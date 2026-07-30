@@ -1,0 +1,75 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "command",
+    "version": "0.1.0",
+    "description": "Run one explicitly configured local command and capture its report."
+  },
+  "operations": [
+    {
+      "id": "run",
+      "description": "Execute the configured command against input artifacts.",
+      "execution": "effect",
+      "inputs": [
+        {
+          "name": "workspace",
+          "schema": "https://devrelay.dev/artifacts/workspace/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.workspace+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "schema": "https://devrelay.dev/artifacts/command-report/v1",
+          "mediaTypes": [
+            "application/json"
+          ],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outcomes": [
+        "completed",
+        "command_failed"
+      ],
+      "evidence": [
+        "command/execution"
+      ],
+      "configSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "executable",
+          "args"
+        ],
+        "properties": {
+          "executable": {
+            "type": "string",
+            "minLength": 1
+          },
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "capabilities": [
+        {
+          "kind": "filesystem.read",
+          "scope": "input:workspace"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "config:executable"
+        }
+      ]
+    }
+  ]
+}

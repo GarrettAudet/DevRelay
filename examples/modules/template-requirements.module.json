@@ -1,0 +1,58 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "template-requirements",
+    "version": "0.1.0",
+    "description": "Produce a requirements proposal from a deterministic local template."
+  },
+  "operations": [
+    {
+      "id": "proposal",
+      "description": "Render the goal into the configured requirements template.",
+      "execution": "pure",
+      "inputs": [
+        {
+          "name": "goal",
+          "schema": "https://devrelay.dev/artifacts/goal/v1",
+          "mediaTypes": [
+            "text/markdown",
+            "text/plain"
+          ],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "proposal",
+          "schema": "https://devrelay.dev/artifacts/requirements-proposal/v1",
+          "mediaTypes": [
+            "text/markdown"
+          ],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outcomes": [
+        "generated",
+        "generation_failed"
+      ],
+      "evidence": [],
+      "configSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "template"
+        ],
+        "properties": {
+          "template": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "capabilities": []
+    }
+  ]
+}

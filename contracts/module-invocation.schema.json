@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/module-invocation.schema.json",
+  "title": "DevRelay ModuleInvocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "invocationId",
+    "runId",
+    "nodeId",
+    "module",
+    "inputs",
+    "config",
+    "grants"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ModuleInvocation"
+    },
+    "invocationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "nodeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "operation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/artifactRef"
+        }
+      }
+    },
+    "config": {
+      "type": "object"
+    },
+    "grants": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capabilityGrant"
+      }
+    }
+  },
+  "$defs": {
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "schema",
+        "mediaType",
+        "digest",
+        "uri"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "capabilityGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "scope"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "filesystem.read",
+            "filesystem.write",
+            "process.spawn",
+            "network.connect",
+            "secrets.read"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      }
+    }
+  }
+}
