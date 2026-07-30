@@ -1,0 +1,53 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "local-command",
+    "version": "0.1.0",
+    "description": "Local process implementation of the generic command module."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "command",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "run",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "executable",
+              "args"
+            ],
+            "properties": {
+              "executable": {
+                "type": "string",
+                "minLength": 1
+              },
+              "args": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "input:workspace"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "config:executable"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -4,13 +4,12 @@
   "metadata": {
     "id": "command",
     "version": "0.1.0",
-    "description": "Run one explicitly configured local command and capture its report."
+    "description": "Execute one command-shaped operation and return a canonical report."
   },
   "operations": [
     {
       "id": "run",
-      "description": "Execute the configured command against input artifacts.",
-      "execution": "effect",
+      "description": "Execute a command against one workspace artifact.",
       "inputs": [
         {
           "name": "workspace",
@@ -30,46 +29,75 @@
             "application/json"
           ],
           "cardinality": "one",
-          "required": true
+          "required": false
         }
       ],
       "outcomes": [
         "completed",
-        "command_failed"
+        "command_failed",
+        "execution_failed"
       ],
+      "resultContracts": {
+        "completed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "requiredOutputs": [
+            "report"
+          ],
+          "allowedOutputs": [
+            "report"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "command/execution",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "report"
+            }
+          ],
+          "diagnosticsRequired": false,
+          "forbiddenInputs": []
+        },
+        "command_failed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "requiredOutputs": [
+            "report"
+          ],
+          "allowedOutputs": [
+            "report"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "command/execution",
+              "statuses": [
+                "fail"
+              ],
+              "artifactOutput": "report"
+            }
+          ],
+          "diagnosticsRequired": true,
+          "forbiddenInputs": []
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true,
+          "forbiddenInputs": []
+        }
+      },
       "evidence": [
         "command/execution"
       ],
-      "configSchema": {
+      "optionsSchema": {
         "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "executable",
-          "args"
-        ],
-        "properties": {
-          "executable": {
-            "type": "string",
-            "minLength": 1
-          },
-          "args": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
+        "additionalProperties": false
       },
-      "capabilities": [
-        {
-          "kind": "filesystem.read",
-          "scope": "input:workspace"
-        },
-        {
-          "kind": "process.spawn",
-          "scope": "config:executable"
-        }
-      ]
+      "inputRules": []
     }
   ]
 }

@@ -1,0 +1,232 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "description": "Turn a goal and explicit project context into a canonical requirements candidate or a stateless clarification request."
+  },
+  "operations": [
+    {
+      "id": "gather",
+      "description": "Gather greenfield requirements or a change set against an exact approved baseline.",
+      "inputs": [
+        {
+          "name": "goal",
+          "schema": "https://devrelay.dev/artifacts/goal/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.goal+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-context",
+          "schema": "https://devrelay.dev/artifacts/project-context/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-context+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "repository-snapshot",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.repository-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "requirements-baseline",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/requirements-gathering-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-gathering-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-responses",
+          "schema": "https://devrelay.dev/artifacts/clarification-response-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.clarification-response-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "requirements-draft",
+          "schema": "https://devrelay.dev/artifacts/requirements-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "requirements-change-set",
+          "schema": "https://devrelay.dev/artifacts/requirements-change-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-change-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-requests",
+          "schema": "https://devrelay.dev/artifacts/clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/requirements-gathering-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-gathering-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "native-source-bundle",
+          "schema": "https://devrelay.dev/artifacts/native-source-bundle/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.native-source-bundle+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "drafted",
+        "change_set_drafted",
+        "needs_clarification",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "drafted": {
+          "status": "completed",
+          "requiredInputs": [],
+          "requiredOutputs": [
+            "requirements-draft",
+            "native-source-bundle"
+          ],
+          "allowedOutputs": [
+            "requirements-draft",
+            "native-source-bundle"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "requirements/source-provenance",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "native-source-bundle"
+            }
+          ],
+          "diagnosticsRequired": false,
+          "forbiddenInputs": [
+            "requirements-baseline"
+          ]
+        },
+        "change_set_drafted": {
+          "status": "completed",
+          "requiredInputs": [
+            "requirements-baseline"
+          ],
+          "requiredOutputs": [
+            "requirements-change-set",
+            "native-source-bundle"
+          ],
+          "allowedOutputs": [
+            "requirements-change-set",
+            "native-source-bundle"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "requirements/source-provenance",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "native-source-bundle"
+            }
+          ],
+          "diagnosticsRequired": false,
+          "forbiddenInputs": []
+        },
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "requiredOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "allowedOutputs": [
+            "clarification-requests",
+            "continuation",
+            "native-source-bundle"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": false,
+          "forbiddenInputs": []
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true,
+          "forbiddenInputs": []
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true,
+          "forbiddenInputs": []
+        }
+      },
+      "evidence": [
+        "requirements/source-provenance"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "inputRules": [
+        {
+          "ifPresent": "continuation",
+          "require": [
+            "clarification-responses"
+          ]
+        },
+        {
+          "ifPresent": "clarification-responses",
+          "require": [
+            "continuation"
+          ]
+        }
+      ]
+    }
+  ]
+}

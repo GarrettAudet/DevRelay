@@ -1,0 +1,81 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsBaseline",
+  "baselineId": "requirements-baseline-001",
+  "version": "1.0.0",
+  "approvedDraft": {
+    "artifactId": "requirements-draft-001",
+    "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  },
+  "requirements": {
+    "objective": "Define the externally observable authentication behavior and its verification obligations.",
+    "scope": {
+      "in": [
+        "Sign in",
+        "Sign out"
+      ],
+      "out": [
+        "Application architecture"
+      ]
+    },
+    "assumptions": [
+      {
+        "id": "ASM-AUTH-001",
+        "statement": "A registered user identity already exists.",
+        "status": "confirmed"
+      }
+    ],
+    "constraints": [
+      "Authentication failures must not disclose whether an account exists."
+    ],
+    "requirements": [
+      {
+        "id": "REQ-AUTH-001",
+        "category": "functional",
+        "statement": "The product shall allow a registered user to authenticate and establish a user session.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-AUTH-001",
+            "statement": "Valid credentials establish an authenticated session for the matching user.",
+            "verification": "Execute an end-to-end authentication test with a registered test user."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "requirements-draft",
+            "artifact": {
+              "artifactId": "requirements-draft-001",
+              "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            }
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "An authoritative user identity source."
+    ],
+    "risks": [],
+    "deliverables": [
+      "Authentication behavior."
+    ],
+    "requiredEvidence": [
+      "security/authentication-review"
+    ],
+    "sourceRefs": [
+      {
+        "role": "requirements-draft",
+        "artifact": {
+          "artifactId": "requirements-draft-001",
+          "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        }
+      }
+    ]
+  },
+  "approvalEvidence": [
+    {
+      "artifactId": "requirements-approval-001",
+      "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}

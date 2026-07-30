@@ -1,0 +1,61 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-spec-kit-clarify-001",
+  "runId": "run-003",
+  "nodeId": "requirements",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "github-spec-kit",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-001",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "uri": "file:///workspace/.devrelay/artifacts/goal-001.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-001",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "uri": "file:///workspace/.devrelay/artifacts/project-context-001.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "/workspace",
+    "toolVersion": "pinned-by-lock-record",
+    "featureName": "add-user-authentication",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "/workspace"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "/workspace/specs"
+    },
+    {
+      "kind": "process.spawn",
+      "scope": "specify"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

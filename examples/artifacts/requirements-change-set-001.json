@@ -1,0 +1,61 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsChangeSet",
+  "changeSetId": "requirements-change-set-001",
+  "baseline": {
+    "artifactId": "requirements-baseline-001",
+    "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "additions": [],
+  "modifications": [
+    {
+      "requirementId": "REQ-AUTH-001",
+      "expectedRequirementDigest": "sha256:4276f45d994d24a975b4b4af4a3838ad59aac4956e03eb597dbde357640fcd27",
+      "replacement": {
+        "id": "REQ-AUTH-001",
+        "category": "security",
+        "statement": "The product shall require an additional authentication factor when policy requires it.",
+        "rationale": "The updated security policy requires multi-factor authentication.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-AUTH-MFA-001",
+            "statement": "A policy-bound user cannot establish a session using only one factor.",
+            "verification": "Execute an end-to-end test for a user governed by the multi-factor policy."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-change-001",
+              "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+            }
+          }
+        ]
+      },
+      "reason": "Require multi-factor authentication for policy-bound users.",
+      "compatibilityImpact": "breaking"
+    }
+  ],
+  "removals": [],
+  "assumptions": [
+    "The policy source can identify users subject to multi-factor authentication."
+  ],
+  "risks": [
+    "Existing clients may not support the additional challenge."
+  ],
+  "requiredEvidence": [
+    "security/authentication-review",
+    "compatibility/client-review"
+  ],
+  "sourceRefs": [
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-001",
+        "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+  ]
+}

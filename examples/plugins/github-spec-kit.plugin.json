@@ -1,0 +1,71 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "github-spec-kit",
+    "version": "0.1.0",
+    "description": "Contract mapping for normalizing GitHub Spec Kit specification and clarification artifacts into RequirementsGathering."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "gather",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "toolVersion",
+              "featureName",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "featureName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "bridge": {
+                "enum": [
+                  "agent-command",
+                  "process-json"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:projectRoot/specs"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "specify"
+            },
+            {
+              "kind": "network.connect",
+              "scope": "host:implementation-engine"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

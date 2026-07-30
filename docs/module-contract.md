@@ -2,74 +2,69 @@
 
 ## Status
 
-First-pass design. The objective is the smallest boundary that lets external engineering libraries participate without becoming kernel special cases.
+Executable first-pass contract. The objective is the smallest boundary that allows best-in-class engineering tools to be swapped without changing workflow semantics or adding kernel branches.
 
-## Design Test
+## Separation Of Authority
 
-The contract succeeds when all of these are true:
+### `ModuleDefinition`
 
-1. DevRelay core contains no branch for `openspec` or any other Module ID.
-2. A second Module with compatible ports can replace OpenSpec in a pipeline definition.
-3. Core can validate, invoke, checkpoint, resume, and trace both Modules identically.
-4. OpenSpec-specific paths, commands, schemas, and native status stay inside its adapter and configuration.
-
-## Four Objects
-
-### ModuleDefinition
-
-Portable description of what a Module can do:
+The semantic engineering capability:
 
 - stable ID and exact version;
-- one or more operations;
-- execution mode;
-- typed input and output ports;
-- declared outcomes;
-- optional evidence kinds;
-- configuration schema;
+- operations;
+- tool-neutral input and output ports and declarative input relationships;
+- declared outcomes and outcome-specific result contracts;
+- evidence kinds;
+- portable operation options.
+
+It does not declare a command, native file layout, execution mode, requested capability, provider, or tool configuration.
+
+### `ModulePlugin`
+
+One implementation binding:
+
+- stable plug-in ID and exact version;
+- exact Module ID/version targets;
+- implemented operation IDs;
+- `pure` or `effect` execution mode;
+- implementation-specific configuration schema;
 - requested capabilities.
 
-It contains no pipeline position, current Run state, provider credential, or downstream behavior.
+A plug-in cannot redefine a Module's ports, outcomes, result rules, or evidence semantics.
 
-### ModuleInvocation
+### `ModuleInvocation`
 
-One exact request to one operation:
+One exact request:
 
 - invocation, Run, and node identities;
 - exact Module ID/version/operation;
-- input ArtifactRefs grouped by port;
-- operation configuration;
-- granted capabilities.
+- exact plug-in ID/version;
+- input `ArtifactRef` values grouped by semantic port;
+- portable Module options;
+- opaque plug-in configuration;
+- host-granted capabilities.
 
-It deliberately omits:
+The invocation fingerprint covers the declared Module, plug-in, content digests, options, configuration, and grants. It identifies checkpoint material; it is not a claim that effectful model/tool execution is bit-for-bit reproducible. Adapter, tool, model, prompt, and environment provenance belong in the host run record.
 
-- the pipeline graph;
-- other node states;
-- gate state;
-- scheduler controls;
-- a method to invoke another Module;
-- a method to mark the Run complete.
+### `ModuleResult`
 
-### ModuleResult
-
-One recorded observation:
+One checkpointable observation:
 
 - invocation identity;
 - lifecycle status;
-- one declared Module outcome;
-- output ArtifactRefs grouped by port;
+- one declared semantic outcome;
+- output `ArtifactRef` values grouped by semantic port;
 - Evidence;
 - bounded diagnostics.
 
-A result never says that the pipeline or Run is accepted. Pipeline outcome routing and gates remain core responsibilities.
+A result never says that the pipeline, gate, or Run is accepted.
 
-### ModuleAdapter
+### `ModuleAdapter`
 
-Runtime implementation paired with one ModuleDefinition:
+Executable code paired with a `ModulePlugin`:
 
 ```ts
 interface ModuleAdapter {
-  readonly definition: ModuleDefinition;
-
   invoke(
     invocation: ModuleInvocation,
     context: ModuleContext,
@@ -77,30 +72,48 @@ interface ModuleAdapter {
 }
 ```
 
-`ModuleContext` is a bounded host surface:
+`ModuleContext` remains a bounded host surface for reading and creating immutable artifacts, logging, cancellation, and explicitly granted effects. It exposes neither the scheduler nor mutable Run state.
 
-```ts
-interface ModuleContext {
-  readArtifact(ref: ArtifactRef): Promise<Uint8Array>;
-  createArtifact(input: NewArtifact): Promise<ArtifactRef>;
-  log(entry: ModuleLogEntry): void;
-  signal: AbortSignal;
+## Resolution
+
+```txt
+validate the invocation JSON Schema
+  -> resolve exact Module and operation
+  -> resolve exact plug-in
+  -> prove plug-in implements that Module version and operation
+  -> validate Module options and plug-in configuration schemas
+  -> validate semantic ports and input relationships
+  -> compare requested and granted capability kinds
+  -> expose the registered adapter
+```
+
+There are no version ranges, implicit defaults, preferred implementations, or `latest` aliases.
+
+## Result Contracts
+
+Output requirements often depend on the outcome. Each Module operation therefore defines one `resultContract` per outcome:
+
+```json
+{
+  "status": "completed",
+  "requiredInputs": [],
+  "forbiddenInputs": ["requirements-baseline"],
+  "requiredOutputs": ["requirements-draft", "native-source-bundle"],
+  "allowedOutputs": ["requirements-draft", "native-source-bundle"],
+  "requiredEvidence": [
+    {
+      "kind": "requirements/source-provenance",
+      "statuses": ["pass"],
+      "artifactOutput": "native-source-bundle"
+    }
+  ],
+  "diagnosticsRequired": false
 }
 ```
 
-It exposes neither scheduler nor mutable Run state.
+The registry rejects missing/forbidden inputs, broken input relationships, missing or undeclared outputs, wrong artifact schemas/media types, evidence with an unacceptable status, lifecycle mismatches, and missing diagnostics.
 
-The first runner can use in-process adapters. A later `process-json` adapter protocol can implement the same invocation/result contracts without changing Module semantics.
-
-## Ports And Artifacts
-
-A port declares:
-
-- name;
-- artifact schema identity;
-- accepted media types;
-- cardinality `one` or `many`;
-- required or optional.
+## Artifacts And Provenance
 
 Artifacts are immutable references:
 
@@ -112,55 +125,24 @@ digest
 uri
 ```
 
-Content may be stored outside the invocation. Core verifies the digest before using an ArtifactRef.
+Interchangeable ports use DevRelay-owned schemas. Plug-ins normalize native representations into those schemas. Promotable requirements candidates must include a `NativeSourceBundle` and passing source-provenance evidence that preserve exact tool/version/source/digest mappings and normalization warnings.
 
-Modules communicate only through artifacts and evidence. Native paths may appear inside a Module's private configuration or artifact URI, but downstream Modules consume declared artifacts rather than reaching into another Module's internals.
+Native tool state is provenance, not downstream authority.
 
-Interchangeable pipeline ports SHOULD use tool-neutral artifact schemas. An adapter normalizes native files into that boundary and may preserve the exact native representation as a secondary artifact. A pipeline may intentionally choose a tool-native schema, but that makes the coupling explicit rather than a kernel special case.
+### Digest Semantics
 
-## Execution Modes
+An `ArtifactRef.digest` is SHA-256 over the exact immutable artifact bytes returned by the artifact store. JSON content that needs a stable subdocument identity, such as `expectedRequirementDigest`, uses DevRelay Canonical JSON v1: recursively sort object keys by Unicode code-unit order, preserve array order, serialize without insignificant whitespace as UTF-8 JSON, then SHA-256 the bytes. The implementation is `src/content-digest.mjs` and is covered by fixed integrity tests.
 
-### `pure`
+## Execution And Resume
 
-The adapter promises equal semantic outputs for equal Module version, operation, configuration, and input bytes. Core may cache or repeat it.
+- `pure`: equal semantic outputs are expected for equal exact invocation material.
+- `effect`: a model, human, process, filesystem, network, or external service may be involved.
 
-### `effect`
-
-The adapter may invoke a human, model, process, filesystem, network, or external service. Core records its result before downstream use and does not implicitly rerun a completed invocation during resume.
-
-This distinction is generic; it is not tied to any specific library.
-
-## Outcomes
-
-Operations declare their possible outcomes as strings. A result must use one declared outcome.
-
-Examples:
-
-- `generated`;
-- `valid`;
-- `invalid`;
-- `completed`;
-- `command_failed`.
-
-Core does not interpret these strings globally. A pipeline binding maps them to downstream routes or gate behavior.
-
-## Evidence
-
-Evidence is a generic claim:
-
-```txt
-kind
-subject
-status: pass | fail | inconclusive
-artifact?
-summary?
-```
-
-OpenSpec strict validation, test output, security review, and human review all use this same shape. Evidence never approves its own pipeline gate; core evaluates gate policy separately.
+Core checkpoints a completed result before downstream use. Resume reuses that exact result. It does not silently rerun an effect whose completion is uncertain.
 
 ## Capabilities
 
-A ModuleDefinition declares requested capability kinds:
+A plug-in declares implementation demand:
 
 - `filesystem.read`;
 - `filesystem.write`;
@@ -168,38 +150,20 @@ A ModuleDefinition declares requested capability kinds:
 - `network.connect`;
 - `secrets.read`.
 
-The invocation contains only granted capabilities. This first pass records and narrows capability demand; it does not claim to provide a security sandbox.
+The invocation records grants. This slice checks capability kinds and returns declared scopes to the host. Scope resolution/containment and sandbox enforcement are host authorization responsibilities; the registry does not treat scope strings as a security boundary.
 
-## Generic Invocation Lifecycle
+## Requirements Plug-in Mapping
 
-```txt
-resolve exact Module
-  -> validate invocation
-  -> compare requested and granted capabilities
-  -> invoke adapter
-  -> validate result and declared outcome
-  -> verify and record artifacts/evidence
-  -> checkpoint invocation result
-  -> expose outputs to downstream ports
-```
+| Semantic operation | OpenSpec plug-in | GitHub Spec Kit plug-in |
+| --- | --- | --- |
+| Gather requirements | proposal plus specs | `/speckit.specify` output |
+| Clarify ambiguity | `/opsx:explore` or bounded continuation | `/speckit.clarify` |
+| Preserve native source | proposal/spec files | feature `spec.md` and clarification content |
+| Canonical output | DevRelay draft/change set/questions | DevRelay draft/change set/questions |
 
-If the process stops after checkpointing, resume reuses the recorded result. If it stops during an effect before a result is checkpointed, the first pass reports the invocation as unresolved rather than blindly rerunning it.
+OpenSpec `design.md` and `tasks.md`, and Spec Kit plan/tasks/implementation, belong to future semantic Modules. They are not smuggled through `RequirementsGathering`.
 
-## OpenSpec Mapping
-
-| OpenSpec concern | Generic DevRelay representation |
-| --- | --- |
-| Proposal generation | `openspec` Module, `proposal` operation |
-| Goal text | Input ArtifactRef |
-| Project root/change/schema | Opaque operation configuration |
-| CLI invocation | Adapter implementation detail |
-| Proposal/design/spec/task files | Tool-neutral output ArtifactRefs; exact native files may be preserved as secondary artifacts |
-| Strict validation | `validate` operation plus Evidence |
-| Native status | Declared Module outcome or evidence |
-| Filesystem/process access | Requested and granted capabilities |
-| Apply/sync/archive | Separate effect operations if added |
-
-Nothing in this mapping requires a kernel branch.
+Both upstream command surfaces are primarily agent-facing. The manifests are contract-compatible bindings; operational interchangeability is not claimed until executable host adapters pass the same artifact/outcome conformance suite.
 
 ## Rejected First-Pass Features
 
@@ -207,17 +171,7 @@ Nothing in this mapping requires a kernel branch.
 - arbitrary access to Run state;
 - Module-owned gates or final acceptance;
 - automatic package discovery;
-- dynamic `latest` resolution;
+- dynamic version resolution;
 - distributed workers;
-- event sourcing;
-- migration and promotion machinery;
-- module-specific fields in core contracts.
-
-## Next Decision
-
-After the examples stabilize, decide whether the first executable adapter boundary is:
-
-1. an in-process TypeScript interface; or
-2. newline-delimited JSON over a child process.
-
-The contracts intentionally permit either.
+- a built-in model provider wrapper;
+- plug-in-specific fields or branches in core.

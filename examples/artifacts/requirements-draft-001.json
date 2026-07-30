@@ -1,0 +1,92 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsDraft",
+  "draftId": "requirements-draft-001",
+  "goal": {
+    "artifactId": "goal-001",
+    "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "projectContext": {
+    "artifactId": "project-context-001",
+    "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "requirements": {
+    "objective": "Define the externally observable authentication behavior and its verification obligations.",
+    "scope": {
+      "in": [
+        "Sign in",
+        "Sign out",
+        "Authentication failure behavior"
+      ],
+      "out": [
+        "Application architecture",
+        "Identity-provider selection"
+      ]
+    },
+    "assumptions": [
+      {
+        "id": "ASM-AUTH-001",
+        "statement": "A registered user identity already exists.",
+        "status": "confirmed"
+      }
+    ],
+    "constraints": [
+      "Authentication failures must not disclose whether an account exists."
+    ],
+    "requirements": [
+      {
+        "id": "REQ-AUTH-001",
+        "category": "functional",
+        "statement": "The product shall allow a registered user to authenticate and establish a user session.",
+        "rationale": "Registered users need access to protected product capabilities.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-AUTH-001",
+            "statement": "Valid credentials establish an authenticated session for the matching user.",
+            "verification": "Execute an end-to-end authentication test with a registered test user."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "location": "objectives[0]"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "An authoritative user identity source."
+    ],
+    "risks": [
+      "Incomplete failure requirements could disclose account existence."
+    ],
+    "deliverables": [
+      "Approved authentication requirements baseline."
+    ],
+    "requiredEvidence": [
+      "requirements/acceptance-criteria-review",
+      "security/authentication-review"
+    ],
+    "sourceRefs": [
+      {
+        "role": "goal",
+        "artifact": {
+          "artifactId": "goal-001",
+          "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      {
+        "role": "project-context",
+        "artifact": {
+          "artifactId": "project-context-001",
+          "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "openspec",
+    "version": "0.1.0",
+    "description": "Contract mapping for normalizing OpenSpec proposal and spec artifacts into RequirementsGathering."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "gather",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "toolVersion",
+              "changeName",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "changeName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "schema": {
+                "type": "string",
+                "minLength": 1
+              },
+              "bridge": {
+                "enum": [
+                  "agent-command",
+                  "process-json"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:projectRoot/openspec/changes"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "openspec"
+            },
+            {
+              "kind": "network.connect",
+              "scope": "host:implementation-engine"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

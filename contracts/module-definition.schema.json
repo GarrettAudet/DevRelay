@@ -56,13 +56,13 @@
       "required": [
         "id",
         "description",
-        "execution",
         "inputs",
         "outputs",
+        "inputRules",
         "outcomes",
+        "resultContracts",
         "evidence",
-        "configSchema",
-        "capabilities"
+        "optionsSchema"
       ],
       "properties": {
         "id": {
@@ -73,12 +73,6 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 1024
-        },
-        "execution": {
-          "enum": [
-            "pure",
-            "effect"
-          ]
         },
         "inputs": {
           "type": "array",
@@ -92,6 +86,12 @@
             "$ref": "#/$defs/port"
           }
         },
+        "inputRules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inputRule"
+          }
+        },
         "outcomes": {
           "type": "array",
           "minItems": 1,
@@ -99,6 +99,16 @@
           "items": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+          }
+        },
+        "resultContracts": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/resultContract"
           }
         },
         "evidence": {
@@ -109,14 +119,8 @@
             "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$"
           }
         },
-        "configSchema": {
+        "optionsSchema": {
           "type": "object"
-        },
-        "capabilities": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/capabilityRequest"
-          }
         }
       }
     },
@@ -159,28 +163,103 @@
         }
       }
     },
-    "capabilityRequest": {
+    "inputRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ifPresent",
+        "require"
+      ],
+      "properties": {
+        "ifPresent": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "require": {
+          "$ref": "#/$defs/nameSet"
+        }
+      }
+    },
+    "resultContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "requiredInputs",
+        "forbiddenInputs",
+        "requiredOutputs",
+        "allowedOutputs",
+        "requiredEvidence",
+        "diagnosticsRequired"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "completed",
+            "failed",
+            "waiting"
+          ]
+        },
+        "requiredInputs": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "forbiddenInputs": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "requiredOutputs": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "allowedOutputs": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "requiredEvidence": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/evidenceRequirement"
+          }
+        },
+        "diagnosticsRequired": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evidenceRequirement": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "kind",
-        "scope"
+        "statuses"
       ],
       "properties": {
         "kind": {
-          "enum": [
-            "filesystem.read",
-            "filesystem.write",
-            "process.spawn",
-            "network.connect",
-            "secrets.read"
-          ]
-        },
-        "scope": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 2048
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$"
+        },
+        "statuses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "pass",
+              "fail",
+              "inconclusive"
+            ]
+          }
+        },
+        "artifactOutput": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
         }
+      }
+    },
+    "nameSet": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$"
       }
     }
   }

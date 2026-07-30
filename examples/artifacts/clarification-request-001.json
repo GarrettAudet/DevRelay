@@ -1,0 +1,35 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationRequestSet",
+  "requestSetId": "clarification-request-001",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-001",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-001",
+        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-AUTH-FACTOR-001",
+      "prompt": "Which authentication factors must the first release support?",
+      "rationale": "The answer changes security requirements and acceptance criteria.",
+      "blocking": true,
+      "responseType": "multiple-choice",
+      "options": [
+        "Password",
+        "Email one-time code",
+        "Authenticator application"
+      ]
+    }
+  ]
+}
