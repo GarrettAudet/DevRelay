@@ -1,0 +1,36 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-architecture-design-module-v1",
+  "statement": "Build DevRelay's ArchitectureDesign module from the user-approved interactive requirements: deterministically select baseline establishment or change design from project state, execute a configured designer-to-modeler-to-decision-recorder chain, and emit one provider-neutral architecture candidate for a separate Architecture Gate.",
+  "objectives": [
+    "Expose one ArchitectureDesign module with establish-baseline and design-change operations.",
+    "Route from persistent project architecture state without model or plug-in discretion.",
+    "Execute exact configured adapters in the declared designer, modeler, decision-recorder order.",
+    "Emit exactly one ArchitectureDraft or ArchitectureChangeSetDraft containing all supporting sections and attachments.",
+    "Require ArchitectureDiscovery before baseline establishment for an existing repository with no current architecture snapshot.",
+    "Preserve exact stage, adapter, source, and normalization provenance."
+  ],
+  "constraints": [
+    "ArchitectureDesign consumes an approved RequirementsBaseline and never approves its own output.",
+    "The Architecture Gate alone promotes or updates an ArchitectureBaseline.",
+    "V1 defaults are SpecKitPlanAdapter or OpenSpecDesignAdapter, followed by StructurizrAdapter and MADRAdapter.",
+    "Named tools remain replaceable adapters and must not create identifier branches in core.",
+    "Interface intent belongs here; detailed OpenAPI, AsyncAPI, protobuf, data-schema generation, and enforcement remain downstream.",
+    "The first implementation remains a small local deterministic contract runner, not a distributed workflow platform."
+  ],
+  "acceptanceCriteria": [
+    "Project state without an architecture baseline selects establish-baseline; state with a baseline selects design-change.",
+    "An existing undiscovered repository routes to ArchitectureDiscovery rather than invoking ArchitectureDesign.",
+    "The configured adapters resolve and execute only in designer, modeler, decision-recorder order.",
+    "Baseline establishment emits exactly one ArchitectureDraft and change design emits exactly one ArchitectureChangeSetDraft.",
+    "Both primary artifacts contain or reference technical design, architecture model, diagrams, interface intent, architecture constraints, decision records, and native artifacts.",
+    "Malformed state, stage handoffs, adapter bindings, provenance, references, or primary outputs are rejected before progression.",
+    "The full test suite passes without architecture or provider identifiers in generic core branches."
+  ],
+  "assumptions": [
+    "ArchitectureDesign 0.1.0 is not yet published; the invalid provisional definition can be replaced rather than versioned.",
+    "The configured OpenSpec chat bridge records requirements provenance but does not claim OpenSpec CLI execution.",
+    "Supporting attachments remain subordinate to one primary module output."
+  ]
+}

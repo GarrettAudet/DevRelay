@@ -1,0 +1,71 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-architecture-design-openspec-v1",
+  "runId": "dogfood-architecture-design-v1",
+  "nodeId": "requirements-gathering",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-architecture-design-module-v1",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-design/goal.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-architecture-design-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-design/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-067b3a5",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-design/repository-snapshot.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "C:/repos/DevRelay",
+    "toolVersion": "conversation-contract-v1",
+    "changeName": "architecture-design-module-v1",
+    "schema": "devrelay-requirements",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "C:/repos/DevRelay"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "C:/repos/DevRelay/dogfood/architecture-design"
+    },
+    {
+      "kind": "process.spawn",
+      "scope": "openspec"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

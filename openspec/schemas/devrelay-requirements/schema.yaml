@@ -1,0 +1,25 @@
+name: devrelay-requirements
+version: 1
+description: Requirements-only OpenSpec workflow used by DevRelay RequirementsGathering.
+
+artifacts:
+  - id: proposal
+    generates: proposal.md
+    description: Intent, scope, and impact without solution architecture.
+    template: proposal.md
+    instruction: |
+      Describe why the semantic module is needed and what observable contract
+      behavior must change. Keep architecture, tasks, implementation, and
+      approval decisions outside this artifact.
+    requires: []
+
+  - id: specs
+    generates: specs/**/*.md
+    description: Verifiable requirements and scenarios for the proposed module.
+    template: spec.md
+    instruction: |
+      Express every requirement with SHALL or MUST and at least one verifiable
+      scenario. Describe tool-neutral behavior. Do not prescribe implementation
+      architecture, generate tasks, or claim that a downstream gate has passed.
+    requires:
+      - proposal

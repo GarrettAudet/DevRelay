@@ -1,0 +1,80 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureClarificationRequestSet",
+  "requestSetId": "architecture-clarification-request-001",
+  "operation": "establish-baseline",
+  "activeStage": "designer",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-existing-discovered-001",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "uri": "file:///workspace/.devrelay/artifacts/project-architecture-state-existing-discovered-001.json"
+  },
+  "baseInputs": [
+    {
+      "role": "project-architecture-state",
+      "artifact": {
+        "artifactId": "project-architecture-state-existing-discovered-001",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "uri": "file:///workspace/.devrelay/artifacts/project-architecture-state-existing-discovered-001.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-001",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "uri": "file:///workspace/.devrelay/artifacts/project-context-001.json"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      }
+    },
+    {
+      "role": "current-architecture-snapshot",
+      "artifact": {
+        "artifactId": "current-architecture-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/current-architecture-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.current-architecture-snapshot+json",
+        "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "uri": "file:///workspace/.devrelay/artifacts/current-architecture-snapshot-001.json"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-AUTH-SESSION-OWNER",
+      "prompt": "Which existing boundary is authorized to own session establishment?",
+      "rationale": "Assigning ownership without project authority would create an unapproved dependency.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Authentication service",
+        "Application backend",
+        "External identity platform"
+      ]
+    }
+  ]
+}

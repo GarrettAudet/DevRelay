@@ -1,0 +1,3383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json",
+  "title": "DevRelay ArchitectureDesign artifact family",
+  "oneOf": [
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/projectArchitectureState"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/currentArchitectureSnapshot"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureBaseline"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureDraft"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureChangeSetDraft"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureClarificationRequestSet"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureClarificationResponseSet"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureDesignContinuation"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureDesignerWorkingArtifact"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureModelerWorkingArtifact"
+    }
+  ],
+  "$defs": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "artifactPointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "schema",
+        "mediaType",
+        "digest",
+        "uri"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "digest": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "artifact"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "artifact": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      }
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRef"
+      }
+    },
+    "sourceRequirementIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^REQ-[A-Z0-9-]+$"
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "boundary",
+        "in",
+        "out"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "system",
+            "subsystem",
+            "feature",
+            "change"
+          ]
+        },
+        "boundary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "in": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "out": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "status",
+        "blocking"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ASM-[A-Z0-9-]+$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "unconfirmed"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "impact",
+        "mitigation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^RISK-[A-Z0-9-]+$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "mitigation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      }
+    },
+    "baseInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "artifact"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "project-architecture-state",
+            "requirements-baseline",
+            "project-context",
+            "repository-snapshot",
+            "current-architecture-snapshot",
+            "architecture-baseline"
+          ]
+        },
+        "artifact": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        }
+      }
+    },
+    "baseInputSet": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/baseInput"
+      }
+    },
+    "projectArchitectureState": {
+      "$id": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "stateId",
+        "state",
+        "projectLifecycle",
+        "projectContext",
+        "requirementsBaseline"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ProjectArchitectureState"
+        },
+        "stateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "state": {
+          "enum": [
+            "greenfield-unbaselined",
+            "existing-undiscovered",
+            "existing-discovered-unbaselined",
+            "baselined"
+          ]
+        },
+        "projectLifecycle": {
+          "enum": [
+            "greenfield",
+            "existing"
+          ]
+        },
+        "projectContext": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "requirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "repositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "currentArchitectureSnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "architectureBaseline": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "greenfield-unbaselined"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "projectLifecycle": {
+                "const": "greenfield"
+              },
+              "repositorySnapshot": false,
+              "currentArchitectureSnapshot": false,
+              "architectureBaseline": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "existing-undiscovered"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "repositorySnapshot"
+            ],
+            "properties": {
+              "projectLifecycle": {
+                "const": "existing"
+              },
+              "currentArchitectureSnapshot": false,
+              "architectureBaseline": false,
+              "repositorySnapshot": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "existing-discovered-unbaselined"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "repositorySnapshot",
+              "currentArchitectureSnapshot"
+            ],
+            "properties": {
+              "projectLifecycle": {
+                "const": "existing"
+              },
+              "architectureBaseline": false,
+              "repositorySnapshot": {},
+              "currentArchitectureSnapshot": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "baselined"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "architectureBaseline"
+            ],
+            "properties": {
+              "architectureBaseline": {}
+            }
+          }
+        }
+      ]
+    },
+    "architectureElement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "type",
+        "description",
+        "responsibilities",
+        "tags",
+        "properties",
+        "sourceRequirementIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^EL-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "type": {
+          "enum": [
+            "person",
+            "software-system",
+            "container",
+            "component",
+            "deployment-node",
+            "infrastructure-node",
+            "software-system-instance",
+            "container-instance"
+          ]
+        },
+        "parentId": {
+          "type": "string",
+          "pattern": "^EL-[A-Z0-9-]+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "technology": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "responsibilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 2048
+          }
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureRelationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "sourceElementId",
+        "targetElementId",
+        "description",
+        "interactionStyle",
+        "tags",
+        "sourceRequirementIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^REL-[A-Z0-9-]+$"
+        },
+        "sourceElementId": {
+          "type": "string",
+          "pattern": "^EL-[A-Z0-9-]+$"
+        },
+        "targetElementId": {
+          "type": "string",
+          "pattern": "^EL-[A-Z0-9-]+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "technology": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "interactionStyle": {
+          "enum": [
+            "synchronous",
+            "asynchronous",
+            "batch",
+            "shared-data",
+            "human"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureModel": {
+      "$id": "https://devrelay.dev/artifacts/architecture-model/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modelId",
+        "notation",
+        "elements",
+        "relationships",
+        "sourceRefs"
+      ],
+      "properties": {
+        "modelId": {
+          "type": "string",
+          "pattern": "^MODEL-[A-Z0-9-]+$"
+        },
+        "notation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "version"
+          ],
+          "properties": {
+            "name": {
+              "const": "C4"
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32
+            }
+          }
+        },
+        "elements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureElement"
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureRelationship"
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "diagramRendering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "artifact"
+      ],
+      "properties": {
+        "format": {
+          "enum": [
+            "structurizr",
+            "svg",
+            "png",
+            "mermaid",
+            "plantuml"
+          ]
+        },
+        "artifact": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        }
+      }
+    },
+    "diagramView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "viewKey",
+        "type",
+        "title",
+        "purpose",
+        "audience",
+        "elementIds",
+        "relationshipIds",
+        "renderings"
+      ],
+      "properties": {
+        "viewKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "type": {
+          "enum": [
+            "system-landscape",
+            "system-context",
+            "container",
+            "component",
+            "dynamic",
+            "deployment",
+            "custom"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "audience": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "scopeElementId": {
+          "type": "string",
+          "pattern": "^EL-[A-Z0-9-]+$"
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "elementIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EL-[A-Z0-9-]+$"
+          }
+        },
+        "relationshipIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^REL-[A-Z0-9-]+$"
+          }
+        },
+        "dynamicSteps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "order",
+              "relationshipId",
+              "description"
+            ],
+            "properties": {
+              "order": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "relationshipId": {
+                "type": "string",
+                "pattern": "^REL-[A-Z0-9-]+$"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            }
+          }
+        },
+        "renderings": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/diagramRendering"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dynamic"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "dynamicSteps"
+            ],
+            "properties": {
+              "dynamicSteps": {}
+            }
+          },
+          "else": {
+            "properties": {
+              "dynamicSteps": false
+            }
+          }
+        }
+      ]
+    },
+    "architectureDiagramSet": {
+      "$id": "https://devrelay.dev/artifacts/architecture-diagram-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "diagramSetId",
+        "architectureModelId",
+        "architectureModelDigest",
+        "views"
+      ],
+      "properties": {
+        "diagramSetId": {
+          "type": "string",
+          "pattern": "^DIAGRAMS-[A-Z0-9-]+$"
+        },
+        "architectureModelId": {
+          "type": "string",
+          "pattern": "^MODEL-[A-Z0-9-]+$"
+        },
+        "architectureModelDigest": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+        },
+        "views": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/diagramView"
+          }
+        }
+      }
+    },
+    "interfaceIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "purpose",
+        "ownerBoundary",
+        "providerElementId",
+        "consumerElementIds",
+        "interactionStyle",
+        "semanticInputs",
+        "semanticOutputs",
+        "protocolConstraints",
+        "failureBehavior",
+        "compatibilityObligations",
+        "securityPrivacyIntent",
+        "deliveryConsistencyIntent",
+        "contractGeneration",
+        "sourceRequirementIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^IF-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "ownerBoundary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "providerElementId": {
+          "type": "string",
+          "pattern": "^EL-[A-Z0-9-]+$"
+        },
+        "consumerElementIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EL-[A-Z0-9-]+$"
+          }
+        },
+        "interactionStyle": {
+          "enum": [
+            "synchronous",
+            "asynchronous",
+            "batch",
+            "shared-data",
+            "human"
+          ]
+        },
+        "semanticInputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "semanticOutputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "protocolConstraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "failureBehavior": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "compatibilityObligations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "securityPrivacyIntent": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "deliveryConsistencyIntent": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "contractGeneration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "suggestedKinds"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "suggestedKinds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "openapi",
+                  "asyncapi",
+                  "protobuf",
+                  "json-schema",
+                  "other"
+                ]
+              }
+            }
+          }
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "interfaceIntentSet": {
+      "$id": "https://devrelay.dev/artifacts/interface-intent-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceIntentSetId",
+        "interfaces"
+      ],
+      "properties": {
+        "interfaceIntentSetId": {
+          "type": "string",
+          "pattern": "^INTERFACES-[A-Z0-9-]+$"
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/interfaceIntent"
+          }
+        }
+      }
+    },
+    "constraintTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "element",
+            "relationship",
+            "interface"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^(EL|REL|IF)-[A-Z0-9-]+$"
+        }
+      }
+    },
+    "architectureConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "strength",
+        "statement",
+        "rationale",
+        "appliesTo",
+        "verificationIntent",
+        "sourceRequirementIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CON-[A-Z0-9-]+$"
+        },
+        "category": {
+          "enum": [
+            "technology",
+            "deployment",
+            "security",
+            "privacy",
+            "compliance",
+            "performance",
+            "availability",
+            "data",
+            "organizational",
+            "compatibility",
+            "operational"
+          ]
+        },
+        "strength": {
+          "enum": [
+            "must",
+            "should"
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "appliesTo": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/constraintTarget"
+          }
+        },
+        "verificationIntent": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureConstraintSet": {
+      "$id": "https://devrelay.dev/artifacts/architecture-constraint-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "constraintSetId",
+        "constraints"
+      ],
+      "properties": {
+        "constraintSetId": {
+          "type": "string",
+          "pattern": "^CONSTRAINTS-[A-Z0-9-]+$"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureConstraint"
+          }
+        }
+      }
+    },
+    "decisionOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "pros",
+        "cons"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^OPT-[A-Z0-9-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "pros": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "cons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        }
+      }
+    },
+    "decisionConsequence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "polarity",
+        "statement"
+      ],
+      "properties": {
+        "polarity": {
+          "enum": [
+            "positive",
+            "negative",
+            "neutral"
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      }
+    },
+    "decisionTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "element",
+            "relationship",
+            "view",
+            "interface",
+            "constraint"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^(EL|REL|IF|CON|VIEW)-[A-Z0-9-]+$"
+        }
+      }
+    },
+    "decisionRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "status",
+        "contextAndProblemStatement",
+        "decisionDrivers",
+        "consideredOptions",
+        "outcome",
+        "consequences",
+        "confirmation",
+        "relatedDecisionIds",
+        "supersedesDecisionIds",
+        "affectedTargets",
+        "sourceRequirementIds",
+        "sourceRefs",
+        "format"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ADR-[A-Z0-9-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "accepted",
+            "rejected",
+            "deprecated",
+            "superseded"
+          ]
+        },
+        "contextAndProblemStatement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "decisionDrivers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "consideredOptions": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionOption"
+          }
+        },
+        "outcome": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "chosenOptionId",
+            "justification"
+          ],
+          "properties": {
+            "chosenOptionId": {
+              "type": "string",
+              "pattern": "^OPT-[A-Z0-9-]+$"
+            },
+            "justification": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            }
+          }
+        },
+        "consequences": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionConsequence"
+          }
+        },
+        "confirmation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "relatedDecisionIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^ADR-[A-Z0-9-]+$"
+          }
+        },
+        "supersedesDecisionIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^ADR-[A-Z0-9-]+$"
+          }
+        },
+        "affectedTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionTarget"
+          }
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        },
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "version"
+          ],
+          "properties": {
+            "name": {
+              "const": "MADR"
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        },
+        "nativeArtifact": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        }
+      }
+    },
+    "decisionRecordSet": {
+      "$id": "https://devrelay.dev/artifacts/architecture-decision-record-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decisionRecordSetId",
+        "decisions"
+      ],
+      "properties": {
+        "decisionRecordSetId": {
+          "type": "string",
+          "pattern": "^DECISIONS-[A-Z0-9-]+$"
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionRecord"
+          }
+        }
+      }
+    },
+    "technicalDesign": {
+      "$id": "https://devrelay.dev/artifacts/technical-design/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "technicalDesignId",
+        "objective",
+        "scope",
+        "problemSummary",
+        "solutionSummary",
+        "requirementsDrivers",
+        "behaviorFlows",
+        "dataResponsibilities",
+        "failureHandling",
+        "securityPrivacy",
+        "performanceReliabilityOperability",
+        "compatibilityMigrationRollout",
+        "verificationIntent",
+        "interfaceIntentIds",
+        "constraintIds",
+        "sourceRequirementIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "technicalDesignId": {
+          "type": "string",
+          "pattern": "^TD-[A-Z0-9-]+$"
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "scope": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/scope"
+        },
+        "problemSummary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "solutionSummary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "requirementsDrivers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "behaviorFlows": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "dataResponsibilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "failureHandling": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "securityPrivacy": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "performanceReliabilityOperability": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "compatibilityMigrationRollout": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "verificationIntent": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "interfaceIntentIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^IF-[A-Z0-9-]+$"
+          }
+        },
+        "constraintIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^CON-[A-Z0-9-]+$"
+          }
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        },
+        "narrativeArtifact": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        }
+      }
+    },
+    "nativeArtifactSet": {
+      "$id": "https://devrelay.dev/artifacts/native-artifact-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nativeArtifactSetId",
+        "entries"
+      ],
+      "properties": {
+        "nativeArtifactSetId": {
+          "type": "string",
+          "pattern": "^NATIVE-[A-Z0-9-]+$"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "artifact",
+              "role",
+              "producedBy",
+              "disposition",
+              "canonicalMappings",
+              "warnings"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^NA-[A-Z0-9-]+$"
+              },
+              "artifact": {
+                "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+              },
+              "role": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "logicalPath": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "producedBy": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "stage",
+                  "adapterId",
+                  "adapterVersion"
+                ],
+                "properties": {
+                  "stage": {
+                    "enum": [
+                      "discovery",
+                      "designer",
+                      "modeler",
+                      "decision-recorder"
+                    ]
+                  },
+                  "adapterId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "adapterVersion": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "tool": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "name",
+                      "version"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    }
+                  }
+                }
+              },
+              "disposition": {
+                "enum": [
+                  "input",
+                  "generated",
+                  "unmapped"
+                ]
+              },
+              "canonicalMappings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "section",
+                    "entityIds",
+                    "jsonPointers"
+                  ],
+                  "properties": {
+                    "section": {
+                      "enum": [
+                        "technicalDesign",
+                        "architectureModel",
+                        "diagrams",
+                        "interfaceIntent",
+                        "architectureConstraints",
+                        "decisionRecords",
+                        "nativeArtifacts"
+                      ]
+                    },
+                    "entityIds": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      }
+                    },
+                    "jsonPointers": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string",
+                        "pattern": "^(|/.*)$"
+                      }
+                    }
+                  }
+                }
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "technicalDesignSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/technicalDesign"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^TD-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "architectureModelSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureModel"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^MODEL-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "diagramsSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureDiagramSet"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^DIAGRAMS-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "interfaceIntentSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/interfaceIntentSet"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^INTERFACES-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "architectureConstraintsSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureConstraintSet"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^CONSTRAINTS-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "decisionRecordsSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionRecordSet"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^DECISIONS-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "nativeArtifactsSection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "content"
+          ],
+          "properties": {
+            "mode": {
+              "const": "embedded"
+            },
+            "content": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/nativeArtifactSet"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "contentId",
+            "artifact"
+          ],
+          "properties": {
+            "mode": {
+              "const": "attached"
+            },
+            "contentId": {
+              "type": "string",
+              "pattern": "^NATIVE-[A-Z0-9-]+$"
+            },
+            "artifact": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        }
+      ]
+    },
+    "architectureSections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "technicalDesign",
+        "architectureModel",
+        "diagrams",
+        "interfaceIntent",
+        "architectureConstraints",
+        "decisionRecords",
+        "nativeArtifacts"
+      ],
+      "properties": {
+        "technicalDesign": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/technicalDesignSection"
+        },
+        "architectureModel": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureModelSection"
+        },
+        "diagrams": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/diagramsSection"
+        },
+        "interfaceIntent": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/interfaceIntentSection"
+        },
+        "architectureConstraints": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureConstraintsSection"
+        },
+        "decisionRecords": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionRecordsSection"
+        },
+        "nativeArtifacts": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/nativeArtifactsSection"
+        }
+      }
+    },
+    "partialArchitectureSections": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "technicalDesign": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/technicalDesignSection"
+        },
+        "architectureModel": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureModelSection"
+        },
+        "diagrams": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/diagramsSection"
+        },
+        "interfaceIntent": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/interfaceIntentSection"
+        },
+        "architectureConstraints": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureConstraintsSection"
+        },
+        "decisionRecords": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionRecordsSection"
+        },
+        "nativeArtifacts": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/nativeArtifactsSection"
+        }
+      }
+    },
+    "traceTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "technical-design",
+            "element",
+            "relationship",
+            "view",
+            "interface",
+            "constraint",
+            "decision",
+            "change"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "traceabilityEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirementId",
+        "disposition",
+        "targets",
+        "rationale"
+      ],
+      "properties": {
+        "requirementId": {
+          "type": "string",
+          "pattern": "^REQ-[A-Z0-9-]+$"
+        },
+        "disposition": {
+          "enum": [
+            "designed",
+            "no-architecture-impact"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/traceTarget"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "designed"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "minItems": 1,
+                "type": "array"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "targets": {
+                "maxItems": 0,
+                "type": "array"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "discoveryReconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observedKind",
+        "observedId",
+        "disposition",
+        "rationale"
+      ],
+      "properties": {
+        "observedKind": {
+          "enum": [
+            "element",
+            "relationship",
+            "view",
+            "interface",
+            "constraint",
+            "decision"
+          ]
+        },
+        "observedId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "disposition": {
+          "enum": [
+            "retained",
+            "replaced",
+            "retired",
+            "out-of-scope",
+            "unresolved"
+          ]
+        },
+        "targetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      }
+    },
+    "semanticChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changeId",
+        "entityKind",
+        "entityId",
+        "operation",
+        "rationale",
+        "compatibilityImpact",
+        "sourceRequirementIds"
+      ],
+      "properties": {
+        "changeId": {
+          "type": "string",
+          "pattern": "^CHG-[A-Z0-9-]+$"
+        },
+        "entityKind": {
+          "enum": [
+            "element",
+            "relationship",
+            "view",
+            "interface",
+            "constraint"
+          ]
+        },
+        "entityId": {
+          "type": "string",
+          "pattern": "^(EL|REL|IF|CON|VIEW)-[A-Z0-9-]+$"
+        },
+        "operation": {
+          "enum": [
+            "add",
+            "modify",
+            "remove"
+          ]
+        },
+        "expectedBaseDigest": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+        },
+        "targetDigest": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "compatibilityImpact": {
+          "enum": [
+            "none",
+            "backward-compatible",
+            "breaking",
+            "unknown"
+          ]
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "add"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "targetDigest"
+            ],
+            "properties": {
+              "expectedBaseDigest": false,
+              "targetDigest": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "modify"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "expectedBaseDigest",
+              "targetDigest"
+            ],
+            "properties": {
+              "expectedBaseDigest": {},
+              "targetDigest": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "remove"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "expectedBaseDigest"
+            ],
+            "properties": {
+              "targetDigest": false,
+              "expectedBaseDigest": {}
+            }
+          }
+        }
+      ]
+    },
+    "decisionChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changeId",
+        "decisionId",
+        "operation",
+        "rationale",
+        "sourceRequirementIds"
+      ],
+      "properties": {
+        "changeId": {
+          "type": "string",
+          "pattern": "^CHG-[A-Z0-9-]+$"
+        },
+        "decisionId": {
+          "type": "string",
+          "pattern": "^ADR-[A-Z0-9-]+$"
+        },
+        "operation": {
+          "enum": [
+            "add",
+            "supersede",
+            "deprecate"
+          ]
+        },
+        "expectedBaseDigest": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+        },
+        "replacementDecisionId": {
+          "type": "string",
+          "pattern": "^ADR-[A-Z0-9-]+$"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sourceRequirementIds": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRequirementIds"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "add"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "expectedBaseDigest": false,
+              "replacementDecisionId": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "supersede"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "expectedBaseDigest",
+              "replacementDecisionId"
+            ],
+            "properties": {
+              "expectedBaseDigest": {},
+              "replacementDecisionId": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "deprecate"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "expectedBaseDigest"
+            ],
+            "properties": {
+              "replacementDecisionId": false,
+              "expectedBaseDigest": {}
+            }
+          }
+        }
+      ]
+    },
+    "architectureChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "elementChanges",
+        "relationshipChanges",
+        "viewChanges",
+        "interfaceChanges",
+        "constraintChanges",
+        "decisionChanges"
+      ],
+      "properties": {
+        "elementChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/semanticChange"
+          }
+        },
+        "relationshipChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/semanticChange"
+          }
+        },
+        "viewChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/semanticChange"
+          }
+        },
+        "interfaceChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/semanticChange"
+          }
+        },
+        "constraintChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/semanticChange"
+          }
+        },
+        "decisionChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionChange"
+          }
+        }
+      }
+    },
+    "currentArchitectureSnapshot": {
+      "$id": "https://devrelay.dev/artifacts/current-architecture-snapshot/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "snapshotId",
+        "authority",
+        "projectArchitectureState",
+        "projectContext",
+        "repositorySnapshot",
+        "repositoryRevision",
+        "architectureModel",
+        "diagrams",
+        "interfaceIntent",
+        "architectureConstraints",
+        "decisionRecords",
+        "nativeArtifacts",
+        "discoveryMethods",
+        "gaps",
+        "warnings",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "CurrentArchitectureSnapshot"
+        },
+        "snapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "authority": {
+          "const": "observational"
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "projectContext": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "repositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "repositoryRevision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "revision",
+            "treeDigest"
+          ],
+          "properties": {
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "treeDigest": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+            }
+          }
+        },
+        "architectureModel": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureModelSection"
+        },
+        "diagrams": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/diagramsSection"
+        },
+        "interfaceIntent": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/interfaceIntentSection"
+        },
+        "architectureConstraints": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureConstraintsSection"
+        },
+        "decisionRecords": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/decisionRecordsSection"
+        },
+        "nativeArtifacts": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/nativeArtifactsSection"
+        },
+        "discoveryMethods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "method",
+              "confidence"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              }
+            }
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "statement",
+              "blocking"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^GAP-[A-Z0-9-]+$"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "blocking": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureBaseline": {
+      "$id": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "baselineId",
+        "approvedDraft",
+        "requirementsBaseline",
+        "projectContext",
+        "sections",
+        "approvalPolicyVersion",
+        "approvalEvidence",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureBaseline"
+        },
+        "baselineId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "approvedDraft": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "requirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "projectContext": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "repositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "sections": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureSections"
+        },
+        "approvalPolicyVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "approvalEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureDraft": {
+      "$id": "https://devrelay.dev/artifacts/architecture-draft/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "draftId",
+        "operation",
+        "projectArchitectureState",
+        "requirementsBaseline",
+        "projectContext",
+        "scope",
+        "sections",
+        "discoveryReconciliation",
+        "traceability",
+        "assumptions",
+        "risks",
+        "requiredEvidence",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureDraft"
+        },
+        "draftId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "const": "establish-baseline"
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "requirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "projectContext": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "repositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "currentArchitectureSnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "scope": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/scope"
+        },
+        "sections": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureSections"
+        },
+        "discoveryReconciliation": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/discoveryReconciliation"
+          }
+        },
+        "traceability": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/traceabilityEntry"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/assumption"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/risk"
+          }
+        },
+        "requiredEvidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureChangeSetDraft": {
+      "$id": "https://devrelay.dev/artifacts/architecture-change-set-draft/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "changeSetId",
+        "operation",
+        "projectArchitectureState",
+        "baseArchitectureBaseline",
+        "baseArchitectureDigest",
+        "targetRequirementsBaseline",
+        "projectContext",
+        "changeDisposition",
+        "scope",
+        "sections",
+        "changes",
+        "traceability",
+        "assumptions",
+        "risks",
+        "requiredEvidence",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureChangeSetDraft"
+        },
+        "changeSetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "const": "design-change"
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "baseArchitectureBaseline": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "baseArchitectureDigest": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/digest"
+        },
+        "targetRequirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "projectContext": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "repositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "changeDisposition": {
+          "enum": [
+            "architecture-change",
+            "no-architecture-change"
+          ]
+        },
+        "noChangeRationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "scope": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/scope"
+        },
+        "sections": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureSections"
+        },
+        "changes": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureChanges"
+        },
+        "traceability": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/traceabilityEntry"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/assumption"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/risk"
+          }
+        },
+        "requiredEvidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "changeDisposition": {
+                "const": "no-architecture-change"
+              }
+            },
+            "required": [
+              "changeDisposition"
+            ]
+          },
+          "then": {
+            "required": [
+              "noChangeRationale"
+            ],
+            "properties": {
+              "noChangeRationale": {}
+            }
+          },
+          "else": {
+            "properties": {
+              "noChangeRationale": false
+            }
+          }
+        }
+      ]
+    },
+    "clarificationQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "prompt",
+        "rationale",
+        "blocking",
+        "responseType",
+        "options"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^Q-[A-Z0-9-]+$"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "responseType": {
+          "enum": [
+            "free-text",
+            "single-choice",
+            "multiple-choice",
+            "boolean"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "responseType": {
+                "enum": [
+                  "single-choice",
+                  "multiple-choice"
+                ]
+              }
+            },
+            "required": [
+              "responseType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "options": {
+                "minItems": 1,
+                "type": "array"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "options": {
+                "maxItems": 0,
+                "type": "array"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "architectureClarificationRequestSet": {
+      "$id": "https://devrelay.dev/artifacts/architecture-clarification-request-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "requestSetId",
+        "operation",
+        "activeStage",
+        "projectArchitectureState",
+        "baseInputs",
+        "questions"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureClarificationRequestSet"
+        },
+        "requestSetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "enum": [
+            "establish-baseline",
+            "design-change"
+          ]
+        },
+        "activeStage": {
+          "enum": [
+            "designer",
+            "modeler",
+            "decision-recorder",
+            "assembly"
+          ]
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "baseInputs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/baseInputSet"
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/clarificationQuestion"
+          }
+        }
+      }
+    },
+    "architectureClarificationResponseSet": {
+      "$id": "https://devrelay.dev/artifacts/architecture-clarification-response-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "responseSetId",
+        "operation",
+        "activeStage",
+        "request",
+        "responses"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureClarificationResponseSet"
+        },
+        "operation": {
+          "enum": [
+            "establish-baseline",
+            "design-change"
+          ]
+        },
+        "activeStage": {
+          "enum": [
+            "designer",
+            "modeler",
+            "decision-recorder",
+            "assembly"
+          ]
+        },
+        "request": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "responses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "questionId",
+              "answer"
+            ],
+            "properties": {
+              "questionId": {
+                "type": "string",
+                "pattern": "^Q-[A-Z0-9-]+$"
+              },
+              "answer": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 8192
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1024
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responseSetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "completedStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step",
+        "plugin",
+        "outputs",
+        "stepInvocationDigest",
+        "stepResultDigest"
+      ],
+      "properties": {
+        "step": {
+          "enum": [
+            "designer",
+            "modeler"
+          ]
+        },
+        "plugin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        },
+        "outputs": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+            }
+          }
+        },
+        "nativeArtifacts": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "stepInvocationDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "stepResultDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    },
+    "partialPrimary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "sections",
+        "traceability",
+        "assumptions",
+        "risks"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "ArchitectureDraftPartial",
+            "ArchitectureChangeSetDraftPartial"
+          ]
+        },
+        "sections": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/partialArchitectureSections"
+        },
+        "traceability": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/traceabilityEntry"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/assumption"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/risk"
+          }
+        }
+      }
+    },
+    "architectureDesignContinuation": {
+      "$id": "https://devrelay.dev/artifacts/architecture-design-continuation/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "continuationId",
+        "operation",
+        "projectArchitectureState",
+        "baseInputs",
+        "semanticPipelineVersion",
+        "sourceInvocation",
+        "chainFingerprint",
+        "activeStage",
+        "completedStages",
+        "workingPrimary",
+        "confirmedFacts",
+        "unresolvedQuestionIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureDesignContinuation"
+        },
+        "continuationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "enum": [
+            "establish-baseline",
+            "design-change"
+          ]
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "baseInputs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/baseInputSet"
+        },
+        "semanticPipelineVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "activeStage": {
+          "enum": [
+            "designer",
+            "modeler",
+            "decision-recorder"
+          ]
+        },
+        "completedStages": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/completedStage"
+          }
+        },
+        "workingPrimary": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/partialPrimary"
+        },
+        "confirmedFacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "unresolvedQuestionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^Q-[A-Z0-9-]+$"
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        },
+        "chainFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "sourceInvocation": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceInvocation"
+        }
+      }
+    },
+    "architectureDesignerWorkingArtifact": {
+      "$id": "https://devrelay.dev/artifacts/architecture-designer-working/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "workingArtifactId",
+        "operation",
+        "projectArchitectureState",
+        "baseInputs",
+        "technicalDesign",
+        "interfaceIntent",
+        "architectureConstraints",
+        "nativeArtifacts",
+        "assumptions",
+        "risks",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureDesignerWorkingArtifact"
+        },
+        "workingArtifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "enum": [
+            "establish-baseline",
+            "design-change"
+          ]
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "baseInputs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/baseInputSet"
+        },
+        "technicalDesign": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/technicalDesignSection"
+        },
+        "interfaceIntent": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/interfaceIntentSection"
+        },
+        "architectureConstraints": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureConstraintsSection"
+        },
+        "nativeArtifacts": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/nativeArtifactsSection"
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/assumption"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/risk"
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "architectureModelerWorkingArtifact": {
+      "$id": "https://devrelay.dev/artifacts/architecture-modeler-working/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "workingArtifactId",
+        "operation",
+        "projectArchitectureState",
+        "designerWorkingArtifact",
+        "architectureModel",
+        "diagrams",
+        "nativeArtifacts",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "ArchitectureModelerWorkingArtifact"
+        },
+        "workingArtifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "enum": [
+            "establish-baseline",
+            "design-change"
+          ]
+        },
+        "projectArchitectureState": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "designerWorkingArtifact": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "architectureModel": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/architectureModelSection"
+        },
+        "diagrams": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/diagramsSection"
+        },
+        "nativeArtifacts": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/nativeArtifactsSection"
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      }
+    },
+    "sourceInvocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invocationId",
+        "invocationFingerprint"
+      ],
+      "properties": {
+        "invocationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "invocationFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

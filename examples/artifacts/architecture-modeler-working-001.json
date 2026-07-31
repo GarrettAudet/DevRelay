@@ -1,0 +1,228 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureModelerWorkingArtifact",
+  "workingArtifactId": "architecture-modeler-working-001",
+  "operation": "establish-baseline",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-existing-discovered-001",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "uri": "file:///workspace/.devrelay/artifacts/project-architecture-state-existing-discovered-001.json"
+  },
+  "designerWorkingArtifact": {
+    "artifactId": "architecture-designer-working-001",
+    "schema": "https://devrelay.dev/artifacts/architecture-designer-working/v1",
+    "mediaType": "application/vnd.devrelay.architecture-designer-working+json",
+    "digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "uri": "file:///workspace/.devrelay/artifacts/architecture-designer-working-001.json"
+  },
+  "architectureModel": {
+    "mode": "embedded",
+    "content": {
+      "modelId": "MODEL-AUTH-001",
+      "notation": {
+        "name": "C4",
+        "version": "1.0"
+      },
+      "elements": [
+        {
+          "id": "EL-AUTH-SYSTEM",
+          "name": "Authentication system",
+          "type": "software-system",
+          "description": "Owns authentication and session-establishment behavior.",
+          "responsibilities": [
+            "Authenticate registered users and establish sessions."
+          ],
+          "tags": [
+            "System"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "REQ-AUTH-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-AUTH-SERVICE",
+          "name": "Authentication service",
+          "type": "container",
+          "parentId": "EL-AUTH-SYSTEM",
+          "description": "Normalizes credential verification and session creation.",
+          "technology": "Provider-neutral service boundary",
+          "responsibilities": [
+            "Verify credentials.",
+            "Normalize authentication failures.",
+            "Establish successful sessions."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "REQ-AUTH-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-IDENTITY-SOURCE",
+          "name": "Identity source",
+          "type": "container",
+          "parentId": "EL-AUTH-SYSTEM",
+          "description": "Stores authoritative identity and credential material.",
+          "responsibilities": [
+            "Provide authoritative credential-verification data."
+          ],
+          "tags": [
+            "Container",
+            "DataStore"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "REQ-AUTH-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-CLIENT",
+          "name": "Registered user",
+          "type": "person",
+          "description": "A registered user authenticating through a client.",
+          "responsibilities": [
+            "Provide authentication input."
+          ],
+          "tags": [
+            "Person"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "REQ-AUTH-001"
+          ],
+          "sourceRefs": []
+        }
+      ],
+      "relationships": [
+        {
+          "id": "REL-CLIENT-AUTH",
+          "sourceElementId": "EL-CLIENT",
+          "targetElementId": "EL-AUTH-SERVICE",
+          "description": "Submits an authentication attempt.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "REQ-AUTH-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-AUTH-IDENTITY",
+          "sourceElementId": "EL-AUTH-SERVICE",
+          "targetElementId": "EL-IDENTITY-SOURCE",
+          "description": "Verifies credential material without exposing identity-source details.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "REQ-AUTH-001"
+          ],
+          "sourceRefs": []
+        }
+      ],
+      "sourceRefs": []
+    }
+  },
+  "diagrams": {
+    "mode": "embedded",
+    "content": {
+      "diagramSetId": "DIAGRAMS-AUTH-001",
+      "architectureModelId": "MODEL-AUTH-001",
+      "architectureModelDigest": "sha256:64a085a93911221d6d46eeefcc4853913b166c814c73c46c54450a41960d0344",
+      "views": [
+        {
+          "viewKey": "VIEW-AUTH-CONTEXT",
+          "type": "system-context",
+          "title": "Authentication context",
+          "purpose": "Show the user-facing authentication boundary and its identity dependency.",
+          "audience": [
+            "engineering",
+            "security"
+          ],
+          "scopeElementId": "EL-AUTH-SYSTEM",
+          "elementIds": [
+            "EL-AUTH-SYSTEM",
+            "EL-AUTH-SERVICE",
+            "EL-IDENTITY-SOURCE",
+            "EL-CLIENT"
+          ],
+          "relationshipIds": [
+            "REL-CLIENT-AUTH",
+            "REL-AUTH-IDENTITY"
+          ],
+          "renderings": [
+            {
+              "format": "structurizr",
+              "artifact": {
+                "artifactId": "structurizr-workspace-auth-001",
+                "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                "mediaType": "text/vnd.structurizr.dsl",
+                "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+                "uri": "file:///workspace/architecture/workspace.dsl"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "nativeArtifacts": {
+    "mode": "embedded",
+    "content": {
+      "nativeArtifactSetId": "NATIVE-MODELER-001",
+      "entries": [
+        {
+          "id": "NA-STRUCTURIZR-WORKSPACE",
+          "artifact": {
+            "artifactId": "structurizr-workspace-auth-001",
+            "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+            "mediaType": "text/vnd.structurizr.dsl",
+            "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+            "uri": "file:///workspace/architecture/workspace.dsl"
+          },
+          "role": "structurizr-workspace",
+          "logicalPath": "architecture/workspace.dsl",
+          "producedBy": {
+            "stage": "modeler",
+            "adapterId": "structurizr",
+            "adapterVersion": "0.1.0",
+            "tool": {
+              "name": "Structurizr DSL",
+              "version": "5.0"
+            }
+          },
+          "disposition": "generated",
+          "canonicalMappings": [
+            {
+              "section": "architectureModel",
+              "entityIds": [
+                "MODEL-AUTH-001"
+              ],
+              "jsonPointers": [
+                "/sections/architectureModel"
+              ]
+            },
+            {
+              "section": "diagrams",
+              "entityIds": [
+                "VIEW-AUTH-CONTEXT"
+              ],
+              "jsonPointers": [
+                "/sections/diagrams"
+              ]
+            }
+          ],
+          "warnings": []
+        }
+      ]
+    }
+  },
+  "sourceRefs": []
+}

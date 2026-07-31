@@ -47,6 +47,9 @@
       "items": {
         "$ref": "#/$defs/operation"
       }
+    },
+    "routing": {
+      "$ref": "#/$defs/routing"
     }
   },
   "$defs": {
@@ -121,8 +124,88 @@
         },
         "optionsSchema": {
           "type": "object"
+        },
+        "adapterChain": {
+          "$ref": "#/$defs/adapterChain"
         }
       }
+    },
+    "adapterChain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "earlyTerminalOutcomes",
+        "steps"
+      ],
+      "properties": {
+        "earlyTerminalOutcomes": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/adapterChainStep"
+          }
+        },
+        "resume": {
+          "$ref": "#/$defs/chainResume"
+        }
+      }
+    },
+    "adapterChainStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "kind": {
+          "enum": [
+            "handoff",
+            "terminal"
+          ]
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/port"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "handoff"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "outputs": {}
+            },
+            "required": [
+              "outputs"
+            ]
+          },
+          "else": {
+            "properties": {
+              "outputs": false
+            }
+          }
+        }
+      ]
     },
     "port": {
       "type": "object",
@@ -149,7 +232,7 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "minLength": 1
+            "pattern": "^application/(?:json|[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*\\+json)$"
           }
         },
         "cardinality": {
@@ -260,6 +343,212 @@
       "items": {
         "type": "string",
         "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$"
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stateInput",
+        "stateSchema",
+        "decisionInput",
+        "discriminator",
+        "rules"
+      ],
+      "properties": {
+        "stateInput": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "stateSchema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "decisionInput": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "discriminator": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 1024,
+          "pattern": "^/"
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/routingRule"
+          }
+        }
+      }
+    },
+    "routingRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "reasonCode"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "prerequisite": {
+          "$ref": "#/$defs/routingPrerequisite"
+        },
+        "reasonCode": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$",
+          "maxLength": 256
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "operation"
+          ],
+          "properties": {
+            "operation": {},
+            "prerequisite": false
+          }
+        },
+        {
+          "required": [
+            "prerequisite"
+          ],
+          "properties": {
+            "operation": false,
+            "prerequisite": {}
+          }
+        }
+      ]
+    },
+    "routingPrerequisite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module",
+        "operation",
+        "outputSchema"
+      ],
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/routingModuleRef"
+        },
+        "operation": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "outputSchema": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "routingModuleRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$"
+        }
+      }
+    },
+    "chainResume": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "continuationInput",
+        "continuationOutput",
+        "chainFingerprintField",
+        "activeStepField",
+        "completedStepsField",
+        "completedStepIdField",
+        "completedStepPluginField",
+        "completedStepOutputsField",
+        "lineageInputs",
+        "controlInputs",
+        "sourceInvocationField",
+        "sourceInvocationIdField",
+        "sourceInvocationFingerprintField",
+        "completedStepInvocationDigestField",
+        "completedStepResultDigestField"
+      ],
+      "properties": {
+        "continuationInput": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "continuationOutput": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "chainFingerprintField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "activeStepField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "completedStepsField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "completedStepIdField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "completedStepPluginField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "completedStepOutputsField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "lineageInputs": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "controlInputs": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "sourceInvocationField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "sourceInvocationIdField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "sourceInvocationFingerprintField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "completedStepInvocationDigestField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "completedStepResultDigestField": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        }
       }
     }
   }

@@ -18,8 +18,10 @@ const [
   definitionSchema,
   pluginSchema,
   invocationSchema,
+  routeDecisionSchema,
   resultSchema,
   artifactSchema,
+  sharedArtifactSchema,
   requirementsModule,
   commandModule,
   openSpecPlugin,
@@ -38,8 +40,10 @@ const [
   readJson("contracts/module-definition.schema.json"),
   readJson("contracts/module-plugin.schema.json"),
   readJson("contracts/module-invocation.schema.json"),
+  readJson("contracts/module-route-decision.schema.json"),
   readJson("contracts/module-result.schema.json"),
   readJson("contracts/requirements-gathering-artifacts.schema.json"),
+  readJson("contracts/shared-artifacts.schema.json"),
   readJson("examples/modules/requirements-gathering.module.json"),
   readJson("examples/modules/command.module.json"),
   readJson("examples/plugins/openspec.plugin.json"),
@@ -115,8 +119,11 @@ test("portable core contains no OpenSpec or Spec Kit branch", async () => {
       "contracts/module-definition.schema.json",
       "contracts/module-plugin.schema.json",
       "contracts/module-invocation.schema.json",
+      "contracts/module-route-decision.schema.json",
       "contracts/module-result.schema.json",
+      "src/artifact-runtime.mjs",
       "src/module-registry.mjs",
+      "src/operation-router.mjs",
     ].map((path) => readFile(new URL(path, root), "utf8")),
   );
 
@@ -379,8 +386,10 @@ test("all top-level contracts use JSON Schema draft 2020-12", () => {
     definitionSchema,
     pluginSchema,
     invocationSchema,
+    routeDecisionSchema,
     resultSchema,
     artifactSchema,
+    sharedArtifactSchema,
   ]) {
     assert.equal(
       schema.$schema,
@@ -391,6 +400,7 @@ test("all top-level contracts use JSON Schema draft 2020-12", () => {
     definitionSchema,
     pluginSchema,
     invocationSchema,
+    routeDecisionSchema,
     resultSchema,
   ]) {
     assert.equal(schema.type, "object");
@@ -400,9 +410,11 @@ test("all top-level contracts use JSON Schema draft 2020-12", () => {
 
 test("canonical requirements artifact IDs cover every module port", () => {
   const artifactIds = new Set(
-    Object.values(artifactSchema.$defs)
-      .map((definition) => definition.$id)
-      .filter(Boolean),
+    [artifactSchema, sharedArtifactSchema].flatMap((schema) =>
+      Object.values(schema.$defs)
+        .map((definition) => definition.$id)
+        .filter(Boolean),
+    ),
   );
   const operation = requirementsModule.operations[0];
 

@@ -8,48 +8,79 @@ function readSchema(name) {
   );
 }
 
-const ajv = new Ajv2020({
-  allErrors: true,
-  allowUnionTypes: true,
-  strict: true,
-});
+function createAjv() {
+  const instance = new Ajv2020({
+    allErrors: true,
+    allowUnionTypes: true,
+    strict: true,
+  });
 
-ajv.addFormat("uri", {
-  type: "string",
-  validate(value) {
-    try {
-      const parsed = new URL(value);
-      return parsed.protocol.length > 1;
-    } catch {
-      return false;
-    }
-  },
-});
+  instance.addFormat("uri", {
+    type: "string",
+    validate(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol.length > 1;
+      } catch {
+        return false;
+      }
+    },
+  });
+
+  return instance;
+}
+
+const coreAjv = createAjv();
 
 export const documentValidators = Object.freeze({
-  moduleDefinition: ajv.compile(
+  moduleDefinition: coreAjv.compile(
     readSchema("module-definition.schema.json"),
   ),
-  modulePlugin: ajv.compile(readSchema("module-plugin.schema.json")),
-  moduleInvocation: ajv.compile(
+  modulePlugin: coreAjv.compile(readSchema("module-plugin.schema.json")),
+  moduleInvocation: coreAjv.compile(
     readSchema("module-invocation.schema.json"),
   ),
-  moduleResult: ajv.compile(readSchema("module-result.schema.json")),
-  requirementsArtifact: ajv.compile(
-    readSchema("requirements-gathering-artifacts.schema.json"),
+  moduleResult: coreAjv.compile(readSchema("module-result.schema.json")),
+  moduleRouteDecision: coreAjv.compile(
+    readSchema("module-route-decision.schema.json"),
+  ),
+  moduleStepInvocation: coreAjv.compile(
+    readSchema("module-step-invocation.schema.json"),
+  ),
+  moduleStepResult: coreAjv.compile(
+    readSchema("module-step-result.schema.json"),
   ),
 });
 
 export function compileEmbeddedSchema(schema) {
-  if (!ajv.validateSchema(schema)) {
-    const detail = ajv.errorsText(ajv.errors, { separator: "; " });
+  if (!coreAjv.validateSchema(schema)) {
+    const detail = coreAjv.errorsText(coreAjv.errors, {
+      separator: "; ",
+    });
     throw new Error(detail);
   }
-  return ajv.compile(schema);
+  return coreAjv.compile(schema);
+}
+
+export function compileArtifactSchema(
+  schema,
+  dependencies = [],
+) {
+  const artifactAjv = createAjv();
+  for (const dependency of dependencies) {
+    artifactAjv.addSchema(dependency);
+  }
+  if (!artifactAjv.validateSchema(schema)) {
+    const detail = artifactAjv.errorsText(artifactAjv.errors, {
+      separator: "; ",
+    });
+    throw new Error(detail);
+  }
+  return artifactAjv.compile(schema);
 }
 
 export function validationDetail(validator) {
-  return ajv.errorsText(validator.errors, {
+  return coreAjv.errorsText(validator.errors, {
     dataVar: "document",
     separator: "; ",
   });

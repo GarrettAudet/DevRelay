@@ -1,7 +1,28 @@
+import { readFileSync } from "node:fs";
+
 import {
-  documentValidators,
+  compileArtifactSchema,
   validationDetail,
 } from "./schema-validation.mjs";
+const requirementsArtifactValidator = compileArtifactSchema(
+  JSON.parse(
+    readFileSync(
+      new URL(
+        "../contracts/requirements-gathering-artifacts.schema.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  ),
+  [
+    JSON.parse(
+      readFileSync(
+        new URL("../contracts/shared-artifacts.schema.json", import.meta.url),
+        "utf8",
+      ),
+    ),
+  ],
+);
 
 export class ArtifactValidationError extends Error {
   constructor(message) {
@@ -12,12 +33,13 @@ export class ArtifactValidationError extends Error {
 }
 
 export function validateRequirementsArtifact(artifact) {
-  if (!documentValidators.requirementsArtifact(artifact)) {
-    throw new ArtifactValidationError(
-      `requirements artifact is invalid: ${validationDetail(
-        documentValidators.requirementsArtifact,
-      )}`,
-    );
+  if (requirementsArtifactValidator(artifact)) {
+    return artifact;
   }
-  return artifact;
+
+  throw new ArtifactValidationError(
+    `requirements artifact is invalid: ${validationDetail(
+      requirementsArtifactValidator,
+    )}`,
+  );
 }

@@ -2,176 +2,223 @@
 
 ## Status
 
-Executable first-pass contract. The objective is the smallest boundary that allows best-in-class engineering tools to be swapped without changing workflow semantics or adding kernel branches.
+Executable first-pass contract. The goal is the smallest deterministic boundary
+that allows engineering capabilities to be independently replaced without
+changing workflow semantics or adding kernel branches.
 
-## Separation Of Authority
+## Separation of authority
 
 ### `ModuleDefinition`
 
-The semantic engineering capability:
+The provider-neutral engineering capability:
 
 - stable ID and exact version;
-- operations;
-- tool-neutral input and output ports and declarative input relationships;
-- declared outcomes and outcome-specific result contracts;
-- evidence kinds;
-- portable operation options.
+- operations and semantic input/output ports;
+- declarative input relationships;
+- finite outcomes and outcome-specific result contracts;
+- evidence kinds and portable options;
+- optional deterministic routing from one declared state schema;
+- optional ordered adapter steps and handoff ports;
+- optional declarative continuation mapping that classifies lineage and control
+  inputs for portable chain resume.
 
-It does not declare a command, native file layout, execution mode, requested capability, provider, or tool configuration.
+It does not contain commands, native paths, model choices, requested host
+capabilities, or implementation configuration.
 
 ### `ModulePlugin`
 
-One implementation binding:
+One exact implementation binding:
 
 - stable plug-in ID and exact version;
-- exact Module ID/version targets;
-- implemented operation IDs;
-- `pure` or `effect` execution mode;
+- exact Module ID/version and operation;
+- exact step when the operation is chained;
+- `pure` or `effect` execution;
 - implementation-specific configuration schema;
-- requested capabilities.
+- declared capability demand.
 
-A plug-in cannot redefine a Module's ports, outcomes, result rules, or evidence semantics.
+A plug-in cannot redefine Module ports, step order, outcomes, gates, or
+evidence semantics.
 
 ### `ModuleInvocation`
 
 One exact request:
 
-- invocation, Run, and node identities;
+- invocation, run, and node identities;
 - exact Module ID/version/operation;
-- exact plug-in ID/version;
-- input `ArtifactRef` values grouped by semantic port;
+- immutable input `ArtifactRef` values;
 - portable Module options;
-- opaque plug-in configuration;
-- host-granted capabilities.
+- either one legacy plug-in binding or an ordered adapter binding for every
+  declared chain step.
 
-The invocation fingerprint covers the declared Module, plug-in, content digests, options, configuration, and grants. It identifies checkpoint material; it is not a claim that effectful model/tool execution is bit-for-bit reproducible. Adapter, tool, model, prompt, and environment provenance belong in the host run record.
+Each adapter binding pins its step, exact plug-in ID/version, configuration,
+and grants. There is no implicit adapter, default, or `latest`.
+
+The invocation fingerprint covers all declared execution material. Chained
+operations also derive a chain fingerprint from the exact operation, ordered
+adapter bindings, options, and declared lineage inputs while excluding
+clarification-control inputs and run identities. Neither digest claims that
+effectful AI or tool execution is bit-for-bit reproducible.
+
+### `ModuleStepInvocation`
+
+Core constructs one immutable request per step containing:
+
+- the parent invocation identity, invocation fingerprint, and chain
+  fingerprint;
+- the exact Module operation, step, and plug-in;
+- original Module inputs;
+- all prior step result digests, plug-ins, and outputs;
+- options, step configuration, and grants;
+- a step-invocation digest over that complete immutable body.
+
+Adapters cannot inspect arbitrary runtime state or call the next adapter.
+
+### `ModuleStepResult`
+
+Every step result repeats the exact invocation fingerprint, chain
+fingerprint, step-invocation digest, and plug-in ID/version from its
+`ModuleStepInvocation`. A handoff step returns
+`disposition: continue` with only its declared output ports, evidence, and
+diagnostics. A terminal step returns `disposition: terminal` with one complete
+`ModuleResult`.
+
+A nonfinal step may terminate only with a Module outcome explicitly declared
+in `earlyTerminalOutcomes`. Core validates that wrapped result against the
+normal Module result contract and never invokes later steps.
 
 ### `ModuleResult`
 
-One checkpointable observation:
+One terminal observation:
 
-- invocation identity;
+- parent invocation identity;
 - lifecycle status;
 - one declared semantic outcome;
-- output `ArtifactRef` values grouped by semantic port;
-- Evidence;
-- bounded diagnostics.
+- allowed output `ArtifactRef` values;
+- evidence and bounded diagnostics.
 
-A result never says that the pipeline, gate, or Run is accepted.
+A result never means the pipeline or a downstream gate accepted the work.
 
-### `ModuleAdapter`
+## Deterministic operation routing
 
-Executable code paired with a `ModulePlugin`:
+A routed Module declares:
 
-```ts
-interface ModuleAdapter {
-  invoke(
-    invocation: ModuleInvocation,
-    context: ModuleContext,
-  ): Promise<ModuleResult>;
-}
-```
+- the required state-input and route-decision-input port names;
+- one state-artifact schema and one JSON Pointer discriminator;
+- a closed set of unique discriminator values and reason codes;
+- exactly one Module operation or exact prerequisite target per value.
 
-`ModuleContext` remains a bounded host surface for reading and creating immutable artifacts, logging, cancellation, and explicitly granted effects. It exposes neither the scheduler nor mutable Run state.
+Core loads the raw state bytes through `context.artifacts.load(ref)`, verifies
+their exact SHA-256 digest, runs the trusted state validator, and materializes a
+provider-neutral `ModuleRouteDecision`. The host persists that returned
+decision as a normal artifact and supplies it to the selected operation.
+Execution independently
+reloads state and decision, recomputes the route, and requires canonical
+equivalence before any adapter runs.
 
-## Resolution
+Core fails closed on absent or tampered state, a missing validator, unknown
+values, duplicate rules, undeclared operations, a prerequisite route, or an
+invocation that conflicts with the recorded route. Prerequisites are explicit
+routes, not hidden calls. After a prerequisite produces its artifact, the host
+records new state and routes again.
 
-```txt
-validate the invocation JSON Schema
-  -> resolve exact Module and operation
-  -> resolve exact plug-in
-  -> prove plug-in implements that Module version and operation
-  -> validate Module options and plug-in configuration schemas
-  -> validate semantic ports and input relationships
-  -> compare requested and granted capability kinds
-  -> expose the registered adapter
-```
+Routing chooses semantic operations only. Adapter selection remains exact
+invocation configuration.
 
-There are no version ranges, implicit defaults, preferred implementations, or `latest` aliases.
+## Chained execution
 
-## Result Contracts
+Before executing a chain, Core validates:
 
-Output requirements often depend on the outcome. Each Module operation therefore defines one `resultContract` per outcome:
+1. every declared step appears exactly once and in order;
+2. each plug-in implements the exact Module operation and step;
+3. every configuration document validates;
+4. every declared capability kind is granted;
+5. original Module inputs satisfy the selected operation;
+6. a trusted validator is registered for every possible input, handoff, and
+   output schema;
+7. `context.artifacts.load` is available, and a complete
+   `context.checkpoints.get/put` store exists for every effectful execution
+   and every declared resumable chain, including legacy effectful adapters.
 
-```json
-{
-  "status": "completed",
-  "requiredInputs": [],
-  "forbiddenInputs": ["requirements-baseline"],
-  "requiredOutputs": ["requirements-draft", "native-source-bundle"],
-  "allowedOutputs": ["requirements-draft", "native-source-bundle"],
-  "requiredEvidence": [
-    {
-      "kind": "requirements/source-provenance",
-      "statuses": ["pass"],
-      "artifactOutput": "native-source-bundle"
-    }
-  ],
-  "diagnosticsRequired": false
-}
-```
+Core then invokes adapters serially. It requires every artifact loader to
+return raw bytes, checks the declared digest before decoding, rejects malformed
+UTF-8, parses JSON, and runs the trusted semantic validator. Only then does it
+checkpoint or pass a handoff into the next
+`ModuleStepInvocation`. Only the final step can produce the normal successful
+terminal result.
 
-The registry rejects missing/forbidden inputs, broken input relationships, missing or undeclared outputs, wrong artifact schemas/media types, evidence with an unacceptable status, lifecycle mismatches, and missing diagnostics.
+Core creates a distinct immutable, plain JSON data context for each adapter
+through `createAdapterContext`; shared mutable context and non-JSON values are
+rejected. Authoritative cross-step state still travels only through persisted
+artifacts.
 
-## Artifacts And Provenance
+This is a bounded linear composition primitive, not a general graph scheduler.
+Parallel dependency execution belongs to a later orchestration layer.
 
-Artifacts are immutable references:
+## Legacy compatibility
 
-```txt
-artifactId
-schema
-mediaType
-digest
-uri
-```
+Unchained operations retain the original single-adapter
+`plugin + config + grants` invocation shape. Chained operations require
+`adapters[]` and forbid those root implementation fields. Legacy plug-ins
+cannot declare a step; chained bindings must declare one. An effectful legacy
+invocation is wrapped in the same validated terminal
+checkpoint envelope and is replayed only for its exact immutable invocation.
 
-Interchangeable ports use DevRelay-owned schemas. Plug-ins normalize native representations into those schemas. Promotable requirements candidates must include a `NativeSourceBundle` and passing source-provenance evidence that preserve exact tool/version/source/digest mappings and normalization warnings.
+## Artifacts, resume, and evidence
 
-Native tool state is provenance, not downstream authority.
+Artifacts and evidence cross every boundary; conversational and provider-native
+session memory do not. Before an effect runs, Core requires a checkpoint store
+keyed by the digest of the complete step invocation, including prior results.
+A returned effect result is fully validated and durably written before
+downstream progression. On restart, a present checkpoint is revalidated and
+reused; a malformed checkpoint fails closed and is never treated as a cache
+miss. A changed upstream pure handoff therefore creates a different downstream
+effect key.
 
-### Digest Semantics
+For declared resumable chains, every completed step is checkpointed. A
+continuation binds the source invocation ID and fingerprint, chain fingerprint,
+exact active step, state, lineage inputs, completed plug-ins, step-invocation
+digests, step-result digests, output references, and unresolved questions.
+Core validates the matching response trio, reloads each original checkpoint,
+revalidates its result envelope and artifact bytes, seeds prior results, and
+starts at the recorded step.
 
-An `ArtifactRef.digest` is SHA-256 over the exact immutable artifact bytes returned by the artifact store. JSON content that needs a stable subdocument identity, such as `expectedRequirementDigest`, uses DevRelay Canonical JSON v1: recursively sort object keys by Unicode code-unit order, preserve array order, serialize without insignificant whitespace as UTF-8 JSON, then SHA-256 the bytes. The implementation is `src/content-digest.mjs` and is covered by fixed integrity tests.
+The portable resume package is the request, response, continuation, referenced
+artifact bytes, and source step checkpoints. A continuation alone cannot prove
+that a skipped effect occurred. Changes to a lineage input, adapter,
+configuration, grant, or option change the chain fingerprint and fail closed;
+new run identities and clarification-control artifacts do not. Hosts and
+adapters still need idempotency for the crash window between a completed
+external effect and its checkpoint write.
 
-## Execution And Resume
-
-- `pure`: equal semantic outputs are expected for equal exact invocation material.
-- `effect`: a model, human, process, filesystem, network, or external service may be involved.
-
-Core checkpoints a completed result before downstream use. Resume reuses that exact result. It does not silently rerun an effect whose completion is uncertain.
+Native artifacts remain subordinate evidence with producer version,
+normalization warnings, and exact content digests.
 
 ## Capabilities
 
-A plug-in declares implementation demand:
+The only capability demand kinds are:
 
-- `filesystem.read`;
-- `filesystem.write`;
-- `process.spawn`;
-- `network.connect`;
-- `secrets.read`.
+- `filesystem.read`
+- `filesystem.write`
+- `process.spawn`
+- `network.connect`
+- `secrets.read`
 
-The invocation records grants. This slice checks capability kinds and returns declared scopes to the host. Scope resolution/containment and sandbox enforcement are host authorization responsibilities; the registry does not treat scope strings as a security boundary.
+The registry checks declared kinds and grants. V1 scope templates use a
+literal scope, `config:<field>`, or `config:<field>/<literal-suffix>`.
+Only one leading configuration token is substituted; composed configuration
+expressions are not part of the grammar. For example, MADR uses an absolute
+`decisionsPath` with `config:decisionsPath`.
 
-## Requirements Plug-in Mapping
+An external host still resolves scope strings and enforces the actual sandbox;
+contract validation alone is not a security boundary.
 
-| Semantic operation | OpenSpec plug-in | GitHub Spec Kit plug-in |
-| --- | --- | --- |
-| Gather requirements | proposal plus specs | `/speckit.specify` output |
-| Clarify ambiguity | `/opsx:explore` or bounded continuation | `/speckit.clarify` |
-| Preserve native source | proposal/spec files | feature `spec.md` and clarification content |
-| Canonical output | DevRelay draft/change set/questions | DevRelay draft/change set/questions |
+## Rejected first-pass features
 
-OpenSpec `design.md` and `tasks.md`, and Spec Kit plan/tasks/implementation, belong to future semantic Modules. They are not smuggled through `RequirementsGathering`.
-
-Both upstream command surfaces are primarily agent-facing. The manifests are contract-compatible bindings; operational interchangeability is not claimed until executable host adapters pass the same artifact/outcome conformance suite.
-
-## Rejected First-Pass Features
-
-- Module-to-Module calls;
-- arbitrary access to Run state;
-- Module-owned gates or final acceptance;
-- automatic package discovery;
-- dynamic version resolution;
-- distributed workers;
-- a built-in model provider wrapper;
-- plug-in-specific fields or branches in core.
+- Module-specific or adapter-specific kernel branches;
+- model-selected operations or adapters;
+- Module-to-Module calls hidden inside adapters;
+- arbitrary access to run state;
+- Module-owned approval gates;
+- automatic package discovery or version resolution;
+- arbitrary graph execution or distributed workers;
+- a built-in model provider wrapper.

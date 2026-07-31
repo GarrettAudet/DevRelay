@@ -1,0 +1,36 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec agent-command bridge",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "interactive-clarification",
+      "path": "dogfood/architecture-design/clarification-transcript.md",
+      "artifact": {
+        "artifactId": "requirements-dialogue-architecture-design-v1",
+        "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-draft-architecture-design-v1",
+      "digest": "sha256:5449b5a27843a24f50697b7ed79f3e837515ee00d527828f90c4c3bb0369bfdc"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec CLI and repository were not installed or executed; this chat acted as the declared agent-command bridge.",
+      "The transcript is semantically exact and normalized. The originating Codex task remains the verbatim conversational source."
+    ],
+    "unmappedContent": []
+  }
+}

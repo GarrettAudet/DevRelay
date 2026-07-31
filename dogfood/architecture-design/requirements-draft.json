@@ -1,0 +1,564 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsDraft",
+  "draftId": "requirements-draft-architecture-design-v1",
+  "goal": {
+    "artifactId": "goal-architecture-design-module-v1",
+    "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+  },
+  "projectContext": {
+    "artifactId": "project-context-devrelay-architecture-design-v1",
+    "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+  },
+  "requirements": {
+    "objective": "Define ArchitectureDesign 0.1.0 as one deterministic DevRelay module that converts an approved RequirementsBaseline into either a new architecture baseline candidate or a proposed change to an existing architecture, using a configured chain of bounded, replaceable adapters.",
+    "scope": {
+      "in": [
+        "One ArchitectureDesign module with establish-baseline and design-change operations.",
+        "Deterministic operation routing from persisted project architecture state.",
+        "A prerequisite ArchitectureDiscovery route for existing repositories without a current architecture snapshot.",
+        "Ordered designer, modeler, and decision-recorder adapter steps.",
+        "Canonical ArchitectureDraft and ArchitectureChangeSetDraft artifacts.",
+        "Step handoffs, clarification checkpoints, native-source preservation, validation, conformance fixtures, and documentation.",
+        "V1 adapter manifests for Spec Kit plan, OpenSpec design, Structurizr, and MADR."
+      ],
+      "out": [
+        "Requirements approval logic beyond the recorded Requirements Gate.",
+        "Architecture approval or ArchitectureBaseline promotion, which belongs to the Architecture Gate.",
+        "A complete ArchitectureDiscovery module implementation.",
+        "Detailed OpenAPI, AsyncAPI, protobuf, database, or other interface contract generation.",
+        "Architecture enforcement, security review, performance verification, task decomposition, code generation, or integration.",
+        "Installation or execution of upstream Spec Kit, OpenSpec, Structurizr, or MADR tooling.",
+        "A distributed scheduler, agent framework, provider wrapper, package marketplace, or model-specific workflow."
+      ]
+    },
+    "assumptions": [
+      {
+        "id": "ASM-ARCH-001",
+        "statement": "ArchitectureDesign 0.1.0 has not been published, so the invalid provisional single-operation definition can be replaced without preserving it as a released contract.",
+        "status": "confirmed"
+      },
+      {
+        "id": "ASM-ARCH-002",
+        "statement": "Supporting architecture sections and native files are subordinate content or attachments inside one primary module output.",
+        "status": "confirmed"
+      },
+      {
+        "id": "ASM-ARCH-003",
+        "statement": "The separate Architecture Gate owns human approval and promotion or update of ArchitectureBaseline.",
+        "status": "confirmed"
+      },
+      {
+        "id": "ASM-ARCH-004",
+        "statement": "This run uses the configured OpenSpec agent-command bridge for requirements work and does not claim OpenSpec CLI execution.",
+        "status": "confirmed"
+      }
+    ],
+    "constraints": [
+      "DevRelay Core, not a model or adapter, selects the operation, configured adapters, sequence, validation path, and gate progression.",
+      "ArchitectureDesign must consume an approved RequirementsBaseline.",
+      "Module contracts remain provider-neutral and cannot branch on adapter or upstream-tool identifiers in generic core.",
+      "Every runtime boundary uses immutable artifact references and exact adapter versions.",
+      "ArchitectureDesign produces candidates only; it cannot approve or promote its own result.",
+      "The implementation must preserve compatibility with RequirementsGathering 0.1.0.",
+      "The first pass must remain small enough to prove modular composition without creating a general workflow platform."
+    ],
+    "requirements": [
+      {
+        "id": "REQ-ARCH-MODULE",
+        "category": "functional",
+        "statement": "DevRelay must expose exactly one ArchitectureDesign module whose purpose is to convert approved requirements into either a new architecture baseline candidate or a proposed change to an existing architecture.",
+        "rationale": "A single semantic boundary avoids artificial greenfield/brownfield module duplication.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-MODULE-001",
+            "statement": "The registered module identifier is architecture-design at version 0.1.0.",
+            "verification": "Register the module through the generic registry and inspect its immutable identity."
+          },
+          {
+            "id": "AC-ARCH-MODULE-002",
+            "statement": "The module never emits an approved ArchitectureBaseline.",
+            "verification": "Inspect declared output ports and reject undeclared baseline output."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: canonical module definition"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-OPERATIONS",
+        "category": "interface",
+        "statement": "ArchitectureDesign must expose exactly the establish-baseline and design-change operations under one shared module contract.",
+        "rationale": "The operations have distinct preconditions and primary results while sharing orchestration and artifact semantics.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-OPERATIONS-001",
+            "statement": "No provisional design operation remains in the ArchitectureDesign definition.",
+            "verification": "Assert the sorted operation identifiers equal establish-baseline and design-change."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 2 and 3: operations"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-ROUTING",
+        "category": "operational",
+        "statement": "DevRelay Core must deterministically select establish-baseline when no ArchitectureBaseline exists and design-change when an ArchitectureBaseline exists, using persisted project architecture state rather than model judgment.",
+        "rationale": "Routing is workflow authority and must be replayable, testable, and independent of implementation engines.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-ROUTING-001",
+            "statement": "Greenfield-unbaselined and existing-discovered-unbaselined states select establish-baseline.",
+            "verification": "Run router fixtures for both state values."
+          },
+          {
+            "id": "AC-ARCH-ROUTING-002",
+            "statement": "Baselined state selects design-change and an invocation cannot override that decision.",
+            "verification": "Run the route/invocation binding negative test."
+          },
+          {
+            "id": "AC-ARCH-ROUTING-003",
+            "statement": "Unknown, duplicate, or ambiguous routing rules fail closed.",
+            "verification": "Run deterministic router negative tests."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 2 and 3: deterministic routing"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-DISCOVERY",
+        "category": "operational",
+        "statement": "An existing repository with no ArchitectureBaseline and no CurrentArchitectureSnapshot must route to the ArchitectureDiscovery prerequisite; its snapshot then permits establish-baseline.",
+        "rationale": "Repository structure is evidence but is not an approved architecture baseline.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-DISCOVERY-001",
+            "statement": "Existing-undiscovered state produces a prerequisite route and cannot start ArchitectureDesign.",
+            "verification": "Run the prerequisite and invocation-blocking router tests."
+          },
+          {
+            "id": "AC-ARCH-DISCOVERY-002",
+            "statement": "The prerequisite declares CurrentArchitectureSnapshot as its required output contract.",
+            "verification": "Inspect the ArchitectureDesign routing declaration."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 2 and 4: discovery prerequisite"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-CHAIN",
+        "category": "functional",
+        "statement": "Each ArchitectureDesign operation must execute an ordered designer, modeler, decision-recorder adapter chain with validated handoffs and exactly one terminal module result.",
+        "rationale": "Best-in-class capabilities can be swapped independently only when step boundaries and sequencing are explicit.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-CHAIN-001",
+            "statement": "The registry resolves all configured steps before execution and invokes them only in declared order.",
+            "verification": "Run chain resolution and in-memory execution tests."
+          },
+          {
+            "id": "AC-ARCH-CHAIN-002",
+            "statement": "Missing, duplicate, reordered, incompatible, or nonterminal step results are rejected.",
+            "verification": "Run negative chain conformance tests."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: adapter sequence and Core authority"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-V1-ADAPTERS",
+        "category": "constraint",
+        "statement": "The V1 default chain must use SpecKitPlanAdapter for establish-baseline or OpenSpecDesignAdapter for design-change, followed by StructurizrAdapter and MADRAdapter.",
+        "rationale": "These are selected V1 implementations of stable semantic step contracts, not hard-coded kernel behavior.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-V1-ADAPTERS-001",
+            "statement": "The baseline example pins Spec Kit plan, Structurizr, and MADR adapter manifests with exact versions and step roles.",
+            "verification": "Resolve the establish-baseline invocation fixture."
+          },
+          {
+            "id": "AC-ARCH-V1-ADAPTERS-002",
+            "statement": "The change example pins OpenSpec design, Structurizr, and MADR adapter manifests with exact versions and step roles.",
+            "verification": "Resolve the design-change invocation fixture."
+          },
+          {
+            "id": "AC-ARCH-V1-ADAPTERS-003",
+            "statement": "Replacing a compatible step adapter requires configuration only and no generic-core identifier branch.",
+            "verification": "Run the adapter-swap fixture and core special-case scan."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: V1 defaults"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-PRIMARY-OUTPUT",
+        "category": "interface",
+        "statement": "A successful establish-baseline invocation must return exactly one ArchitectureDraft, and a successful design-change invocation must return exactly one ArchitectureChangeSetDraft.",
+        "rationale": "One primary candidate makes the module boundary and downstream Architecture Gate unambiguous.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-PRIMARY-OUTPUT-001",
+            "statement": "Successful result contracts allow and require only the operation-specific primary output.",
+            "verification": "Validate both success results and reject extra top-level outputs."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: primary output"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-SECTIONS",
+        "category": "data",
+        "statement": "ArchitectureDraft and ArchitectureChangeSetDraft must contain or immutably reference technical design, architecture model, diagrams, interface intent, architecture constraints, decision records, and native artifacts.",
+        "rationale": "Supporting work remains complete and traceable without becoming separate module outcomes.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-SECTIONS-001",
+            "statement": "Both canonical primary artifact fixtures expose all seven named sections.",
+            "verification": "Validate fixtures against the architecture artifact schema."
+          },
+          {
+            "id": "AC-ARCH-SECTIONS-002",
+            "statement": "A section may be embedded or attached by immutable artifact reference, but cannot be absent or both forms at once.",
+            "verification": "Run section-union negative schema tests."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: supporting artifacts"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-STATE",
+        "category": "data",
+        "statement": "ProjectArchitectureState must distinguish greenfield-unbaselined, existing-undiscovered, existing-discovered-unbaselined, and baselined states and bind any required snapshot or baseline by exact artifact reference.",
+        "rationale": "Closed explicit state prevents inference from repository contents or conversational memory.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-STATE-001",
+            "statement": "Each valid state variant accepts only its required references.",
+            "verification": "Validate positive and contradictory state fixtures."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 1, 2, and 4: project state"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-PROVENANCE",
+        "category": "quality",
+        "statement": "Every step handoff and primary output must preserve exact input, adapter, native-source, normalization, and output provenance without relying on conversational or provider session memory.",
+        "rationale": "Traceable handoffs are required for resume, audit, swapping, and trustworthy normalization.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-PROVENANCE-001",
+            "statement": "A successful chain exposes step results bound to the exact invocation, inputs, adapter version, and produced artifact digests.",
+            "verification": "Run handoff validation and digest-mismatch tests."
+          },
+          {
+            "id": "AC-ARCH-PROVENANCE-002",
+            "statement": "Native artifacts are subordinate to the primary candidate and retain warnings for unmapped or unexecuted native behavior.",
+            "verification": "Inspect and validate both primary artifact fixtures."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Workflow instruction and Clarification 3: Core authority"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-INTERFACE-BOUNDARY",
+        "category": "constraint",
+        "statement": "ArchitectureDesign must capture interface intent and architectural constraints, while detailed API, event, data, and protocol contracts remain in downstream ContractGeneration.",
+        "rationale": "Architecture should define boundaries without collapsing a later deterministic lifecycle stage.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-INTERFACE-BOUNDARY-001",
+            "statement": "Canonical artifacts require interface intent but do not require OpenAPI, AsyncAPI, protobuf, or database-schema payloads.",
+            "verification": "Inspect the schema and documentation boundary."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 2 and 3: interface scope"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-CLARIFICATION",
+        "category": "operational",
+        "statement": "Blocking ambiguity at any ArchitectureDesign step must emit portable clarification requests and a complete continuation; resume must bind the matching responses and exact prior state.",
+        "rationale": "A multi-step effectful module must resume without hidden native-tool or chat state.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-CLARIFICATION-001",
+            "statement": "Clarification output contains the request set and continuation but no primary architecture candidate.",
+            "verification": "Validate a clarification result fixture."
+          },
+          {
+            "id": "AC-ARCH-CLARIFICATION-002",
+            "statement": "Continuation and response inputs are required together and bind the exact paused stage.",
+            "verification": "Run input-rule and artifact semantic validation tests."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Workflow instruction: normal user-facing module workflow"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-GATE",
+        "category": "operational",
+        "statement": "Module validation must establish structural and semantic completeness, while a separate Architecture Gate decides clarity, fitness, approval, and promotion or update of ArchitectureBaseline.",
+        "rationale": "Generation and progression authority must remain separate deterministic stages.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-GATE-001",
+            "statement": "ArchitectureDesign outputs are explicitly candidates and cannot claim gate approval.",
+            "verification": "Inspect module outcomes and documentation."
+          },
+          {
+            "id": "AC-ARCH-GATE-002",
+            "statement": "Progression documentation requires a passing Architecture Gate bound to the exact candidate digest.",
+            "verification": "Review the end-to-end workflow example."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 2 and 3: approval and Core progression"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-BOUNDED-CAPABILITY",
+        "category": "constraint",
+        "statement": "Each adapter manifest must bind only the relevant upstream capability for its declared ArchitectureDesign step; DevRelay must not treat an upstream repository's full workflow as one module.",
+        "rationale": "Bounded capabilities preserve module ownership and permit independent best-in-class replacement.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-BOUNDED-CAPABILITY-001",
+            "statement": "Spec Kit exposes only planning for the designer step and OpenSpec exposes only design for the designer step in ArchitectureDesign.",
+            "verification": "Inspect the adapter manifests and bounded native schemas."
+          },
+          {
+            "id": "AC-ARCH-BOUNDED-CAPABILITY-002",
+            "statement": "Structurizr and MADR manifests implement only their modeler and decision-recorder steps.",
+            "verification": "Inspect and register the adapter manifests."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: adapter sequence"
+          }
+        ]
+      },
+      {
+        "id": "REQ-ARCH-CONFORMANCE",
+        "category": "quality",
+        "statement": "The implementation must include positive and negative schema, routing, registry, chain, artifact, clarification, provenance, backward-compatibility, and core-neutrality tests.",
+        "rationale": "Determinism and replaceability require executable evidence, not naming conventions.",
+        "priority": "must",
+        "acceptanceCriteria": [
+          {
+            "id": "AC-ARCH-CONFORMANCE-001",
+            "statement": "The full DevRelay test suite passes.",
+            "verification": "Run npm.cmd test."
+          },
+          {
+            "id": "AC-ARCH-CONFORMANCE-002",
+            "statement": "RequirementsGathering 0.1.0 fixtures continue to resolve and validate unchanged.",
+            "verification": "Run the pre-existing RequirementsGathering conformance tests."
+          },
+          {
+            "id": "AC-ARCH-CONFORMANCE-003",
+            "statement": "Generic core contains no ArchitectureDesign or adapter identifier branches.",
+            "verification": "Run the source neutrality scan."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Canonical definition and approved build authorization"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "RequirementsGathering 0.1.0 and its approved RequirementsBaseline contract.",
+      "The generic ModuleDefinition, ModulePlugin, ModuleInvocation, ModuleResult, ArtifactRef, Evidence, schema compiler, and content-digest contracts.",
+      "A downstream Architecture Gate before candidate promotion.",
+      "A future ArchitectureDiscovery module or compatible prerequisite implementation for existing-undiscovered state."
+    ],
+    "risks": [
+      "A chain abstraction that is too general could expand DevRelay into a workflow platform instead of a small module runner.",
+      "Weak step contracts could allow native tool output or conversational state to leak across adapters.",
+      "Treating a repository snapshot as an architecture baseline would make changes unauditable.",
+      "Embedding full OpenSpec or Spec Kit workflows would duplicate stages and prevent independent module replacement.",
+      "A canonical architecture artifact that is too prescriptive could merely replace one upstream methodology with another.",
+      "Contract fixtures prove boundary compatibility but do not prove live upstream CLI interoperability."
+    ],
+    "deliverables": [
+      "Approved ArchitectureDesign RequirementsBaseline and user-visible clarification record.",
+      "Generic deterministic operation router and ordered adapter-chain support.",
+      "ArchitectureDesign module definition with establish-baseline and design-change.",
+      "Canonical project-state, routing, discovery, draft, change-set, step-work, and clarification artifact contracts.",
+      "Spec Kit plan, OpenSpec design, Structurizr, and MADR bounded adapter manifests.",
+      "Representative invocations, step results, primary outputs, and end-to-end workflow documentation.",
+      "Conformance, negative, regression, and core-neutrality tests."
+    ],
+    "requiredEvidence": [
+      "requirements/source-provenance",
+      "requirements/gate-review",
+      "routing/deterministic-selection",
+      "architecture/chain-conformance",
+      "architecture/artifact-validation",
+      "architecture/source-provenance",
+      "architecture/backward-compatibility",
+      "architecture/core-neutrality",
+      "architecture/full-test-suite"
+    ],
+    "sourceRefs": [
+      {
+        "role": "goal",
+        "artifact": {
+          "artifactId": "goal-architecture-design-module-v1",
+          "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+        }
+      },
+      {
+        "role": "project-context",
+        "artifact": {
+          "artifactId": "project-context-devrelay-architecture-design-v1",
+          "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+        }
+      },
+      {
+        "role": "repository-snapshot",
+        "artifact": {
+          "artifactId": "repository-snapshot-devrelay-067b3a5",
+          "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+        }
+      },
+      {
+        "role": "interactive-clarification",
+        "artifact": {
+          "artifactId": "requirements-dialogue-architecture-design-v1",
+          "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+        },
+        "location": "Complete normalized clarification sequence"
+      }
+    ]
+  }
+}

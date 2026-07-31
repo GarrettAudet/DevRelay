@@ -82,6 +82,31 @@ test("portable options and selected plug-in config schemas are executed", () => 
   expectContractError(() => registry.resolve(incompleteConfig), "DR1608");
 });
 
+test("Module ports accept only JSON-compatible media types", () => {
+  const nonJson = clone(requirementsModule);
+  nonJson.operations[0].inputs[0].mediaTypes = ["text/plain"];
+  expectContractError(
+    () => createModuleRegistry({ modules: [nonJson] }),
+    "DR1207",
+  );
+
+  const genericJson = clone(requirementsModule);
+  genericJson.operations[0].inputs[0].mediaTypes = ["application/json"];
+  assert.equal(
+    createModuleRegistry({ modules: [genericJson] }).moduleCount,
+    1,
+  );
+
+  const vendorJson = clone(requirementsModule);
+  vendorJson.operations[0].inputs[0].mediaTypes = [
+    "application/vnd.example.requirement+json",
+  ];
+  assert.equal(
+    createModuleRegistry({ modules: [vendorJson] }).moduleCount,
+    1,
+  );
+});
+
 test("continuation and clarification responses form an explicit pair", () => {
   const noResponses = clone(clarificationResumeInvocation);
   delete noResponses.inputs["clarification-responses"];

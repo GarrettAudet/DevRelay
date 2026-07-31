@@ -1,0 +1,95 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "madr",
+    "version": "0.1.0",
+    "description": "Bounded MADR decision-recorder adapter for ArchitectureDesign."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "establish-baseline",
+          "step": "decision-recorder",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "templateVersion",
+              "decisionsPath"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "templateVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decisionsPath": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:decisionsPath"
+            }
+          ]
+        },
+        {
+          "id": "design-change",
+          "step": "decision-recorder",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "templateVersion",
+              "decisionsPath"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "templateVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decisionsPath": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:decisionsPath"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

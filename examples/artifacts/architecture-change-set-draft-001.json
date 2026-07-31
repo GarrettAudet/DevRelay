@@ -1,0 +1,657 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureChangeSetDraft",
+  "changeSetId": "architecture-change-set-draft-001",
+  "operation": "design-change",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-baselined-001",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "uri": "file:///workspace/.devrelay/artifacts/project-architecture-state-baselined-001.json"
+  },
+  "baseArchitectureBaseline": {
+    "artifactId": "architecture-baseline-001",
+    "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+    "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+    "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+  },
+  "baseArchitectureDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "targetRequirementsBaseline": {
+    "artifactId": "requirements-baseline-002",
+    "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+    "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+    "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+    "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-002.json"
+  },
+  "projectContext": {
+    "artifactId": "project-context-001",
+    "schema": "https://devrelay.dev/artifacts/project-context/v1",
+    "mediaType": "application/vnd.devrelay.project-context+json",
+    "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "uri": "file:///workspace/.devrelay/artifacts/project-context-001.json"
+  },
+  "repositorySnapshot": {
+    "artifactId": "repository-snapshot-001",
+    "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+    "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+    "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+  },
+  "changeDisposition": "architecture-change",
+  "scope": {
+    "level": "change",
+    "boundary": "Authentication-service abuse protection.",
+    "in": [
+      "Rate-limit authentication attempts"
+    ],
+    "out": [
+      "Detailed API schemas",
+      "Implementation tasks"
+    ]
+  },
+  "sections": {
+    "technicalDesign": {
+      "mode": "embedded",
+      "content": {
+        "technicalDesignId": "TD-AUTH-001",
+        "objective": "Establish a provider-neutral authentication architecture.",
+        "scope": {
+          "level": "feature",
+          "boundary": "Authentication and session establishment.",
+          "in": [
+            "Authentication request handling",
+            "Credential verification",
+            "Session establishment"
+          ],
+          "out": [
+            "Detailed API schemas",
+            "Implementation tasks"
+          ]
+        },
+        "problemSummary": "Authentication must establish sessions without revealing whether an account exists.",
+        "solutionSummary": "Centralize credential verification, failure normalization, and session creation behind one service boundary.",
+        "requirementsDrivers": [
+          "Registered users can authenticate.",
+          "Externally visible failures do not reveal account existence."
+        ],
+        "behaviorFlows": [
+          "A user submits authentication input to the authentication service.",
+          "The service verifies credentials and either creates a session or returns a uniform failure."
+        ],
+        "dataResponsibilities": [
+          "The identity source owns credential-verification material.",
+          "The authentication service owns session-establishment policy."
+        ],
+        "failureHandling": [
+          "Normalize invalid-identity and invalid-credential outcomes."
+        ],
+        "securityPrivacy": [
+          "Protect credential material in transit and at rest.",
+          "Do not expose identity-source details."
+        ],
+        "performanceReliabilityOperability": [
+          "Authentication telemetry must not contain credential material."
+        ],
+        "compatibilityMigrationRollout": [
+          "Preserve externally uniform failure behavior during migration."
+        ],
+        "verificationIntent": [
+          "Security review compares externally visible failures.",
+          "Architecture tests verify the intended dependency direction."
+        ],
+        "interfaceIntentIds": [
+          "IF-AUTHENTICATE"
+        ],
+        "constraintIds": [
+          "CON-AUTH-FAILURE"
+        ],
+        "sourceRequirementIds": [
+          "REQ-AUTH-001"
+        ],
+        "sourceRefs": []
+      }
+    },
+    "architectureModel": {
+      "mode": "embedded",
+      "content": {
+        "modelId": "MODEL-AUTH-001",
+        "notation": {
+          "name": "C4",
+          "version": "1.0"
+        },
+        "elements": [
+          {
+            "id": "EL-AUTH-SYSTEM",
+            "name": "Authentication system",
+            "type": "software-system",
+            "description": "Owns authentication and session-establishment behavior.",
+            "responsibilities": [
+              "Authenticate registered users and establish sessions."
+            ],
+            "tags": [
+              "System"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-AUTH-SERVICE",
+            "name": "Authentication service",
+            "type": "container",
+            "parentId": "EL-AUTH-SYSTEM",
+            "description": "Normalizes credential verification, rate limiting, and session creation.",
+            "technology": "Provider-neutral service boundary",
+            "responsibilities": [
+              "Verify credentials.",
+              "Normalize authentication failures.",
+              "Establish successful sessions."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-IDENTITY-SOURCE",
+            "name": "Identity source",
+            "type": "container",
+            "parentId": "EL-AUTH-SYSTEM",
+            "description": "Stores authoritative identity and credential material.",
+            "responsibilities": [
+              "Provide authoritative credential-verification data."
+            ],
+            "tags": [
+              "Container",
+              "DataStore"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-CLIENT",
+            "name": "Registered user",
+            "type": "person",
+            "description": "A registered user authenticating through a client.",
+            "responsibilities": [
+              "Provide authentication input."
+            ],
+            "tags": [
+              "Person"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          }
+        ],
+        "relationships": [
+          {
+            "id": "REL-CLIENT-AUTH",
+            "sourceElementId": "EL-CLIENT",
+            "targetElementId": "EL-AUTH-SERVICE",
+            "description": "Submits an authentication attempt.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-AUTH-IDENTITY",
+            "sourceElementId": "EL-AUTH-SERVICE",
+            "targetElementId": "EL-IDENTITY-SOURCE",
+            "description": "Verifies credential material without exposing identity-source details.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          }
+        ],
+        "sourceRefs": []
+      }
+    },
+    "diagrams": {
+      "mode": "embedded",
+      "content": {
+        "diagramSetId": "DIAGRAMS-AUTH-001",
+        "architectureModelId": "MODEL-AUTH-001",
+        "architectureModelDigest": "sha256:b04a6320b553b9fe2a5e48fb5aeba0d78c03e85db44b0f682d4225aec63f913a",
+        "views": [
+          {
+            "viewKey": "VIEW-AUTH-CONTEXT",
+            "type": "system-context",
+            "title": "Authentication context",
+            "purpose": "Show the user-facing authentication boundary and its identity dependency.",
+            "audience": [
+              "engineering",
+              "security"
+            ],
+            "scopeElementId": "EL-AUTH-SYSTEM",
+            "elementIds": [
+              "EL-AUTH-SYSTEM",
+              "EL-AUTH-SERVICE",
+              "EL-IDENTITY-SOURCE",
+              "EL-CLIENT"
+            ],
+            "relationshipIds": [
+              "REL-CLIENT-AUTH",
+              "REL-AUTH-IDENTITY"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-auth-001",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+                  "uri": "file:///workspace/architecture/workspace.dsl"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "interfaceIntent": {
+      "mode": "embedded",
+      "content": {
+        "interfaceIntentSetId": "INTERFACES-AUTH-001",
+        "interfaces": [
+          {
+            "id": "IF-AUTHENTICATE",
+            "name": "Authenticate user",
+            "purpose": "Request credential verification and session establishment.",
+            "ownerBoundary": "Authentication service",
+            "providerElementId": "EL-AUTH-SERVICE",
+            "consumerElementIds": [
+              "EL-CLIENT"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Presented identity and credential material"
+            ],
+            "semanticOutputs": [
+              "Established session or uniform authentication failure"
+            ],
+            "protocolConstraints": [
+              "Credential material is protected in transit."
+            ],
+            "failureBehavior": "Return one externally uniform failure and establish no session.",
+            "compatibilityObligations": [
+              "Preserve success-versus-uniform-failure semantics."
+            ],
+            "securityPrivacyIntent": [
+              "Do not disclose whether an identity exists."
+            ],
+            "deliveryConsistencyIntent": [
+              "A successful response means session state is established."
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "openapi"
+              ]
+            },
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          }
+        ]
+      }
+    },
+    "architectureConstraints": {
+      "mode": "embedded",
+      "content": {
+        "constraintSetId": "CONSTRAINTS-AUTH-001",
+        "constraints": [
+          {
+            "id": "CON-AUTH-FAILURE",
+            "category": "security",
+            "strength": "must",
+            "statement": "Externally visible authentication failures must not disclose identity existence.",
+            "rationale": "Account enumeration is an unacceptable security exposure.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-AUTH-SERVICE"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-AUTHENTICATE"
+              }
+            ],
+            "verificationIntent": "Compare responses and timing for existing and nonexistent identities.",
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": []
+          }
+        ]
+      }
+    },
+    "decisionRecords": {
+      "mode": "embedded",
+      "content": {
+        "decisionRecordSetId": "DECISIONS-AUTH-001",
+        "decisions": [
+          {
+            "id": "ADR-AUTH-001",
+            "title": "Centralize authentication policy",
+            "status": "accepted",
+            "contextAndProblemStatement": "Credential verification, failure normalization, and session establishment need one accountable architectural boundary.",
+            "decisionDrivers": [
+              "Uniform security behavior",
+              "Provider independence",
+              "Traceable session ownership"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-CENTRAL-SERVICE",
+                "title": "Central authentication service",
+                "pros": [
+                  "One policy owner"
+                ],
+                "cons": [
+                  "Adds a runtime dependency"
+                ]
+              },
+              {
+                "id": "OPT-CLIENT-VERIFICATION",
+                "title": "Client-owned verification",
+                "pros": [
+                  "Avoids one service hop"
+                ],
+                "cons": [
+                  "Duplicates security policy"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-CENTRAL-SERVICE",
+              "justification": "One boundary can enforce non-enumerating failures consistently."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Authentication behavior has one accountable owner."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Authentication depends on service availability."
+              }
+            ],
+            "confirmation": "Architecture and security verification confirm dependency direction and uniform failures.",
+            "relatedDecisionIds": [],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-AUTH-SERVICE"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-AUTHENTICATE"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-AUTH-FAILURE"
+              },
+              {
+                "kind": "view",
+                "id": "VIEW-AUTH-CONTEXT"
+              }
+            ],
+            "sourceRequirementIds": [
+              "REQ-AUTH-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-auth-001",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+              "uri": "file:///workspace/architecture/decisions/0001-centralize-authentication.md"
+            }
+          }
+        ]
+      }
+    },
+    "nativeArtifacts": {
+      "mode": "embedded",
+      "content": {
+        "nativeArtifactSetId": "NATIVE-AUTH-001",
+        "entries": [
+          {
+            "id": "NA-OPENSPEC-DESIGN",
+            "artifact": {
+              "artifactId": "openspec-design-auth-change-001",
+              "schema": "https://devrelay.dev/native/markdown/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+              "uri": "file:///workspace/openspec/changes/auth-rate-limit/design.md"
+            },
+            "role": "openspec-design",
+            "logicalPath": "openspec/changes/auth-rate-limit/design.md",
+            "producedBy": {
+              "stage": "designer",
+              "adapterId": "openspec-design",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "OpenSpec",
+                "version": "1.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "technicalDesign",
+                "entityIds": [
+                  "TD-AUTH-001"
+                ],
+                "jsonPointers": [
+                  "/sections/technicalDesign"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-STRUCTURIZR-WORKSPACE",
+            "artifact": {
+              "artifactId": "structurizr-workspace-auth-001",
+              "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+              "mediaType": "text/vnd.structurizr.dsl",
+              "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+              "uri": "file:///workspace/architecture/workspace.dsl"
+            },
+            "role": "structurizr-workspace",
+            "logicalPath": "architecture/workspace.dsl",
+            "producedBy": {
+              "stage": "modeler",
+              "adapterId": "structurizr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "Structurizr DSL",
+                "version": "5.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "architectureModel",
+                "entityIds": [
+                  "MODEL-AUTH-001"
+                ],
+                "jsonPointers": [
+                  "/sections/architectureModel"
+                ]
+              },
+              {
+                "section": "diagrams",
+                "entityIds": [
+                  "VIEW-AUTH-CONTEXT"
+                ],
+                "jsonPointers": [
+                  "/sections/diagrams"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-MADR-DECISION",
+            "artifact": {
+              "artifactId": "madr-auth-001",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+              "uri": "file:///workspace/architecture/decisions/0001-centralize-authentication.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "architecture/decisions/0001-centralize-authentication.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-AUTH-001"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          }
+        ]
+      }
+    }
+  },
+  "changes": {
+    "elementChanges": [
+      {
+        "changeId": "CHG-AUTH-RATE-LIMIT",
+        "entityKind": "element",
+        "entityId": "EL-AUTH-SERVICE",
+        "operation": "modify",
+        "expectedBaseDigest": "sha256:ef870dcf7997be051c62ffc243956618ded283ad0cc550c0aef8900aad740644",
+        "targetDigest": "sha256:36b087aea64146f09a835461b487c6a854cfdb755735c906ffd121e276f9f42c",
+        "rationale": "The updated requirements require abuse protection.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "REQ-AUTH-001"
+        ]
+      }
+    ],
+    "relationshipChanges": [],
+    "viewChanges": [],
+    "interfaceChanges": [],
+    "constraintChanges": [],
+    "decisionChanges": []
+  },
+  "traceability": [
+    {
+      "requirementId": "REQ-AUTH-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-AUTH-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AUTH-SYSTEM"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AUTH-SERVICE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-IDENTITY-SOURCE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CLIENT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CLIENT-AUTH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AUTH-IDENTITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AUTHENTICATE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AUTH-FAILURE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AUTH-001"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-AUTH-RATE-LIMIT"
+        }
+      ],
+      "rationale": "The target architecture and typed change preserve authentication behavior while adding abuse protection."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-AUTH-IDENTITY-SOURCE",
+      "statement": "The authoritative identity source is available through a bounded internal interface.",
+      "status": "confirmed",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-AUTH-TIMING",
+      "statement": "Timing differences may reveal account existence.",
+      "impact": "An attacker could enumerate registered identities.",
+      "mitigation": "Require timing-oriented security evidence at the Architecture Gate."
+    }
+  ],
+  "requiredEvidence": [
+    "architecture/change-application",
+    "security/authentication-rate-limit-review"
+  ],
+  "sourceRefs": []
+}

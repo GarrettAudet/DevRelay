@@ -23,7 +23,6 @@ const artifactNames = [
   "requirements-continuation-001.json",
   "requirements-baseline-001.json",
   "requirements-change-set-001.json",
-  "native-source-bundle-001.json",
 ];
 
 const artifacts = new Map(

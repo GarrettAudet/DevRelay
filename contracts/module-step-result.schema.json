@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/module-step-result.schema.json",
+  "title": "DevRelay ModuleStepResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "invocationId",
+    "invocationFingerprint",
+    "chainFingerprint",
+    "stepInvocationDigest",
+    "step",
+    "plugin",
+    "disposition"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ModuleStepResult"
+    },
+    "invocationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "step": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "disposition": {
+      "enum": [
+        "continue",
+        "terminal"
+      ]
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "module-result.schema.json#/$defs/artifactRef"
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "module-result.schema.json#/$defs/evidence"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "module-result.schema.json#/$defs/diagnostic"
+      }
+    },
+    "moduleResult": {
+      "$ref": "module-result.schema.json"
+    },
+    "invocationFingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "plugin": {
+      "$ref": "module-invocation.schema.json#/$defs/pluginRef"
+    },
+    "chainFingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "stepInvocationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "disposition": {
+            "const": "continue"
+          }
+        },
+        "required": [
+          "disposition"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outputs": {},
+          "evidence": {},
+          "diagnostics": {},
+          "moduleResult": false
+        },
+        "required": [
+          "outputs",
+          "evidence",
+          "diagnostics"
+        ]
+      },
+      "else": {
+        "properties": {
+          "moduleResult": {},
+          "outputs": false,
+          "evidence": false,
+          "diagnostics": false
+        },
+        "required": [
+          "moduleResult"
+        ]
+      }
+    }
+  ]
+}

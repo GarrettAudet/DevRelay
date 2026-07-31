@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/module-step-invocation.schema.json",
+  "title": "DevRelay ModuleStepInvocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "invocationId",
+    "runId",
+    "nodeId",
+    "invocationFingerprint",
+    "chainFingerprint",
+    "stepInvocationDigest",
+    "module",
+    "step",
+    "plugin",
+    "inputs",
+    "priorResults",
+    "options",
+    "config",
+    "grants"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ModuleStepInvocation"
+    },
+    "invocationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "nodeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "invocationFingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "operation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        }
+      }
+    },
+    "step": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "plugin": {
+      "$ref": "module-invocation.schema.json#/$defs/pluginRef"
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "module-invocation.schema.json#/$defs/artifactRef"
+        }
+      }
+    },
+    "priorResults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/priorResult"
+      }
+    },
+    "options": {
+      "type": "object"
+    },
+    "config": {
+      "type": "object"
+    },
+    "grants": {
+      "type": "array",
+      "items": {
+        "$ref": "module-invocation.schema.json#/$defs/capabilityGrant"
+      }
+    },
+    "chainFingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "stepInvocationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  },
+  "$defs": {
+    "priorResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step",
+        "plugin",
+        "stepInvocationDigest",
+        "digest",
+        "outputs"
+      ],
+      "properties": {
+        "step": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "module-invocation.schema.json#/$defs/artifactRef"
+            }
+          }
+        },
+        "plugin": {
+          "$ref": "module-invocation.schema.json#/$defs/pluginRef"
+        },
+        "stepInvocationDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

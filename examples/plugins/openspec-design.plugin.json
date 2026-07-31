@@ -1,0 +1,80 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "openspec-design",
+    "version": "0.1.0",
+    "description": "Bounded OpenSpec design adapter for ArchitectureDesign changes."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "design-change",
+          "step": "designer",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "toolVersion",
+              "changeName",
+              "schema",
+              "artifact",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "changeName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "artifact": {
+                "const": "design.md"
+              },
+              "bridge": {
+                "enum": [
+                  "agent-command",
+                  "process-json"
+                ]
+              },
+              "schema": {
+                "const": "devrelay-architecture"
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:projectRoot/openspec/changes"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "openspec"
+            },
+            {
+              "kind": "network.connect",
+              "scope": "host:implementation-engine"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,631 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "architecture-design",
+    "version": "0.1.0",
+    "description": "Convert an approved requirements baseline into one architecture baseline candidate or one architecture change candidate through a deterministic adapter chain."
+  },
+  "routing": {
+    "stateSchema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "discriminator": "/state",
+    "rules": [
+      {
+        "value": "greenfield-unbaselined",
+        "operation": "establish-baseline",
+        "reasonCode": "GREENFIELD_REQUIRES_BASELINE"
+      },
+      {
+        "value": "existing-undiscovered",
+        "prerequisite": {
+          "module": {
+            "id": "architecture-discovery",
+            "version": "0.1.0"
+          },
+          "operation": "discover",
+          "outputSchema": "https://devrelay.dev/artifacts/current-architecture-snapshot/v1"
+        },
+        "reasonCode": "EXISTING_REQUIRES_DISCOVERY"
+      },
+      {
+        "value": "existing-discovered-unbaselined",
+        "operation": "establish-baseline",
+        "reasonCode": "DISCOVERY_READY_FOR_BASELINE"
+      },
+      {
+        "value": "baselined",
+        "operation": "design-change",
+        "reasonCode": "BASELINE_REQUIRES_CHANGE_DESIGN"
+      }
+    ],
+    "stateInput": "project-architecture-state",
+    "decisionInput": "routing-decision"
+  },
+  "operations": [
+    {
+      "id": "establish-baseline",
+      "description": "Create one ArchitectureDraft from approved requirements and an unbaselined project state.",
+      "inputs": [
+        {
+          "name": "project-architecture-state",
+          "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-architecture-state+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "routing-decision",
+          "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.module-route-decision+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "requirements-baseline",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-context",
+          "schema": "https://devrelay.dev/artifacts/project-context/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-context+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "repository-snapshot",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.repository-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "current-architecture-snapshot",
+          "schema": "https://devrelay.dev/artifacts/current-architecture-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.current-architecture-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-request",
+          "schema": "https://devrelay.dev/artifacts/architecture-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-responses",
+          "schema": "https://devrelay.dev/artifacts/architecture-clarification-response-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-clarification-response-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/architecture-design-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-design-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "architecture-draft",
+          "schema": "https://devrelay.dev/artifacts/architecture-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-requests",
+          "schema": "https://devrelay.dev/artifacts/architecture-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/architecture-design-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-design-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "inputRules": [
+        {
+          "ifPresent": "clarification-request",
+          "require": [
+            "clarification-responses",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "clarification-responses",
+          "require": [
+            "clarification-request",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "continuation",
+          "require": [
+            "clarification-request",
+            "clarification-responses"
+          ]
+        }
+      ],
+      "outcomes": [
+        "baseline_drafted",
+        "needs_clarification",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "baseline_drafted": {
+          "status": "completed",
+          "requiredInputs": [
+            "project-architecture-state",
+            "routing-decision",
+            "requirements-baseline",
+            "project-context"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "architecture-draft"
+          ],
+          "allowedOutputs": [
+            "architecture-draft"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "architecture/chain-provenance",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "architecture-draft"
+            },
+            {
+              "kind": "architecture/contract-validation",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "architecture-draft"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "allowedOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": false
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "architecture/chain-provenance",
+        "architecture/contract-validation"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "adapterChain": {
+        "earlyTerminalOutcomes": [
+          "needs_clarification",
+          "unable_to_proceed",
+          "execution_failed"
+        ],
+        "steps": [
+          {
+            "id": "designer",
+            "kind": "handoff",
+            "outputs": [
+              {
+                "name": "architecture-designer-working",
+                "schema": "https://devrelay.dev/artifacts/architecture-designer-working/v1",
+                "mediaTypes": [
+                  "application/vnd.devrelay.architecture-designer-working+json"
+                ],
+                "cardinality": "one",
+                "required": true
+              }
+            ]
+          },
+          {
+            "id": "modeler",
+            "kind": "handoff",
+            "outputs": [
+              {
+                "name": "architecture-modeler-working",
+                "schema": "https://devrelay.dev/artifacts/architecture-modeler-working/v1",
+                "mediaTypes": [
+                  "application/vnd.devrelay.architecture-modeler-working+json"
+                ],
+                "cardinality": "one",
+                "required": true
+              }
+            ]
+          },
+          {
+            "id": "decision-recorder",
+            "kind": "terminal"
+          }
+        ],
+        "resume": {
+          "continuationInput": "continuation",
+          "continuationOutput": "continuation",
+          "chainFingerprintField": "chainFingerprint",
+          "activeStepField": "activeStage",
+          "completedStepsField": "completedStages",
+          "completedStepIdField": "step",
+          "completedStepPluginField": "plugin",
+          "completedStepOutputsField": "outputs",
+          "lineageInputs": [
+            "project-architecture-state",
+            "requirements-baseline",
+            "project-context",
+            "repository-snapshot",
+            "current-architecture-snapshot"
+          ],
+          "controlInputs": [
+            "routing-decision",
+            "clarification-request",
+            "clarification-responses",
+            "continuation"
+          ],
+          "sourceInvocationField": "sourceInvocation",
+          "sourceInvocationIdField": "invocationId",
+          "sourceInvocationFingerprintField": "invocationFingerprint",
+          "completedStepInvocationDigestField": "stepInvocationDigest",
+          "completedStepResultDigestField": "stepResultDigest"
+        }
+      }
+    },
+    {
+      "id": "design-change",
+      "description": "Create one ArchitectureChangeSetDraft against an exact approved ArchitectureBaseline.",
+      "inputs": [
+        {
+          "name": "project-architecture-state",
+          "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-architecture-state+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "routing-decision",
+          "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.module-route-decision+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "requirements-baseline",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-context",
+          "schema": "https://devrelay.dev/artifacts/project-context/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-context+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "architecture-baseline",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "repository-snapshot",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.repository-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-request",
+          "schema": "https://devrelay.dev/artifacts/architecture-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-responses",
+          "schema": "https://devrelay.dev/artifacts/architecture-clarification-response-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-clarification-response-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/architecture-design-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-design-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "architecture-change-set-draft",
+          "schema": "https://devrelay.dev/artifacts/architecture-change-set-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-change-set-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-requests",
+          "schema": "https://devrelay.dev/artifacts/architecture-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/architecture-design-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-design-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "inputRules": [
+        {
+          "ifPresent": "clarification-request",
+          "require": [
+            "clarification-responses",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "clarification-responses",
+          "require": [
+            "clarification-request",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "continuation",
+          "require": [
+            "clarification-request",
+            "clarification-responses"
+          ]
+        }
+      ],
+      "outcomes": [
+        "change_set_drafted",
+        "needs_clarification",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "change_set_drafted": {
+          "status": "completed",
+          "requiredInputs": [
+            "project-architecture-state",
+            "routing-decision",
+            "requirements-baseline",
+            "project-context",
+            "architecture-baseline"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "architecture-change-set-draft"
+          ],
+          "allowedOutputs": [
+            "architecture-change-set-draft"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "architecture/chain-provenance",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "architecture-change-set-draft"
+            },
+            {
+              "kind": "architecture/contract-validation",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "architecture-change-set-draft"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "allowedOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": false
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "architecture/chain-provenance",
+        "architecture/contract-validation"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "adapterChain": {
+        "earlyTerminalOutcomes": [
+          "needs_clarification",
+          "unable_to_proceed",
+          "execution_failed"
+        ],
+        "steps": [
+          {
+            "id": "designer",
+            "kind": "handoff",
+            "outputs": [
+              {
+                "name": "architecture-designer-working",
+                "schema": "https://devrelay.dev/artifacts/architecture-designer-working/v1",
+                "mediaTypes": [
+                  "application/vnd.devrelay.architecture-designer-working+json"
+                ],
+                "cardinality": "one",
+                "required": true
+              }
+            ]
+          },
+          {
+            "id": "modeler",
+            "kind": "handoff",
+            "outputs": [
+              {
+                "name": "architecture-modeler-working",
+                "schema": "https://devrelay.dev/artifacts/architecture-modeler-working/v1",
+                "mediaTypes": [
+                  "application/vnd.devrelay.architecture-modeler-working+json"
+                ],
+                "cardinality": "one",
+                "required": true
+              }
+            ]
+          },
+          {
+            "id": "decision-recorder",
+            "kind": "terminal"
+          }
+        ],
+        "resume": {
+          "continuationInput": "continuation",
+          "continuationOutput": "continuation",
+          "chainFingerprintField": "chainFingerprint",
+          "activeStepField": "activeStage",
+          "completedStepsField": "completedStages",
+          "completedStepIdField": "step",
+          "completedStepPluginField": "plugin",
+          "completedStepOutputsField": "outputs",
+          "lineageInputs": [
+            "project-architecture-state",
+            "requirements-baseline",
+            "project-context",
+            "architecture-baseline",
+            "repository-snapshot"
+          ],
+          "controlInputs": [
+            "routing-decision",
+            "clarification-request",
+            "clarification-responses",
+            "continuation"
+          ],
+          "sourceInvocationField": "sourceInvocation",
+          "sourceInvocationIdField": "invocationId",
+          "sourceInvocationFingerprintField": "invocationFingerprint",
+          "completedStepInvocationDigestField": "stepInvocationDigest",
+          "completedStepResultDigestField": "stepResultDigest"
+        }
+      }
+    }
+  ]
+}

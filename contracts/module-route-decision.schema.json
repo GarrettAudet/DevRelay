@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/artifacts/module-route-decision/v1",
+  "title": "DevRelay ModuleRouteDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "module",
+    "state",
+    "discriminator",
+    "reasonCode",
+    "selection"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ModuleRouteDecision"
+    },
+    "module": {
+      "$ref": "#/$defs/moduleRef"
+    },
+    "state": {
+      "$ref": "#/$defs/artifactIdentity"
+    },
+    "discriminator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "value"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^/",
+          "minLength": 2,
+          "maxLength": 1024
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "reasonCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$",
+      "maxLength": 256
+    },
+    "selection": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/operationSelection"
+        },
+        {
+          "$ref": "#/$defs/prerequisiteSelection"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "moduleRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$"
+        }
+      }
+    },
+    "operationSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "operation"
+      ],
+      "properties": {
+        "kind": {
+          "const": "operation"
+        },
+        "operation": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        }
+      }
+    },
+    "prerequisiteSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "module",
+        "operation",
+        "outputSchema"
+      ],
+      "properties": {
+        "kind": {
+          "const": "prerequisite"
+        },
+        "module": {
+          "$ref": "#/$defs/moduleRef"
+        },
+        "operation": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "outputSchema": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "artifactIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "schema",
+        "digest"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

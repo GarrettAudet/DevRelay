@@ -11,11 +11,8 @@
     "runId",
     "nodeId",
     "module",
-    "plugin",
     "inputs",
-    "options",
-    "config",
-    "grants"
+    "options"
   ],
   "properties": {
     "apiVersion": {
@@ -60,19 +57,13 @@
       }
     },
     "plugin": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        }
+      "$ref": "#/$defs/pluginRef"
+    },
+    "adapters": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/adapterBinding"
       }
     },
     "inputs": {
@@ -97,7 +88,78 @@
       }
     }
   },
+  "oneOf": [
+    {
+      "properties": {
+        "plugin": {},
+        "config": {},
+        "grants": {},
+        "adapters": false
+      },
+      "required": [
+        "plugin",
+        "config",
+        "grants"
+      ]
+    },
+    {
+      "properties": {
+        "adapters": {},
+        "plugin": false,
+        "config": false,
+        "grants": false
+      },
+      "required": [
+        "adapters"
+      ]
+    }
+  ],
   "$defs": {
+    "pluginRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "adapterBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step",
+        "plugin",
+        "config",
+        "grants"
+      ],
+      "properties": {
+        "step": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "plugin": {
+          "$ref": "#/$defs/pluginRef"
+        },
+        "config": {
+          "type": "object"
+        },
+        "grants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capabilityGrant"
+          }
+        }
+      }
+    },
     "artifactRef": {
       "type": "object",
       "additionalProperties": false,

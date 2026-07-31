@@ -43,13 +43,23 @@ The module does not validate, approve, merge, or baseline its own output.
 | `unable_to_proceed` | `completed`; diagnostics and no domain outputs. |
 | `execution_failed` | `failed`; diagnostics and no domain outputs. |
 
-Clarification is a completed, checkpointed invocation. The pipeline obtains answers and starts a new invocation. No plug-in session is authoritative.
+Clarification is a completed, checkpointed invocation. The pipeline obtains
+answers and starts a new invocation. No plug-in session is authoritative.
 
 ## Stateless Clarification
 
-The clarification request and continuation carry one exact goal and project-context digest plus optional snapshot/baseline digests. Responses carry the exact request digest, and continuation/responses must be supplied together. Artifact schema validation checks those structures; the host or downstream semantic validator must still compare the referenced digests to the current invocation before execution.
+The clarification request and continuation carry one exact goal and
+project-context digest plus optional snapshot/baseline digests. Responses carry
+the exact request digest, and continuation/responses must be supplied together.
+Artifact schema validation checks those structures; the host or downstream
+semantic validator must still compare the referenced digests to the current
+invocation before execution.
 
-Because the continuation preserves a complete typed working state, the contract permits the next invocation to select another compatible plug-in. The included example proves that GitHub Spec Kit output can be resolved as OpenSpec input at the contract boundary; operational cross-tool resume remains a required host-adapter conformance test.
+Because the continuation preserves a complete typed working state, the
+contract permits the next invocation to select another compatible plug-in. The
+included example proves that GitHub Spec Kit output can be resolved as OpenSpec
+input at the contract boundary; operational cross-tool resume remains a
+required host-adapter conformance test.
 
 ## Draft And Change Set
 
@@ -75,7 +85,9 @@ The OpenSpec manifest maps only its requirements capabilities:
 - exploration/clarification becomes a request set and continuation;
 - native proposal/spec files are preserved in `NativeSourceBundle`.
 
-`design.md` and `tasks.md` are reserved for future architecture and work-decomposition Modules.
+`design.md` belongs to ArchitectureDesign's bounded OpenSpec designer
+capability. `tasks.md` remains outside RequirementsGathering and belongs to
+downstream work decomposition.
 
 ## GitHub Spec Kit Plug-in
 

@@ -1,0 +1,123 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "structurizr",
+    "version": "0.1.0",
+    "description": "Bounded Structurizr modeler adapter for materializing architecture models and diagrams."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "establish-baseline",
+          "step": "modeler",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "toolVersion",
+              "workspacePath",
+              "exportFormat"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "workspacePath": {
+                "type": "string",
+                "minLength": 1
+              },
+              "exportFormat": {
+                "enum": [
+                  "plantuml",
+                  "mermaid",
+                  "dot",
+                  "json",
+                  "static"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:projectRoot/architecture"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "structurizr-cli"
+            }
+          ]
+        },
+        {
+          "id": "design-change",
+          "step": "modeler",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "toolVersion",
+              "workspacePath",
+              "exportFormat"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "workspacePath": {
+                "type": "string",
+                "minLength": 1
+              },
+              "exportFormat": {
+                "enum": [
+                  "plantuml",
+                  "mermaid",
+                  "dot",
+                  "json",
+                  "static"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:projectRoot/architecture"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "structurizr-cli"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

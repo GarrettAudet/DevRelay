@@ -1,0 +1,30 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay is a small deterministic runner for composable software-engineering Modules. RequirementsGathering 0.1.0 is the committed vertical slice; ArchitectureDesign is being defined through an interactive RequirementsGathering run before implementation.",
+  "stakeholders": [
+    "DevRelay maintainer",
+    "Workflow authors",
+    "Module and adapter authors",
+    "IDE and orchestration hosts",
+    "Architecture reviewers"
+  ],
+  "domainConstraints": [
+    "DevRelay Core owns routing, exact adapter selection, sequencing, handoff validation, and progression.",
+    "Modules own provider-neutral semantic contracts; adapters own bounded native-tool capabilities.",
+    "Artifacts and evidence cross boundaries; conversational memory and provider session state do not.",
+    "Effectful stages require immutable results and exact provenance.",
+    "The runtime is not a coding agent, model wrapper, marketplace, or distributed scheduler."
+  ],
+  "conventions": [
+    "Use exact module and adapter versions with no latest aliases.",
+    "Use immutable SHA-256-bound artifact references at runtime boundaries.",
+    "Use JSON Schema draft 2020-12 and Ajv validation.",
+    "Use lowercase kebab-case module, operation, stage, and port identifiers.",
+    "Keep primary outputs provider-neutral and preserve native files as subordinate attachments.",
+    "Prove generic behavior with fixtures, negative tests, and core special-case scans."
+  ],
+  "sourceRefs": []
+}

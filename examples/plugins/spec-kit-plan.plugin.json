@@ -1,0 +1,76 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "spec-kit-plan",
+    "version": "0.1.0",
+    "description": "Bounded Spec Kit planning adapter for ArchitectureDesign baseline establishment."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "establish-baseline",
+          "step": "designer",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "toolVersion",
+              "featureName",
+              "command",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1
+              },
+              "featureName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "command": {
+                "const": "/speckit.plan"
+              },
+              "bridge": {
+                "enum": [
+                  "agent-command",
+                  "process-json"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.read",
+              "scope": "config:projectRoot"
+            },
+            {
+              "kind": "filesystem.write",
+              "scope": "config:projectRoot/specs"
+            },
+            {
+              "kind": "process.spawn",
+              "scope": "specify"
+            },
+            {
+              "kind": "network.connect",
+              "scope": "host:implementation-engine"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

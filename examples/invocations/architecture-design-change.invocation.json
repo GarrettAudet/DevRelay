@@ -1,0 +1,153 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "architecture-design-change-001",
+  "runId": "architecture-run-002",
+  "nodeId": "architecture-design",
+  "module": {
+    "id": "architecture-design",
+    "version": "0.1.0",
+    "operation": "design-change"
+  },
+  "adapters": [
+    {
+      "step": "designer",
+      "plugin": {
+        "id": "openspec-design",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "/workspace",
+        "toolVersion": "fixture-0.1.0",
+        "changeName": "authentication-hardening",
+        "schema": "devrelay-architecture",
+        "artifact": "design.md",
+        "bridge": "agent-command"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "/workspace"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "/workspace/openspec/changes"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "openspec"
+        },
+        {
+          "kind": "network.connect",
+          "scope": "host:implementation-engine"
+        }
+      ]
+    },
+    {
+      "step": "modeler",
+      "plugin": {
+        "id": "structurizr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "/workspace",
+        "toolVersion": "fixture-0.1.0",
+        "workspacePath": "architecture/workspace.dsl",
+        "exportFormat": "mermaid"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "/workspace"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "/workspace/architecture"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "structurizr-cli"
+        }
+      ]
+    },
+    {
+      "step": "decision-recorder",
+      "plugin": {
+        "id": "madr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "/workspace",
+        "templateVersion": "4.0",
+        "decisionsPath": "/workspace/architecture/decisions"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "/workspace"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "/workspace/architecture/decisions"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "project-architecture-state": [
+      {
+        "artifactId": "project-architecture-state-baselined-001",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "uri": "file:///workspace/.devrelay/artifacts/project-architecture-state-baselined-001.json"
+      }
+    ],
+    "routing-decision": [
+      {
+        "artifactId": "module-route-decision-change-001",
+        "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+        "mediaType": "application/vnd.devrelay.module-route-decision+json",
+        "digest": "sha256:e5bba234961e71a748462aa3f878fe5ce78d12da701cb06acdc0a305538cfc56",
+        "uri": "file:///workspace/.devrelay/artifacts/module-route-decision-change-001.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-002",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+        "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-002.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-001",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "uri": "file:///workspace/.devrelay/artifacts/project-context-001.json"
+      }
+    ],
+    "architecture-baseline": [
+      {
+        "artifactId": "architecture-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      }
+    ]
+  },
+  "options": {}
+}
