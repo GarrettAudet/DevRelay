@@ -10,7 +10,16 @@ import {
   validateArchitectureDiscoveryHandoff,
   validateArchitectureDraftAgainstState,
 } from "../src/architecture-artifact-validator.mjs";
-import { canonicalJsonDigest } from "../src/content-digest.mjs";
+import {
+  canonicalJsonDigest,
+  sha256Digest,
+} from "../src/content-digest.mjs";
+import { normativeRequirementIds } from "../src/requirements-artifact-validator.mjs";
+import {
+  alignArchitectureChangeDigests,
+  alignArchitectureRequirements,
+  augmentArchitectureArtifactOverview,
+} from "./architecture-project-overview-fixtures.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -41,8 +50,40 @@ const artifacts = new Map(
   ),
 );
 
+const [repositorySnapshot, requirementsBaseline] = await Promise.all([
+  readJson("examples/artifacts/repository-snapshot-001.json"),
+  readJson("examples/artifacts/requirements-baseline-001.json"),
+]);
+
+for (const artifact of artifacts.values()) {
+  augmentArchitectureArtifactOverview(artifact);
+  alignArchitectureRequirements(artifact, requirementsBaseline);
+}
+alignArchitectureChangeDigests(
+  artifacts.get("architecture-change-set-draft-001.json"),
+  artifacts.get("architecture-baseline-001.json"),
+);
+
 const get = (name) => artifacts.get(name);
 const clone = (value) => structuredClone(value);
+
+function replaceRequirementId(value, from, to) {
+  if (Array.isArray(value)) {
+    for (let index = 0; index < value.length; index += 1) {
+      if (value[index] === from) {
+        value[index] = to;
+      } else {
+        replaceRequirementId(value[index], from, to);
+      }
+    }
+    return;
+  }
+  if (value && typeof value === "object") {
+    for (const child of Object.values(value)) {
+      replaceRequirementId(child, from, to);
+    }
+  }
+}
 
 function expectArtifactError(value, options) {
   assert.throws(
@@ -101,6 +142,25 @@ test("project architecture state is a closed deterministic union", () => {
   );
   delete incomplete.currentArchitectureSnapshot;
   expectArtifactError(incomplete);
+
+  const existingWithoutRepository = clone(
+    get("project-architecture-state-baselined-001.json"),
+  );
+  delete existingWithoutRepository.repositorySnapshot;
+  expectArtifactError(existingWithoutRepository);
+
+  const greenfieldWithRepository = clone(
+    get("project-architecture-state-baselined-001.json"),
+  );
+  greenfieldWithRepository.projectLifecycle = "greenfield";
+  expectArtifactError(greenfieldWithRepository);
+
+  const greenfieldBaseline = clone(greenfieldWithRepository);
+  delete greenfieldBaseline.repositorySnapshot;
+  assert.equal(
+    validateArchitectureArtifact(greenfieldBaseline),
+    greenfieldBaseline,
+  );
 });
 
 test("discovery binds pre-state while post-state points to the snapshot", () => {
@@ -116,6 +176,7 @@ test("discovery binds pre-state while post-state points to the snapshot", () => 
     validateArchitectureDiscoveryHandoff({
       projectArchitectureState: preState,
       projectArchitectureStateRef: snapshot.projectArchitectureState,
+      repositorySnapshot,
       currentArchitectureSnapshot: snapshot,
     }).currentArchitectureSnapshot,
     snapshot,
@@ -144,22 +205,25 @@ test("draft has exactly seven embedded-or-attached composite sections", () => {
 
   const attached = clone(draft);
   const content = attached.sections.technicalDesign.content;
+  const bytes = Buffer.from(`${JSON.stringify(content, null, 2)}\n`);
+  const ref = {
+    artifactId: "technical-design-auth-001",
+    schema: "https://devrelay.dev/artifacts/technical-design/v1",
+    mediaType: "application/vnd.devrelay.technical-design+json",
+    digest: sha256Digest(bytes),
+    uri: "file:///workspace/.devrelay/artifacts/technical-design-auth-001.json",
+  };
   attached.sections.technicalDesign = {
     mode: "attached",
     contentId: content.technicalDesignId,
-    artifact: {
-      artifactId: "technical-design-auth-001",
-      schema: "https://devrelay.dev/artifacts/technical-design/v1",
-      mediaType: "application/vnd.devrelay.technical-design+json",
-      digest: canonicalJsonDigest(content),
-      uri: "file:///workspace/.devrelay/artifacts/technical-design-auth-001.json",
-    },
+    artifact: ref,
   };
+  assert.notEqual(ref.digest, canonicalJsonDigest(content));
   assert.equal(validateArchitectureArtifact(attached), attached);
   assert.equal(
     validateArchitectureArtifact(attached, {
       resolveAttached() {
-        return content;
+        return { ref, bytes, value: content };
       },
     }),
     attached,
@@ -169,7 +233,7 @@ test("draft has exactly seven embedded-or-attached composite sections", () => {
   stale.objective = "Different bytes";
   expectArtifactError(attached, {
     resolveAttached() {
-      return stale;
+      return { ref, bytes, value: stale };
     },
   });
 });
@@ -231,6 +295,88 @@ test("traceability covers every cited architecture target", () => {
     id: "VIEW-UNKNOWN",
   });
   expectArtifactError(unknown);
+
+  const missingBackCitation = clone(
+    get("architecture-draft-001.json"),
+  );
+  missingBackCitation.sections.technicalDesign.content
+    .sourceRequirementIds = [];
+  expectArtifactError(missingBackCitation);
+});
+
+test("resolved empty sections still enforce closed architecture references", () => {
+  const constraintDangling = clone(
+    get("architecture-draft-001.json"),
+  );
+  constraintDangling.sections.interfaceIntent.content.interfaces = [];
+  constraintDangling.sections.technicalDesign.content.interfaceIntentIds = [];
+  constraintDangling.sections.decisionRecords.content.decisions[0]
+    .affectedTargets =
+      constraintDangling.sections.decisionRecords.content.decisions[0]
+        .affectedTargets.filter(({ kind }) => kind !== "interface");
+  constraintDangling.traceability[0].targets =
+    constraintDangling.traceability[0].targets.filter(
+      ({ kind }) => kind !== "interface",
+    );
+  expectArtifactError(constraintDangling);
+
+  const decisionDangling = clone(
+    get("architecture-draft-001.json"),
+  );
+  decisionDangling.sections.interfaceIntent.content.interfaces = [];
+  decisionDangling.sections.technicalDesign.content.interfaceIntentIds = [];
+  decisionDangling.sections.architectureConstraints.content.constraints[0]
+    .appliesTo =
+      decisionDangling.sections.architectureConstraints.content.constraints[0]
+        .appliesTo.filter(({ kind }) => kind !== "interface");
+  decisionDangling.traceability[0].targets =
+    decisionDangling.traceability[0].targets.filter(
+      ({ kind }) => kind !== "interface",
+    );
+  expectArtifactError(decisionDangling);
+});
+
+test("candidate traceability exactly covers the approved requirements", () => {
+  const state = get(
+    "project-architecture-state-existing-discovered-001.json",
+  );
+  const snapshot = get("current-architecture-snapshot-001.json");
+  const unapproved = clone(get("architecture-draft-001.json"));
+  replaceRequirementId(
+    unapproved,
+    normativeRequirementIds(requirementsBaseline.requirements)[0],
+    "REQ-FAKE-001",
+  );
+  unapproved.sections.diagrams.content.architectureModelDigest =
+    canonicalJsonDigest(unapproved.sections.architectureModel.content);
+  assert.throws(
+    () =>
+      validateArchitectureDraftAgainstState({
+        projectArchitectureState: state,
+        projectArchitectureStateRef: unapproved.projectArchitectureState,
+        requirementsBaseline,
+        architectureDraft: unapproved,
+        currentArchitectureSnapshot: snapshot,
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
+  const expandedBaseline = clone(requirementsBaseline);
+  const second = clone(expandedBaseline.requirements.userStories[0]);
+  second.id = "US-AUTH-SECOND";
+  expandedBaseline.requirements.userStories.push(second);
+  assert.throws(
+    () =>
+      validateArchitectureDraftAgainstState({
+        projectArchitectureState: state,
+        projectArchitectureStateRef:
+          get("architecture-draft-001.json").projectArchitectureState,
+        requirementsBaseline: expandedBaseline,
+        architectureDraft: get("architecture-draft-001.json"),
+        currentArchitectureSnapshot: snapshot,
+      }),
+    ArchitectureArtifactValidationError,
+  );
 });
 
 test("draft rejects blocking assumptions and incomplete discovery reconciliation", () => {
@@ -255,10 +401,60 @@ test("draft rejects blocking assumptions and incomplete discovery reconciliation
           "project-architecture-state-existing-discovered-001.json",
         ),
         projectArchitectureStateRef: draft.projectArchitectureState,
+        requirementsBaseline,
         architectureDraft: draft,
         currentArchitectureSnapshot: get(
           "current-architecture-snapshot-001.json",
         ),
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
+  const extraReconciliation = clone(
+    get("architecture-draft-001.json"),
+  );
+  extraReconciliation.discoveryReconciliation.push({
+    observedKind: "element",
+    observedId: "EL-NOT-OBSERVED",
+    disposition: "removed",
+    rationale: "Fabricated discovery row.",
+  });
+  assert.throws(
+    () =>
+      validateArchitectureDraftAgainstState({
+        projectArchitectureState: get(
+          "project-architecture-state-existing-discovered-001.json",
+        ),
+        projectArchitectureStateRef:
+          extraReconciliation.projectArchitectureState,
+        requirementsBaseline,
+        architectureDraft: extraReconciliation,
+        currentArchitectureSnapshot: get(
+          "current-architecture-snapshot-001.json",
+        ),
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
+  const blockedDiscovery = clone(
+    get("current-architecture-snapshot-001.json"),
+  );
+  blockedDiscovery.gaps.push({
+    id: "GAP-BLOCKING-001",
+    statement: "Architecture ownership remains unknown.",
+    blocking: true,
+  });
+  assert.throws(
+    () =>
+      validateArchitectureDraftAgainstState({
+        projectArchitectureState: get(
+          "project-architecture-state-existing-discovered-001.json",
+        ),
+        projectArchitectureStateRef:
+          get("architecture-draft-001.json").projectArchitectureState,
+        requirementsBaseline,
+        architectureDraft: get("architecture-draft-001.json"),
+        currentArchitectureSnapshot: blockedDiscovery,
       }),
     ArchitectureArtifactValidationError,
   );
@@ -289,6 +485,7 @@ test("change sets bind the exact baseline and contain typed semantic changes", (
     validateArchitectureChangeSetAgainstState({
       projectArchitectureState: state,
       projectArchitectureStateRef: changeSet.projectArchitectureState,
+      requirementsBaseline,
       architectureChangeSet: changeSet,
     }).architectureChangeSet,
     changeSet,
@@ -315,6 +512,38 @@ test("change sets bind the exact baseline and contain typed semantic changes", (
   absentTarget.changes.elementChanges[0].entityId = "EL-UNKNOWN";
   expectArtifactError(absentTarget);
 
+  const undeclaredMutation = clone(changeSet);
+  const client = undeclaredMutation.sections.architectureModel.content
+    .elements.find(({ id }) => id === "EL-CLIENT");
+  client.description = "Undeclared target architecture mutation.";
+  undeclaredMutation.sections.diagrams.content.architectureModelDigest =
+    canonicalJsonDigest(
+      undeclaredMutation.sections.architectureModel.content,
+    );
+  assert.throws(
+    () =>
+      validateArchitectureChangeSetAgainstBaseline({
+        architectureBaseline: baseline,
+        architectureBaselineRef: changeSet.baseArchitectureBaseline,
+        architectureChangeSet: undeclaredMutation,
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
+  const forgedRepository = clone(changeSet);
+  forgedRepository.repositorySnapshot.digest =
+    `sha256:${"f".repeat(64)}`;
+  assert.throws(
+    () =>
+      validateArchitectureChangeSetAgainstState({
+        projectArchitectureState: state,
+        projectArchitectureStateRef: changeSet.projectArchitectureState,
+        requirementsBaseline,
+        architectureChangeSet: forgedRepository,
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
   const staleEntityDigest = clone(changeSet);
   staleEntityDigest.changes.elementChanges[0].expectedBaseDigest =
     "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
@@ -336,10 +565,9 @@ test("change and no-change dispositions are mutually exclusive", () => {
   for (const collection of Object.values(emptyChange.changes)) {
     collection.splice(0);
   }
-  emptyChange.traceability[0].targets =
-    emptyChange.traceability[0].targets.filter(
-      ({ kind }) => kind !== "change",
-    );
+  for (const trace of emptyChange.traceability) {
+    trace.targets = trace.targets.filter(({ kind }) => kind !== "change");
+  }
   expectArtifactError(emptyChange);
 
   emptyChange.changeDisposition = "no-architecture-change";
@@ -394,6 +622,39 @@ test("native files are subordinate and cannot point back to canonical outputs", 
   assert.equal(baselineDesigner.producedBy.adapterId, "spec-kit-plan");
   assert.equal(changeDesigner.producedBy.adapterId, "openspec-design");
   assert.match(changeDesigner.artifact.uri, /\/design\.md$/);
+
+  const invalidMapping = clone(get("architecture-draft-001.json"));
+  const mapping = invalidMapping.sections.nativeArtifacts.content
+    .entries[0].canonicalMappings[0];
+  mapping.entityIds = [];
+  mapping.jsonPointers = [
+    "/sections/technicalDesign/definitely-not-real",
+  ];
+  expectArtifactError(invalidMapping);
+
+  const generatedWithoutMapping = clone(
+    get("architecture-draft-001.json"),
+  );
+  generatedWithoutMapping.sections.nativeArtifacts.content.entries[0]
+    .canonicalMappings = [];
+  expectArtifactError(generatedWithoutMapping);
+
+  const contradictoryUnmapped = clone(
+    get("architecture-draft-001.json"),
+  );
+  contradictoryUnmapped.sections.nativeArtifacts.content.entries[0]
+    .disposition = "unmapped";
+  expectArtifactError(contradictoryUnmapped);
+
+  const unexplainedUnmapped = clone(
+    get("architecture-draft-001.json"),
+  );
+  const unmappedEntry =
+    unexplainedUnmapped.sections.nativeArtifacts.content.entries[0];
+  unmappedEntry.disposition = "unmapped";
+  unmappedEntry.canonicalMappings = [];
+  unmappedEntry.warnings = [];
+  expectArtifactError(unexplainedUnmapped);
 
   const circular = clone(get("architecture-draft-001.json"));
   circular.sections.nativeArtifacts.content.canonicalOutputs = [

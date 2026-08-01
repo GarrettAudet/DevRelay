@@ -21,7 +21,9 @@
             "additionalProperties": false,
             "required": [
               "projectRoot",
+              "toolName",
               "toolVersion",
+              "nativeOperation",
               "featureName",
               "bridge"
             ],
@@ -30,19 +32,22 @@
                 "type": "string",
                 "minLength": 1
               },
+              "toolName": {
+                "const": "GitHub Spec Kit"
+              },
               "toolVersion": {
                 "type": "string",
                 "minLength": 1
+              },
+              "nativeOperation": {
+                "const": "requirements.gather"
               },
               "featureName": {
                 "type": "string",
                 "minLength": 1
               },
               "bridge": {
-                "enum": [
-                  "agent-command",
-                  "process-json"
-                ]
+                "const": "agent-command"
               }
             }
           },
@@ -54,10 +59,6 @@
             {
               "kind": "filesystem.write",
               "scope": "config:projectRoot/specs"
-            },
-            {
-              "kind": "process.spawn",
-              "scope": "specify"
             },
             {
               "kind": "network.connect",

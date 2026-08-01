@@ -4,7 +4,7 @@
   "metadata": {
     "id": "requirements-gathering",
     "version": "0.1.0",
-    "description": "Turn a goal and explicit project context into a canonical requirements candidate or a stateless clarification request."
+    "description": "Turn a goal and explicit project context into a canonical requirements candidate or a checkpoint-bound clarification request."
   },
   "operations": [
     {
@@ -48,6 +48,24 @@
           "required": false
         },
         {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-request",
+          "schema": "https://devrelay.dev/artifacts/clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
           "name": "continuation",
           "schema": "https://devrelay.dev/artifacts/requirements-gathering-continuation/v1",
           "mediaTypes": [
@@ -77,10 +95,28 @@
           "required": false
         },
         {
+          "name": "project-overview-draft",
+          "schema": "https://devrelay.dev/artifacts/project-overview-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
           "name": "requirements-change-set",
           "schema": "https://devrelay.dev/artifacts/requirements-change-set/v1",
           "mediaTypes": [
             "application/vnd.devrelay.requirements-change-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "project-overview-change-set-draft",
+          "schema": "https://devrelay.dev/artifacts/project-overview-change-set-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-change-set-draft+json"
           ],
           "cardinality": "one",
           "required": false
@@ -126,10 +162,12 @@
           "requiredInputs": [],
           "requiredOutputs": [
             "requirements-draft",
+            "project-overview-draft",
             "native-source-bundle"
           ],
           "allowedOutputs": [
             "requirements-draft",
+            "project-overview-draft",
             "native-source-bundle"
           ],
           "requiredEvidence": [
@@ -143,20 +181,24 @@
           ],
           "diagnosticsRequired": false,
           "forbiddenInputs": [
-            "requirements-baseline"
+            "requirements-baseline",
+            "project-overview-baseline"
           ]
         },
         "change_set_drafted": {
           "status": "completed",
           "requiredInputs": [
-            "requirements-baseline"
+            "requirements-baseline",
+            "project-overview-baseline"
           ],
           "requiredOutputs": [
             "requirements-change-set",
+            "project-overview-change-set-draft",
             "native-source-bundle"
           ],
           "allowedOutputs": [
             "requirements-change-set",
+            "project-overview-change-set-draft",
             "native-source-bundle"
           ],
           "requiredEvidence": [
@@ -215,14 +257,35 @@
       },
       "inputRules": [
         {
+          "ifPresent": "project-overview-baseline",
+          "require": [
+            "requirements-baseline"
+          ]
+        },
+        {
+          "ifPresent": "requirements-baseline",
+          "require": [
+            "project-overview-baseline"
+          ]
+        },
+        {
           "ifPresent": "continuation",
           "require": [
+            "clarification-request",
+            "clarification-responses"
+          ]
+        },
+        {
+          "ifPresent": "clarification-request",
+          "require": [
+            "continuation",
             "clarification-responses"
           ]
         },
         {
           "ifPresent": "clarification-responses",
           "require": [
+            "clarification-request",
             "continuation"
           ]
         }

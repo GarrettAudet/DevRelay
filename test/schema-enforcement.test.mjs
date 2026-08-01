@@ -80,6 +80,14 @@ test("portable options and selected plug-in config schemas are executed", () => 
   const incompleteConfig = clone(openSpecInvocation);
   incompleteConfig.config = {};
   expectContractError(() => registry.resolve(incompleteConfig), "DR1608");
+
+  const fabricatedTool = clone(openSpecInvocation);
+  fabricatedTool.config.toolName = "Fabricated Tool";
+  expectContractError(() => registry.resolve(fabricatedTool), "DR1608");
+
+  const fabricatedOperation = clone(openSpecInvocation);
+  fabricatedOperation.config.nativeOperation = "architecture.design";
+  expectContractError(() => registry.resolve(fabricatedOperation), "DR1608");
 });
 
 test("Module ports accept only JSON-compatible media types", () => {
@@ -107,7 +115,7 @@ test("Module ports accept only JSON-compatible media types", () => {
   );
 });
 
-test("continuation and clarification responses form an explicit pair", () => {
+test("clarification request, continuation, and responses form an explicit triad", () => {
   const noResponses = clone(clarificationResumeInvocation);
   delete noResponses.inputs["clarification-responses"];
   expectContractError(() => registry.resolve(noResponses), "DR1406");
@@ -115,6 +123,10 @@ test("continuation and clarification responses form an explicit pair", () => {
   const noContinuation = clone(clarificationResumeInvocation);
   delete noContinuation.inputs.continuation;
   expectContractError(() => registry.resolve(noContinuation), "DR1406");
+
+  const noRequest = clone(clarificationResumeInvocation);
+  delete noRequest.inputs["clarification-request"];
+  expectContractError(() => registry.resolve(noRequest), "DR1406");
 });
 
 test("a baseline-bound invocation cannot claim a full draft outcome", () => {

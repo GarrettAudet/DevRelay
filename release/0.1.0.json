@@ -1,0 +1,1188 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ReleaseCatalog",
+  "metadata": {
+    "name": "devrelay",
+    "version": "0.1.0",
+    "releaseType": "private-source"
+  },
+  "scope": {
+    "root": ".",
+    "inclusion": "all-regular-files-recursive",
+    "excludedDirectories": [
+      ".devrelay",
+      ".git",
+      "coverage",
+      "dist",
+      "node_modules"
+    ],
+    "selfExclusion": {
+      "path": "release/0.1.0.json",
+      "reason": "A release catalog cannot contain its own stable raw-byte digest.",
+      "npmPackaged": true
+    }
+  },
+  "digestAlgorithm": "sha256-raw-bytes",
+  "modules": [
+    {
+      "id": "requirements-gathering",
+      "version": "0.1.0",
+      "definition": "examples/modules/requirements-gathering.module.json",
+      "operations": [
+        {
+          "id": "gather",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "github-spec-kit",
+        "openspec"
+      ]
+    },
+    {
+      "id": "architecture-design",
+      "version": "0.1.0",
+      "definition": "examples/modules/architecture-design.module.json",
+      "operations": [
+        {
+          "id": "design-change",
+          "steps": [
+            "designer",
+            "modeler",
+            "decision-recorder"
+          ]
+        },
+        {
+          "id": "establish-baseline",
+          "steps": [
+            "designer",
+            "modeler",
+            "decision-recorder"
+          ]
+        }
+      ],
+      "plugins": [
+        "madr",
+        "openspec-design",
+        "spec-kit-plan",
+        "structurizr"
+      ]
+    }
+  ],
+  "plugins": [
+    {
+      "id": "github-spec-kit",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/github-spec-kit.plugin.json",
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "gather",
+          "step": null
+        }
+      ]
+    },
+    {
+      "id": "madr",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/madr.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "design-change",
+          "step": "decision-recorder"
+        },
+        {
+          "operation": "establish-baseline",
+          "step": "decision-recorder"
+        }
+      ]
+    },
+    {
+      "id": "openspec",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openspec.plugin.json",
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "gather",
+          "step": null
+        }
+      ]
+    },
+    {
+      "id": "openspec-design",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openspec-design.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "design-change",
+          "step": "designer"
+        }
+      ]
+    },
+    {
+      "id": "spec-kit-plan",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/spec-kit-plan.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "establish-baseline",
+          "step": "designer"
+        }
+      ]
+    },
+    {
+      "id": "structurizr",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/structurizr.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "design-change",
+          "step": "modeler"
+        },
+        {
+          "operation": "establish-baseline",
+          "step": "modeler"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": ".gitattributes",
+      "role": "repository-policy",
+      "packaged": false,
+      "digest": "sha256:d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "role": "continuous-integration",
+      "packaged": false,
+      "digest": "sha256:749ba3eff7d1c0a91fb1052bf83b32cfb1f14ce183e2af53f2c090b7e7d3aaaf"
+    },
+    {
+      "path": ".gitignore",
+      "role": "repository-policy",
+      "packaged": false,
+      "digest": "sha256:4f5981d7ea3c0d82d9390f25cbe06df6eb2842c78d45013404b0a3adcee7322d"
+    },
+    {
+      "path": "AGENTS.md",
+      "role": "agent-guidance",
+      "packaged": false,
+      "digest": "sha256:451038b63b80ac186a42e0c554a67832e143e8eaa9dd3d154d91eeaa35187164"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:7449ab25553fad3c5ce35169e35cd973aeb8782a416d616135dbeef9f216cce4"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:86670e5807d8a1ccc147a02593c1df0d9aafd707c020600c9ab558ec269b04f5"
+    },
+    {
+      "path": "LICENSE",
+      "role": "license",
+      "packaged": true,
+      "digest": "sha256:a5c61659dc0acc8fc81dadc14fb9ca54db1a21e73a8dc62deebe46a9b7cccc31"
+    },
+    {
+      "path": "README.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:2f963cb3f59910fa34110dd102482a5986b5774deb339e70e95f31cf9e957a11"
+    },
+    {
+      "path": "RELEASE.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:fc609a748091bdcaf48f4380da98f4d31cc40a0693d7b387302e5df83d16c0a8"
+    },
+    {
+      "path": "SECURITY.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:f636c2755c4ef97f46a302bb25d34ad0ec8c3d6987ac6954f48179e54bd6ba4c"
+    },
+    {
+      "path": "contracts/architecture-design-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:79bad1a6642176909569cb6d179a00863723eae82062404291d953ae88e5544c"
+    },
+    {
+      "path": "contracts/module-definition.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:6b77dedfbd7838b6e3446ad6e5ecf5fed91d1cb951afa73568ef8592f0fb7ae4"
+    },
+    {
+      "path": "contracts/module-invocation.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:7d22b28eb192c253cbf432304196a824e3c54dcadbf210642c2c9f75edfd7b3b"
+    },
+    {
+      "path": "contracts/module-plugin.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:629951b4588bddb5765fee41ec41b6de788d11586406766068d8954a9cb0b22a"
+    },
+    {
+      "path": "contracts/module-result.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:fe00aec2e7952d0b6fb53b0a125d8540cfee8cce9e44a88ca7cd1d19102a437c"
+    },
+    {
+      "path": "contracts/module-route-decision.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:98c3a137fcfe8baccd95863ec0bce01e230daed194345839a985da9d2c1e16fa"
+    },
+    {
+      "path": "contracts/module-step-invocation.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:4d041b1d4745ba45ed48daaafc5d8e18da755d092a4937670d05ba7a730bc6f5"
+    },
+    {
+      "path": "contracts/module-step-result.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:2beb01b0f6701c95ac3887bf2f523cd00a1f13f7be473d1d361a07c37fa6b071"
+    },
+    {
+      "path": "contracts/project-overview-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:ff94a62f53d25077d0e7f9c8f7a8608228f88c72583c610499867d28806edb9b"
+    },
+    {
+      "path": "contracts/requirements-gathering-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:88e9c2b702af56d9176b6bef03b5242922797d5098dd6382e58cbc2453101ad0"
+    },
+    {
+      "path": "contracts/shared-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:0cb65f222541b24cb058e19fbf68d5a5c9710642f33917227c14338f18632e51"
+    },
+    {
+      "path": "docs/architecture-design.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:35233ddb4d30275524efd3d45c65cf0a2ce30a4ae9ae5b7866de5d84460b13b8"
+    },
+    {
+      "path": "docs/module-contract.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:97467bdb5ff32122005516dfdbded10f073eefcfc231d21ef102e2acba695a92"
+    },
+    {
+      "path": "docs/requirements-gathering.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:0079ceec9c02183710817baaa2cda5c5aa1161a8048de7df5e2966be001a638c"
+    },
+    {
+      "path": "dogfood/architecture-design/ProjectOverview.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fa6e6f96669bed0e6567b979cbf0c4c51d23ab51c1aca662bce07472b3756bad"
+    },
+    {
+      "path": "dogfood/architecture-design/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:605991530ea75e825557328cf4f0ba0832f6a71fa7c817307c3e375f7a82d03f"
+    },
+    {
+      "path": "dogfood/architecture-design/clarification-transcript.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+    },
+    {
+      "path": "dogfood/architecture-design/goal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+    },
+    {
+      "path": "dogfood/architecture-design/native-source-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:50b6066bf105e3f62565fc0890e8d3d66bc937f9bc51498807436101baf1fda9"
+    },
+    {
+      "path": "dogfood/architecture-design/project-context.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+    },
+    {
+      "path": "dogfood/architecture-design/project-overview-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:12d7f6d244184753a3915f0cf99e11e7a51a4387624ab2832af4d0e4bd107b1b"
+    },
+    {
+      "path": "dogfood/architecture-design/project-overview-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bdfe3a44f8794312db365042560f49bcd9709f8c7c9fb962b03865c33404b01a"
+    },
+    {
+      "path": "dogfood/architecture-design/repository-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:62bb8760efd5a7b9877dfb9f828b2a9cbad2f6625d51d1275ea588b530a306bc"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e8ab02df1b197b5b439b752e6688af66166cc3d8b87949bf8d97c7e67734943f"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-gate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:37e25cf6d8976710d4847110d9958a731db48cee3f03f3e898e227fc33ff6b2f"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-gathering.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9b602830932bdf54fc1ba88ec8720f7aefc75e03b5b82c90d1aea0dc1b0a196a"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-gathering.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2cfecc1fd81b9ce00988bebebee52954aaec9a2876155f4a52e1d536f262758b"
+    },
+    {
+      "path": "examples/README.md",
+      "role": "example-documentation",
+      "packaged": true,
+      "digest": "sha256:1b78bd1a94cfb4aeaf973938b8b8a4da8e712ecb8c7daa2020d26df0be3365d1"
+    },
+    {
+      "path": "examples/artifacts/ProjectOverview.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:beffbef3c02b9e6b3f109a1d38962bfead8f58c1446b9433a1db9c2be5e9da46"
+    },
+    {
+      "path": "examples/artifacts/architecture-baseline-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489"
+    },
+    {
+      "path": "examples/artifacts/architecture-change-set-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d134be76412798d39d0196397a7b33fabd85336951fc36db421a8432d021a886"
+    },
+    {
+      "path": "examples/artifacts/architecture-clarification-request-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:385a8f53d1029d50c99bb41a1ef1a3991624d095679ad5a6bb5d41a75fb404f0"
+    },
+    {
+      "path": "examples/artifacts/architecture-clarification-response-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:0c7acd9241545be2d13cf6c8eca0a1c5a02b0e9d0c7539273a3af0ced991ba7a"
+    },
+    {
+      "path": "examples/artifacts/architecture-continuation-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:39a9beeeebaf0a8a0a66f6a3c2b7766ee1a5aa9054f49ff27af16f5593b8536b"
+    },
+    {
+      "path": "examples/artifacts/architecture-designer-working-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:961377f17296ea98863ae7b53792fdfa09a3a39b315979fb83e7046000ccdb25"
+    },
+    {
+      "path": "examples/artifacts/architecture-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:ebc6fa68048dba6d0b041cb9591fcab16af8903dfd3bdc27cd11916cb4dab254"
+    },
+    {
+      "path": "examples/artifacts/architecture-gate-review-001.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:c2192e28802e23aebcbfa9aff8f0316122fe23018bcf9c2f76c7446ae874fa87"
+    },
+    {
+      "path": "examples/artifacts/architecture-modeler-working-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:1d6262b1bd4dff5a8a7df67c4f43bceee5c0692ecace3425241b98cc123b7734"
+    },
+    {
+      "path": "examples/artifacts/clarification-request-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:4ebc0b6dc7cf8cb5b09de33ad5bc7eec3f000431fadb5d65356b62e3748ce0aa"
+    },
+    {
+      "path": "examples/artifacts/clarification-response-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:0fd8d8d836951c92d058bc3b39657f4365821d4e9bfc7471067fa132415e6c3a"
+    },
+    {
+      "path": "examples/artifacts/current-architecture-snapshot-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:229bdb3e99feafb253c1ce09b3236062135e6105c26104075e63c7f553586cc2"
+    },
+    {
+      "path": "examples/artifacts/goal-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+    },
+    {
+      "path": "examples/artifacts/goal-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+    },
+    {
+      "path": "examples/artifacts/module-route-decision-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:768cdc1741550dcb608c187b05cd732b30d91d19234ea40bd5afa18a24203a44"
+    },
+    {
+      "path": "examples/artifacts/module-route-decision-establish-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:8479b21c3dc20819c7874618a097eece786eab2e953de484b8705dfefc0e9238"
+    },
+    {
+      "path": "examples/artifacts/native-source-bundle-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:55c9cad3b27808ae365c5819e46ca0ddf9631528e1bf86469b30866e4d58d2fd"
+    },
+    {
+      "path": "examples/artifacts/native-source-bundle-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b26ef3532f831805fc4aab2ca24816b3fade8f4880b05c91b73d76f5171d230a"
+    },
+    {
+      "path": "examples/artifacts/native-source-bundle-spec-kit-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b1d4e5222f377394f23171a93ea6d61e642afe6f0659e9c157217be7b77ec18d"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-baselined-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:1247efe37f0db9c2e93240d87767ba2990f6747f59df870db8920ef95bba9ca4"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-existing-discovered-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:c3cebad52dbc009c67261b1dd6903a26aad5fb74a51db6d5b1fe0337aa78dd1c"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-existing-undiscovered-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:54e1df0d2ba5adfc2e110a7c723ca5d57a390df6c033773f7465d42bc1de3a10"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-greenfield-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:e697aba27f15c86f0e37a9982b17a3d57ff6e7bf0c7638997fc9096234befa6f"
+    },
+    {
+      "path": "examples/artifacts/project-context-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+    },
+    {
+      "path": "examples/artifacts/project-overview-baseline-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc"
+    },
+    {
+      "path": "examples/artifacts/project-overview-baseline-002.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:0830fa74fafed5f0044ab1cdc795d7983ee69841597b96e3656b404cefbd8aa6"
+    },
+    {
+      "path": "examples/artifacts/project-overview-change-set-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:50f8473aa7823f1b1c543d3faae2c9a391082e3578f3888eb6db91fe9559949b"
+    },
+    {
+      "path": "examples/artifacts/project-overview-change/ProjectOverview.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:be48954eab587371a42530589a63a88b75723538f66dbdba3ea5af0de9250f64"
+    },
+    {
+      "path": "examples/artifacts/project-overview-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d4698df12af404a722a25d58a58c3297b1c69d098c37ffd3e62b79304fb2e380"
+    },
+    {
+      "path": "examples/artifacts/repository-snapshot-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613"
+    },
+    {
+      "path": "examples/artifacts/requirements-approval-001.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:772840902cc6d8a7b1a046d9e07fea2761810016bfd68630391cfefb09b10626"
+    },
+    {
+      "path": "examples/artifacts/requirements-baseline-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab"
+    },
+    {
+      "path": "examples/artifacts/requirements-baseline-002.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:1746eb1304e73a835449af70f9bdaf9371f19732cea4beca213b1cc084543c64"
+    },
+    {
+      "path": "examples/artifacts/requirements-change-approval-001.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:e40ec09962bbbfaa6ec849869431aa93af414fc1561ddc1c92d1f5c5a199943d"
+    },
+    {
+      "path": "examples/artifacts/requirements-change-set-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:7524523eefe0e090d3c9bd9001a49dcc3a3c74c6052da7fcfba9c4e8e2729a52"
+    },
+    {
+      "path": "examples/artifacts/requirements-continuation-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b0edc88bed88369a0075ef7410ec3533b8051b5ff9401036990f9c30c7614b59"
+    },
+    {
+      "path": "examples/artifacts/requirements-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:ac4cf345c0ee0015573084163348f05115f9d174127fb508c653774d82870104"
+    },
+    {
+      "path": "examples/invocations/architecture-design-change.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:83159916ad20a83225489c2453edfb07a75f3072e855ae098c70d6fd372fd8ee"
+    },
+    {
+      "path": "examples/invocations/architecture-establish-baseline.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:08525dbc3f2d264f8e5fd6ede1118f2a7723290e32e0e412bf44708cce487b29"
+    },
+    {
+      "path": "examples/invocations/architecture-establish-resume.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:3fc0739c42987827e85a8d356258fe685923a38c04d2c8c1c924748648737c9b"
+    },
+    {
+      "path": "examples/invocations/requirements-clarification-resume-openspec.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:236124f5adbc5794a9b22f51d339d24d455bf74ff59a1ffd2cc98ce02636830f"
+    },
+    {
+      "path": "examples/invocations/requirements-openspec-change-set.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:e15480318aacf7f3c1f1ce337eb90d07818439cbcbfe9a4a89685f2e6f70a639"
+    },
+    {
+      "path": "examples/invocations/requirements-openspec.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:801c66544e90927e705038d65de4c210891c2724074a59b22ca27fbed296eec3"
+    },
+    {
+      "path": "examples/invocations/requirements-spec-kit-clarification.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:39da229e4037d42d035fdea432ca6953c21805b90d69153bff0cff3bb12598ef"
+    },
+    {
+      "path": "examples/invocations/requirements-spec-kit.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:bef8353b42b7e1a3e0d735a78b187da57f0292c8f696b6149efb8bdf85a7477e"
+    },
+    {
+      "path": "examples/modules/architecture-design.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:5cf422ead582ef2a6921d6e24b118837e0ebc7d429271890c6b5c1302b4e3648"
+    },
+    {
+      "path": "examples/modules/command.module.json",
+      "role": "module-definition",
+      "packaged": false,
+      "digest": "sha256:5af829b4c1faabf3a51ddc25333275b996d4c444e8b839d27f1a26850c4dfb77"
+    },
+    {
+      "path": "examples/modules/requirements-gathering.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:489b8689e437ad3740f8c67da428ba40be5b78e4f7befb4d21f795bcdb34b6d6"
+    },
+    {
+      "path": "examples/native/architecture/0001-centralize-authentication.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:617e5c32df97318e9d046ce8bd2120f7b0ee41b1509f37cfd3b3a3fe7adb117b"
+    },
+    {
+      "path": "examples/native/architecture/discovery-report.json",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:9970fd8fd0047c28dd8456c39fd32136a6ab8e136875d054841fd8c2ac812804"
+    },
+    {
+      "path": "examples/native/architecture/openspec-design.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:5f9f49eb11e3b0b7aca2d658a6ebfbdecda72a95cce40dbfe77e43ca0f24c319"
+    },
+    {
+      "path": "examples/native/architecture/spec-kit-plan.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:3ff005c8839311a2526c5f0f5be6cf7e15fb748797502a2ca6d6a6d7bcd6852a"
+    },
+    {
+      "path": "examples/native/architecture/workspace.dsl",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:2e318b6c3209de2dc6f3b32cbc7e5a5f9310f737db331760fe91a670fee93f54"
+    },
+    {
+      "path": "examples/native/github-spec-kit/spec.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:46c4f7390ea78565d8af15bbbbe33fce32c8ec0f031254a203f66602cc342453"
+    },
+    {
+      "path": "examples/native/openspec/change-proposal.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:5ac62ad439f03cfa31534c2f25f11caaf4606581d28c63709dbc1282411b41d6"
+    },
+    {
+      "path": "examples/native/openspec/proposal.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:04985e0e68cfda7dca96af2fc48e4c8bff41a9daf112d8821ab424077241d0b6"
+    },
+    {
+      "path": "examples/plugins/github-spec-kit.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:43d34d0d875c515080220a7539a9aada2e66fced074d0872af109eaada37f09f"
+    },
+    {
+      "path": "examples/plugins/local-command.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": false,
+      "digest": "sha256:d44c1d250feab0d656d10c46585c63fe5cbeb2d132a53e98c024e4486256c2fb"
+    },
+    {
+      "path": "examples/plugins/madr.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:9b6a6a5ea573e11429ecdbe8a9c30baed8bda5edef15410e7ffbd0dc8f7420ad"
+    },
+    {
+      "path": "examples/plugins/openspec-design.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:b872310e8698a8ea9770989a2232e9417263c9da4b198e0feafcb3288400f349"
+    },
+    {
+      "path": "examples/plugins/openspec.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:ef35cbc0248e0b6b2af972df518cf46f5b9a01157cd45419c6ac18f4a27be12a"
+    },
+    {
+      "path": "examples/plugins/spec-kit-plan.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:e89f1280bd2423906d2c5ba529e845409aa3ae4ccfe14ff13e4c269ee0f54e4e"
+    },
+    {
+      "path": "examples/plugins/structurizr.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:feaafc337fe004f7c107d72b343b2228dc6bd58d67a122605243c6bf1dcdfafd"
+    },
+    {
+      "path": "examples/results/architecture-design-change.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:e5645de6068c2a43ab00c6e94ed2fb38c9eeb75973d5a562f18c63e1db220d59"
+    },
+    {
+      "path": "examples/results/architecture-establish-baseline.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:71bd38e5e7c769ac8830f9bd38a0c72d5041d1042added44a1463c3164795083"
+    },
+    {
+      "path": "examples/results/architecture-establish-clarification.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:cbdad478d0f323d2b5707701947486d0045ece6d77db265a4a9df6a1cfd2d7ab"
+    },
+    {
+      "path": "examples/results/requirements-openspec-change-set.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:ca836ac057331fe1d2cb61774ca240afe01b96847410abb772722f49591c978f"
+    },
+    {
+      "path": "examples/results/requirements-openspec.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:6433d0259c639f71d80beb9625868196951371c23504afd25dff38eb5f754ebf"
+    },
+    {
+      "path": "examples/results/requirements-spec-kit-clarification.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:21489fbb44b1fb814f18f87db4d444076c4508e73ff1811a7106e39b26a45d72"
+    },
+    {
+      "path": "examples/results/requirements-spec-kit.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:dfb9083880f31d5c993bd0300830d82388082766630c496ba5d2d04766da466e"
+    },
+    {
+      "path": "openspec/schemas/devrelay-architecture/schema.yaml",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:182c9f8f8f8b923f527e8eb455d285f9249b8ededc49e0ae39dd32a20dd84079"
+    },
+    {
+      "path": "openspec/schemas/devrelay-architecture/templates/design.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:a04fdda75c79930d487fc90db3456176acee5b2ef01daff483d49e0f62ebd898"
+    },
+    {
+      "path": "openspec/schemas/devrelay-requirements/schema.yaml",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:8ec94076520a9b468cc38498e53e9d904da07f93006e3537db3febe94e68ddc4"
+    },
+    {
+      "path": "openspec/schemas/devrelay-requirements/templates/proposal.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:0d60037c928cde4c45ce8eb35c1e7630c599bdde2c1524726508e26d265507ec"
+    },
+    {
+      "path": "openspec/schemas/devrelay-requirements/templates/spec.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:e92a6513e6fdac01502af8061b97ae02e6d754a233244dc74ee10c8701c4561d"
+    },
+    {
+      "path": "package-lock.json",
+      "role": "dependency-lock",
+      "packaged": false,
+      "digest": "sha256:2c885e389a302899a7dc68e92a0d6c5475871b5b424972647f6ae23be13814ef"
+    },
+    {
+      "path": "package.json",
+      "role": "package-metadata",
+      "packaged": true,
+      "digest": "sha256:c3b6bf6e6148db3b2e5baadd9db8644c921ae88e08f2a3c344c18ef5b16a2d87"
+    },
+    {
+      "path": "scripts/check-release-manifest.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:c8fefbdc714acabf236ede5c091ca0f9dfc2e9f9cad3b5a8b5c7f55b53393287"
+    },
+    {
+      "path": "scripts/generate-release-manifest.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:3a74efe7cf512b8a2a4c6493b2de6e0f7380b68f3d2a830acb796824b07bc35c"
+    },
+    {
+      "path": "scripts/release-catalog.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:d68d18c48a2f64cc80c8d930e1e3853e6db0a581795d16f32d98f1826d7419ab"
+    },
+    {
+      "path": "scripts/release-check.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:6ba9ee84b5d10beeb958998b7850562cd7a46bcee66ed585604b04e7bc8c0f25"
+    },
+    {
+      "path": "scripts/release-tools.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:cf3657cf52b764dea0ab55be0ebaf6c1cbc95003781cbed4045dc14529b96c04"
+    },
+    {
+      "path": "scripts/verify.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:c1ab60aa320bacf1deb63fc41db8560f6f16a1cf27ffcf5caefcaddeb599ec78"
+    },
+    {
+      "path": "src/architecture-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:cb6027c9088d66eb293efd0aa0b7a2a0eb02cbc3de1d39e8c04b3362583744c6"
+    },
+    {
+      "path": "src/architecture-handoff-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:782d25f63acb67d7c13f2054feecc7836aa42f0122caf29db8176def3a9dfa68"
+    },
+    {
+      "path": "src/architecture-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:35cecbcfdd40f097acec027dcdf67c5bba4ebe957837893e0f908fe8c128275f"
+    },
+    {
+      "path": "src/artifact-runtime.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:2bb92dafe6303739fc70f0e126d12e4f00e7df091f84e4695d313928de53e2b3"
+    },
+    {
+      "path": "src/content-digest.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:1f159a01eaf4ad9bace5d60e6965d1e06f9d252a792df6d537f6e66d02149201"
+    },
+    {
+      "path": "src/index.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:1a4477867402b717767616bb0ad0e33630abf6a08e2faa2a9c4a41d503fc67dd"
+    },
+    {
+      "path": "src/module-registry.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:a133682245a70f0ea7f48939b92947c91b18d1af76d14bf71adfd553037a3d8a"
+    },
+    {
+      "path": "src/operation-router.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:055118a253ddc6e4541120823d9bb11ada8a1b057e7b5c15f3ca52165e78cba7"
+    },
+    {
+      "path": "src/project-overview-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:abc4fd50e9ff7aef99a6a18a9d8564dcc2c90ce9c12468bb8cdfba2321ed22c5"
+    },
+    {
+      "path": "src/project-overview-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:f017f0f107dc7270a8f7ad3bab731cf2735597242f9fcc5ea657a75c8ee2c74f"
+    },
+    {
+      "path": "src/project-overview.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:9f90214d84db7eb5d8d9ac03e952ddfa271836bb67752e5283543af08430b623"
+    },
+    {
+      "path": "src/requirements-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:cbea8865f1da6cc80ae3600e1f3a20f74f4fa8f49751e703b5c45e9ee2d4b141"
+    },
+    {
+      "path": "src/requirements-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:379ece341cbc367340abd54076d08fb60c115e80269716b16267e470eb309e45"
+    },
+    {
+      "path": "src/requirements-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:f7dca56f797459b834cc38ac451532bb0b42410416302c76b5b47523f5419234"
+    },
+    {
+      "path": "src/schema-validation.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4ade921b312a6d3ecbd02d965aea409f238e2f1125936e114944e3f9cedb0740"
+    },
+    {
+      "path": "src/shared-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:b100b1794522386b9052a91c639e34afae5495cb9b3f2cf0659cd3f9d5ba2b45"
+    },
+    {
+      "path": "test/adapter-chain.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:0f98d03c52f0f16e0045920c3723dd39618ef35478492f57ce47096052bf273c"
+    },
+    {
+      "path": "test/architecture-artifact-hardening.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:d36d72ba7431f9ddfd810cfad160ad0419915324bbcab8ec2c3b350871a4f612"
+    },
+    {
+      "path": "test/architecture-change-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:68036dec36009c0a9cc01b3ee0da8f5bec426a9b182619b6340576e7670bb88f"
+    },
+    {
+      "path": "test/architecture-design-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bf5ca0abcee60b8d73e20f7da95d45a86668fc1d0c32abc53bba1fcdf6a5b3d9"
+    },
+    {
+      "path": "test/architecture-design.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9a0dc8f7715cc5cde027a3a66661b6f25a33b7a011554609d89405998670e1e9"
+    },
+    {
+      "path": "test/architecture-handoff.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:89fd5573520f45abd42dee735552a36d544f1e861a3ce862f594c1aa4870115e"
+    },
+    {
+      "path": "test/architecture-module-surface.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:4a3d35c97a13e640b11352f8198a236531e6abb1cb29a7aa65e9a72d11ba4f9c"
+    },
+    {
+      "path": "test/architecture-project-overview-fixtures.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bd4db31b65036b777ded1b8c4d8ca861a8de2d980dea9083433837ebc4fb8dc0"
+    },
+    {
+      "path": "test/architecture-runtime-lineage-regression.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9408c61f5dad284241bbdbd1619c1440cee88ad0f6a6028de532cc46567df099"
+    },
+    {
+      "path": "test/architecture-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:0404649299084fc7e3b5b9f0131b994de2b3ced2a96e383f6d019ac143cd0f68"
+    },
+    {
+      "path": "test/artifact-runtime-boundary.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:7391bf90586c79bc655d5dd3be96f4bea8a04dca3bb48dd6ca98080e97c1bd1d"
+    },
+    {
+      "path": "test/clarification-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9715db1e29b48bb63dc53646d1327cf0419fafee83efada0c0dce73dc144da22"
+    },
+    {
+      "path": "test/content-digest.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:217f85bc143858359eb5e21c1ee59a529c4e3b053fcea65f6a1da099eb86d985"
+    },
+    {
+      "path": "test/contract-hardening.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1b2a55c74738b312a870b070ea4a902bcdcc41aceb229b29c17344147ffbfc0f"
+    },
+    {
+      "path": "test/module-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:99e631a51067bdf78e0157856ff13d41f64b7cd8be2788157d2c7acc2c46c5a8"
+    },
+    {
+      "path": "test/native-architecture-fixtures.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:f2686f06d540bef73b58a6edc45ada3190ffb567314e55d4d4d1bce87dd47537"
+    },
+    {
+      "path": "test/openspec-bounded-schemas.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:949a3f6e31be5b99e5a0cb60fb5d0844ac841c30c36bdf791f268aa33daac9b7"
+    },
+    {
+      "path": "test/operation-router.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:391f1f7b041235b4adb54c6f1508182ef6d5b3fc772c337b1619c99686c8b5fb"
+    },
+    {
+      "path": "test/project-overview-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:96ec92ed2b72d0db2b7e014b36bdfb8dc67b24b146312d57de682f30de66f588"
+    },
+    {
+      "path": "test/project-overview.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a0bdca30200d0532f1a9b6e849bb09fb37072914c6e22b1d045ef42199768eb3"
+    },
+    {
+      "path": "test/provenance-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9e066e105839cd85d6d528403c9d87f79a2f396d7808d50213a41fdbfce7df9e"
+    },
+    {
+      "path": "test/registry-edge-cases.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9710a7c6f94699d5d542e8f4e0a1d340ce15a6fa83cd494ccd678057247d5fd9"
+    },
+    {
+      "path": "test/requirements-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:84610366ddf99c86b3ff1f37391c15fb4a9949c6de6c63b8fc574c2e7eb45753"
+    },
+    {
+      "path": "test/requirements-gate.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:6414e34a1166555885106ceb216ca413eb9b0646d0a951ea1379716ddd29cd5c"
+    },
+    {
+      "path": "test/requirements-identity-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:f22622cb3138c5a2d5e352b2d4f52357602c8a4f803283fd3ae2adbdc507b426"
+    },
+    {
+      "path": "test/requirements-runtime-lineage.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1bf55365ca562b054bfafee5e81670488ee325a9285fa8d84c1523d3aad59242"
+    },
+    {
+      "path": "test/requirements-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:466c6b95005ee92b5ae570c74c07059f6874bdb4b1dd71d1538dbd2392ede551"
+    },
+    {
+      "path": "test/requirements-typed-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:dd15dbff841ea99620bff8e07d50624a1142b0553da6584622d1a4c87319b1b5"
+    },
+    {
+      "path": "test/schema-enforcement.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:3dabb1bbcbd98543146642fa8c1005a5f6d5e30965132b2ebe1bc09f862dcd81"
+    },
+    {
+      "path": "test/shared-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:16e226966e30544df71c06f707f26fe9349e9de22d2af7d0f8b118e623eda79f"
+    }
+  ]
+}

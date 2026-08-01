@@ -26,7 +26,8 @@
               "changeName",
               "schema",
               "artifact",
-              "bridge"
+              "bridge",
+              "toolName"
             ],
             "properties": {
               "projectRoot": {
@@ -45,13 +46,13 @@
                 "const": "design.md"
               },
               "bridge": {
-                "enum": [
-                  "agent-command",
-                  "process-json"
-                ]
+                "const": "agent-command"
               },
               "schema": {
                 "const": "devrelay-architecture"
+              },
+              "toolName": {
+                "const": "OpenSpec"
               }
             }
           },
@@ -63,10 +64,6 @@
             {
               "kind": "filesystem.write",
               "scope": "config:projectRoot/openspec/changes"
-            },
-            {
-              "kind": "process.spawn",
-              "scope": "openspec"
             },
             {
               "kind": "network.connect",

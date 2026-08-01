@@ -36,6 +36,7 @@ function inputPointers(invocation) {
   for (const role of [
     "project-architecture-state",
     "requirements-baseline",
+    "project-overview-baseline",
     "project-context",
     "repository-snapshot",
     "current-architecture-snapshot",
@@ -96,6 +97,86 @@ function assertAnswer(question, answer) {
     default:
       fail(`question ${question.id} has an unsupported response type`);
   }
+}
+
+function assertIssuanceLineage({
+  invocation,
+  clarificationRequestRef,
+  clarificationRequest,
+  continuationRef,
+  continuation,
+}) {
+  if (clarificationRequest.requestSetId !== clarificationRequestRef.artifactId) {
+    fail("loaded clarification request does not match its output ref");
+  }
+  if (continuation.continuationId !== continuationRef.artifactId) {
+    fail("loaded continuation does not match its output ref");
+  }
+  if (
+    clarificationRequest.operation !== invocation.module.operation ||
+    continuation.operation !== clarificationRequest.operation
+  ) {
+    fail("clarification issuance disagrees with the invocation operation");
+  }
+  if (continuation.activeStage !== clarificationRequest.activeStage) {
+    fail("clarification issuance disagrees on active stage");
+  }
+
+  const expectedInputs = inputPointers(invocation);
+  assertBaseInputs(
+    "clarification request",
+    clarificationRequest.baseInputs,
+    expectedInputs,
+  );
+  assertBaseInputs(
+    "continuation",
+    continuation.baseInputs,
+    expectedInputs,
+  );
+  const stateRef = expectedInputs.get("project-architecture-state");
+  if (
+    !samePointer(clarificationRequest.projectArchitectureState, stateRef) ||
+    !samePointer(continuation.projectArchitectureState, stateRef)
+  ) {
+    fail("clarification issuance does not bind the exact project state");
+  }
+
+  const questions = new Set(
+    clarificationRequest.questions.map(({ id }) => id),
+  );
+  const unresolved = new Set(continuation.unresolvedQuestionIds);
+  if (
+    unresolved.size !== questions.size ||
+    [...questions].some((questionId) => !unresolved.has(questionId))
+  ) {
+    fail("continuation question IDs do not match the emitted request");
+  }
+}
+
+export function validateArchitectureClarificationIssuance({
+  invocation,
+  clarificationRequestRef,
+  clarificationRequest,
+  continuationRef,
+  continuation,
+}) {
+  try {
+    validateArchitectureArtifact(clarificationRequest);
+    validateArchitectureArtifact(continuation);
+  } catch (error) {
+    fail(error.message);
+  }
+  assertIssuanceLineage({
+    invocation,
+    clarificationRequestRef,
+    clarificationRequest,
+    continuationRef,
+    continuation,
+  });
+  return {
+    clarificationRequest,
+    continuation,
+  };
 }
 
 export function validateArchitectureClarificationHandoff({

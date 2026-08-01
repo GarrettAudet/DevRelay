@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json",
+  "title": "DevRelay ProjectOverview artifact family",
+  "oneOf": [
+    {
+      "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/projectOverviewDraft"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/projectOverviewChangeSetDraft"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/projectOverviewBaseline"
+    }
+  ],
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "contractIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "contractDigest"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "contractDigest": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/digest"
+        }
+      }
+    },
+    "renderedDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "schema",
+        "mediaType",
+        "artifact",
+        "renderer"
+      ],
+      "properties": {
+        "path": {
+          "const": "ProjectOverview.md"
+        },
+        "mediaType": {
+          "const": "text/markdown; charset=utf-8"
+        },
+        "artifact": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "renderer": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/contractIdentity"
+        },
+        "schema": {
+          "const": "https://devrelay.dev/artifacts/project-overview-markdown/v1"
+        }
+      }
+    },
+    "projectOverviewBody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "businessObjectives",
+        "users",
+        "keyCapabilities",
+        "successMetrics",
+        "scope",
+        "nonGoals",
+        "constraints",
+        "nonFunctionalRequirements",
+        "terminology",
+        "currentStatus"
+      ],
+      "properties": {
+        "purpose": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/purpose"
+        },
+        "businessObjectives": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/businessObjective"
+          }
+        },
+        "users": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/user"
+          }
+        },
+        "keyCapabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/capability"
+              },
+              {
+                "properties": {
+                  "key": {
+                    "const": true
+                  }
+                },
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "successMetrics": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/successMetric"
+          }
+        },
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/scopeItem"
+          }
+        },
+        "nonGoals": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/nonGoal"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/constraint"
+          }
+        },
+        "nonFunctionalRequirements": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/nonFunctionalRequirement"
+          }
+        },
+        "terminology": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/termDefinition"
+          }
+        },
+        "currentStatus": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/currentStatus"
+        }
+      }
+    },
+    "changedSections": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "purpose",
+          "businessObjectives",
+          "users",
+          "keyCapabilities",
+          "successMetrics",
+          "scope",
+          "nonGoals",
+          "constraints",
+          "nonFunctionalRequirements",
+          "terminology",
+          "currentStatus"
+        ]
+      }
+    },
+    "projectOverviewDraft": {
+      "$id": "https://devrelay.dev/artifacts/project-overview-draft/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "draftId",
+        "requirementsDraft",
+        "projection",
+        "overview",
+        "renderedDocument"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "ProjectOverviewDraft"
+        },
+        "draftId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "requirementsDraft": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "projection": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/contractIdentity"
+        },
+        "overview": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/projectOverviewBody"
+        },
+        "renderedDocument": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/renderedDocument"
+        }
+      }
+    },
+    "projectOverviewChangeSetDraft": {
+      "$id": "https://devrelay.dev/artifacts/project-overview-change-set-draft/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "changeSetId",
+        "baseOverview",
+        "requirementsChangeSet",
+        "changeDisposition",
+        "changedSections",
+        "projection",
+        "overview",
+        "renderedDocument"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "ProjectOverviewChangeSetDraft"
+        },
+        "changeSetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "baseOverview": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "requirementsChangeSet": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "changeDisposition": {
+          "enum": [
+            "changed",
+            "unchanged"
+          ]
+        },
+        "changedSections": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/changedSections"
+        },
+        "projection": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/contractIdentity"
+        },
+        "overview": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/projectOverviewBody"
+        },
+        "renderedDocument": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/renderedDocument"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "changeDisposition": {
+                "const": "changed"
+              }
+            },
+            "required": [
+              "changeDisposition"
+            ],
+            "type": "object"
+          },
+          "then": {
+            "properties": {
+              "changedSections": {
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "else": {
+            "properties": {
+              "changedSections": {
+                "maxItems": 0,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "projectOverviewBaseline": {
+      "$id": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "baselineId",
+        "version",
+        "approvedOverviewCandidate",
+        "requirementsBaseline",
+        "projection",
+        "overview",
+        "renderedDocument",
+        "approvalEvidence"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "ProjectOverviewBaseline"
+        },
+        "baselineId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "approvedOverviewCandidate": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "supersedes": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "requirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "projection": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/contractIdentity"
+        },
+        "overview": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/projectOverviewBody"
+        },
+        "renderedDocument": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/renderedDocument"
+        },
+        "approvalEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/artifactPointer"
+          }
+        }
+      }
+    },
+    "artifactPointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "digest"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "digest": {
+          "$ref": "https://devrelay.dev/contracts/project-overview-artifacts.schema.json#/$defs/digest"
+        }
+      }
+    }
+  }
+}

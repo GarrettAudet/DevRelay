@@ -16,6 +16,28 @@ test("OpenSpec RequirementsGathering schema declares requirements artifacts only
   assert.doesNotMatch(schema, /^\s*- id: tasks$/m);
 });
 
+test("OpenSpec RequirementsGathering binding pins the bounded schema", async () => {
+  const plugin = await readJson("examples/plugins/openspec.plugin.json");
+  const operation = plugin.implements[0].operations[0];
+  assert.ok(operation.configSchema.required.includes("schema"));
+  assert.equal(
+    operation.configSchema.properties.schema.const,
+    "devrelay-requirements",
+  );
+
+  for (const path of [
+    "examples/invocations/requirements-openspec.invocation.json",
+    "examples/invocations/requirements-openspec-change-set.invocation.json",
+    "examples/invocations/requirements-clarification-resume-openspec.invocation.json",
+  ]) {
+    assert.equal((await readJson(path)).config.schema, "devrelay-requirements");
+  }
+  assert.equal(
+    (await readJson("examples/artifacts/native-source-bundle-001.json")).schema,
+    "devrelay-requirements",
+  );
+});
+
 test("OpenSpec ArchitectureDesign schema declares the designer artifact only", async () => {
   const schema = await readText(
     "openspec/schemas/devrelay-architecture/schema.yaml",

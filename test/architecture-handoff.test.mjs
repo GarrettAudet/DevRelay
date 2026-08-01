@@ -6,6 +6,7 @@ import {
   ArchitectureHandoffValidationError,
   validateArchitectureClarificationHandoff,
 } from "../src/architecture-handoff-validator.mjs";
+import { augmentArchitectureArtifactOverview } from "./architecture-project-overview-fixtures.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -21,6 +22,9 @@ const [clarificationRequest, clarificationResponse, continuation] =
     ),
     readJson("examples/artifacts/architecture-continuation-001.json"),
   ]);
+
+augmentArchitectureArtifactOverview(clarificationRequest);
+augmentArchitectureArtifactOverview(continuation);
 
 const pointer = (
   artifactId,

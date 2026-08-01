@@ -97,3 +97,86 @@ test("resolution requires every requested capability kind", () => {
     "DR1604",
   );
 });
+
+test("resolution requires exact resolved capability scopes and no excess grants", () => {
+  const registry = createModuleRegistry({
+    modules: [requirementsModule],
+    plugins: [
+      {
+        definition: openSpecPlugin,
+        adapter: { invoke() {} },
+      },
+    ],
+  });
+
+  const wrongWritePath = clone(openSpecInvocation);
+  wrongWritePath.grants.find(
+    ({ kind }) => kind === "filesystem.write",
+  ).scope = "C:/totally-unrelated";
+  expectContractError(() => registry.resolve(wrongWritePath), "DR1604");
+
+  const wrongImplementationHost = clone(openSpecInvocation);
+  wrongImplementationHost.grants.find(
+    ({ kind }) => kind === "network.connect",
+  ).scope = "host:unrelated-service";
+  expectContractError(
+    () => registry.resolve(wrongImplementationHost),
+    "DR1604",
+  );
+
+  const excessGrant = clone(openSpecInvocation);
+  excessGrant.grants.push({
+    kind: "secrets.read",
+    scope: "host:all-secrets",
+  });
+  expectContractError(() => registry.resolve(excessGrant), "DR1604");
+
+  const relocatedWithoutMatchingGrants = clone(openSpecInvocation);
+  relocatedWithoutMatchingGrants.config.projectRoot = "/different-workspace";
+  expectContractError(
+    () => registry.resolve(relocatedWithoutMatchingGrants),
+    "DR1604",
+  );
+});
+
+test("resolution rejects capability templates that collide after substitution", () => {
+  const collidingPlugin = clone(openSpecPlugin);
+  collidingPlugin.implements[0].operations[0].capabilities.push({
+    kind: "filesystem.read",
+    scope: openSpecInvocation.config.projectRoot,
+  });
+  const collidingRegistry = createModuleRegistry({
+    modules: [requirementsModule],
+    plugins: [
+      {
+        definition: collidingPlugin,
+        adapter: { invoke() {} },
+      },
+    ],
+  });
+
+  expectContractError(
+    () => collidingRegistry.resolve(openSpecInvocation),
+    "DR1604",
+  );
+});
+
+test("plug-in registration rejects ambiguous capability scope templates", () => {
+  const invalidPlugin = clone(openSpecPlugin);
+  invalidPlugin.implements[0].operations[0].capabilities[1].scope =
+    "config:projectRoot/../escape";
+
+  expectContractError(
+    () =>
+      createModuleRegistry({
+        modules: [requirementsModule],
+        plugins: [
+          {
+            definition: invalidPlugin,
+            adapter: { invoke() {} },
+          },
+        ],
+      }),
+    "DR1313",
+  );
+});

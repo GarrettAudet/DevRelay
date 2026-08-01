@@ -2,46 +2,620 @@
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "RequirementsChangeSet",
   "changeSetId": "requirements-change-set-001",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-change-001",
+        "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-001",
+        "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-001",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-001",
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-001",
+        "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc"
+      }
+    }
+  ],
   "baseline": {
     "artifactId": "requirements-baseline-001",
-    "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab"
   },
-  "additions": [],
-  "modifications": [
-    {
-      "requirementId": "REQ-AUTH-001",
-      "expectedRequirementDigest": "sha256:4276f45d994d24a975b4b4af4a3838ad59aac4956e03eb597dbde357640fcd27",
-      "replacement": {
-        "id": "REQ-AUTH-001",
-        "category": "security",
-        "statement": "The product shall require an additional authentication factor when policy requires it.",
-        "rationale": "The updated security policy requires multi-factor authentication.",
+  "expectedRequirementsDigest": "sha256:806a23038ccfedf0c82cbbbb551bbe75747aee2369c4d129c1930f794139ea4d",
+  "replacement": {
+    "purpose": {
+      "statement": "Define secure, observable authentication behavior for registered product users.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-001",
+            "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+          }
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-001",
+            "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+          }
+        }
+      ]
+    },
+    "businessObjectives": [
+      {
+        "id": "BO-AUTH-ACCESS-001",
+        "statement": "Allow registered users to reliably access protected product capabilities.",
         "priority": "must",
-        "acceptanceCriteria": [
+        "sourceRefs": [
           {
-            "id": "AC-AUTH-MFA-001",
-            "statement": "A policy-bound user cannot establish a session using only one factor.",
-            "verification": "Execute an end-to-end test for a user governed by the multi-factor policy."
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-AUTH-USERS-001"
+        ]
+      },
+      {
+        "id": "BO-AUTH-SECURITY-001",
+        "statement": "Protect account confidentiality throughout authentication failures.",
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-AUTH-SECURITY-001"
+        ]
+      }
+    ],
+    "successMetrics": [
+      {
+        "id": "SM-AUTH-DISCLOSURE-001",
+        "name": "Account-disclosure defects",
+        "businessObjectiveIds": [
+          "BO-AUTH-SECURITY-001"
+        ],
+        "measure": "Confirmed authentication responses that disclose whether an account exists.",
+        "target": "Zero confirmed disclosures.",
+        "measurementMethod": "Security review and negative authentication tests.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-AUTH-SUCCESS-001",
+        "name": "Valid sign-in success rate",
+        "businessObjectiveIds": [
+          "BO-AUTH-ACCESS-001"
+        ],
+        "measure": "Percentage of valid registered-user sign-in attempts that establish a session.",
+        "target": "At least 99 percent.",
+        "measurementMethod": "Aggregate authentication integration-test and service telemetry.",
+        "evaluationWindow": "Rolling 30 days after release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "stakeholders": [
+      {
+        "id": "STK-AUTH-SECURITY-001",
+        "name": "Security reviewer",
+        "role": "Verify authentication security and evidence.",
+        "category": "owner",
+        "interests": [
+          "No account disclosure.",
+          "Repeatable security verification."
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "STK-AUTH-USERS-001",
+        "name": "Registered users",
+        "role": "Authenticate to use protected product capabilities.",
+        "category": "user",
+        "interests": [
+          "Private authentication failures.",
+          "Reliable access."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "users": [
+      {
+        "id": "USR-AUTH-REGISTERED-001",
+        "name": "Registered user",
+        "description": "A product user with an existing persistent identity.",
+        "stakeholderIds": [
+          "STK-AUTH-USERS-001"
+        ],
+        "needs": [
+          "Receive safe failure feedback.",
+          "Sign in.",
+          "Sign out."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "CAP-AUTH-SESSION-001",
+        "name": "Authentication session management",
+        "description": "Authenticate registered users with policy-required factors, establish sessions, and terminate sessions safely.",
+        "businessObjectiveIds": [
+          "BO-AUTH-ACCESS-001",
+          "BO-AUTH-SECURITY-001"
+        ],
+        "userIds": [
+          "USR-AUTH-REGISTERED-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-change-001",
+              "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+            }
+          }
+        ]
+      }
+    ],
+    "userJourneys": [
+      {
+        "id": "UJ-AUTH-SESSION-001",
+        "name": "Establish and end an authenticated session",
+        "userId": "USR-AUTH-REGISTERED-001",
+        "capabilityIds": [
+          "CAP-AUTH-SESSION-001"
+        ],
+        "trigger": "A registered user requests a protected product capability.",
+        "outcome": "The user can establish and later terminate an authenticated session.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Provide valid authentication credentials.",
+            "expectedOutcome": "The product establishes the matching user session."
+          },
+          {
+            "sequence": 2,
+            "action": "Request sign out.",
+            "expectedOutcome": "The product terminates the authenticated session."
           }
         ],
         "sourceRefs": [
           {
             "role": "goal",
             "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "userStories": [
+      {
+        "id": "US-AUTH-SESSION-001",
+        "userId": "USR-AUTH-REGISTERED-001",
+        "capabilityId": "CAP-AUTH-SESSION-001",
+        "userJourneyIds": [
+          "UJ-AUTH-SESSION-001"
+        ],
+        "need": "Complete every authentication factor required by the applicable security policy.",
+        "benefit": "My protected session satisfies the applicable authentication policy.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-AUTH-MFA-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
               "artifactId": "goal-change-001",
-              "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+              "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+            }
+          }
+        ]
+      }
+    ],
+    "acceptanceCriteria": [
+      {
+        "id": "AC-AUTH-DISCLOSURE-001",
+        "statement": "Authentication failure responses do not reveal whether the submitted account exists.",
+        "verification": "Compare negative responses for known and unknown account identifiers in a security test.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
             }
           }
         ]
       },
-      "reason": "Require multi-factor authentication for policy-bound users.",
-      "compatibilityImpact": "breaking"
-    }
+      {
+        "id": "AC-AUTH-MFA-001",
+        "statement": "A policy-bound user cannot establish a session using fewer factors than policy requires.",
+        "verification": "Execute an end-to-end test for a user governed by the multi-factor policy.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-change-001",
+              "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-AUTH-PERFORMANCE-001",
+        "statement": "Authentication satisfies the declared response-latency target under the declared load.",
+        "verification": "Execute the authentication load-test profile.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "nonFunctionalRequirements": [
+      {
+        "id": "NFR-AUTH-PERFORMANCE-001",
+        "category": "performance",
+        "statement": "Authentication responses must complete within a bounded user-facing latency.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-AUTH-SESSION-001"
+          ]
+        },
+        "measure": "95th-percentile authentication response latency.",
+        "target": "At most 500 milliseconds under 100 concurrent sign-in attempts.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-AUTH-PERFORMANCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CON-AUTH-NONDISCLOSURE-001",
+        "category": "security",
+        "statement": "Authentication failures must not disclose whether an account exists.",
+        "rationale": "Account existence is security-sensitive information.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-AUTH-SESSION-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-AUTH-DISCLOSURE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "SCOPE-AUTH-FAILURE-001",
+        "statement": "Authentication failure behavior.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-AUTH-SIGNIN-001",
+        "statement": "Sign in.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-AUTH-SIGNOUT-001",
+        "statement": "Sign out.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "nonGoals": [
+      {
+        "id": "NG-AUTH-ARCHITECTURE-001",
+        "statement": "Select the application architecture.",
+        "rationale": "Architecture selection belongs to ArchitectureDesign.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-AUTH-PROVIDER-001",
+        "statement": "Select or replace the identity provider.",
+        "rationale": "Provider selection is an architectural decision.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "terminology": [
+      {
+        "id": "TERM-AUTH-REGISTERED-USER-001",
+        "term": "Registered user",
+        "definition": "A user with an existing persistent product identity.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-AUTH-SESSION-001",
+        "term": "Authenticated session",
+        "definition": "A product session bound to a successfully authenticated user.",
+        "aliases": [
+          "User session"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "currentStatus": {
+      "lifecycle": "existing",
+      "phase": "planning",
+      "summary": "The existing product has a user domain but no approved authentication baseline.",
+      "sourceRefs": [
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-001",
+            "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+          }
+        }
+      ]
+    },
+    "assumptions": [
+      {
+        "id": "ASM-AUTH-001",
+        "statement": "A registered user identity already exists.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "An authoritative user identity source."
+    ],
+    "risks": [
+      "Incomplete failure requirements could disclose account existence."
+    ],
+    "deliverables": [
+      "Approved authentication requirements baseline."
+    ],
+    "requiredEvidence": [
+      "requirements/acceptance-criteria-review",
+      "security/authentication-review"
+    ],
+    "sourceRefs": [
+      {
+        "role": "goal",
+        "artifact": {
+          "artifactId": "goal-001",
+          "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+        }
+      },
+      {
+        "role": "project-context",
+        "artifact": {
+          "artifactId": "project-context-001",
+          "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+        }
+      }
+    ]
+  },
+  "changedSections": [
+    "acceptanceCriteria",
+    "capabilities",
+    "userStories"
   ],
-  "removals": [],
-  "assumptions": [
-    "The policy source can identify users subject to multi-factor authentication."
-  ],
+  "reason": "Require policy-driven multi-factor authentication.",
+  "compatibilityImpact": "breaking",
   "risks": [
     "Existing clients may not support the additional challenge."
   ],
@@ -51,10 +625,17 @@
   ],
   "sourceRefs": [
     {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-change-001",
+        "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+      }
+    },
+    {
       "role": "requirements-baseline",
       "artifact": {
         "artifactId": "requirements-baseline-001",
-        "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab"
       }
     }
   ]

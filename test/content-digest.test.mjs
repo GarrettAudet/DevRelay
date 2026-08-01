@@ -53,14 +53,14 @@ test("raw byte and canonical JSON digests use explicit sha256 identity", () => {
   );
 });
 
-test("change-set expectedRequirementDigest binds canonical baseline content", async () => {
+test("change-set expectedRequirementsDigest binds the complete canonical baseline body", async () => {
   const [baseline, changeSet] = await Promise.all([
     readJson("examples/artifacts/requirements-baseline-001.json"),
     readJson("examples/artifacts/requirements-change-set-001.json"),
   ]);
 
   assert.equal(
-    changeSet.modifications[0].expectedRequirementDigest,
-    canonicalJsonDigest(baseline.requirements.requirements[0]),
+    changeSet.expectedRequirementsDigest,
+    canonicalJsonDigest(baseline.requirements),
   );
 });

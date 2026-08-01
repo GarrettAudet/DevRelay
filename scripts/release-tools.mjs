@@ -1,0 +1,387 @@
+import { spawnSync } from "node:child_process";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  canonicalModules,
+  canonicalPackageExports,
+  comparePortablePaths,
+  expectedPackagedPaths,
+  parseReleaseManifest,
+} from "./release-catalog.mjs";
+
+export const repositoryRoot = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
+
+const excludedDirectories = new Set([
+  ".devrelay",
+  ".git",
+  "coverage",
+  "dist",
+  "node_modules",
+]);
+const textExtensions = new Set([
+  ".json",
+  ".md",
+  ".mjs",
+  ".txt",
+  ".yaml",
+  ".yml",
+]);
+const extensionOf = (path) => {
+  const name = basename(path);
+  const dot = name.lastIndexOf(".");
+  return dot === -1 ? "" : name.slice(dot);
+};
+const portablePath = (path) => path.split(sep).join("/");
+
+function repositoryFiles(directory = repositoryRoot) {
+  const files = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    if (entry.isDirectory() && excludedDirectories.has(entry.name)) {
+      continue;
+    }
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...repositoryFiles(path));
+    } else if (entry.isFile()) {
+      files.push(path);
+    }
+  }
+  return files.sort((left, right) =>
+    comparePortablePaths(
+      portablePath(relative(repositoryRoot, left)),
+      portablePath(relative(repositoryRoot, right)),
+    ),
+  );
+}
+
+function npmInvocation(args) {
+  if (process.env.npm_execpath) {
+    return {
+      command: process.execPath,
+      args: [process.env.npm_execpath, ...args],
+    };
+  }
+  if (process.platform !== "win32") {
+    return { command: "npm", args };
+  }
+  const npmCli = join(
+    dirname(process.execPath),
+    "node_modules",
+    "npm",
+    "bin",
+    "npm-cli.js",
+  );
+  if (!existsSync(npmCli)) {
+    throw new Error(
+      "cannot locate npm; run this check through npm run release:check",
+    );
+  }
+  return { command: process.execPath, args: [npmCli, ...args] };
+}
+
+function run(command, args, options = {}) {
+  const result = spawnSync(command, args, {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+    stdio: options.capture ? "pipe" : "inherit",
+    ...options,
+  });
+  if (result.error) {
+    throw result.error;
+  }
+  if (result.status !== 0) {
+    const detail = options.capture
+      ? [result.stdout, result.stderr].filter(Boolean).join("\n")
+      : "";
+    throw new Error(
+      `${command} ${args.join(" ")} failed with status ${result.status}${
+        detail ? `\n${detail}` : ""
+      }`,
+    );
+  }
+  return result;
+}
+
+function checkJson(files) {
+  const jsonFiles = files.filter((path) => extensionOf(path) === ".json");
+  const failures = [];
+  for (const path of jsonFiles) {
+    try {
+      JSON.parse(readFileSync(path, "utf8"));
+    } catch (error) {
+      failures.push(
+        `${portablePath(relative(repositoryRoot, path))}: ${error.message}`,
+      );
+    }
+  }
+  if (failures.length > 0) {
+    throw new Error(`invalid JSON:\n${failures.join("\n")}`);
+  }
+  return jsonFiles.length;
+}
+
+function checkModuleSyntax(files) {
+  const moduleFiles = files.filter((path) => extensionOf(path) === ".mjs");
+  for (const path of moduleFiles) {
+    run(process.execPath, ["--check", path], { capture: true });
+  }
+  return moduleFiles.length;
+}
+
+function checkLfPolicy(files) {
+  const candidates = files.filter((path) => {
+    const name = basename(path);
+    return (
+      textExtensions.has(extensionOf(path)) ||
+      name === ".gitattributes" ||
+      name === ".gitignore" ||
+      name === "LICENSE"
+    );
+  });
+  const failures = [];
+  for (const path of candidates) {
+    const bytes = readFileSync(path);
+    if (bytes.includes(13)) {
+      failures.push(portablePath(relative(repositoryRoot, path)));
+    }
+  }
+  if (failures.length > 0) {
+    throw new Error(
+      `files violate the LF-only policy:\n${failures.join("\n")}`,
+    );
+  }
+  return candidates.length;
+}
+
+function checkDownstreamProjectOverviewPolicy() {
+  const overviewSchema =
+    "https://devrelay.dev/artifacts/project-overview-baseline/v1";
+  let operationCount = 0;
+  for (const released of canonicalModules) {
+    if (released.id === "requirements-gathering") continue;
+    const definition = JSON.parse(
+      readFileSync(join(repositoryRoot, ...released.definition.split("/")), "utf8"),
+    );
+    for (const operation of definition.operations) {
+      operationCount += 1;
+      const input = operation.inputs.find(
+        ({ name }) => name === "project-overview-baseline",
+      );
+      if (
+        input?.required !== true ||
+        input.cardinality !== "one" ||
+        input.schema !== overviewSchema
+      ) {
+        throw new Error(
+          `${released.id}#${operation.id} must explicitly require one ProjectOverviewBaseline input`,
+        );
+      }
+    }
+  }
+  return operationCount;
+}
+
+export function runStaticChecks() {
+  const files = repositoryFiles();
+  const jsonCount = checkJson(files);
+  const moduleCount = checkModuleSyntax(files);
+  const textCount = checkLfPolicy(files);
+  const contextOperationCount = checkDownstreamProjectOverviewPolicy();
+  console.log(
+    `Static verification passed: ${jsonCount} JSON files, ${moduleCount} JavaScript modules, ${textCount} LF-only text files, and ${contextOperationCount} downstream operations with explicit ProjectOverview context.`,
+  );
+}
+
+export function runTests() {
+  run(process.execPath, ["--test"]);
+}
+
+export function runVerification() {
+  runStaticChecks();
+  runTests();
+}
+
+export function runReleaseManifestCheck() {
+  const checker = join(repositoryRoot, "scripts", "check-release-manifest.mjs");
+  const manifest = join(repositoryRoot, "release", "0.1.0.json");
+  if (!existsSync(checker) || !existsSync(manifest)) {
+    throw new Error(
+      "release:check requires both scripts/check-release-manifest.mjs and release/0.1.0.json",
+    );
+  }
+  run(process.execPath, [checker]);
+}
+
+const requiredPackageFiles = [
+  "contracts/architecture-design-artifacts.schema.json",
+  "contracts/requirements-gathering-artifacts.schema.json",
+  "docs/architecture-design.md",
+  "docs/requirements-gathering.md",
+  "examples/modules/architecture-design.module.json",
+  "examples/modules/requirements-gathering.module.json",
+  "examples/plugins/github-spec-kit.plugin.json",
+  "examples/plugins/madr.plugin.json",
+  "examples/plugins/openspec-design.plugin.json",
+  "examples/plugins/openspec.plugin.json",
+  "examples/plugins/spec-kit-plan.plugin.json",
+  "examples/plugins/structurizr.plugin.json",
+  "src/index.mjs",
+  "src/module-registry.mjs",
+];
+
+function assertPackageMetadata(packageDocument) {
+  if (packageDocument.version !== "0.1.0") {
+    throw new Error("package version must be 0.1.0 for this source release");
+  }
+  if (packageDocument.private !== true) {
+    throw new Error("source-only release must remain private");
+  }
+  if (packageDocument.license !== "UNLICENSED") {
+    throw new Error("source-only release must remain UNLICENSED");
+  }
+  if (packageDocument.dependencies?.ajv !== "8.20.0") {
+    throw new Error("Ajv must be pinned exactly to 8.20.0");
+  }
+  if (packageDocument.main !== "./src/index.mjs") {
+    throw new Error("package main must point to the intentional public API");
+  }
+  if (
+    JSON.stringify(packageDocument.exports) !==
+    JSON.stringify(canonicalPackageExports)
+  ) {
+    throw new Error(
+      "package exports must expose only the canonical module/plugin surface and declared supporting paths",
+    );
+  }
+}
+
+function assertPackageContents(files, manifest) {
+  const paths = files.map(({ path }) => path).sort(comparePortablePaths);
+  const expected = expectedPackagedPaths(manifest);
+  if (JSON.stringify(paths) !== JSON.stringify(expected)) {
+    const actual = new Set(paths);
+    const intended = new Set(expected);
+    const missing = expected.filter((path) => !actual.has(path));
+    const extras = paths.filter((path) => !intended.has(path));
+    throw new Error(
+      [
+        "npm pack file set differs from release catalog",
+        missing.length > 0 ? "missing:\n" + missing.join("\n") : "",
+        extras.length > 0 ? "extras:\n" + extras.join("\n") : "",
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    );
+  }
+  const forbidden = [
+    "examples/modules/command.module.json",
+    "examples/plugins/local-command.plugin.json",
+  ].filter((path) => paths.includes(path));
+  if (forbidden.length > 0) {
+    throw new Error(
+      "package contains development-only legacy module/plugin fixtures:\n" +
+        forbidden.join("\n"),
+    );
+  }
+  const missingRequired = requiredPackageFiles.filter(
+    (path) => !paths.includes(path),
+  );
+  if (missingRequired.length > 0) {
+    throw new Error(
+      "package is missing required release files:\n" +
+        missingRequired.join("\n"),
+    );
+  }
+  return paths.length;
+}
+
+function installAndImport(tarball, packageName, temporaryRoot) {
+  const consumer = join(temporaryRoot, "consumer");
+  mkdirSync(consumer);
+  writeFileSync(
+    join(consumer, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "devrelay-release-smoke",
+        private: true,
+        type: "module",
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  const install = npmInvocation([
+    "install",
+    "--offline",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--package-lock=false",
+    tarball,
+  ]);
+  run(install.command, install.args, { cwd: consumer });
+  const smokeProgram = [
+    `const api = await import(${JSON.stringify(packageName)});`,
+    'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
+    'if (typeof api.requirementsRuntimeArtifactContracts !== "function") throw new Error("missing RequirementsGathering contracts export");',
+    'if (typeof api.architectureRuntimeArtifactContracts !== "function") throw new Error("missing ArchitectureDesign contracts export");',
+    'const { createRequire } = await import("node:module");',
+    "const require = createRequire(import.meta.url);",
+    `require.resolve(${JSON.stringify(
+      `${packageName}/modules/requirements-gathering.module.json`,
+    )});`,
+    `require.resolve(${JSON.stringify(
+      `${packageName}/modules/architecture-design.module.json`,
+    )});`,
+  ].join("\n");
+  run(process.execPath, ["--input-type=module", "--eval", smokeProgram], {
+    cwd: consumer,
+  });
+}
+
+export function runPackageCheck() {
+  const manifest = parseReleaseManifest();
+  const packageDocument = JSON.parse(
+    readFileSync(join(repositoryRoot, "package.json"), "utf8"),
+  );
+  assertPackageMetadata(packageDocument);
+
+  const temporaryRoot = mkdtempSync(join(tmpdir(), "devrelay-release-"));
+  try {
+    const pack = npmInvocation([
+      "pack",
+      "--json",
+      "--pack-destination",
+      temporaryRoot,
+    ]);
+    const result = run(pack.command, pack.args, { capture: true });
+    const report = JSON.parse(result.stdout);
+    if (!Array.isArray(report) || report.length !== 1) {
+      throw new Error("npm pack returned an unexpected report");
+    }
+    const packageFileCount = assertPackageContents(
+      report[0].files ?? [],
+      manifest,
+    );
+    const tarball = join(temporaryRoot, report[0].filename);
+    installAndImport(tarball, packageDocument.name, temporaryRoot);
+    console.log(
+      `Package verification passed: ${packageFileCount} exact catalog-bound files and an installed root-import smoke test.`,
+    );
+  } finally {
+    rmSync(temporaryRoot, { force: true, recursive: true });
+  }
+}

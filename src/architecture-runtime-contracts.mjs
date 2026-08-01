@@ -6,8 +6,11 @@ import {
   validateArchitectureChangeSetAgainstState,
   validateArchitectureDraftAgainstState,
 } from "./architecture-artifact-validator.mjs";
-import { validateArchitectureClarificationHandoff } from "./architecture-handoff-validator.mjs";
-import { validateRequirementsArtifact } from "./requirements-artifact-validator.mjs";
+import {
+  validateArchitectureClarificationHandoff,
+  validateArchitectureClarificationIssuance,
+} from "./architecture-handoff-validator.mjs";
+import { requirementsRuntimeArtifactContracts } from "./requirements-runtime-contracts.mjs";
 
 const ARCHITECTURE_SCHEMAS = new Set([
   "https://devrelay.dev/artifacts/project-architecture-state/v1",
@@ -22,15 +25,6 @@ const ARCHITECTURE_SCHEMAS = new Set([
   "https://devrelay.dev/artifacts/architecture-modeler-working/v1",
 ]);
 
-const REQUIREMENTS_SCHEMAS = new Set([
-  "https://devrelay.dev/artifacts/requirements-baseline/v1",
-]);
-
-const SHARED_SCHEMAS = new Set([
-  "https://devrelay.dev/artifacts/project-context/v1",
-  "https://devrelay.dev/artifacts/repository-snapshot/v1",
-]);
-
 function oneLoaded(loadedInputs, port) {
   const entries = loadedInputs?.[port];
   return entries?.length === 1 ? entries[0] : undefined;
@@ -40,9 +34,133 @@ function refKey(ref) {
   return `${ref.schema}\u0000${ref.digest}`;
 }
 
+function exactPointerKey(ref) {
+  return [
+    ref?.artifactId,
+    ref?.schema,
+    ref?.mediaType,
+    ref?.digest,
+  ].join("\u0000");
+}
+
+function walkArtifactContent(value, options, visit, resolved = new Set()) {
+  if (Array.isArray(value)) {
+    for (const entry of value) {
+      walkArtifactContent(entry, options, visit, resolved);
+    }
+    return;
+  }
+  if (value === null || typeof value !== "object") {
+    return;
+  }
+
+  visit(value);
+  if (value.mode === "attached" && value.artifact) {
+    const key = exactPointerKey(value.artifact);
+    if (!resolved.has(key)) {
+      const record = options.resolveAttached?.(value.artifact);
+      if (!record?.value) {
+        failLineage("attached architecture content was not resolved");
+      }
+      resolved.add(key);
+      walkArtifactContent(record.value, options, visit, resolved);
+    }
+  }
+  for (const child of Object.values(value)) {
+    walkArtifactContent(child, options, visit, resolved);
+  }
+}
+
+function collectSourceReferences(value, options) {
+  const sourceRefs = [];
+  walkArtifactContent(value, options, (node) => {
+    if (Array.isArray(node.sourceRefs)) {
+      for (const sourceRef of node.sourceRefs) {
+        sourceRefs.push(sourceRef);
+      }
+    }
+  });
+  return sourceRefs;
+}
+
+function addAllowedRole(allowed, artifact, role) {
+  const key = exactPointerKey(artifact);
+  const roles = allowed.get(key) ?? new Set();
+  roles.add(role);
+  allowed.set(key, roles);
+}
+
+function collectNativeArtifactEntries(value, options) {
+  const entries = [];
+  walkArtifactContent(value, options, (node) => {
+    if (
+      typeof node.nativeArtifactSetId === "string" &&
+      Array.isArray(node.entries)
+    ) {
+      entries.push(...node.entries);
+    }
+  });
+  return entries;
+}
+
+async function verifyNativeArtifactBytes(value, context, options) {
+  const entries = collectNativeArtifactEntries(value, options);
+  if (entries.length === 0) {
+    return new Map();
+  }
+  if (typeof context.loadBytes !== "function") {
+    failLineage("native architecture artifacts require a raw-byte loader");
+  }
+  const verified = new Map();
+  for (const entry of entries) {
+    const key = exactPointerKey(entry.artifact);
+    if (!verified.has(key)) {
+      await context.loadBytes(entry.artifact);
+    }
+    addAllowedRole(verified, entry.artifact, entry.role);
+  }
+  return verified;
+}
+
+function assertSourceReferenceClosure(value, context, options, nativeRoles) {
+  const allowed = new Map(
+    [...nativeRoles].map(([key, roles]) => [key, new Set(roles)]),
+  );
+  for (const [port, artifacts] of Object.entries(
+    context.loadedInputs ?? {},
+  )) {
+    for (const { ref } of artifacts) {
+      addAllowedRole(allowed, ref, port);
+    }
+  }
+  for (const [stage, outputs] of Object.entries(
+    context.loadedHandoffs ?? {},
+  )) {
+    for (const artifacts of Object.values(outputs)) {
+      for (const { ref } of artifacts) {
+        addAllowedRole(allowed, ref, `${stage}-handoff`);
+      }
+    }
+  }
+  for (const sourceRef of collectSourceReferences(value, options)) {
+    const roles = allowed.get(exactPointerKey(sourceRef.artifact));
+    if (!roles) {
+      failLineage(
+        "source reference is not an exact input, prior handoff, or verified native artifact",
+      );
+    }
+    if (!roles.has(sourceRef.role)) {
+      failLineage(
+        `source reference role ${sourceRef.role} does not match the exact runtime evidence role`,
+      );
+    }
+  }
+}
+
 const STATE_POINTER_PORTS = Object.freeze({
   projectContext: "project-context",
   requirementsBaseline: "requirements-baseline",
+  projectOverviewBaseline: "project-overview-baseline",
   repositorySnapshot: "repository-snapshot",
   currentArchitectureSnapshot: "current-architecture-snapshot",
   architectureBaseline: "architecture-baseline",
@@ -55,6 +173,10 @@ function samePointer(left, right) {
     left?.mediaType === right?.mediaType &&
     left?.digest === right?.digest
   );
+}
+
+function samePlugin(left, right) {
+  return left?.id === right?.id && left?.version === right?.version;
 }
 
 function failLineage(message) {
@@ -83,6 +205,15 @@ function assertStateLineage(state, context) {
       assertPointer(`project state ${port}`, state[field], invocationRef);
     }
   }
+  const projectContext = oneLoaded(context.loadedInputs, "project-context");
+  if (
+    !projectContext ||
+    state.projectLifecycle !== projectContext.value.lifecycle
+  ) {
+    failLineage(
+      "project state lifecycle does not match the loaded project context",
+    );
+  }
 }
 
 function assertCurrentArchitectureSnapshotLineage(snapshot, context) {
@@ -110,6 +241,19 @@ function assertCurrentArchitectureSnapshotLineage(snapshot, context) {
     snapshot.repositorySnapshot,
     loadedRef(context, "repository-snapshot"),
   );
+  const repository = oneLoaded(
+    context.loadedInputs,
+    "repository-snapshot",
+  );
+  if (
+    !repository ||
+    snapshot.repositoryRevision.revision !== repository.value.revision ||
+    snapshot.repositoryRevision.treeDigest !== repository.value.treeDigest
+  ) {
+    failLineage(
+      "current architecture snapshot revision does not match the loaded repository",
+    );
+  }
 }
 
 function assertArchitectureBaselineLineage(baseline, context) {
@@ -130,10 +274,17 @@ function assertArchitectureBaselineLineage(baseline, context) {
     baseline.projectContext,
     loadedRef(context, "project-context"),
   );
-  if (baseline.repositorySnapshot !== undefined) {
+  const stateRepository = state.value.repositorySnapshot;
+  const baselineRepository = baseline.repositorySnapshot;
+  if (Boolean(stateRepository) !== Boolean(baselineRepository)) {
+    failLineage(
+      "architecture baseline repository presence does not match project state",
+    );
+  }
+  if (baselineRepository) {
     assertPointer(
       "architecture baseline repository",
-      baseline.repositorySnapshot,
+      baselineRepository,
       loadedRef(context, "repository-snapshot"),
     );
   }
@@ -192,11 +343,11 @@ function resolveLineageSection(section, name, options) {
   if (section.mode === "embedded") {
     return section.content;
   }
-  const content = options.resolveAttached?.(section.artifact);
-  if (!content) {
+  const record = options.resolveAttached?.(section.artifact);
+  if (!record?.value) {
     failLineage(`attached ${name} section was not resolved`);
   }
-  return content;
+  return record.value;
 }
 
 function nativeEntries(section, options) {
@@ -207,26 +358,57 @@ function nativeEntries(section, options) {
   ).entries;
 }
 
+function producerBinding(context, stage) {
+  const binding = context.invocation.adapters?.find(
+    (candidate) =>
+      candidate.step === stage &&
+      samePlugin(candidate.plugin, context.producer?.plugin),
+  );
+  if (
+    !binding ||
+    typeof binding.config?.toolName !== "string" ||
+    typeof binding.config?.toolVersion !== "string"
+  ) {
+    failLineage(`${stage} adapter lacks explicit tool identity config`);
+  }
+  return binding;
+}
+
 function assertNativeProducer(section, options, context, stage) {
   const owned = nativeEntries(section, options).filter(
     (entry) => entry.producedBy.stage === stage,
   );
+  const binding = producerBinding(context, stage);
   if (
     owned.length === 0 ||
     owned.some(
       (entry) =>
         entry.producedBy.adapterId !== context.producer.plugin.id ||
-        entry.producedBy.adapterVersion !== context.producer.plugin.version,
+        entry.producedBy.adapterVersion !== context.producer.plugin.version ||
+        entry.producedBy.tool?.name !== binding.config.toolName ||
+        entry.producedBy.tool?.version !== binding.config.toolVersion,
     )
   ) {
     failLineage(
-      `${stage} native provenance does not match the configured plug-in`,
+      `${stage} native provenance does not match the configured plug-in and tool`,
+    );
+  }
+}
+
+function assertExclusiveNativeStage(section, options, stage) {
+  const unexpected = nativeEntries(section, options).find(
+    (entry) => entry.producedBy.stage !== stage,
+  );
+  if (unexpected) {
+    failLineage(
+      `${stage} handoff contains ${unexpected.producedBy.stage} native artifact ${unexpected.id}`,
     );
   }
 }
 
 function assertDesignerLineage(value, context, options) {
   producerStep(context, "designer");
+  assertExclusiveNativeStage(value.nativeArtifacts, options, "designer");
   assertNativeProducer(
     value.nativeArtifacts,
     options,
@@ -246,6 +428,7 @@ function assertDesignerLineage(value, context, options) {
 
 function assertModelerLineage(value, context, options) {
   producerStep(context, "modeler");
+  assertExclusiveNativeStage(value.nativeArtifacts, options, "modeler");
   assertNativeProducer(
     value.nativeArtifacts,
     options,
@@ -277,15 +460,22 @@ function assertEqualSection(label, candidate, working) {
   }
 }
 
-function assertNativeSubset(candidateEntries, requiredEntries, owner) {
+function assertNativeExact(candidateEntries, requiredEntries, owner) {
   const byId = new Map(candidateEntries.map((entry) => [entry.id, entry]));
+  if (byId.size !== requiredEntries.length) {
+    failLineage(
+      `terminal candidate changed the ${owner} native artifact set`,
+    );
+  }
   for (const entry of requiredEntries) {
     const candidate = byId.get(entry.id);
     if (
       !candidate ||
       canonicalJsonDigest(candidate) !== canonicalJsonDigest(entry)
     ) {
-      failLineage(`terminal candidate replaced ${owner} native artifact ${entry.id}`);
+      failLineage(
+        `terminal candidate replaced ${owner} native artifact ${entry.id}`,
+      );
     }
   }
 }
@@ -373,23 +563,39 @@ async function assertTerminalLineage(value, context, options) {
     sections.nativeArtifacts,
     options,
   );
-  assertNativeSubset(
-    candidateEntries,
+  const discoveryEntry = candidateEntries.find(
+    (entry) => entry.producedBy.stage === "discovery",
+  );
+  if (discoveryEntry) {
+    failLineage(
+      `terminal candidate must preserve discovery evidence through its snapshot reference, not native artifact ${discoveryEntry.id}`,
+    );
+  }
+  assertNativeExact(
+    candidateEntries.filter(
+      (entry) => entry.producedBy.stage === "designer",
+    ),
     nativeEntries(designer.value.nativeArtifacts, designerOptions),
     "designer",
   );
-  assertNativeSubset(
-    candidateEntries,
+  assertNativeExact(
+    candidateEntries.filter(
+      (entry) => entry.producedBy.stage === "modeler",
+    ),
     nativeEntries(modeler.value.nativeArtifacts, modelerOptions),
     "modeler",
   );
 }
 
 function assertContinuationLineage(value, context) {
+  const sourceInvocation = value.sourceInvocation;
   if (
-    value.sourceInvocation.invocationId !== context.invocation.invocationId ||
-    value.sourceInvocation.invocationFingerprint !==
-      context.producer?.invocationFingerprint
+    sourceInvocation.invocationId !== context.producer?.invocationId ||
+    sourceInvocation.invocationFingerprint !==
+      context.producer?.invocationFingerprint ||
+    !samePlugin(sourceInvocation.plugin, context.producer?.plugin) ||
+    sourceInvocation.stepInvocationDigest !==
+      context.producer?.stepInvocationDigest
   ) {
     failLineage("continuation source invocation does not match execution");
   }
@@ -419,6 +625,16 @@ function assertContinuationLineage(value, context) {
       recorded.step !== actual.step ||
       recorded.plugin.id !== actual.plugin.id ||
       recorded.plugin.version !== actual.plugin.version ||
+      recorded.sourceInvocation.invocationId !==
+        actual.sourceInvocation.invocationId ||
+      recorded.sourceInvocation.invocationFingerprint !==
+        actual.sourceInvocation.invocationFingerprint ||
+      !samePlugin(
+        recorded.sourceInvocation.plugin,
+        actual.sourceInvocation.plugin,
+      ) ||
+      recorded.sourceInvocation.stepInvocationDigest !==
+        actual.sourceInvocation.stepInvocationDigest ||
       recorded.stepInvocationDigest !== actual.stepInvocationDigest ||
       recorded.stepResultDigest !== actual.digest ||
       canonicalJsonDigest(recorded.outputs) !==
@@ -426,6 +642,62 @@ function assertContinuationLineage(value, context) {
     ) {
       failLineage("continuation completed-stage provenance is invalid");
     }
+  }
+}
+
+async function assertContinuationSourceCheckpoint(value, context) {
+  if (typeof context.loadCheckpoint !== "function") {
+    failLineage("continuation resume requires a checkpoint loader");
+  }
+  const sourceInvocation = value.sourceInvocation;
+  const checkpoint = await context.loadCheckpoint(
+    sourceInvocation.stepInvocationDigest,
+  );
+  if (!checkpoint) {
+    failLineage("continuation source terminal checkpoint is missing");
+  }
+  const moduleResult = checkpoint.moduleResult;
+  if (
+    checkpoint.disposition !== "terminal" ||
+    checkpoint.invocationId !== sourceInvocation.invocationId ||
+    checkpoint.invocationFingerprint !==
+      sourceInvocation.invocationFingerprint ||
+    !samePlugin(checkpoint.plugin, sourceInvocation.plugin) ||
+    checkpoint.stepInvocationDigest !==
+      sourceInvocation.stepInvocationDigest ||
+    checkpoint.step !== value.activeStage ||
+    checkpoint.chainFingerprint !== value.chainFingerprint ||
+    moduleResult?.invocationId !== sourceInvocation.invocationId ||
+    moduleResult?.outcome !== "needs_clarification"
+  ) {
+    failLineage("continuation source terminal checkpoint is invalid");
+  }
+  const outputNames = Object.keys(moduleResult.outputs ?? {}).sort();
+  if (
+    outputNames.length !== 2 ||
+    outputNames[0] !== "clarification-requests" ||
+    outputNames[1] !== "continuation"
+  ) {
+    failLineage(
+      "continuation source checkpoint has invalid clarification outputs",
+    );
+  }
+  const request = oneLoaded(
+    context.loadedInputs,
+    "clarification-request",
+  );
+  const requestRefs = moduleResult.outputs["clarification-requests"];
+  const continuationRefs = moduleResult.outputs.continuation;
+  if (
+    !request ||
+    requestRefs?.length !== 1 ||
+    continuationRefs?.length !== 1 ||
+    !samePointer(requestRefs[0], request.ref) ||
+    !samePointer(continuationRefs[0], context.ref)
+  ) {
+    failLineage(
+      "continuation source checkpoint does not bind the exact clarification artifacts",
+    );
   }
 }
 
@@ -452,12 +724,14 @@ async function architectureOptions(value, context) {
   if (refs.length === 0) {
     return {};
   }
-  if (typeof context.load !== "function") {
-    throw new Error("attached architecture sections require a verified loader");
+  if (typeof context.loadArtifact !== "function") {
+    throw new Error(
+      "attached architecture sections require a verified artifact-record loader",
+    );
   }
   const resolved = new Map();
   for (const ref of refs) {
-    resolved.set(refKey(ref), await context.load(ref));
+    resolved.set(refKey(ref), await context.loadArtifact(ref));
   }
   return {
     resolveAttached(ref) {
@@ -469,6 +743,12 @@ async function architectureOptions(value, context) {
 async function validateArchitectureRuntimeArtifact(value, context) {
   const options = await architectureOptions(value, context);
   validateArchitectureArtifact(value, options);
+  const verifiedNativeRefs = await verifyNativeArtifactBytes(
+    value,
+    context,
+    options,
+  );
+  assertSourceReferenceClosure(value, context, options, verifiedNativeRefs);
 
   if (
     context.phase === "input" &&
@@ -510,6 +790,22 @@ async function validateArchitectureRuntimeArtifact(value, context) {
     value.kind === "ArchitectureDesignContinuation"
   ) {
     assertContinuationLineage(value, context);
+    const request = oneLoaded(
+      context.loadedArtifacts,
+      "clarification-requests",
+    );
+    if (!request) {
+      failLineage(
+        "architecture continuation output is missing its clarification request",
+      );
+    }
+    validateArchitectureClarificationIssuance({
+      invocation: context.invocation,
+      clarificationRequestRef: request.ref,
+      clarificationRequest: request.value,
+      continuationRef: context.ref,
+      continuation: value,
+    });
   }
 
   if (context.phase === "output" && value.kind === "ArchitectureDraft") {
@@ -522,12 +818,23 @@ async function validateArchitectureRuntimeArtifact(value, context) {
       context.loadedInputs,
       "current-architecture-snapshot",
     );
-    if (!state) {
-      throw new Error("ArchitectureDraft validation requires loaded project state");
+    const requirements = oneLoaded(
+      context.loadedInputs,
+      "requirements-baseline",
+    );
+    const projectOverview = oneLoaded(
+      context.loadedInputs,
+      "project-overview-baseline",
+    );
+    if (!state || !requirements || !projectOverview) {
+      throw new Error(
+        "ArchitectureDraft validation requires loaded project state, requirements, and project overview",
+      );
     }
     validateArchitectureDraftAgainstState({
       projectArchitectureState: state.value,
       projectArchitectureStateRef: state.ref,
+      requirementsBaseline: requirements.value,
       architectureDraft: value,
       currentArchitectureSnapshot: snapshot?.value,
       options,
@@ -547,9 +854,17 @@ async function validateArchitectureRuntimeArtifact(value, context) {
       context.loadedInputs,
       "architecture-baseline",
     );
-    if (!state || !baseline) {
+    const requirements = oneLoaded(
+      context.loadedInputs,
+      "requirements-baseline",
+    );
+    const projectOverview = oneLoaded(
+      context.loadedInputs,
+      "project-overview-baseline",
+    );
+    if (!state || !baseline || !requirements || !projectOverview) {
       throw new Error(
-        "ArchitectureChangeSetDraft validation requires loaded state and baseline",
+        "ArchitectureChangeSetDraft validation requires loaded state, baseline, requirements, and project overview",
       );
     }
     const baselineOptions = await architectureOptions(
@@ -567,6 +882,7 @@ async function validateArchitectureRuntimeArtifact(value, context) {
     validateArchitectureChangeSetAgainstState({
       projectArchitectureState: state.value,
       projectArchitectureStateRef: state.ref,
+      requirementsBaseline: requirements.value,
       architectureChangeSet: value,
       options: combinedOptions,
     });
@@ -582,6 +898,7 @@ async function validateArchitectureRuntimeArtifact(value, context) {
     context.phase === "input" &&
     value.kind === "ArchitectureDesignContinuation"
   ) {
+    await assertContinuationSourceCheckpoint(value, context);
     const request = oneLoaded(context.loadedInputs, "clarification-request");
     const response = oneLoaded(
       context.loadedInputs,
@@ -601,17 +918,10 @@ async function validateArchitectureRuntimeArtifact(value, context) {
 
 export function architectureRuntimeArtifactContracts() {
   return [
+    ...requirementsRuntimeArtifactContracts(),
     ...[...ARCHITECTURE_SCHEMAS].map((schema) => ({
       schema,
       validate: validateArchitectureRuntimeArtifact,
-    })),
-    ...[...REQUIREMENTS_SCHEMAS].map((schema) => ({
-      schema,
-      validate: validateRequirementsArtifact,
-    })),
-    ...[...SHARED_SCHEMAS].map((schema) => ({
-      schema,
-      validate: validateRequirementsArtifact,
     })),
   ];
 }

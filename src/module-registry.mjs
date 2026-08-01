@@ -11,6 +11,7 @@ import {
 import {
   ArtifactRuntimeError,
   createArtifactContractRegistry,
+  loadArtifactBytes,
   loadArtifactContent,
   requireArtifactContracts,
   requireArtifactLoader,
@@ -22,6 +23,8 @@ import {
   documentValidators,
   validationDetail,
 } from "./schema-validation.mjs";
+
+const verifiedCheckpointReplayReceipts = new WeakSet();
 
 const CAPABILITY_KINDS = new Set([
   "filesystem.read",
@@ -41,6 +44,16 @@ export class ContractError extends Error {
 
 function fail(code, message) {
   throw new ContractError(code, message);
+}
+
+export function assertVerifiedCheckpointReplayReceipt(receipt) {
+  if (!isRecord(receipt) || !verifiedCheckpointReplayReceipts.has(receipt)) {
+    fail(
+      "DR2214",
+      "requirements gate requires an in-process verified checkpoint replay receipt",
+    );
+  }
+  return receipt;
 }
 
 function assertSchema(validator, value, code, label) {
@@ -496,7 +509,12 @@ function validatePluginDefinition(definition, modules) {
           fail("DR1307", `${label}.kind is invalid`);
         }
         requireString(capability.scope, `${label}.scope`);
+        parseCapabilityScopeTemplate(capability.scope, `${label}.scope`);
       }
+      assertUnique(
+        pluginOperation.capabilities.map(capabilityKey),
+        `${moduleKey}#${pluginOperation.id}.capabilities`,
+      );
       targetKeys.push(
         `${moduleKey}#${pluginOperation.id}/${pluginOperation.step ?? ""}`,
       );
@@ -594,8 +612,56 @@ function normalizedGrants(grants) {
     });
 }
 
-function validateGrants(grants, pluginOperation, pluginKey, label) {
+function parseCapabilityScopeTemplate(scope, label) {
+  if (!scope.startsWith("config:")) {
+    return { literal: scope };
+  }
+  const match = /^config:([A-Za-z][A-Za-z0-9_-]*)(\/.*)?$/.exec(scope);
+  if (!match) {
+    fail("DR1313", `${label} has an invalid configuration scope template`);
+  }
+  const suffix = match[2]?.slice(1);
+  if (
+    suffix !== undefined &&
+    (suffix.includes("\\") ||
+      suffix.split("/").some((segment) => !segment || segment === "." || segment === ".."))
+  ) {
+    fail("DR1313", `${label} has an invalid configuration scope suffix`);
+  }
+  return { field: match[1], suffix };
+}
+
+function resolveCapabilityScope(capability, config, label) {
+  const template = parseCapabilityScopeTemplate(capability.scope, label);
+  if (template.literal !== undefined) {
+    return template.literal;
+  }
+  const base = config[template.field];
+  if (typeof base !== "string" || base.length === 0) {
+    fail(
+      "DR1604",
+      `${label} requires string config field "${template.field}"`,
+    );
+  }
+  if (template.suffix === undefined) {
+    return base;
+  }
+  return `${base.replace(/[\\/]+$/, "")}/${template.suffix}`;
+}
+
+function capabilityKey({ kind, scope }) {
+  return `${kind}\u0000${scope}`;
+}
+
+function validateGrants(
+  grants,
+  pluginOperation,
+  config,
+  pluginKey,
+  label,
+) {
   requireArray(grants, label);
+  const granted = new Set();
   for (const [index, grant] of grants.entries()) {
     const grantLabel = `${label}[${index}]`;
     requireRecord(grant, grantLabel);
@@ -603,13 +669,46 @@ function validateGrants(grants, pluginOperation, pluginKey, label) {
       fail("DR1605", `${grantLabel}.kind is invalid`);
     }
     requireString(grant.scope, `${grantLabel}.scope`);
+    const key = capabilityKey(grant);
+    if (granted.has(key)) {
+      fail("DR1604", `${grantLabel} duplicates an existing grant`);
+    }
+    granted.add(key);
   }
-  const grantKinds = new Set(grants.map(({ kind }) => kind));
-  for (const capability of pluginOperation.capabilities) {
-    if (!grantKinds.has(capability.kind)) {
+
+  const demanded = new Set();
+  for (const [index, capability] of pluginOperation.capabilities.entries()) {
+    const demand = capabilityKey({
+      kind: capability.kind,
+      scope: resolveCapabilityScope(
+        capability,
+        config,
+        `plugin ${pluginKey} capability[${index}]`,
+      ),
+    });
+    if (demanded.has(demand)) {
       fail(
         "DR1604",
-        `plugin ${pluginKey} requires an ungranted ${capability.kind} capability`,
+        `plugin ${pluginKey} capabilities resolve to a duplicate demand`,
+      );
+    }
+    demanded.add(demand);
+  }
+  for (const demand of demanded) {
+    if (!granted.has(demand)) {
+      const [kind, scope] = demand.split("\u0000");
+      fail(
+        "DR1604",
+        `plugin ${pluginKey} requires exact grant ${kind}:${scope}`,
+      );
+    }
+  }
+  for (const grant of granted) {
+    if (!demanded.has(grant)) {
+      const [kind, scope] = grant.split("\u0000");
+      fail(
+        "DR1604",
+        `plugin ${pluginKey} received undeclared grant ${kind}:${scope}`,
       );
     }
   }
@@ -868,11 +967,14 @@ export function createModuleRegistry({
     if (pluginRegistrations.has(key)) {
       fail("DR1502", `duplicate plugin registration ${key}`);
     }
+    const adapter = Object.freeze({
+      invoke: registration.adapter.invoke.bind(registration.adapter),
+    });
     pluginRegistrations.set(
       key,
       Object.freeze({
         definition,
-        adapter: registration.adapter,
+        adapter,
       }),
     );
     for (const implementation of definition.implements) {
@@ -962,24 +1064,13 @@ export function createModuleRegistry({
     validateInputs(invocation, operationDefinition);
     requireRecord(invocation.options, "invocation.options");
     requireRecord(invocation.config, "invocation.config");
-    requireArray(invocation.grants, "invocation.grants");
-    for (const [index, grant] of invocation.grants.entries()) {
-      const label = `invocation.grants[${index}]`;
-      requireRecord(grant, label);
-      if (!CAPABILITY_KINDS.has(grant.kind)) {
-        fail("DR1605", `${label}.kind is invalid`);
-      }
-      requireString(grant.scope, `${label}.scope`);
-    }
-    const grantKinds = new Set(invocation.grants.map(({ kind }) => kind));
-    for (const capability of pluginOperation.capabilities) {
-      if (!grantKinds.has(capability.kind)) {
-        fail(
-          "DR1604",
-          `plugin ${pluginKey} requires an ungranted ${capability.kind} capability`,
-        );
-      }
-    }
+    validateGrants(
+      invocation.grants,
+      pluginOperation,
+      invocation.config,
+      pluginKey,
+      "invocation.grants",
+    );
 
     return Object.freeze({
       moduleDefinition,
@@ -1096,6 +1187,7 @@ export function createModuleRegistry({
       validateGrants(
         binding.grants,
         pluginOperation,
+        binding.config,
         pluginKey,
         `invocation.adapters[${index}].grants`,
       );
@@ -1329,11 +1421,42 @@ export function createModuleRegistry({
 
     const effectiveInputs =
       phase === "input" ? loadedByPort : runtime.loadedInputs;
-    const loadAttached = async (ref) => {
-      const loaded = await runtimeAction(() =>
+    const loadAttachedArtifact = async (ref) =>
+      runtimeAction(() =>
         loadArtifactContent(ref, runtime.context.artifacts),
       );
-      return loaded.value;
+    const loadAttached = async (ref) =>
+      (await loadAttachedArtifact(ref)).value;
+    const loadBytes = async (ref) =>
+      (await loadArtifactBytes(ref, runtime.context.artifacts)).bytes;
+    const loadCheckpoint = async (stepInvocationDigest) => {
+      if (
+        typeof stepInvocationDigest !== "string" ||
+        !/^sha256:[a-f0-9]{64}$/.test(stepInvocationDigest)
+      ) {
+        throw new Error("checkpoint lookup requires a SHA-256 step digest");
+      }
+      const checkpoint = await readCheckpoint(
+        runtime.context.checkpoints,
+        stepCheckpointKeyFromDigest(stepInvocationDigest),
+      );
+      if (checkpoint === undefined || checkpoint === null) {
+        return undefined;
+      }
+      const result = immutableCopy(checkpoint);
+      assertSchema(
+        documentValidators.moduleStepResult,
+        result,
+        "DR2212",
+        "source checkpoint",
+      );
+      if (result.stepInvocationDigest !== stepInvocationDigest) {
+        fail(
+          "DR2212",
+          "source checkpoint does not match the requested step invocation digest",
+        );
+      }
+      return result;
     };
 
     for (const [portName, artifacts] of Object.entries(loadedByPort)) {
@@ -1345,6 +1468,7 @@ export function createModuleRegistry({
             invocation: runtime.invocation,
             operation: runtime.resolution.operationDefinition,
             loadedInputs: exposeLoadedArtifacts(effectiveInputs),
+            loadedArtifacts: exposeLoadedArtifacts(loadedByPort),
             loadedHandoffs: Object.fromEntries(
               Object.entries(runtime.loadedHandoffs).map(([step, outputs]) => [
                 step,
@@ -1355,6 +1479,9 @@ export function createModuleRegistry({
             chainFingerprint: runtime.resolution.chainFingerprint,
             producer: producer === undefined ? undefined : immutableCopy(producer),
             load: loadAttached,
+            loadArtifact: loadAttachedArtifact,
+            loadBytes,
+            loadCheckpoint,
           }),
         );
       }
@@ -1506,6 +1633,7 @@ export function createModuleRegistry({
 
   function producerFor(stepInvocation) {
     return {
+      invocationId: stepInvocation.invocationId,
       step: stepInvocation.step,
       plugin: stepInvocation.plugin,
       invocationFingerprint: stepInvocation.invocationFingerprint,
@@ -1566,7 +1694,13 @@ export function createModuleRegistry({
       result = validateResult(
         invocation,
         immutableCopy(
-          await resolution.adapter.invoke(invocation, adapterContext),
+          await resolution.adapter.invoke(
+            invocation,
+            adapterContext,
+            stepInvocation === undefined
+              ? undefined
+              : immutableCopy(producerFor(stepInvocation)),
+          ),
         ),
       );
     }
@@ -1647,6 +1781,11 @@ export function createModuleRegistry({
         recorded[resume.completedStepInvocationDigestField];
       const stepResultDigest =
         recorded[resume.completedStepResultDigestField];
+      const completedSource = recorded[resume.sourceInvocationField];
+      const completedSourceInvocationId =
+        completedSource?.[resume.sourceInvocationIdField];
+      const completedSourceInvocationFingerprint =
+        completedSource?.[resume.sourceInvocationFingerprintField];
       if (
         step !== plan.stepDefinition.id ||
         plugin?.id !== plan.binding.plugin.id ||
@@ -1662,6 +1801,18 @@ export function createModuleRegistry({
         typeof stepResultDigest !== "string"
       ) {
         fail("DR2211", "continuation completed-step digests are missing");
+      }
+      if (
+        typeof completedSourceInvocationId !== "string" ||
+        typeof completedSourceInvocationFingerprint !== "string" ||
+        completedSource?.plugin?.id !== plugin.id ||
+        completedSource?.plugin?.version !== plugin.version ||
+        completedSource?.stepInvocationDigest !== stepInvocationDigest
+      ) {
+        fail(
+          "DR2211",
+          "continuation completed-step source invocation is incomplete",
+        );
       }
 
       const checkpoint = await readCheckpoint(
@@ -1680,8 +1831,8 @@ export function createModuleRegistry({
       );
       if (
         result.disposition !== "continue" ||
-        result.invocationId !== sourceInvocationId ||
-        result.invocationFingerprint !== sourceInvocationFingerprint ||
+        result.invocationId !== completedSourceInvocationId ||
+        result.invocationFingerprint !== completedSourceInvocationFingerprint ||
         result.chainFingerprint !== runtime.resolution.chainFingerprint ||
         result.stepInvocationDigest !== stepInvocationDigest ||
         result.step !== step ||
@@ -1695,9 +1846,10 @@ export function createModuleRegistry({
 
       validateStepOutputs(result.outputs, plan.stepDefinition);
       const producer = {
+        invocationId: completedSourceInvocationId,
         step,
         plugin,
-        invocationFingerprint: sourceInvocationFingerprint,
+        invocationFingerprint: completedSourceInvocationFingerprint,
         chainFingerprint: runtime.resolution.chainFingerprint,
         stepInvocationDigest,
       };
@@ -1712,6 +1864,12 @@ export function createModuleRegistry({
         immutableCopy({
           step,
           plugin,
+          sourceInvocation: {
+            invocationId: completedSourceInvocationId,
+            invocationFingerprint: completedSourceInvocationFingerprint,
+            plugin,
+            stepInvocationDigest,
+          },
           stepInvocationDigest,
           digest: stepResultDigest,
           outputs: result.outputs,
@@ -1719,6 +1877,93 @@ export function createModuleRegistry({
       );
     }
     return startIndex;
+  }
+
+  async function verifyCheckpointedExecution(invocation, context = {}) {
+    const invocationSnapshot = immutableCopy(invocation);
+    const resolution = resolve(invocationSnapshot);
+    try {
+      requireArtifactLoader(context.artifacts);
+      requireArtifactContracts(
+        runtimeSchemas(resolution.operationDefinition),
+        artifactContractRegistry,
+      );
+    } catch (error) {
+      runtimeFailure(error);
+    }
+    if (
+      resolution.mode !== "single" ||
+      resolution.pluginOperation.execution !== "effect"
+    ) {
+      fail(
+        "DR2213",
+        "checkpoint-only verification requires a checkpointed single-adapter effect",
+      );
+    }
+    if (
+      !isRecord(context.checkpoints) ||
+      typeof context.checkpoints.get !== "function"
+    ) {
+      fail(
+        "DR2200",
+        "checkpoint-only verification requires context.checkpoints.get",
+      );
+    }
+
+    const runtime = {
+      context,
+      invocation: invocationSnapshot,
+      resolution,
+      loadedInputs: undefined,
+      loadedHandoffs: {},
+      priorResults: [],
+    };
+    runtime.loadedInputs = await loadPortArtifacts(
+      invocationSnapshot.inputs,
+      resolution.operationDefinition.inputs,
+      "input",
+      runtime,
+    );
+    await enforceDeterministicRoute(runtime);
+
+    const stepInvocation = singleStepInvocation(invocationSnapshot, resolution);
+    const checkpoint = await readCheckpoint(
+      context.checkpoints,
+      stepCheckpointKey(stepInvocation),
+    );
+    if (checkpoint === undefined || checkpoint === null) {
+      fail(
+        "DR2213",
+        "checkpoint-only verification requires the exact terminal checkpoint",
+      );
+    }
+    const envelope = immutableCopy(checkpoint);
+    validateStepResultBinding(stepInvocation, envelope);
+    if (envelope.disposition !== "terminal") {
+      fail("DR2213", "checkpoint-only verification requires a terminal result");
+    }
+    const moduleResult = validateResult(
+      invocationSnapshot,
+      envelope.moduleResult,
+    );
+    const loadedOutputs = await loadPortArtifacts(
+      moduleResult.outputs,
+      resolution.operationDefinition.outputs,
+      "output",
+      runtime,
+      producerFor(stepInvocation),
+    );
+    const receipt = immutableCopy({
+      apiVersion: "devrelay.dev/v1alpha1",
+      kind: "VerifiedCheckpointReplayReceipt",
+      invocation: invocationSnapshot,
+      producer: producerFor(stepInvocation),
+      moduleResult,
+      loadedInputs: exposeLoadedArtifacts(runtime.loadedInputs),
+      loadedOutputs: exposeLoadedArtifacts(loadedOutputs),
+    });
+    verifiedCheckpointReplayReceipts.add(receipt);
+    return receipt;
   }
 
   async function execute(invocation, context = {}) {
@@ -1859,6 +2104,12 @@ export function createModuleRegistry({
         immutableCopy({
           step: plan.stepDefinition.id,
           plugin: plan.binding.plugin,
+          sourceInvocation: {
+            invocationId: stepInvocation.invocationId,
+            invocationFingerprint: stepInvocation.invocationFingerprint,
+            plugin: plan.binding.plugin,
+            stepInvocationDigest: stepInvocation.stepInvocationDigest,
+          },
           stepInvocationDigest: stepInvocation.stepInvocationDigest,
           digest: canonicalJsonDigest(stepResult),
           outputs: stepResult.outputs,
@@ -1903,6 +2154,7 @@ export function createModuleRegistry({
     selectOperation,
     resolve,
     validateResult,
+    verifyCheckpointedExecution,
     execute,
     moduleCount: moduleDefinitions.size,
     pluginCount: pluginRegistrations.size,

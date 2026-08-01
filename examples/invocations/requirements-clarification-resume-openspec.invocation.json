@@ -19,7 +19,7 @@
         "artifactId": "goal-001",
         "schema": "https://devrelay.dev/artifacts/goal/v1",
         "mediaType": "application/vnd.devrelay.goal+json",
-        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c",
         "uri": "file:///workspace/.devrelay/artifacts/goal-001.json"
       }
     ],
@@ -28,8 +28,17 @@
         "artifactId": "project-context-001",
         "schema": "https://devrelay.dev/artifacts/project-context/v1",
         "mediaType": "application/vnd.devrelay.project-context+json",
-        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5",
         "uri": "file:///workspace/.devrelay/artifacts/project-context-001.json"
+      }
+    ],
+    "clarification-request": [
+      {
+        "artifactId": "clarification-request-001",
+        "schema": "https://devrelay.dev/artifacts/clarification-request-set/v1",
+        "mediaType": "application/vnd.devrelay.clarification-request-set+json",
+        "digest": "sha256:4ebc0b6dc7cf8cb5b09de33ad5bc7eec3f000431fadb5d65356b62e3748ce0aa",
+        "uri": "file:///workspace/.devrelay/artifacts/clarification-request-001.json"
       }
     ],
     "continuation": [
@@ -37,26 +46,28 @@
         "artifactId": "requirements-continuation-001",
         "schema": "https://devrelay.dev/artifacts/requirements-gathering-continuation/v1",
         "mediaType": "application/vnd.devrelay.requirements-gathering-continuation+json",
-        "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "digest": "sha256:b0edc88bed88369a0075ef7410ec3533b8051b5ff9401036990f9c30c7614b59",
         "uri": "file:///workspace/.devrelay/artifacts/requirements-continuation-001.json"
       }
     ],
     "clarification-responses": [
       {
-        "artifactId": "clarification-responses-001",
+        "artifactId": "clarification-response-001",
         "schema": "https://devrelay.dev/artifacts/clarification-response-set/v1",
         "mediaType": "application/vnd.devrelay.clarification-response-set+json",
-        "digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
-        "uri": "file:///workspace/.devrelay/artifacts/clarification-responses-001.json"
+        "digest": "sha256:0fd8d8d836951c92d058bc3b39657f4365821d4e9bfc7471067fa132415e6c3a",
+        "uri": "file:///workspace/.devrelay/artifacts/clarification-response-001.json"
       }
     ]
   },
   "options": {},
   "config": {
     "projectRoot": "/workspace",
+    "toolName": "OpenSpec",
     "toolVersion": "pinned-by-lock-record",
+    "nativeOperation": "requirements.gather",
     "changeName": "add-user-authentication",
-    "schema": "spec-driven",
+    "schema": "devrelay-requirements",
     "bridge": "agent-command"
   },
   "grants": [
@@ -67,10 +78,6 @@
     {
       "kind": "filesystem.write",
       "scope": "/workspace/openspec/changes"
-    },
-    {
-      "kind": "process.spawn",
-      "scope": "openspec"
     },
     {
       "kind": "network.connect",

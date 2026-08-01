@@ -19,7 +19,7 @@
         "artifactId": "goal-change-001",
         "schema": "https://devrelay.dev/artifacts/goal/v1",
         "mediaType": "application/vnd.devrelay.goal+json",
-        "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+        "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609",
         "uri": "file:///workspace/.devrelay/artifacts/goal-change-001.json"
       }
     ],
@@ -28,7 +28,7 @@
         "artifactId": "project-context-001",
         "schema": "https://devrelay.dev/artifacts/project-context/v1",
         "mediaType": "application/vnd.devrelay.project-context+json",
-        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5",
         "uri": "file:///workspace/.devrelay/artifacts/project-context-001.json"
       }
     ],
@@ -37,7 +37,7 @@
         "artifactId": "repository-snapshot-001",
         "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
         "mediaType": "application/vnd.devrelay.repository-snapshot+json",
-        "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613",
         "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
       }
     ],
@@ -46,17 +46,28 @@
         "artifactId": "requirements-baseline-001",
         "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
         "mediaType": "application/vnd.devrelay.requirements-baseline+json",
-        "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
         "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc",
+        "uri": "file:///workspace/.devrelay/artifacts/project-overview-baseline-001.json"
       }
     ]
   },
   "options": {},
   "config": {
     "projectRoot": "/workspace",
+    "toolName": "OpenSpec",
     "toolVersion": "pinned-by-lock-record",
+    "nativeOperation": "requirements.gather",
     "changeName": "require-mfa",
-    "schema": "spec-driven",
+    "schema": "devrelay-requirements",
     "bridge": "agent-command"
   },
   "grants": [
@@ -67,10 +78,6 @@
     {
       "kind": "filesystem.write",
       "scope": "/workspace/openspec/changes"
-    },
-    {
-      "kind": "process.spawn",
-      "scope": "openspec"
     },
     {
       "kind": "network.connect",

@@ -25,7 +25,8 @@
               "toolVersion",
               "featureName",
               "command",
-              "bridge"
+              "bridge",
+              "toolName"
             ],
             "properties": {
               "projectRoot": {
@@ -44,10 +45,10 @@
                 "const": "/speckit.plan"
               },
               "bridge": {
-                "enum": [
-                  "agent-command",
-                  "process-json"
-                ]
+                "const": "agent-command"
+              },
+              "toolName": {
+                "const": "GitHub Spec Kit"
               }
             }
           },
@@ -59,10 +60,6 @@
             {
               "kind": "filesystem.write",
               "scope": "config:projectRoot/specs"
-            },
-            {
-              "kind": "process.spawn",
-              "scope": "specify"
             },
             {
               "kind": "network.connect",

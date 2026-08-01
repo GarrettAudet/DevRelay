@@ -4,8 +4,14 @@ import test from "node:test";
 
 import { sha256Digest } from "../src/content-digest.mjs";
 import { createModuleRegistry } from "../src/module-registry.mjs";
-import { validateRequirementsArtifact } from "../src/requirements-artifact-validator.mjs";
-import { validateSharedArtifact } from "../src/shared-artifact-validator.mjs";
+import {
+  PROJECT_OVERVIEW_DOCUMENT,
+  PROJECT_OVERVIEW_PROJECTION,
+  PROJECT_OVERVIEW_RENDERER,
+  deriveProjectOverview,
+  renderProjectOverviewMarkdownBytes,
+} from "../src/project-overview.mjs";
+import { requirementsRuntimeArtifactContracts } from "../src/requirements-runtime-contracts.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -20,6 +26,7 @@ const [
   projectContext,
   draft,
   nativeBundleFixture,
+  nativeSourceBytes,
 ] = await Promise.all([
   readJson("examples/modules/requirements-gathering.module.json"),
   readJson("examples/plugins/openspec.plugin.json"),
@@ -29,6 +36,7 @@ const [
   readJson("examples/artifacts/project-context-001.json"),
   readJson("examples/artifacts/requirements-draft-001.json"),
   readJson("examples/artifacts/native-source-bundle-001.json"),
+  readFile(new URL("examples/native/openspec/proposal.md", root)),
 ]);
 
 function add(store, artifactId, schema, mediaType, value) {
@@ -40,6 +48,45 @@ function add(store, artifactId, schema, mediaType, value) {
     mediaType,
     digest: sha256Digest(bytes),
     uri: `artifact://requirements-runtime/${artifactId}`,
+  };
+}
+
+function pointer(ref) {
+  return { artifactId: ref.artifactId, digest: ref.digest };
+}
+
+function addProjectOverviewDraft(store, requirementsDraftRef, requirements) {
+  const overview = deriveProjectOverview(requirements);
+  const bytes = renderProjectOverviewMarkdownBytes(overview);
+  const markdownArtifact = {
+    artifactId: "project-overview-md-runtime",
+    digest: sha256Digest(bytes),
+  };
+  store.set(markdownArtifact.artifactId, bytes);
+  const value = {
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "ProjectOverviewDraft",
+    draftId: "project-overview-draft-runtime",
+    requirementsDraft: pointer(requirementsDraftRef),
+    projection: { ...PROJECT_OVERVIEW_PROJECTION },
+    overview,
+    renderedDocument: {
+      path: PROJECT_OVERVIEW_DOCUMENT.path,
+      schema: PROJECT_OVERVIEW_DOCUMENT.schema,
+      mediaType: PROJECT_OVERVIEW_DOCUMENT.mediaType,
+      artifact: markdownArtifact,
+      renderer: { ...PROJECT_OVERVIEW_RENDERER },
+    },
+  };
+  return {
+    value,
+    ref: add(
+      store,
+      value.draftId,
+      "https://devrelay.dev/artifacts/project-overview-draft/v1",
+      "application/vnd.devrelay.project-overview-draft+json",
+      value,
+    ),
   };
 }
 
@@ -60,14 +107,12 @@ test("legacy RequirementsGathering single-adapter execution remains content-auth
     projectContext,
   );
   const runtimeDraft = structuredClone(draft);
-  runtimeDraft.goal = {
-    artifactId: goalRef.artifactId,
-    digest: goalRef.digest,
-  };
-  runtimeDraft.projectContext = {
-    artifactId: contextRef.artifactId,
-    digest: contextRef.digest,
-  };
+  runtimeDraft.baseInputs = [
+    { role: "goal", artifact: pointer(goalRef) },
+    { role: "project-context", artifact: pointer(contextRef) },
+  ];
+  runtimeDraft.goal = pointer(goalRef);
+  runtimeDraft.projectContext = pointer(contextRef);
   const replacePointers = (value) => {
     if (value === null || typeof value !== "object") {
       return;
@@ -91,12 +136,32 @@ test("legacy RequirementsGathering single-adapter execution remains content-auth
     runtimeDraft,
   );
 
+  const projectOverview = addProjectOverviewDraft(
+    store,
+    draftRef,
+    runtimeDraft.requirements,
+  );
+
+  const invocation = structuredClone(invocationFixture);
+  invocation.inputs = {
+    goal: [goalRef],
+    "project-context": [contextRef],
+  };
+  const sourceRef = {
+    artifactId: "openspec-proposal-001",
+    digest: sha256Digest(nativeSourceBytes),
+  };
+  store.set(sourceRef.artifactId, Buffer.from(nativeSourceBytes));
   const nativeBundle = structuredClone(nativeBundleFixture);
+  nativeBundle.tool = {
+    name: invocation.config.toolName,
+    version: invocation.config.toolVersion,
+  };
+  nativeBundle.operation = invocation.config.nativeOperation;
+  nativeBundle.sources[0].artifact = sourceRef;
   nativeBundle.canonicalOutputs = [
-    {
-      artifactId: draftRef.artifactId,
-      digest: draftRef.digest,
-    },
+    pointer(draftRef),
+    pointer(projectOverview.ref),
   ];
   const nativeRef = add(
     store,
@@ -106,27 +171,15 @@ test("legacy RequirementsGathering single-adapter execution remains content-auth
     nativeBundle,
   );
 
-  const invocation = structuredClone(invocationFixture);
-  invocation.inputs = {
-    goal: [goalRef],
-    "project-context": [contextRef],
-  };
   const result = structuredClone(resultFixture);
   result.outputs = {
     "requirements-draft": [draftRef],
+    "project-overview-draft": [projectOverview.ref],
     "native-source-bundle": [nativeRef],
   };
   result.evidence[0].artifact = structuredClone(nativeRef);
 
   let calls = 0;
-  const requirementsSchemas = new Set(
-    [...moduleDefinition.operations[0].inputs, ...moduleDefinition.operations[0].outputs]
-      .map(({ schema }) => schema)
-      .filter(
-        (schema) =>
-          schema !== "https://devrelay.dev/artifacts/native-source-bundle/v1",
-      ),
-  );
   const registry = createModuleRegistry({
     modules: [moduleDefinition],
     plugins: [
@@ -140,16 +193,7 @@ test("legacy RequirementsGathering single-adapter execution remains content-auth
         },
       },
     ],
-    artifactContracts: [
-      ...[...requirementsSchemas].map((schema) => ({
-        schema,
-        validate: validateRequirementsArtifact,
-      })),
-      {
-        schema: "https://devrelay.dev/artifacts/native-source-bundle/v1",
-        validate: validateSharedArtifact,
-      },
-    ],
+    artifactContracts: requirementsRuntimeArtifactContracts(),
   });
 
   const artifacts = {

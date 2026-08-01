@@ -21,6 +21,7 @@ const [
   routeDecisionSchema,
   resultSchema,
   artifactSchema,
+  projectOverviewArtifactSchema,
   sharedArtifactSchema,
   requirementsModule,
   commandModule,
@@ -43,6 +44,7 @@ const [
   readJson("contracts/module-route-decision.schema.json"),
   readJson("contracts/module-result.schema.json"),
   readJson("contracts/requirements-gathering-artifacts.schema.json"),
+  readJson("contracts/project-overview-artifacts.schema.json"),
   readJson("contracts/shared-artifacts.schema.json"),
   readJson("examples/modules/requirements-gathering.module.json"),
   readJson("examples/modules/command.module.json"),
@@ -181,10 +183,32 @@ test("registry resolves either requirements plug-in without changing the module"
   assert.equal(openSpec.operationDefinition, specKit.operationDefinition);
   assert.equal(openSpec.pluginDefinition.metadata.id, "openspec");
   assert.equal(specKit.pluginDefinition.metadata.id, "github-spec-kit");
-  assert.equal(openSpec.adapter, adapters.openspec);
-  assert.equal(specKit.adapter, adapters.specKit);
+  assert.notEqual(openSpec.adapter, adapters.openspec);
+  assert.notEqual(specKit.adapter, adapters.specKit);
+  assert.equal(Object.isFrozen(openSpec.adapter), true);
+  assert.equal(Object.isFrozen(specKit.adapter), true);
   assert.equal(registry.moduleCount, 2);
   assert.equal(registry.pluginCount, 3);
+});
+
+test("registry snapshots the adapter invoke callable at registration", () => {
+  const supplied = {
+    invoke() {
+      return "registered";
+    },
+  };
+  const localRegistry = createModuleRegistry({
+    modules: [requirementsModule],
+    plugins: [{ definition: openSpecPlugin, adapter: supplied }],
+  });
+  const resolved = localRegistry.resolve(openSpecInvocation);
+  const capturedInvoke = resolved.adapter.invoke;
+
+  supplied.invoke = () => "replaced";
+
+  assert.equal(resolved.adapter.invoke, capturedInvoke);
+  assert.equal(resolved.adapter.invoke(), "registered");
+  assert.equal(Object.isFrozen(resolved.adapter), true);
 });
 
 test("plug-in choice is part of deterministic invocation identity", () => {
@@ -196,10 +220,12 @@ test("plug-in choice is part of deterministic invocation identity", () => {
   const reordered = {
     ...openSpecInvocation,
     config: {
+      nativeOperation: openSpecInvocation.config.nativeOperation,
       bridge: openSpecInvocation.config.bridge,
       schema: openSpecInvocation.config.schema,
       changeName: openSpecInvocation.config.changeName,
       toolVersion: openSpecInvocation.config.toolVersion,
+      toolName: openSpecInvocation.config.toolName,
       projectRoot: openSpecInvocation.config.projectRoot,
     },
   };
@@ -256,10 +282,18 @@ test("change-set outcome requires an exact baseline input", () => {
     changeSetResult,
   );
 
-  const noBaseline = clone(changeSetInvocation);
-  delete noBaseline.inputs["requirements-baseline"];
+  const incompletePair = clone(changeSetInvocation);
+  delete incompletePair.inputs["requirements-baseline"];
   expectContractError(
-    () => registry.validateResult(noBaseline, changeSetResult),
+    () => registry.validateResult(incompletePair, changeSetResult),
+    "DR1406",
+  );
+
+  const noBaselinePair = clone(changeSetInvocation);
+  delete noBaselinePair.inputs["requirements-baseline"];
+  delete noBaselinePair.inputs["project-overview-baseline"];
+  expectContractError(
+    () => registry.validateResult(noBaselinePair, changeSetResult),
     "DR1703",
   );
 });
@@ -280,10 +314,15 @@ test("clarification is checkpointed and requires portable continuation", () => {
 });
 
 test("clarification continuation resolves through another compatible plug-in contract", () => {
+  const priorRequest = clarificationResult.outputs["clarification-requests"][0];
+  const resumedRequest =
+    clarificationResumeInvocation.inputs["clarification-request"][0];
   const priorContinuation = clarificationResult.outputs.continuation[0];
   const resumedContinuation =
     clarificationResumeInvocation.inputs.continuation[0];
 
+  assert.equal(priorRequest.artifactId, resumedRequest.artifactId);
+  assert.equal(priorRequest.digest, resumedRequest.digest);
   assert.equal(priorContinuation.artifactId, resumedContinuation.artifactId);
   assert.equal(priorContinuation.digest, resumedContinuation.digest);
   assert.equal(clarificationInvocation.plugin.id, "github-spec-kit");
@@ -347,7 +386,7 @@ test("generic command example uses the same registry path", () => {
     grants: [
       {
         kind: "filesystem.read",
-        scope: "/workspace",
+        scope: "input:workspace",
       },
       {
         kind: "process.spawn",
@@ -410,7 +449,11 @@ test("all top-level contracts use JSON Schema draft 2020-12", () => {
 
 test("canonical requirements artifact IDs cover every module port", () => {
   const artifactIds = new Set(
-    [artifactSchema, sharedArtifactSchema].flatMap((schema) =>
+    [
+      artifactSchema,
+      projectOverviewArtifactSchema,
+      sharedArtifactSchema,
+    ].flatMap((schema) =>
       Object.values(schema.$defs)
         .map((definition) => definition.$id)
         .filter(Boolean),

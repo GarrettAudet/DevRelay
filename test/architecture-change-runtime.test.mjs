@@ -4,11 +4,19 @@ import test from "node:test";
 
 import { architectureRuntimeArtifactContracts } from "../src/architecture-runtime-contracts.mjs";
 import { sha256Digest } from "../src/content-digest.mjs";
+import { renderProjectOverviewMarkdownBytes } from "../src/project-overview.mjs";
 import { ContractError, createModuleRegistry } from "../src/module-registry.mjs";
 import {
   MODULE_ROUTE_DECISION_MEDIA_TYPE,
   MODULE_ROUTE_DECISION_SCHEMA,
 } from "../src/operation-router.mjs";
+import {
+  alignArchitectureChangeDigests,
+  alignArchitectureRequirements,
+  augmentArchitectureArtifactOverview,
+  createProjectOverviewBaselineFixture,
+} from "./architecture-project-overview-fixtures.mjs";
+import { registerArchitectureNativeBytes } from "./native-architecture-fixtures.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (relativePath) =>
@@ -36,8 +44,8 @@ const [
   readJson("examples/plugins/madr.plugin.json"),
   readJson("examples/invocations/architecture-design-change.invocation.json"),
   readJson("examples/artifacts/project-architecture-state-baselined-001.json"),
-  readJson("dogfood/architecture-design/requirements-baseline.json"),
-  readJson("dogfood/architecture-design/project-context.json"),
+  readJson("examples/artifacts/requirements-baseline-001.json"),
+  readJson("examples/artifacts/project-context-001.json"),
   readJson("dogfood/architecture-design/repository-snapshot.json"),
   readJson("examples/artifacts/architecture-baseline-001.json"),
   readJson("examples/artifacts/architecture-designer-working-001.json"),
@@ -51,6 +59,8 @@ const schemaByKind = {
     "https://devrelay.dev/artifacts/project-architecture-state/v1",
   RequirementsBaseline:
     "https://devrelay.dev/artifacts/requirements-baseline/v1",
+  ProjectOverviewBaseline:
+    "https://devrelay.dev/artifacts/project-overview-baseline/v1",
   ProjectContext: "https://devrelay.dev/artifacts/project-context/v1",
   RepositorySnapshot:
     "https://devrelay.dev/artifacts/repository-snapshot/v1",
@@ -69,6 +79,8 @@ const mediaTypeByKind = {
   ProjectArchitectureState:
     "application/vnd.devrelay.project-architecture-state+json",
   RequirementsBaseline: "application/vnd.devrelay.requirements-baseline+json",
+  ProjectOverviewBaseline:
+    "application/vnd.devrelay.project-overview-baseline+json",
   ProjectContext: "application/vnd.devrelay.project-context+json",
   RepositorySnapshot: "application/vnd.devrelay.repository-snapshot+json",
   ArchitectureBaseline: "application/vnd.devrelay.architecture-baseline+json",
@@ -94,7 +106,11 @@ function createStore() {
         uri: `artifact://architecture-change-runtime/${artifactId}`,
       };
       bytesById.set(artifactId, bytes);
+      registerArchitectureNativeBytes(value, bytesById);
       return ref;
+    },
+    addBytes(artifactId, bytes) {
+      bytesById.set(artifactId, Buffer.from(bytes));
     },
     artifacts: {
       async load(ref) {
@@ -171,6 +187,7 @@ async function changeRuntime({
   mutateState,
   mutateModeler,
   mutateCandidate,
+  mutateProjectOverview,
 } = {}) {
   const store = createStore();
   const projectContext = structuredClone(projectContextFixture);
@@ -182,11 +199,41 @@ async function changeRuntime({
     requirementsFixture.baselineId,
     requirementsFixture,
   );
+  const projectOverviewFixture = createProjectOverviewBaselineFixture({
+    requirementsBaseline: requirementsFixture,
+    requirementsBaselineRef: requirementsRef,
+    baselineId: "project-overview-baseline-change-runtime",
+  });
+  mutateProjectOverview?.(projectOverviewFixture.value);
+  if (mutateProjectOverview) {
+    projectOverviewFixture.documentBytes =
+      renderProjectOverviewMarkdownBytes(
+        projectOverviewFixture.value.overview,
+      );
+    projectOverviewFixture.documentRef.digest = sha256Digest(
+      projectOverviewFixture.documentBytes,
+    );
+  }
+  store.addBytes(
+    projectOverviewFixture.documentRef.artifactId,
+    projectOverviewFixture.documentBytes,
+  );
+  const projectOverviewRef = store.add(
+    projectOverviewFixture.value.baselineId,
+    projectOverviewFixture.value,
+  );
   const repositoryRef = store.add(
     "repository-snapshot-change-runtime",
     repositorySnapshotFixture,
   );
   const architectureBaseline = structuredClone(baselineFixture);
+  alignArchitectureRequirements(architectureBaseline, requirementsFixture);
+  architectureBaseline.projectOverviewBaseline = {
+    ...structuredClone(projectOverviewRef),
+    artifactId: "project-overview-baseline-older-architecture",
+    digest: "sha256:" + "7".repeat(64),
+    uri: "artifact://architecture-change-runtime/project-overview-baseline-older",
+  };
   architectureBaseline.projectContext = structuredClone(projectContextRef);
   architectureBaseline.repositorySnapshot = structuredClone(repositoryRef);
   const baselineRef = store.add(
@@ -197,6 +244,7 @@ async function changeRuntime({
   const state = structuredClone(stateFixture);
   state.projectContext = structuredClone(projectContextRef);
   state.requirementsBaseline = structuredClone(requirementsRef);
+  augmentArchitectureArtifactOverview(state, projectOverviewRef);
   state.repositorySnapshot = structuredClone(repositoryRef);
   state.architectureBaseline = structuredClone(baselineRef);
   mutateState?.(state);
@@ -253,12 +301,16 @@ async function changeRuntime({
   const lineageRefs = {
     "project-architecture-state": stateRef,
     "requirements-baseline": requirementsRef,
+    "project-overview-baseline": projectOverviewRef,
     "project-context": projectContextRef,
     "architecture-baseline": baselineRef,
     "repository-snapshot": repositoryRef,
   };
 
   const changeSet = structuredClone(changeSetFixture);
+  alignArchitectureRequirements(changeSet, requirementsFixture);
+  augmentArchitectureArtifactOverview(changeSet, projectOverviewRef);
+  alignArchitectureChangeDigests(changeSet, architectureBaseline);
   changeSet.projectArchitectureState = structuredClone(stateRef);
   changeSet.baseArchitectureBaseline = structuredClone(baselineRef);
   changeSet.baseArchitectureDigest = baselineRef.digest;
@@ -269,6 +321,7 @@ async function changeRuntime({
   modelerEntry.producedBy.adapterId = modelerId;
 
   const designer = structuredClone(designerFixture);
+  alignArchitectureRequirements(designer, requirementsFixture);
   designer.workingArtifactId = "architecture-designer-working-change-runtime";
   designer.operation = "design-change";
   designer.projectArchitectureState = structuredClone(stateRef);
@@ -286,6 +339,7 @@ async function changeRuntime({
   designerRef = store.add(designer.workingArtifactId, designer);
 
   const modeler = structuredClone(modelerFixture);
+  alignArchitectureRequirements(modeler, requirementsFixture);
   modeler.workingArtifactId = "architecture-modeler-working-change-runtime";
   modeler.operation = "design-change";
   modeler.projectArchitectureState = structuredClone(stateRef);
@@ -315,6 +369,7 @@ async function changeRuntime({
     "project-architecture-state": [structuredClone(stateRef)],
     "routing-decision": [structuredClone(routeRef)],
     "requirements-baseline": [structuredClone(requirementsRef)],
+    "project-overview-baseline": [structuredClone(projectOverviewRef)],
     "project-context": [structuredClone(projectContextRef)],
     "architecture-baseline": [structuredClone(baselineRef)],
     "repository-snapshot": [structuredClone(repositoryRef)],
@@ -325,8 +380,11 @@ async function changeRuntime({
   };
 
   return {
+    baselineProjectOverviewRef:
+      architectureBaseline.projectOverviewBaseline,
     calls,
     invocation,
+    projectOverviewRef,
     registry,
     store,
   };
@@ -341,6 +399,11 @@ test("design-change executes OpenSpec -> Structurizr -> MADR against the exact b
   });
 
   assert.equal(result.outcome, "change_set_drafted");
+  assert.notEqual(
+    fixture.baselineProjectOverviewRef.digest,
+    fixture.projectOverviewRef.digest,
+    "the base architecture may bind an older overview than the target input",
+  );
   assert.deepEqual(fixture.calls, [
     "openspec-design",
     "structurizr",
@@ -419,4 +482,62 @@ test("modeler and terminal candidates cannot replace validated upstream work", a
     "structurizr",
     "madr",
   ]);
+});
+
+
+test("design-change rejects a ProjectOverview baseline that is not the exact RequirementsBaseline projection", async () => {
+  const fixture = await changeRuntime({
+    mutateProjectOverview(projectOverview) {
+      projectOverview.overview.purpose.statement +=
+        " This statement was not derived from the loaded requirements.";
+    },
+  });
+
+  await assert.rejects(
+    fixture.registry.execute(fixture.invocation, {
+      artifacts: fixture.store.artifacts,
+      checkpoints: checkpoints(),
+    }),
+    (error) => error instanceof ContractError && error.code === "DR2104",
+  );
+  assert.deepEqual(fixture.calls, []);
+});
+
+test("design-change rejects stale ProjectOverview refs in state and candidate", async (t) => {
+  await t.test("state", async () => {
+    const fixture = await changeRuntime({
+      mutateState(state) {
+        state.projectOverviewBaseline.digest = "sha256:" + "f".repeat(64);
+      },
+    });
+    await assert.rejects(
+      fixture.registry.execute(fixture.invocation, {
+        artifacts: fixture.store.artifacts,
+        checkpoints: checkpoints(),
+      }),
+      (error) => error instanceof ContractError && error.code === "DR2104",
+    );
+    assert.deepEqual(fixture.calls, []);
+  });
+
+  await t.test("candidate", async () => {
+    const fixture = await changeRuntime({
+      mutateCandidate(candidate) {
+        candidate.targetProjectOverviewBaseline.digest =
+          "sha256:" + "f".repeat(64);
+      },
+    });
+    await assert.rejects(
+      fixture.registry.execute(fixture.invocation, {
+        artifacts: fixture.store.artifacts,
+        checkpoints: checkpoints(),
+      }),
+      (error) => error instanceof ContractError && error.code === "DR2104",
+    );
+    assert.deepEqual(fixture.calls, [
+      "openspec-design",
+      "structurizr",
+      "madr",
+    ]);
+  });
 });

@@ -1,16 +1,67 @@
 {
   "name": "devrelay",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "description": "A deterministic runner for composable software-engineering modules.",
   "type": "module",
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./contracts/*": "./contracts/*",
+    "./modules/requirements-gathering.module.json": "./examples/modules/requirements-gathering.module.json",
+    "./modules/architecture-design.module.json": "./examples/modules/architecture-design.module.json",
+    "./plugins/github-spec-kit.plugin.json": "./examples/plugins/github-spec-kit.plugin.json",
+    "./plugins/openspec.plugin.json": "./examples/plugins/openspec.plugin.json",
+    "./plugins/spec-kit-plan.plugin.json": "./examples/plugins/spec-kit-plan.plugin.json",
+    "./plugins/openspec-design.plugin.json": "./examples/plugins/openspec-design.plugin.json",
+    "./plugins/structurizr.plugin.json": "./examples/plugins/structurizr.plugin.json",
+    "./plugins/madr.plugin.json": "./examples/plugins/madr.plugin.json",
+    "./examples/artifacts/*": "./examples/artifacts/*",
+    "./examples/invocations/*": "./examples/invocations/*",
+    "./examples/native/*": "./examples/native/*",
+    "./examples/results/*": "./examples/results/*",
+    "./examples/README.md": "./examples/README.md",
+    "./openspec/*": "./openspec/*",
+    "./release/*": "./release/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/",
+    "contracts/",
+    "docs/",
+    "examples/README.md",
+    "examples/artifacts/",
+    "examples/invocations/",
+    "examples/native/",
+    "examples/results/",
+    "examples/modules/requirements-gathering.module.json",
+    "examples/modules/architecture-design.module.json",
+    "examples/plugins/github-spec-kit.plugin.json",
+    "examples/plugins/openspec.plugin.json",
+    "examples/plugins/spec-kit-plan.plugin.json",
+    "examples/plugins/openspec-design.plugin.json",
+    "examples/plugins/structurizr.plugin.json",
+    "examples/plugins/madr.plugin.json",
+    "openspec/",
+    "release/",
+    "README.md",
+    "CHANGELOG.md",
+    "RELEASE.md",
+    "LICENSE",
+    "SECURITY.md",
+    "CONTRIBUTING.md"
+  ],
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "verify": "node scripts/verify.mjs",
+    "release:catalog": "node scripts/generate-release-manifest.mjs",
+    "release:check": "node scripts/release-check.mjs"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "ajv": "^8.20.0"
+    "ajv": "8.20.0"
   }
 }

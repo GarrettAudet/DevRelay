@@ -1,0 +1,1738 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectOverviewDraft",
+  "draftId": "project-overview-draft-architecture-design-v1",
+  "requirementsDraft": {
+    "artifactId": "requirements-draft-architecture-design-v1",
+    "digest": "sha256:e8ab02df1b197b5b439b752e6688af66166cc3d8b87949bf8d97c7e67734943f"
+  },
+  "projection": {
+    "id": "devrelay.requirements-to-project-overview",
+    "version": "1.0.0",
+    "contractDigest": "sha256:037623b387a0da23932efad2243e1064a1ec28f8984bbb32d4b37b5523ca99db"
+  },
+  "overview": {
+    "purpose": {
+      "statement": "Define ArchitectureDesign 0.1.0 as one deterministic DevRelay module that converts an approved RequirementsBaseline into either a new architecture baseline candidate or a proposed change to an existing architecture, using a configured chain of bounded, replaceable adapters.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-architecture-design-module-v1",
+            "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+          }
+        },
+        {
+          "role": "interactive-clarification",
+          "artifact": {
+            "artifactId": "requirements-dialogue-architecture-design-v1",
+            "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+          },
+          "location": "Complete normalized clarification sequence"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-architecture-design-v1",
+            "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-067b3a5",
+            "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+          }
+        }
+      ]
+    },
+    "businessObjectives": [
+      {
+        "id": "BO-ARCH-DETERMINISM-001",
+        "statement": "Make architecture workflow selection and execution deterministic and replayable.",
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-ARCH-MAINTAINER-001",
+          "STK-ARCH-WORKFLOW-AUTHOR-001"
+        ]
+      },
+      {
+        "id": "BO-ARCH-MODULARITY-001",
+        "statement": "Allow bounded best-in-class architecture capabilities to be replaced independently.",
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-ARCH-MAINTAINER-001",
+          "STK-ARCH-WORKFLOW-AUTHOR-001"
+        ]
+      },
+      {
+        "id": "BO-ARCH-TRACEABILITY-001",
+        "statement": "Produce traceable architecture candidates ready for separate approval.",
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-ARCH-MAINTAINER-001",
+          "STK-ARCH-WORKFLOW-AUTHOR-001"
+        ]
+      }
+    ],
+    "users": [
+      {
+        "id": "USR-ARCH-WORKFLOW-AUTHOR",
+        "name": "Workflow author",
+        "description": "A maintainer or integrator configuring DevRelay architecture workflows.",
+        "stakeholderIds": [
+          "STK-ARCH-WORKFLOW-AUTHOR-001"
+        ],
+        "needs": [
+          "Design a change against an approved architecture baseline.",
+          "Establish a new architecture baseline candidate.",
+          "Inspect exact evidence and gate readiness."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      }
+    ],
+    "keyCapabilities": [
+      {
+        "id": "CAP-ARCH-ARTIFACTS",
+        "name": "Canonical architecture candidates",
+        "description": "Produce complete, immutable, traceable architecture candidate artifacts.",
+        "businessObjectiveIds": [
+          "BO-ARCH-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-ARCH-WORKFLOW-AUTHOR"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-ARCH-CHAIN",
+        "name": "Replaceable architecture adapter chain",
+        "description": "Execute designer, modeler, and decision-recorder handoffs in order.",
+        "businessObjectiveIds": [
+          "BO-ARCH-MODULARITY-001"
+        ],
+        "userIds": [
+          "USR-ARCH-WORKFLOW-AUTHOR"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-ARCH-GOVERNANCE",
+        "name": "Architecture gate readiness",
+        "description": "Separate candidate generation from approval and prove conformance.",
+        "businessObjectiveIds": [
+          "BO-ARCH-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-ARCH-WORKFLOW-AUTHOR"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-ARCH-MODULE",
+        "name": "ArchitectureDesign module boundary",
+        "description": "Expose one module with two explicit state-routed operations.",
+        "businessObjectiveIds": [
+          "BO-ARCH-DETERMINISM-001"
+        ],
+        "userIds": [
+          "USR-ARCH-WORKFLOW-AUTHOR"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-ARCH-ROUTING",
+        "name": "Architecture state routing",
+        "description": "Select baseline, change, or discovery prerequisite from persisted state.",
+        "businessObjectiveIds": [
+          "BO-ARCH-DETERMINISM-001"
+        ],
+        "userIds": [
+          "USR-ARCH-WORKFLOW-AUTHOR"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      }
+    ],
+    "successMetrics": [
+      {
+        "id": "SM-ARCH-PROVENANCE-001",
+        "name": "Complete candidate provenance",
+        "businessObjectiveIds": [
+          "BO-ARCH-TRACEABILITY-001"
+        ],
+        "measure": "Successful primary candidates with verified complete chain provenance.",
+        "target": "100 percent.",
+        "measurementMethod": "Execute artifact, native-source, handoff, and traceability validation.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-ARCH-ROUTING-001",
+        "name": "Deterministic route conformance",
+        "businessObjectiveIds": [
+          "BO-ARCH-DETERMINISM-001"
+        ],
+        "measure": "Declared ArchitectureDesign routing fixtures that select exactly one expected route.",
+        "target": "100 percent.",
+        "measurementMethod": "Execute positive and negative deterministic router tests.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-ARCH-SWAP-001",
+        "name": "Adapter replaceability",
+        "businessObjectiveIds": [
+          "BO-ARCH-MODULARITY-001"
+        ],
+        "measure": "Compatible adapter swaps requiring a generic-core code branch.",
+        "target": "Zero.",
+        "measurementMethod": "Execute adapter-swap and core-neutrality tests.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "SCOPE-ARCH-001",
+        "statement": "One ArchitectureDesign module with establish-baseline and design-change operations.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-ARCH-002",
+        "statement": "Deterministic operation routing from persisted project architecture state.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-ARCH-003",
+        "statement": "A prerequisite ArchitectureDiscovery route for existing repositories without a current architecture snapshot.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-ARCH-004",
+        "statement": "Ordered designer, modeler, and decision-recorder adapter steps.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-ARCH-005",
+        "statement": "Canonical ArchitectureDraft and ArchitectureChangeSetDraft artifacts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-ARCH-006",
+        "statement": "Step handoffs, clarification checkpoints, native-source preservation, validation, conformance fixtures, and documentation.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-ARCH-007",
+        "statement": "V1 adapter manifests for Spec Kit plan, OpenSpec design, Structurizr, and MADR.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      }
+    ],
+    "nonGoals": [
+      {
+        "id": "NG-ARCH-001",
+        "statement": "Requirements approval logic beyond the recorded Requirements Gate.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-ARCH-002",
+        "statement": "Architecture approval or ArchitectureBaseline promotion, which belongs to the Architecture Gate.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-ARCH-003",
+        "statement": "A complete ArchitectureDiscovery module implementation.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-ARCH-004",
+        "statement": "Detailed OpenAPI, AsyncAPI, protobuf, database, or other interface contract generation.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-ARCH-005",
+        "statement": "Architecture enforcement, security review, performance verification, task decomposition, code generation, or integration.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-ARCH-006",
+        "statement": "Installation or execution of upstream Spec Kit, OpenSpec, Structurizr, or MADR tooling.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-ARCH-007",
+        "statement": "A distributed scheduler, agent framework, provider wrapper, package marketplace, or model-specific workflow.",
+        "rationale": "This responsibility belongs to another explicit lifecycle stage or release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CON-ARCH-APPROVED-REQUIREMENTS",
+        "category": "business",
+        "statement": "ArchitectureDesign must consume an approved RequirementsBaseline.",
+        "rationale": "Architecture work must start from approved requirements.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-MODULE"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-REQUIREMENTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-BOUNDED-CAPABILITY",
+        "category": "technical",
+        "statement": "Each adapter manifest must bind only the relevant upstream capability for its declared ArchitectureDesign step; DevRelay must not treat an upstream repository's full workflow as one module.",
+        "rationale": "Bounded capabilities preserve module ownership and permit independent best-in-class replacement.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-CHAIN"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-BOUNDED-CAPABILITY-001",
+          "AC-ARCH-BOUNDED-CAPABILITY-002"
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: adapter sequence"
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-CANDIDATE-ONLY",
+        "category": "business",
+        "statement": "ArchitectureDesign produces candidates only; it cannot approve or promote its own result.",
+        "rationale": "Approval belongs to the separate Architecture Gate.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-GOVERNANCE"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-CANDIDATE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-CORE-AUTHORITY",
+        "category": "technical",
+        "statement": "DevRelay Core, not a model or adapter, selects the operation, configured adapters, sequence, validation path, and gate progression.",
+        "rationale": "DevRelay Core retains deterministic workflow authority.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-ROUTING"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-CORE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-IMMUTABLE-BOUNDARIES",
+        "category": "technical",
+        "statement": "Every runtime boundary uses immutable artifact references and exact adapter versions.",
+        "rationale": "Replay and verification require immutable boundaries.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-ARTIFACTS"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-IMMUTABLE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-INTERFACE-BOUNDARY",
+        "category": "technical",
+        "statement": "ArchitectureDesign must capture interface intent and architectural constraints, while detailed API, event, data, and protocol contracts remain in downstream ContractGeneration.",
+        "rationale": "Architecture should define boundaries without collapsing a later deterministic lifecycle stage.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-ARTIFACTS"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-INTERFACE-BOUNDARY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarifications 2 and 3: interface scope"
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-PROVIDER-NEUTRALITY",
+        "category": "technical",
+        "statement": "Module contracts remain provider-neutral and cannot branch on adapter or upstream-tool identifiers in generic core.",
+        "rationale": "The kernel must remain independently extensible.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-CHAIN"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-NEUTRALITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-REQUIREMENTS-COMPATIBILITY",
+        "category": "compatibility",
+        "statement": "The implementation must preserve compatibility with RequirementsGathering 0.1.0.",
+        "rationale": "The new module must compose with the released requirements boundary.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-GOVERNANCE"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-COMPATIBILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-SMALL-KERNEL",
+        "category": "technical",
+        "statement": "The first pass must remain small enough to prove modular composition without creating a general workflow platform.",
+        "rationale": "The proof must not become a general workflow platform.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-MODULE"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONSTRAINT-SCOPE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-ARCH-V1-ADAPTERS",
+        "category": "technical",
+        "statement": "The V1 default chain must use SpecKitPlanAdapter for establish-baseline or OpenSpecDesignAdapter for design-change, followed by StructurizrAdapter and MADRAdapter.",
+        "rationale": "These are selected V1 implementations of stable semantic step contracts, not hard-coded kernel behavior.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-CHAIN"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-ARCH-V1-ADAPTERS-001",
+          "AC-ARCH-V1-ADAPTERS-002",
+          "AC-ARCH-V1-ADAPTERS-003"
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Clarification 3: V1 defaults"
+          }
+        ]
+      }
+    ],
+    "nonFunctionalRequirements": [
+      {
+        "id": "NFR-ARCH-CONFORMANCE",
+        "category": "reliability",
+        "statement": "The implementation must include positive and negative schema, routing, registry, chain, artifact, clarification, provenance, backward-compatibility, and core-neutrality tests.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-GOVERNANCE"
+          ]
+        },
+        "measure": "Required schema, routing, chain, artifact, clarification, provenance, compatibility, and neutrality checks passing.",
+        "target": "100 percent.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-ARCH-CONFORMANCE-001",
+          "AC-ARCH-CONFORMANCE-002",
+          "AC-ARCH-CONFORMANCE-003"
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Canonical definition and approved build authorization"
+          }
+        ]
+      },
+      {
+        "id": "NFR-ARCH-PROVENANCE",
+        "category": "observability",
+        "statement": "Every step handoff and primary output must preserve exact input, adapter, native-source, normalization, and output provenance without relying on conversational or provider session memory.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-ARCH-ARTIFACTS"
+          ]
+        },
+        "measure": "Percentage of step handoffs and primary outputs with complete exact provenance.",
+        "target": "100 percent.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-ARCH-PROVENANCE-001",
+          "AC-ARCH-PROVENANCE-002"
+        ],
+        "sourceRefs": [
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Workflow instruction and Clarification 3: Core authority"
+          }
+        ]
+      }
+    ],
+    "terminology": [
+      {
+        "id": "TERM-ARCH-ADAPTER-001",
+        "term": "Bounded adapter",
+        "definition": "A replaceable implementation of one declared module operation or step capability.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-ARCH-BASELINE-001",
+        "term": "ArchitectureBaseline",
+        "definition": "An approved architecture state used as the target for future changes.",
+        "aliases": [
+          "Architecture baseline"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-ARCH-CHANGE-001",
+        "term": "ArchitectureChangeSetDraft",
+        "definition": "A proposed change against an exact approved ArchitectureBaseline.",
+        "aliases": [
+          "Architecture change candidate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-ARCH-DRAFT-001",
+        "term": "ArchitectureDraft",
+        "definition": "A candidate new architecture baseline that has not passed the Architecture Gate.",
+        "aliases": [
+          "Baseline candidate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-architecture-design-module-v1",
+              "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-architecture-design-v1",
+              "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+            },
+            "location": "Complete normalized clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-architecture-design-v1",
+              "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-067b3a5",
+              "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+            }
+          }
+        ]
+      }
+    ],
+    "currentStatus": {
+      "lifecycle": "existing",
+      "phase": "implementation",
+      "summary": "ArchitectureDesign 0.1.0 is being implemented against an approved typed requirements candidate.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-architecture-design-module-v1",
+            "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+          }
+        },
+        {
+          "role": "interactive-clarification",
+          "artifact": {
+            "artifactId": "requirements-dialogue-architecture-design-v1",
+            "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+          },
+          "location": "Complete normalized clarification sequence"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-architecture-design-v1",
+            "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-067b3a5",
+            "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+          }
+        }
+      ]
+    }
+  },
+  "renderedDocument": {
+    "path": "ProjectOverview.md",
+    "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
+    "mediaType": "text/markdown; charset=utf-8",
+    "artifact": {
+      "artifactId": "project-overview-markdown-architecture-design-v1",
+      "digest": "sha256:fa6e6f96669bed0e6567b979cbf0c4c51d23ab51c1aca662bce07472b3756bad"
+    },
+    "renderer": {
+      "id": "devrelay.project-overview.markdown",
+      "version": "1.0.0",
+      "contractDigest": "sha256:b50fd7a486ff860acf569bb1cab8f5cecb8db19b6cf3cb7a6bcba494bb8806eb"
+    }
+  }
+}

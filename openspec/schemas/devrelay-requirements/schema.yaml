@@ -5,21 +5,35 @@ description: Requirements-only OpenSpec workflow used by DevRelay RequirementsGa
 artifacts:
   - id: proposal
     generates: proposal.md
-    description: Intent, scope, and impact without solution architecture.
+    description: Typed product intent and project overview inputs without solution architecture.
     template: proposal.md
     instruction: |
-      Describe why the semantic module is needed and what observable contract
-      behavior must change. Keep architecture, tasks, implementation, and
-      approval decisions outside this artifact.
+      Elicit the purpose, business objectives, measurable success metrics,
+      stakeholders, users, capabilities, scope, non-goals, constraints,
+      non-functional requirements, terminology, current status, assumptions,
+      dependencies, risks, deliverables, and required evidence needed by the
+      DevRelay requirements contract. Use stable typed identifiers and preserve
+      sources. For every assumption, record its ASM-* ID, confirmed/unconfirmed
+      status, explicit blocking boolean, and canonical source references. Only
+      an unconfirmed blocking assumption prevents gate promotion; retain
+      unconfirmed nonblocking assumptions visibly. Keep architecture, tasks,
+      implementation, and approval decisions
+      outside this artifact. Do not author ProjectOverview.md; DevRelay derives
+      and renders that projection deterministically from canonical requirements.
     requires: []
 
   - id: specs
     generates: specs/**/*.md
-    description: Verifiable requirements and scenarios for the proposed module.
+    description: Typed journeys, stories, requirements, criteria, and scenarios for the proposed capability.
     template: spec.md
     instruction: |
-      Express every requirement with SHALL or MUST and at least one verifiable
-      scenario. Describe tool-neutral behavior. Do not prescribe implementation
-      architecture, generate tasks, or claim that a downstream gate has passed.
+      Define capabilities, user journeys, user stories, acceptance criteria,
+      measurable non-functional requirements, and verifiable constraints with
+      stable typed identifiers and closed references. Express normative behavior
+      with SHALL or MUST and provide deterministic verification. Describe
+      tool-neutral behavior. Preserve assumption status, blocking disposition,
+      and sources from the proposal without silently confirming or dropping
+      nonblocking uncertainty. Do not prescribe implementation architecture,
+      generate tasks, or claim that a downstream gate has passed.
     requires:
       - proposal

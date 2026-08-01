@@ -107,7 +107,7 @@ export function requireArtifactLoader(artifacts) {
   }
 }
 
-export async function loadArtifactContent(ref, artifacts) {
+export async function loadArtifactBytes(ref, artifacts) {
   requireArtifactLoader(artifacts);
   let supplied;
   try {
@@ -126,10 +126,17 @@ export async function loadArtifactContent(ref, artifacts) {
       `artifact "${ref.artifactId}" bytes do not match ${ref.digest}`,
     );
   }
+  return Object.freeze({
+    ref: immutableCopy(ref),
+    bytes,
+  });
+}
 
+export async function loadArtifactContent(ref, artifacts) {
+  const loaded = await loadArtifactBytes(ref, artifacts);
   let value;
   try {
-    value = JSON.parse(decodeUtf8(bytes, ref.artifactId));
+    value = JSON.parse(decodeUtf8(loaded.bytes, ref.artifactId));
   } catch (error) {
     if (error instanceof ArtifactRuntimeError) {
       throw error;
@@ -140,8 +147,7 @@ export async function loadArtifactContent(ref, artifacts) {
     );
   }
   return Object.freeze({
-    ref: immutableCopy(ref),
-    bytes,
+    ...loaded,
     value: immutableCopy(value),
   });
 }

@@ -6,6 +6,10 @@ import {
   ContractError,
   createModuleRegistry,
 } from "../src/module-registry.mjs";
+import {
+  augmentArchitectureArtifactOverview,
+  augmentArchitectureInvocationOverview,
+} from "./architecture-project-overview-fixtures.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -39,6 +43,15 @@ const [
   readJson("examples/results/architecture-establish-clarification.result.json"),
   readJson("examples/artifacts/architecture-continuation-001.json"),
 ]);
+
+for (const invocation of [
+  establishInvocation,
+  changeInvocation,
+  resumeInvocation,
+]) {
+  augmentArchitectureInvocationOverview(invocation);
+}
+augmentArchitectureArtifactOverview(continuationFixture);
 
 const noOpAdapter = {
   async invoke() {
@@ -79,6 +92,24 @@ test("canonical baseline and change examples resolve exact configured chains", (
   assert.deepEqual(
     moduleDefinition.operations.map(({ id }) => id),
     ["establish-baseline", "design-change"],
+  );
+});
+
+test("ProjectOverview baseline participates in deterministic resume lineage", () => {
+  for (const operation of moduleDefinition.operations) {
+    assert.ok(
+      operation.adapterChain.resume.lineageInputs.includes(
+        "project-overview-baseline",
+      ),
+    );
+  }
+
+  const changed = clone(establishInvocation);
+  changed.inputs["project-overview-baseline"][0].digest =
+    "sha256:" + "f".repeat(64);
+  assert.notEqual(
+    registry.resolve(changed).chainFingerprint,
+    registry.resolve(establishInvocation).chainFingerprint,
   );
 });
 
@@ -178,6 +209,9 @@ test("clarification result and resume invocation preserve the exact triad", () =
     clarificationResult,
   );
   const sourceResolution = registry.resolve(establishInvocation);
+  continuationFixture.sourceInvocation.invocationFingerprint =
+    sourceResolution.invocationFingerprint;
+  continuationFixture.chainFingerprint = sourceResolution.chainFingerprint;
   const resumeResolution = registry.resolve(resumeInvocation);
   assert.equal(resumeResolution.operationDefinition.id, "establish-baseline");
   assert.equal(
@@ -224,6 +258,7 @@ test("every ArchitectureDesign port references a published artifact schema", asy
   const schemas = await Promise.all(
     [
       "contracts/requirements-gathering-artifacts.schema.json",
+      "contracts/project-overview-artifacts.schema.json",
       "contracts/shared-artifacts.schema.json",
       "contracts/architecture-design-artifacts.schema.json",
       "contracts/module-route-decision.schema.json",
@@ -245,6 +280,43 @@ test("every ArchitectureDesign port references a published artifact schema", asy
   }
 });
 
+
+test("V1 designer bridges are agent-command only and request no process grant", () => {
+  for (const plugin of [specKitPlan, openSpecDesign]) {
+    const operation = plugin.implements[0].operations[0];
+    assert.equal(
+      operation.configSchema.properties.bridge.const,
+      "agent-command",
+    );
+    assert.equal(
+      operation.capabilities.some(
+        ({ kind }) => kind === "process.spawn",
+      ),
+      false,
+    );
+  }
+  for (const invocation of [
+    establishInvocation,
+    changeInvocation,
+    resumeInvocation,
+  ]) {
+    const designer = invocation.adapters.find(
+      ({ step }) => step === "designer",
+    );
+    assert.equal(designer.config.bridge, "agent-command");
+    assert.equal(
+      designer.grants.some(({ kind }) => kind === "process.spawn"),
+      false,
+    );
+    const modeler = invocation.adapters.find(
+      ({ step }) => step === "modeler",
+    );
+    assert.equal(
+      modeler.grants.some(({ kind }) => kind === "process.spawn"),
+      true,
+    );
+  }
+});
 
 test("MADR write demand follows each invocation's configured decisionsPath", () => {
   for (const operation of madr.implements[0].operations) {

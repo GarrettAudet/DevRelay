@@ -776,6 +776,72 @@ test("a completed terminal checkpoint is reusable only by the exact invocation",
   ]);
 });
 
+test("validation checkpoint lookup rejects a result for another step digest", async () => {
+  const store = artifactStore();
+  const artifacts = fixtureArtifacts(store);
+  const requestedDigest = `sha256:${"e".repeat(64)}`;
+  const mismatchedCheckpoint = {
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "ModuleStepResult",
+    invocationId: "other-invocation",
+    invocationFingerprint: `sha256:${"a".repeat(64)}`,
+    chainFingerprint: `sha256:${"b".repeat(64)}`,
+    stepInvocationDigest: `sha256:${"f".repeat(64)}`,
+    step: "draft",
+    plugin: {
+      id: "draft-adapter",
+      version: "0.1.0",
+    },
+    disposition: "continue",
+    outputs: {},
+    evidence: [],
+    diagnostics: [],
+  };
+  const probingContracts = artifactContracts.map((contract) =>
+    contract.schema === DRAFT_SCHEMA
+      ? {
+          ...contract,
+          async validate(value, context) {
+            contract.validate(value);
+            if (context.phase === "handoff") {
+              await context.loadCheckpoint(requestedDigest);
+            }
+          },
+        }
+      : contract,
+  );
+  const adapters = defaultAdapters(artifacts);
+  const registry = createModuleRegistry({
+    modules: [moduleDefinition],
+    plugins: pluginDefinitions().map((definition) => ({
+      definition,
+      adapter: adapters[definition.metadata.id],
+    })),
+    artifactContracts: probingContracts,
+  });
+  let checkpointReads = 0;
+  const checkpoints = {
+    async get() {
+      checkpointReads += 1;
+      return checkpointReads === 2 ? mismatchedCheckpoint : undefined;
+    },
+    async put() {},
+  };
+
+  await assert.rejects(
+    registry.execute(invocationFor(artifacts), {
+      artifacts: store.artifacts,
+      checkpoints,
+    }),
+    (error) => {
+      assert.ok(error instanceof ContractError);
+      assert.equal(error.code, "DR2104");
+      assert.match(error.message, /requested step invocation digest/);
+      return true;
+    },
+  );
+});
+
 test("a corrupt checkpoint fails closed instead of rerunning the effect", async () => {
   const store = artifactStore();
   const artifacts = fixtureArtifacts(store);
@@ -950,6 +1016,8 @@ test("a changed pure handoff cannot replay a stale downstream effect checkpoint"
     artifactContracts,
   });
   const invocation = invocationFor(artifacts);
+  invocation.adapters[0].grants = [];
+  invocation.adapters[2].grants = [];
   const checkpointStore = memoryCheckpoints();
 
   await registry.execute(invocation, {
@@ -1007,7 +1075,11 @@ test("each adapter receives a distinct immutable data context", async () => {
     },
   };
   const registry = registryWith(adapters, "pure");
-  await registry.execute(invocationFor(artifacts), {
+  const invocation = invocationFor(artifacts);
+  invocation.adapters.forEach((binding) => {
+    binding.grants = [];
+  });
+  await registry.execute(invocation, {
     artifacts: store.artifacts,
     createAdapterContext() {
       return { scratch: [] };
@@ -1026,9 +1098,13 @@ test("adapter contexts reject shared memory before the first adapter runs", asyn
   const calls = [];
   const registry = registryWith(defaultAdapters(artifacts, calls), "pure");
   const shared = new SharedArrayBuffer(8);
+  const invocation = invocationFor(artifacts);
+  invocation.adapters.forEach((binding) => {
+    binding.grants = [];
+  });
 
   await expectContractRejection(
-    registry.execute(invocationFor(artifacts), {
+    registry.execute(invocation, {
       artifacts: store.artifacts,
       createAdapterContext() {
         return { shared };

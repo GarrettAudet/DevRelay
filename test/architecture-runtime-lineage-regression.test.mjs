@@ -7,7 +7,15 @@ import {
   validateArchitectureArtifact,
 } from "../src/architecture-artifact-validator.mjs";
 import { architectureRuntimeArtifactContracts } from "../src/architecture-runtime-contracts.mjs";
-import { canonicalJsonDigest } from "../src/content-digest.mjs";
+import {
+  canonicalJsonDigest,
+  sha256Digest,
+} from "../src/content-digest.mjs";
+import {
+  alignArchitectureRequirements,
+  augmentArchitectureArtifactOverview,
+} from "./architecture-project-overview-fixtures.mjs";
+import { loadArchitectureNativeBytes } from "./native-architecture-fixtures.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -23,6 +31,8 @@ const [
   designer,
   modeler,
   draft,
+  requirementsBaseline,
+  repositorySnapshot,
 ] = await Promise.all([
   readJson("examples/modules/architecture-design.module.json"),
   readJson(
@@ -36,7 +46,22 @@ const [
   readJson("examples/artifacts/architecture-designer-working-001.json"),
   readJson("examples/artifacts/architecture-modeler-working-001.json"),
   readJson("examples/artifacts/architecture-draft-001.json"),
+  readJson("examples/artifacts/requirements-baseline-001.json"),
+  readJson("examples/artifacts/repository-snapshot-001.json"),
 ]);
+
+for (const artifact of [
+  discoveredState,
+  baselinedState,
+  snapshot,
+  baseline,
+  designer,
+  modeler,
+  draft,
+]) {
+  augmentArchitectureArtifactOverview(artifact);
+  alignArchitectureRequirements(artifact, requirementsBaseline);
+}
 
 const operations = new Map(
   moduleDefinition.operations.map((operation) => [operation.id, operation]),
@@ -73,6 +98,29 @@ function contextFor({
         version: "0.1.0",
         operation,
       },
+      adapters: [
+        {
+          step: "designer",
+          plugin: {
+            id: operation === "design-change" ? "openspec-design" : "spec-kit-plan",
+            version: "0.1.0",
+          },
+          config:
+            operation === "design-change"
+              ? { toolName: "OpenSpec", toolVersion: "1.0" }
+              : { toolName: "GitHub Spec Kit", toolVersion: "0.1.0" },
+        },
+        {
+          step: "modeler",
+          plugin: { id: "structurizr", version: "0.1.0" },
+          config: { toolName: "Structurizr DSL", toolVersion: "5.0" },
+        },
+        {
+          step: "decision-recorder",
+          plugin: { id: "madr", version: "0.1.0" },
+          config: { toolName: "MADR", toolVersion: "4.0" },
+        },
+      ],
     },
     operation: operations.get(operation),
     loadedInputs,
@@ -80,13 +128,18 @@ function contextFor({
     priorResults: [],
     chainFingerprint: `sha256:${"a".repeat(64)}`,
     producer,
-    async load(artifact) {
-      const content = attachments.get(artifact.digest);
-      if (!content) {
+    async loadArtifact(artifact) {
+      const record = attachments.get(artifact.digest);
+      if (!record) {
         throw new Error(`missing attached content ${artifact.digest}`);
       }
-      return clone(content);
+      return {
+        ref: clone(record.ref),
+        bytes: Buffer.from(record.bytes),
+        value: clone(record.value),
+      };
     },
+    loadBytes: loadArchitectureNativeBytes,
   };
 }
 
@@ -101,18 +154,56 @@ function attachment(section, name, attachments, mutate = (value) => value) {
     decisionRecords: "decisionRecordSetId",
     nativeArtifacts: "nativeArtifactSetId",
   };
-  const digest = canonicalJsonDigest(content);
-  attachments.set(digest, content);
+  const contracts = {
+    technicalDesign: {
+      schema: "https://devrelay.dev/artifacts/technical-design/v1",
+      mediaType: "application/vnd.devrelay.technical-design+json",
+    },
+    architectureModel: {
+      schema: "https://devrelay.dev/artifacts/architecture-model/v1",
+      mediaType: "application/vnd.devrelay.architecture-model+json",
+    },
+    diagrams: {
+      schema: "https://devrelay.dev/artifacts/architecture-diagram-set/v1",
+      mediaType: "application/vnd.devrelay.architecture-diagram-set+json",
+    },
+    interfaceIntent: {
+      schema: "https://devrelay.dev/artifacts/interface-intent-set/v1",
+      mediaType: "application/vnd.devrelay.interface-intent-set+json",
+    },
+    architectureConstraints: {
+      schema: "https://devrelay.dev/artifacts/architecture-constraint-set/v1",
+      mediaType: "application/vnd.devrelay.architecture-constraint-set+json",
+    },
+    decisionRecords: {
+      schema:
+        "https://devrelay.dev/artifacts/architecture-decision-record-set/v1",
+      mediaType:
+        "application/vnd.devrelay.architecture-decision-record-set+json",
+    },
+    nativeArtifacts: {
+      schema: "https://devrelay.dev/artifacts/native-artifact-set/v1",
+      mediaType: "application/vnd.devrelay.native-artifact-set+json",
+    },
+  };
+  const bytes = Buffer.from(`${JSON.stringify(content, null, 2)}\n`);
+  const digest = sha256Digest(bytes);
+  const ref = {
+    artifactId: `attached-${name}-${content[identityFields[name]]}`,
+    schema: contracts[name].schema,
+    mediaType: contracts[name].mediaType,
+    digest,
+    uri: `artifact://architecture-lineage/${name}/${digest.slice(7)}`,
+  };
+  attachments.set(digest, {
+    ref,
+    bytes,
+    value: content,
+  });
   return {
     mode: "attached",
     contentId: content[identityFields[name]],
-    artifact: {
-      artifactId: `attached-${name}-${content[identityFields[name]]}`,
-      schema: `https://devrelay.dev/artifacts/${name}/v1`,
-      mediaType: `application/vnd.devrelay.${name}+json`,
-      digest,
-      uri: `artifact://architecture-lineage/${name}/${digest.slice(7)}`,
-    },
+    artifact: ref,
   };
 }
 
@@ -131,7 +222,11 @@ function establishInputs({ relocate = false } = {}) {
         ? discoveredState
         : role === "current-architecture-snapshot"
           ? snapshot
-          : {};
+          : role === "requirements-baseline"
+            ? requirementsBaseline
+            : role === "repository-snapshot"
+              ? repositorySnapshot
+              : {};
     result[role] = [loaded(ref, value)];
   }
   return result;
@@ -212,9 +307,12 @@ test("terminal lineage compares resolved content across attachment modes", async
   const snapshotRef = candidate.currentArchitectureSnapshot;
   const loadedInputs = {
     "project-architecture-state": [loaded(stateRef, discoveredState)],
-    "requirements-baseline": [loaded(candidate.requirementsBaseline)],
+    "requirements-baseline": [loaded(candidate.requirementsBaseline, requirementsBaseline)],
+    "project-overview-baseline": [
+      loaded(candidate.projectOverviewBaseline),
+    ],
     "project-context": [loaded(candidate.projectContext)],
-    "repository-snapshot": [loaded(candidate.repositorySnapshot)],
+    "repository-snapshot": [loaded(candidate.repositorySnapshot, repositorySnapshot)],
     "current-architecture-snapshot": [loaded(snapshotRef, snapshot)],
   };
   const loadedHandoffs = {
@@ -271,9 +369,12 @@ test("snapshot and baseline internals bind to invocation provenance", async () =
     "project-architecture-state": [
       loaded(draft.projectArchitectureState, discoveredState),
     ],
-    "requirements-baseline": [loaded(discoveredState.requirementsBaseline)],
+    "requirements-baseline": [loaded(discoveredState.requirementsBaseline, requirementsBaseline)],
+    "project-overview-baseline": [
+      loaded(discoveredState.projectOverviewBaseline),
+    ],
     "project-context": [loaded(discoveredState.projectContext)],
-    "repository-snapshot": [loaded(discoveredState.repositorySnapshot)],
+    "repository-snapshot": [loaded(discoveredState.repositorySnapshot, repositorySnapshot)],
     "current-architecture-snapshot": [loaded(snapshotRef, snapshot)],
   };
   const snapshotContext = contextFor({
@@ -305,9 +406,12 @@ test("snapshot and baseline internals bind to invocation provenance", async () =
         baselinedState,
       ),
     ],
-    "requirements-baseline": [loaded(baselinedState.requirementsBaseline)],
+    "requirements-baseline": [loaded(baselinedState.requirementsBaseline, requirementsBaseline)],
+    "project-overview-baseline": [
+      loaded(baselinedState.projectOverviewBaseline),
+    ],
     "project-context": [loaded(baselinedState.projectContext)],
-    "repository-snapshot": [loaded(baselinedState.repositorySnapshot)],
+    "repository-snapshot": [loaded(baselinedState.repositorySnapshot, repositorySnapshot)],
     "architecture-baseline": [loaded(baselineRef, baseline)],
   };
   const baselineContext = contextFor({

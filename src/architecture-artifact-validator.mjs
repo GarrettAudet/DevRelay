@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 
-import { canonicalJsonDigest } from "./content-digest.mjs";
+import { canonicalJsonDigest, sha256Digest } from "./content-digest.mjs";
+import { normativeRequirementIds } from "./requirements-artifact-validator.mjs";
 import {
   compileArtifactSchema,
   validationDetail,
@@ -37,6 +38,37 @@ const SECTION_DEFINITIONS = Object.freeze({
   architectureConstraints: "architectureConstraintSet",
   decisionRecords: "decisionRecordSet",
   nativeArtifacts: "nativeArtifactSet",
+});
+
+const SECTION_ARTIFACT_CONTRACTS = Object.freeze({
+  technicalDesign: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/technical-design/v1",
+    mediaType: "application/vnd.devrelay.technical-design+json",
+  }),
+  architectureModel: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/architecture-model/v1",
+    mediaType: "application/vnd.devrelay.architecture-model+json",
+  }),
+  diagrams: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/architecture-diagram-set/v1",
+    mediaType: "application/vnd.devrelay.architecture-diagram-set+json",
+  }),
+  interfaceIntent: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/interface-intent-set/v1",
+    mediaType: "application/vnd.devrelay.interface-intent-set+json",
+  }),
+  architectureConstraints: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/architecture-constraint-set/v1",
+    mediaType: "application/vnd.devrelay.architecture-constraint-set+json",
+  }),
+  decisionRecords: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/architecture-decision-record-set/v1",
+    mediaType: "application/vnd.devrelay.architecture-decision-record-set+json",
+  }),
+  nativeArtifacts: Object.freeze({
+    schema: "https://devrelay.dev/artifacts/native-artifact-set/v1",
+    mediaType: "application/vnd.devrelay.native-artifact-set+json",
+  }),
 });
 
 const sectionContentValidators = Object.freeze(
@@ -125,6 +157,7 @@ function validateBaseInputs(baseInputs, operation, projectStatePointer) {
   for (const required of [
     "project-architecture-state",
     "requirements-baseline",
+    "project-overview-baseline",
     "project-context",
   ]) {
     if (!roles.has(required)) {
@@ -163,6 +196,43 @@ function validateBaseInputs(baseInputs, operation, projectStatePointer) {
   }
 }
 
+function decodeAttachedRecord(record, section, name) {
+  if (
+    !record ||
+    typeof record !== "object" ||
+    !samePointer(record.ref, section.artifact) ||
+    (!Buffer.isBuffer(record.bytes) && !(record.bytes instanceof Uint8Array))
+  ) {
+    fail(`attached ${name} did not resolve to its verified artifact record`);
+  }
+  const contract = SECTION_ARTIFACT_CONTRACTS[name];
+  if (
+    record.ref.schema !== contract.schema ||
+    record.ref.mediaType !== contract.mediaType
+  ) {
+    fail(`attached ${name} uses the wrong schema or media type`);
+  }
+  const bytes = Buffer.from(record.bytes);
+  if (sha256Digest(bytes) !== section.artifact.digest) {
+    fail(`attached ${name} bytes do not match its digest`);
+  }
+  let parsed;
+  try {
+    parsed = JSON.parse(
+      new TextDecoder("utf-8", {
+        fatal: true,
+        ignoreBOM: true,
+      }).decode(bytes),
+    );
+  } catch (error) {
+    fail(`attached ${name} is not valid UTF-8 JSON: ${error.message}`);
+  }
+  if (canonicalJsonDigest(parsed) !== canonicalJsonDigest(record.value)) {
+    fail(`attached ${name} verified value does not match its raw bytes`);
+  }
+  return parsed;
+}
+
 function resolveSection(section, name, options) {
   if (!section) {
     return undefined;
@@ -174,14 +244,11 @@ function resolveSection(section, name, options) {
     return undefined;
   }
 
-  const content = options.resolveAttached(section.artifact);
-  if (!content || typeof content !== "object") {
-    fail(`attached ${name} could not be resolved`);
-  }
-  const digest = canonicalJsonDigest(content);
-  if (digest !== section.artifact.digest) {
-    fail(`attached ${name} content does not match its digest`);
-  }
+  const content = decodeAttachedRecord(
+    options.resolveAttached(section.artifact),
+    section,
+    name,
+  );
   const idField = SECTION_IDS[name];
   if (content[idField] !== section.contentId) {
     fail(`attached ${name} content does not match contentId`);
@@ -203,12 +270,12 @@ function sectionIdentity(section, name, options) {
 }
 
 function sectionDigest(section, name, options) {
+  if (section?.mode === "attached") {
+    resolveSection(section, name, options);
+    return section.artifact.digest;
+  }
   const content = resolveSection(section, name, options);
-  return content
-    ? canonicalJsonDigest(content)
-    : section?.mode === "attached"
-      ? section.artifact.digest
-      : undefined;
+  return content ? canonicalJsonDigest(content) : undefined;
 }
 
 function emptyIndex() {
@@ -423,7 +490,12 @@ function validateInterfaces(interfaces, model, index, citations) {
   }
 }
 
-function validateConstraints(constraints, index, citations, modelResolved) {
+function validateConstraints(
+  constraints,
+  index,
+  citations,
+  resolvedKinds,
+) {
   if (!constraints) {
     return;
   }
@@ -431,16 +503,12 @@ function validateConstraints(constraints, index, citations, modelResolved) {
   for (const constraint of constraints.constraints) {
     index.constraint.add(constraint.id);
     for (const target of constraint.appliesTo) {
-      const enforce =
-        target.kind === "interface"
-          ? index.interface.size > 0
-          : modelResolved;
       requireKnown(
         index,
         target.kind,
         target.id,
         `constraint ${constraint.id}`,
-        enforce,
+        resolvedKinds[target.kind] === true,
       );
     }
     addRequirementCitation(
@@ -452,7 +520,12 @@ function validateConstraints(constraints, index, citations, modelResolved) {
   }
 }
 
-function validateDecisions(decisions, index, citations) {
+function validateDecisions(
+  decisions,
+  index,
+  citations,
+  resolvedKinds,
+) {
   if (!decisions) {
     return;
   }
@@ -470,20 +543,12 @@ function validateDecisions(decisions, index, citations) {
       );
     }
     for (const target of decision.affectedTargets) {
-      const enforce =
-        target.kind === "view"
-          ? index.view.size > 0
-          : target.kind === "interface"
-            ? index.interface.size > 0
-            : target.kind === "constraint"
-              ? index.constraint.size > 0
-              : index.element.size > 0;
       requireKnown(
         index,
         target.kind,
         target.id,
         `decision ${decision.id}`,
-        enforce,
+        resolvedKinds[target.kind] === true,
       );
     }
     addRequirementCitation(
@@ -495,7 +560,98 @@ function validateDecisions(decisions, index, citations) {
   }
 }
 
-function validateNativeArtifacts(nativeArtifacts) {
+function nativeSectionEntityIds(sectionName, content) {
+  if (!content) {
+    return undefined;
+  }
+  const ids = new Set([content[SECTION_IDS[sectionName]]]);
+  const collections = {
+    architectureModel: ["elements", "relationships"],
+    diagrams: ["views"],
+    interfaceIntent: ["interfaces"],
+    architectureConstraints: ["constraints"],
+    decisionRecords: ["decisions"],
+    nativeArtifacts: ["entries"],
+  };
+  for (const collection of collections[sectionName] ?? []) {
+    for (const entity of content[collection] ?? []) {
+      ids.add(entity.id ?? entity.viewKey);
+    }
+  }
+  return ids;
+}
+
+function mappingPointerMatchesSection(pointer, sectionName) {
+  return (
+    pointer === `/${sectionName}` ||
+    pointer.startsWith(`/${sectionName}/`) ||
+    pointer === `/sections/${sectionName}` ||
+    pointer.startsWith(`/sections/${sectionName}/`)
+  );
+}
+
+function decodeJsonPointerToken(token) {
+  let decoded = "";
+  for (let index = 0; index < token.length; index += 1) {
+    const character = token[index];
+    if (character !== "~") {
+      decoded += character;
+      continue;
+    }
+    const escape = token[index + 1];
+    if (escape === "0") {
+      decoded += "~";
+    } else if (escape === "1") {
+      decoded += "/";
+    } else {
+      return undefined;
+    }
+    index += 1;
+  }
+  return decoded;
+}
+
+function jsonPointerResolves(rootValue, pointer) {
+  if (pointer === "") {
+    return true;
+  }
+  if (!pointer.startsWith("/")) {
+    return false;
+  }
+  let current = rootValue;
+  for (const rawToken of pointer.slice(1).split("/")) {
+    const token = decodeJsonPointerToken(rawToken);
+    if (
+      token === undefined ||
+      current === null ||
+      typeof current !== "object"
+    ) {
+      return false;
+    }
+    if (Array.isArray(current)) {
+      if (!/^(0|[1-9][0-9]*)$/.test(token)) {
+        return false;
+      }
+      const index = Number(token);
+      if (index >= current.length) {
+        return false;
+      }
+      current = current[index];
+    } else {
+      if (!Object.hasOwn(current, token)) {
+        return false;
+      }
+      current = current[token];
+    }
+  }
+  return true;
+}
+
+function validateNativeArtifacts(
+  nativeArtifacts,
+  resolvedSections,
+  declaredSections,
+) {
   if (!nativeArtifacts) {
     return;
   }
@@ -505,6 +661,61 @@ function validateNativeArtifacts(nativeArtifacts) {
     "native artifact logical identities",
     ({ artifact }) => `${artifact.artifactId}:${artifact.digest}`,
   );
+  const idsBySection = new Map(
+    Object.entries(resolvedSections).map(([name, content]) => [
+      name,
+      nativeSectionEntityIds(name, content),
+    ]),
+  );
+  const pointerRoot = {
+    ...resolvedSections,
+    sections: resolvedSections,
+  };
+  for (const entry of nativeArtifacts.entries) {
+    if (
+      entry.disposition === "generated" &&
+      entry.canonicalMappings.length === 0
+    ) {
+      fail(
+        `generated native artifact ${entry.id} has no canonical mapping`,
+      );
+    }
+    if (
+      entry.disposition === "unmapped" &&
+      (entry.canonicalMappings.length > 0 || entry.warnings.length === 0)
+    ) {
+      fail(
+        `unmapped native artifact ${entry.id} must have no mappings and an explanatory warning`,
+      );
+    }
+    for (const mapping of entry.canonicalMappings) {
+      const known = idsBySection.get(mapping.section);
+      if (!declaredSections[mapping.section]) {
+        fail(
+          `native artifact ${entry.id} maps absent section ${mapping.section}`,
+        );
+      }
+      if (known) {
+        for (const entityId of mapping.entityIds) {
+          if (!known.has(entityId)) {
+            fail(
+              `native artifact ${entry.id} maps unknown ${mapping.section} entity ${entityId}`,
+            );
+          }
+        }
+      }
+      for (const pointer of mapping.jsonPointers) {
+        if (
+          !mappingPointerMatchesSection(pointer, mapping.section) ||
+          (known && !jsonPointerResolves(pointerRoot, pointer))
+        ) {
+          fail(
+            `native artifact ${entry.id} has invalid ${mapping.section} JSON pointer ${pointer}`,
+          );
+        }
+      }
+    }
+  }
 }
 
 function validateTechnicalDesign(
@@ -550,7 +761,13 @@ function validateTechnicalDesign(
   );
 }
 
-function validateTraceability(traceability, index, citations) {
+function validateTraceability(
+  traceability,
+  index,
+  citations,
+  approvedRequirementIds,
+  resolvedTargetKinds,
+) {
   assertUnique(
     traceability,
     "traceability",
@@ -559,6 +776,23 @@ function validateTraceability(traceability, index, citations) {
   const byRequirement = new Map(
     traceability.map((entry) => [entry.requirementId, entry]),
   );
+  if (approvedRequirementIds) {
+    for (const requirementId of byRequirement.keys()) {
+      if (!approvedRequirementIds.has(requirementId)) {
+        fail(`traceability references unapproved requirement ${requirementId}`);
+      }
+    }
+    for (const requirementId of approvedRequirementIds) {
+      if (!byRequirement.has(requirementId)) {
+        fail(`traceability omits approved requirement ${requirementId}`);
+      }
+    }
+    for (const requirementId of citations.keys()) {
+      if (!approvedRequirementIds.has(requirementId)) {
+        fail(`architecture cites unapproved requirement ${requirementId}`);
+      }
+    }
+  }
 
   for (const entry of traceability) {
     const targets = assertUnique(
@@ -566,6 +800,7 @@ function validateTraceability(traceability, index, citations) {
       `traceability ${entry.requirementId} targets`,
       ({ kind, id }) => `${kind}:${id}`,
     );
+    const citedTargets = citations.get(entry.requirementId) ?? new Set();
     for (const target of entry.targets) {
       requireKnown(
         index,
@@ -573,6 +808,15 @@ function validateTraceability(traceability, index, citations) {
         target.id,
         `traceability ${entry.requirementId}`,
       );
+      const key = `${target.kind}:${target.id}`;
+      if (
+        resolvedTargetKinds[target.kind] === true &&
+        !citedTargets.has(key)
+      ) {
+        fail(
+          `traceability ${entry.requirementId} declares target ${key} without a matching sourceRequirementIds citation`,
+        );
+      }
     }
     if (entry.disposition === "no-architecture-impact" && targets.size > 0) {
       fail(
@@ -610,7 +854,7 @@ function validateSections(
   sections,
   traceability,
   options,
-  { partial = false, changes } = {},
+  { partial = false, changes, approvedRequirementIds } = {},
 ) {
   const index = emptyIndex();
   const citations = new Map();
@@ -663,8 +907,17 @@ function validateSections(
     options,
   );
   validateInterfaces(interfaces, model, index, citations);
-  validateConstraints(constraints, index, citations, Boolean(model));
-  validateDecisions(decisions, index, citations);
+  validateConstraints(constraints, index, citations, {
+    element: Boolean(model),
+    relationship: Boolean(model),
+    interface: Boolean(interfaces),
+  });
+  validateDecisions(decisions, index, citations, {
+    element: Boolean(model),
+    view: Boolean(diagrams),
+    interface: Boolean(interfaces),
+    constraint: Boolean(constraints),
+  });
   validateTechnicalDesign(
     technicalDesign,
     interfaces,
@@ -672,7 +925,15 @@ function validateSections(
     index,
     citations,
   );
-  validateNativeArtifacts(nativeArtifacts);
+  validateNativeArtifacts(nativeArtifacts, {
+    technicalDesign,
+    architectureModel: model,
+    diagrams,
+    interfaceIntent: interfaces,
+    architectureConstraints: constraints,
+    decisionRecords: decisions,
+    nativeArtifacts,
+  }, sections);
 
   if (changes) {
     for (const [collectionName, expectedKind] of Object.entries(
@@ -706,7 +967,22 @@ function validateSections(
   }
 
   if (!partial || traceability.length > 0) {
-    validateTraceability(traceability, index, citations);
+    validateTraceability(
+      traceability,
+      index,
+      citations,
+      approvedRequirementIds,
+      {
+        "technical-design": Boolean(technicalDesign),
+        element: Boolean(model),
+        relationship: Boolean(model),
+        view: Boolean(diagrams),
+        interface: Boolean(interfaces),
+        constraint: Boolean(constraints),
+        decision: Boolean(decisions),
+        change: Boolean(changes),
+      },
+    );
   }
   return { index, decisions, sections };
 }
@@ -745,10 +1021,16 @@ function validateProjectArchitectureState(artifact) {
         );
       }
       return;
-    case "baselined":
-      if (!artifact.architectureBaseline) {
-        fail("baselined state omits its architecture baseline");
+    case "baselined": {
+      const repositoryRequired = artifact.projectLifecycle === "existing";
+      if (
+        !artifact.architectureBaseline ||
+        Boolean(artifact.repositorySnapshot) !== repositoryRequired
+      ) {
+        fail("baselined state contains contradictory lifecycle facts");
       }
+      return;
+    }
   }
 }
 
@@ -758,6 +1040,9 @@ function validateDraft(artifact, options) {
     artifact.sections,
     artifact.traceability,
     options,
+    {
+      approvedRequirementIds: options.approvedRequirementIds,
+    },
   );
 
   if (artifact.currentArchitectureSnapshot) {
@@ -834,7 +1119,10 @@ function validateChangeSet(artifact, options) {
     artifact.sections,
     artifact.traceability,
     options,
-    { changes: artifact.changes },
+    {
+      changes: artifact.changes,
+      approvedRequirementIds: options.approvedRequirementIds,
+    },
   );
 
   for (const [collectionName, targetKind] of Object.entries(
@@ -1051,6 +1339,7 @@ export function validateArchitectureArtifact(artifact, options = {}) {
 export function validateArchitectureDiscoveryHandoff({
   projectArchitectureState,
   projectArchitectureStateRef,
+  repositorySnapshot,
   currentArchitectureSnapshot,
 }) {
   validateArchitectureArtifact(projectArchitectureState);
@@ -1073,7 +1362,20 @@ export function validateArchitectureDiscoveryHandoff({
     currentArchitectureSnapshot.projectArchitectureState,
     projectArchitectureStateRef,
   );
-  return { projectArchitectureState, currentArchitectureSnapshot };
+  if (
+    !repositorySnapshot ||
+    currentArchitectureSnapshot.repositoryRevision.revision !==
+      repositorySnapshot.revision ||
+    currentArchitectureSnapshot.repositoryRevision.treeDigest !==
+      repositorySnapshot.treeDigest
+  ) {
+    fail("discovery snapshot repository revision does not match its source");
+  }
+  return {
+    projectArchitectureState,
+    repositorySnapshot,
+    currentArchitectureSnapshot,
+  };
 }
 
 function observedIds(snapshot, options) {
@@ -1125,12 +1427,20 @@ function observedIds(snapshot, options) {
 export function validateArchitectureDraftAgainstState({
   projectArchitectureState,
   projectArchitectureStateRef,
+  requirementsBaseline,
   architectureDraft,
   currentArchitectureSnapshot,
   options = {},
 }) {
+  const requirementIds = new Set(
+    normativeRequirementIds(requirementsBaseline.requirements),
+  );
+  const candidateOptions = {
+    ...options,
+    approvedRequirementIds: requirementIds,
+  };
   validateArchitectureArtifact(projectArchitectureState);
-  validateArchitectureArtifact(architectureDraft, options);
+  validateArchitectureArtifact(architectureDraft, candidateOptions);
   if (
     ![
       "greenfield-unbaselined",
@@ -1154,12 +1464,34 @@ export function validateArchitectureDraftAgainstState({
     architectureDraft.requirementsBaseline,
     projectArchitectureState.requirementsBaseline,
   );
+  assertPointer(
+    "draft project overview baseline",
+    architectureDraft.projectOverviewBaseline,
+    projectArchitectureState.projectOverviewBaseline,
+  );
+
+  if (projectArchitectureState.state === "greenfield-unbaselined") {
+    if (
+      architectureDraft.repositorySnapshot ||
+      architectureDraft.currentArchitectureSnapshot
+    ) {
+      fail("greenfield draft cannot claim repository or discovery provenance");
+    }
+  }
 
   if (projectArchitectureState.state === "existing-discovered-unbaselined") {
     if (!currentArchitectureSnapshot) {
       fail("existing project draft requires the loaded discovery snapshot");
     }
     validateArchitectureArtifact(currentArchitectureSnapshot, options);
+    const blockingGap = currentArchitectureSnapshot.gaps.find(
+      ({ blocking }) => blocking,
+    );
+    if (blockingGap) {
+      fail(
+        `discovery snapshot retains blocking gap ${blockingGap.id}; clarification is required`,
+      );
+    }
     assertPointer(
       "draft discovery snapshot",
       architectureDraft.currentArchitectureSnapshot,
@@ -1175,9 +1507,19 @@ export function validateArchitectureDraftAgainstState({
         ({ observedKind, observedId }) => `${observedKind}:${observedId}`,
       ),
     );
-    for (const observed of observedIds(currentArchitectureSnapshot, options)) {
-      if (!reconciled.has(observed)) {
-        fail(`discovery reconciliation omits observed ${observed}`);
+    const observed = new Set(
+      observedIds(currentArchitectureSnapshot, options),
+    );
+    for (const observedId of observed) {
+      if (!reconciled.has(observedId)) {
+        fail(`discovery reconciliation omits observed ${observedId}`);
+      }
+    }
+    for (const reconciledId of reconciled) {
+      if (!observed.has(reconciledId)) {
+        fail(
+          `discovery reconciliation includes unobserved ${reconciledId}`,
+        );
       }
     }
   }
@@ -1187,11 +1529,19 @@ export function validateArchitectureDraftAgainstState({
 export function validateArchitectureChangeSetAgainstState({
   projectArchitectureState,
   projectArchitectureStateRef,
+  requirementsBaseline,
   architectureChangeSet,
   options = {},
 }) {
+  const requirementIds = new Set(
+    normativeRequirementIds(requirementsBaseline.requirements),
+  );
+  const candidateOptions = {
+    ...options,
+    approvedRequirementIds: requirementIds,
+  };
   validateArchitectureArtifact(projectArchitectureState);
-  validateArchitectureArtifact(architectureChangeSet, options);
+  validateArchitectureArtifact(architectureChangeSet, candidateOptions);
   if (projectArchitectureState.state !== "baselined") {
     fail("design-change requires baselined project state");
   }
@@ -1211,10 +1561,27 @@ export function validateArchitectureChangeSetAgainstState({
     projectArchitectureState.requirementsBaseline,
   );
   assertPointer(
+    "change-set project overview baseline",
+    architectureChangeSet.targetProjectOverviewBaseline,
+    projectArchitectureState.projectOverviewBaseline,
+  );
+  assertPointer(
     "change-set project context",
     architectureChangeSet.projectContext,
     projectArchitectureState.projectContext,
   );
+  const stateRepository = projectArchitectureState.repositorySnapshot;
+  const candidateRepository = architectureChangeSet.repositorySnapshot;
+  if (Boolean(stateRepository) !== Boolean(candidateRepository)) {
+    fail("change-set repository provenance presence does not match project state");
+  }
+  if (stateRepository) {
+    assertPointer(
+      "change-set repository snapshot",
+      candidateRepository,
+      stateRepository,
+    );
+  }
   return { projectArchitectureState, architectureChangeSet };
 }
 
@@ -1277,6 +1644,66 @@ function assertEntityDigest(label, entity, expectedDigest) {
   }
 }
 
+function expectedEntityDifferences(base, target) {
+  const expected = new Map();
+  for (const id of new Set([...base.keys(), ...target.keys()])) {
+    const before = base.get(id);
+    const after = target.get(id);
+    if (!before) {
+      expected.set(id, "add");
+    } else if (!after) {
+      expected.set(id, "remove");
+    } else if (canonicalJsonDigest(before) !== canonicalJsonDigest(after)) {
+      expected.set(id, "modify");
+    }
+  }
+  return expected;
+}
+
+function validateExhaustiveEntityChanges(
+  collectionName,
+  kind,
+  changes,
+  base,
+  target,
+) {
+  const byEntity = new Map();
+  for (const change of changes) {
+    if (byEntity.has(change.entityId)) {
+      fail(
+        `${collectionName} repeats ${kind} ${change.entityId}`,
+      );
+    }
+    byEntity.set(change.entityId, change);
+  }
+  const expected = expectedEntityDifferences(base, target);
+  for (const [entityId, operation] of expected) {
+    const declared = byEntity.get(entityId);
+    if (!declared) {
+      fail(
+        `${collectionName} omits ${operation} for changed ${kind} ${entityId}`,
+      );
+    }
+    if (declared.operation !== operation) {
+      fail(
+        `${collectionName} declares ${declared.operation} for ${kind} ${entityId}; expected ${operation}`,
+      );
+    }
+  }
+  for (const entityId of byEntity.keys()) {
+    if (!expected.has(entityId)) {
+      fail(`${collectionName} declares unchanged ${kind} ${entityId}`);
+    }
+  }
+}
+
+function consumeDecisionDifference(expected, decisionId, operation, label) {
+  if (expected.get(decisionId) !== operation) {
+    fail(`${label} does not match the ${operation} decision delta`);
+  }
+  expected.delete(decisionId);
+}
+
 export function validateArchitectureChangeSetAgainstBaseline({
   architectureBaseline,
   architectureBaselineRef,
@@ -1333,7 +1760,9 @@ export function validateArchitectureChangeSetAgainstBaseline({
       kind,
       "change-set target verification",
     );
-    for (const change of architectureChangeSet.changes[collectionName]) {
+    const declaredChanges =
+      architectureChangeSet.changes[collectionName];
+    for (const change of declaredChanges) {
       const before = base.get(change.entityId);
       const after = target.get(change.entityId);
       if (change.operation === "add") {
@@ -1377,6 +1806,13 @@ export function validateArchitectureChangeSetAgainstBaseline({
         );
       }
     }
+    validateExhaustiveEntityChanges(
+      collectionName,
+      kind,
+      declaredChanges,
+      base,
+      target,
+    );
   }
 
   const baseDecisions = requireResolvedEntityMap(
@@ -1389,7 +1825,16 @@ export function validateArchitectureChangeSetAgainstBaseline({
     "decision",
     "decision change verification",
   );
+  const expectedDecisionChanges = expectedEntityDifferences(
+    baseDecisions,
+    targetDecisions,
+  );
+  const changedDecisionIds = new Set();
   for (const change of architectureChangeSet.changes.decisionChanges) {
+    if (changedDecisionIds.has(change.decisionId)) {
+      fail(`decision changes repeat ${change.decisionId}`);
+    }
+    changedDecisionIds.add(change.decisionId);
     if (change.operation === "add") {
       if (
         baseDecisions.has(change.decisionId) ||
@@ -1397,6 +1842,12 @@ export function validateArchitectureChangeSetAgainstBaseline({
       ) {
         fail(`decision add ${change.changeId} is not a new proposed MADR`);
       }
+      consumeDecisionDifference(
+        expectedDecisionChanges,
+        change.decisionId,
+        "add",
+        `decision add ${change.changeId}`,
+      );
       continue;
     }
     const baseDecision = baseDecisions.get(change.decisionId);
@@ -1412,15 +1863,47 @@ export function validateArchitectureChangeSetAgainstBaseline({
       const replacement = targetDecisions.get(
         change.replacementDecisionId,
       );
+      const superseded = targetDecisions.get(change.decisionId);
       if (
+        superseded?.status !== "superseded" ||
         replacement?.status !== "proposed" ||
+        baseDecisions.has(change.replacementDecisionId) ||
         !replacement.supersedesDecisionIds.includes(change.decisionId)
       ) {
         fail(
-          `decision change ${change.changeId} lacks its proposed replacement`,
+          `decision change ${change.changeId} lacks its superseded source and proposed replacement`,
         );
       }
+      consumeDecisionDifference(
+        expectedDecisionChanges,
+        change.decisionId,
+        "modify",
+        `decision supersede ${change.changeId}`,
+      );
+      consumeDecisionDifference(
+        expectedDecisionChanges,
+        change.replacementDecisionId,
+        "add",
+        `decision supersede ${change.changeId}`,
+      );
+    } else {
+      if (targetDecisions.get(change.decisionId)?.status !== "deprecated") {
+        fail(
+          `decision deprecate ${change.changeId} does not produce a deprecated MADR`,
+        );
+      }
+      consumeDecisionDifference(
+        expectedDecisionChanges,
+        change.decisionId,
+        "modify",
+        `decision deprecate ${change.changeId}`,
+      );
     }
+  }
+  if (expectedDecisionChanges.size > 0) {
+    const [decisionId, operation] = expectedDecisionChanges.entries().next()
+      .value;
+    fail(`decision changes omit ${operation} for ${decisionId}`);
   }
   return { architectureBaseline, architectureChangeSet };
 }

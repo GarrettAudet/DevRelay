@@ -37,7 +37,10 @@ One exact implementation binding:
 - declared capability demand.
 
 A plug-in cannot redefine Module ports, step order, outcomes, gates, or
-evidence semantics.
+evidence semantics. The registry snapshots and binds the supplied
+`adapter.invoke` callable at registration, so replacing that property later
+cannot change an already registered plug-in. The external host remains
+responsible for state and effects intentionally captured by the callable.
 
 ### `ModuleInvocation`
 
@@ -131,7 +134,8 @@ Before executing a chain, Core validates:
 1. every declared step appears exactly once and in order;
 2. each plug-in implements the exact Module operation and step;
 3. every configuration document validates;
-4. every declared capability kind is granted;
+4. the grants exactly equal the plug-in's resolved capability demands, with no
+   missing, duplicate, or excess entries;
 5. original Module inputs satisfy the selected operation;
 6. a trusted validator is registered for every possible input, handoff, and
    output schema;
@@ -162,6 +166,10 @@ Unchained operations retain the original single-adapter
 cannot declare a step; chained bindings must declare one. An effectful legacy
 invocation is wrapped in the same validated terminal
 checkpoint envelope and is replayed only for its exact immutable invocation.
+Its adapter receives the immutable invocation, its isolated adapter context,
+and a producer identity containing the invocation ID and fingerprint, exact
+plug-in, and step-invocation digest. This lets a legacy adapter bind generated
+artifacts to the same checkpoint identity without inspecting runtime state.
 
 ## Artifacts, resume, and evidence
 
@@ -203,8 +211,10 @@ The only capability demand kinds are:
 - `network.connect`
 - `secrets.read`
 
-The registry checks declared kinds and grants. V1 scope templates use a
-literal scope, `config:<field>`, or `config:<field>/<literal-suffix>`.
+The registry resolves every declared demand and requires the invocation grants
+to be its exact set. Missing, duplicate, and excess grants fail closed. V1
+scope templates use a literal scope, `config:<field>`, or
+`config:<field>/<literal-suffix>`.
 Only one leading configuration token is substituted; composed configuration
 expressions are not part of the grammar. For example, MADR uses an absolute
 `decisionsPath` with `config:decisionsPath`.

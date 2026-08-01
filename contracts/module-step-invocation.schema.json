@@ -119,6 +119,7 @@
       "required": [
         "step",
         "plugin",
+        "sourceInvocation",
         "stepInvocationDigest",
         "digest",
         "outputs"
@@ -141,6 +142,37 @@
               "$ref": "module-invocation.schema.json#/$defs/artifactRef"
             }
           }
+        },
+        "plugin": {
+          "$ref": "module-invocation.schema.json#/$defs/pluginRef"
+        },
+        "stepInvocationDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "sourceInvocation": {
+          "$ref": "#/$defs/sourceInvocation"
+        }
+      }
+    },
+    "sourceInvocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invocationId",
+        "invocationFingerprint",
+        "plugin",
+        "stepInvocationDigest"
+      ],
+      "properties": {
+        "invocationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "invocationFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
         },
         "plugin": {
           "$ref": "module-invocation.schema.json#/$defs/pluginRef"

@@ -21,8 +21,11 @@
             "additionalProperties": false,
             "required": [
               "projectRoot",
+              "toolName",
               "toolVersion",
+              "nativeOperation",
               "changeName",
+              "schema",
               "bridge"
             ],
             "properties": {
@@ -30,23 +33,25 @@
                 "type": "string",
                 "minLength": 1
               },
+              "toolName": {
+                "const": "OpenSpec"
+              },
               "toolVersion": {
                 "type": "string",
                 "minLength": 1
+              },
+              "nativeOperation": {
+                "const": "requirements.gather"
               },
               "changeName": {
                 "type": "string",
                 "minLength": 1
               },
               "schema": {
-                "type": "string",
-                "minLength": 1
+                "const": "devrelay-requirements"
               },
               "bridge": {
-                "enum": [
-                  "agent-command",
-                  "process-json"
-                ]
+                "const": "agent-command"
               }
             }
           },
@@ -58,10 +63,6 @@
             {
               "kind": "filesystem.write",
               "scope": "config:projectRoot/openspec/changes"
-            },
-            {
-              "kind": "process.spawn",
-              "scope": "openspec"
             },
             {
               "kind": "network.connect",

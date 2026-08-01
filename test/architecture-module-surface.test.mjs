@@ -10,6 +10,7 @@ import {
   RoutingError,
   assertInvocationMatchesRoute,
 } from "../src/operation-router.mjs";
+import { augmentArchitectureArtifactOverview } from "./architecture-project-overview-fixtures.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -62,7 +63,10 @@ const stateFiles = {
 };
 
 async function route(state) {
-  const bytes = await readFile(new URL(stateFiles[state], root));
+  const value = augmentArchitectureArtifactOverview(
+    JSON.parse(await readFile(new URL(stateFiles[state], root), "utf8")),
+  );
+  const bytes = Buffer.from(`${JSON.stringify(value, null, 2)}\n`, "utf8");
   const ref = {
     artifactId: `project-architecture-state-${state}`,
     schema: "https://devrelay.dev/artifacts/project-architecture-state/v1",

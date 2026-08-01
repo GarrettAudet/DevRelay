@@ -67,7 +67,8 @@
             "goal",
             "project-context",
             "repository-snapshot",
-            "requirements-baseline"
+            "requirements-baseline",
+            "project-overview-baseline"
           ]
         },
         "artifact": {
@@ -78,7 +79,7 @@
     "baseInputSet": {
       "type": "array",
       "minItems": 2,
-      "maxItems": 4,
+      "maxItems": 5,
       "items": {
         "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/baseInput"
       },
@@ -142,6 +143,77 @@
           },
           "minContains": 0,
           "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "role"
+            ],
+            "properties": {
+              "role": {
+                "const": "project-overview-baseline"
+              }
+            }
+          },
+          "minContains": 0,
+          "maxContains": 1
+        },
+        {
+          "if": {
+            "contains": {
+              "type": "object",
+              "required": [
+                "role"
+              ],
+              "properties": {
+                "role": {
+                  "const": "requirements-baseline"
+                }
+              }
+            }
+          },
+          "then": {
+            "contains": {
+              "type": "object",
+              "required": [
+                "role"
+              ],
+              "properties": {
+                "role": {
+                  "const": "project-overview-baseline"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "contains": {
+              "type": "object",
+              "required": [
+                "role"
+              ],
+              "properties": {
+                "role": {
+                  "const": "project-overview-baseline"
+                }
+              }
+            }
+          },
+          "then": {
+            "contains": {
+              "type": "object",
+              "required": [
+                "role"
+              ],
+              "properties": {
+                "role": {
+                  "const": "requirements-baseline"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -173,7 +245,8 @@
       "required": [
         "id",
         "statement",
-        "verification"
+        "verification",
+        "sourceRefs"
       ],
       "properties": {
         "id": {
@@ -189,59 +262,6 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 2048
-        }
-      }
-    },
-    "requirement": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "category",
-        "statement",
-        "priority",
-        "acceptanceCriteria",
-        "sourceRefs"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^REQ-[A-Z0-9-]+$"
-        },
-        "category": {
-          "enum": [
-            "functional",
-            "quality",
-            "security",
-            "data",
-            "interface",
-            "operational",
-            "constraint"
-          ]
-        },
-        "statement": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 4096
-        },
-        "rationale": {
-          "type": "string",
-          "maxLength": 4096
-        },
-        "priority": {
-          "enum": [
-            "must",
-            "should",
-            "could",
-            "wont"
-          ]
-        },
-        "acceptanceCriteria": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/acceptanceCriterion"
-          }
         },
         "sourceRefs": {
           "type": "array",
@@ -444,11 +464,22 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "objective",
-        "scope",
-        "assumptions",
+        "purpose",
+        "businessObjectives",
+        "successMetrics",
+        "stakeholders",
+        "users",
+        "capabilities",
+        "userJourneys",
+        "userStories",
+        "acceptanceCriteria",
+        "nonFunctionalRequirements",
         "constraints",
-        "requirements",
+        "scope",
+        "nonGoals",
+        "terminology",
+        "currentStatus",
+        "assumptions",
         "dependencies",
         "risks",
         "deliverables",
@@ -456,33 +487,104 @@
         "sourceRefs"
       ],
       "properties": {
-        "objective": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 8192
+        "purpose": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/purpose"
         },
-        "scope": {
-          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/scope"
-        },
-        "assumptions": {
+        "businessObjectives": {
           "type": "array",
+          "minItems": 1,
           "items": {
-            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/assumption"
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/businessObjective"
+          }
+        },
+        "successMetrics": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/successMetric"
+          }
+        },
+        "stakeholders": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/stakeholder"
+          }
+        },
+        "users": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/user"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/capability"
+          }
+        },
+        "userJourneys": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/userJourney"
+          }
+        },
+        "userStories": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/userStory"
+          }
+        },
+        "acceptanceCriteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/acceptanceCriterion"
+          }
+        },
+        "nonFunctionalRequirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/nonFunctionalRequirement"
           }
         },
         "constraints": {
           "type": "array",
           "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 2048
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/constraint"
           }
         },
-        "requirements": {
+        "scope": {
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirement"
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/scopeItem"
+          }
+        },
+        "nonGoals": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/nonGoal"
+          }
+        },
+        "terminology": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/termDefinition"
+          }
+        },
+        "currentStatus": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/currentStatus"
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/assumption"
           }
         },
         "dependencies": {
@@ -534,6 +636,7 @@
         "apiVersion",
         "kind",
         "draftId",
+        "baseInputs",
         "goal",
         "projectContext",
         "requirements"
@@ -549,6 +652,9 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 256
+        },
+        "baseInputs": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/baseInputSet"
         },
         "goal": {
           "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
@@ -570,7 +676,7 @@
         "kind",
         "baselineId",
         "version",
-        "approvedDraft",
+        "approvedCandidate",
         "requirements",
         "approvalEvidence"
       ],
@@ -588,11 +694,7 @@
         },
         "version": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 128
-        },
-        "approvedDraft": {
-          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
         },
         "requirements": {
           "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirementsBody"
@@ -603,6 +705,12 @@
           "items": {
             "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
           }
+        },
+        "approvedCandidate": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
+        },
+        "supersedes": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
         }
       }
     },
@@ -614,11 +722,13 @@
         "apiVersion",
         "kind",
         "changeSetId",
+        "baseInputs",
         "baseline",
-        "additions",
-        "modifications",
-        "removals",
-        "assumptions",
+        "expectedRequirementsDigest",
+        "replacement",
+        "changedSections",
+        "reason",
+        "compatibilityImpact",
         "risks",
         "requiredEvidence",
         "sourceRefs"
@@ -635,98 +745,61 @@
           "minLength": 1,
           "maxLength": 256
         },
+        "baseInputs": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/baseInputSet"
+        },
         "baseline": {
           "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
         },
-        "additions": {
+        "expectedRequirementsDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "replacement": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirementsBody"
+        },
+        "changedSections": {
           "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
-            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirement"
+            "enum": [
+              "purpose",
+              "businessObjectives",
+              "successMetrics",
+              "stakeholders",
+              "users",
+              "capabilities",
+              "userJourneys",
+              "userStories",
+              "acceptanceCriteria",
+              "nonFunctionalRequirements",
+              "constraints",
+              "scope",
+              "nonGoals",
+              "terminology",
+              "currentStatus",
+              "assumptions",
+              "dependencies",
+              "risks",
+              "deliverables",
+              "requiredEvidence",
+              "sourceRefs"
+            ]
           }
         },
-        "modifications": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "requirementId",
-              "expectedRequirementDigest",
-              "replacement",
-              "reason",
-              "compatibilityImpact"
-            ],
-            "properties": {
-              "requirementId": {
-                "type": "string",
-                "pattern": "^REQ-[A-Z0-9-]+$"
-              },
-              "expectedRequirementDigest": {
-                "type": "string",
-                "pattern": "^sha256:[a-f0-9]{64}$"
-              },
-              "replacement": {
-                "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirement"
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 4096
-              },
-              "compatibilityImpact": {
-                "enum": [
-                  "none",
-                  "backward-compatible",
-                  "breaking",
-                  "unknown"
-                ]
-              }
-            }
-          }
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
         },
-        "removals": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "requirementId",
-              "expectedRequirementDigest",
-              "reason",
-              "compatibilityImpact"
-            ],
-            "properties": {
-              "requirementId": {
-                "type": "string",
-                "pattern": "^REQ-[A-Z0-9-]+$"
-              },
-              "expectedRequirementDigest": {
-                "type": "string",
-                "pattern": "^sha256:[a-f0-9]{64}$"
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 4096
-              },
-              "compatibilityImpact": {
-                "enum": [
-                  "none",
-                  "backward-compatible",
-                  "breaking",
-                  "unknown"
-                ]
-              }
-            }
-          }
-        },
-        "assumptions": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 2048
-          }
+        "compatibilityImpact": {
+          "enum": [
+            "none",
+            "backward-compatible",
+            "breaking",
+            "unknown"
+          ]
         },
         "risks": {
           "type": "array",
@@ -751,33 +824,7 @@
             "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
           }
         }
-      },
-      "anyOf": [
-        {
-          "properties": {
-            "additions": {
-              "type": "array",
-              "minItems": 1
-            }
-          }
-        },
-        {
-          "properties": {
-            "modifications": {
-              "type": "array",
-              "minItems": 1
-            }
-          }
-        },
-        {
-          "properties": {
-            "removals": {
-              "type": "array",
-              "minItems": 1
-            }
-          }
-        }
-      ]
+      }
     },
     "clarificationQuestion": {
       "type": "object",
@@ -967,16 +1014,10 @@
         "apiVersion",
         "kind",
         "continuationId",
+        "clarificationRequest",
         "baseInputs",
-        "objective",
-        "scope",
-        "assumptions",
-        "constraints",
-        "candidateRequirements",
-        "dependencies",
-        "risks",
-        "deliverables",
-        "requiredEvidence",
+        "sourceInvocation",
+        "workingRequirements",
         "confirmedFacts",
         "unresolvedQuestionIds",
         "sourceRefs"
@@ -993,14 +1034,17 @@
           "minLength": 1,
           "maxLength": 256
         },
+        "clarificationRequest": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/artifactPointer"
+        },
         "baseInputs": {
           "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/baseInputSet"
         },
-        "candidateRequirements": {
-          "type": "array",
-          "items": {
-            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirement"
-          }
+        "sourceInvocation": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceInvocation"
+        },
+        "workingRequirements": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/requirementsWorkingBody"
         },
         "confirmedFacts": {
           "type": "array",
@@ -1013,6 +1057,7 @@
         "unresolvedQuestionIds": {
           "type": "array",
           "minItems": 1,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "pattern": "^Q-[A-Z0-9-]+$"
@@ -1024,27 +1069,1007 @@
           "items": {
             "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
           }
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "status",
+        "blocking",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ASM-[A-Z0-9-]+$"
         },
-        "objective": {
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "unconfirmed"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "sourceInvocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invocationId",
+        "invocationFingerprint",
+        "stepInvocationDigest",
+        "plugin"
+      ],
+      "properties": {
+        "invocationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "invocationFingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "stepInvocationDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "plugin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        }
+      }
+    },
+    "priority": {
+      "enum": [
+        "must",
+        "should",
+        "could",
+        "wont"
+      ]
+    },
+    "purpose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "sourceRefs"
+      ],
+      "properties": {
+        "statement": {
           "type": "string",
           "minLength": 1,
           "maxLength": 8192
         },
-        "scope": {
-          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/scope"
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "businessObjective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "stakeholderIds",
+        "priority",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^BO-[A-Z0-9-]+$"
         },
-        "assumptions": {
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "stakeholderIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^STK-[A-Z0-9-]+$"
+          }
+        },
+        "priority": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/priority"
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "successMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "businessObjectiveIds",
+        "measure",
+        "target",
+        "measurementMethod",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SM-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "businessObjectiveIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^BO-[A-Z0-9-]+$"
+          }
+        },
+        "measure": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "measurementMethod": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "evaluationWindow": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "stakeholder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "role",
+        "category",
+        "interests",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^STK-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "category": {
+          "enum": [
+            "user",
+            "sponsor",
+            "owner",
+            "operator",
+            "regulator",
+            "affected",
+            "other"
+          ]
+        },
+        "interests": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "stakeholderIds",
+        "needs",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^USR-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "stakeholderIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^STK-[A-Z0-9-]+$"
+          }
+        },
+        "needs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "businessObjectiveIds",
+        "userIds",
+        "audience",
+        "key",
+        "priority",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CAP-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "businessObjectiveIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^BO-[A-Z0-9-]+$"
+          }
+        },
+        "userIds": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^USR-[A-Z0-9-]+$"
+          }
+        },
+        "audience": {
+          "enum": [
+            "user-facing",
+            "internal"
+          ]
+        },
+        "key": {
+          "type": "boolean"
+        },
+        "priority": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/priority"
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "audience": {
+                "const": "user-facing"
+              }
+            },
+            "required": [
+              "audience"
+            ]
+          },
+          "then": {
+            "properties": {
+              "userIds": {
+                "minItems": 1,
+                "type": "array"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "userJourneyStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "action",
+        "expectedOutcome"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "expectedOutcome": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      }
+    },
+    "userJourney": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "userId",
+        "capabilityIds",
+        "trigger",
+        "outcome",
+        "steps",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^UJ-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "userId": {
+          "type": "string",
+          "pattern": "^USR-[A-Z0-9-]+$"
+        },
+        "capabilityIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^CAP-[A-Z0-9-]+$"
+          }
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/userJourneyStep"
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "userStory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "userId",
+        "capabilityId",
+        "userJourneyIds",
+        "need",
+        "benefit",
+        "priority",
+        "acceptanceCriterionIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^US-[A-Z0-9-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "pattern": "^USR-[A-Z0-9-]+$"
+        },
+        "capabilityId": {
+          "type": "string",
+          "pattern": "^CAP-[A-Z0-9-]+$"
+        },
+        "userJourneyIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^UJ-[A-Z0-9-]+$"
+          }
+        },
+        "need": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "benefit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "priority": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/priority"
+        },
+        "acceptanceCriterionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^AC-[A-Z0-9-]+$"
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "applicability": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "level"
+          ],
+          "properties": {
+            "level": {
+              "const": "project"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "level",
+            "capabilityIds"
+          ],
+          "properties": {
+            "level": {
+              "const": "capabilities"
+            },
+            "capabilityIds": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^CAP-[A-Z0-9-]+$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "nonFunctionalRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "statement",
+        "applicability",
+        "measure",
+        "target",
+        "priority",
+        "acceptanceCriterionIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^NFR-[A-Z0-9-]+$"
+        },
+        "category": {
+          "enum": [
+            "security",
+            "performance",
+            "reliability",
+            "availability",
+            "scalability",
+            "usability",
+            "accessibility",
+            "maintainability",
+            "observability",
+            "compatibility",
+            "privacy",
+            "compliance",
+            "operational",
+            "other"
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "applicability": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/applicability"
+        },
+        "measure": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "priority": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/priority"
+        },
+        "acceptanceCriterionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^AC-[A-Z0-9-]+$"
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "statement",
+        "applicability",
+        "acceptanceCriterionIds",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CON-[A-Z0-9-]+$"
+        },
+        "category": {
+          "enum": [
+            "business",
+            "technical",
+            "regulatory",
+            "legal",
+            "budget",
+            "schedule",
+            "platform",
+            "compatibility",
+            "data",
+            "security",
+            "other"
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "applicability": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/applicability"
+        },
+        "acceptanceCriterionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^AC-[A-Z0-9-]+$"
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "scopeItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SCOPE-[A-Z0-9-]+$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "nonGoal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^NG-[A-Z0-9-]+$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "termDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "term",
+        "definition",
+        "aliases",
+        "sourceRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^TERM-[A-Z0-9-]+$"
+        },
+        "term": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "aliases": {
           "type": "array",
           "items": {
-            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/assumption"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "currentStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lifecycle",
+        "phase",
+        "summary",
+        "sourceRefs"
+      ],
+      "properties": {
+        "lifecycle": {
+          "enum": [
+            "greenfield",
+            "existing"
+          ]
+        },
+        "phase": {
+          "enum": [
+            "discovery",
+            "planning",
+            "implementation",
+            "operational",
+            "maintenance",
+            "retirement"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "requirementsWorkingBody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "businessObjectives",
+        "successMetrics",
+        "stakeholders",
+        "users",
+        "capabilities",
+        "userJourneys",
+        "userStories",
+        "acceptanceCriteria",
+        "nonFunctionalRequirements",
+        "constraints",
+        "scope",
+        "nonGoals",
+        "terminology",
+        "currentStatus",
+        "assumptions",
+        "dependencies",
+        "risks",
+        "deliverables",
+        "requiredEvidence",
+        "sourceRefs"
+      ],
+      "properties": {
+        "purpose": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/purpose"
+        },
+        "businessObjectives": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/businessObjective"
+          }
+        },
+        "successMetrics": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/successMetric"
+          }
+        },
+        "stakeholders": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/stakeholder"
+          }
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/user"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/capability"
+          }
+        },
+        "userJourneys": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/userJourney"
+          }
+        },
+        "userStories": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/userStory"
+          }
+        },
+        "acceptanceCriteria": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/acceptanceCriterion"
+          }
+        },
+        "nonFunctionalRequirements": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/nonFunctionalRequirement"
           }
         },
         "constraints": {
           "type": "array",
           "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 2048
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/constraint"
+          }
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/scopeItem"
+          }
+        },
+        "nonGoals": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/nonGoal"
+          }
+        },
+        "terminology": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/termDefinition"
+          }
+        },
+        "currentStatus": {
+          "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/currentStatus"
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/assumption"
           }
         },
         "dependencies": {
@@ -1078,58 +2103,12 @@
             "minLength": 1,
             "maxLength": 256
           }
-        }
-      }
-    },
-    "scope": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "in",
-        "out"
-      ],
-      "properties": {
-        "in": {
+        },
+        "sourceRefs": {
           "type": "array",
           "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 2048
+            "$ref": "https://devrelay.dev/contracts/requirements-gathering-artifacts.schema.json#/$defs/sourceRef"
           }
-        },
-        "out": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 2048
-          }
-        }
-      }
-    },
-    "assumption": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "statement",
-        "status"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^ASM-[A-Z0-9-]+$"
-        },
-        "statement": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 2048
-        },
-        "status": {
-          "enum": [
-            "confirmed",
-            "unconfirmed"
-          ]
         }
       }
     }

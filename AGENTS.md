@@ -10,9 +10,10 @@ software-engineering Modules and interchangeable bounded adapters.
 The executable contract slices are:
 
 - `requirements-gathering@0.1.0`, which turns a goal and project context into
-  a requirements candidate or clarification checkpoint through one configured
-  plug-in;
-- `architecture-design@0.1.0`, which state-routes approved requirements into
+  a typed requirements candidate, its deterministic project-overview
+  projection, or a clarification checkpoint through one configured plug-in;
+- `architecture-design@0.1.0`, which state-routes an approved paired
+  `RequirementsBaseline` and `ProjectOverviewBaseline` into
   `establish-baseline` or `design-change` and executes a configured designer,
   modeler, decision-recorder chain.
 
@@ -22,14 +23,17 @@ OpenSpec design bindings, followed by Structurizr and MADR bindings.
 
 The manifests and conformance fixtures are present; live upstream command
 adapters are not shipped. Do not claim live interoperability from contract
-fixtures.
+fixtures. `ArchitectureDiscovery` is an explicit prerequisite contract for an
+unknown existing system, but no executable discovery Module ships in `0.1.0`.
 
 Do not add a workflow platform, agent framework, package marketplace,
 distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 
 ## Invariants
 
-- Generic Core never branches on a Module, operation, adapter, or product ID.
+- Generic Core never branches on a Module, operation, adapter, or product ID,
+  and never injects hidden project context. Every downstream Module receives
+  its exact `project-overview-baseline` through a declared input port.
 - A Module owns provider-neutral ports, outcomes, result contracts, evidence,
   deterministic routing rules, and ordered step contracts.
 - A plug-in owns one exact Module operation/step binding, execution mode,
@@ -55,6 +59,20 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 - Requirements and architecture Modules emit candidates, clarification, or
   diagnostics. Separate gates own validation policy, approval, and baseline
   promotion.
+- A canonical requirements body is typed around purpose, business objectives,
+  success metrics, stakeholders, users, capabilities, user journeys, user
+  stories, acceptance criteria, non-functional requirements, constraints,
+  scope, non-goals, terminology, current status, and supporting engineering
+  context. Do not restore a generic duplicate `requirements[]` spine.
+- `ProjectOverview.md` is a deterministic UTF-8/NFC/LF rendering of a
+  structured ProjectOverview artifact. Its raw bytes are digest-bound evidence,
+  never an independently editable source of truth.
+- The Requirements Gate promotes a requirements candidate and its matching
+  project-overview candidate as one atomic pair. A requirements change always
+  creates a new paired `ProjectOverviewBaseline`, even when the projected
+  overview sections are unchanged.
+- A `RequirementsChangeSet` is an optimistic full-body replacement bound to the
+  exact prior requirements digest and exhaustive changed-section list.
 - Detailed interface contracts belong to ContractGeneration. Architecture
   enforcement belongs to Verification.
 - Cross-module artifact IDs have one schema owner.
@@ -66,12 +84,13 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 
 Before implementation:
 
-1. Establish or update an approved RequirementsBaseline.
+1. Establish or update an approved, version-aligned
+   `RequirementsBaseline` + `ProjectOverviewBaseline` pair.
 2. Update the semantic Module, routing, step, or plug-in contract.
 3. Add a valid invocation and positive/negative conformance fixtures.
-4. Verify raw-byte digests, deterministic routing, full-chain preflight,
-   effect checkpoints, handoff validation, terminal results, and legacy
-   compatibility.
+4. Verify raw-byte digests, the exact `ProjectOverview.md` projection,
+   deterministic routing, full-chain preflight, effect checkpoints, handoff
+   validation, terminal results, and legacy compatibility.
 5. Prove generic source contains no product identifier branch.
 6. Keep dependencies minimal. Ajv is the contract validator.
 
