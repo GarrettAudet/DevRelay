@@ -259,6 +259,26 @@ operational.
 The release uses only these bounded capabilities; it does not embed either
 upstream repository or run its full workflow.
 
+## Traceability contribution
+
+On graph-aware execution, Core's trusted RequirementsGathering contributor
+projects the validated candidate into business-objective, success-metric,
+stakeholder, user, capability, user-journey, user-story,
+acceptance-criterion, non-functional-requirement, and
+requirement-constraint nodes with their explicit relationships. The
+deterministic ProjectOverview is linked as a projection artifact rather than
+creating duplicate semantic owners.
+
+Candidate output enters `requirements/candidate` authority. When an approved
+requirements/project-overview pair is later supplied to ArchitectureDesign,
+the baseline observer projects those exact approved facts into the separate
+`requirements/baseline` authority so candidate and approved history coexist.
+The Requirements Gate remains the only owner of promotion; this release does
+not infer approval from successful execution.
+
+The contributor's contract digest binds its exact scope, authority, and
+allowed node/edge kinds. Core owns coalesced artifact-reference assertions.
+
 ## Next Gate
 
 The downstream Requirements Validation module should check:

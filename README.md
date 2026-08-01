@@ -1,24 +1,27 @@
 # DevRelay
 
-DevRelay is a small deterministic runner for composable
-software-engineering Modules.
+DevRelay is a small deterministic runner for composable software-engineering
+Modules with a Core-owned lifecycle traceability sidecar.
 
 It does not replace engineering tools, coding agents, or model providers. A
 semantic Module defines a stable engineering contract, configured adapters
 implement bounded capabilities, and DevRelay Core owns routing, sequencing,
-validation, checkpointing, and progression.
+validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.1.0` is a private, source-only release containing
-`requirements-gathering@0.1.0` and `architecture-design@0.1.0`. It is
-`UNLICENSED` and is not published to the public npm registry. Access to the
-source does not grant permission to use or redistribute it; see
-[LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
+DevRelay `0.2.0` is a private, source-only release containing DevRelay Core,
+`TraceabilityGraph`, `requirements-gathering@0.1.0`, and
+`architecture-design@0.1.0`. Source-package versions and immutable Module
+versions are intentionally independent. The package is `UNLICENSED` and is
+not published to the public npm registry. Access to the source does not grant
+permission to use or redistribute it; see [LICENSE](LICENSE) and
+[RELEASE.md](RELEASE.md).
 
 The release contains Core, schemas, versioned manifests, fixtures, and bounded
-adapter contracts. It does not contain live OpenSpec, GitHub Spec Kit,
-Structurizr, or MADR command adapters.
+adapter contracts, plus an in-memory reference graph and checkpoint store. It
+does not contain a durable graph backend, approval-gate contributors, or live
+OpenSpec, GitHub Spec Kit, Structurizr, or MADR command adapters.
 
 ## Source setup and verification
 
@@ -86,6 +89,54 @@ const registry = createModuleRegistry({
 const overviewOnlyContracts = projectOverviewRuntimeArtifactContracts();
 ```
 
+### Traceability sidecar quickstart
+
+A host configures graph-aware execution once without changing a Module or
+adapter. From that point, ordinary `execute()` cannot bypass graph projection:
+
+```js
+import {
+  architectureTraceabilityContributors,
+  createInMemoryTraceabilityCheckpointStore,
+  createInMemoryTraceabilityStore,
+  createTraceabilityGraphService,
+  requirementsTraceabilityContributors,
+} from "devrelay";
+
+const traceabilityGraph = createTraceabilityGraphService({
+  graphId: "graph-example",
+  projectId: "project-example",
+  store: createInMemoryTraceabilityStore(),
+  contributors: [
+    ...requirementsTraceabilityContributors,
+    ...architectureTraceabilityContributors,
+  ],
+});
+const traceabilityCheckpoints =
+  createInMemoryTraceabilityCheckpointStore();
+
+const tracedRegistry = createModuleRegistry({
+  modules: [requirements, architecture],
+  artifactContracts,
+  traceability: {
+    graph: traceabilityGraph,
+    checkpoints: traceabilityCheckpoints,
+  },
+});
+
+const executionRecord = await tracedRegistry.execute(invocation, runtimeContext);
+```
+
+`executionRecord` contains the original validated `ModuleResult`, canonical
+`TraceabilityUpdate`, exact persisted traceability checkpoint, merge receipt,
+resulting graph reference, diagnostics, and application proof. Core checkpoints
+the exact prepared update before graph application, so a retry can complete
+without rerunning the adapter. Adapters never receive the graph service or
+checkpoint store. Use a durable atomic implementation of both store boundaries
+outside local and conformance use. An unconfigured registry preserves exact
+0.1 `execute()` behavior; `executeWithTraceability()` remains the explicit
+advanced seam.
+
 Register exact plug-in manifests and host adapter functions before resolving
 or executing an invocation. There is no implicit adapter, version, model, or
 external command. `requirementsRuntimeArtifactContracts()` includes the
@@ -137,6 +188,14 @@ GoalArtifact + ProjectContext + optional paired baselines
   -> separate Architecture Gate
   -> ArchitectureBaseline
 ```
+
+`TraceabilityGraph` runs beside this sequence rather than appearing as another
+box in it. Requirements executions project objectives, capabilities, stories,
+criteria, and their links; ArchitectureDesign executions add technical design,
+architecture elements, relationships, constraints, interface intent, and
+decision records linked to the requirements they support. Future contributor
+packages extend the same vocabulary with contracts, work, code, tests, and
+verification evidence.
 
 ### RequirementsGathering 0.1.0
 
@@ -228,6 +287,10 @@ ModuleDefinition + ModulePlugin + ModuleInvocation
                          |
                          v
             ModuleStepResult + ModuleResult
+                         |
+              Core-owned TraceabilityUpdate
+                         v
+              ModuleExecutionRecord
 ```
 
 - `ModuleDefinition` owns portable operations, ports, result rules, evidence,
@@ -248,6 +311,10 @@ ModuleDefinition + ModulePlugin + ModuleInvocation
   `ModuleResult`.
 - `ModuleResult` is checked against Module semantics and never implies gate or
   pipeline acceptance.
+- `ModuleExecutionRecord` is returned by graph-aware Core execution and binds
+  the unchanged `ModuleResult` to its validated update, exact persisted
+  checkpoint, merge receipt, diagnostics, and application proof. It is not
+  authored by an adapter and does not promote a candidate.
 
 Legacy single-adapter invocations remain supported for RequirementsGathering.
 
@@ -282,6 +349,14 @@ The registry and schema-backed runner:
 - reject non-JSON invocation, result, definition, and adapter-context state,
   and create a distinct immutable data context for every adapter;
 - preserve the existing single-adapter RequirementsGathering contract path.
+- project validated Module artifacts through trusted, versioned contributors;
+- checkpoint every exact traceability update before atomic, idempotent graph
+  application and replay it without rerunning a completed adapter;
+- keep candidate and approved observations distinct by authority and scope;
+- reject output- or evidence-bearing graph-aware results that have no matching contributor;
+- preserve graph history through retirement and supersession;
+- query deterministic forward/reverse paths and report horizon-aware orphaned
+  requirements, unscoped work, and missing passing evidence.
 
 Effectful model or tool execution is checkpointed rather than assumed
 bit-for-bit reproducible. Exact-invocation recovery reuses fully bound
@@ -324,6 +399,8 @@ contracts/
   module-step-invocation.schema.json
   module-step-result.schema.json
   module-result.schema.json
+  module-execution-record.schema.json
+  traceability-graph-artifacts.schema.json
   requirements-gathering-artifacts.schema.json
   project-overview-artifacts.schema.json
   architecture-design-artifacts.schema.json
@@ -332,6 +409,7 @@ docs/
   module-contract.md
   requirements-gathering.md
   architecture-design.md
+  traceability-graph.md
 dogfood/
   architecture-design/
 examples/
@@ -345,6 +423,7 @@ openspec/
   schemas/devrelay-architecture/
 release/
   0.1.0.json
+  0.2.0.json
 scripts/
   verify.mjs
   release-check.mjs
@@ -366,6 +445,12 @@ src/
   requirements-runtime-contracts.mjs
   architecture-artifact-validator.mjs
   shared-artifact-validator.mjs
+  traceability-graph.mjs
+  traceability-artifact-validator.mjs
+  traceability-runtime-contracts.mjs
+  traceability-checkpoint-store.mjs
+  requirements-traceability-contributor.mjs
+  architecture-traceability-contributor.mjs
 test/
 ```
 

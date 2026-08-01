@@ -15,7 +15,11 @@ The executable contract slices are:
 - `architecture-design@0.1.0`, which state-routes an approved paired
   `RequirementsBaseline` and `ProjectOverviewBaseline` into
   `establish-baseline` or `design-change` and executes a configured designer,
-  modeler, decision-recorder chain.
+  modeler, decision-recorder chain;
+- `TraceabilityGraph`, a Core-owned sidecar that projects validated results
+  from both Modules into one living lifecycle graph and returns a standardized
+  update plus merge proof in `ModuleExecutionRecord`. It is not a Module,
+  adapter, gate, or workflow stage.
 
 RequirementsGathering supports bounded OpenSpec and GitHub Spec Kit
 requirements bindings. ArchitectureDesign V1 uses bounded Spec Kit plan or
@@ -34,6 +38,19 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 - Generic Core never branches on a Module, operation, adapter, or product ID,
   and never injects hidden project context. Every downstream Module receives
   its exact `project-overview-baseline` through a declared input port.
+- Adapters never receive the graph service and never author graph assertions.
+  Trusted, versioned contributors may project only already validated canonical
+  artifacts and only within their declared kinds and scopes.
+- Graph-aware execution checkpoints the exact prepared update before merge.
+  Replay must reuse that checkpoint without rerunning the adapter and must
+  prove the exact stored receipt and result graph.
+- Candidate and approved observations coexist as distinct authority/scope
+  identities. A Module result never promotes graph facts; approval gates own
+  activation. Graph history is retired or superseded, never deleted.
+- An output- or evidence-bearing graph-aware result without a matching
+  contributor fails closed. Generic Core must not contain contributor-specific routing.
+- The bundled graph/checkpoint stores are reference implementations; durable
+  atomic persistence remains a host responsibility.
 - A Module owns provider-neutral ports, outcomes, result contracts, evidence,
   deterministic routing rules, and ordered step contracts.
 - A plug-in owns one exact Module operation/step binding, execution mode,
@@ -91,8 +108,10 @@ Before implementation:
 4. Verify raw-byte digests, the exact `ProjectOverview.md` projection,
    deterministic routing, full-chain preflight, effect checkpoints, handoff
    validation, terminal results, and legacy compatibility.
-5. Prove generic source contains no product identifier branch.
-6. Keep dependencies minimal. Ajv is the contract validator.
+5. Verify exact traceability projection, checkpoint-before-merge ordering,
+   retry/idempotency, ownership isolation, and horizon diagnostics.
+6. Prove generic source contains no product identifier branch.
+7. Keep dependencies minimal. Ajv is the contract validator.
 
 When the user says to use a Module, run its normal user-facing workflow:
 present its clarification questions and gate decision in chat, then preserve

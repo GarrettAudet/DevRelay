@@ -13,7 +13,11 @@ export const repositoryRoot = resolve(
   dirname(fileURLToPath(import.meta.url)),
   "..",
 );
-export const releaseManifestRelativePath = "release/0.1.0.json";
+export const sourceReleaseVersion = JSON.parse(
+  readFileSync(join(repositoryRoot, "package.json"), "utf8"),
+).version;
+export const releaseManifestRelativePath =
+  `release/${sourceReleaseVersion}.json`;
 export const releaseManifestPath = join(
   repositoryRoot,
   ...releaseManifestRelativePath.split("/"),

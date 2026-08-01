@@ -4,6 +4,32 @@ All notable DevRelay source releases are recorded here. Module versions are
 immutable once released; a semantic contract change requires a new module
 version.
 
+## 0.2.0 - 2026-08-01
+
+### Added
+
+- Core-owned `TraceabilityGraph` infrastructure with closed graph snapshot,
+  standardized update, merge receipt, diagnostic report, and
+  `ModuleExecutionRecord` contracts.
+- Trusted RequirementsGathering and ArchitectureDesign contributors that
+  project validated canonical artifacts without exposing graph state to
+  adapters or changing the immutable 0.1.0 Module contracts.
+- Checkpoint-first, atomic, idempotent graph application; deterministic retry;
+  disjoint stale-update rebase; conflict detection; retirement/supersession
+  history; and exact artifact and JSON Pointer provenance.
+- Candidate and approved observations as separate authority/scope identities,
+  deterministic forward/reverse traversal, and horizon-aware diagnostics for
+  orphaned requirements, unscoped work, and missing passing evidence.
+- In-memory graph and traceability checkpoint reference stores plus public API,
+  schemas, package smoke coverage, and release documentation.
+
+### Release scope
+
+- The source package is `0.2.0`; RequirementsGathering and ArchitectureDesign
+  remain at their released `0.1.0` contract versions.
+- Durable graph/checkpoint backends and approval-gate contributors remain host
+  or future-module responsibilities.
+
 ## 0.1.0 - 2026-07-30
 
 ### Added

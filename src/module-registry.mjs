@@ -24,7 +24,14 @@ import {
   validationDetail,
 } from "./schema-validation.mjs";
 
+import {
+  createGraphAwareInvocationFingerprint,
+  createTraceCheckpointKey,
+  validateModuleExecutionRecord,
+} from "./module-execution-record-validator.mjs";
+
 const verifiedCheckpointReplayReceipts = new WeakSet();
+const traceabilityExecutionCapture = Symbol("traceabilityExecutionCapture");
 
 const CAPABILITY_KINDS = new Set([
   "filesystem.read",
@@ -798,6 +805,186 @@ function immutableCopy(value) {
   return freeze(copy);
 }
 
+function requireTraceabilityRuntime(context) {
+  const graph = context.traceabilityGraph;
+  const checkpoints = context.traceabilityCheckpoints;
+  if (!isRecord(graph)) {
+    fail("DR2500", "graph-aware execution requires context.traceabilityGraph");
+  }
+  for (const method of [
+    "captureBase",
+    "prepare",
+    "validatePrepared",
+    "mergePrepared",
+    "assertApplied",
+  ]) {
+    if (typeof graph[method] !== "function") {
+      fail("DR2500", `traceabilityGraph.${method} must be a function`);
+    }
+  }
+  requireString(graph.graphId, "traceabilityGraph.graphId");
+  requireString(graph.projectId, "traceabilityGraph.projectId");
+  if (
+    !isRecord(checkpoints) ||
+    typeof checkpoints.get !== "function" ||
+    typeof checkpoints.putIfAbsent !== "function"
+  ) {
+    fail(
+      "DR2500",
+      "graph-aware execution requires context.traceabilityCheckpoints.get and .putIfAbsent",
+    );
+  }
+  return { graph, checkpoints };
+}
+
+function assertTraceabilityArtifactRef(ref, label) {
+  requireRecord(ref, label);
+  for (const field of ["artifactId", "schema", "mediaType", "digest", "uri"]) {
+    requireString(ref[field], `${label}.${field}`);
+  }
+  if (!/^sha256:[a-f0-9]{64}$/.test(ref.digest)) {
+    fail("DR2503", `${label}.digest must be a SHA-256 digest`);
+  }
+  try {
+    new URL(ref.schema);
+    new URL(ref.uri);
+  } catch {
+    fail("DR2503", `${label} must contain absolute schema and uri values`);
+  }
+  return ref;
+}
+
+function sameCanonicalValue(left, right) {
+  return canonicalJsonDigest(left) === canonicalJsonDigest(right);
+}
+
+function snapshotTraceabilityConfiguration(configuration) {
+  if (configuration === undefined) {
+    return undefined;
+  }
+  requireRecord(configuration, "traceability configuration");
+  if (
+    !sameCanonicalValue(Object.keys(configuration).sort(), [
+      "checkpoints",
+      "graph",
+    ])
+  ) {
+    fail(
+      "DR2500",
+      "traceability configuration must contain exactly graph and checkpoints",
+    );
+  }
+  const { graph, checkpoints } = requireTraceabilityRuntime({
+    traceabilityGraph: configuration.graph,
+    traceabilityCheckpoints: configuration.checkpoints,
+  });
+  return Object.freeze({
+    graph: Object.freeze({
+      graphId: graph.graphId,
+      projectId: graph.projectId,
+      captureBase: graph.captureBase.bind(graph),
+      prepare: graph.prepare.bind(graph),
+      validatePrepared: graph.validatePrepared.bind(graph),
+      mergePrepared: graph.mergePrepared.bind(graph),
+      assertApplied: graph.assertApplied.bind(graph),
+    }),
+    checkpoints: Object.freeze({
+      get: checkpoints.get.bind(checkpoints),
+      putIfAbsent: checkpoints.putIfAbsent.bind(checkpoints),
+    }),
+  });
+}
+
+function traceabilityCheckpointKey(invocation, invocationFingerprint, graph) {
+  requireString(graph.graphId, "traceabilityGraph.graphId");
+  requireString(graph.projectId, "traceabilityGraph.projectId");
+  return createTraceCheckpointKey({
+    graphId: graph.graphId,
+    projectId: graph.projectId,
+    invocationId: invocation.invocationId,
+    runId: invocation.runId,
+    nodeId: invocation.nodeId,
+    module: invocation.module,
+    invocationFingerprint,
+  });
+}
+
+function moduleExecutionRecordKey(traceCheckpointKey) {
+  return canonicalJsonDigest({
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "ModuleExecutionRecordKey",
+    traceCheckpointKey,
+  });
+}
+
+function inspectPreparedTraceability(prepared, expectedBaseGraphRef, label) {
+  requireRecord(prepared, label);
+  requireRecord(prepared.update, `${label}.update`);
+  assertJsonData(prepared.update, `${label}.update`);
+  assertTraceabilityArtifactRef(prepared.updateRef, `${label}.updateRef`);
+  assertTraceabilityArtifactRef(
+    prepared.baseGraphRef,
+    `${label}.baseGraphRef`,
+  );
+  requireRecord(prepared.checkpoint, `${label}.checkpoint`);
+  assertJsonData(prepared.checkpoint, `${label}.checkpoint`);
+  const checkpointKeys = Object.keys(prepared.checkpoint).sort();
+  if (
+    !sameCanonicalValue(checkpointKeys, [
+      "baseGraphRef",
+      "update",
+      "updateRef",
+    ])
+  ) {
+    fail(
+      "DR2503",
+      `${label}.checkpoint must contain exactly baseGraphRef, update, and updateRef`,
+    );
+  }
+  if (
+    !sameCanonicalValue(prepared.baseGraphRef, expectedBaseGraphRef) ||
+    !sameCanonicalValue(
+      prepared.checkpoint.baseGraphRef,
+      expectedBaseGraphRef,
+    ) ||
+    !sameCanonicalValue(prepared.checkpoint.updateRef, prepared.updateRef) ||
+    !sameCanonicalValue(prepared.checkpoint.update, prepared.update)
+  ) {
+    fail("DR2503", `${label} is not bound to its exact base and update`);
+  }
+  if (canonicalJsonDigest(prepared.update) !== prepared.updateRef.digest) {
+    fail(
+      "DR2503",
+      `${label}.updateRef digest does not identify the canonical update`,
+    );
+  }
+  return {
+    baseGraphRef: immutableCopy(prepared.baseGraphRef),
+    update: immutableCopy(prepared.update),
+    updateRef: immutableCopy(prepared.updateRef),
+    checkpoint: immutableCopy(prepared.checkpoint),
+  };
+}
+
+function createSelfDigestDocument(material, digestField) {
+  return immutableCopy({
+    ...material,
+    [digestField]: canonicalJsonDigest(material),
+  });
+}
+
+function validateSelfDigestDocument(document, digestField, label) {
+  requireRecord(document, label);
+  const { [digestField]: digest, ...material } = document;
+  if (
+    typeof digest !== "string" ||
+    canonicalJsonDigest(material) !== digest
+  ) {
+    fail("DR2502", `${label} content digest is invalid`);
+  }
+  return document;
+}
+
 export function createInvocationFingerprint(invocation) {
   requireRecord(invocation, "invocation");
   requireRecord(invocation.module, "invocation.module");
@@ -882,11 +1069,14 @@ export function createModuleRegistry({
   modules = [],
   plugins = [],
   artifactContracts = [],
+  traceability,
 } = {}) {
   const moduleDefinitions = new Map();
   const moduleOptionValidators = new Map();
   const pluginRegistrations = new Map();
   const pluginConfigValidators = new Map();
+  const configuredTraceability =
+    snapshotTraceabilityConfiguration(traceability);
   let artifactContractRegistry;
   try {
     artifactContractRegistry = createArtifactContractRegistry([
@@ -1489,6 +1679,408 @@ export function createModuleRegistry({
     return loadedByPort;
   }
 
+  async function readTraceabilityDocument(store, key, label) {
+    try {
+      const value = await store.get(key);
+      return value === undefined || value === null
+        ? undefined
+        : immutableCopy(value);
+    } catch (error) {
+      fail("DR2501", `${label} read failed: ${error.message}`);
+    }
+  }
+
+  async function persistTraceabilityDocument(store, key, document, label) {
+    const immutable = immutableCopy(document);
+    const existing = await readTraceabilityDocument(store, key, label);
+    if (existing !== undefined) {
+      if (!sameCanonicalValue(existing, immutable)) {
+        fail("DR2502", `${label} conflicts with the exact stable key`);
+      }
+      return existing;
+    }
+    let winner;
+    try {
+      winner = immutableCopy(await store.putIfAbsent(key, immutable));
+    } catch (error) {
+      fail("DR2501", `${label} write failed: ${error.message}`);
+    }
+    if (!sameCanonicalValue(winner, immutable)) {
+      fail("DR2502", `${label} lost an atomic write to divergent content`);
+    }
+    const persisted = await readTraceabilityDocument(store, key, label);
+    if (
+      persisted === undefined ||
+      !sameCanonicalValue(persisted, immutable) ||
+      !sameCanonicalValue(persisted, winner)
+    ) {
+      fail("DR2502", `${label} was not durably persisted exactly`);
+    }
+    return persisted;
+  }
+
+  function captureTraceabilityExecution(runtime, moduleResult, producer) {
+    const capture = runtime.context[traceabilityExecutionCapture];
+    if (capture === undefined) {
+      return;
+    }
+    if (!isRecord(capture) || capture.value !== undefined) {
+      fail("DR2502", "graph-aware execution capture is invalid");
+    }
+    capture.value = immutableCopy({
+      moduleResultDigest: canonicalJsonDigest(moduleResult),
+      producer,
+      priorResults: runtime.priorResults,
+    });
+  }
+
+  function validateTraceabilityCheckpoint(
+    checkpoint,
+    checkpointKey,
+    invocation,
+    resolution,
+    graph,
+  ) {
+    validateSelfDigestDocument(
+      checkpoint,
+      "checkpointDigest",
+      "traceability checkpoint",
+    );
+    if (
+      checkpoint.apiVersion !== "devrelay.dev/v1alpha1" ||
+      checkpoint.kind !== "ModuleTraceabilityCheckpoint" ||
+      checkpoint.traceCheckpointKey !== checkpointKey ||
+      checkpoint.invocationId !== invocation.invocationId ||
+      checkpoint.runId !== invocation.runId ||
+      checkpoint.nodeId !== invocation.nodeId ||
+      !sameCanonicalValue(checkpoint.module, invocation.module) ||
+      checkpoint.invocationFingerprint !== resolution.invocationFingerprint ||
+      checkpoint.graphId !== graph.graphId ||
+      checkpoint.projectId !== graph.projectId
+    ) {
+      fail("DR2502", "traceability checkpoint invocation binding is invalid");
+    }
+    requireString(checkpoint.graphId, "traceability checkpoint.graphId");
+    requireString(checkpoint.projectId, "traceability checkpoint.projectId");
+    assertTraceabilityArtifactRef(
+      checkpoint.baseGraphRef,
+      "traceability checkpoint.baseGraphRef",
+    );
+    assertTraceabilityArtifactRef(
+      checkpoint.updateRef,
+      "traceability checkpoint.updateRef",
+    );
+    requireRecord(
+      checkpoint.preparedCheckpoint,
+      "traceability checkpoint.preparedCheckpoint",
+    );
+    requireRecord(
+      checkpoint.executionContext,
+      "traceability checkpoint.executionContext",
+    );
+    requireRecord(checkpoint.moduleResult, "traceability checkpoint.moduleResult");
+    if (
+      checkpoint.moduleResultDigest !==
+        canonicalJsonDigest(checkpoint.moduleResult) ||
+      checkpoint.preparedCheckpointDigest !==
+        canonicalJsonDigest(checkpoint.preparedCheckpoint) ||
+      checkpoint.executionContextDigest !==
+        canonicalJsonDigest(checkpoint.executionContext) ||
+      checkpoint.updateRefDigest !== canonicalJsonDigest(checkpoint.updateRef)
+    ) {
+      fail("DR2502", "traceability checkpoint material binding is invalid");
+    }
+    const expectedGraphFingerprint = createGraphAwareInvocationFingerprint({
+      invocationFingerprint: resolution.invocationFingerprint,
+      graphId: checkpoint.graphId,
+      projectId: checkpoint.projectId,
+      baseGraphRef: checkpoint.baseGraphRef,
+    });
+    if (
+      checkpoint.graphAwareInvocationFingerprint !== expectedGraphFingerprint
+    ) {
+      fail("DR2502", "traceability checkpoint graph fingerprint is invalid");
+    }
+    return checkpoint;
+  }
+
+  function producerFromPriorResult(priorResult, chainFingerprint) {
+    return {
+      invocationId: priorResult.sourceInvocation.invocationId,
+      step: priorResult.step,
+      plugin: priorResult.plugin,
+      invocationFingerprint:
+        priorResult.sourceInvocation.invocationFingerprint,
+      chainFingerprint,
+      stepInvocationDigest: priorResult.stepInvocationDigest,
+    };
+  }
+
+  function validatePriorResult(priorResult, plan, chainFingerprint, label) {
+    requireRecord(priorResult, label);
+    requireRecord(priorResult.plugin, `${label}.plugin`);
+    requireRecord(priorResult.sourceInvocation, `${label}.sourceInvocation`);
+    requireRecord(priorResult.outputs, `${label}.outputs`);
+    if (
+      priorResult.step !== plan.stepDefinition.id ||
+      priorResult.plugin.id !== plan.binding.plugin.id ||
+      priorResult.plugin.version !== plan.binding.plugin.version ||
+      priorResult.sourceInvocation.plugin?.id !== plan.binding.plugin.id ||
+      priorResult.sourceInvocation.plugin?.version !== plan.binding.plugin.version ||
+      priorResult.sourceInvocation.stepInvocationDigest !==
+        priorResult.stepInvocationDigest ||
+      !/^sha256:[a-f0-9]{64}$/.test(priorResult.stepInvocationDigest) ||
+      !/^sha256:[a-f0-9]{64}$/.test(priorResult.digest) ||
+      typeof priorResult.sourceInvocation.invocationId !== "string" ||
+      !/^sha256:[a-f0-9]{64}$/.test(
+        priorResult.sourceInvocation.invocationFingerprint,
+      ) ||
+      plan.stepDefinition.kind !== "handoff"
+    ) {
+      fail("DR2502", `${label} binding is invalid`);
+    }
+    validateStepOutputs(priorResult.outputs, plan.stepDefinition);
+    return producerFromPriorResult(priorResult, chainFingerprint);
+  }
+
+  function expectedTerminalProducer(
+    invocation,
+    resolution,
+    moduleResult,
+    priorResults,
+    recordedProducer,
+  ) {
+    let stepInvocation;
+    if (resolution.mode === "single") {
+      if (priorResults.length !== 0) {
+        fail("DR2502", "single-adapter trace checkpoint has prior results");
+      }
+      stepInvocation = singleStepInvocation(invocation, resolution);
+    } else {
+      const terminalIndex = resolution.steps.findIndex(
+        ({ stepDefinition }) => stepDefinition.id === recordedProducer.step,
+      );
+      if (terminalIndex < 0 || priorResults.length !== terminalIndex) {
+        fail("DR2502", "trace checkpoint terminal step is not the exact prefix");
+      }
+      const plan = resolution.steps[terminalIndex];
+      if (
+        plan.stepDefinition.kind !== "terminal" &&
+        !resolution.operationDefinition.adapterChain.earlyTerminalOutcomes.includes(
+          moduleResult.outcome,
+        )
+      ) {
+        fail("DR2502", "trace checkpoint records an undeclared early terminal");
+      }
+      stepInvocation = createStepInvocation({
+        apiVersion: "devrelay.dev/v1alpha1",
+        kind: "ModuleStepInvocation",
+        invocationId: invocation.invocationId,
+        runId: invocation.runId,
+        nodeId: invocation.nodeId,
+        invocationFingerprint: resolution.invocationFingerprint,
+        chainFingerprint: resolution.chainFingerprint,
+        module: invocation.module,
+        step: plan.stepDefinition.id,
+        plugin: plan.binding.plugin,
+        inputs: invocation.inputs,
+        priorResults,
+        options: invocation.options,
+        config: plan.binding.config,
+        grants: plan.binding.grants,
+      });
+    }
+    const expected = producerFor(stepInvocation);
+    if (!sameCanonicalValue(expected, recordedProducer)) {
+      fail("DR2502", "trace checkpoint terminal producer is invalid");
+    }
+    return expected;
+  }
+
+  async function revalidateTraceabilityExecution({
+    invocation,
+    resolution,
+    context,
+    moduleResult,
+    executionContext,
+  }) {
+    try {
+      requireArtifactLoader(context.artifacts);
+      requireArtifactContracts(
+        runtimeSchemas(resolution.operationDefinition),
+        artifactContractRegistry,
+      );
+    } catch (error) {
+      runtimeFailure(error);
+    }
+    requireRecord(executionContext, "traceability execution context");
+    requireRecord(executionContext.producer, "traceability execution producer");
+    requireArray(
+      executionContext.priorResults,
+      "traceability execution priorResults",
+    );
+    if (
+      executionContext.moduleResultDigest !== canonicalJsonDigest(moduleResult)
+    ) {
+      fail("DR2502", "traceability execution result digest is invalid");
+    }
+
+    const runtime = {
+      context,
+      invocation,
+      resolution,
+      loadedInputs: undefined,
+      loadedHandoffs: {},
+      priorResults: [],
+    };
+    runtime.loadedInputs = await loadPortArtifacts(
+      invocation.inputs,
+      resolution.operationDefinition.inputs,
+      "input",
+      runtime,
+    );
+    await enforceDeterministicRoute(runtime);
+
+    if (resolution.mode === "single") {
+      if (executionContext.priorResults.length !== 0) {
+        fail("DR2502", "single-adapter trace checkpoint has prior results");
+      }
+    } else {
+      if (executionContext.priorResults.length >= resolution.steps.length) {
+        fail("DR2502", "traceability priorResults are not a handoff prefix");
+      }
+      for (const [index, priorResult] of
+        executionContext.priorResults.entries()) {
+        const plan = resolution.steps[index];
+        const producer = validatePriorResult(
+          priorResult,
+          plan,
+          resolution.chainFingerprint,
+          `traceability priorResults[${index}]`,
+        );
+        runtime.loadedHandoffs[priorResult.step] = await loadPortArtifacts(
+          priorResult.outputs,
+          plan.stepDefinition.outputs,
+          "handoff",
+          runtime,
+          producer,
+        );
+        runtime.priorResults.push(immutableCopy(priorResult));
+      }
+    }
+
+    const producer = expectedTerminalProducer(
+      invocation,
+      resolution,
+      moduleResult,
+      runtime.priorResults,
+      executionContext.producer,
+    );
+    const validatedResult = validateResult(invocation, moduleResult);
+    const loadedOutputs = await loadPortArtifacts(
+      validatedResult.outputs,
+      resolution.operationDefinition.outputs,
+      "output",
+      runtime,
+      producer,
+    );
+
+    const resolveArtifact = async (ref) => {
+      assertTraceabilityArtifactRef(ref, "traceability attachment ref");
+      try {
+        requireArtifactContracts([ref.schema], artifactContractRegistry);
+      } catch (error) {
+        runtimeFailure(error);
+      }
+      const portName = "traceability-artifact";
+      const loaded = await loadPortArtifacts(
+        { [portName]: [immutableCopy(ref)] },
+        [
+          {
+            name: portName,
+            schema: ref.schema,
+            mediaTypes: [ref.mediaType],
+            cardinality: "one",
+            required: true,
+          },
+        ],
+        "traceability",
+        runtime,
+        producer,
+      );
+      return loaded[portName][0];
+    };
+
+    return Object.freeze({
+      moduleResult: immutableCopy(validatedResult),
+      producer: immutableCopy(producer),
+      loadedInputs: exposeLoadedArtifacts(runtime.loadedInputs),
+      loadedOutputs: exposeLoadedArtifacts(loadedOutputs),
+      resolveArtifact,
+    });
+  }
+
+  function validateApplicationProof(
+    proof,
+    updateRef,
+    mergeResult,
+    label,
+  ) {
+    requireRecord(proof, label);
+    assertTraceabilityArtifactRef(proof.updateRef, `${label}.updateRef`);
+    assertTraceabilityArtifactRef(
+      proof.receiptRef,
+      `${label}.receiptRef`,
+    );
+    assertTraceabilityArtifactRef(
+      proof.resultGraphRef,
+      `${label}.resultGraphRef`,
+    );
+    requireRecord(proof.receipt, `${label}.receipt`);
+    if (!sameCanonicalValue(proof.updateRef, updateRef)) {
+      fail("DR2504", `${label} does not identify the exact update`);
+    }
+    if (mergeResult !== undefined) {
+      if (
+        !sameCanonicalValue(proof.receiptRef, mergeResult.receiptRef) ||
+        !sameCanonicalValue(proof.receipt, mergeResult.receipt) ||
+        !sameCanonicalValue(proof.resultGraphRef, mergeResult.snapshotRef)
+      ) {
+        fail("DR2504", `${label} diverges from the merge receipt`);
+      }
+    }
+    return immutableCopy(proof);
+  }
+
+  function traceabilityPreparationRequest({
+    invocation,
+    invocationFingerprint,
+    graphAwareInvocationFingerprint,
+    execution,
+    baseGraph,
+    checkpoint,
+  }) {
+    const request = {
+      apiVersion: "devrelay.dev/v1alpha1",
+      kind: "TraceabilityPreparationRequest",
+      invocation: immutableCopy(invocation),
+      invocationFingerprint,
+      graphAwareInvocationFingerprint,
+      moduleResult: immutableCopy(execution.moduleResult),
+      producer: immutableCopy(execution.producer),
+      loadedInputs: immutableCopy(execution.loadedInputs),
+      loadedOutputs: immutableCopy(execution.loadedOutputs),
+      resolveArtifact: execution.resolveArtifact,
+    };
+    if (baseGraph !== undefined) {
+      request.baseGraph = baseGraph;
+    }
+    if (checkpoint !== undefined) {
+      request.checkpoint = immutableCopy(checkpoint);
+    }
+    return Object.freeze(request);
+  }
+
   async function enforceDeterministicRoute(runtime) {
     const { moduleDefinition } = runtime.resolution;
     if (moduleDefinition.routing === undefined) {
@@ -1665,9 +2257,11 @@ export function createModuleRegistry({
   async function executeSingle(runtime) {
     const { invocation, resolution, context } = runtime;
     const effectful = resolution.pluginOperation.execution === "effect";
-    const stepInvocation = effectful
-      ? singleStepInvocation(invocation, resolution)
-      : undefined;
+    const captureRequested = isRecord(context[traceabilityExecutionCapture]);
+    const stepInvocation =
+      effectful || captureRequested
+        ? singleStepInvocation(invocation, resolution)
+        : undefined;
     const checkpointKey = effectful
       ? stepCheckpointKey(stepInvocation)
       : undefined;
@@ -1697,9 +2291,9 @@ export function createModuleRegistry({
           await resolution.adapter.invoke(
             invocation,
             adapterContext,
-            stepInvocation === undefined
-              ? undefined
-              : immutableCopy(producerFor(stepInvocation)),
+            effectful
+              ? immutableCopy(producerFor(stepInvocation))
+              : undefined,
           ),
         ),
       );
@@ -1710,6 +2304,11 @@ export function createModuleRegistry({
       resolution.operationDefinition.outputs,
       "output",
       runtime,
+      stepInvocation === undefined ? undefined : producerFor(stepInvocation),
+    );
+    captureTraceabilityExecution(
+      runtime,
+      result,
       stepInvocation === undefined ? undefined : producerFor(stepInvocation),
     );
 
@@ -1966,7 +2565,7 @@ export function createModuleRegistry({
     return receipt;
   }
 
-  async function execute(invocation, context = {}) {
+  async function executeOrdinary(invocation, context = {}) {
     const invocationSnapshot = immutableCopy(invocation);
     const resolution = resolve(invocationSnapshot);
     try {
@@ -2076,6 +2675,7 @@ export function createModuleRegistry({
           runtime,
           producer,
         );
+        captureTraceabilityExecution(runtime, moduleResult, producer);
         if (checkpointed && !fromCheckpoint) {
           await writeCheckpoint(context.checkpoints, checkpointKey, stepResult);
         }
@@ -2120,6 +2720,331 @@ export function createModuleRegistry({
     fail("DR1807", "adapter chain completed without a terminal result");
   }
 
+  async function executeGraphAware(invocation, context) {
+    const invocationSnapshot = immutableCopy(invocation);
+    const resolution = resolve(invocationSnapshot);
+    const { graph, checkpoints: traceabilityCheckpoints } =
+      requireTraceabilityRuntime(context);
+    try {
+      requireArtifactLoader(context.artifacts);
+      requireArtifactContracts(
+        runtimeSchemas(resolution.operationDefinition),
+        artifactContractRegistry,
+      );
+    } catch (error) {
+      runtimeFailure(error);
+    }
+
+    const invocationFingerprint = resolution.invocationFingerprint;
+    const traceCheckpointKey = traceabilityCheckpointKey(
+      invocationSnapshot,
+      invocationFingerprint,
+      graph,
+    );
+    const executionRecordKey = moduleExecutionRecordKey(traceCheckpointKey);
+    let traceCheckpoint = await readTraceabilityDocument(
+      traceabilityCheckpoints,
+      traceCheckpointKey,
+      "traceability checkpoint",
+    );
+    let prepared;
+    let preparedView;
+    let execution;
+
+    if (traceCheckpoint !== undefined) {
+      traceCheckpoint = validateTraceabilityCheckpoint(
+        traceCheckpoint,
+        traceCheckpointKey,
+        invocationSnapshot,
+        resolution,
+        graph,
+      );
+      execution = await revalidateTraceabilityExecution({
+        invocation: invocationSnapshot,
+        resolution,
+        context,
+        moduleResult: traceCheckpoint.moduleResult,
+        executionContext: traceCheckpoint.executionContext,
+      });
+      prepared = await graph.validatePrepared(
+        traceabilityPreparationRequest({
+          invocation: invocationSnapshot,
+          invocationFingerprint,
+          graphAwareInvocationFingerprint:
+            traceCheckpoint.graphAwareInvocationFingerprint,
+          execution,
+          checkpoint: traceCheckpoint.preparedCheckpoint,
+        }),
+      );
+      preparedView = inspectPreparedTraceability(
+        prepared,
+        traceCheckpoint.baseGraphRef,
+        "replayed traceability preparation",
+      );
+      if (
+        !sameCanonicalValue(
+          preparedView.checkpoint,
+          traceCheckpoint.preparedCheckpoint,
+        ) ||
+        !sameCanonicalValue(preparedView.updateRef, traceCheckpoint.updateRef) ||
+        canonicalJsonDigest(preparedView.update) !==
+          traceCheckpoint.updateDigest
+      ) {
+        fail(
+          "DR2503",
+          "replayed traceability preparation diverges from its checkpoint",
+        );
+      }
+    } else {
+      const baseGraph = await graph.captureBase();
+      requireRecord(baseGraph, "traceability graph base");
+      requireString(baseGraph.graphId, "traceability graph base.graphId");
+      requireString(baseGraph.projectId, "traceability graph base.projectId");
+      if (
+        baseGraph.graphId !== graph.graphId ||
+        baseGraph.projectId !== graph.projectId
+      ) {
+        fail("DR2503", "captured graph base does not match the graph service");
+      }
+      const baseGraphRef = assertTraceabilityArtifactRef(
+        baseGraph.ref,
+        "traceability graph base.ref",
+      );
+      const graphAwareInvocationFingerprint =
+        createGraphAwareInvocationFingerprint({
+          invocationFingerprint,
+          graphId: baseGraph.graphId,
+          projectId: baseGraph.projectId,
+          baseGraphRef,
+        });
+      const capture = {};
+      const {
+        traceabilityGraph: ignoredGraph,
+        traceabilityCheckpoints: ignoredTraceabilityCheckpoints,
+        ...ordinaryContext
+      } = context;
+      const moduleResult = await executeOrdinary(invocationSnapshot, {
+        ...ordinaryContext,
+        [traceabilityExecutionCapture]: capture,
+      });
+      if (!isRecord(capture.value)) {
+        fail("DR2502", "ordinary execution did not produce a trace capture");
+      }
+      execution = await revalidateTraceabilityExecution({
+        invocation: invocationSnapshot,
+        resolution,
+        context,
+        moduleResult,
+        executionContext: capture.value,
+      });
+      const initiallyPrepared = await graph.prepare(
+        traceabilityPreparationRequest({
+          invocation: invocationSnapshot,
+          invocationFingerprint,
+          graphAwareInvocationFingerprint,
+          execution,
+          baseGraph,
+        }),
+      );
+      const initialView = inspectPreparedTraceability(
+        initiallyPrepared,
+        baseGraphRef,
+        "traceability preparation",
+      );
+      prepared = await graph.validatePrepared(
+        traceabilityPreparationRequest({
+          invocation: invocationSnapshot,
+          invocationFingerprint,
+          graphAwareInvocationFingerprint,
+          execution,
+          checkpoint: initialView.checkpoint,
+        }),
+      );
+      preparedView = inspectPreparedTraceability(
+        prepared,
+        baseGraphRef,
+        "validated traceability preparation",
+      );
+      if (
+        !sameCanonicalValue(preparedView, initialView)
+      ) {
+        fail(
+          "DR2503",
+          "validated traceability preparation diverges from initial preparation",
+        );
+      }
+
+      traceCheckpoint = createSelfDigestDocument(
+        {
+          apiVersion: "devrelay.dev/v1alpha1",
+          kind: "ModuleTraceabilityCheckpoint",
+          traceCheckpointKey,
+          invocationId: invocationSnapshot.invocationId,
+          runId: invocationSnapshot.runId,
+          nodeId: invocationSnapshot.nodeId,
+          module: invocationSnapshot.module,
+          invocationFingerprint,
+          graphAwareInvocationFingerprint,
+          graphId: baseGraph.graphId,
+          projectId: baseGraph.projectId,
+          baseGraphRef: preparedView.baseGraphRef,
+          moduleResult: execution.moduleResult,
+          moduleResultDigest: canonicalJsonDigest(execution.moduleResult),
+          executionContext: capture.value,
+          executionContextDigest: canonicalJsonDigest(capture.value),
+          preparedCheckpoint: preparedView.checkpoint,
+          preparedCheckpointDigest: canonicalJsonDigest(
+            preparedView.checkpoint,
+          ),
+          updateRef: preparedView.updateRef,
+          updateRefDigest: canonicalJsonDigest(preparedView.updateRef),
+          updateDigest: canonicalJsonDigest(preparedView.update),
+        },
+        "checkpointDigest",
+      );
+      traceCheckpoint = await persistTraceabilityDocument(
+        traceabilityCheckpoints,
+        traceCheckpointKey,
+        traceCheckpoint,
+        "traceability checkpoint",
+      );
+    }
+
+    const existingRecord = await readTraceabilityDocument(
+      traceabilityCheckpoints,
+      executionRecordKey,
+      "module execution record",
+    );
+    if (existingRecord !== undefined) {
+      validateSelfDigestDocument(
+        existingRecord,
+        "recordDigest",
+        "module execution record",
+      );
+      validateModuleExecutionRecord(existingRecord);
+      if (
+        existingRecord.apiVersion !== "devrelay.dev/v1alpha1" ||
+        existingRecord.kind !== "ModuleExecutionRecord" ||
+        existingRecord.traceCheckpointKey !== traceCheckpointKey ||
+        existingRecord.traceCheckpointDigest !==
+          traceCheckpoint.checkpointDigest ||
+        existingRecord.invocationFingerprint !== invocationFingerprint ||
+        existingRecord.graphAwareInvocationFingerprint !==
+          traceCheckpoint.graphAwareInvocationFingerprint ||
+        !sameCanonicalValue(
+          existingRecord.moduleResult,
+          execution.moduleResult,
+        ) ||
+        !sameCanonicalValue(
+          existingRecord.traceabilityUpdateRef,
+          preparedView.updateRef,
+        ) ||
+        !sameCanonicalValue(
+          existingRecord.traceabilityUpdate,
+          preparedView.update,
+        ) ||
+        !sameCanonicalValue(
+          existingRecord.traceCheckpoint,
+          traceCheckpoint,
+        ) ||
+        existingRecord.mergeReceipt === undefined
+      ) {
+        fail("DR2502", "module execution record binding is invalid");
+      }
+      const applied = validateApplicationProof(
+        await graph.assertApplied(prepared.updateRef),
+        prepared.updateRef,
+        existingRecord.mergeReceipt,
+        "traceability application proof",
+      );
+      if (!sameCanonicalValue(applied, existingRecord.applicationProof)) {
+        fail("DR2504", "stored application proof is no longer exact");
+      }
+      return immutableCopy(existingRecord);
+    }
+
+    const mergeResult = await graph.mergePrepared(prepared);
+    if (!isRecord(mergeResult)) {
+      fail("DR2504", "traceability merge must return a receipt");
+    }
+    const mergeReceipt = immutableCopy(mergeResult);
+    const applicationProof = validateApplicationProof(
+      await graph.assertApplied(prepared.updateRef),
+      prepared.updateRef,
+      mergeReceipt,
+      "traceability application proof",
+    );
+    const record = createSelfDigestDocument(
+      {
+        apiVersion: "devrelay.dev/v1alpha1",
+        kind: "ModuleExecutionRecord",
+        invocationId: invocationSnapshot.invocationId,
+        runId: invocationSnapshot.runId,
+        nodeId: invocationSnapshot.nodeId,
+        module: invocationSnapshot.module,
+        invocationFingerprint,
+        graphAwareInvocationFingerprint:
+          traceCheckpoint.graphAwareInvocationFingerprint,
+        graphId: traceCheckpoint.graphId,
+        projectId: traceCheckpoint.projectId,
+        baseGraphRef: preparedView.baseGraphRef,
+        traceCheckpointKey,
+        traceCheckpointDigest: traceCheckpoint.checkpointDigest,
+        traceCheckpoint,
+        moduleResult: execution.moduleResult,
+        traceabilityUpdate: preparedView.update,
+        traceabilityUpdateRef: preparedView.updateRef,
+        mergeReceipt,
+        applicationProof,
+      },
+      "recordDigest",
+    );
+    validateModuleExecutionRecord(record);
+    return persistTraceabilityDocument(
+      traceabilityCheckpoints,
+      executionRecordKey,
+      record,
+      "module execution record",
+    );
+  }
+
+  function contextWithConfiguredTraceability(context) {
+    requireRecord(context, "execution context");
+    if (
+      "traceabilityGraph" in context ||
+      "traceabilityCheckpoints" in context
+    ) {
+      fail(
+        "DR2505",
+        "a traceability-configured registry does not allow context overrides",
+      );
+    }
+    return Object.freeze({
+      ...context,
+      traceabilityGraph: configuredTraceability.graph,
+      traceabilityCheckpoints: configuredTraceability.checkpoints,
+    });
+  }
+
+  async function execute(invocation, context = {}) {
+    if (configuredTraceability === undefined) {
+      return executeOrdinary(invocation, context);
+    }
+    return executeGraphAware(
+      invocation,
+      contextWithConfiguredTraceability(context),
+    );
+  }
+
+  async function executeWithTraceability(invocation, context = {}) {
+    return executeGraphAware(
+      invocation,
+      configuredTraceability === undefined
+        ? context
+        : contextWithConfiguredTraceability(context),
+    );
+  }
+
   async function selectOperation(moduleRef, stateArtifactRef, context = {}) {
     const key = exactKey(moduleRef);
     const moduleDefinition = moduleDefinitions.get(key);
@@ -2156,6 +3081,7 @@ export function createModuleRegistry({
     validateResult,
     verifyCheckpointedExecution,
     execute,
+    executeWithTraceability,
     moduleCount: moduleDefinitions.size,
     pluginCount: pluginRegistrations.size,
   });

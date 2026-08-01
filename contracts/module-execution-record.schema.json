@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/module-execution-record.schema.json",
+  "title": "DevRelay graph-aware module execution record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "invocationId",
+    "runId",
+    "nodeId",
+    "module",
+    "invocationFingerprint",
+    "graphAwareInvocationFingerprint",
+    "graphId",
+    "projectId",
+    "baseGraphRef",
+    "traceCheckpointKey",
+    "traceCheckpointDigest",
+    "traceCheckpoint",
+    "moduleResult",
+    "traceabilityUpdate",
+    "traceabilityUpdateRef",
+    "mergeReceipt",
+    "applicationProof",
+    "recordDigest"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ModuleExecutionRecord"
+    },
+    "invocationId": {
+      "$ref": "#/$defs/identifier"
+    },
+    "runId": {
+      "$ref": "#/$defs/identifier"
+    },
+    "nodeId": {
+      "$ref": "#/$defs/identifier"
+    },
+    "module": {
+      "$ref": "#/$defs/module"
+    },
+    "invocationFingerprint": {
+      "$ref": "#/$defs/digest"
+    },
+    "graphAwareInvocationFingerprint": {
+      "$ref": "#/$defs/digest"
+    },
+    "graphId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+      "maxLength": 256
+    },
+    "projectId": {
+      "$ref": "#/$defs/identifier"
+    },
+    "baseGraphRef": {
+      "$ref": "#/$defs/artifactRef"
+    },
+    "traceCheckpointKey": {
+      "$ref": "#/$defs/digest"
+    },
+    "traceCheckpointDigest": {
+      "$ref": "#/$defs/digest"
+    },
+    "traceCheckpoint": {
+      "$ref": "#/$defs/moduleTraceabilityCheckpoint"
+    },
+    "moduleResult": {
+      "type": "object"
+    },
+    "traceabilityUpdate": {
+      "type": "object"
+    },
+    "traceabilityUpdateRef": {
+      "$ref": "#/$defs/artifactRef"
+    },
+    "mergeReceipt": {
+      "$ref": "#/$defs/mergeResult"
+    },
+    "applicationProof": {
+      "$ref": "#/$defs/applicationProof"
+    },
+    "recordDigest": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "operation"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "version": {
+          "$ref": "#/$defs/identifier"
+        },
+        "operation": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "schema",
+        "mediaType",
+        "digest",
+        "uri"
+      ],
+      "properties": {
+        "artifactId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "preparedCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseGraphRef",
+        "updateRef",
+        "update"
+      ],
+      "properties": {
+        "baseGraphRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "updateRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "update": {
+          "type": "object"
+        }
+      }
+    },
+    "moduleTraceabilityCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "traceCheckpointKey",
+        "invocationId",
+        "runId",
+        "nodeId",
+        "module",
+        "invocationFingerprint",
+        "graphAwareInvocationFingerprint",
+        "graphId",
+        "projectId",
+        "baseGraphRef",
+        "moduleResult",
+        "moduleResultDigest",
+        "executionContext",
+        "executionContextDigest",
+        "preparedCheckpoint",
+        "preparedCheckpointDigest",
+        "updateRef",
+        "updateRefDigest",
+        "updateDigest",
+        "checkpointDigest"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "ModuleTraceabilityCheckpoint"
+        },
+        "traceCheckpointKey": {
+          "$ref": "#/$defs/digest"
+        },
+        "invocationId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "runId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "nodeId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "module": {
+          "$ref": "#/$defs/module"
+        },
+        "invocationFingerprint": {
+          "$ref": "#/$defs/digest"
+        },
+        "graphAwareInvocationFingerprint": {
+          "$ref": "#/$defs/digest"
+        },
+        "graphId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "projectId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "baseGraphRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "moduleResult": {
+          "type": "object"
+        },
+        "moduleResultDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "executionContext": {
+          "type": "object"
+        },
+        "executionContextDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "preparedCheckpoint": {
+          "$ref": "#/$defs/preparedCheckpoint"
+        },
+        "preparedCheckpointDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "updateRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "updateRefDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "updateDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "checkpointDigest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "mergeResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disposition",
+        "snapshotRef",
+        "snapshot",
+        "receiptRef",
+        "receipt",
+        "diagnostics"
+      ],
+      "properties": {
+        "disposition": {
+          "enum": [
+            "merged",
+            "rebased",
+            "no-op"
+          ]
+        },
+        "snapshotRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "snapshot": {
+          "type": "object"
+        },
+        "receiptRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "receipt": {
+          "type": "object"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "applicationProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "updateRef",
+        "receiptRef",
+        "receipt",
+        "resultGraphRef"
+      ],
+      "properties": {
+        "updateRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "receiptRef": {
+          "$ref": "#/$defs/artifactRef"
+        },
+        "receipt": {
+          "type": "object"
+        },
+        "resultGraphRef": {
+          "$ref": "#/$defs/artifactRef"
+        }
+      }
+    }
+  }
+}

@@ -90,3 +90,67 @@ export {
   SharedArtifactValidationError,
   validateSharedArtifact,
 } from "./shared-artifact-validator.mjs";
+
+export {
+  TRACEABILITY_ANALYZER,
+  TRACEABILITY_DIAGNOSTIC_MEDIA_TYPE,
+  TRACEABILITY_DIAGNOSTIC_SCHEMA,
+  TRACEABILITY_EDGE_KINDS,
+  TRACEABILITY_GRAPH_MEDIA_TYPE,
+  TRACEABILITY_GRAPH_SCHEMA,
+  TRACEABILITY_HORIZONS,
+  TRACEABILITY_MERGE_ENGINE,
+  TRACEABILITY_NODE_KINDS,
+  TRACEABILITY_RECEIPT_MEDIA_TYPE,
+  TRACEABILITY_RECEIPT_SCHEMA,
+  TRACEABILITY_UPDATE_MEDIA_TYPE,
+  TRACEABILITY_UPDATE_SCHEMA,
+  TRACEABILITY_VOCABULARY,
+  TraceabilityArtifactValidationError,
+  traceabilityContentDigest,
+  traceabilityDiagnosticId,
+  traceabilityEdgeId,
+  traceabilityHorizonRank,
+  traceabilityNodeId,
+  traceabilityUpdateId,
+  validateTraceabilityArtifact,
+  validateTraceabilityDiagnosticReport,
+  validateTraceabilityGraphSnapshot,
+  validateTraceabilityMergeReceipt,
+  validateTraceabilityUpdate,
+} from "./traceability-artifact-validator.mjs";
+export { traceabilityRuntimeArtifactContracts } from "./traceability-runtime-contracts.mjs";
+export {
+  TraceabilityConflictError,
+  TraceabilityGraphError,
+  createInMemoryTraceabilityStore,
+  createTraceabilityDiagnosticReport,
+  createTraceabilityGraphService,
+  diagnoseTraceabilityGraph,
+  queryTraceabilityGraph,
+} from "./traceability-graph.mjs";
+export { createInMemoryTraceabilityCheckpointStore } from "./traceability-checkpoint-store.mjs";
+export {
+  MODULE_EXECUTION_RECORD_MEDIA_TYPE,
+  MODULE_EXECUTION_RECORD_SCHEMA,
+  ModuleExecutionRecordValidationError,
+  createGraphAwareInvocationFingerprint,
+  createTraceCheckpointKey,
+  validateModuleExecutionRecord,
+} from "./module-execution-record-validator.mjs";
+export {
+  createRequirementsBaselineObserverContributor,
+  createRequirementsControlTraceabilityContributor,
+  createRequirementsTraceabilityContributor,
+  requirementsBaselineObserverContributor,
+  requirementsControlTraceabilityContributor,
+  requirementsTraceabilityContributor,
+  requirementsTraceabilityContributors,
+} from "./requirements-traceability-contributor.mjs";
+export {
+  architectureControlTraceabilityContributor,
+  architectureTraceabilityContributor,
+  architectureTraceabilityContributors,
+  createArchitectureControlTraceabilityContributor,
+  createArchitectureTraceabilityContributor,
+} from "./architecture-traceability-contributor.mjs";

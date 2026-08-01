@@ -17,6 +17,8 @@ import {
   comparePortablePaths,
   expectedPackagedPaths,
   parseReleaseManifest,
+  releaseManifestPath,
+  sourceReleaseVersion,
 } from "./release-catalog.mjs";
 
 export const repositoryRoot = resolve(
@@ -216,20 +218,22 @@ export function runVerification() {
 
 export function runReleaseManifestCheck() {
   const checker = join(repositoryRoot, "scripts", "check-release-manifest.mjs");
-  const manifest = join(repositoryRoot, "release", "0.1.0.json");
-  if (!existsSync(checker) || !existsSync(manifest)) {
+  if (!existsSync(checker) || !existsSync(releaseManifestPath)) {
     throw new Error(
-      "release:check requires both scripts/check-release-manifest.mjs and release/0.1.0.json",
+      `release:check requires both scripts/check-release-manifest.mjs and release/${sourceReleaseVersion}.json`,
     );
   }
   run(process.execPath, [checker]);
 }
 
 const requiredPackageFiles = [
+  "contracts/module-execution-record.schema.json",
   "contracts/architecture-design-artifacts.schema.json",
   "contracts/requirements-gathering-artifacts.schema.json",
+  "contracts/traceability-graph-artifacts.schema.json",
   "docs/architecture-design.md",
   "docs/requirements-gathering.md",
+  "docs/traceability-graph.md",
   "examples/modules/architecture-design.module.json",
   "examples/modules/requirements-gathering.module.json",
   "examples/plugins/github-spec-kit.plugin.json",
@@ -238,13 +242,22 @@ const requiredPackageFiles = [
   "examples/plugins/openspec.plugin.json",
   "examples/plugins/spec-kit-plan.plugin.json",
   "examples/plugins/structurizr.plugin.json",
+  "src/architecture-traceability-contributor.mjs",
   "src/index.mjs",
+  "src/module-execution-record-validator.mjs",
   "src/module-registry.mjs",
+  "src/requirements-traceability-contributor.mjs",
+  "src/traceability-artifact-validator.mjs",
+  "src/traceability-checkpoint-store.mjs",
+  "src/traceability-graph.mjs",
+  "src/traceability-runtime-contracts.mjs",
 ];
 
 function assertPackageMetadata(packageDocument) {
-  if (packageDocument.version !== "0.1.0") {
-    throw new Error("package version must be 0.1.0 for this source release");
+  if (packageDocument.version !== sourceReleaseVersion) {
+    throw new Error(
+      `package version must be ${sourceReleaseVersion} for this source release`,
+    );
   }
   if (packageDocument.private !== true) {
     throw new Error("source-only release must remain private");
@@ -338,6 +351,14 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
     'if (typeof api.requirementsRuntimeArtifactContracts !== "function") throw new Error("missing RequirementsGathering contracts export");',
     'if (typeof api.architectureRuntimeArtifactContracts !== "function") throw new Error("missing ArchitectureDesign contracts export");',
+    'if (typeof api.createTraceabilityGraphService !== "function") throw new Error("missing TraceabilityGraph service export");',
+    'if (typeof api.createInMemoryTraceabilityStore !== "function") throw new Error("missing TraceabilityGraph store export");',
+    'if (typeof api.createInMemoryTraceabilityCheckpointStore !== "function") throw new Error("missing traceability checkpoint store export");',
+    'if (typeof api.validateModuleExecutionRecord !== "function") throw new Error("missing ModuleExecutionRecord validator export");',
+    'if (typeof api.queryTraceabilityGraph !== "function") throw new Error("missing TraceabilityGraph query export");',
+    'if (!Array.isArray(api.requirementsTraceabilityContributors)) throw new Error("missing Requirements traceability contributors export");',
+    'if (!Array.isArray(api.architectureTraceabilityContributors)) throw new Error("missing Architecture traceability contributors export");',
+    'if (api.TRACEABILITY_VOCABULARY.version !== "1.0.0") throw new Error("unexpected traceability vocabulary");',
     'const { createRequire } = await import("node:module");',
     "const require = createRequire(import.meta.url);",
     `require.resolve(${JSON.stringify(

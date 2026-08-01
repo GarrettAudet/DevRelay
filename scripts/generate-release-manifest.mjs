@@ -10,6 +10,7 @@ import {
   releaseManifestRelativePath,
   releaseRepositoryFiles,
   roleFor,
+  sourceReleaseVersion,
   comparePortablePaths,
 } from "./release-catalog.mjs";
 
@@ -30,7 +31,7 @@ const manifest = {
   kind: "ReleaseCatalog",
   metadata: {
     name: "devrelay",
-    version: "0.1.0",
+    version: sourceReleaseVersion,
     releaseType: "private-source",
   },
   scope: {

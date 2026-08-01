@@ -13,6 +13,7 @@ import {
   releaseRepositoryFiles,
   repositoryRoot,
   roleFor,
+  sourceReleaseVersion,
 } from "./release-catalog.mjs";
 
 function fail(message) {
@@ -56,10 +57,10 @@ exact(
   manifest.metadata,
   {
     name: "devrelay",
-    version: "0.1.0",
+    version: sourceReleaseVersion,
     releaseType: "private-source",
   },
-  "metadata does not identify the private DevRelay 0.1.0 source release",
+  `metadata does not identify the private DevRelay ${sourceReleaseVersion} source release`,
 );
 exact(
   manifest.scope,

@@ -101,6 +101,45 @@ One terminal observation:
 
 A result never means the pipeline or a downstream gate accepted the work.
 
+## Cross-cutting traceability
+
+`TraceabilityGraph` is Core infrastructure beside Module execution, not a
+Module, adapter, stage, or gate. On a registry configured with
+`traceability: { graph, checkpoints }`, ordinary `execute()` must complete the
+traceability sidecar and returns a `ModuleExecutionRecord`; invocation context
+cannot replace or disable either configured service. An unconfigured registry
+preserves the 0.1 behavior and returns the unchanged `ModuleResult`.
+`executeWithTraceability()` remains an explicit advanced seam. The record
+contains:
+
+- the original validated `ModuleResult`;
+- one standardized `TraceabilityUpdate` projected by a trusted contributor;
+- the immutable traceability checkpoint identity;
+- the merge receipt, diagnostics, resulting graph reference, and application
+  proof.
+
+Contributors are versioned semantic projectors. They receive validated
+artifacts and exact provenance through Core and declare a digest-bound
+ownership descriptor containing authority, scope, and the node/edge kinds they
+may emit. Different contributor contracts cannot own the same authority/scope,
+and a contributor cannot modify assertions owned by another contract. Adapters
+never receive the graph service or author graph facts. A result carrying
+artifacts or evidence without a matching contributor fails closed.
+
+Core writes the exact prepared update to a separate atomic `putIfAbsent`
+checkpoint before graph merge. Retry validates and reuses that checkpoint
+rather than rerunning the adapter. Graph merge is atomic and idempotent,
+permits a stale update only when its per-entity preconditions remain disjoint,
+and preserves history through retirement and supersession. Candidate facts
+remain candidate until an explicit gate contributor activates an approved
+scope. Every accepted update, including a semantic no-op, advances the
+immutable graph revision; Core proves the persisted result by replaying the
+stored update and requiring the result snapshot to be in the current head
+lineage.
+
+See `docs/traceability-graph.md` for the vocabulary, query, diagnostic,
+storage, and contributor contracts.
+
 ## Deterministic operation routing
 
 A routed Module declares:

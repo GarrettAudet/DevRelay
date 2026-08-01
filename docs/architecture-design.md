@@ -204,6 +204,31 @@ conversational, model-provider, or native-tool session memory is authoritative.
 A changed `ProjectOverviewBaseline` is a changed lineage input and therefore
 invalidates the invocation fingerprint, continuation, and replay checkpoints.
 
+## Traceability contribution
+
+On graph-aware execution, Core's trusted ArchitectureDesign contributor adds
+the candidate technical design, architecture elements and relationships,
+views, interface intent, architecture constraints, decision records, and the
+architecture change disposition. Embedded and attached sections are resolved
+through the same exact artifact boundary before projection.
+
+Each architecture target links back to the normative approved requirement IDs
+declared by the already validated candidate. Acceptance-criterion coverage is
+therefore reached through its owning requirement; the contributor does not
+invent a direct support link absent from the canonical artifacts. An explicit
+`no-architecture-impact` disposition is recorded as a stable architecture
+change assertion rather than silently dropping the requirement.
+
+Architecture contributors own only architecture assertions and their links to
+requirements. They cannot replace or retire requirements facts. Architecture
+candidates remain candidate authority until a future Architecture Gate
+contributor records approved activation. Later contributors can extend the
+same graph with contracts, work items, code changes, tests, and verification
+evidence without changing ArchitectureDesign.
+
+The contributor's contract digest binds its exact scope, authority, and
+allowed node/edge kinds. Core rejects any assertion outside that descriptor.
+
 ## Module validation versus Architecture Gate
 
 Module validation answers whether the route, chain, handoffs, references,

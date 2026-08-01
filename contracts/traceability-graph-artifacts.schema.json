@@ -1,0 +1,878 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/traceability-graph-artifacts.schema.json",
+  "title": "DevRelay TraceabilityGraph artifacts",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/graphSnapshot"
+    },
+    {
+      "$ref": "#/$defs/traceabilityUpdate"
+    },
+    {
+      "$ref": "#/$defs/mergeReceipt"
+    },
+    {
+      "$ref": "#/$defs/diagnosticReport"
+    }
+  ],
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "artifactPointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "digest"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "schema",
+        "mediaType",
+        "digest",
+        "uri"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "contractIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "contractDigest"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "contractDigest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "horizon": {
+      "enum": [
+        "requirements",
+        "architecture",
+        "contracts",
+        "implementation",
+        "verification"
+      ]
+    },
+    "state": {
+      "enum": [
+        "active",
+        "superseded",
+        "retired"
+      ]
+    },
+    "sourceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "jsonPointer",
+        "entityDigest"
+      ],
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/artifactPointer"
+        },
+        "jsonPointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~/]|~[01])*)*$",
+          "maxLength": 4096
+        },
+        "entityDigest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodeId",
+        "kind",
+        "stableId",
+        "label",
+        "authority",
+        "state",
+        "scope",
+        "contributor",
+        "attributes",
+        "sourceLocators",
+        "contentDigest"
+      ],
+      "properties": {
+        "nodeId": {
+          "$ref": "#/$defs/digest"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 128
+        },
+        "stableId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "state": {
+          "$ref": "#/$defs/state"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "contributor": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "verificationStatus": {
+          "enum": [
+            "pass",
+            "fail",
+            "inconclusive"
+          ]
+        },
+        "attributes": {
+          "type": "object"
+        },
+        "sourceLocators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceLocator"
+          }
+        },
+        "contentDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "authority": {
+          "$ref": "#/$defs/authority"
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edgeId",
+        "kind",
+        "sourceNodeId",
+        "targetNodeId",
+        "qualifier",
+        "rationale",
+        "authority",
+        "state",
+        "scope",
+        "contributor",
+        "attributes",
+        "sourceLocators",
+        "contentDigest"
+      ],
+      "properties": {
+        "edgeId": {
+          "$ref": "#/$defs/digest"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 128
+        },
+        "sourceNodeId": {
+          "$ref": "#/$defs/digest"
+        },
+        "targetNodeId": {
+          "$ref": "#/$defs/digest"
+        },
+        "qualifier": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "state": {
+          "$ref": "#/$defs/state"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "contributor": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "attributes": {
+          "type": "object"
+        },
+        "sourceLocators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceLocator"
+          }
+        },
+        "contentDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "authority": {
+          "$ref": "#/$defs/authority"
+        }
+      }
+    },
+    "precondition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state"
+          ],
+          "properties": {
+            "state": {
+              "const": "absent"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "contentDigest"
+          ],
+          "properties": {
+            "state": {
+              "const": "match"
+            },
+            "contentDigest": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        }
+      ]
+    },
+    "nodeChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "precondition",
+        "node"
+      ],
+      "properties": {
+        "precondition": {
+          "$ref": "#/$defs/precondition"
+        },
+        "node": {
+          "$ref": "#/$defs/node"
+        }
+      }
+    },
+    "edgeChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "precondition",
+        "edge"
+      ],
+      "properties": {
+        "precondition": {
+          "$ref": "#/$defs/precondition"
+        },
+        "edge": {
+          "$ref": "#/$defs/edge"
+        }
+      }
+    },
+    "scopeAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "contributor",
+        "authority",
+        "nodeIds",
+        "edgeIds"
+      ],
+      "properties": {
+        "scope": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "contributor": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "authority": {
+          "$ref": "#/$defs/authority"
+        },
+        "nodeIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/digest"
+          }
+        },
+        "edgeIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/digest"
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module",
+        "invocationId",
+        "invocationFingerprint",
+        "outcome"
+      ],
+      "properties": {
+        "module": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version",
+            "operation"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          }
+        },
+        "invocationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "invocationFingerprint": {
+          "$ref": "#/$defs/digest"
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "graphSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "graphId",
+        "projectId",
+        "revision",
+        "horizon",
+        "vocabulary",
+        "parentGraph",
+        "lastAppliedUpdate",
+        "appliedUpdates",
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "TraceabilityGraphSnapshot"
+        },
+        "graphId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "horizon": {
+          "$ref": "#/$defs/horizon"
+        },
+        "vocabulary": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "parentGraph": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/traceabilityGraphRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lastAppliedUpdate": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/traceabilityUpdateRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "appliedUpdates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/traceabilityUpdateRef"
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edge"
+          }
+        }
+      }
+    },
+    "traceabilityUpdate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "updateId",
+        "graphId",
+        "projectId",
+        "baseGraph",
+        "horizon",
+        "vocabulary",
+        "producer",
+        "sourceArtifacts",
+        "scopes",
+        "nodeChanges",
+        "edgeChanges"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "TraceabilityUpdate"
+        },
+        "updateId": {
+          "$ref": "#/$defs/digest"
+        },
+        "graphId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$",
+          "maxLength": 256
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "baseGraph": {
+          "$ref": "#/$defs/traceabilityGraphRef"
+        },
+        "horizon": {
+          "$ref": "#/$defs/horizon"
+        },
+        "vocabulary": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "sourceArtifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifactRef"
+          }
+        },
+        "scopes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/scopeAssertion"
+          }
+        },
+        "nodeChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nodeChange"
+          }
+        },
+        "edgeChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edgeChange"
+          }
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "diagnosticId",
+        "code",
+        "severity",
+        "blocking",
+        "category",
+        "subjectKind",
+        "subjectId",
+        "relatedNodeIds",
+        "message"
+      ],
+      "properties": {
+        "diagnosticId": {
+          "$ref": "#/$defs/digest"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^TG_[A-Z0-9_]+$",
+          "maxLength": 128
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning",
+            "information"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "category": {
+          "enum": [
+            "integrity",
+            "orphan",
+            "scope",
+            "evidence",
+            "concurrency"
+          ]
+        },
+        "subjectKind": {
+          "enum": [
+            "graph",
+            "node",
+            "edge"
+          ]
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "relatedNodeIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/digest"
+          }
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      }
+    },
+    "diagnosticSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "errors",
+        "warnings",
+        "information"
+      ],
+      "properties": {
+        "errors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warnings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "information": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "diagnosticReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "graph",
+        "horizon",
+        "analyzer",
+        "summary",
+        "diagnostics"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "TraceabilityDiagnosticReport"
+        },
+        "graph": {
+          "$ref": "#/$defs/traceabilityGraphRef"
+        },
+        "update": {
+          "$ref": "#/$defs/traceabilityUpdateRef"
+        },
+        "horizon": {
+          "$ref": "#/$defs/horizon"
+        },
+        "analyzer": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "summary": {
+          "$ref": "#/$defs/diagnosticSummary"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        }
+      }
+    },
+    "changeSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodesAdded",
+        "nodesReplaced",
+        "nodesRetired",
+        "edgesAdded",
+        "edgesReplaced",
+        "edgesRetired"
+      ],
+      "properties": {
+        "nodesAdded": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nodesReplaced": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nodesRetired": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edgesAdded": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edgesReplaced": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edgesRetired": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "mergeReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "graphId",
+        "update",
+        "previousGraph",
+        "resultGraph",
+        "disposition",
+        "mergeEngine",
+        "revisionBefore",
+        "revisionAfter",
+        "changes",
+        "diagnostics"
+      ],
+      "properties": {
+        "apiVersion": {
+          "const": "devrelay.dev/v1alpha1"
+        },
+        "kind": {
+          "const": "TraceabilityMergeReceipt"
+        },
+        "graphId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "update": {
+          "$ref": "#/$defs/traceabilityUpdateRef"
+        },
+        "previousGraph": {
+          "$ref": "#/$defs/traceabilityGraphRef"
+        },
+        "resultGraph": {
+          "$ref": "#/$defs/traceabilityGraphRef"
+        },
+        "disposition": {
+          "enum": [
+            "merged",
+            "rebased",
+            "no-op"
+          ]
+        },
+        "mergeEngine": {
+          "$ref": "#/$defs/contractIdentity"
+        },
+        "revisionBefore": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revisionAfter": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changes": {
+          "$ref": "#/$defs/changeSummary"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        }
+      }
+    },
+    "authority": {
+      "enum": [
+        "candidate",
+        "approved",
+        "observed",
+        "reference"
+      ]
+    },
+    "traceabilityGraphRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactRef"
+        },
+        {
+          "properties": {
+            "schema": {
+              "const": "https://devrelay.dev/artifacts/traceability-graph-snapshot/v1"
+            },
+            "mediaType": {
+              "const": "application/vnd.devrelay.traceability-graph+json"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "traceabilityUpdateRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactRef"
+        },
+        {
+          "properties": {
+            "schema": {
+              "const": "https://devrelay.dev/artifacts/traceability-update/v1"
+            },
+            "mediaType": {
+              "const": "application/vnd.devrelay.traceability-update+json"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    }
+  }
+}
