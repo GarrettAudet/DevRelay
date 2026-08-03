@@ -154,3 +154,47 @@ export {
   createArchitectureControlTraceabilityContributor,
   createArchitectureTraceabilityContributor,
 } from "./architecture-traceability-contributor.mjs";
+
+export {
+  WORK_BREAKDOWN_ARTIFACT_CONTRACTS,
+  WORK_BREAKDOWN_ARTIFACT_SCHEMAS,
+  WorkBreakdownArtifactValidationError,
+  applyWorkBreakdownChangeSet,
+  sameWorkBreakdownArtifactRef,
+  validateProjectWorkBreakdownStateAgainstInputs,
+  validateWorkBreakdownArtifact,
+  validateWorkBreakdownBaselinePromotion,
+  validateWorkBreakdownCandidateAgainstInputs,
+} from "./work-breakdown-artifact-validator.mjs";
+export {
+  WORK_BREAKDOWN_INPUT_GUARD,
+  evaluateWorkBreakdownInputDrift,
+  workBreakdownRuntimeArtifactContracts,
+} from "./work-breakdown-runtime-contracts.mjs";
+export {
+  WorkBreakdownGateValidationError,
+  validateWorkBreakdownGateCandidate,
+  validateWorkBreakdownGatePromotion,
+} from "./work-breakdown-gate.mjs";
+export {
+  contractDispositionObserverContributor,
+  createContractDispositionObserverContributor,
+  createWorkBreakdownControlTraceabilityContributor,
+  createWorkBreakdownTraceabilityContributor,
+  workBreakdownControlTraceabilityContributor,
+  workBreakdownTraceabilityContributor,
+  workBreakdownTraceabilityContributors,
+} from "./work-breakdown-traceability-contributor.mjs";
+
+export {
+  TRACEABILITY_EDGE_KINDS_V1_0,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION,
+  TRACEABILITY_HORIZONS_V1_0,
+  TRACEABILITY_NODE_KINDS_V1_0,
+  TRACEABILITY_VOCABULARY_V1_0,
+  assertTraceabilityVocabularyTransition,
+} from "./traceability-artifact-validator.mjs";
+export {
+  architectureBaselineObserverContributor,
+  createArchitectureBaselineObserverContributor,
+} from "./architecture-traceability-contributor.mjs";

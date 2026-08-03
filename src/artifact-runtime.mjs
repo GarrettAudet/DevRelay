@@ -52,6 +52,7 @@ export function createArtifactContractRegistry(contracts = []) {
     fail("DR1503", "artifactContracts must be an array");
   }
   const registry = new Map();
+  const inputGuards = new Map();
   for (const [index, contract] of contracts.entries()) {
     if (
       contract === null ||
@@ -78,11 +79,92 @@ export function createArtifactContractRegistry(contracts = []) {
         `artifact contract "${contract.schema}" is registered more than once`,
       );
     }
+    let inputGuard;
+    if (contract.inputGuard !== undefined) {
+      const supplied = contract.inputGuard;
+      if (
+        supplied === null ||
+        typeof supplied !== "object" ||
+        Array.isArray(supplied)
+      ) {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard must be an object`,
+        );
+      }
+      if (typeof supplied.id !== "string" || supplied.id.length === 0) {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard.id must be a non-empty string`,
+        );
+      }
+      if (
+        typeof supplied.version !== "string" ||
+        supplied.version.length === 0
+      ) {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard.version must be a non-empty string`,
+        );
+      }
+      if (!Array.isArray(supplied.outcomes) || supplied.outcomes.length === 0) {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard.outcomes must be a non-empty array`,
+        );
+      }
+      if (
+        supplied.outcomes.some(
+          (outcome) => typeof outcome !== "string" || outcome.length === 0,
+        )
+      ) {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard.outcomes must contain non-empty strings`,
+        );
+      }
+      if (new Set(supplied.outcomes).size !== supplied.outcomes.length) {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard.outcomes contains a duplicate`,
+        );
+      }
+      if (typeof supplied.evaluate !== "function") {
+        fail(
+          "DR1503",
+          `artifactContracts[${index}].inputGuard.evaluate must be a function`,
+        );
+      }
+      inputGuard = Object.freeze({
+        id: supplied.id,
+        version: supplied.version,
+        outcomes: Object.freeze([...supplied.outcomes]),
+        evaluate: supplied.evaluate,
+      });
+      const guardKey = `${inputGuard.id}@${inputGuard.version}`;
+      const existing = inputGuards.get(guardKey);
+      if (
+        existing !== undefined &&
+        (existing.evaluate !== inputGuard.evaluate ||
+          existing.outcomes.length !== inputGuard.outcomes.length ||
+          existing.outcomes.some(
+            (outcome, outcomeIndex) =>
+              outcome !== inputGuard.outcomes[outcomeIndex],
+          ))
+      ) {
+        fail(
+          "DR1505",
+          `input guard "${guardKey}" is registered with divergent behavior`,
+        );
+      }
+      inputGuards.set(guardKey, inputGuard);
+    }
     registry.set(
       contract.schema,
       Object.freeze({
         schema: contract.schema,
         validate: contract.validate,
+        ...(inputGuard === undefined ? {} : { inputGuard }),
       }),
     );
   }

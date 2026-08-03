@@ -1,0 +1,3015 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsBaseline",
+  "baselineId": "requirements-baseline-work-breakdown-v1",
+  "version": "1.0.0",
+  "approvedCandidate": {
+    "artifactId": "requirements-draft-work-breakdown-v1",
+    "digest": "sha256:0adc23305d536207a488b18a0ce798da0a73d62d721a333d1cd176c640681a04"
+  },
+  "requirements": {
+    "purpose": {
+      "statement": "Define WorkBreakdown 0.1.0 as one deterministic DevRelay module that converts approved scope into a complete set of bounded, traceable, independently executable and verifiable work-item drafts without executing work or building code.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-work-breakdown-module-v1",
+            "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+          }
+        },
+        {
+          "role": "interactive-clarification",
+          "artifact": {
+            "artifactId": "requirements-dialogue-work-breakdown-v1",
+            "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+          },
+          "location": "Complete normalized WorkBreakdown clarification sequence"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-work-breakdown-v1",
+            "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+            "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+          }
+        }
+      ]
+    },
+    "businessObjectives": [
+      {
+        "id": "BO-WB-COMPLETENESS-001",
+        "statement": "Ensure every authorized requirement, architecture target, and applicable contract concern receives an explicit work coverage disposition.",
+        "stakeholderIds": [
+          "STK-WB-MAINTAINER-001",
+          "STK-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-WB-DETERMINISM-001",
+        "statement": "Make WorkBreakdown routing, input validation, drift detection, result validation, and replay deterministic and auditable.",
+        "stakeholderIds": [
+          "STK-WB-MAINTAINER-001",
+          "STK-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-WB-MODULARITY-001",
+        "statement": "Allow bounded work-breakdown capabilities to be replaced through configuration without changing module semantics or generic Core.",
+        "stakeholderIds": [
+          "STK-WB-MAINTAINER-001",
+          "STK-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-WB-TRACEABILITY-001",
+        "statement": "Preserve exact lineage from approved scope through planned work while keeping graph mutation inside a trusted Core-owned boundary.",
+        "stakeholderIds": [
+          "STK-WB-MAINTAINER-001",
+          "STK-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "successMetrics": [
+      {
+        "id": "SM-WB-CORE-NEUTRALITY-001",
+        "name": "Core-neutral adapter replacement",
+        "businessObjectiveIds": [
+          "BO-WB-MODULARITY-001"
+        ],
+        "measure": "Compatible WorkBreakdown adapter changes requiring a product-specific branch in generic Core.",
+        "target": "Zero.",
+        "measurementMethod": "Execute adapter-swap fixtures and product-identifier scans over generic Core source.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-WB-COVERAGE-001",
+        "name": "Authorized-scope coverage",
+        "businessObjectiveIds": [
+          "BO-WB-COMPLETENESS-001"
+        ],
+        "measure": "In-scope acceptance criteria, architecture targets or changes, and applicable contract targets or changes with exactly one valid coverage disposition.",
+        "target": "100 percent before WorkBreakdown Gate pass.",
+        "measurementMethod": "Compare canonical coverage dispositions with the exact approved invocation inputs.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-WB-DRIFT-001",
+        "name": "Pre-adapter drift detection",
+        "businessObjectiveIds": [
+          "BO-WB-DETERMINISM-001"
+        ],
+        "measure": "Stale baseline, disposition, repository commit, or tree-digest fixtures blocked before adapter invocation.",
+        "target": "100 percent with zero adapter calls and no candidate output.",
+        "measurementMethod": "Execute independent version, digest, commit, and tree-drift negative fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-WB-TRACEABILITY-001",
+        "name": "Complete planning provenance",
+        "businessObjectiveIds": [
+          "BO-WB-TRACEABILITY-001"
+        ],
+        "measure": "Successful work-breakdown candidates with closed domain references and a verified exact graph merge proof.",
+        "target": "100 percent.",
+        "measurementMethod": "Validate candidate references, contributor ownership, checkpoint-before-merge ordering, receipt, and result graph lineage.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "stakeholders": [
+      {
+        "id": "STK-WB-MAINTAINER-001",
+        "name": "DevRelay maintainer",
+        "role": "Own the deterministic module kernel, contracts, traceability contributor, and release evidence.",
+        "category": "owner",
+        "interests": [
+          "Deterministic contracts.",
+          "Small provider-neutral Core.",
+          "Verifiable releases."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "STK-WB-WORKFLOW-AUTHOR-001",
+        "name": "DevRelay workflow author",
+        "role": "Configure and invoke WorkBreakdown and inspect candidates before approval.",
+        "category": "user",
+        "interests": [
+          "Complete work coverage.",
+          "Replaceable work-breakdown adapters.",
+          "Traceable bounded work items."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "users": [
+      {
+        "id": "USR-WB-WORKFLOW-AUTHOR-001",
+        "name": "Workflow author",
+        "description": "A maintainer or integrator converting approved project scope into candidate work items for downstream analysis and execution.",
+        "stakeholderIds": [
+          "STK-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "needs": [
+          "Detect stale inputs before work decomposition.",
+          "Inspect complete coverage before approval.",
+          "Produce bounded work items from approved scope.",
+          "Swap bounded adapters without changing workflow semantics."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "CAP-WB-COVERAGE-001",
+        "name": "Complete scope coverage",
+        "description": "Account explicitly for every authorized requirement, architecture target, and applicable contract concern.",
+        "businessObjectiveIds": [
+          "BO-WB-COMPLETENESS-001"
+        ],
+        "userIds": [
+          "USR-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-WB-DECOMPOSITION-001",
+        "name": "Bounded work decomposition",
+        "description": "Convert approved baseline or change scope into discrete independently executable and verifiable WorkItemDrafts.",
+        "businessObjectiveIds": [
+          "BO-WB-COMPLETENESS-001",
+          "BO-WB-DETERMINISM-001"
+        ],
+        "userIds": [
+          "USR-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-WB-EXTENSIBILITY-001",
+        "name": "Replaceable work-breakdown adapter",
+        "description": "Resolve one configured provider-neutral adapter binding without coupling an operation to a product implementation.",
+        "businessObjectiveIds": [
+          "BO-WB-MODULARITY-001"
+        ],
+        "userIds": [
+          "USR-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-WB-GOVERNANCE-001",
+        "name": "Work-breakdown governance",
+        "description": "Pin exact inputs, detect drift, validate candidates, preserve evidence, and project planned traceability through a trusted contributor.",
+        "businessObjectiveIds": [
+          "BO-WB-DETERMINISM-001",
+          "BO-WB-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-WB-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "userJourneys": [
+      {
+        "id": "UJ-WB-DECOMPOSE-APPROVED-SCOPE-001",
+        "name": "Decompose approved project scope",
+        "userId": "USR-WB-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-WB-COVERAGE-001",
+          "CAP-WB-DECOMPOSITION-001",
+          "CAP-WB-EXTENSIBILITY-001",
+          "CAP-WB-GOVERNANCE-001"
+        ],
+        "trigger": "Approved requirements, ProjectOverview, architecture and contract context are ready for work decomposition.",
+        "outcome": "A complete, validated and traceable work-breakdown candidate is ready for the separate WorkBreakdown Gate, or an explicit control outcome explains why it is not.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Submit exact approved baselines, explicit contract and repository dispositions, pinned capability catalog, and immutable traceability context.",
+            "expectedOutcome": "DevRelay validates source identity and determines whether baseline state is current."
+          },
+          {
+            "sequence": 2,
+            "action": "Request work decomposition through the configured WorkBreakdown module.",
+            "expectedOutcome": "DevRelay state-routes the operation and resolves the exact configured adapter without model discretion."
+          },
+          {
+            "sequence": 3,
+            "action": "Review the adapter's normalized domain candidate or explicit clarification or failure control artifact.",
+            "expectedOutcome": "Only a complete canonical work-breakdown candidate can advance toward the gate."
+          },
+          {
+            "sequence": 4,
+            "action": "Inspect work-item coverage, provenance, validation evidence, and proposed planning relationships.",
+            "expectedOutcome": "The candidate is traceable and ready for approval without claiming execution or dependency authority."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "userStories": [
+      {
+        "id": "US-WB-COVERAGE-001",
+        "userId": "USR-WB-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-WB-COVERAGE-001",
+        "userJourneyIds": [
+          "UJ-WB-DECOMPOSE-APPROVED-SCOPE-001"
+        ],
+        "need": "Account for every authorized requirement, architecture target, and contract concern exactly once.",
+        "benefit": "I can approve a breakdown knowing no authorized scope was silently omitted or padded with unscoped work.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-COVERAGE-DISPOSITIONS-001",
+          "AC-WB-GATE-BOUNDARY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-WB-DECOMPOSITION-001",
+        "userId": "USR-WB-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-WB-DECOMPOSITION-001",
+        "userJourneyIds": [
+          "UJ-WB-DECOMPOSE-APPROVED-SCOPE-001"
+        ],
+        "need": "Convert an approved baseline or approved change into bounded independently executable and verifiable work-item drafts.",
+        "benefit": "Downstream dependency analysis, specialist assignment, execution, and verification receive clear actions without WorkBreakdown performing them.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-DECOMPOSE-CHANGE-001",
+          "AC-WB-DECOMPOSE-ESTABLISH-001",
+          "AC-WB-NO-EXECUTION-001",
+          "AC-WB-OUTPUT-CONTRACT-001",
+          "AC-WB-WORK-ITEM-CONTRACT-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-WB-EXTENSIBILITY-001",
+        "userId": "USR-WB-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-WB-EXTENSIBILITY-001",
+        "userJourneyIds": [
+          "UJ-WB-DECOMPOSE-APPROVED-SCOPE-001"
+        ],
+        "need": "Select a compatible bounded adapter through configuration rather than a hard-coded operation-to-product mapping.",
+        "benefit": "The best available decomposition capability can change without changing workflow semantics or generic Core.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-ADAPTER-SELECTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-WB-GOVERNANCE-001",
+        "userId": "USR-WB-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-WB-GOVERNANCE-001",
+        "userJourneyIds": [
+          "UJ-WB-DECOMPOSE-APPROVED-SCOPE-001"
+        ],
+        "need": "Know that exact current inputs were used and that planned traceability was derived through a trusted boundary.",
+        "benefit": "I can audit, resume, replay, and approve the candidate without trusting adapter-authored graph operations.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-INPUT-PINNING-001",
+          "AC-WB-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "acceptanceCriteria": [
+      {
+        "id": "AC-WB-ADAPTER-SELECTION-001",
+        "statement": "Operation routing selects only a configured WorkBreakdownAdapter; Spec Kit for greenfield, OpenSpec for existing-system establishment, and OpenSpec for change decomposition are replaceable defaults rather than permanent operation coupling.",
+        "verification": "Execute adapter-resolution and swap fixtures for both operations and scan generic Core for Spec Kit, OpenSpec, operation-specific, or product-specific branches.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-COVERAGE-DISPOSITIONS-001",
+        "statement": "Every in-scope acceptance criterion, architecture target or approved architecture change, and applicable contract target or approved contract change has exactly one coverage disposition: planned with linked work-item IDs, already-satisfied with rationale and current evidence references, or no-work-required with rationale and an explicit approval reference.",
+        "verification": "Validate complete, duplicate-free coverage against the exact approved scope and reject missing, contradictory, or under-evidenced dispositions.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-DECOMPOSE-CHANGE-001",
+        "statement": "When an approved current WorkBreakdownBaseline and ApprovedChangePackage exist, DevRelay selects decompose-change and supplies exact current project baselines, current-work-breakdown-baseline, approved-change-package, and current-repository-snapshot to produce one WorkBreakdownChangeSetDraft.",
+        "verification": "Execute positive and negative state-routing fixtures and verify exact current-baseline and authorized-delta lineage on the change candidate.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-DECOMPOSE-ESTABLISH-001",
+        "statement": "When no approved WorkBreakdownBaseline exists, DevRelay selects establish-breakdown for either a greenfield or existing project without reconstructing historical work, using exact requirements, ProjectOverview and architecture baselines plus explicit contract and repository dispositions to produce one WorkBreakdownDraft.",
+        "verification": "Execute greenfield and existing-project routing fixtures with ContractBaseline or ApprovedNotApplicable and RepositorySnapshot or ApprovedNotApplicable variants, and verify that no historical-work reconstruction is requested.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-GATE-BOUNDARY-001",
+        "statement": "WorkBreakdownGate rejects unscoped work items, uncovered authorized scope, and invalid source or traceability references, while cycle detection, missing dependencies, and impossible ordering remain exclusively in WorkDependencyGate.",
+        "verification": "Run focused gate fixtures for each WorkBreakdown rejection and prove that dependency-DAG policy is absent from the WorkBreakdown gate and present only in the downstream contract boundary.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-INPUT-PINNING-001",
+        "statement": "Every baseline and disposition is content-addressed and version-pinned, every repository snapshot binds a commit and tree digest, and any mismatch with ApprovedChangePackage returns baseline_drift with diagnostics before adapter invocation and without a candidate output.",
+        "verification": "Mutate each pinned version, content digest, commit, and tree digest independently and verify a pre-adapter baseline_drift outcome, zero adapter calls, diagnostics, and no primary output.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-NO-EXECUTION-001",
+        "statement": "WorkBreakdown only defines candidate actions; it does not execute or build code, establish the authoritative dependency DAG, assign specialists, choose owners, estimate, schedule, track execution status, produce change sets, or claim completion evidence.",
+        "verification": "Inspect schemas, adapter inputs, output fixtures, graph assertions, and Core execution paths for prohibited execution, assignment, scheduling, completion, and dependency-authority fields or effects.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-OUTPUT-CONTRACT-001",
+        "statement": "A successful operation emits exactly one primary WorkBreakdownDraft or WorkBreakdownChangeSetDraft containing work items, coverage dispositions, dependency hints, and subordinate native artifacts; explicit ClarificationContinuation and RevisionRequest artifacts support resumption, and control outcomes are decomposed, needs_clarification, baseline_drift, unable_to_proceed, and execution_failed.",
+        "verification": "Validate result contracts for each operation and outcome, including forbidden extra primary outputs, required diagnostics on drift or failure, and exact clarification and revision lineage.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-TRACEABILITY-001",
+        "statement": "The adapter declares only the approved WorkItemDraft domain fields, including acceptance-criterion, architecture and contract references; after draft validation a trusted WorkBreakdownTraceabilityContributor derives upstream-to-downstream planning edges, Core validates and atomically merges them, and ModuleExecutionRecord binds execution ID, graph revision, update digest, persisted checkpoint, merge receipt, and resulting snapshot without storing inverse or completion edges.",
+        "verification": "Attempt arbitrary adapter graph operations and invalid reference or edge types, then verify rejection; execute a valid projection and verify only planned-by, implementation-planned-by, and realization-planned-by assertions plus exact checkpoint and merge proof.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-WB-WORK-ITEM-CONTRACT-001",
+        "statement": "Every WorkItemDraft has exactly these fields and no others: id, objective, bounded-scope, deliverables, work-type, acceptance-criterion-refs, architecture-refs, contract-refs, required-capabilities, dependency-hints, verification-plan, required-evidence, and source-refs. Work-type is one of code-change, configuration-change, documentation-change, infrastructure-change, migration, operational-readiness, or test-change; upstream requirements and user stories are reached transitively through acceptance-criterion-refs rather than direct requirement-refs or user-story-refs.",
+        "verification": "Validate positive and negative closed-schema fixtures for all thirteen fields, reject every additional property including requirement-refs and user-story-refs, verify the closed work-type and capability values, and prove transitive upstream lineage through each acceptance-criterion-ref.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "nonFunctionalRequirements": [
+      {
+        "id": "NFR-WB-ATOMICITY-001",
+        "category": "reliability",
+        "statement": "A graph-aware successful result must checkpoint the exact validated update before one atomic merge and must return a proof bound to the resulting graph lineage.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-GOVERNANCE-001"
+          ]
+        },
+        "measure": "Successful graph-aware executions whose update checkpoint, merge receipt, and resulting snapshot verify as one exact lineage.",
+        "target": "100 percent; partial or uncheckpointed merges are zero.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-WB-CORE-NEUTRALITY-001",
+        "category": "maintainability",
+        "statement": "Generic Core must resolve WorkBreakdown operations, adapters, contracts, and contributors through declared metadata without product identifiers or WorkBreakdown-specific branches.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Product, adapter, operation, and contributor identifiers used in behavioral branches in generic Core.",
+        "target": "Zero.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-ADAPTER-SELECTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-WB-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "The same verified project state, exact invocation and configured adapter binding must select the same operation and enforce the same validation and drift result.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-DECOMPOSITION-001",
+            "CAP-WB-GOVERNANCE-001"
+          ]
+        },
+        "measure": "Repeated routing, preflight, validation and drift decisions that match for identical content-addressed inputs.",
+        "target": "100 percent.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-DECOMPOSE-CHANGE-001",
+          "AC-WB-DECOMPOSE-ESTABLISH-001",
+          "AC-WB-INPUT-PINNING-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-WB-PROVENANCE-001",
+        "category": "observability",
+        "statement": "Every work item, coverage disposition, adapter result, source reference, traceability update and execution proof must be attributable to exact immutable inputs without conversational memory.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-COVERAGE-001",
+            "CAP-WB-DECOMPOSITION-001",
+            "CAP-WB-GOVERNANCE-001"
+          ]
+        },
+        "measure": "Successful candidates whose domain entities and merge proof resolve to exact source artifacts and declared locations.",
+        "target": "100 percent.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-COVERAGE-DISPOSITIONS-001",
+          "AC-WB-TRACEABILITY-001",
+          "AC-WB-WORK-ITEM-CONTRACT-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-WB-REPLAY-001",
+        "category": "reliability",
+        "statement": "A durably checkpointed WorkBreakdown execution must be revalidated and replayed for the exact invocation without reinvoking its adapter.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-GOVERNANCE-001"
+          ]
+        },
+        "measure": "Exact checkpoint replays producing the validated terminal result with zero additional adapter invocations.",
+        "target": "100 percent.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WB-OUTPUT-CONTRACT-001",
+          "AC-WB-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CON-WB-ADAPTER-TRUST-001",
+        "category": "security",
+        "statement": "A WorkBreakdown adapter cannot receive graph service access, create graph nodes, choose graph relationship kinds, or submit graph mutations.",
+        "rationale": "Only a trusted versioned contributor may translate a validated canonical domain candidate into graph assertions.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-GOVERNANCE-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-WB-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WB-DEPENDENCY-BOUNDARY-001",
+        "category": "technical",
+        "statement": "WorkBreakdown may propose dependency hints but cannot emit or validate the authoritative dependency DAG.",
+        "rationale": "WorkDependencyAnalysis owns ordering, cycle rejection, missing-dependency detection, and impossible-ordering policy.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-DECOMPOSITION-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-WB-GATE-BOUNDARY-001",
+          "AC-WB-NO-EXECUTION-001",
+          "AC-WB-WORK-ITEM-CONTRACT-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WB-DOWNSTREAM-BOUNDARY-001",
+        "category": "technical",
+        "statement": "Assignment, ownership, estimates, scheduling, execution status, produced changes, completion edges, and verification results remain downstream concerns.",
+        "rationale": "WorkBreakdown defines actions; later modules order, assign, perform, and verify them.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-WB-NO-EXECUTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WB-INPUT-IMMUTABILITY-001",
+        "category": "technical",
+        "statement": "Baselines, explicit not-applicable dispositions, approved change packages, repository snapshots, capability catalogs, and traceability references must be immutable and content-addressed at invocation.",
+        "rationale": "Deterministic routing and drift detection require exact current authority rather than labels such as previous or latest.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WB-GOVERNANCE-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-WB-INPUT-PINNING-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WB-NO-EXECUTION-001",
+        "category": "business",
+        "statement": "WorkBreakdown must not execute work, build code, or claim that a planned action has been completed.",
+        "rationale": "The module's sole purpose is to produce candidate actions for later deterministic lifecycle modules.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-WB-NO-EXECUTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "SCOPE-WB-ADAPTERS-001",
+        "statement": "Provider-neutral WorkBreakdownAdapter binding plus bounded Spec Kit and OpenSpec default adapter manifests and conformance fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WB-ARTIFACTS-001",
+        "statement": "Canonical state, disposition, approved-change, capability-catalog, work-item, coverage, clarification, revision, draft, change-set, baseline, and diagnostic artifacts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WB-COVERAGE-GATE-001",
+        "statement": "A separate deterministic WorkBreakdown Gate for scope coverage, work-item scope, and reference validity.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WB-DRIFT-001",
+        "statement": "Pre-adapter exact baseline, disposition, approved-change-package, repository commit, and tree-digest drift detection.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WB-ROUTING-001",
+        "statement": "State-driven establish-breakdown and decompose-change routing with explicit clarification, drift, unable, and failure outcomes.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WB-TRACEABILITY-001",
+        "statement": "Trusted deterministic projection of validated work candidates into planning-only TraceabilityGraph relationships and an exact merge proof.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WB-WORK-ITEMS-001",
+        "statement": "Complete bounded WorkItemDrafts containing only id, objective, bounded-scope, deliverables, work-type, acceptance-criterion-refs, architecture-refs, contract-refs, required-capabilities, dependency-hints, verification-plan, required-evidence, and source-refs.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "nonGoals": [
+      {
+        "id": "NG-WB-AUTHORITATIVE-DAG-001",
+        "statement": "Construct or validate the authoritative work dependency DAG.",
+        "rationale": "This belongs to WorkDependencyAnalysis.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WB-CODE-EXECUTION-001",
+        "statement": "Execute work, build code, or produce implementation change sets.",
+        "rationale": "This belongs to WorkExecution and integration stages.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WB-CONTRACT-GENERATION-001",
+        "statement": "Generate or approve interface and data contracts.",
+        "rationale": "WorkBreakdown consumes approved contract context; ContractGeneration owns contract production.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WB-HISTORICAL-RECONSTRUCTION-001",
+        "statement": "Reconstruct historical work for an existing project without an approved WorkBreakdownBaseline.",
+        "rationale": "Such projects establish a current baseline from current approved scope only.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WB-LIVE-CLI-001",
+        "statement": "Claim live Spec Kit or OpenSpec CLI interoperability from contract fixtures alone.",
+        "rationale": "V1 bounded manifests and fixtures prove the boundary; live command adapters require separate evidence.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WB-SPECIALIST-ASSIGNMENT-001",
+        "statement": "Select a person, agent, model, provider, or specialist for a work item.",
+        "rationale": "This belongs to SpecialistAssignment.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WB-WORK-MANAGEMENT-001",
+        "statement": "Own estimates, schedules, assignees, status, progress, completion, or verification evidence results.",
+        "rationale": "Those concerns belong to downstream planning, execution, and verification modules.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "terminology": [
+      {
+        "id": "TERM-WB-APPROVED-CHANGE-PACKAGE-001",
+        "term": "ApprovedChangePackage",
+        "definition": "An immutable authorized delta containing approved requirements and architecture changes, an approved contract change when applicable, and relevant TraceabilityGraph references.",
+        "aliases": [
+          "Approved change package"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-CAPABILITY-CATALOG-001",
+        "term": "CapabilityCatalog",
+        "definition": "An invocation-pinned provider-neutral catalog of controlled capabilities a WorkItemDraft may require from a later specialist assignment.",
+        "aliases": [
+          "Capability catalog"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-CLARIFICATION-CONTINUATION-001",
+        "term": "ClarificationContinuation",
+        "definition": "An immutable resumable state artifact returned with a WorkBreakdown clarification request.",
+        "aliases": [
+          "Clarification continuation"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-COVERAGE-DISPOSITION-001",
+        "term": "CoverageDisposition",
+        "definition": "A complete accounting entry marking authorized scope planned, already-satisfied with evidence, or no-work-required with approval.",
+        "aliases": [
+          "Coverage disposition"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-DEPENDENCY-HINT-001",
+        "term": "DependencyHint",
+        "definition": "A proposed ordering or dependency observation that has no authority until validated by WorkDependencyAnalysis.",
+        "aliases": [
+          "Dependency hint"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-REVISION-REQUEST-001",
+        "term": "RevisionRequest",
+        "definition": "An explicit immutable request to revise a WorkBreakdown candidate without relying on an implicit previous draft.",
+        "aliases": [
+          "Revision request"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-TRACEABILITY-CONTRIBUTOR-001",
+        "term": "WorkBreakdownTraceabilityContributor",
+        "definition": "A trusted versioned projector that derives allowed planning graph assertions from an already validated canonical work-breakdown candidate.",
+        "aliases": [
+          "Work breakdown traceability contributor"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-WORK-BREAKDOWN-BASELINE-001",
+        "term": "WorkBreakdownBaseline",
+        "definition": "The exact approved current set of planned work against which future authorized changes are decomposed.",
+        "aliases": [
+          "Work breakdown baseline"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-WORK-BREAKDOWN-CHANGE-001",
+        "term": "WorkBreakdownChangeSetDraft",
+        "definition": "A candidate planned-work delta against an exact current WorkBreakdownBaseline and ApprovedChangePackage.",
+        "aliases": [
+          "Work breakdown change candidate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-WORK-BREAKDOWN-DRAFT-001",
+        "term": "WorkBreakdownDraft",
+        "definition": "A complete candidate initial set of planned work for a project with no approved WorkBreakdownBaseline.",
+        "aliases": [
+          "Work breakdown candidate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WB-WORK-ITEM-DRAFT-001",
+        "term": "WorkItemDraft",
+        "definition": "A bounded, traceable, independently executable and verifiable proposed action that has not been ordered, assigned, executed, or verified.",
+        "aliases": [
+          "Work item draft"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "currentStatus": {
+      "lifecycle": "existing",
+      "phase": "planning",
+      "summary": "WorkBreakdown 0.1.0 has completed interactive requirements clarification and is awaiting paired Requirements Gate promotion before ArchitectureDesign.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-work-breakdown-module-v1",
+            "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+          }
+        },
+        {
+          "role": "interactive-clarification",
+          "artifact": {
+            "artifactId": "requirements-dialogue-work-breakdown-v1",
+            "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+          },
+          "location": "Complete normalized WorkBreakdown clarification sequence"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-work-breakdown-v1",
+            "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+            "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+          }
+        }
+      ]
+    },
+    "assumptions": [
+      {
+        "id": "ASM-WB-CURRENT-BASELINE-001",
+        "statement": "Current means the exact approved content-addressed baseline supplied to the invocation, never an unpinned latest alias.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-WB-LIVE-ADAPTERS-001",
+        "statement": "V1 bounded Spec Kit and OpenSpec manifests and fixtures do not by themselves claim live upstream CLI execution.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-WB-PUBLISHING-001",
+        "statement": "WorkBreakdown 0.1.0 has not been published, so this requirements run may establish its first exact contract.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-WB-REPOSITORY-CHANGE-001",
+        "statement": "Decompose-change requires a current RepositorySnapshot; explicit repository ApprovedNotApplicable is supported only when establishing work for a project with no repository context.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-WB-WORK-ITEM-ID-001",
+        "statement": "The final authoritative WorkItemDraft field set includes stable id, verification-plan, and required-evidence and excludes direct requirement-refs and user-story-refs; upstream lineage is transitive through acceptance-criterion-refs.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-breakdown-module-v1",
+              "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+            }
+          },
+          {
+            "role": "interactive-clarification",
+            "artifact": {
+              "artifactId": "requirements-dialogue-work-breakdown-v1",
+              "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+            },
+            "location": "Complete normalized WorkBreakdown clarification sequence"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-breakdown-v1",
+              "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+              "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+            }
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "A future WorkDependencyAnalysis module or compatible downstream contract for authoritative ordering.",
+      "A separate WorkBreakdown Gate before candidate promotion.",
+      "Approved RequirementsBaseline, ProjectOverviewBaseline, and ArchitectureBaseline inputs.",
+      "DevRelay TraceabilityGraph contributor, checkpoint, merge, and ModuleExecutionRecord contracts.",
+      "Explicit contract and repository disposition contracts plus a provider-neutral capability catalog.",
+      "The generic ModuleDefinition, ModulePlugin, ModuleInvocation, ModuleResult, artifact, evidence, digest, routing, and checkpoint contracts."
+    ],
+    "risks": [
+      "Adapter-native task formats may encourage product-specific semantics unless normalization remains strict.",
+      "Coverage accounting may become bureaucratic if dispositions are not derived and presented compactly.",
+      "Dependency hints could accidentally be treated as authoritative before WorkDependencyAnalysis.",
+      "Existing projects without a work baseline could trigger misleading historical reconstruction unless explicitly prohibited.",
+      "Overly broad work items would undermine independent execution and verification even if structurally valid.",
+      "Planning-edge names could imply completed implementation unless the trusted contributor restricts them to planned semantics.",
+      "Weak drift checks could decompose an approved change against stale baselines or repository state."
+    ],
+    "deliverables": [
+      "Approved WorkBreakdown RequirementsBaseline and ProjectOverviewBaseline with a visible clarification record.",
+      "Canonical WorkBreakdown state, input, work-item, coverage, clarification, revision, draft, change-set, baseline, and diagnostic contracts.",
+      "Configured Spec Kit and OpenSpec bounded adapter manifests and conformance fixtures.",
+      "Deterministic WorkBreakdown Gate and baseline-promotion contract.",
+      "State routing, drift, contract validation, checkpoint, replay, negative, and Core-neutrality evidence.",
+      "Trusted WorkBreakdownTraceabilityContributor with planning-only relationships and merge proof.",
+      "WorkBreakdown module definition with establish-breakdown and decompose-change operations."
+    ],
+    "requiredEvidence": [
+      "requirements/gate-review",
+      "requirements/source-provenance",
+      "routing/deterministic-selection",
+      "traceability/checkpoint-before-merge",
+      "traceability/planning-edge-conformance",
+      "work-breakdown/adapter-neutrality",
+      "work-breakdown/artifact-validation",
+      "work-breakdown/coverage-validation",
+      "work-breakdown/drift-preflight",
+      "work-breakdown/full-test-suite",
+      "work-breakdown/no-execution-boundary"
+    ],
+    "sourceRefs": [
+      {
+        "role": "goal",
+        "artifact": {
+          "artifactId": "goal-work-breakdown-module-v1",
+          "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+        }
+      },
+      {
+        "role": "interactive-clarification",
+        "artifact": {
+          "artifactId": "requirements-dialogue-work-breakdown-v1",
+          "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+        },
+        "location": "Complete normalized WorkBreakdown clarification sequence"
+      },
+      {
+        "role": "project-context",
+        "artifact": {
+          "artifactId": "project-context-devrelay-work-breakdown-v1",
+          "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+        }
+      },
+      {
+        "role": "repository-snapshot",
+        "artifact": {
+          "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+          "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+        }
+      }
+    ]
+  },
+  "approvalEvidence": [
+    {
+      "artifactId": "requirements-gate-work-breakdown-v1",
+      "digest": "sha256:af421c6fb34e03313fab9a7e289fe5cf024c46835c7ffb3ca8d012967450d107"
+    }
+  ]
+}

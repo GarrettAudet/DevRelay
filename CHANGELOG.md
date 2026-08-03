@@ -4,6 +4,48 @@ All notable DevRelay source releases are recorded here. Module versions are
 immutable once released; a semantic contract change requires a new module
 version.
 
+## 0.3.0 - 2026-08-02
+
+### Added
+
+- `work-breakdown@0.1.0` with deterministic `establish-breakdown` and
+  `decompose-change` routing, exact content-addressed upstream inputs, and a
+  pre-adapter `baseline_drift` outcome.
+- A closed `WorkItemDraft` contract using deliverable-oriented work types,
+  provider-neutral capabilities, non-authoritative dependency hints,
+  verification plans, required evidence, and exact source references.
+- Complete coverage dispositions and a deterministic WorkBreakdown Gate that
+  rejects unscoped work, uncovered approved scope, invalid references, and
+  stale typed changes while leaving dependency-DAG policy downstream.
+- Checkpoint-only WorkBreakdown Gate promotion that derives its candidate and
+  exact inputs from an unforgeable replay receipt, verifies raw baseline bytes,
+  and returns an atomic commit payload; plain or cloned results are not
+  promotion authority.
+- Bounded, replaceable Spec Kit tasks and OpenSpec tasks manifests implementing
+  both operations without product-specific Core routing.
+- Trusted WorkBreakdown traceability contribution with acceptance-criterion,
+  architecture-element, and contract planning edges, plus immutable
+  traceability vocabulary `1.1.0` compatibility with exact `1.0.0` artifacts.
+- End-to-end dogfood evidence spanning RequirementsGathering,
+  ArchitectureDesign, WorkBreakdown, Gate promotion, TraceabilityGraph merge,
+  checkpoint replay, and zero-adapter-call baseline drift, with upstream CLI
+  limitations recorded explicitly.
+- Independent release-audit hardening for attached architecture models,
+  upstream and approved-change pre-state coherence, exact graph-node
+  membership, revision lineage and mutual exclusion, effect-only adapter
+  compatibility, and guard-owned outcomes.
+- Semantic-empty graph transitions now retain artifact-reference accounting
+  anchors so stale work, planning edges, and contract facts retire without
+  asserting implementation progress.
+
+### Release scope
+
+- The source package is `0.3.0`; RequirementsGathering and ArchitectureDesign
+  remain at `0.1.0`, and WorkBreakdown is released at `0.1.0`.
+- WorkBreakdown plans actions only. Assignment, authoritative dependencies,
+  execution, and verification remain downstream responsibilities.
+- Live OpenSpec and GitHub Spec Kit command adapters are not shipped.
+
 ## 0.2.0 - 2026-08-01
 
 ### Added

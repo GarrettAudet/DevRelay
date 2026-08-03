@@ -1,0 +1,44 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "interactive-clarification",
+      "path": "dogfood/work-breakdown/clarification-transcript.md",
+      "artifact": {
+        "artifactId": "requirements-dialogue-work-breakdown-v1",
+        "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-draft-work-breakdown-v1",
+      "digest": "sha256:0adc23305d536207a488b18a0ce798da0a73d62d721a333d1cd176c640681a04"
+    },
+    {
+      "artifactId": "project-overview-draft-work-breakdown-v1",
+      "digest": "sha256:62884e909f576170ca14b20725bdf710e02907dc4c87b0be4c10a9426368ba15"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec CLI and repository were not installed or executed; this chat acted as the declared agent-command bridge.",
+      "The transcript is semantically exact and normalized. The originating Codex task remains the verbatim conversational source.",
+      "ProjectOverviewDraft and ProjectOverview.md were derived deterministically by DevRelay from the canonical RequirementsDraft; OpenSpec did not author an independent overview.",
+      "The final deliverable-oriented work-type vocabulary supersedes the earlier provisional activity-oriented labels.",
+      "The latest authoritative field confirmation removes direct requirement-refs and user-story-refs; upstream lineage is transitive through acceptance-criterion-refs."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

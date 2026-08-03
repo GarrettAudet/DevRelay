@@ -2,10 +2,11 @@
 
 ## Release identity
 
-This repository packages DevRelay Core, `requirements-gathering@0.1.0`, and
-`architecture-design@0.1.0` as one private source release, version `0.2.0`.
-The source package adds `TraceabilityGraph` without changing either immutable
-Module contract version.
+This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
+`architecture-design@0.1.0`, and `work-breakdown@0.1.0` as one private source
+release, version `0.3.0`. The source package also advances the immutable
+TraceabilityGraph vocabulary from exact legacy `1.0.0` support to current
+`1.1.0` planning-edge semantics.
 
 `package.json` intentionally retains `"private": true` and
 `"license": "UNLICENSED"`. Do not run `npm publish`. The local package tarball
@@ -23,11 +24,24 @@ release.
 - Typed requirements, deterministic ProjectOverview projection/rendering,
   atomic paired Requirements Gate validation, and ArchitectureDesign's explicit
   project-overview context contract through the public JavaScript API.
+- WorkBreakdown state routing, pre-adapter baseline drift detection, closed
+  work-item and coverage contracts, typed change application, deterministic
+  checkpoint-only Gate validation, raw-byte-bound baseline commit payloads,
+  and exact project-overview context through the public API.
+- Release-audited WorkBreakdown handoffs: exact attached architecture-model
+  resolution, architecture/upstream and approved-change pre-state coherence,
+  authoritative graph-node membership, revision-control lineage and mutual
+  exclusion, effect-only compatible adapters, and Core-reserved guard
+  outcomes.
 - Closed TraceabilityGraph snapshot, update, receipt, diagnostic-report, and
   ModuleExecutionRecord contracts through the public JavaScript API.
-- Trusted RequirementsGathering and ArchitectureDesign contributors, exact
-  provenance, checkpoint-first idempotent application, optimistic disjoint
-  rebase, forward/reverse traversal, and lifecycle coverage diagnostics.
+- Trusted RequirementsGathering, ArchitectureDesign, and WorkBreakdown
+  contributors; exact planning-edge authority; legacy/current vocabulary
+  compatibility; checkpoint-first idempotent application; optimistic disjoint
+  rebase; forward/reverse traversal; and lifecycle coverage diagnostics.
+- Artifact-reference accounting anchors for semantic-empty transitions, so
+  stale WorkItem planning edges and contract facts retire deterministically
+  without inventing implementation progress.
 - Explicit assumption blocking/source provenance, checkpoint-only gate proof
   through an in-process unforgeable replay receipt, and raw-byte-bound baseline
   commit payloads. Portable cross-process verification receipts are not
@@ -64,7 +78,7 @@ working tree:
 5. verifies the mandatory final release digest catalog.
 6. builds an allowlisted package in a temporary directory.
 7. installs that tarball offline and smoke-tests the package root,
-   TraceabilityGraph surface, and both module manifests from a disposable
+   TraceabilityGraph surface, and all three module manifests from a disposable
    consumer.
 
 Use `npm run verify` for the static checks and test suite without packaging.
@@ -72,9 +86,13 @@ Use `npm run verify` for the static checks and test suite without packaging.
 ## Release checklist
 
 - [ ] Work from a clean checkout of the intended commit.
-- [ ] Confirm package, RequirementsGathering, and ArchitectureDesign versions.
+- [ ] Confirm package, RequirementsGathering, ArchitectureDesign, and
+      WorkBreakdown versions.
 - [ ] Confirm paired Requirements/ProjectOverview promotion and explicit
       ArchitectureDesign project-overview input coverage.
+- [ ] Confirm WorkBreakdown drift blocks before adapter entry and the Gate
+      rejects unscoped, uncovered, stale, or invalid-reference candidates using
+      only an unforgeable replay receipt and exact baseline bytes.
 - [ ] Confirm graph-aware execution checkpoints before merge, retries without
       adapter reinvocation, and proves the exact applied update.
 - [ ] Confirm candidate/approved scope separation, contributor ownership, and

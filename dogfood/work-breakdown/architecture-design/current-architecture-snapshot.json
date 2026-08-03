@@ -1,0 +1,295 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "CurrentArchitectureSnapshot",
+  "snapshotId": "current-architecture-snapshot-work-breakdown-v1",
+  "authority": "observational",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-work-breakdown-existing-undiscovered-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:e722e0e80c9434b60ed4c8002555883a55345efcfef9bdedad4451b82a8364b2",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/project-architecture-state-existing-undiscovered.json"
+  },
+  "projectContext": {
+    "artifactId": "project-context-devrelay-work-breakdown-v1",
+    "schema": "https://devrelay.dev/artifacts/project-context/v1",
+    "mediaType": "application/vnd.devrelay.project-context+json",
+    "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-context.json"
+  },
+  "repositorySnapshot": {
+    "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+    "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+    "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+    "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/repository-snapshot.json"
+  },
+  "repositoryRevision": {
+    "revision": "7d3b9c16d4c197bf80dce8279e027b953e32f21a",
+    "treeDigest": "sha256:1b27077b4c9cb4b749c36241ad50bff8e4af7640470e584980eefd9356e9e161"
+  },
+  "architectureModel": {
+    "mode": "embedded",
+    "content": {
+      "modelId": "MODEL-DEVRELAY-CURRENT-WB-001",
+      "notation": {
+        "name": "C4",
+        "version": "1.0"
+      },
+      "elements": [
+        {
+          "id": "EL-DEVRELAY-SYSTEM",
+          "name": "DevRelay",
+          "type": "software-system",
+          "description": "Deterministic orchestration runtime for composable software-engineering modules.",
+          "responsibilities": [
+            "Progress exact artifacts through provider-neutral module contracts and gates."
+          ],
+          "tags": [
+            "System"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-DEVRELAY-CORE",
+          "name": "Generic Core",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Owns generic module registration, state-derived routing, exact adapter resolution, checkpoints, and progression.",
+          "technology": "Node.js",
+          "responsibilities": [
+            "Validate content-addressed runtime inputs.",
+            "Resolve and invoke configured bounded adapters.",
+            "Persist and replay exact effect checkpoints."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-DEVRELAY-MODULES",
+          "name": "Released Semantic Modules",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Provider-neutral RequirementsGathering and ArchitectureDesign contracts and validators.",
+          "technology": "JSON Schema and JavaScript",
+          "responsibilities": [
+            "Define stable semantic ports, outcomes, artifacts, and gates."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-DEVRELAY-GRAPH",
+          "name": "TraceabilityGraph",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Core-owned sidecar for trusted lifecycle traceability contributions and atomic merge proofs.",
+          "technology": "Provider-neutral graph contract",
+          "responsibilities": [
+            "Validate and atomically merge trusted contributor updates.",
+            "Preserve authority, scope, version, and checkpoint lineage."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [],
+          "sourceRefs": []
+        }
+      ],
+      "relationships": [
+        {
+          "id": "REL-CORE-MODULES",
+          "sourceElementId": "EL-DEVRELAY-CORE",
+          "targetElementId": "EL-DEVRELAY-MODULES",
+          "description": "Executes a registered provider-neutral module contract through exact configured bindings.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-CORE-GRAPH",
+          "sourceElementId": "EL-DEVRELAY-CORE",
+          "targetElementId": "EL-DEVRELAY-GRAPH",
+          "description": "Submits checkpointed updates from trusted registered contributors.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [],
+          "sourceRefs": []
+        }
+      ],
+      "sourceRefs": []
+    }
+  },
+  "diagrams": {
+    "mode": "embedded",
+    "content": {
+      "diagramSetId": "DIAGRAMS-DEVRELAY-CURRENT-WB-001",
+      "architectureModelId": "MODEL-DEVRELAY-CURRENT-WB-001",
+      "architectureModelDigest": "sha256:5213756748852f9f14a7672463d60bc45a958c4156e5593f7005ee57be245431",
+      "views": [
+        {
+          "viewKey": "VIEW-DEVRELAY-CURRENT-CONTAINERS",
+          "type": "container",
+          "title": "Current DevRelay containers",
+          "purpose": "Document the released generic Core, semantic module, and traceability boundaries before WorkBreakdown is added.",
+          "audience": [
+            "engineering",
+            "maintainers"
+          ],
+          "scopeElementId": "EL-DEVRELAY-SYSTEM",
+          "elementIds": [
+            "EL-DEVRELAY-SYSTEM",
+            "EL-DEVRELAY-CORE",
+            "EL-DEVRELAY-MODULES",
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "relationshipIds": [
+            "REL-CORE-MODULES",
+            "REL-CORE-GRAPH"
+          ],
+          "renderings": [
+            {
+              "format": "structurizr",
+              "artifact": {
+                "artifactId": "structurizr-current-devrelay-work-breakdown-v1",
+                "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                "mediaType": "text/vnd.structurizr.dsl",
+                "digest": "sha256:dbf84de41a15d35ec42e0e70b8b91baa546ca26f21f512ad1161ca6da1240557",
+                "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/current-architecture.dsl"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "interfaceIntent": {
+    "mode": "embedded",
+    "content": {
+      "interfaceIntentSetId": "INTERFACES-DEVRELAY-CURRENT-WB-001",
+      "interfaces": []
+    }
+  },
+  "architectureConstraints": {
+    "mode": "embedded",
+    "content": {
+      "constraintSetId": "CONSTRAINTS-DEVRELAY-CURRENT-WB-001",
+      "constraints": []
+    }
+  },
+  "decisionRecords": {
+    "mode": "embedded",
+    "content": {
+      "decisionRecordSetId": "DECISIONS-DEVRELAY-CURRENT-WB-001",
+      "decisions": []
+    }
+  },
+  "nativeArtifacts": {
+    "mode": "embedded",
+    "content": {
+      "nativeArtifactSetId": "NATIVE-DEVRELAY-DISCOVERY-WB-001",
+      "entries": [
+        {
+          "id": "NA-WB-DISCOVERY-REPORT",
+          "artifact": {
+            "artifactId": "architecture-discovery-work-breakdown-v1",
+            "schema": "https://devrelay.dev/native/architecture-discovery-report/v1",
+            "mediaType": "application/json",
+            "digest": "sha256:abe3aa20bf1b9797524056647be18eb91e8128d237b2b320feda8edf55117b9a",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-discovery-report.json"
+          },
+          "role": "discovery-report",
+          "logicalPath": "dogfood/work-breakdown/architecture-design/architecture-discovery-report.json",
+          "producedBy": {
+            "stage": "discovery",
+            "adapterId": "repository-architecture-discovery",
+            "adapterVersion": "0.1.0",
+            "tool": {
+              "name": "repository-inspector",
+              "version": "0.1.0"
+            }
+          },
+          "disposition": "generated",
+          "canonicalMappings": [
+            {
+              "section": "architectureModel",
+              "entityIds": [
+                "MODEL-DEVRELAY-CURRENT-WB-001"
+              ],
+              "jsonPointers": [
+                "/architectureModel"
+              ]
+            }
+          ],
+          "warnings": []
+        },
+        {
+          "id": "NA-WB-CURRENT-STRUCTURIZR",
+          "artifact": {
+            "artifactId": "structurizr-current-devrelay-work-breakdown-v1",
+            "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+            "mediaType": "text/vnd.structurizr.dsl",
+            "digest": "sha256:dbf84de41a15d35ec42e0e70b8b91baa546ca26f21f512ad1161ca6da1240557",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/current-architecture.dsl"
+          },
+          "role": "structurizr-workspace",
+          "logicalPath": "dogfood/work-breakdown/architecture-design/current-architecture.dsl",
+          "producedBy": {
+            "stage": "discovery",
+            "adapterId": "repository-architecture-discovery",
+            "adapterVersion": "0.1.0",
+            "tool": {
+              "name": "Structurizr DSL",
+              "version": "5.0"
+            }
+          },
+          "disposition": "generated",
+          "canonicalMappings": [
+            {
+              "section": "architectureModel",
+              "entityIds": [
+                "MODEL-DEVRELAY-CURRENT-WB-001"
+              ],
+              "jsonPointers": [
+                "/architectureModel"
+              ]
+            },
+            {
+              "section": "diagrams",
+              "entityIds": [
+                "VIEW-DEVRELAY-CURRENT-CONTAINERS"
+              ],
+              "jsonPointers": [
+                "/diagrams"
+              ]
+            }
+          ],
+          "warnings": []
+        }
+      ]
+    }
+  },
+  "discoveryMethods": [
+    {
+      "method": "Static inspection of repository contracts, source, manifests, docs, examples, and tests at the pinned revision.",
+      "confidence": "high"
+    }
+  ],
+  "gaps": [],
+  "warnings": [
+    "This observational snapshot establishes current architecture only; it does not approve the WorkBreakdown target design."
+  ],
+  "sourceRefs": []
+}

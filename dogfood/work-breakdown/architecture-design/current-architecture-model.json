@@ -1,0 +1,101 @@
+{
+  "modelId": "MODEL-DEVRELAY-CURRENT-WB-001",
+  "notation": {
+    "name": "C4",
+    "version": "1.0"
+  },
+  "elements": [
+    {
+      "id": "EL-DEVRELAY-SYSTEM",
+      "name": "DevRelay",
+      "type": "software-system",
+      "description": "Deterministic orchestration runtime for composable software-engineering modules.",
+      "responsibilities": [
+        "Progress exact artifacts through provider-neutral module contracts and gates."
+      ],
+      "tags": [
+        "System"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-DEVRELAY-CORE",
+      "name": "Generic Core",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Owns generic module registration, state-derived routing, exact adapter resolution, checkpoints, and progression.",
+      "technology": "Node.js",
+      "responsibilities": [
+        "Validate content-addressed runtime inputs.",
+        "Resolve and invoke configured bounded adapters.",
+        "Persist and replay exact effect checkpoints."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-DEVRELAY-MODULES",
+      "name": "Released Semantic Modules",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Provider-neutral RequirementsGathering and ArchitectureDesign contracts and validators.",
+      "technology": "JSON Schema and JavaScript",
+      "responsibilities": [
+        "Define stable semantic ports, outcomes, artifacts, and gates."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-DEVRELAY-GRAPH",
+      "name": "TraceabilityGraph",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Core-owned sidecar for trusted lifecycle traceability contributions and atomic merge proofs.",
+      "technology": "Provider-neutral graph contract",
+      "responsibilities": [
+        "Validate and atomically merge trusted contributor updates.",
+        "Preserve authority, scope, version, and checkpoint lineage."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [],
+      "sourceRefs": []
+    }
+  ],
+  "relationships": [
+    {
+      "id": "REL-CORE-MODULES",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-DEVRELAY-MODULES",
+      "description": "Executes a registered provider-neutral module contract through exact configured bindings.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-CORE-GRAPH",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-DEVRELAY-GRAPH",
+      "description": "Submits checkpointed updates from trusted registered contributors.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [],
+      "sourceRefs": []
+    }
+  ],
+  "sourceRefs": []
+}

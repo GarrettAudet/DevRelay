@@ -139,14 +139,12 @@ function requirementChain({ architecture = false, delivery = false, evidenceStat
   }
   if (delivery) {
     nodes.push(
-      { kind: "work-item", stableId: "WORK-1", label: "Work item" },
       { kind: "code-change", stableId: "CODE-1", label: "Code change" },
       { kind: "test", stableId: "TEST-1", label: "Test", verificationStatus: evidenceStatus },
       { kind: "verification-evidence", stableId: "EVIDENCE-1", label: "Evidence", verificationStatus: evidenceStatus },
     );
     edges.push(
-      { kind: "planned-by", source: { kind: "architecture-element", stableId: "ARCH-1" }, target: { kind: "work-item", stableId: "WORK-1" }, rationale: "Architecture scopes implementation." },
-      { kind: "implemented-by", source: { kind: "work-item", stableId: "WORK-1" }, target: { kind: "code-change", stableId: "CODE-1" }, rationale: "Work item is implemented by code." },
+      { kind: "implemented-by", source: { kind: "architecture-element", stableId: "ARCH-1" }, target: { kind: "code-change", stableId: "CODE-1" }, rationale: "The architecture element is implemented by this code change." },
       { kind: "tested-by", source: { kind: "code-change", stableId: "CODE-1" }, target: { kind: "test", stableId: "TEST-1" }, rationale: "Code is tested." },
       { kind: "produces", source: { kind: "test", stableId: "TEST-1" }, target: { kind: "verification-evidence", stableId: "EVIDENCE-1" }, rationale: "Test produces evidence." },
       { kind: "verified-by", source: { kind: "acceptance-criterion", stableId: "AC-1" }, target: { kind: "verification-evidence", stableId: "EVIDENCE-1" }, rationale: "Evidence verifies criterion." },
@@ -254,11 +252,11 @@ test("architecture horizon blocks approved requirements without architecture rea
   assert.deepEqual(diagnoseTraceabilityGraph(complete.snapshot), []);
 });
 
-test("implementation diagnostics distinguish unscoped work from decision-scoped work", async () => {
+test("implementation diagnostics distinguish unscoped changes from architecture-scoped changes", async () => {
   const unscoped = await materialize({
     graphId: "unscoped-work",
     horizon: "implementation",
-    nodes: [{ kind: "work-item", stableId: "WORK-ORPHAN", label: "Orphan work" }],
+    nodes: [{ kind: "code-change", stableId: "CODE-ORPHAN", label: "Orphan change" }],
     edges: [],
   });
   const unscopedDiagnostics = diagnoseTraceabilityGraph(unscoped.snapshot);
@@ -267,14 +265,14 @@ test("implementation diagnostics distinguish unscoped work from decision-scoped 
   assert.equal(unscopedDiagnostics[0].blocking, true);
 
   const scoped = await materialize({
-    graphId: "decision-scoped-work",
+    graphId: "architecture-scoped-work",
     horizon: "implementation",
     nodes: [
-      { kind: "decision-record", stableId: "ADR-1", label: "Decision" },
-      { kind: "work-item", stableId: "WORK-1", label: "Work" },
+      { kind: "architecture-element", stableId: "ARCH-1", label: "Architecture" },
+      { kind: "code-change", stableId: "CODE-1", label: "Code change" },
     ],
     edges: [
-      { kind: "planned-by", source: { kind: "decision-record", stableId: "ADR-1" }, target: { kind: "work-item", stableId: "WORK-1" }, rationale: "Decision scopes work." },
+      { kind: "implemented-by", source: { kind: "architecture-element", stableId: "ARCH-1" }, target: { kind: "code-change", stableId: "CODE-1" }, rationale: "Architecture scopes the code change." },
     ],
   });
   assert.deepEqual(diagnoseTraceabilityGraph(scoped.snapshot), []);

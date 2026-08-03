@@ -24,35 +24,7 @@ export const TRACEABILITY_RECEIPT_MEDIA_TYPE =
 export const TRACEABILITY_DIAGNOSTIC_MEDIA_TYPE =
   "application/vnd.devrelay.traceability-diagnostic-report+json";
 
-const VOCABULARY_MATERIAL = Object.freeze({
-  id: "devrelay.traceability/v1",
-  version: "1.0.0",
-});
-
-export const TRACEABILITY_VOCABULARY = Object.freeze({
-  ...VOCABULARY_MATERIAL,
-  contractDigest: canonicalJsonDigest(VOCABULARY_MATERIAL),
-});
-
-export const TRACEABILITY_ANALYZER = Object.freeze({
-  id: "devrelay.traceability/analyzer",
-  version: "1.0.0",
-  contractDigest: canonicalJsonDigest({
-    id: "devrelay.traceability/analyzer",
-    version: "1.0.0",
-  }),
-});
-
-export const TRACEABILITY_MERGE_ENGINE = Object.freeze({
-  id: "devrelay.traceability/merge-engine",
-  version: "1.0.0",
-  contractDigest: canonicalJsonDigest({
-    id: "devrelay.traceability/merge-engine",
-    version: "1.0.0",
-  }),
-});
-
-export const TRACEABILITY_HORIZONS = Object.freeze([
+export const TRACEABILITY_HORIZONS_V1_0 = Object.freeze([
   "requirements",
   "architecture",
   "contracts",
@@ -60,7 +32,7 @@ export const TRACEABILITY_HORIZONS = Object.freeze([
   "verification",
 ]);
 
-export const TRACEABILITY_NODE_KINDS = Object.freeze([
+export const TRACEABILITY_NODE_KINDS_V1_0 = Object.freeze([
   "acceptance-criterion",
   "architecture-change",
   "architecture-constraint",
@@ -88,7 +60,7 @@ export const TRACEABILITY_NODE_KINDS = Object.freeze([
   "work-item",
 ]);
 
-export const TRACEABILITY_EDGE_KINDS = Object.freeze([
+export const TRACEABILITY_EDGE_KINDS_V1_0 = Object.freeze([
   "accepted-by",
   "affects",
   "applies-to",
@@ -117,8 +89,95 @@ export const TRACEABILITY_EDGE_KINDS = Object.freeze([
   "verified-by",
 ]);
 
+const VOCABULARY_MATERIAL_V1_0 = Object.freeze({
+  id: "devrelay.traceability/v1",
+  version: "1.0.0",
+});
+
+export const TRACEABILITY_VOCABULARY_V1_0 = Object.freeze({
+  ...VOCABULARY_MATERIAL_V1_0,
+  contractDigest: canonicalJsonDigest(VOCABULARY_MATERIAL_V1_0),
+});
+
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION = "1.1.0";
+export const TRACEABILITY_HORIZONS = TRACEABILITY_HORIZONS_V1_0;
+export const TRACEABILITY_NODE_KINDS = TRACEABILITY_NODE_KINDS_V1_0;
+export const TRACEABILITY_EDGE_KINDS = Object.freeze([
+  "accepted-by",
+  "affects",
+  "applies-to",
+  "contains",
+  "contracted-by",
+  "defines",
+  "depends-on",
+  "derived-from",
+  "designed-by",
+  "exercised-by",
+  "implemented-by",
+  "implementation-planned-by",
+  "measured-by",
+  "owned-by",
+  "performed-by",
+  "planned-by",
+  "produces",
+  "projects",
+  "realization-planned-by",
+  "realized-by",
+  "represents",
+  "serves",
+  "source-endpoint",
+  "specified-by",
+  "supersedes",
+  "target-endpoint",
+  "tested-by",
+  "verified-by",
+]);
+
+const VOCABULARY_MATERIAL = Object.freeze({
+  id: "devrelay.traceability/v1",
+  version: "1.1.0",
+  horizons: TRACEABILITY_HORIZONS,
+  nodeKinds: TRACEABILITY_NODE_KINDS,
+  edgeKinds: TRACEABILITY_EDGE_KINDS,
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION,
+});
+
+export const TRACEABILITY_VOCABULARY = Object.freeze({
+  id: VOCABULARY_MATERIAL.id,
+  version: VOCABULARY_MATERIAL.version,
+  contractDigest: canonicalJsonDigest(VOCABULARY_MATERIAL),
+});
+
+export const TRACEABILITY_ANALYZER = Object.freeze({
+  id: "devrelay.traceability/analyzer",
+  version: "1.0.0",
+  contractDigest: canonicalJsonDigest({
+    id: "devrelay.traceability/analyzer",
+    version: "1.0.0",
+  }),
+});
+
+export const TRACEABILITY_MERGE_ENGINE = Object.freeze({
+  id: "devrelay.traceability/merge-engine",
+  version: "1.0.0",
+  contractDigest: canonicalJsonDigest({
+    id: "devrelay.traceability/merge-engine",
+    version: "1.0.0",
+  }),
+});
+
+
 const NODE_KINDS = new Set(TRACEABILITY_NODE_KINDS);
 const EDGE_KINDS = new Set(TRACEABILITY_EDGE_KINDS);
+const EDGE_KINDS_V1_0 = new Set(TRACEABILITY_EDGE_KINDS_V1_0);
+const CURRENT_VOCABULARY_PROFILE = Object.freeze({
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION,
+  edgeKinds: EDGE_KINDS,
+});
+const LEGACY_VOCABULARY_PROFILE = Object.freeze({
+  endpointPolicyVersion: "1.0.0",
+  edgeKinds: EDGE_KINDS_V1_0,
+});
 const ARCHITECTURE_KINDS = new Set([
   "architecture-change",
   "architecture-constraint",
@@ -369,7 +428,9 @@ function assertNode(node, graphId) {
   }
 }
 
-function edgeEndpointsAllowed(kind, sourceKind, targetKind) {
+const WORK_BREAKDOWN_SCOPE = "work-breakdown/candidate";
+
+function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
   switch (kind) {
     case "defines":
       return sourceKind === "project";
@@ -428,6 +489,18 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind) {
       return targetKind === "contract";
     case "planned-by":
       return targetKind === "work-item";
+    case "implementation-planned-by":
+      return (
+        profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+        sourceKind === "architecture-element" &&
+        targetKind === "work-item"
+      );
+    case "realization-planned-by":
+      return (
+        profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+        sourceKind === "contract" &&
+        targetKind === "work-item"
+      );
     case "implemented-by":
       return targetKind === "code-change";
     case "tested-by":
@@ -443,8 +516,51 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind) {
   }
 }
 
-function assertEdge(edge, graphId, nodes, requireEndpoints) {
-  if (!EDGE_KINDS.has(edge.kind)) {
+function assertPlanningEdgeAuthority(edge, source, target, profile) {
+  if (profile.endpointPolicyVersion !== TRACEABILITY_ENDPOINT_POLICY_VERSION) {
+    return;
+  }
+  if (
+    edge.kind === "planned-by" &&
+    edge.scope !== WORK_BREAKDOWN_SCOPE
+  ) {
+    return;
+  }
+  const sourceScopes = new Map([
+    ["planned-by", "requirements/baseline"],
+    ["implementation-planned-by", "architecture/baseline"],
+    ["realization-planned-by", "contracts/baseline"],
+  ]);
+  const sourceKinds = new Map([
+    ["planned-by", "acceptance-criterion"],
+    ["implementation-planned-by", "architecture-element"],
+    ["realization-planned-by", "contract"],
+  ]);
+  const sourceScope = sourceScopes.get(edge.kind);
+  if (sourceScope === undefined) {
+    return;
+  }
+  if (
+    source.authority !== "approved" ||
+    source.kind !== sourceKinds.get(edge.kind) ||
+    edge.scope !== WORK_BREAKDOWN_SCOPE ||
+    target.kind !== "work-item" ||
+    source.scope !== sourceScope ||
+    target.authority !== "candidate" ||
+    target.scope !== "work-breakdown/candidate" ||
+    edge.authority !== target.authority ||
+    edge.scope !== target.scope ||
+    !sameContract(edge.contributor, target.contributor)
+  ) {
+    fail(
+      `planning edge ${edge.edgeId} crosses an unauthorized authority or ownership scope`,
+      "TG_INVALID_EDGE_AUTHORITY",
+    );
+  }
+}
+
+function assertEdge(edge, graphId, nodes, requireEndpoints, profile) {
+  if (!profile.edgeKinds.has(edge.kind)) {
     fail(`unknown edge kind ${edge.kind}`, "TG_UNKNOWN_EDGE_KIND");
   }
   if (
@@ -497,12 +613,13 @@ function assertEdge(edge, graphId, nodes, requireEndpoints) {
       "TG_INVALID_EDGE_AUTHORITY",
     );
   }
-  if (!edgeEndpointsAllowed(edge.kind, source.kind, target.kind)) {
+  if (!edgeEndpointsAllowed(edge.kind, source.kind, target.kind, profile)) {
     fail(
       `edge ${edge.edgeId} has invalid ${source.kind} -> ${target.kind} endpoints for ${edge.kind}`,
       "TG_INVALID_EDGE_ENDPOINTS",
     );
   }
+  assertPlanningEdgeAuthority(edge, source, target, profile);
 }
 
 function assertScope(scope) {
@@ -585,13 +702,35 @@ function assertUpdateClosure(update) {
 }
 
 function assertVocabulary(vocabulary) {
-  if (!sameContract(vocabulary, TRACEABILITY_VOCABULARY)) {
-    fail("artifact does not identify the supported traceability vocabulary");
+  if (sameContract(vocabulary, TRACEABILITY_VOCABULARY)) {
+    return CURRENT_VOCABULARY_PROFILE;
   }
+  if (sameContract(vocabulary, TRACEABILITY_VOCABULARY_V1_0)) {
+    return LEGACY_VOCABULARY_PROFILE;
+  }
+  fail("artifact does not identify a supported traceability vocabulary");
+}
+
+export function assertTraceabilityVocabularyTransition(
+  parentVocabulary,
+  updateVocabulary,
+) {
+  const parentProfile = assertVocabulary(parentVocabulary);
+  const updateProfile = assertVocabulary(updateVocabulary);
+  if (
+    parentProfile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+    updateProfile.endpointPolicyVersion === "1.0.0"
+  ) {
+    fail(
+      "a legacy traceability update cannot downgrade a current graph",
+      "TG_VOCABULARY_DOWNGRADE",
+    );
+  }
+  return updateVocabulary;
 }
 
 function validateSnapshot(snapshot) {
-  assertVocabulary(snapshot.vocabulary);
+  const vocabularyProfile = assertVocabulary(snapshot.vocabulary);
   assertStrictOrder(snapshot.appliedUpdates, refKey, "appliedUpdates");
   assertStrictOrder(snapshot.nodes, ({ nodeId }) => nodeId, "nodes");
   assertStrictOrder(snapshot.edges, ({ edgeId }) => edgeId, "edges");
@@ -645,12 +784,12 @@ function validateSnapshot(snapshot) {
     nodes.set(node.nodeId, node);
   }
   for (const edge of snapshot.edges) {
-    assertEdge(edge, snapshot.graphId, nodes, true);
+    assertEdge(edge, snapshot.graphId, nodes, true, vocabularyProfile);
   }
 }
 
 function validateUpdate(update) {
-  assertVocabulary(update.vocabulary);
+  const vocabularyProfile = assertVocabulary(update.vocabulary);
   assertArtifactRefType(
     update.baseGraph,
     TRACEABILITY_GRAPH_SCHEMA,
@@ -694,7 +833,13 @@ function validateUpdate(update) {
       );
     }
     const endpointsKnown = Boolean(sourceNode && targetNode);
-    assertEdge(edge, update.graphId, changedNodes, endpointsKnown);
+    assertEdge(
+      edge,
+      update.graphId,
+      changedNodes,
+      endpointsKnown,
+      vocabularyProfile,
+    );
   }
   assertUpdateClosure(update);
 }

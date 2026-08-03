@@ -54,6 +54,16 @@ export const canonicalModules = Object.freeze([
     ],
     plugins: ["madr", "openspec-design", "spec-kit-plan", "structurizr"],
   },
+  {
+    id: "work-breakdown",
+    version: "0.1.0",
+    definition: "examples/modules/work-breakdown.module.json",
+    operations: [
+      { id: "decompose-change", steps: [] },
+      { id: "establish-breakdown", steps: [] },
+    ],
+    plugins: ["openspec-tasks", "spec-kit-tasks"],
+  },
 ]);
 
 export const canonicalPlugins = Object.freeze([
@@ -89,11 +99,31 @@ export const canonicalPlugins = Object.freeze([
     bindings: [{ operation: "design-change", step: "designer" }],
   },
   {
+    id: "openspec-tasks",
+    version: "0.1.0",
+    manifest: "examples/plugins/openspec-tasks.plugin.json",
+    module: { id: "work-breakdown", version: "0.1.0" },
+    bindings: [
+      { operation: "decompose-change", step: null },
+      { operation: "establish-breakdown", step: null },
+    ],
+  },
+  {
     id: "spec-kit-plan",
     version: "0.1.0",
     manifest: "examples/plugins/spec-kit-plan.plugin.json",
     module: { id: "architecture-design", version: "0.1.0" },
     bindings: [{ operation: "establish-baseline", step: "designer" }],
+  },
+  {
+    id: "spec-kit-tasks",
+    version: "0.1.0",
+    manifest: "examples/plugins/spec-kit-tasks.plugin.json",
+    module: { id: "work-breakdown", version: "0.1.0" },
+    bindings: [
+      { operation: "decompose-change", step: null },
+      { operation: "establish-breakdown", step: null },
+    ],
   },
   {
     id: "structurizr",
@@ -114,6 +144,8 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/modules/requirements-gathering.module.json",
   "./modules/architecture-design.module.json":
     "./examples/modules/architecture-design.module.json",
+  "./modules/work-breakdown.module.json":
+    "./examples/modules/work-breakdown.module.json",
   "./plugins/github-spec-kit.plugin.json":
     "./examples/plugins/github-spec-kit.plugin.json",
   "./plugins/openspec.plugin.json":
@@ -124,6 +156,10 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/plugins/openspec-design.plugin.json",
   "./plugins/structurizr.plugin.json":
     "./examples/plugins/structurizr.plugin.json",
+  "./plugins/openspec-tasks.plugin.json":
+    "./examples/plugins/openspec-tasks.plugin.json",
+  "./plugins/spec-kit-tasks.plugin.json":
+    "./examples/plugins/spec-kit-tasks.plugin.json",
   "./plugins/madr.plugin.json": "./examples/plugins/madr.plugin.json",
   "./examples/artifacts/*": "./examples/artifacts/*",
   "./examples/invocations/*": "./examples/invocations/*",

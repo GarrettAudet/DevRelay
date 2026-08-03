@@ -1,0 +1,387 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkBreakdownChangeSetDraft",
+  "changeSetId": "WBCS-AUTH-001",
+  "operation": "decompose-change",
+  "currentBaseline": {
+    "artifactId": "WBB-AUTH-001",
+    "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+    "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+    "digest": "sha256:5cf025c4c5768f1721695b43ded8972f5c041ae04609d2f58d3e058e849f85c9",
+    "uri": "file:///workspace/.devrelay/artifacts/work-breakdown-baseline-auth-001.json"
+  },
+  "inputBindings": [
+    {
+      "role": "project-work-breakdown-state",
+      "artifact": {
+        "artifactId": "PWBS-AUTH-BASELINED-001",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:d721593aefbef9cb5991281b57ebc4e699a1ab0af6ab78ca8b36410ffa0e91b8",
+        "uri": "file:///workspace/.devrelay/artifacts/project-work-breakdown-state-baselined-001.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+        "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc",
+        "uri": "file:///workspace/.devrelay/artifacts/project-overview-baseline-001.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+        "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+      }
+    },
+    {
+      "role": "contract-disposition",
+      "artifact": {
+        "artifactId": "CD-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3",
+        "uri": "file:///workspace/.devrelay/artifacts/contract-disposition-auth-001.json"
+      }
+    },
+    {
+      "role": "capability-catalog",
+      "artifact": {
+        "artifactId": "CC-WORK-BREAKDOWN-001",
+        "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+        "mediaType": "application/vnd.devrelay.capability-catalog+json",
+        "digest": "sha256:d459c8167b1bdb8db2cc68c13d65538c3775dcd4b57221037be121194bbb1bb4",
+        "uri": "file:///workspace/.devrelay/artifacts/capability-catalog-work-breakdown-001.json"
+      }
+    },
+    {
+      "role": "current-repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      }
+    },
+    {
+      "role": "current-work-breakdown-baseline",
+      "artifact": {
+        "artifactId": "WBB-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+        "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+        "digest": "sha256:5cf025c4c5768f1721695b43ded8972f5c041ae04609d2f58d3e058e849f85c9",
+        "uri": "file:///workspace/.devrelay/artifacts/work-breakdown-baseline-auth-001.json"
+      }
+    },
+    {
+      "role": "approved-change-package",
+      "artifact": {
+        "artifactId": "ACP-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+        "mediaType": "application/vnd.devrelay.approved-change-package+json",
+        "digest": "sha256:e764c18027e16394b161c28107240a89ca54134e55e77ac8358bd840b658dc2b",
+        "uri": "file:///workspace/.devrelay/artifacts/approved-change-package-auth-001.json"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-AUTH-FAILURE-VERIFICATION",
+        "objective": "Replace the prior negative-test task with a bounded security verification suite for uniform authentication failures.",
+        "bounded-scope": {
+          "included": [
+            "Automated comparisons of authentication failures for known and unknown account identifiers."
+          ],
+          "excluded": [
+            "Changes to production identity data or the implementation of the authentication service."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-AUTH-FAILURE-VERIFICATION",
+            "description": "One replacement security verification suite for known and unknown identity failures.",
+            "artifactKind": "security-test-change"
+          }
+        ],
+        "work-type": "test-change",
+        "acceptance-criterion-refs": [
+          "AC-AUTH-DISCLOSURE-001"
+        ],
+        "architecture-refs": [
+          "EL-AUTH-SERVICE"
+        ],
+        "contract-refs": [],
+        "required-capabilities": [
+          "CAP-TEST"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-AUTH-CORE",
+            "relation": "after",
+            "rationale": "The replacement suite is expected to exercise the updated boundary, subject to WorkDependencyAnalysis.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-AUTH-FAILURE-VERIFICATION",
+              "method": "Execute the negative authentication suite with known and unknown identities.",
+              "successCriteria": "Externally visible response status, body shape, and security-relevant timing classification are indistinguishable."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "security-test-report",
+            "description": "Passing negative-test output comparing known and unknown identity failures."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+              "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/1"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+              "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/1"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-AUTH-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:e764c18027e16394b161c28107240a89ca54134e55e77ac8358bd840b658dc2b",
+              "uri": "file:///workspace/.devrelay/artifacts/approved-change-package-auth-001.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "update",
+      "workItemId": "WI-AUTH-CORE",
+      "priorItemDigest": "sha256:3520ad8f8602b50b1c2127b0de3028be870e3047204c8e7f159be0902f1be2bb",
+      "workItem": {
+        "id": "WI-AUTH-CORE",
+        "objective": "Extend the provider-neutral authentication service boundary with the approved audit-safe behavior while retaining its stable work identity.",
+        "bounded-scope": {
+          "included": [
+            "The authorized authentication service behavior, uniform failures, session establishment, and audit-safe event emission."
+          ],
+          "excluded": [
+            "Identity-provider replacement, specialist assignment, scheduling, and work execution."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-AUTH-CORE",
+            "description": "One reviewable authentication service source change with contract conformance and audit-safe behavior.",
+            "artifactKind": "source-change"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-AUTH-001"
+        ],
+        "architecture-refs": [
+          "EL-AUTH-SERVICE"
+        ],
+        "contract-refs": [
+          "CT-AUTH-HTTP"
+        ],
+        "required-capabilities": [
+          "CAP-CODE"
+        ],
+        "dependency-hints": [],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-AUTH-CORE",
+              "method": "Run the authentication integration test against the approved contract boundary.",
+              "successCriteria": "Valid credentials establish a session and the produced interface behavior conforms to CT-AUTH-HTTP."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "integration-test-report",
+            "description": "Passing authentication integration-test output bound to the produced source change."
+          },
+          {
+            "kind": "contract-conformance-report",
+            "description": "Machine-readable evidence that the realized interface conforms to CT-AUTH-HTTP."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+              "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/0"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+              "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/1"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-AUTH-001",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3",
+              "uri": "file:///workspace/.devrelay/artifacts/contract-disposition-auth-001.json"
+            },
+            "jsonPointer": "/contractTargets/0"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-AUTH-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:e764c18027e16394b161c28107240a89ca54134e55e77ac8358bd840b658dc2b",
+              "uri": "file:///workspace/.devrelay/artifacts/approved-change-package-auth-001.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-AUTH-FAILURE-TESTS",
+      "priorItemDigest": "sha256:58a4bd44943f6030f399d890638ca93310c19d8d8154faccde52108bdf1e411e",
+      "rationale": "The approved change replaces this bounded task with WI-AUTH-FAILURE-VERIFICATION."
+    }
+  ],
+  "coverageDispositions": [
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-AUTH-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-CORE"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-AUTH-DISCLOSURE-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-FAILURE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-AUTH-SERVICE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-CORE",
+        "WI-AUTH-FAILURE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-AUTH-HTTP",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-CORE"
+      ]
+    }
+  ],
+  "resultingWorkItemsDigest": "sha256:aca4a1a144c10f724647c6908a91e3b6b2bd66c97c5883e605ad7a3b11ab9dba",
+  "nativeArtifacts": [
+    {
+      "artifactId": "openspec-tasks-auth-change-001",
+      "schema": "https://devrelay.dev/native/openspec-tasks/v1",
+      "mediaType": "text/markdown",
+      "digest": "sha256:2184ee70b617bfcb421b15d0134a0a8d97eab068dc3d0dae56768572432a489c",
+      "uri": "file:///workspace/openspec/changes/auth-audit/tasks.md"
+    }
+  ],
+  "sourceRefs": [
+    {
+      "role": "approved-change-package",
+      "artifact": {
+        "artifactId": "ACP-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+        "mediaType": "application/vnd.devrelay.approved-change-package+json",
+        "digest": "sha256:e764c18027e16394b161c28107240a89ca54134e55e77ac8358bd840b658dc2b",
+        "uri": "file:///workspace/.devrelay/artifacts/approved-change-package-auth-001.json"
+      },
+      "jsonPointer": "/authorizedScope"
+    },
+    {
+      "role": "current-work-breakdown-baseline",
+      "artifact": {
+        "artifactId": "WBB-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+        "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+        "digest": "sha256:5cf025c4c5768f1721695b43ded8972f5c041ae04609d2f58d3e058e849f85c9",
+        "uri": "file:///workspace/.devrelay/artifacts/work-breakdown-baseline-auth-001.json"
+      },
+      "jsonPointer": "/workItems"
+    },
+    {
+      "role": "current-repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      },
+      "jsonPointer": "/revision"
+    }
+  ]
+}

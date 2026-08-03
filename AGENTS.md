@@ -16,14 +16,20 @@ The executable contract slices are:
   `RequirementsBaseline` and `ProjectOverviewBaseline` into
   `establish-baseline` or `design-change` and executes a configured designer,
   modeler, decision-recorder chain;
+- `work-breakdown@0.1.0`, which state-routes exact approved requirements,
+  project-overview, architecture, contract-disposition, repository, and
+  capability inputs into `establish-breakdown` or `decompose-change`, producing
+  one bounded planning candidate without executing work;
 - `TraceabilityGraph`, a Core-owned sidecar that projects validated results
-  from both Modules into one living lifecycle graph and returns a standardized
+  from all three Modules into one living lifecycle graph and returns a standardized
   update plus merge proof in `ModuleExecutionRecord`. It is not a Module,
   adapter, gate, or workflow stage.
 
 RequirementsGathering supports bounded OpenSpec and GitHub Spec Kit
 requirements bindings. ArchitectureDesign V1 uses bounded Spec Kit plan or
 OpenSpec design bindings, followed by Structurizr and MADR bindings.
+WorkBreakdown supports bounded Spec Kit tasks and OpenSpec tasks bindings for
+both operations; host configuration selects the preferred adapter.
 
 The manifests and conformance fixtures are present; live upstream command
 adapters are not shipped. Do not claim live interoperability from contract
@@ -73,9 +79,9 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 - Supporting architecture material is embedded or attached inside one
   `ArchitectureDraft` or `ArchitectureChangeSetDraft`; it is not exposed as
   separate successful Module outcomes.
-- Requirements and architecture Modules emit candidates, clarification, or
-  diagnostics. Separate gates own validation policy, approval, and baseline
-  promotion.
+- RequirementsGathering, ArchitectureDesign, and WorkBreakdown emit
+  candidates, clarification, or diagnostics. Separate gates own validation
+  policy, approval, and baseline promotion.
 - A canonical requirements body is typed around purpose, business objectives,
   success metrics, stakeholders, users, capabilities, user journeys, user
   stories, acceptance criteria, non-functional requirements, constraints,
@@ -93,6 +99,27 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 - Detailed interface contracts belong to ContractGeneration. Architecture
   enforcement belongs to Verification.
 - Cross-module artifact IDs have one schema owner.
+- WorkBreakdown emits only deliverable-oriented candidate actions. Its exact
+  work types are code-change, test-change, migration, configuration-change,
+  infrastructure-change, documentation-change, and operational-readiness.
+- WorkBreakdown Gate promotion derives the candidate and exact inputs only from
+  Core's unforgeable checkpoint-replay receipt and commits only a
+  raw-byte-bound baseline payload. Plain or cloned results are not approval
+  authority.
+- WorkBreakdown operations require effect adapters so Gate promotion always
+  has a durable terminal checkpoint. `baseline_drift` is guard-owned and
+  cannot be returned by an adapter.
+- Attached architecture models, ArchitectureBaseline upstream pointers,
+  ApprovedChangePackage pre-state and target pointers, and graph node
+  references must resolve to their exact approved artifacts before planning.
+- A WorkBreakdown `RevisionRequest` resolves its exact prior candidate and
+  Gate evidence and is mutually exclusive with the clarification continuation
+  trio.
+- WorkBreakdown dependency hints are non-authoritative; WorkDependencyAnalysis
+  owns the dependency DAG, cycle checks, and ordering validation.
+- WorkBreakdown adapters declare domain references only. Trusted contributors
+  derive upstream-to-downstream planning edges; adapters never create graph
+  nodes, select edge kinds, or claim implementation or verification.
 - Published exact Module and plug-in versions are immutable.
 - Module-owned schemas compile through the generic schema helper; do not add
   module-ID conditionals to Core.

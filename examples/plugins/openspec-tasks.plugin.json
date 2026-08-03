@@ -1,0 +1,89 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "openspec-tasks",
+    "version": "0.1.0",
+    "description": "Bounded OpenSpec tasks adapter for WorkBreakdown."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "establish-breakdown",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "planningOutputRoot",
+              "toolName",
+              "toolVersion",
+              "changeName",
+              "schema",
+              "artifact",
+              "command",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": { "type": "string", "minLength": 1 },
+              "planningOutputRoot": { "type": "string", "minLength": 1 },
+              "toolName": { "const": "OpenSpec" },
+              "toolVersion": { "type": "string", "minLength": 1 },
+              "changeName": { "type": "string", "minLength": 1 },
+              "schema": { "const": "devrelay-work-breakdown" },
+              "artifact": { "const": "tasks.md" },
+              "command": { "const": "/opsx:continue" },
+              "bridge": { "const": "agent-command" }
+            }
+          },
+          "capabilities": [
+            { "kind": "filesystem.read", "scope": "config:projectRoot" },
+            { "kind": "filesystem.write", "scope": "config:planningOutputRoot" },
+            { "kind": "network.connect", "scope": "host:implementation-engine" }
+          ]
+        },
+        {
+          "id": "decompose-change",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "planningOutputRoot",
+              "toolName",
+              "toolVersion",
+              "changeName",
+              "schema",
+              "artifact",
+              "command",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": { "type": "string", "minLength": 1 },
+              "planningOutputRoot": { "type": "string", "minLength": 1 },
+              "toolName": { "const": "OpenSpec" },
+              "toolVersion": { "type": "string", "minLength": 1 },
+              "changeName": { "type": "string", "minLength": 1 },
+              "schema": { "const": "devrelay-work-breakdown" },
+              "artifact": { "const": "tasks.md" },
+              "command": { "const": "/opsx:continue" },
+              "bridge": { "const": "agent-command" }
+            }
+          },
+          "capabilities": [
+            { "kind": "filesystem.read", "scope": "config:projectRoot" },
+            { "kind": "filesystem.write", "scope": "config:planningOutputRoot" },
+            { "kind": "network.connect", "scope": "host:implementation-engine" }
+          ]
+        }
+      ]
+    }
+  ]
+}

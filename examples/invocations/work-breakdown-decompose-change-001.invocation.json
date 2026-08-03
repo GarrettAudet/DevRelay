@@ -1,0 +1,134 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "work-breakdown-decompose-change-001",
+  "runId": "work-breakdown-run-002",
+  "nodeId": "work-breakdown",
+  "module": {
+    "id": "work-breakdown",
+    "version": "0.1.0",
+    "operation": "decompose-change"
+  },
+  "plugin": {
+    "id": "openspec-tasks",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "project-work-breakdown-state": [
+      {
+        "artifactId": "PWBS-AUTH-BASELINED-001",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:d721593aefbef9cb5991281b57ebc4e699a1ab0af6ab78ca8b36410ffa0e91b8",
+        "uri": "file:///workspace/.devrelay/artifacts/project-work-breakdown-state-baselined-001.json"
+      }
+    ],
+    "routing-decision": [
+      {
+        "artifactId": "work-breakdown-route-change-001",
+        "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+        "mediaType": "application/vnd.devrelay.module-route-decision+json",
+        "digest": "sha256:e154bc59d17f3f97a80982f53c0abbc94f706885b4630d5d4309add5be33020a",
+        "uri": "file:///workspace/.devrelay/artifacts/module-route-decision-work-breakdown-change-001.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+        "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc",
+        "uri": "file:///workspace/.devrelay/artifacts/project-overview-baseline-001.json"
+      }
+    ],
+    "architecture-baseline": [
+      {
+        "artifactId": "architecture-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+        "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+      }
+    ],
+    "contract-disposition": [
+      {
+        "artifactId": "CD-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3",
+        "uri": "file:///workspace/.devrelay/artifacts/contract-disposition-auth-001.json"
+      }
+    ],
+    "capability-catalog": [
+      {
+        "artifactId": "CC-WORK-BREAKDOWN-001",
+        "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+        "mediaType": "application/vnd.devrelay.capability-catalog+json",
+        "digest": "sha256:d459c8167b1bdb8db2cc68c13d65538c3775dcd4b57221037be121194bbb1bb4",
+        "uri": "file:///workspace/.devrelay/artifacts/capability-catalog-work-breakdown-001.json"
+      }
+    ],
+    "current-work-breakdown-baseline": [
+      {
+        "artifactId": "WBB-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+        "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+        "digest": "sha256:5cf025c4c5768f1721695b43ded8972f5c041ae04609d2f58d3e058e849f85c9",
+        "uri": "file:///workspace/.devrelay/artifacts/work-breakdown-baseline-auth-001.json"
+      }
+    ],
+    "approved-change-package": [
+      {
+        "artifactId": "ACP-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+        "mediaType": "application/vnd.devrelay.approved-change-package+json",
+        "digest": "sha256:e764c18027e16394b161c28107240a89ca54134e55e77ac8358bd840b658dc2b",
+        "uri": "file:///workspace/.devrelay/artifacts/approved-change-package-auth-001.json"
+      }
+    ],
+    "current-repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "/workspace",
+    "planningOutputRoot": "/workspace/openspec/changes/auth-audit",
+    "toolName": "OpenSpec",
+    "toolVersion": "1.0.0",
+    "changeName": "auth-audit",
+    "schema": "devrelay-work-breakdown",
+    "artifact": "tasks.md",
+    "command": "/opsx:continue",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "/workspace"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "/workspace/openspec/changes/auth-audit"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

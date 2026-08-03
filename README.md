@@ -10,9 +10,10 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.2.0` is a private, source-only release containing DevRelay Core,
-`TraceabilityGraph`, `requirements-gathering@0.1.0`, and
-`architecture-design@0.1.0`. Source-package versions and immutable Module
+DevRelay `0.3.0` is a private, source-only release containing DevRelay Core,
+`TraceabilityGraph`, `requirements-gathering@0.1.0`,
+`architecture-design@0.1.0`, and `work-breakdown@0.1.0`. Source-package
+versions and immutable Module
 versions are intentionally independent. The package is `UNLICENSED` and is
 not published to the public npm registry. Access to the source does not grant
 permission to use or redistribute it; see [LICENSE](LICENSE) and
@@ -36,7 +37,7 @@ npm run release:check
 `verify` parses JSON, checks JavaScript syntax and LF-only text, and runs
 the complete suite. `release:check` also verifies the release digest catalog
 as a mandatory release input, builds an allowlisted tarball in a temporary
-directory, installs it offline, and smoke-tests the package root and both
+directory, installs it offline, and smoke-tests the package root and all three
 module manifests.
 
 ## Library quickstart
@@ -49,11 +50,11 @@ capability enforcement, and adapter implementations:
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import {
-  architectureRuntimeArtifactContracts,
   createModuleRegistry,
   projectOverviewRuntimeArtifactContracts,
-  requirementsRuntimeArtifactContracts,
   validateRequirementsGatePromotion,
+  validateWorkBreakdownGatePromotion,
+  workBreakdownRuntimeArtifactContracts,
 } from "devrelay";
 
 const require = createRequire(import.meta.url);
@@ -66,26 +67,27 @@ const requirements = await loadJson(
 const architecture = await loadJson(
   "devrelay/modules/architecture-design.module.json",
 );
-
-const requirementsContracts =
-  requirementsRuntimeArtifactContracts();
-const requirementsSchemas = new Set(
-  requirementsContracts.map(({ schema }) => schema),
+const workBreakdown = await loadJson(
+  "devrelay/modules/work-breakdown.module.json",
 );
-const artifactContracts = [
-  ...requirementsContracts,
-  ...architectureRuntimeArtifactContracts().filter(
-    ({ schema }) => !requirementsSchemas.has(schema),
-  ),
-];
 
-const registry = createModuleRegistry({
-  modules: [requirements, architecture],
-  artifactContracts,
-});
+// The downstream WorkBreakdown bundle composes the complete ArchitectureDesign,
+// RequirementsGathering, and ProjectOverview artifact families without
+// duplicate schema registrations.
+const artifactContracts = workBreakdownRuntimeArtifactContracts();
 
-// A standalone Requirements Gate or context consumer can register only the
-// ProjectOverview artifact family when it does not execute either Module.
+// Plug-ins are exact host-supplied { definition, adapter } bindings. DevRelay
+// has no post-construction registration or implicit adapter lookup.
+export function createDevRelayRegistry({ plugins }) {
+  return createModuleRegistry({
+    modules: [requirements, architecture, workBreakdown],
+    artifactContracts,
+    plugins,
+  });
+}
+
+// A standalone Requirements Gate or context consumer can still register only
+// the ProjectOverview artifact family.
 const overviewOnlyContracts = projectOverviewRuntimeArtifactContracts();
 ```
 
@@ -101,6 +103,7 @@ import {
   createInMemoryTraceabilityStore,
   createTraceabilityGraphService,
   requirementsTraceabilityContributors,
+  workBreakdownTraceabilityContributors,
 } from "devrelay";
 
 const traceabilityGraph = createTraceabilityGraphService({
@@ -110,14 +113,16 @@ const traceabilityGraph = createTraceabilityGraphService({
   contributors: [
     ...requirementsTraceabilityContributors,
     ...architectureTraceabilityContributors,
+    ...workBreakdownTraceabilityContributors,
   ],
 });
 const traceabilityCheckpoints =
   createInMemoryTraceabilityCheckpointStore();
 
 const tracedRegistry = createModuleRegistry({
-  modules: [requirements, architecture],
+  modules: [requirements, architecture, workBreakdown],
   artifactContracts,
+  plugins, // the same exact host-supplied constructor bindings
   traceability: {
     graph: traceabilityGraph,
     checkpoints: traceabilityCheckpoints,
@@ -139,10 +144,10 @@ advanced seam.
 
 Register exact plug-in manifests and host adapter functions before resolving
 or executing an invocation. There is no implicit adapter, version, model, or
-external command. `requirementsRuntimeArtifactContracts()` includes the
-ProjectOverview family, and `architectureRuntimeArtifactContracts()` includes
-that complete requirements bundle transitively; the composition above removes
-duplicate schemas.
+external command. `workBreakdownRuntimeArtifactContracts()` includes the
+complete ArchitectureDesign, RequirementsGathering, and ProjectOverview
+families transitively. Hosts that execute only an earlier lifecycle slice may
+register its narrower runtime-contract bundle instead.
 
 After normal execution has durably stored its terminal checkpoint, the host
 calls `registry.verifyCheckpointedExecution(invocation, { artifacts,
@@ -159,6 +164,14 @@ references and exact bytes encoded as base64. Plain `ModuleResult` JSON or a
 serialized/cloned receipt is insufficient, and V1 does not ship a portable
 cross-process receipt. The helper does not persist its validated pair; the host
 must decode and commit both payload documents atomically or commit neither.
+
+`validateWorkBreakdownGatePromotion()` uses the same checkpoint-only trust
+boundary. It derives the operation, candidate, diagnostics, and exact loaded
+inputs from the unforgeable replay receipt; callers cannot substitute them. It
+resolves already-satisfied evidence, requires separate Gate-owned approval for
+every no-work disposition, verifies the proposed `WorkBreakdownBaseline`
+against its exact raw bytes, and returns the only bytes the host may commit.
+Dependency-hint semantics remain outside this Gate.
 
 ## Schema identifiers
 
@@ -187,15 +200,24 @@ GoalArtifact + ProjectContext + optional paired baselines
   -> ArchitectureDraft | ArchitectureChangeSetDraft | clarification
   -> separate Architecture Gate
   -> ArchitectureBaseline
+  -> caller supplies the exact architecture baseline, contract disposition,
+     repository context, capability catalog, and work-breakdown state
+  -> WorkBreakdown@establish-breakdown | @decompose-change
+  -> configured Spec Kit tasks, OpenSpec tasks, or compatible bounded adapter
+  -> WorkBreakdownDraft | WorkBreakdownChangeSetDraft | clarification
+  -> separate WorkBreakdown Gate
+  -> WorkBreakdownBaseline
+  -> WorkDependencyAnalysis owns the authoritative dependency DAG
 ```
 
 `TraceabilityGraph` runs beside this sequence rather than appearing as another
 box in it. Requirements executions project objectives, capabilities, stories,
 criteria, and their links; ArchitectureDesign executions add technical design,
 architecture elements, relationships, constraints, interface intent, and
-decision records linked to the requirements they support. Future contributor
-packages extend the same vocabulary with contracts, work, code, tests, and
-verification evidence.
+decision records linked to the requirements they support. WorkBreakdown adds
+candidate work items and exact approved-upstream planning edges. Future
+contributors extend the same vocabulary with contracts, code changes, tests,
+and verification evidence.
 
 ### RequirementsGathering 0.1.0
 
@@ -274,6 +296,50 @@ The exact `project-overview-baseline` is a required declared invocation input,
 is copied into architecture state/candidate lineage, and participates in
 invocation and resume identity. Changing it invalidates replay.
 
+### WorkBreakdown 0.1.0
+
+WorkBreakdown converts exact approved scope into a complete candidate set of
+bounded, traceable, independently executable and verifiable actions. It does
+not execute work, build code, assign specialists, estimate, schedule, or claim
+completion. Project state deterministically selects `establish-breakdown` when
+no work baseline exists and `decompose-change` when an exact current baseline
+and approved change package exist.
+
+Each work item is a closed contract containing:
+
+```text
+id | objective | bounded-scope | deliverables | work-type
+acceptance-criterion-refs | architecture-refs | contract-refs
+required-capabilities | dependency-hints | verification-plan
+required-evidence | source-refs
+```
+
+The seven deliverable-oriented work types are `code-change`, `test-change`,
+`migration`, `configuration-change`, `infrastructure-change`,
+`documentation-change`, and `operational-readiness`. Dependency hints remain
+proposals; WorkDependencyAnalysis owns authoritative ordering and cycle checks.
+
+Every authorized acceptance criterion, architecture target, and applicable
+contract target must be planned, already satisfied with current evidence, or
+explicitly approved as requiring no work. The WorkBreakdown Gate rejects
+unscoped work, uncovered scope, invalid references, and stale typed changes.
+
+Both operations require checkpoint-capable effect adapters because Gate
+promotion depends on a verified terminal checkpoint; pure bindings are
+rejected at compatibility resolution. Attached architecture models and
+ApprovedChangePackage graph references are resolved as exact content-addressed
+inputs before candidate acceptance.
+
+Spec Kit tasks and OpenSpec tasks are bounded replaceable adapters implementing
+both operations. Their greenfield/change preference is host configuration, not
+Core routing. Before adapter entry, the registered state guard detects baseline
+or repository drift and returns a checkpointed `baseline_drift` result with no
+candidate.
+That outcome is guard-owned; an adapter cannot claim it after preflight has
+passed.
+Successful validated candidates are projected by a trusted contributor as
+planning facts only; no implemented, realized, or verified claim is created.
+
 ## Stable contracts
 
 ```text
@@ -331,6 +397,9 @@ The registry and schema-backed runner:
   handoff, and terminal output;
 - derive a `ModuleRouteDecision` from validated state and reject forged,
   stale, prerequisite, or operation-mismatched invocations;
+- discover a trusted input guard from validated artifact contracts, checkpoint
+  a terminal `baseline_drift` result under its own producer identity, and
+  replay it without invoking the configured adapter;
 - resolve every adapter before invoking the first step;
 - invoke steps only in declared order;
 - validate intermediate handoff content and terminal candidate semantics
@@ -340,6 +409,9 @@ The registry and schema-backed runner:
 - validate paired Requirements/ProjectOverview promotion while leaving policy
   approval and atomic persistence to the host;
 - stop deterministically on declared early terminal outcomes;
+- validate WorkBreakdown promotion only from an unforgeable checkpoint replay
+  and exact raw baseline bytes, returning an atomic commit payload while
+  leaving approval and persistence to the host;
 - require effect results—including legacy single adapters—to be durably
   stored before downstream work;
 - key step checkpoints by the complete step invocation, including prior
@@ -348,7 +420,7 @@ The registry and schema-backed runner:
   portable continuation, then resume at the recorded ArchitectureDesign step;
 - reject non-JSON invocation, result, definition, and adapter-context state,
   and create a distinct immutable data context for every adapter;
-- preserve the existing single-adapter RequirementsGathering contract path.
+- preserve the existing single-adapter RequirementsGathering contract path;
 - project validated Module artifacts through trusted, versioned contributors;
 - checkpoint every exact traceability update before atomic, idempotent graph
   application and replay it without rerunning a completed adapter;
@@ -370,87 +442,77 @@ idempotency for a crash after the external effect succeeds but before the
 checkpoint write completes. Tool, model, prompt, environment, native-source,
 and normalization provenance remain explicit evidence.
 
-## Requirements dogfood
+## Dogfood evidence
 
-In a source checkout, `dogfood/architecture-design/` contains the
-authoritative interactive RequirementsGathering run used before
-ArchitectureDesign implementation. This evidence directory is intentionally
-excluded from the controlled npm package and is not available to installed
-package consumers. It
-binds the goal, project context, repository snapshot, four visible
-clarification exchanges, normalized typed draft, deterministic
-ProjectOverview candidate and Markdown bytes, OpenSpec bridge source bundle,
-Module invocation/result, passing Requirements Gate, and approved paired
-baselines.
+In a source checkout, `dogfood/work-breakdown/` records the complete
+module-by-module run used for this release: interactive RequirementsGathering,
+approved paired requirements/project-overview baselines, ArchitectureDesign
+discovery and baseline establishment, and the executable WorkBreakdown run.
+The evidence tree is intentionally excluded from the controlled npm package.
 
-The OpenSpec CLI was not executed. The agent-command bridge and that limitation
-are both recorded in the source bundle.
+The WorkBreakdown proof state-routes the existing repository through
+`establish-breakdown` with a bounded `openspec-tasks` fixture, produces seven
+exact work items, covers all 10 acceptance criteria and 12 architecture
+elements, merges 37 forward planning edges into graph revision 1, and records
+the merge in `ModuleExecutionRecord`. Checkpoint replay invokes the adapter
+zero additional times; a stale-baseline run and its replay also invoke it zero
+times. The Gate uses the verified checkpoint receipt and commits the exact
+raw-byte-bound baseline payload.
+
+No upstream OpenSpec, Spec Kit, Structurizr, or MADR CLI was executed. The
+checked-in fixtures prove DevRelay's bounded adapter and normalization
+contracts, not live command interoperability or completed implementation work.
 
 ## Repository
 
 ```text
-.github/workflows/
-  verify.yml
+.github/workflows/verify.yml
 contracts/
-  module-definition.schema.json
-  module-plugin.schema.json
-  module-invocation.schema.json
-  module-route-decision.schema.json
-  module-step-invocation.schema.json
-  module-step-result.schema.json
-  module-result.schema.json
-  module-execution-record.schema.json
-  traceability-graph-artifacts.schema.json
+  module-*.schema.json
   requirements-gathering-artifacts.schema.json
   project-overview-artifacts.schema.json
   architecture-design-artifacts.schema.json
-  shared-artifacts.schema.json
+  work-breakdown-artifacts.schema.json
+  traceability-graph-artifacts.schema.json
 docs/
   module-contract.md
   requirements-gathering.md
   architecture-design.md
+  work-breakdown.md
   traceability-graph.md
 dogfood/
   architecture-design/
+  work-breakdown/
 examples/
   artifacts/
-  modules/
-  plugins/
   invocations/
+  modules/
+  native/
+  plugins/
   results/
-openspec/
-  schemas/devrelay-requirements/
-  schemas/devrelay-architecture/
+openspec/schemas/
+  devrelay-requirements/
+  devrelay-architecture/
+  devrelay-work-breakdown/
 release/
   0.1.0.json
   0.2.0.json
+  0.3.0.json
 scripts/
   verify.mjs
   release-check.mjs
   check-release-manifest.mjs
 src/
-  index.mjs
-  content-digest.mjs
   artifact-runtime.mjs
   module-registry.mjs
   operation-router.mjs
-  project-overview.mjs
-  project-overview-artifact-validator.mjs
-  project-overview-runtime-contracts.mjs
-  requirements-gate.mjs
-  architecture-runtime-contracts.mjs
-  architecture-handoff-validator.mjs
-  schema-validation.mjs
-  requirements-artifact-validator.mjs
-  requirements-runtime-contracts.mjs
-  architecture-artifact-validator.mjs
-  shared-artifact-validator.mjs
-  traceability-graph.mjs
-  traceability-artifact-validator.mjs
-  traceability-runtime-contracts.mjs
-  traceability-checkpoint-store.mjs
-  requirements-traceability-contributor.mjs
-  architecture-traceability-contributor.mjs
+  requirements-*.mjs
+  project-overview-*.mjs
+  architecture-*.mjs
+  work-breakdown-*.mjs
+  traceability-*.mjs
+  module-execution-record-validator.mjs
+  index.mjs
 test/
 ```
 
@@ -466,7 +528,7 @@ For the test and static-analysis subset:
 npm run verify
 ```
 
-The next lifecycle boundary is the Architecture Gate. It must bind its decision
-to the exact candidate, approved requirements, approved project overview,
-project state, policy version, and evidence before creating or updating an
-`ArchitectureBaseline`.
+The next lifecycle module is WorkDependencyAnalysis. It consumes an approved
+`WorkBreakdownBaseline`, turns non-authoritative dependency hints into a
+validated dependency DAG, and rejects cycles, missing dependencies, and
+impossible ordering before specialist assignment.

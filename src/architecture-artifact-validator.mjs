@@ -264,6 +264,28 @@ function resolveSection(section, name, options) {
   return content;
 }
 
+/**
+ * Resolve the architecture model through the same content-addressed section
+ * verification used by the ArchitectureDesign validator. Callers that accept
+ * attached sections must supply an exact verified artifact record through
+ * resolveAttached; this function never performs host I/O or consults ambient
+ * process state.
+ */
+export function resolveVerifiedArchitectureModelContent(
+  architectureArtifact,
+  options = {},
+) {
+  const section = architectureArtifact?.sections?.architectureModel;
+  if (!section) {
+    fail("architecture artifact has no architectureModel section");
+  }
+  const content = resolveSection(section, "architectureModel", options);
+  if (content === undefined) {
+    fail("attached architectureModel requires its exact artifact record");
+  }
+  return content;
+}
+
 function sectionIdentity(section, name, options) {
   const content = resolveSection(section, name, options);
   return content?.[SECTION_IDS[name]] ?? section?.contentId;

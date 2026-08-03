@@ -1,0 +1,941 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json",
+  "title": "DevRelay WorkBreakdown artifact family",
+  "oneOf": [
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/projectWorkBreakdownState" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/contractDisposition" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedNotApplicable" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/capabilityCatalog" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedChangePackage" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workBreakdownDraft" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workBreakdownChangeSetDraft" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workBreakdownBaseline" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/clarificationRequestSet" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/clarificationResponseSet" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/continuation" },
+    { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/revisionRequest" }
+  ],
+  "$defs": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "schema", "mediaType", "digest", "uri"],
+      "properties": {
+        "artifactId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "schema": { "type": "string", "format": "uri" },
+        "mediaType": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "digest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "traceabilityGraphRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "schema", "mediaType", "digest", "uri"],
+      "properties": {
+        "artifactId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "schema": { "const": "https://devrelay.dev/artifacts/traceability-graph-snapshot/v1" },
+        "mediaType": { "const": "application/vnd.devrelay.traceability-graph+json" },
+        "digest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "inputRole": {
+      "enum": [
+        "project-work-breakdown-state",
+        "requirements-baseline",
+        "project-overview-baseline",
+        "architecture-baseline",
+        "contract-disposition",
+        "repository-context",
+        "current-repository-snapshot",
+        "capability-catalog",
+        "current-work-breakdown-baseline",
+        "approved-change-package",
+        "clarification-request",
+        "clarification-responses",
+        "continuation",
+        "revision-request"
+      ]
+    },
+    "inputBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact"],
+      "properties": {
+        "role": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputRole" },
+        "artifact": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+      }
+    },
+    "inputBindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBinding" }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact", "jsonPointer"],
+      "properties": {
+        "role": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputRole" },
+        "artifact": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "jsonPointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~/]|~[01])*)*$",
+          "maxLength": 4096
+        }
+      }
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRef" }
+    },
+    "approvedNotApplicable": {
+      "$id": "https://devrelay.dev/artifacts/approved-not-applicable/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "approvalId",
+        "purpose",
+        "rationale",
+        "authority",
+        "approvalEvidence"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "ApprovedNotApplicable" },
+        "approvalId": { "type": "string", "pattern": "^ANA-[A-Z0-9-]+$" },
+        "purpose": { "enum": ["contract-disposition", "repository-context"] },
+        "rationale": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "role"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "role": { "enum": ["human-approver", "approved-policy"] }
+          }
+        },
+        "approvalEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        }
+      }
+    },
+    "contractTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "description"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^CT-[A-Z0-9-]+$" },
+        "kind": { "enum": ["http-interface", "async-interface", "data-schema", "event", "other"] },
+        "description": { "type": "string", "minLength": 1, "maxLength": 4096 }
+      }
+    },
+    "contractDisposition": {
+      "$id": "https://devrelay.dev/artifacts/contract-disposition/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "dispositionId", "mode"],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "ContractDisposition" },
+        "dispositionId": { "type": "string", "pattern": "^CD-[A-Z0-9-]+$" },
+        "mode": { "enum": ["baseline", "not-applicable"] },
+        "contractBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "contractTargets": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/contractTarget" }
+        },
+        "notApplicable": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedNotApplicable" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "mode": { "const": "baseline" } }, "required": ["mode"] },
+          "then": {
+            "required": ["contractBaseline", "contractTargets"],
+            "properties": {
+              "contractBaseline": {},
+              "contractTargets": {},
+              "notApplicable": false
+            }
+          }
+        },
+        {
+          "if": { "properties": { "mode": { "const": "not-applicable" } }, "required": ["mode"] },
+          "then": {
+            "required": ["notApplicable"],
+            "properties": { "contractBaseline": false, "contractTargets": false, "notApplicable": {} },
+            "allOf": [
+              {
+                "properties": {
+                  "notApplicable": {
+                    "type": "object",
+                    "properties": { "purpose": { "const": "contract-disposition" } },
+                    "required": ["purpose"]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "type", "description", "providerNeutral"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^CAP-[A-Z0-9-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "type": {
+          "enum": [
+            "code",
+            "test",
+            "data",
+            "configuration",
+            "infrastructure",
+            "documentation",
+            "operations",
+            "security",
+            "analysis"
+          ]
+        },
+        "description": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "providerNeutral": { "const": true }
+      }
+    },
+    "capabilityCatalog": {
+      "$id": "https://devrelay.dev/artifacts/capability-catalog/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "catalogId", "version", "capabilities"],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "CapabilityCatalog" },
+        "catalogId": { "type": "string", "pattern": "^CC-[A-Z0-9-]+$" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/capability" }
+        }
+      }
+    },
+    "repositoryBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact", "revision", "treeDigest"],
+      "properties": {
+        "artifact": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "revision": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "treeDigest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" }
+      }
+    },
+    "baselineLineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirementsBaseline",
+        "projectOverviewBaseline",
+        "architectureBaseline",
+        "contractDisposition"
+      ],
+      "properties": {
+        "requirementsBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "projectOverviewBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "architectureBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "contractDisposition": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+      }
+    },
+    "authorizedScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["acceptanceCriteria", "architecture", "contracts"],
+      "properties": {
+        "acceptanceCriteria": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^AC-[A-Z0-9-]+$" }
+        },
+        "architecture": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^EL-[A-Z0-9-]+$" }
+        },
+        "contracts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^CT-[A-Z0-9-]+$" }
+        }
+      }
+    },
+    "traceabilityRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodeId", "artifact"],
+      "properties": {
+        "nodeId": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "artifact": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/traceabilityGraphRef" }
+      }
+    },
+    "approvedChangePackage": {
+      "$id": "https://devrelay.dev/artifacts/approved-change-package/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "packageId",
+        "preChange",
+        "target",
+        "currentWorkBreakdownBaseline",
+        "currentRepository",
+        "approvedRequirementsChange",
+        "approvedArchitectureChange",
+        "approvedContractChangeDisposition",
+        "authorizedScope",
+        "traceabilityRefs",
+        "approvalEvidence"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "ApprovedChangePackage" },
+        "packageId": { "type": "string", "pattern": "^ACP-[A-Z0-9-]+$" },
+        "preChange": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/baselineLineage" },
+        "target": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/baselineLineage" },
+        "currentWorkBreakdownBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "currentRepository": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/repositoryBinding" },
+        "approvedRequirementsChange": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "approvedArchitectureChange": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "approvedContractChangeDisposition": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "authorizedScope": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/authorizedScope" },
+        "traceabilityRefs": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/traceabilityRef" }
+        },
+        "approvalEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        }
+      }
+    },
+    "projectWorkBreakdownState": {
+      "$id": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "stateId",
+        "state",
+        "requirementsBaseline",
+        "projectOverviewBaseline",
+        "architectureBaseline",
+        "contractDisposition",
+        "capabilityCatalog"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "ProjectWorkBreakdownState" },
+        "stateId": { "type": "string", "pattern": "^PWBS-[A-Z0-9-]+$" },
+        "state": { "enum": ["unbaselined", "baselined"] },
+        "requirementsBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "projectOverviewBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "architectureBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "contractDisposition": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "capabilityCatalog": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "repositoryContext": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "currentRepositorySnapshot": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "currentWorkBreakdownBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "approvedChangePackage": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "state": { "const": "unbaselined" } }, "required": ["state"] },
+          "then": {
+            "required": ["repositoryContext"],
+            "properties": {
+              "repositoryContext": {},
+              "currentRepositorySnapshot": false,
+              "currentWorkBreakdownBaseline": false,
+              "approvedChangePackage": false
+            }
+          }
+        },
+        {
+          "if": { "properties": { "state": { "const": "baselined" } }, "required": ["state"] },
+          "then": {
+            "required": [
+              "currentRepositorySnapshot",
+              "currentWorkBreakdownBaseline",
+              "approvedChangePackage"
+            ],
+            "properties": {
+              "repositoryContext": false,
+              "currentRepositorySnapshot": {},
+              "currentWorkBreakdownBaseline": {},
+              "approvedChangePackage": {}
+            }
+          }
+        }
+      ]
+    },
+    "boundedScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["included", "excluded"],
+      "properties": {
+        "included": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1, "maxLength": 2048 }
+        },
+        "excluded": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 2048 }
+        }
+      }
+    },
+    "deliverable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "artifactKind"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^DEL-[A-Z0-9-]+$" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "artifactKind": { "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    },
+    "dependencyHint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work-item-ref", "relation", "rationale", "authority"],
+      "properties": {
+        "work-item-ref": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+        "relation": { "enum": ["before", "after", "related"] },
+        "rationale": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "authority": { "const": "hint" }
+      }
+    },
+    "verificationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "method", "successCriteria"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^VC-[A-Z0-9-]+$" },
+        "method": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "successCriteria": { "type": "string", "minLength": 1, "maxLength": 4096 }
+      }
+    },
+    "verificationPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checks"],
+      "properties": {
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/verificationCheck" }
+        }
+      }
+    },
+    "requiredEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "description"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 4096 }
+      }
+    },
+    "workItemDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "objective",
+        "bounded-scope",
+        "deliverables",
+        "work-type",
+        "acceptance-criterion-refs",
+        "architecture-refs",
+        "contract-refs",
+        "required-capabilities",
+        "dependency-hints",
+        "verification-plan",
+        "required-evidence",
+        "source-refs"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+        "objective": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "bounded-scope": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/boundedScope" },
+        "deliverables": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/deliverable" }
+        },
+        "work-type": {
+          "enum": [
+            "code-change",
+            "test-change",
+            "migration",
+            "configuration-change",
+            "infrastructure-change",
+            "documentation-change",
+            "operational-readiness"
+          ]
+        },
+        "acceptance-criterion-refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^AC-[A-Z0-9-]+$" }
+        },
+        "architecture-refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^EL-[A-Z0-9-]+$" }
+        },
+        "contract-refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^CT-[A-Z0-9-]+$" }
+        },
+        "required-capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^CAP-[A-Z0-9-]+$" }
+        },
+        "dependency-hints": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/dependencyHint" }
+        },
+        "verification-plan": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/verificationPlan" },
+        "required-evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/requiredEvidence" }
+        },
+        "source-refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRef" }
+        }
+      }
+    },
+    "coverageDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scopeKind", "scopeRef", "disposition"],
+      "properties": {
+        "scopeKind": { "enum": ["acceptance-criterion", "architecture", "contract"] },
+        "scopeRef": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "disposition": { "enum": ["planned", "already-satisfied", "no-work-required"] },
+        "workItemRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" }
+        },
+        "rationale": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "currentEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "disposition": { "const": "planned" } }, "required": ["disposition"] },
+          "then": {
+            "required": ["workItemRefs"],
+            "properties": { "workItemRefs": {}, "rationale": false, "currentEvidence": false }
+          }
+        },
+        {
+          "if": { "properties": { "disposition": { "const": "already-satisfied" } }, "required": ["disposition"] },
+          "then": {
+            "required": ["rationale", "currentEvidence"],
+            "properties": { "workItemRefs": false, "rationale": {}, "currentEvidence": {} }
+          }
+        },
+        {
+          "if": { "properties": { "disposition": { "const": "no-work-required" } }, "required": ["disposition"] },
+          "then": {
+            "required": ["rationale"],
+            "properties": { "workItemRefs": false, "rationale": {}, "currentEvidence": false }
+          }
+        }
+      ]
+    },
+    "approvedCoverageDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scopeKind", "scopeRef", "disposition"],
+      "properties": {
+        "scopeKind": { "enum": ["acceptance-criterion", "architecture", "contract"] },
+        "scopeRef": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "disposition": { "enum": ["planned", "already-satisfied", "no-work-required"] },
+        "workItemRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" }
+        },
+        "rationale": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "currentEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        },
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["authority", "candidate", "scopeKind", "scopeRef", "evidence"],
+          "properties": {
+            "authority": { "const": "work-breakdown-gate" },
+            "candidate": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+            "scopeKind": { "enum": ["acceptance-criterion", "architecture", "contract"] },
+            "scopeRef": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "evidence": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "disposition": { "const": "planned" } }, "required": ["disposition"] },
+          "then": {
+            "required": ["workItemRefs"],
+            "properties": { "workItemRefs": {}, "rationale": false, "currentEvidence": false, "approval": false }
+          }
+        },
+        {
+          "if": { "properties": { "disposition": { "const": "already-satisfied" } }, "required": ["disposition"] },
+          "then": {
+            "required": ["rationale", "currentEvidence"],
+            "properties": { "workItemRefs": false, "rationale": {}, "currentEvidence": {}, "approval": false }
+          }
+        },
+        {
+          "if": { "properties": { "disposition": { "const": "no-work-required" } }, "required": ["disposition"] },
+          "then": {
+            "required": ["rationale", "approval"],
+            "properties": { "workItemRefs": false, "rationale": {}, "currentEvidence": false, "approval": {} }
+          }
+        }
+      ]
+    },
+    "candidateCommonProperties": {
+      "inputBindings": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBindings" },
+      "coverageDispositions": {
+        "type": "array",
+        "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/coverageDisposition" }
+      },
+      "nativeArtifacts": {
+        "type": "array",
+        "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+      },
+      "sourceRefs": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRefs" }
+    },
+    "workBreakdownDraft": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-draft/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "draftId",
+        "operation",
+        "inputBindings",
+        "workItems",
+        "coverageDispositions",
+        "nativeArtifacts",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownDraft" },
+        "draftId": { "type": "string", "pattern": "^WBD-[A-Z0-9-]+$" },
+        "operation": { "const": "establish-breakdown" },
+        "inputBindings": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBindings" },
+        "workItems": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemDraft" }
+        },
+        "coverageDispositions": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/coverageDisposition" }
+        },
+        "nativeArtifacts": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        },
+        "sourceRefs": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRefs" }
+      }
+    },
+    "workItemChange": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operation", "workItem"],
+          "properties": {
+            "operation": { "const": "add" },
+            "workItem": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemDraft" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operation", "workItemId", "priorItemDigest", "workItem"],
+          "properties": {
+            "operation": { "const": "update" },
+            "workItemId": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+            "priorItemDigest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+            "workItem": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemDraft" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operation", "workItemId", "priorItemDigest", "rationale"],
+          "properties": {
+            "operation": { "const": "retire" },
+            "workItemId": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+            "priorItemDigest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+            "rationale": { "type": "string", "minLength": 1, "maxLength": 4096 }
+          }
+        }
+      ]
+    },
+    "workBreakdownChangeSetDraft": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-change-set-draft/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "changeSetId",
+        "operation",
+        "currentBaseline",
+        "inputBindings",
+        "changes",
+        "coverageDispositions",
+        "resultingWorkItemsDigest",
+        "nativeArtifacts",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownChangeSetDraft" },
+        "changeSetId": { "type": "string", "pattern": "^WBCS-[A-Z0-9-]+$" },
+        "operation": { "const": "decompose-change" },
+        "currentBaseline": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "inputBindings": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBindings" },
+        "changes": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemChange" }
+        },
+        "coverageDispositions": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/coverageDisposition" }
+        },
+        "resultingWorkItemsDigest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+        "nativeArtifacts": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        },
+        "sourceRefs": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRefs" }
+      }
+    },
+    "workBreakdownBaseline": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "baselineId",
+        "version",
+        "approvedCandidate",
+        "inputBindings",
+        "workItems",
+        "coverageDispositions",
+        "approvalEvidence",
+        "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownBaseline" },
+        "baselineId": { "type": "string", "pattern": "^WBB-[A-Z0-9-]+$" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "approvedCandidate": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "inputBindings": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBindings" },
+        "workItems": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemDraft" }
+        },
+        "coverageDispositions": {
+          "type": "array",
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedCoverageDisposition" }
+        },
+        "approvalEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" }
+        },
+        "sourceRefs": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRefs" }
+      }
+    },
+    "sourceInvocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["invocationId", "invocationFingerprint", "stepInvocationDigest", "plugin"],
+      "properties": {
+        "invocationId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "invocationFingerprint": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+        "stepInvocationDigest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest" },
+        "plugin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "version": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        }
+      }
+    },
+    "clarificationQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "prompt", "blocking"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^WBQ-[A-Z0-9-]+$" },
+        "prompt": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "blocking": { "const": true }
+      }
+    },
+    "clarificationRequestSet": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-clarification-request-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "requestSetId",
+        "sourceInvocation",
+        "operation",
+        "inputBindings",
+        "questions"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownClarificationRequestSet" },
+        "requestSetId": { "type": "string", "pattern": "^WBCR-[A-Z0-9-]+$" },
+        "sourceInvocation": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceInvocation" },
+        "operation": { "enum": ["establish-breakdown", "decompose-change"] },
+        "inputBindings": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBindings" },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/clarificationQuestion" }
+        }
+      }
+    },
+    "clarificationResponseSet": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-clarification-response-set/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "responseSetId", "clarificationRequest", "responses"],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownClarificationResponseSet" },
+        "responseSetId": { "type": "string", "pattern": "^WBRS-[A-Z0-9-]+$" },
+        "clarificationRequest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "responses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["questionId", "answer"],
+            "properties": {
+              "questionId": { "type": "string", "pattern": "^WBQ-[A-Z0-9-]+$" },
+              "answer": { "type": "string", "minLength": 1, "maxLength": 8192 }
+            }
+          }
+        }
+      }
+    },
+    "continuation": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-continuation/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "continuationId",
+        "sourceInvocation",
+        "operation",
+        "clarificationRequest",
+        "inputBindings"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownContinuation" },
+        "continuationId": { "type": "string", "pattern": "^WBC-[A-Z0-9-]+$" },
+        "sourceInvocation": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceInvocation" },
+        "operation": { "enum": ["establish-breakdown", "decompose-change"] },
+        "clarificationRequest": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "inputBindings": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/inputBindings" }
+      }
+    },
+    "revisionRequest": {
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-revision-request/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "revisionRequestId",
+        "candidate",
+        "gateEvidence",
+        "issues"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownRevisionRequest" },
+        "revisionRequestId": { "type": "string", "pattern": "^WBRR-[A-Z0-9-]+$" },
+        "candidate": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "gateEvidence": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef" },
+        "issues": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "message"],
+            "properties": {
+              "code": { "type": "string", "pattern": "^WB-[A-Z0-9-]+$" },
+              "message": { "type": "string", "minLength": 1, "maxLength": 4096 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

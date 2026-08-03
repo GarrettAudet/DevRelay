@@ -766,7 +766,8 @@ async function validateArchitectureRuntimeArtifact(value, context) {
 
   if (
     context.phase === "input" &&
-    value.kind === "ArchitectureBaseline"
+    value.kind === "ArchitectureBaseline" &&
+    context.invocation?.module?.id === "architecture-design"
   ) {
     assertArchitectureBaselineLineage(value, context);
   }

@@ -1,0 +1,2145 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureDraft",
+  "draftId": "architecture-draft-work-breakdown-v1",
+  "operation": "establish-baseline",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-work-breakdown-existing-discovered-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:d29fdd4640eca1c6555b823e1f5e5be2885910660f785e2257ef963fbdf2caab",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/project-architecture-state.json"
+  },
+  "requirementsBaseline": {
+    "artifactId": "requirements-baseline-work-breakdown-v1",
+    "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+    "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+    "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+  },
+  "projectOverviewBaseline": {
+    "artifactId": "project-overview-baseline-work-breakdown-v1",
+    "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+    "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+    "digest": "sha256:005fcec20ca10d27d06dc84bf35c2e4c24144099a7ba28cb516759036afa703e",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-overview-baseline.json"
+  },
+  "projectContext": {
+    "artifactId": "project-context-devrelay-work-breakdown-v1",
+    "schema": "https://devrelay.dev/artifacts/project-context/v1",
+    "mediaType": "application/vnd.devrelay.project-context+json",
+    "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-context.json"
+  },
+  "repositorySnapshot": {
+    "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+    "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+    "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+    "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/repository-snapshot.json"
+  },
+  "currentArchitectureSnapshot": {
+    "artifactId": "current-architecture-snapshot-work-breakdown-v1",
+    "schema": "https://devrelay.dev/artifacts/current-architecture-snapshot/v1",
+    "mediaType": "application/vnd.devrelay.current-architecture-snapshot+json",
+    "digest": "sha256:afa6141ebf4574cda26d281728e9cf0360a85fd6c629246c0a2280cb343a5817",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/current-architecture-snapshot.json"
+  },
+  "scope": {
+    "level": "feature",
+    "boundary": "WorkBreakdown 0.1.0 planning semantics in the existing DevRelay kernel.",
+    "in": [
+      "Trusted state routing",
+      "Context-neutral upstream validation",
+      "Pre-adapter drift guard",
+      "Configured planning adapter",
+      "Coverage gate and typed delta promotion",
+      "Trusted planning traceability"
+    ],
+    "out": [
+      "Authoritative dependency DAG",
+      "Assignment",
+      "Execution or code building",
+      "Completion verification",
+      "Scheduling and status"
+    ]
+  },
+  "sections": {
+    "technicalDesign": {
+      "mode": "embedded",
+      "content": {
+        "technicalDesignId": "TD-WB-001",
+        "objective": "Establish a deterministic provider-neutral planning-only WorkBreakdown module.",
+        "scope": {
+          "level": "feature",
+          "boundary": "WorkBreakdown 0.1.0 planning semantics in the existing DevRelay kernel.",
+          "in": [
+            "Trusted state routing",
+            "Context-neutral upstream validation",
+            "Pre-adapter drift guard",
+            "Configured planning adapter",
+            "Coverage gate and typed delta promotion",
+            "Trusted planning traceability"
+          ],
+          "out": [
+            "Authoritative dependency DAG",
+            "Assignment",
+            "Execution or code building",
+            "Completion verification",
+            "Scheduling and status"
+          ]
+        },
+        "problemSummary": "Approved scope needs complete bounded work without coupling Core to a planner or allowing plans to imply execution.",
+        "solutionSummary": "Use one state-routed module with context-neutral validators, a ProjectWorkBreakdownState-registered preflight producer, configured planner, authoritative gate, approved baseline observers, and trusted contributor.",
+        "requirementsDrivers": [
+          "Complete authorized coverage",
+          "Literal approved kebab-case WorkItemDraft fields",
+          "Replaceable planning adapters",
+          "No execution or graph authority in adapters"
+        ],
+        "behaviorFlows": [
+          "Core loads exact state and derives establish-breakdown or decompose-change.",
+          "Registered preflight schema-validates and durably checkpoints baseline_drift under its own producer identity before adapter entry; replay never enters the adapter.",
+          "On pass, the configured planner returns one canonical candidate.",
+          "Approved requirements and architecture observers, plus applicable contract observer, run before candidate WorkItem edges; ApprovedNotApplicable forbids contract refs.",
+          "Gate derives coverage, resolves current evidence, owns no-work approval, and promotes or deterministically applies an exact delta."
+        ],
+        "dataResponsibilities": [
+          "ProjectWorkBreakdownState owns routing and exact lineage.",
+          "Context-neutral validators own upstream schema and semantic checks.",
+          "Guard checkpoints bind producer, invocation fingerprint, result schema, and replay.",
+          "ApprovedChangePackage binds approval evidence plus pre-change and target requirements, architecture, contract disposition, repository, graph, and work baseline.",
+          "Gate owns coverage universe, already-satisfied evidence resolution, no-work approval, deterministic delta application, and full-result binding.",
+          "Traceability 1.1 contract digest binds horizons, node kinds, edge kinds, and endpoint-policy version while retaining the implementation horizon."
+        ],
+        "failureHandling": [
+          "Version, digest, revision, tree, disposition, or change-package lineage mismatch yields baseline_drift with no candidate and zero adapter calls.",
+          "Guard result or checkpoint mismatch fails closed.",
+          "Gate rejects uncovered scope, unscoped work, invalid refs, unresolved evidence, or unapproved no-work.",
+          "Delta rejects duplicate targets, add-existing, update/retire-missing, prior-digest mismatch, replacement mismatch, or result not bound to exact ordered operations."
+        ],
+        "securityPrivacy": [
+          "Adapters never receive graph access.",
+          "WorkBreakdown adapter grants allow exact reads, planning-artifact writes, and implementation-engine bridge only; process, build, and source-tree writes are forbidden.",
+          "ContractBaseline and ApprovedNotApplicable are explicit authority-bearing unions."
+        ],
+        "performanceReliabilityOperability": [
+          "All effect and guard checkpoints replay deterministically.",
+          "Graph updates checkpoint before atomic merge.",
+          "A 1.1 update may extend a valid 1.0 snapshot only as a 1.1 child preserving exact parent and update lineage."
+        ],
+        "compatibilityMigrationRollout": [
+          "Published module versions remain immutable.",
+          "Traceability validator recognizes exact legacy 1.0 vocabulary and kinds; WorkBreakdown contributors emit 1.1 only.",
+          "Spec Kit tasks and OpenSpec tasks are configuration defaults, not fixed routing."
+        ],
+        "verificationIntent": [
+          "Test both routes, adapter swap, drift zero-call replay, schemas, coverage, promotion, traceability ordering, and Core scans.",
+          "Test literal WorkItemDraft keys and deliverable-oriented work types.",
+          "Test unique-target add/update/retire preconditions, deterministic apply order, and resulting baseline digest.",
+          "Test traceability 1.0 validation, 1.1 update migration, 1.1 child identity, and preserved parent/update replay lineage."
+        ],
+        "interfaceIntentIds": [
+          "IF-WB-PLANNER",
+          "IF-WB-GATE",
+          "IF-WB-TRACEABILITY"
+        ],
+        "constraintIds": [
+          "CON-WB-PLANNING-ONLY",
+          "CON-WB-PREFLIGHT",
+          "CON-WB-UPSTREAM",
+          "CON-WB-DELTA",
+          "CON-WB-COVERAGE",
+          "CON-WB-TRACE-VERSION"
+        ],
+        "sourceRequirementIds": [
+          "US-WB-COVERAGE-001",
+          "US-WB-DECOMPOSITION-001",
+          "US-WB-EXTENSIBILITY-001",
+          "US-WB-GOVERNANCE-001",
+          "NFR-WB-ATOMICITY-001",
+          "NFR-WB-CORE-NEUTRALITY-001",
+          "NFR-WB-DETERMINISM-001",
+          "NFR-WB-PROVENANCE-001",
+          "NFR-WB-REPLAY-001",
+          "CON-WB-ADAPTER-TRUST-001",
+          "CON-WB-DEPENDENCY-BOUNDARY-001",
+          "CON-WB-DOWNSTREAM-BOUNDARY-001",
+          "CON-WB-INPUT-IMMUTABILITY-001",
+          "CON-WB-NO-EXECUTION-001"
+        ],
+        "sourceRefs": []
+      }
+    },
+    "architectureModel": {
+      "mode": "embedded",
+      "content": {
+        "modelId": "MODEL-DEVRELAY-WB-001",
+        "notation": {
+          "name": "C4",
+          "version": "1.0"
+        },
+        "elements": [
+          {
+            "id": "EL-DEVRELAY-SYSTEM",
+            "name": "DevRelay",
+            "type": "software-system",
+            "description": "Deterministic orchestration runtime for composable software-engineering modules.",
+            "responsibilities": [
+              "Progress exact approved artifacts through provider-neutral modules, gates, and trusted traceability."
+            ],
+            "tags": [
+              "System"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-DEVRELAY-CORE",
+            "name": "Generic Core",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Owns generic registration, state-derived routing, exact adapter resolution, checkpoints, replay, and progression.",
+            "technology": "Node.js",
+            "responsibilities": [
+              "Load exact state and artifact contracts.",
+              "Route without product-specific branches.",
+              "Checkpoint and replay bounded effects and control results."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-DEVRELAY-MODULES",
+            "name": "Released Semantic Modules",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Provider-neutral RequirementsGathering and ArchitectureDesign contracts extended by WorkBreakdown.",
+            "technology": "JSON Schema and JavaScript",
+            "responsibilities": [
+              "Define stable ports, canonical artifacts, outcomes, and gate handoffs."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-DECOMPOSITION-001",
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-CORE-NEUTRALITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-DEVRELAY-GRAPH",
+            "name": "TraceabilityGraph",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Core-owned sidecar for trusted lifecycle traceability contributions and atomic merge proofs.",
+            "technology": "Provider-neutral graph contract",
+            "responsibilities": [
+              "Replay approved upstream observer contributions.",
+              "Keep candidate and approved authority distinct.",
+              "Validate and atomically merge registered contributor updates."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-MODULE",
+            "name": "WorkBreakdown Module",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Converts exact approved scope into bounded, traceable, independently executable and verifiable work-item candidates.",
+            "technology": "JSON Schema and JavaScript",
+            "responsibilities": [
+              "Own establish-breakdown and decompose-change semantic contracts.",
+              "Normalize configured planning adapter output.",
+              "Return candidates without executing work."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-VALIDATORS",
+            "name": "Context-neutral Upstream Validators",
+            "type": "component",
+            "parentId": "EL-WB-MODULE",
+            "description": "Composes schema and semantic validators for requirements, project overview, architecture, contract, repository, and capability inputs without reusing ArchitectureDesign operation-specific runtime contracts.",
+            "technology": "JavaScript validation contracts",
+            "responsibilities": [
+              "Validate exact upstream artifacts in a WorkBreakdown-neutral context.",
+              "Enforce approved absence unions and cross-artifact lineage."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-ADAPTER-PORT",
+            "name": "Configured Planning Adapter Port",
+            "type": "component",
+            "parentId": "EL-WB-MODULE",
+            "description": "Provider-neutral port for one bounded work-decomposition capability selected by configuration.",
+            "technology": "Agent-command bridge",
+            "responsibilities": [
+              "Invoke Spec Kit tasks, OpenSpec tasks, or a compatible planner through the same canonical contract.",
+              "Allow read and planning-artifact output only."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-PREFLIGHT",
+            "name": "Registered WorkBreakdown Preflight",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Generic guard registered on the loaded ProjectWorkBreakdownState artifact contract with its own persisted producer identity.",
+            "technology": "Registered artifact-contract guard",
+            "responsibilities": [
+              "Detect exact baseline, disposition, revision, and tree drift before adapter entry.",
+              "Schema-validate baseline_drift results.",
+              "Checkpoint and replay the control result without adapter entry."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-GATE",
+            "name": "WorkBreakdown Gate",
+            "type": "component",
+            "parentId": "EL-WB-MODULE",
+            "description": "Derives the authoritative coverage universe, resolves evidence, owns no-work approval, and promotes approved planned work.",
+            "technology": "Deterministic gate policy",
+            "responsibilities": [
+              "Reject unscoped or uncovered work.",
+              "Approve or reject already-satisfied and no-work-required dispositions.",
+              "Atomically promote a baseline or apply an exact typed delta."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-CONTRIBUTOR",
+            "name": "WorkBreakdown Traceability Contributor",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-GRAPH",
+            "description": "Trusted projector of validated candidate work items into limited planning relationships.",
+            "technology": "Trusted versioned contributor",
+            "responsibilities": [
+              "Create only approved planning edge kinds.",
+              "Preserve candidate authority until gate activation.",
+              "Never create inverse or factual completion edges."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-OBSERVERS",
+            "name": "Approved Baseline Observers",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-GRAPH",
+            "description": "Replays approved RequirementsBaseline, ArchitectureBaseline, and applicable ContractBaseline graph contributions before WorkBreakdown candidate edges.",
+            "technology": "Trusted observer contracts",
+            "responsibilities": [
+              "Materialize approved upstream endpoints and authority.",
+              "Forbid contract endpoints and contract refs when ApprovedNotApplicable is selected."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-DOWNSTREAM",
+            "name": "Downstream Work Modules",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "WorkDependencyAnalysis, SpecialistAssignment, WorkExecution, and Verification own ordering, assignment, execution, and proof.",
+            "technology": "Future provider-neutral modules",
+            "responsibilities": [
+              "Validate the dependency DAG.",
+              "Assign specialists.",
+              "Perform work and collect completion evidence."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          }
+        ],
+        "relationships": [
+          {
+            "id": "REL-CORE-MODULES",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-DEVRELAY-MODULES",
+            "description": "Executes registered provider-neutral module contracts through exact configured bindings.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-GRAPH",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-DEVRELAY-GRAPH",
+            "description": "Submits checkpointed updates from trusted contributors.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-WB-ROUTE",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-WB-MODULE",
+            "description": "Derives establish-breakdown or decompose-change from loaded trusted project state.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-WB-VALIDATORS",
+            "sourceElementId": "EL-WB-MODULE",
+            "targetElementId": "EL-WB-VALIDATORS",
+            "description": "Validates immutable upstream baselines, dispositions, repository context, and capability catalog.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-WB-PREFLIGHT",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-WB-PREFLIGHT",
+            "description": "Runs the registered guard after state loading and before any adapter effect.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-PREFLIGHT-ADAPTER",
+            "sourceElementId": "EL-WB-PREFLIGHT",
+            "targetElementId": "EL-WB-ADAPTER-PORT",
+            "description": "Allows adapter entry only when exact lineage and drift checks pass.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "NFR-WB-DETERMINISM-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-ADAPTER-WB",
+            "sourceElementId": "EL-WB-ADAPTER-PORT",
+            "targetElementId": "EL-WB-MODULE",
+            "description": "Returns a bounded native planning artifact normalized into one canonical candidate.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-DECOMPOSITION-001",
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-WB-GATE",
+            "sourceElementId": "EL-WB-MODULE",
+            "targetElementId": "EL-WB-GATE",
+            "description": "Presents the validated candidate and Core-derived coverage universe for approval.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-GATE-DOWNSTREAM",
+            "sourceElementId": "EL-WB-GATE",
+            "targetElementId": "EL-WB-DOWNSTREAM",
+            "description": "Releases only an approved WorkBreakdownBaseline or applied change set.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-CONTRIBUTOR",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-WB-CONTRIBUTOR",
+            "description": "Invokes the trusted contributor only for a validated canonical candidate.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-OBSERVERS-GRAPH",
+            "sourceElementId": "EL-WB-OBSERVERS",
+            "targetElementId": "EL-DEVRELAY-GRAPH",
+            "description": "Replays approved upstream nodes and authority before candidate work-item assertions.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CONTRIBUTOR-GRAPH",
+            "sourceElementId": "EL-WB-CONTRIBUTOR",
+            "targetElementId": "EL-DEVRELAY-GRAPH",
+            "description": "Submits candidate-authority planning edges under the existing implementation horizon.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          }
+        ],
+        "sourceRefs": []
+      }
+    },
+    "diagrams": {
+      "mode": "embedded",
+      "content": {
+        "diagramSetId": "DIAGRAMS-WB-001",
+        "architectureModelId": "MODEL-DEVRELAY-WB-001",
+        "architectureModelDigest": "sha256:cfeb5cda8e71b3d703f1cecd98b541a52aae7f3cb54afec0ffcaf05f5902328b",
+        "views": [
+          {
+            "viewKey": "VIEW-WB-TARGET-CONTAINERS",
+            "type": "container",
+            "title": "WorkBreakdown target architecture",
+            "purpose": "Trusted routing, planning, gate, graph, and downstream boundaries.",
+            "audience": [
+              "engineering"
+            ],
+            "scopeElementId": "EL-DEVRELAY-SYSTEM",
+            "elementIds": [
+              "EL-DEVRELAY-SYSTEM",
+              "EL-DEVRELAY-CORE",
+              "EL-DEVRELAY-MODULES",
+              "EL-DEVRELAY-GRAPH",
+              "EL-WB-MODULE",
+              "EL-WB-VALIDATORS",
+              "EL-WB-ADAPTER-PORT",
+              "EL-WB-PREFLIGHT",
+              "EL-WB-GATE",
+              "EL-WB-CONTRIBUTOR",
+              "EL-WB-OBSERVERS",
+              "EL-WB-DOWNSTREAM"
+            ],
+            "relationshipIds": [
+              "REL-CORE-MODULES",
+              "REL-CORE-GRAPH",
+              "REL-CORE-WB-ROUTE",
+              "REL-WB-VALIDATORS",
+              "REL-CORE-WB-PREFLIGHT",
+              "REL-PREFLIGHT-ADAPTER",
+              "REL-ADAPTER-WB",
+              "REL-WB-GATE",
+              "REL-GATE-DOWNSTREAM",
+              "REL-CORE-CONTRIBUTOR",
+              "REL-OBSERVERS-GRAPH",
+              "REL-CONTRIBUTOR-GRAPH"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-work-breakdown-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:050a676a1ff556e8cc9b211b54f8c8518cabd4d53acb195070464728d515d7db",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "interfaceIntent": {
+      "mode": "embedded",
+      "content": {
+        "interfaceIntentSetId": "INTERFACES-WB-001",
+        "interfaces": [
+          {
+            "id": "IF-WB-PLANNER",
+            "name": "Bounded planning adapter",
+            "purpose": "Bounded planning adapter",
+            "ownerBoundary": "EL-WB-ADAPTER-PORT",
+            "providerElementId": "EL-WB-ADAPTER-PORT",
+            "consumerElementIds": [
+              "EL-WB-MODULE"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact immutable canonical artifacts"
+            ],
+            "semanticOutputs": [
+              "Validated provider-neutral artifact or explicit failure"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable semantics across compatible adapters"
+            ],
+            "securityPrivacyIntent": [
+              "No graph or code-execution authority crosses this boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WB-DECOMPOSITION-001",
+              "US-WB-EXTENSIBILITY-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WB-GATE",
+            "name": "Coverage and promotion gate",
+            "purpose": "Coverage and promotion gate",
+            "ownerBoundary": "EL-WB-GATE",
+            "providerElementId": "EL-WB-GATE",
+            "consumerElementIds": [
+              "EL-WB-MODULE",
+              "EL-WB-DOWNSTREAM"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact immutable canonical artifacts"
+            ],
+            "semanticOutputs": [
+              "Validated provider-neutral artifact or explicit failure"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable semantics across compatible adapters"
+            ],
+            "securityPrivacyIntent": [
+              "No graph or code-execution authority crosses this boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WB-TRACEABILITY",
+            "name": "Trusted planning projection",
+            "purpose": "Trusted planning projection",
+            "ownerBoundary": "EL-WB-CONTRIBUTOR",
+            "providerElementId": "EL-WB-CONTRIBUTOR",
+            "consumerElementIds": [
+              "EL-DEVRELAY-GRAPH"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact immutable canonical artifacts"
+            ],
+            "semanticOutputs": [
+              "Validated provider-neutral artifact or explicit failure"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable semantics across compatible adapters"
+            ],
+            "securityPrivacyIntent": [
+              "No graph or code-execution authority crosses this boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          }
+        ]
+      }
+    },
+    "architectureConstraints": {
+      "mode": "embedded",
+      "content": {
+        "constraintSetId": "CONSTRAINTS-WB-001",
+        "constraints": [
+          {
+            "id": "CON-WB-PLANNING-ONLY",
+            "category": "operational",
+            "strength": "must",
+            "statement": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+            "rationale": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-MODULE"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WB-PLANNER"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-PREFLIGHT",
+            "category": "availability",
+            "strength": "must",
+            "statement": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+            "rationale": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-PREFLIGHT"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-UPSTREAM",
+            "category": "data",
+            "strength": "must",
+            "statement": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+            "rationale": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-OBSERVERS"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WB-CONTRIBUTOR"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-DELTA",
+            "category": "data",
+            "strength": "must",
+            "statement": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+            "rationale": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-GATE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-COVERAGE",
+            "category": "organizational",
+            "strength": "must",
+            "statement": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+            "rationale": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-GATE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-TRACE-VERSION",
+            "category": "compatibility",
+            "strength": "must",
+            "statement": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+            "rationale": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-DEVRELAY-GRAPH"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WB-CONTRIBUTOR"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "NFR-WB-CORE-NEUTRALITY-001"
+            ],
+            "sourceRefs": []
+          }
+        ]
+      }
+    },
+    "decisionRecords": {
+      "mode": "embedded",
+      "content": {
+        "decisionRecordSetId": "DECISIONS-WB-001",
+        "decisions": [
+          {
+            "id": "ADR-WB-001",
+            "title": "Keep WorkBreakdown planning-only and provider-neutral",
+            "status": "proposed",
+            "contextAndProblemStatement": "Keep WorkBreakdown planning-only and provider-neutral",
+            "decisionDrivers": [
+              "Determinism",
+              "Compatibility",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WB-MODULAR",
+                "title": "Adopt the bounded compatible design",
+                "pros": [
+                  "Preserves contracts and trust boundaries"
+                ],
+                "cons": [
+                  "Adds explicit migration tests"
+                ]
+              },
+              {
+                "id": "OPT-WB-COUPLED",
+                "title": "Mutate or couple existing behavior",
+                "pros": [
+                  "Less immediate contract work"
+                ],
+                "cons": [
+                  "Breaks immutability or modularity"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WB-MODULAR",
+              "justification": "The bounded compatible design preserves exact published contracts."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Deterministic modular behavior remains auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Additional conformance coverage is required."
+              }
+            ],
+            "confirmation": "Release gates and replay tests pass.",
+            "relatedDecisionIds": [],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-WB-MODULE"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WB-PLANNER"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WB-PLANNING-ONLY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-work-breakdown-boundaries-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:7302aae87e4412b76842f9b2cc17f07c1139c290d8e7a23c6e123a08ebeda31f",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/0001-work-breakdown-boundaries.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-WB-002",
+            "title": "Version traceability planning vocabulary as compatible 1.1.0",
+            "status": "proposed",
+            "contextAndProblemStatement": "Version traceability planning vocabulary as compatible 1.1.0",
+            "decisionDrivers": [
+              "Determinism",
+              "Compatibility",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WB-TRACE-11",
+                "title": "Adopt the bounded compatible design",
+                "pros": [
+                  "Preserves contracts and trust boundaries"
+                ],
+                "cons": [
+                  "Adds explicit migration tests"
+                ]
+              },
+              {
+                "id": "OPT-WB-MUTATE-10",
+                "title": "Mutate or couple existing behavior",
+                "pros": [
+                  "Less immediate contract work"
+                ],
+                "cons": [
+                  "Breaks immutability or modularity"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WB-TRACE-11",
+              "justification": "The bounded compatible design preserves exact published contracts."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Deterministic modular behavior remains auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Additional conformance coverage is required."
+              }
+            ],
+            "confirmation": "Release gates and replay tests pass.",
+            "relatedDecisionIds": [],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-DEVRELAY-GRAPH"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WB-CONTRIBUTOR"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WB-TRACE-VERSION"
+              }
+            ],
+            "sourceRequirementIds": [
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "NFR-WB-CORE-NEUTRALITY-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-traceability-vocabulary-1-1-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:d436ecbb2a4b12679dd2eef6520f70caae3056aee594fc16b7733e46e059c398",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/0002-traceability-vocabulary-1.1.md"
+            }
+          }
+        ]
+      }
+    },
+    "nativeArtifacts": {
+      "mode": "embedded",
+      "content": {
+        "nativeArtifactSetId": "NATIVE-WB-001",
+        "entries": [
+          {
+            "id": "NA-WB-PLAN",
+            "artifact": {
+              "artifactId": "spec-kit-plan-work-breakdown-v1",
+              "schema": "https://devrelay.dev/native/markdown/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:bc17d30732c3ca58896b0067066329c186141f7f7ab2b37c1d4c7857a6bcb235",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-design.md"
+            },
+            "role": "technical-design-source",
+            "logicalPath": "dogfood/work-breakdown/architecture-design/architecture-design.md",
+            "producedBy": {
+              "stage": "designer",
+              "adapterId": "spec-kit-plan",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "GitHub Spec Kit",
+                "version": "0.1.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "technicalDesign",
+                "entityIds": [
+                  "TD-WB-001"
+                ],
+                "jsonPointers": [
+                  "/sections/technicalDesign"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-WB-STRUCTURIZR",
+            "artifact": {
+              "artifactId": "structurizr-workspace-work-breakdown-v1",
+              "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+              "mediaType": "text/vnd.structurizr.dsl",
+              "digest": "sha256:050a676a1ff556e8cc9b211b54f8c8518cabd4d53acb195070464728d515d7db",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/workspace.dsl"
+            },
+            "role": "structurizr-workspace",
+            "logicalPath": "dogfood/work-breakdown/architecture-design/workspace.dsl",
+            "producedBy": {
+              "stage": "modeler",
+              "adapterId": "structurizr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "Structurizr DSL",
+                "version": "5.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "architectureModel",
+                "entityIds": [
+                  "MODEL-DEVRELAY-WB-001"
+                ],
+                "jsonPointers": [
+                  "/sections/architectureModel"
+                ]
+              },
+              {
+                "section": "diagrams",
+                "entityIds": [
+                  "VIEW-WB-TARGET-CONTAINERS"
+                ],
+                "jsonPointers": [
+                  "/sections/diagrams"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-WB-MADR-001",
+            "artifact": {
+              "artifactId": "madr-work-breakdown-boundaries-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:7302aae87e4412b76842f9b2cc17f07c1139c290d8e7a23c6e123a08ebeda31f",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/0001-work-breakdown-boundaries.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/work-breakdown/architecture-design/0001-work-breakdown-boundaries.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-WB-001"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-WB-MADR-002",
+            "artifact": {
+              "artifactId": "madr-traceability-vocabulary-1-1-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:d436ecbb2a4b12679dd2eef6520f70caae3056aee594fc16b7733e46e059c398",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/0002-traceability-vocabulary-1.1.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/work-breakdown/architecture-design/0002-traceability-vocabulary-1.1.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-WB-002"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          }
+        ]
+      }
+    }
+  },
+  "discoveryReconciliation": [
+    {
+      "observedKind": "element",
+      "observedId": "EL-DEVRELAY-SYSTEM",
+      "disposition": "retained",
+      "targetId": "EL-DEVRELAY-SYSTEM",
+      "rationale": "Released boundary retained."
+    },
+    {
+      "observedKind": "element",
+      "observedId": "EL-DEVRELAY-CORE",
+      "disposition": "retained",
+      "targetId": "EL-DEVRELAY-CORE",
+      "rationale": "Released boundary retained."
+    },
+    {
+      "observedKind": "element",
+      "observedId": "EL-DEVRELAY-MODULES",
+      "disposition": "retained",
+      "targetId": "EL-DEVRELAY-MODULES",
+      "rationale": "Released boundary retained."
+    },
+    {
+      "observedKind": "element",
+      "observedId": "EL-DEVRELAY-GRAPH",
+      "disposition": "retained",
+      "targetId": "EL-DEVRELAY-GRAPH",
+      "rationale": "Released boundary retained."
+    },
+    {
+      "observedKind": "relationship",
+      "observedId": "REL-CORE-MODULES",
+      "disposition": "retained",
+      "targetId": "REL-CORE-MODULES",
+      "rationale": "Released direction retained."
+    },
+    {
+      "observedKind": "relationship",
+      "observedId": "REL-CORE-GRAPH",
+      "disposition": "retained",
+      "targetId": "REL-CORE-GRAPH",
+      "rationale": "Released direction retained."
+    },
+    {
+      "observedKind": "view",
+      "observedId": "VIEW-DEVRELAY-CURRENT-CONTAINERS",
+      "disposition": "replaced",
+      "targetId": "VIEW-WB-TARGET-CONTAINERS",
+      "rationale": "Target view expands the observed view."
+    }
+  ],
+  "traceability": [
+    {
+      "requirementId": "US-WB-COVERAGE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-GRAPH"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-VALIDATORS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-OBSERVERS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-OBSERVERS-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-GATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-TRACEABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-UPSTREAM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-COVERAGE"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "US-WB-DECOMPOSITION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-MODULES"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-ADAPTER-WB"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-DOWNSTREAM"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-PLANNER"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "US-WB-EXTENSIBILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-SYSTEM"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-CORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-MODULES"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-ADAPTER-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-MODULES"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-ADAPTER-WB"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-PLANNER"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-001"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "US-WB-GOVERNANCE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-SYSTEM"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-CORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-GRAPH"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-PREFLIGHT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-OBSERVERS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-PREFLIGHT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-CONTRIBUTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-OBSERVERS-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-GATE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-DELTA"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-COVERAGE"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "NFR-WB-ATOMICITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-GRAPH"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-CONTRIBUTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-GATE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-PREFLIGHT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-DELTA"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "NFR-WB-CORE-NEUTRALITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-SYSTEM"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-CORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-MODULES"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-ADAPTER-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-MODULES"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-ROUTE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-PREFLIGHT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-TRACE-VERSION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-002"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "NFR-WB-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-SYSTEM"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-CORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-VALIDATORS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-PREFLIGHT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-MODULES"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-ROUTE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-VALIDATORS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-PREFLIGHT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PREFLIGHT-ADAPTER"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-PREFLIGHT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-DELTA"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "NFR-WB-PROVENANCE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-GRAPH"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-VALIDATORS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-OBSERVERS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-VALIDATORS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-ADAPTER-WB"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-CONTRIBUTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-OBSERVERS-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-TRACEABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-PREFLIGHT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-UPSTREAM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-TRACE-VERSION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-002"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "NFR-WB-REPLAY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-CORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-GRAPH"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-PREFLIGHT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-OBSERVERS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-PREFLIGHT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-OBSERVERS-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-TRACEABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-PREFLIGHT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-TRACE-VERSION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-002"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "CON-WB-ADAPTER-TRUST-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-GRAPH"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-ADAPTER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-OBSERVERS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-ADAPTER-WB"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-CONTRIBUTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-PLANNER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-TRACEABILITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-001"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "CON-WB-DEPENDENCY-BOUNDARY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-DOWNSTREAM"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "CON-WB-DOWNSTREAM-BOUNDARY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-DOWNSTREAM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-PLANNING-ONLY"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "CON-WB-INPUT-IMMUTABILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DEVRELAY-CORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-VALIDATORS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-PREFLIGHT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-ROUTE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-VALIDATORS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WB-PREFLIGHT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PREFLIGHT-ADAPTER"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-UPSTREAM"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    },
+    {
+      "requirementId": "CON-WB-NO-EXECUTION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-WB-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-ADAPTER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WB-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-ADAPTER-WB"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WB-PLANNER"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WB-PLANNING-ONLY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WB-001"
+        }
+      ],
+      "rationale": "Only the listed architecture targets cite and support this requirement."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-WB-BASELINES",
+      "statement": "The package inputs are the exact approved WorkBreakdown requirements pair.",
+      "status": "confirmed",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-WB-NATIVE-LEAKAGE",
+      "statement": "Native planner formats could leak into the canonical contract.",
+      "impact": "Adapter replacement would change module semantics.",
+      "mitigation": "Normalize into provider-neutral artifacts and retain native files only as subordinate evidence."
+    },
+    {
+      "id": "RISK-WB-COVERAGE-BUREAUCRACY",
+      "statement": "Coverage accounting could become ceremony without correctness value.",
+      "impact": "Workflow cost rises while gaps remain.",
+      "mitigation": "Derive the exact universe mechanically and require concise evidence-bearing dispositions."
+    },
+    {
+      "id": "RISK-WB-DEPENDENCY-AUTHORITY",
+      "statement": "Dependency hints could be treated as an authoritative DAG.",
+      "impact": "Invalid ordering propagates downstream.",
+      "mitigation": "Mark hints non-authoritative and reserve DAG validation for WorkDependencyAnalysis."
+    },
+    {
+      "id": "RISK-WB-HISTORY-RECONSTRUCTION",
+      "statement": "Existing projects could be forced to reconstruct historical work.",
+      "impact": "Invented history becomes authority.",
+      "mitigation": "Use establish-breakdown when no baseline exists and plan only current approved scope."
+    },
+    {
+      "id": "RISK-WB-OVERBROAD-ITEMS",
+      "statement": "Generated work items may not be independently executable or verifiable.",
+      "impact": "Execution and verification become ambiguous.",
+      "mitigation": "Gate bounded scope, deliverables, verification plan, evidence, and controlled work type."
+    },
+    {
+      "id": "RISK-WB-COMPLETION-EDGES",
+      "statement": "Planning edges could imply implementation or verification.",
+      "impact": "The graph overstates lifecycle progress.",
+      "mitigation": "Emit only candidate planning edges and activate them at the Gate; factual edges remain downstream."
+    },
+    {
+      "id": "RISK-WB-WEAK-DRIFT",
+      "statement": "Stale baselines or repository state may reach the planner.",
+      "impact": "Work is decomposed against unauthorized inputs.",
+      "mitigation": "Run the registered preflight before adapter entry and checkpoint/replay baseline_drift."
+    },
+    {
+      "id": "RISK-WB-VOCAB-MIGRATION",
+      "statement": "Traceability 1.1 migration could corrupt legacy lineage.",
+      "impact": "Graph replay or audit becomes unverifiable.",
+      "mitigation": "Recognize exact 1.0, emit 1.1 only for WorkBreakdown, and preserve parent/update lineage in the 1.1 child."
+    },
+    {
+      "id": "RISK-WB-GRANT-ENFORCEMENT",
+      "statement": "Declarative planning-only grants may not be enforced by a host.",
+      "impact": "A planner could perform forbidden build or source writes.",
+      "mitigation": "Require host enforcement evidence and fail release conformance when process/build/source-tree effects are observed."
+    }
+  ],
+  "requiredEvidence": [
+    "architecture/runtime-chain",
+    "architecture/drift-replay",
+    "architecture/coverage-and-delta",
+    "architecture/traceability-1.0-to-1.1"
+  ],
+  "sourceRefs": []
+}

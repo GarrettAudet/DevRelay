@@ -137,14 +137,55 @@ function assertNamesExist(names, available, label) {
   }
 }
 
+function validatePortMediaTypes(mediaTypes, label) {
+  requireArray(mediaTypes, label);
+  if (mediaTypes.length === 0) {
+    fail("DR1101", `${label} must not be empty`);
+  }
+  assertUnique(mediaTypes, label);
+}
+
+function portVariants(port, label = "port") {
+  const hasSchema = Object.hasOwn(port, "schema");
+  const hasVariants = Object.hasOwn(port, "variants");
+  if (hasSchema === hasVariants) {
+    fail(
+      "DR1104",
+      `${label} must declare exactly one of schema or variants`,
+    );
+  }
+  if (hasSchema) {
+    requireString(port.schema, `${label}.schema`);
+    validatePortMediaTypes(port.mediaTypes, `${label}.mediaTypes`);
+    return [{ schema: port.schema, mediaTypes: port.mediaTypes }];
+  }
+  requireArray(port.variants, `${label}.variants`);
+  if (port.variants.length < 2) {
+    fail("DR1104", `${label}.variants must contain at least two variants`);
+  }
+  for (const [index, variant] of port.variants.entries()) {
+    requireRecord(variant, `${label}.variants[${index}]`);
+    requireString(variant.schema, `${label}.variants[${index}].schema`);
+    validatePortMediaTypes(
+      variant.mediaTypes,
+      `${label}.variants[${index}].mediaTypes`,
+    );
+  }
+  assertUnique(
+    port.variants.map(({ schema }) => schema),
+    `${label}.variant schemas`,
+  );
+  return port.variants;
+}
+
+function portSchemas(port, label = "port") {
+  return portVariants(port, label).map(({ schema }) => schema);
+}
+
 function validatePort(port, label) {
   requireRecord(port, label);
   requireString(port.name, `${label}.name`);
-  requireString(port.schema, `${label}.schema`);
-  requireArray(port.mediaTypes, `${label}.mediaTypes`);
-  if (port.mediaTypes.length === 0) {
-    fail("DR1101", `${label}.mediaTypes must not be empty`);
-  }
+  portVariants(port, label);
   if (!["one", "many"].includes(port.cardinality)) {
     fail("DR1102", `${label}.cardinality is invalid`);
   }
@@ -188,6 +229,12 @@ function validateModuleDefinition(definition) {
     requireArray(operation.evidence, `${operation.id}.evidence`);
     requireRecord(operation.resultContracts, `${operation.id}.resultContracts`);
     requireRecord(operation.optionsSchema, `${operation.id}.optionsSchema`);
+    if (
+      operation.adapterExecution !== undefined &&
+      !["pure", "effect"].includes(operation.adapterExecution)
+    ) {
+      fail("DR1215", `${operation.id}.adapterExecution is invalid`);
+    }
 
     for (const [index, port] of operation.inputs.entries()) {
       validatePort(port, `${operation.id}.inputs[${index}]`);
@@ -214,6 +261,13 @@ function validateModuleDefinition(definition) {
         inputNames,
         `${operation.id}.inputRules[${index}].require`,
       );
+      if (rule.forbid !== undefined) {
+        assertNamesExist(
+          rule.forbid,
+          inputNames,
+          `${operation.id}.inputRules[${index}].forbid`,
+        );
+      }
     }
     assertUnique(operation.outcomes, `${operation.id} outcomes`);
     assertUnique(operation.evidence, `${operation.id} evidence kinds`);
@@ -478,6 +532,15 @@ function validatePluginDefinition(definition, modules) {
       if (!["pure", "effect"].includes(pluginOperation.execution)) {
         fail("DR1306", `${moduleKey}#${pluginOperation.id} execution is invalid`);
       }
+      if (
+        operationDefinition.adapterExecution !== undefined &&
+        pluginOperation.execution !== operationDefinition.adapterExecution
+      ) {
+        fail(
+          "DR1313",
+          `${moduleKey}#${pluginOperation.id} requires ${operationDefinition.adapterExecution} adapter execution`,
+        );
+      }
       if (operationDefinition.adapterChain !== undefined) {
         if (pluginOperation.step === undefined) {
           fail(
@@ -540,10 +603,13 @@ function validateArtifacts(artifacts, port, label) {
   }
   for (const artifact of artifacts) {
     requireRecord(artifact, `${label} artifact`);
-    if (artifact.schema !== port.schema) {
+    const variant = portVariants(port).find(
+      ({ schema }) => schema === artifact.schema,
+    );
+    if (variant === undefined) {
       fail("DR1402", `${label} artifact schema does not match its port`);
     }
-    if (!port.mediaTypes.includes(artifact.mediaType)) {
+    if (!variant.mediaTypes.includes(artifact.mediaType)) {
       fail("DR1403", `${label} artifact media type is not accepted`);
     }
     requireString(artifact.digest, `${label} artifact.digest`);
@@ -572,6 +638,14 @@ function validateInputs(invocation, operation) {
           fail(
             "DR1406",
             `input "${rule.ifPresent}" requires input "${requiredInput}"`,
+          );
+        }
+      }
+      for (const forbiddenInput of rule.forbid ?? []) {
+        if (Object.hasOwn(invocation.inputs, forbiddenInput)) {
+          fail(
+            "DR1407",
+            `input "${rule.ifPresent}" forbids input "${forbiddenInput}"`,
           );
         }
       }
@@ -1547,7 +1621,9 @@ export function createModuleRegistry({
     for (const step of operation.adapterChain?.steps ?? []) {
       ports.push(...(step.outputs ?? []));
     }
-    return new Set(ports.map(({ schema }) => schema));
+    return new Set(
+      ports.flatMap((port) => portSchemas(port)),
+    );
   }
 
   function requireCheckpointStore(resolution, checkpoints) {
@@ -1585,6 +1661,279 @@ export function createModuleRegistry({
       ]),
     );
   }
+  function inputGuardIdentity(inputGuard) {
+    return Object.freeze({
+      id: inputGuard.id,
+      version: inputGuard.version,
+    });
+  }
+
+  function inputGuardKey(inputGuard) {
+    return `${inputGuard.id}@${inputGuard.version}`;
+  }
+
+  function discoverInputGuard(runtime) {
+    const discovered = new Map();
+    for (const artifacts of Object.values(runtime.loadedInputs)) {
+      for (const loaded of artifacts) {
+        const inputGuard = artifactContractRegistry.get(
+          loaded.ref.schema,
+        )?.inputGuard;
+        if (inputGuard !== undefined) {
+          discovered.set(inputGuardKey(inputGuard), inputGuard);
+        }
+      }
+    }
+    if (discovered.size > 1) {
+      fail(
+        "DR2400",
+        `execution inputs resolve multiple registered input guards: ${[...discovered.keys()].sort().join(", ")}`,
+      );
+    }
+    return discovered.values().next().value;
+  }
+
+  function assertAdapterOutcomeNotGuardOwned(runtime, result) {
+    const inputGuard = discoverInputGuard(runtime);
+    if (
+      inputGuard !== undefined &&
+      inputGuard.outcomes.includes(result.outcome)
+    ) {
+      fail(
+        "DR2405",
+        `outcome "${result.outcome}" is owned by input guard "${inputGuardKey(
+          inputGuard,
+        )}" and cannot be returned by an adapter`,
+      );
+    }
+  }
+
+  function requireInputGuardCheckpointStore(inputGuard, checkpoints) {
+    if (inputGuard === undefined) {
+      return;
+    }
+    if (
+      !isRecord(checkpoints) ||
+      typeof checkpoints.get !== "function" ||
+      typeof checkpoints.put !== "function"
+    ) {
+      fail(
+        "DR2200",
+        "input-guarded module execution requires context.checkpoints.get and context.checkpoints.put",
+      );
+    }
+  }
+
+  function inputGuardCheckpointKey(invocationFingerprint, inputGuard) {
+    return canonicalJsonDigest({
+      apiVersion: "devrelay.dev/v1alpha1",
+      kind: "ModuleInputGuardCheckpointKey",
+      invocationFingerprint,
+      guard: inputGuardIdentity(inputGuard),
+    });
+  }
+
+  function inputGuardProducer(runtime, inputGuard, checkpointKey) {
+    return immutableCopy({
+      kind: "input-guard",
+      invocationId: runtime.invocation.invocationId,
+      invocationFingerprint: runtime.resolution.invocationFingerprint,
+      module: runtime.invocation.module,
+      guard: inputGuardIdentity(inputGuard),
+      checkpointKey,
+    });
+  }
+
+  function validateInputGuardResult(runtime, inputGuard, supplied) {
+    let result;
+    try {
+      result = immutableCopy(supplied);
+    } catch (error) {
+      fail(
+        "DR2402",
+        `input guard "${inputGuardKey(inputGuard)}" returned non-JSON data: ${error.message}`,
+      );
+    }
+    if (!inputGuard.outcomes.includes(result?.outcome)) {
+      fail(
+        "DR2403",
+        `input guard "${inputGuardKey(inputGuard)}" returned undeclared outcome "${result?.outcome}"`,
+      );
+    }
+    return validateResult(runtime.invocation, result);
+  }
+
+  async function evaluateInputGuard(runtime, inputGuard) {
+    let supplied;
+    try {
+      supplied = await inputGuard.evaluate(
+        immutableCopy({
+          invocation: runtime.invocation,
+          operation: runtime.resolution.operationDefinition,
+          invocationFingerprint: runtime.resolution.invocationFingerprint,
+          loadedInputs: exposeLoadedArtifacts(runtime.loadedInputs),
+        }),
+      );
+    } catch (error) {
+      fail(
+        "DR2402",
+        `input guard "${inputGuardKey(inputGuard)}" evaluation failed: ${error.message}`,
+      );
+    }
+    if (supplied === undefined || supplied === null) {
+      return undefined;
+    }
+    return validateInputGuardResult(runtime, inputGuard, supplied);
+  }
+
+  function validateInputGuardCheckpoint(
+    checkpoint,
+    checkpointKey,
+    runtime,
+    inputGuard,
+    producer,
+  ) {
+    requireRecord(checkpoint, "input guard checkpoint");
+    const expectedKeys = [
+      "apiVersion",
+      "checkpointDigest",
+      "checkpointKey",
+      "guard",
+      "invocationFingerprint",
+      "invocationId",
+      "kind",
+      "module",
+      "moduleResult",
+      "moduleResultDigest",
+      "nodeId",
+      "producer",
+      "runId",
+    ];
+    if (
+      Object.keys(checkpoint).sort().join("\u0000") !==
+      expectedKeys.sort().join("\u0000")
+    ) {
+      fail("DR2404", "input guard checkpoint has unexpected fields");
+    }
+    const { checkpointDigest, ...material } = checkpoint;
+    if (
+      typeof checkpointDigest !== "string" ||
+      canonicalJsonDigest(material) !== checkpointDigest
+    ) {
+      fail("DR2404", "input guard checkpoint content digest is invalid");
+    }
+    if (
+      checkpoint.apiVersion !== "devrelay.dev/v1alpha1" ||
+      checkpoint.kind !== "ModuleInputGuardCheckpoint" ||
+      checkpoint.checkpointKey !== checkpointKey ||
+      checkpoint.invocationId !== runtime.invocation.invocationId ||
+      checkpoint.runId !== runtime.invocation.runId ||
+      checkpoint.nodeId !== runtime.invocation.nodeId ||
+      checkpoint.invocationFingerprint !==
+        runtime.resolution.invocationFingerprint ||
+      !sameCanonicalValue(checkpoint.module, runtime.invocation.module) ||
+      !sameCanonicalValue(checkpoint.guard, inputGuardIdentity(inputGuard)) ||
+      !sameCanonicalValue(checkpoint.producer, producer) ||
+      checkpoint.moduleResultDigest !==
+        canonicalJsonDigest(checkpoint.moduleResult)
+    ) {
+      fail("DR2404", "input guard checkpoint binding is invalid");
+    }
+    const moduleResult = validateInputGuardResult(
+      runtime,
+      inputGuard,
+      checkpoint.moduleResult,
+    );
+    return immutableCopy({
+      checkpoint,
+      moduleResult,
+      producer,
+    });
+  }
+
+  async function runInputGuard(runtime) {
+    const inputGuard = discoverInputGuard(runtime);
+    requireInputGuardCheckpointStore(inputGuard, runtime.context.checkpoints);
+    if (inputGuard === undefined) {
+      return undefined;
+    }
+
+    const checkpointKey = inputGuardCheckpointKey(
+      runtime.resolution.invocationFingerprint,
+      inputGuard,
+    );
+    const producer = inputGuardProducer(
+      runtime,
+      inputGuard,
+      checkpointKey,
+    );
+    const stored = await readCheckpoint(
+      runtime.context.checkpoints,
+      checkpointKey,
+    );
+
+    if (stored !== undefined && stored !== null) {
+      const replay = validateInputGuardCheckpoint(
+        immutableCopy(stored),
+        checkpointKey,
+        runtime,
+        inputGuard,
+        producer,
+      );
+      const recomputed = await evaluateInputGuard(runtime, inputGuard);
+      if (
+        recomputed === undefined ||
+        !sameCanonicalValue(recomputed, replay.moduleResult)
+      ) {
+        fail(
+          "DR2404",
+          "input guard replay diverges from its checkpointed terminal result",
+        );
+      }
+      return replay;
+    }
+
+    const moduleResult = await evaluateInputGuard(runtime, inputGuard);
+    if (moduleResult === undefined) {
+      return undefined;
+    }
+    const checkpoint = createSelfDigestDocument(
+      {
+        apiVersion: "devrelay.dev/v1alpha1",
+        kind: "ModuleInputGuardCheckpoint",
+        checkpointKey,
+        invocationId: runtime.invocation.invocationId,
+        runId: runtime.invocation.runId,
+        nodeId: runtime.invocation.nodeId,
+        module: runtime.invocation.module,
+        invocationFingerprint: runtime.resolution.invocationFingerprint,
+        guard: inputGuardIdentity(inputGuard),
+        producer,
+        moduleResult,
+        moduleResultDigest: canonicalJsonDigest(moduleResult),
+      },
+      "checkpointDigest",
+    );
+    await writeCheckpoint(runtime.context.checkpoints, checkpointKey, checkpoint);
+    const persisted = await readCheckpoint(
+      runtime.context.checkpoints,
+      checkpointKey,
+    );
+    if (
+      persisted === undefined ||
+      !sameCanonicalValue(persisted, checkpoint)
+    ) {
+      fail("DR2404", "input guard checkpoint was not persisted exactly");
+    }
+    return validateInputGuardCheckpoint(
+      immutableCopy(persisted),
+      checkpointKey,
+      runtime,
+      inputGuard,
+      producer,
+    );
+  }
+
 
   async function loadPortArtifacts(
     references,
@@ -1941,42 +2290,73 @@ export function createModuleRegistry({
     );
     await enforceDeterministicRoute(runtime);
 
-    if (resolution.mode === "single") {
+    const guardTerminal = await runInputGuard(runtime);
+    let producer;
+    if (executionContext.producer.kind === "input-guard") {
       if (executionContext.priorResults.length !== 0) {
-        fail("DR2502", "single-adapter trace checkpoint has prior results");
+        fail("DR2502", "input-guard trace checkpoint has prior results");
       }
+      if (
+        guardTerminal === undefined ||
+        !sameCanonicalValue(guardTerminal.moduleResult, moduleResult) ||
+        !sameCanonicalValue(
+          guardTerminal.producer,
+          executionContext.producer,
+        )
+      ) {
+        fail(
+          "DR2502",
+          "trace checkpoint input-guard execution is not exact",
+        );
+      }
+      producer = guardTerminal.producer;
     } else {
-      if (executionContext.priorResults.length >= resolution.steps.length) {
-        fail("DR2502", "traceability priorResults are not a handoff prefix");
-      }
-      for (const [index, priorResult] of
-        executionContext.priorResults.entries()) {
-        const plan = resolution.steps[index];
-        const producer = validatePriorResult(
-          priorResult,
-          plan,
-          resolution.chainFingerprint,
-          `traceability priorResults[${index}]`,
+      if (guardTerminal !== undefined) {
+        fail(
+          "DR2502",
+          "trace checkpoint records adapter execution after a terminal input guard",
         );
-        runtime.loadedHandoffs[priorResult.step] = await loadPortArtifacts(
-          priorResult.outputs,
-          plan.stepDefinition.outputs,
-          "handoff",
-          runtime,
-          producer,
-        );
-        runtime.priorResults.push(immutableCopy(priorResult));
       }
-    }
+      if (resolution.mode === "single") {
+        if (executionContext.priorResults.length !== 0) {
+          fail("DR2502", "single-adapter trace checkpoint has prior results");
+        }
+      } else {
+        if (executionContext.priorResults.length >= resolution.steps.length) {
+          fail("DR2502", "traceability priorResults are not a handoff prefix");
+        }
+        for (const [index, priorResult] of
+          executionContext.priorResults.entries()) {
+          const plan = resolution.steps[index];
+          const priorProducer = validatePriorResult(
+            priorResult,
+            plan,
+            resolution.chainFingerprint,
+            `traceability priorResults[${index}]`,
+          );
+          runtime.loadedHandoffs[priorResult.step] = await loadPortArtifacts(
+            priorResult.outputs,
+            plan.stepDefinition.outputs,
+            "handoff",
+            runtime,
+            priorProducer,
+          );
+          runtime.priorResults.push(immutableCopy(priorResult));
+        }
+      }
 
-    const producer = expectedTerminalProducer(
-      invocation,
-      resolution,
-      moduleResult,
-      runtime.priorResults,
-      executionContext.producer,
-    );
+      producer = expectedTerminalProducer(
+        invocation,
+        resolution,
+        moduleResult,
+        runtime.priorResults,
+        executionContext.producer,
+      );
+    }
     const validatedResult = validateResult(invocation, moduleResult);
+    if (executionContext.producer.kind !== "input-guard") {
+      assertAdapterOutcomeNotGuardOwned(runtime, validatedResult);
+    }
     const loadedOutputs = await loadPortArtifacts(
       validatedResult.outputs,
       resolution.operationDefinition.outputs,
@@ -2299,6 +2679,7 @@ export function createModuleRegistry({
       );
     }
 
+    assertAdapterOutcomeNotGuardOwned(runtime, result);
     await loadPortArtifacts(
       result.outputs,
       resolution.operationDefinition.outputs,
@@ -2545,6 +2926,7 @@ export function createModuleRegistry({
       invocationSnapshot,
       envelope.moduleResult,
     );
+    assertAdapterOutcomeNotGuardOwned(runtime, moduleResult);
     const loadedOutputs = await loadPortArtifacts(
       moduleResult.outputs,
       resolution.operationDefinition.outputs,
@@ -2594,6 +2976,23 @@ export function createModuleRegistry({
       runtime,
     );
     await enforceDeterministicRoute(runtime);
+    const guardTerminal = await runInputGuard(runtime);
+    if (guardTerminal !== undefined) {
+      await loadPortArtifacts(
+        guardTerminal.moduleResult.outputs,
+        resolution.operationDefinition.outputs,
+        "output",
+        runtime,
+        guardTerminal.producer,
+      );
+      captureTraceabilityExecution(
+        runtime,
+        guardTerminal.moduleResult,
+        guardTerminal.producer,
+      );
+      return guardTerminal.moduleResult;
+    }
+
 
     if (resolution.mode === "single") {
       return executeSingle(runtime);
@@ -2657,6 +3056,7 @@ export function createModuleRegistry({
           invocationSnapshot,
           stepResult.moduleResult,
         );
+        assertAdapterOutcomeNotGuardOwned(runtime, moduleResult);
         if (
           plan.stepDefinition.kind !== "terminal" &&
           !resolution.operationDefinition.adapterChain.earlyTerminalOutcomes.includes(

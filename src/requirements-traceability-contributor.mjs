@@ -9,7 +9,12 @@ const ARCHITECTURE_MODULE = Object.freeze({
   id: "architecture-design",
   version: "0.1.0",
 });
+const WORK_BREAKDOWN_MODULE = Object.freeze({
+  id: "work-breakdown",
+  version: "0.1.0",
+});
 const CANDIDATE_OUTCOMES = new Set(["drafted", "change_set_drafted"]);
+const WORK_BREAKDOWN_OBSERVER_OUTCOMES = new Set(["decomposed"]);
 const CONTROL_OUTCOMES = new Set([
   "needs_clarification",
   "unable_to_proceed",
@@ -70,6 +75,18 @@ function isModule(context, expected) {
     module?.id === expected.id &&
     module.version === expected.version &&
     (expected.operation === undefined || module.operation === expected.operation)
+  );
+}
+
+function observesApprovedRequirements(context) {
+  const module = context?.invocation?.module;
+  return (
+    isModule(context, ARCHITECTURE_MODULE) ||
+    (isModule(context, WORK_BREAKDOWN_MODULE) &&
+      new Set(["establish-breakdown", "decompose-change"]).has(
+        module?.operation,
+      ) &&
+      hasOutcome(context, WORK_BREAKDOWN_OBSERVER_OUTCOMES))
   );
 }
 
@@ -303,7 +320,7 @@ function selectApprovedInputs(context) {
     requirements.value.kind !== "RequirementsBaseline" ||
     overview.value.kind !== "ProjectOverviewBaseline"
   ) {
-    fail("ArchitectureDesign inputs do not contain the approved baseline pair");
+    fail("module inputs do not contain the approved requirements baseline pair");
   }
   return {
     requirements,
@@ -530,7 +547,7 @@ async function projectCandidate(context) {
 }
 
 async function projectApprovedBaseline(context) {
-  if (!isModule(context, ARCHITECTURE_MODULE)) {
+  if (!observesApprovedRequirements(context)) {
     fail("baseline observer called for a nonmatching execution");
   }
   return projectSelected(context, selectApprovedInputs(context));
@@ -568,7 +585,7 @@ export function createRequirementsBaselineObserverContributor() {
   return Object.freeze({
     metadata: deepFreeze({ id: "devrelay.requirements-baseline-observer", version: "1.0.0" }),
     match: (context) =>
-      isModule(context, ARCHITECTURE_MODULE) &&
+      observesApprovedRequirements(context) &&
       hasLoaded(context, "loadedInputs", "requirements-baseline") &&
       hasLoaded(context, "loadedInputs", "project-overview-baseline"),
     scope: "requirements/baseline",

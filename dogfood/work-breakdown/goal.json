@@ -1,0 +1,37 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-work-breakdown-module-v1",
+  "statement": "Build DevRelay's WorkBreakdown module through the released RequirementsGathering and ArchitectureDesign workflow so approved scope becomes a complete set of bounded, traceable, independently executable and verifiable work-item drafts without executing or building code.",
+  "objectives": [
+    "Expose one WorkBreakdown module with establish-breakdown and decompose-change operations.",
+    "Route from the presence of an approved WorkBreakdownBaseline rather than model or adapter discretion.",
+    "Use configured, replaceable WorkBreakdown adapters with Spec Kit and OpenSpec as defaults rather than operation-specific Core branches.",
+    "Emit one canonical WorkBreakdownDraft or WorkBreakdownChangeSetDraft containing discrete WorkItemDrafts and complete coverage dispositions.",
+    "Detect baseline or repository drift before adapter invocation.",
+    "Project validated planning relationships into TraceabilityGraph through a trusted contributor."
+  ],
+  "constraints": [
+    "WorkBreakdown consumes approved requirements, project-overview, architecture, contract, repository, and traceability context through immutable references.",
+    "Adapters may propose domain references but cannot access or mutate TraceabilityGraph.",
+    "WorkBreakdown proposes dependency hints; WorkDependencyAnalysis alone owns the authoritative dependency DAG.",
+    "Assignment, ownership, estimates, schedules, execution status, produced changes, and completion evidence remain downstream.",
+    "WorkBreakdown never executes work, writes implementation code, or claims planned work has been completed.",
+    "The first implementation remains a small deterministic module slice, not a general workflow platform."
+  ],
+  "acceptanceCriteria": [
+    "No WorkBreakdownBaseline selects establish-breakdown for either greenfield or existing projects; an approved baseline plus ApprovedChangePackage selects decompose-change.",
+    "Every baseline, disposition, repository snapshot, capability catalog, and approved change input is exact and content-bound.",
+    "Baseline or repository drift returns baseline_drift with diagnostics before adapter execution and no candidate output.",
+    "A successful operation emits exactly one WorkBreakdownDraft or WorkBreakdownChangeSetDraft with bounded WorkItemDrafts, mandatory coverage dispositions, dependency hints, and subordinate native artifacts.",
+    "Every work item carries typed approved-scope references, a verification plan, required evidence, and capabilities selected from the pinned provider-neutral catalog.",
+    "The WorkBreakdown Gate rejects unscoped work, uncovered authorized scope, and invalid source or traceability references.",
+    "A trusted contributor derives only approved planning-edge types and Core validates and atomically merges the update with a complete merge proof.",
+    "No WorkBreakdown output contains an authoritative dependency DAG, assignment, schedule, execution, code change, completion claim, or inverse traceability edge."
+  ],
+  "assumptions": [
+    "WorkBreakdown 0.1.0 has not been published and can be introduced as a new exact module contract.",
+    "The configured OpenSpec chat bridge records this requirements run but does not claim OpenSpec CLI execution.",
+    "A stable WorkItemDraft ID is required for source references, coverage, and later dependency analysis."
+  ]
+}

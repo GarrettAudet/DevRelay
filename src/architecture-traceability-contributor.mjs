@@ -1,7 +1,12 @@
 import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 
 const MODULE = Object.freeze({ id: "architecture-design", version: "0.1.0" });
+const WORK_BREAKDOWN_MODULE = Object.freeze({
+  id: "work-breakdown",
+  version: "0.1.0",
+});
 const SUCCESS_OUTCOMES = new Set(["baseline_drafted", "change_set_drafted"]);
+const WORK_BREAKDOWN_OBSERVER_OUTCOMES = new Set(["decomposed"]);
 const CONTROL_OUTCOMES = new Set([
   "needs_clarification",
   "unable_to_proceed",
@@ -68,6 +73,15 @@ function sameModule(context) {
   );
 }
 
+function isWorkBreakdownModule(context) {
+  const module = context?.invocation?.module;
+  return (
+    module?.id === WORK_BREAKDOWN_MODULE.id &&
+    module.version === WORK_BREAKDOWN_MODULE.version &&
+    new Set(["establish-breakdown", "decompose-change"]).has(module.operation)
+  );
+}
+
 function hasOutcome(context, outcomes) {
   return (
     context?.moduleResult?.status === "completed" &&
@@ -94,6 +108,11 @@ function oneLoaded(context, group, port) {
     fail(`${group}.${port} does not contain a valid loaded artifact`);
   }
   return loaded;
+}
+
+function hasLoaded(context, group, port) {
+  const entries = context?.[group]?.[port];
+  return Array.isArray(entries) && entries.length === 1;
 }
 
 function pointerSegment(value) {
@@ -324,20 +343,10 @@ function addUniqueNode(nodes, node) {
   nodes.set(key, existing ?? node);
 }
 
-async function projectArchitecture(context) {
-  if (!sameModule(context) || !hasOutcome(context, SUCCESS_OUTCOMES)) {
-    fail("candidate projector called for a nonmatching execution");
-  }
-  const candidate = selectCandidate(context);
-  const requirements = oneLoaded(
-    context,
-    "loadedInputs",
-    "requirements-baseline",
-  );
-  if (requirements.value.kind !== "RequirementsBaseline") {
-    fail("ArchitectureDesign input is not a RequirementsBaseline");
-  }
-
+async function projectSelectedArchitecture(
+  context,
+  { candidate, requirements, requirementsField, traceability },
+) {
   const nodes = new Map();
   const edges = new Map();
   const targetEndpoints = new Map();
@@ -345,10 +354,6 @@ async function projectArchitecture(context) {
   addUniqueNode(nodes, artifactNode(candidate));
   addUniqueNode(nodes, artifactNode(requirements));
 
-  const requirementsField =
-    candidate.value.kind === "ArchitectureDraft"
-      ? "requirementsBaseline"
-      : "targetRequirementsBaseline";
   relate(
     edges,
     "derived-from",
@@ -621,70 +626,87 @@ async function projectArchitecture(context) {
     relate(edges, "contains", tdEndpoint, semanticEndpoint("architecture-constraint", constraintId), "The technical design contains this architecture constraint.", technical.loaded, pointer(technical.pointerBase, "constraintIds", position), constraintId);
   }
 
-  const tracedTargets = new Set();
-  for (const [tracePosition, trace] of candidate.value.traceability.entries()) {
-    if (trace.disposition === "no-architecture-impact") {
-      const stableId = `NO-ARCHITECTURE-IMPACT-${trace.requirementId}`;
-      const tracePointer = pointer("/traceability", tracePosition);
-      addUniqueNode(
-        nodes,
-        semanticNode(
-          "architecture-change",
-          stableId,
-          `No architecture impact for ${trace.requirementId}`,
+  if (Array.isArray(traceability)) {
+    const tracedTargets = new Set();
+    for (const [tracePosition, trace] of traceability.entries()) {
+      if (trace.disposition === "no-architecture-impact") {
+        const stableId = `NO-ARCHITECTURE-IMPACT-${trace.requirementId}`;
+        const tracePointer = pointer("/traceability", tracePosition);
+        addUniqueNode(
+          nodes,
+          semanticNode(
+            "architecture-change",
+            stableId,
+            `No architecture impact for ${trace.requirementId}`,
+            candidate,
+            tracePointer,
+            trace,
+            { disposition: trace.disposition, rationale: trace.rationale },
+          ),
+        );
+        relate(
+          edges,
+          "contains",
+          artifactEndpoint(candidate.ref),
+          semanticEndpoint("architecture-change", stableId),
+          "The architecture candidate records this explicit no-impact disposition.",
           candidate,
           tracePointer,
           trace,
-          { disposition: trace.disposition, rationale: trace.rationale },
-        ),
-      );
-      relate(
-        edges,
-        "contains",
-        artifactEndpoint(candidate.ref),
-        semanticEndpoint("architecture-change", stableId),
-        "The architecture candidate records this explicit no-impact disposition.",
-        candidate,
-        tracePointer,
-        trace,
-      );
-      relate(
-        edges,
-        "designed-by",
-        requirementEndpoint(trace.requirementId),
-        semanticEndpoint("architecture-change", stableId),
-        trace.rationale,
-        candidate,
-        tracePointer,
-        trace,
-      );
-      continue;
-    }
-    for (const [targetPosition, target] of trace.targets.entries()) {
-      const mappedKind = TARGET_KIND[target.kind];
-      const endpoint = targetEndpoints.get(targetKey(target.kind, target.id));
-      if (!mappedKind || !endpoint) {
-        fail(`traceability references unknown target ${target.kind}:${target.id}`);
+        );
+        relate(
+          edges,
+          "designed-by",
+          requirementEndpoint(trace.requirementId),
+          semanticEndpoint("architecture-change", stableId),
+          trace.rationale,
+          candidate,
+          tracePointer,
+          trace,
+        );
+        continue;
       }
-      const traceKey = `${trace.requirementId}\u0000${targetKey(target.kind, target.id)}`;
-      tracedTargets.add(traceKey);
-      relate(
-        edges,
-        "designed-by",
-        requirementEndpoint(trace.requirementId),
-        endpoint,
-        trace.rationale,
-        candidate,
-        pointer("/traceability", tracePosition, "targets", targetPosition),
-        target,
-        citations.get(traceKey) ?? [],
-      );
+      for (const [targetPosition, target] of trace.targets.entries()) {
+        const mappedKind = TARGET_KIND[target.kind];
+        const endpoint = targetEndpoints.get(targetKey(target.kind, target.id));
+        if (!mappedKind || !endpoint) {
+          fail(`traceability references unknown target ${target.kind}:${target.id}`);
+        }
+        const traceKey = `${trace.requirementId}\u0000${targetKey(target.kind, target.id)}`;
+        tracedTargets.add(traceKey);
+        relate(
+          edges,
+          "designed-by",
+          requirementEndpoint(trace.requirementId),
+          endpoint,
+          trace.rationale,
+          candidate,
+          pointer("/traceability", tracePosition, "targets", targetPosition),
+          target,
+          citations.get(traceKey) ?? [],
+        );
+      }
     }
-  }
-  for (const citationKey of citations.keys()) {
-    if (!tracedTargets.has(citationKey)) {
+    for (const citationKey of citations.keys()) {
+      if (!tracedTargets.has(citationKey)) {
+        const [requirementId, traceKind, targetId] = citationKey.split("\u0000");
+        fail(`sourceRequirementIds citation ${requirementId} -> ${traceKind}:${targetId} is absent from exhaustive traceability`);
+      }
+    }
+  } else {
+    for (const [citationKey, sourceLocators] of citations.entries()) {
       const [requirementId, traceKind, targetId] = citationKey.split("\u0000");
-      fail(`sourceRequirementIds citation ${requirementId} -> ${traceKind}:${targetId} is absent from exhaustive traceability`);
+      const endpoint = targetEndpoints.get(targetKey(traceKind, targetId));
+      if (!endpoint) {
+        fail(`approved baseline citation references unknown target ${traceKind}:${targetId}`);
+      }
+      addEdge(edges, {
+        kind: "designed-by",
+        source: requirementEndpoint(requirementId),
+        target: endpoint,
+        rationale: "The approved architecture baseline declares this target as driven by the approved requirement.",
+        sourceLocators,
+      });
     }
   }
 
@@ -693,6 +715,60 @@ async function projectArchitecture(context) {
     nodes: [...nodes.values()].sort((left, right) => assertionKey(left).localeCompare(assertionKey(right), "en")),
     edges: [...edges.values()].sort((left, right) => assertionKey(left).localeCompare(assertionKey(right), "en")),
   };
+}
+
+async function projectArchitecture(context) {
+  if (!sameModule(context) || !hasOutcome(context, SUCCESS_OUTCOMES)) {
+    fail("candidate projector called for a nonmatching execution");
+  }
+  const candidate = selectCandidate(context);
+  const requirements = oneLoaded(
+    context,
+    "loadedInputs",
+    "requirements-baseline",
+  );
+  if (requirements.value.kind !== "RequirementsBaseline") {
+    fail("ArchitectureDesign input is not a RequirementsBaseline");
+  }
+  return projectSelectedArchitecture(context, {
+    candidate,
+    requirements,
+    requirementsField:
+      candidate.value.kind === "ArchitectureDraft"
+        ? "requirementsBaseline"
+        : "targetRequirementsBaseline",
+    traceability: candidate.value.traceability,
+  });
+}
+
+async function projectApprovedBaseline(context) {
+  if (
+    !isWorkBreakdownModule(context) ||
+    !hasOutcome(context, WORK_BREAKDOWN_OBSERVER_OUTCOMES)
+  ) {
+    fail("approved baseline observer called for a nonmatching execution");
+  }
+  const baseline = oneLoaded(context, "loadedInputs", "architecture-baseline");
+  const requirements = oneLoaded(
+    context,
+    "loadedInputs",
+    "requirements-baseline",
+  );
+  if (
+    baseline.value.kind !== "ArchitectureBaseline" ||
+    requirements.value.kind !== "RequirementsBaseline"
+  ) {
+    fail("WorkBreakdown inputs do not contain approved architecture and requirements baselines");
+  }
+  if (!sameRef(baseline.value.requirementsBaseline, requirements.ref)) {
+    fail("ArchitectureBaseline does not bind the exact loaded RequirementsBaseline");
+  }
+  return projectSelectedArchitecture(context, {
+    candidate: baseline,
+    requirements,
+    requirementsField: "requirementsBaseline",
+    traceability: undefined,
+  });
 }
 
 async function projectControl(context) {
@@ -723,6 +799,29 @@ export function createArchitectureTraceabilityContributor() {
   });
 }
 
+export function createArchitectureBaselineObserverContributor() {
+  return Object.freeze({
+    metadata: deepFreeze({
+      id: "devrelay.architecture-baseline-observer",
+      version: "1.0.0",
+    }),
+    match: (context) =>
+      isWorkBreakdownModule(context) &&
+      hasOutcome(context, WORK_BREAKDOWN_OBSERVER_OUTCOMES) &&
+      hasLoaded(context, "loadedInputs", "architecture-baseline") &&
+      hasLoaded(context, "loadedInputs", "requirements-baseline"),
+    scope: "architecture/baseline",
+    authority: "approved",
+    ownership: ownership(
+      "architecture/baseline",
+      "approved",
+      ARCHITECTURE_NODE_KINDS,
+      ARCHITECTURE_EDGE_KINDS,
+    ),
+    project: projectApprovedBaseline,
+  });
+}
+
 export function createArchitectureControlTraceabilityContributor() {
   return Object.freeze({
     metadata: deepFreeze({ id: "devrelay.architecture-control", version: "1.0.0" }),
@@ -740,8 +839,10 @@ export function createArchitectureControlTraceabilityContributor() {
 }
 
 export const architectureTraceabilityContributor = createArchitectureTraceabilityContributor();
+export const architectureBaselineObserverContributor = createArchitectureBaselineObserverContributor();
 export const architectureControlTraceabilityContributor = createArchitectureControlTraceabilityContributor();
 export const architectureTraceabilityContributors = Object.freeze([
   architectureTraceabilityContributor,
+  architectureBaselineObserverContributor,
   architectureControlTraceabilityContributor,
 ]);

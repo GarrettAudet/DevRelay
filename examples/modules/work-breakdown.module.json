@@ -1,0 +1,603 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "work-breakdown",
+    "version": "0.1.0",
+    "description": "Convert exact approved scope into one complete candidate set of bounded, traceable, independently executable and verifiable work items without executing the work."
+  },
+  "routing": {
+    "stateSchema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+    "discriminator": "/state",
+    "rules": [
+      {
+        "value": "unbaselined",
+        "operation": "establish-breakdown",
+        "reasonCode": "WORK_BREAKDOWN_BASELINE_ABSENT"
+      },
+      {
+        "value": "baselined",
+        "operation": "decompose-change",
+        "reasonCode": "WORK_BREAKDOWN_BASELINE_PRESENT"
+      }
+    ],
+    "stateInput": "project-work-breakdown-state",
+    "decisionInput": "routing-decision"
+  },
+  "operations": [
+    {
+      "id": "establish-breakdown",
+      "description": "Create one WorkBreakdownDraft from exact approved project baselines and an explicit repository disposition.",
+      "adapterExecution": "effect",
+      "inputs": [
+        {
+          "name": "project-work-breakdown-state",
+          "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-work-breakdown-state+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "routing-decision",
+          "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.module-route-decision+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "requirements-baseline",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "architecture-baseline",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "contract-disposition",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.contract-disposition+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "capability-catalog",
+          "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.capability-catalog+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "repository-context",
+          "variants": [
+            {
+              "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+              "mediaTypes": [
+                "application/vnd.devrelay.repository-snapshot+json"
+              ]
+            },
+            {
+              "schema": "https://devrelay.dev/artifacts/approved-not-applicable/v1",
+              "mediaTypes": [
+                "application/vnd.devrelay.approved-not-applicable+json"
+              ]
+            }
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "clarification-request",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-responses",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-clarification-response-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-clarification-response-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "revision-request",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-revision-request/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-revision-request+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "work-breakdown-draft",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-requests",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "inputRules": [
+        {
+          "ifPresent": "clarification-request",
+          "require": [
+            "clarification-responses",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "clarification-responses",
+          "require": [
+            "clarification-request",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "continuation",
+          "require": [
+            "clarification-request",
+            "clarification-responses"
+          ]
+        },
+        {
+          "ifPresent": "revision-request",
+          "require": [],
+          "forbid": [
+            "clarification-request",
+            "clarification-responses",
+            "continuation"
+          ]
+        }
+      ],
+      "outcomes": [
+        "decomposed",
+        "needs_clarification",
+        "baseline_drift",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "decomposed": {
+          "status": "completed",
+          "requiredInputs": [
+            "project-work-breakdown-state",
+            "routing-decision",
+            "requirements-baseline",
+            "project-overview-baseline",
+            "architecture-baseline",
+            "contract-disposition",
+            "capability-catalog",
+            "repository-context"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "work-breakdown-draft"
+          ],
+          "allowedOutputs": [
+            "work-breakdown-draft"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "work-breakdown/contract-validation",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "work-breakdown-draft"
+            },
+            {
+              "kind": "work-breakdown/source-closure",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "work-breakdown-draft"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "allowedOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": false
+        },
+        "baseline_drift": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "work-breakdown/contract-validation",
+        "work-breakdown/source-closure"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "decompose-change",
+      "description": "Create one WorkBreakdownChangeSetDraft against the exact current WorkBreakdownBaseline and approved change package.",
+      "adapterExecution": "effect",
+      "inputs": [
+        {
+          "name": "project-work-breakdown-state",
+          "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-work-breakdown-state+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "routing-decision",
+          "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.module-route-decision+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "requirements-baseline",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "architecture-baseline",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "contract-disposition",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.contract-disposition+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "capability-catalog",
+          "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.capability-catalog+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "current-work-breakdown-baseline",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "approved-change-package",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.approved-change-package+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "current-repository-snapshot",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.repository-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "clarification-request",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-responses",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-clarification-response-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-clarification-response-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "revision-request",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-revision-request/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-revision-request+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "work-breakdown-change-set-draft",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-change-set-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-change-set-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "clarification-requests",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-clarification-request-set/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-clarification-request-set+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "continuation",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-continuation/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-continuation+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "inputRules": [
+        {
+          "ifPresent": "clarification-request",
+          "require": [
+            "clarification-responses",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "clarification-responses",
+          "require": [
+            "clarification-request",
+            "continuation"
+          ]
+        },
+        {
+          "ifPresent": "continuation",
+          "require": [
+            "clarification-request",
+            "clarification-responses"
+          ]
+        },
+        {
+          "ifPresent": "revision-request",
+          "require": [],
+          "forbid": [
+            "clarification-request",
+            "clarification-responses",
+            "continuation"
+          ]
+        }
+      ],
+      "outcomes": [
+        "decomposed",
+        "needs_clarification",
+        "baseline_drift",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "decomposed": {
+          "status": "completed",
+          "requiredInputs": [
+            "project-work-breakdown-state",
+            "routing-decision",
+            "requirements-baseline",
+            "project-overview-baseline",
+            "architecture-baseline",
+            "contract-disposition",
+            "capability-catalog",
+            "current-work-breakdown-baseline",
+            "approved-change-package",
+            "current-repository-snapshot"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "work-breakdown-change-set-draft"
+          ],
+          "allowedOutputs": [
+            "work-breakdown-change-set-draft"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "work-breakdown/contract-validation",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "work-breakdown-change-set-draft"
+            },
+            {
+              "kind": "work-breakdown/source-closure",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "work-breakdown-change-set-draft"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "allowedOutputs": [
+            "clarification-requests",
+            "continuation"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": false
+        },
+        "baseline_drift": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "work-breakdown/contract-validation",
+        "work-breakdown/source-closure"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    }
+  ]
+}

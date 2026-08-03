@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay is a small deterministic runner for composable software-engineering modules. RequirementsGathering, ArchitectureDesign, and the TraceabilityGraph sidecar are release-ready; WorkBreakdown is now being defined through a normal interactive RequirementsGathering run before ArchitectureDesign and implementation.",
+  "stakeholders": [
+    "DevRelay maintainers",
+    "Workflow authors",
+    "Module and adapter authors",
+    "IDE and orchestration hosts",
+    "Work reviewers and downstream execution systems"
+  ],
+  "domainConstraints": [
+    "DevRelay Core owns state routing, exact adapter resolution, artifact validation, checkpoints, and progression.",
+    "Modules own provider-neutral semantic contracts; adapters own bounded native-tool capabilities.",
+    "Adapters never receive TraceabilityGraph and never author graph assertions.",
+    "Artifacts and evidence cross boundaries; conversational memory and provider session state do not.",
+    "Candidate and approved observations remain distinct; gates own baseline promotion.",
+    "The runtime is not a coding agent, model wrapper, marketplace, or distributed scheduler."
+  ],
+  "conventions": [
+    "Use exact module and adapter versions with no latest aliases.",
+    "Use immutable SHA-256-bound artifact references at runtime boundaries.",
+    "Use JSON Schema draft 2020-12 and Ajv validation.",
+    "Use lowercase kebab-case module, operation, stage, and port identifiers.",
+    "Keep primary outputs provider-neutral and preserve native files as subordinate attachments.",
+    "Use underscore-separated machine outcome identifiers within the existing ModuleDefinition contract.",
+    "Prove generic behavior with conformance fixtures, negative tests, replay, and Core special-case scans."
+  ],
+  "sourceRefs": []
+}

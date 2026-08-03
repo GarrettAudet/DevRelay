@@ -231,17 +231,24 @@ const requiredPackageFiles = [
   "contracts/architecture-design-artifacts.schema.json",
   "contracts/requirements-gathering-artifacts.schema.json",
   "contracts/traceability-graph-artifacts.schema.json",
+  "contracts/work-breakdown-artifacts.schema.json",
   "docs/architecture-design.md",
   "docs/requirements-gathering.md",
   "docs/traceability-graph.md",
+  "docs/work-breakdown.md",
   "examples/modules/architecture-design.module.json",
   "examples/modules/requirements-gathering.module.json",
+  "examples/modules/work-breakdown.module.json",
   "examples/plugins/github-spec-kit.plugin.json",
   "examples/plugins/madr.plugin.json",
   "examples/plugins/openspec-design.plugin.json",
   "examples/plugins/openspec.plugin.json",
   "examples/plugins/spec-kit-plan.plugin.json",
   "examples/plugins/structurizr.plugin.json",
+  "examples/plugins/openspec-tasks.plugin.json",
+  "examples/plugins/spec-kit-tasks.plugin.json",
+  "openspec/schemas/devrelay-work-breakdown/schema.yaml",
+  "openspec/schemas/devrelay-work-breakdown/templates/tasks.md",
   "src/architecture-traceability-contributor.mjs",
   "src/index.mjs",
   "src/module-execution-record-validator.mjs",
@@ -251,6 +258,10 @@ const requiredPackageFiles = [
   "src/traceability-checkpoint-store.mjs",
   "src/traceability-graph.mjs",
   "src/traceability-runtime-contracts.mjs",
+  "src/work-breakdown-artifact-validator.mjs",
+  "src/work-breakdown-gate.mjs",
+  "src/work-breakdown-runtime-contracts.mjs",
+  "src/work-breakdown-traceability-contributor.mjs",
 ];
 
 function assertPackageMetadata(packageDocument) {
@@ -351,6 +362,10 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
     'if (typeof api.requirementsRuntimeArtifactContracts !== "function") throw new Error("missing RequirementsGathering contracts export");',
     'if (typeof api.architectureRuntimeArtifactContracts !== "function") throw new Error("missing ArchitectureDesign contracts export");',
+    'if (typeof api.workBreakdownRuntimeArtifactContracts !== "function") throw new Error("missing WorkBreakdown contracts export");',
+    'if (typeof api.validateWorkBreakdownCandidateAgainstInputs !== "function") throw new Error("missing WorkBreakdown candidate validator export");',
+    'if (typeof api.applyWorkBreakdownChangeSet !== "function") throw new Error("missing WorkBreakdown change application export");',
+    'if (typeof api.validateWorkBreakdownGatePromotion !== "function") throw new Error("missing WorkBreakdown Gate export");',
     'if (typeof api.createTraceabilityGraphService !== "function") throw new Error("missing TraceabilityGraph service export");',
     'if (typeof api.createInMemoryTraceabilityStore !== "function") throw new Error("missing TraceabilityGraph store export");',
     'if (typeof api.createInMemoryTraceabilityCheckpointStore !== "function") throw new Error("missing traceability checkpoint store export");',
@@ -358,7 +373,8 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     'if (typeof api.queryTraceabilityGraph !== "function") throw new Error("missing TraceabilityGraph query export");',
     'if (!Array.isArray(api.requirementsTraceabilityContributors)) throw new Error("missing Requirements traceability contributors export");',
     'if (!Array.isArray(api.architectureTraceabilityContributors)) throw new Error("missing Architecture traceability contributors export");',
-    'if (api.TRACEABILITY_VOCABULARY.version !== "1.0.0") throw new Error("unexpected traceability vocabulary");',
+    'if (!Array.isArray(api.workBreakdownTraceabilityContributors)) throw new Error("missing WorkBreakdown traceability contributors export");',
+    'if (api.TRACEABILITY_VOCABULARY.version !== "1.1.0") throw new Error("unexpected traceability vocabulary");',
     'const { createRequire } = await import("node:module");',
     "const require = createRequire(import.meta.url);",
     `require.resolve(${JSON.stringify(
@@ -366,6 +382,9 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     )});`,
     `require.resolve(${JSON.stringify(
       `${packageName}/modules/architecture-design.module.json`,
+    )});`,
+    `require.resolve(${JSON.stringify(
+      `${packageName}/modules/work-breakdown.module.json`,
     )});`,
   ].join("\n");
   run(process.execPath, ["--input-type=module", "--eval", smokeProgram], {

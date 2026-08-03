@@ -1,0 +1,520 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkBreakdownDraft",
+  "draftId": "WBD-AUTH-001",
+  "operation": "establish-breakdown",
+  "inputBindings": [
+    {
+      "role": "project-work-breakdown-state",
+      "artifact": {
+        "artifactId": "PWBS-AUTH-UNBASELINED-001",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:8d7bc78a65357a839db71545bef0ff0e33ca8296cf21c0c218e56123a403d353",
+        "uri": "file:///workspace/.devrelay/artifacts/project-work-breakdown-state-unbaselined-001.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+        "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc",
+        "uri": "file:///workspace/.devrelay/artifacts/project-overview-baseline-001.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+        "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+      }
+    },
+    {
+      "role": "contract-disposition",
+      "artifact": {
+        "artifactId": "CD-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3",
+        "uri": "file:///workspace/.devrelay/artifacts/contract-disposition-auth-001.json"
+      }
+    },
+    {
+      "role": "repository-context",
+      "artifact": {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      }
+    },
+    {
+      "role": "capability-catalog",
+      "artifact": {
+        "artifactId": "CC-WORK-BREAKDOWN-001",
+        "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+        "mediaType": "application/vnd.devrelay.capability-catalog+json",
+        "digest": "sha256:d459c8167b1bdb8db2cc68c13d65538c3775dcd4b57221037be121194bbb1bb4",
+        "uri": "file:///workspace/.devrelay/artifacts/capability-catalog-work-breakdown-001.json"
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "id": "WI-AUTH-CORE",
+      "objective": "Introduce the provider-neutral authentication service boundary and realize the approved authentication contract.",
+      "bounded-scope": {
+        "included": [
+          "Authentication request handling, credential verification orchestration, uniform failure mapping, and successful session establishment."
+        ],
+        "excluded": [
+          "Identity-provider replacement, specialist assignment, scheduling, and work execution."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-AUTH-CORE",
+          "description": "One reviewable authentication service source change that conforms to the approved HTTP contract.",
+          "artifactKind": "source-change"
+        }
+      ],
+      "work-type": "code-change",
+      "acceptance-criterion-refs": [
+        "AC-AUTH-001"
+      ],
+      "architecture-refs": [
+        "EL-AUTH-SERVICE"
+      ],
+      "contract-refs": [
+        "CT-AUTH-HTTP"
+      ],
+      "required-capabilities": [
+        "CAP-CODE"
+      ],
+      "dependency-hints": [],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-AUTH-CORE",
+            "method": "Run the authentication integration test against the approved contract boundary.",
+            "successCriteria": "Valid credentials establish a session and the produced interface behavior conforms to CT-AUTH-HTTP."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "integration-test-report",
+          "description": "Passing authentication integration-test output bound to the produced source change."
+        },
+        {
+          "kind": "contract-conformance-report",
+          "description": "Machine-readable evidence that the realized interface conforms to CT-AUTH-HTTP."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+            "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/0"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+            "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/1"
+        },
+        {
+          "role": "contract-disposition",
+          "artifact": {
+            "artifactId": "CD-AUTH-001",
+            "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+            "mediaType": "application/vnd.devrelay.contract-disposition+json",
+            "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3",
+            "uri": "file:///workspace/.devrelay/artifacts/contract-disposition-auth-001.json"
+          },
+          "jsonPointer": "/contractTargets/0"
+        }
+      ]
+    },
+    {
+      "id": "WI-AUTH-FAILURE-TESTS",
+      "objective": "Add negative authentication tests that prove failure responses do not disclose account existence.",
+      "bounded-scope": {
+        "included": [
+          "Automated comparisons of authentication failures for known and unknown account identifiers."
+        ],
+        "excluded": [
+          "Changes to production identity data or the implementation of the authentication service."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-AUTH-FAILURE-TESTS",
+          "description": "One reviewable negative authentication test suite.",
+          "artifactKind": "test-change"
+        }
+      ],
+      "work-type": "test-change",
+      "acceptance-criterion-refs": [
+        "AC-AUTH-DISCLOSURE-001"
+      ],
+      "architecture-refs": [
+        "EL-AUTH-SERVICE"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-TEST"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-AUTH-CORE",
+          "relation": "after",
+          "rationale": "The negative suite is expected to exercise the service boundary, subject to authoritative dependency analysis.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-AUTH-FAILURE-TESTS",
+            "method": "Execute the negative authentication suite with known and unknown identities.",
+            "successCriteria": "Externally visible response status, body shape, and security-relevant timing classification are indistinguishable."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "security-test-report",
+          "description": "Passing negative-test output comparing known and unknown identity failures."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+            "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/1"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+            "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/1"
+        }
+      ]
+    },
+    {
+      "id": "WI-AUTH-OPERATIONS",
+      "objective": "Define safe authentication telemetry and a bounded operator-readiness check for the identity and client boundaries.",
+      "bounded-scope": {
+        "included": [
+          "Telemetry field policy, credential-redaction expectations, and one operator readiness checklist."
+        ],
+        "excluded": [
+          "Production deployment, on-call scheduling, and implementation of authentication logic."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-AUTH-OPERATIONS",
+          "description": "One authentication operations runbook with safe telemetry and readiness checks.",
+          "artifactKind": "operations-runbook"
+        }
+      ],
+      "work-type": "operational-readiness",
+      "acceptance-criterion-refs": [],
+      "architecture-refs": [
+        "EL-IDENTITY-SOURCE",
+        "EL-CLIENT"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-OPERATIONS"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-AUTH-CORE",
+          "relation": "related",
+          "rationale": "The runbook should reflect the eventual service behavior without asserting an authoritative order.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-AUTH-OPERATIONS",
+            "method": "Review the runbook and telemetry field list against the architecture security intent.",
+            "successCriteria": "The readiness check is executable and no credential material or identity-source internals are logged."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "operational-readiness-review",
+          "description": "Approved runbook review demonstrating safe telemetry and an executable readiness check."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+            "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/2"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+            "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/3"
+        }
+      ]
+    },
+    {
+      "id": "WI-AUTH-PERFORMANCE",
+      "objective": "Provide a repeatable authentication load-test profile for the approved performance criterion.",
+      "bounded-scope": {
+        "included": [
+          "A load-test configuration for 100 concurrent sign-in attempts and deterministic latency reporting."
+        ],
+        "excluded": [
+          "Production capacity changes, deployment scheduling, and service implementation."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-AUTH-PERFORMANCE",
+          "description": "One reviewable authentication load-test configuration.",
+          "artifactKind": "load-test-configuration"
+        }
+      ],
+      "work-type": "infrastructure-change",
+      "acceptance-criterion-refs": [
+        "AC-AUTH-PERFORMANCE-001"
+      ],
+      "architecture-refs": [
+        "EL-AUTH-SYSTEM"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-INFRASTRUCTURE",
+        "CAP-TEST"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-AUTH-CORE",
+          "relation": "after",
+          "rationale": "The profile is expected to exercise an authentication implementation, subject to WorkDependencyAnalysis.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-AUTH-PERFORMANCE",
+            "method": "Run the profile against a representative authentication environment.",
+            "successCriteria": "The report measures 95th-percentile latency under 100 concurrent sign-in attempts and can determine whether the 500 millisecond target passes."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "performance-test-report",
+          "description": "Load-test output containing concurrency, latency distribution, revision, and environment identity."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+            "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/2"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-001",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+            "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/0"
+        }
+      ]
+    }
+  ],
+  "coverageDispositions": [
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-AUTH-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-CORE"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-AUTH-DISCLOSURE-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-FAILURE-TESTS"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-AUTH-PERFORMANCE-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-PERFORMANCE"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-AUTH-SYSTEM",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-PERFORMANCE"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-AUTH-SERVICE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-CORE",
+        "WI-AUTH-FAILURE-TESTS"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-IDENTITY-SOURCE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-OPERATIONS"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-CLIENT",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-OPERATIONS"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-AUTH-HTTP",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-AUTH-CORE"
+      ]
+    }
+  ],
+  "nativeArtifacts": [
+    {
+      "artifactId": "spec-kit-tasks-auth-001",
+      "schema": "https://devrelay.dev/native/spec-kit-tasks/v1",
+      "mediaType": "text/markdown",
+      "digest": "sha256:cce679c3aed6f3eeb780e8ca7a2cca6e63c9be1e5cab19c1bba39bb2df6e9999",
+      "uri": "file:///workspace/specs/auth/tasks.md"
+    }
+  ],
+  "sourceRefs": [
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab",
+        "uri": "file:///workspace/.devrelay/artifacts/requirements-baseline-001.json"
+      },
+      "jsonPointer": "/requirements/acceptanceCriteria"
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489",
+        "uri": "file:///workspace/.devrelay/artifacts/architecture-baseline-001.json"
+      },
+      "jsonPointer": "/sections/architectureModel/content/elements"
+    },
+    {
+      "role": "contract-disposition",
+      "artifact": {
+        "artifactId": "CD-AUTH-001",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3",
+        "uri": "file:///workspace/.devrelay/artifacts/contract-disposition-auth-001.json"
+      },
+      "jsonPointer": "/contractTargets"
+    },
+    {
+      "role": "repository-context",
+      "artifact": {
+        "artifactId": "repository-snapshot-001",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613",
+        "uri": "file:///workspace/.devrelay/artifacts/repository-snapshot-001.json"
+      },
+      "jsonPointer": "/revision"
+    }
+  ]
+}

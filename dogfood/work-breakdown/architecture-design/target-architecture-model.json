@@ -1,0 +1,479 @@
+{
+  "modelId": "MODEL-DEVRELAY-WB-001",
+  "notation": {
+    "name": "C4",
+    "version": "1.0"
+  },
+  "elements": [
+    {
+      "id": "EL-DEVRELAY-SYSTEM",
+      "name": "DevRelay",
+      "type": "software-system",
+      "description": "Deterministic orchestration runtime for composable software-engineering modules.",
+      "responsibilities": [
+        "Progress exact approved artifacts through provider-neutral modules, gates, and trusted traceability."
+      ],
+      "tags": [
+        "System"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-EXTENSIBILITY-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-CORE-NEUTRALITY-001",
+        "NFR-WB-DETERMINISM-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-DEVRELAY-CORE",
+      "name": "Generic Core",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Owns generic registration, state-derived routing, exact adapter resolution, checkpoints, replay, and progression.",
+      "technology": "Node.js",
+      "responsibilities": [
+        "Load exact state and artifact contracts.",
+        "Route without product-specific branches.",
+        "Checkpoint and replay bounded effects and control results."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-EXTENSIBILITY-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-CORE-NEUTRALITY-001",
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-REPLAY-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-DEVRELAY-MODULES",
+      "name": "Released Semantic Modules",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Provider-neutral RequirementsGathering and ArchitectureDesign contracts extended by WorkBreakdown.",
+      "technology": "JSON Schema and JavaScript",
+      "responsibilities": [
+        "Define stable ports, canonical artifacts, outcomes, and gate handoffs."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-DECOMPOSITION-001",
+        "US-WB-EXTENSIBILITY-001",
+        "NFR-WB-CORE-NEUTRALITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-DEVRELAY-GRAPH",
+      "name": "TraceabilityGraph",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Core-owned sidecar for trusted lifecycle traceability contributions and atomic merge proofs.",
+      "technology": "Provider-neutral graph contract",
+      "responsibilities": [
+        "Replay approved upstream observer contributions.",
+        "Keep candidate and approved authority distinct.",
+        "Validate and atomically merge registered contributor updates."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-ATOMICITY-001",
+        "NFR-WB-PROVENANCE-001",
+        "NFR-WB-REPLAY-001",
+        "CON-WB-ADAPTER-TRUST-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-MODULE",
+      "name": "WorkBreakdown Module",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "Converts exact approved scope into bounded, traceable, independently executable and verifiable work-item candidates.",
+      "technology": "JSON Schema and JavaScript",
+      "responsibilities": [
+        "Own establish-breakdown and decompose-change semantic contracts.",
+        "Normalize configured planning adapter output.",
+        "Return candidates without executing work."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-DECOMPOSITION-001",
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-DEPENDENCY-BOUNDARY-001",
+        "CON-WB-DOWNSTREAM-BOUNDARY-001",
+        "CON-WB-NO-EXECUTION-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-VALIDATORS",
+      "name": "Context-neutral Upstream Validators",
+      "type": "component",
+      "parentId": "EL-WB-MODULE",
+      "description": "Composes schema and semantic validators for requirements, project overview, architecture, contract, repository, and capability inputs without reusing ArchitectureDesign operation-specific runtime contracts.",
+      "technology": "JavaScript validation contracts",
+      "responsibilities": [
+        "Validate exact upstream artifacts in a WorkBreakdown-neutral context.",
+        "Enforce approved absence unions and cross-artifact lineage."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-ADAPTER-PORT",
+      "name": "Configured Planning Adapter Port",
+      "type": "component",
+      "parentId": "EL-WB-MODULE",
+      "description": "Provider-neutral port for one bounded work-decomposition capability selected by configuration.",
+      "technology": "Agent-command bridge",
+      "responsibilities": [
+        "Invoke Spec Kit tasks, OpenSpec tasks, or a compatible planner through the same canonical contract.",
+        "Allow read and planning-artifact output only."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-EXTENSIBILITY-001",
+        "NFR-WB-CORE-NEUTRALITY-001",
+        "CON-WB-ADAPTER-TRUST-001",
+        "CON-WB-NO-EXECUTION-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-PREFLIGHT",
+      "name": "Registered WorkBreakdown Preflight",
+      "type": "component",
+      "parentId": "EL-DEVRELAY-CORE",
+      "description": "Generic guard registered on the loaded ProjectWorkBreakdownState artifact contract with its own persisted producer identity.",
+      "technology": "Registered artifact-contract guard",
+      "responsibilities": [
+        "Detect exact baseline, disposition, revision, and tree drift before adapter entry.",
+        "Schema-validate baseline_drift results.",
+        "Checkpoint and replay the control result without adapter entry."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-REPLAY-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-GATE",
+      "name": "WorkBreakdown Gate",
+      "type": "component",
+      "parentId": "EL-WB-MODULE",
+      "description": "Derives the authoritative coverage universe, resolves evidence, owns no-work approval, and promotes approved planned work.",
+      "technology": "Deterministic gate policy",
+      "responsibilities": [
+        "Reject unscoped or uncovered work.",
+        "Approve or reject already-satisfied and no-work-required dispositions.",
+        "Atomically promote a baseline or apply an exact typed delta."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-DECOMPOSITION-001",
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-DEPENDENCY-BOUNDARY-001",
+        "CON-WB-DOWNSTREAM-BOUNDARY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-CONTRIBUTOR",
+      "name": "WorkBreakdown Traceability Contributor",
+      "type": "component",
+      "parentId": "EL-DEVRELAY-GRAPH",
+      "description": "Trusted projector of validated candidate work items into limited planning relationships.",
+      "technology": "Trusted versioned contributor",
+      "responsibilities": [
+        "Create only approved planning edge kinds.",
+        "Preserve candidate authority until gate activation.",
+        "Never create inverse or factual completion edges."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-ATOMICITY-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-ADAPTER-TRUST-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-OBSERVERS",
+      "name": "Approved Baseline Observers",
+      "type": "component",
+      "parentId": "EL-DEVRELAY-GRAPH",
+      "description": "Replays approved RequirementsBaseline, ArchitectureBaseline, and applicable ContractBaseline graph contributions before WorkBreakdown candidate edges.",
+      "technology": "Trusted observer contracts",
+      "responsibilities": [
+        "Materialize approved upstream endpoints and authority.",
+        "Forbid contract endpoints and contract refs when ApprovedNotApplicable is selected."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-PROVENANCE-001",
+        "NFR-WB-REPLAY-001",
+        "CON-WB-ADAPTER-TRUST-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "EL-WB-DOWNSTREAM",
+      "name": "Downstream Work Modules",
+      "type": "container",
+      "parentId": "EL-DEVRELAY-SYSTEM",
+      "description": "WorkDependencyAnalysis, SpecialistAssignment, WorkExecution, and Verification own ordering, assignment, execution, and proof.",
+      "technology": "Future provider-neutral modules",
+      "responsibilities": [
+        "Validate the dependency DAG.",
+        "Assign specialists.",
+        "Perform work and collect completion evidence."
+      ],
+      "tags": [
+        "Container"
+      ],
+      "properties": {},
+      "sourceRequirementIds": [
+        "CON-WB-DEPENDENCY-BOUNDARY-001",
+        "CON-WB-DOWNSTREAM-BOUNDARY-001",
+        "CON-WB-NO-EXECUTION-001"
+      ],
+      "sourceRefs": []
+    }
+  ],
+  "relationships": [
+    {
+      "id": "REL-CORE-MODULES",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-DEVRELAY-MODULES",
+      "description": "Executes registered provider-neutral module contracts through exact configured bindings.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-EXTENSIBILITY-001",
+        "NFR-WB-CORE-NEUTRALITY-001",
+        "NFR-WB-DETERMINISM-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-CORE-GRAPH",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-DEVRELAY-GRAPH",
+      "description": "Submits checkpointed updates from trusted contributors.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-ATOMICITY-001",
+        "NFR-WB-PROVENANCE-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-CORE-WB-ROUTE",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-WB-MODULE",
+      "description": "Derives establish-breakdown or decompose-change from loaded trusted project state.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "NFR-WB-CORE-NEUTRALITY-001",
+        "NFR-WB-DETERMINISM-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-WB-VALIDATORS",
+      "sourceElementId": "EL-WB-MODULE",
+      "targetElementId": "EL-WB-VALIDATORS",
+      "description": "Validates immutable upstream baselines, dispositions, repository context, and capability catalog.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-CORE-WB-PREFLIGHT",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-WB-PREFLIGHT",
+      "description": "Runs the registered guard after state loading and before any adapter effect.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-CORE-NEUTRALITY-001",
+        "NFR-WB-DETERMINISM-001",
+        "NFR-WB-REPLAY-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-PREFLIGHT-ADAPTER",
+      "sourceElementId": "EL-WB-PREFLIGHT",
+      "targetElementId": "EL-WB-ADAPTER-PORT",
+      "description": "Allows adapter entry only when exact lineage and drift checks pass.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "NFR-WB-DETERMINISM-001",
+        "CON-WB-INPUT-IMMUTABILITY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-ADAPTER-WB",
+      "sourceElementId": "EL-WB-ADAPTER-PORT",
+      "targetElementId": "EL-WB-MODULE",
+      "description": "Returns a bounded native planning artifact normalized into one canonical candidate.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-DECOMPOSITION-001",
+        "US-WB-EXTENSIBILITY-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-ADAPTER-TRUST-001",
+        "CON-WB-NO-EXECUTION-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-WB-GATE",
+      "sourceElementId": "EL-WB-MODULE",
+      "targetElementId": "EL-WB-GATE",
+      "description": "Presents the validated candidate and Core-derived coverage universe for approval.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-DECOMPOSITION-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-DEPENDENCY-BOUNDARY-001",
+        "CON-WB-DOWNSTREAM-BOUNDARY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-GATE-DOWNSTREAM",
+      "sourceElementId": "EL-WB-GATE",
+      "targetElementId": "EL-WB-DOWNSTREAM",
+      "description": "Releases only an approved WorkBreakdownBaseline or applied change set.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-DECOMPOSITION-001",
+        "CON-WB-DEPENDENCY-BOUNDARY-001",
+        "CON-WB-DOWNSTREAM-BOUNDARY-001",
+        "CON-WB-NO-EXECUTION-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-CORE-CONTRIBUTOR",
+      "sourceElementId": "EL-DEVRELAY-CORE",
+      "targetElementId": "EL-WB-CONTRIBUTOR",
+      "description": "Invokes the trusted contributor only for a validated canonical candidate.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-ADAPTER-TRUST-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-OBSERVERS-GRAPH",
+      "sourceElementId": "EL-WB-OBSERVERS",
+      "targetElementId": "EL-DEVRELAY-GRAPH",
+      "description": "Replays approved upstream nodes and authority before candidate work-item assertions.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-PROVENANCE-001",
+        "NFR-WB-REPLAY-001"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "id": "REL-CONTRIBUTOR-GRAPH",
+      "sourceElementId": "EL-WB-CONTRIBUTOR",
+      "targetElementId": "EL-DEVRELAY-GRAPH",
+      "description": "Submits candidate-authority planning edges under the existing implementation horizon.",
+      "interactionStyle": "synchronous",
+      "tags": [],
+      "sourceRequirementIds": [
+        "US-WB-COVERAGE-001",
+        "US-WB-GOVERNANCE-001",
+        "NFR-WB-ATOMICITY-001",
+        "NFR-WB-PROVENANCE-001",
+        "CON-WB-ADAPTER-TRUST-001",
+        "CON-WB-NO-EXECUTION-001"
+      ],
+      "sourceRefs": []
+    }
+  ],
+  "sourceRefs": []
+}

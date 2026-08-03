@@ -2,7 +2,7 @@
 
 ## Supported version
 
-The current supported source release is DevRelay `0.1.x`. Pre-release branches
+The current supported source release is DevRelay `0.3.x`. Pre-release branches
 and older snapshots are not supported security baselines.
 
 ## Reporting a vulnerability
@@ -25,3 +25,20 @@ for this source preview.
 DevRelay contract validation is not a host sandbox. A host remains responsible
 for capability enforcement, process isolation, secret handling, network
 policy, artifact storage, and upstream-tool security.
+
+WorkBreakdown adapters are untrusted planners. They may emit only validated
+domain candidates and cannot approve coverage, mutate TraceabilityGraph, or
+claim implementation or verification. Hosts must authenticate approval
+evidence and enforce configured adapter capabilities; manifest declarations
+are demands, not a sandbox.
+
+Core rejects pure plug-ins for effect-required WorkBreakdown operations and
+rejects adapter-authored guard outcomes. Attached architecture models,
+approved-change graph nodes, and revision candidate/evidence references are
+resolved against exact content-addressed artifacts before adapter entry.
+
+WorkBreakdown promotion accepts only the unforgeable in-process replay receipt
+returned by Core after checkpoint revalidation and a baseline bound to exact
+raw bytes. A plain or cloned `ModuleResult`, candidate, receipt, or baseline
+object is not promotion authority. Cross-process hosts must define a separate
+authenticated receipt format before moving that trust boundary.

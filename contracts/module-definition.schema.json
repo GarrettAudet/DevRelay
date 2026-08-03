@@ -77,6 +77,12 @@
           "minLength": 1,
           "maxLength": 1024
         },
+        "adapterExecution": {
+          "enum": [
+            "pure",
+            "effect"
+          ]
+        },
         "inputs": {
           "type": "array",
           "items": {
@@ -212,8 +218,6 @@
       "additionalProperties": false,
       "required": [
         "name",
-        "schema",
-        "mediaTypes",
         "cardinality",
         "required"
       ],
@@ -225,6 +229,31 @@
         "schema": {
           "type": "string",
           "format": "uri"
+        },
+        "variants": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["schema", "mediaTypes"],
+            "properties": {
+              "schema": {
+                "type": "string",
+                "format": "uri"
+              },
+              "mediaTypes": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^application/(?:json|[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*\\+json)$"
+                }
+              }
+            }
+          }
         },
         "mediaTypes": {
           "type": "array",
@@ -244,7 +273,25 @@
         "required": {
           "type": "boolean"
         }
-      }
+      },
+      "oneOf": [
+        {
+          "required": ["schema", "mediaTypes"],
+          "properties": {
+            "schema": {},
+            "mediaTypes": {},
+            "variants": false
+          }
+        },
+        {
+          "required": ["variants"],
+          "properties": {
+            "schema": false,
+            "mediaTypes": false,
+            "variants": {}
+          }
+        }
+      ]
     },
     "inputRule": {
       "type": "object",
@@ -259,6 +306,9 @@
           "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
         },
         "require": {
+          "$ref": "#/$defs/nameSet"
+        },
+        "forbid": {
           "$ref": "#/$defs/nameSet"
         }
       }

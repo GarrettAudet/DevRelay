@@ -1,0 +1,1192 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkBreakdownBaseline",
+  "baselineId": "WBB-WB-DOGFOOD",
+  "version": "1.0.0",
+  "approvedCandidate": {
+    "artifactId": "WBD-WB-DOGFOOD",
+    "schema": "https://devrelay.dev/artifacts/work-breakdown-draft/v1",
+    "mediaType": "application/vnd.devrelay.work-breakdown-draft+json",
+    "digest": "sha256:8bbe28c832bb40ae62ebee6f6dadc57af100dc4c0b769d143762597f02e9e621",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/work-breakdown-draft.json"
+  },
+  "inputBindings": [
+    {
+      "role": "project-work-breakdown-state",
+      "artifact": {
+        "artifactId": "PWBS-WB-DOGFOOD",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:5b6016e6e9485fd3dc8681d376bb74976c16bc02e818b8667dcf70c084825c1b",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/project-work-breakdown-state.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:005fcec20ca10d27d06dc84bf35c2e4c24144099a7ba28cb516759036afa703e",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-overview-baseline.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+      }
+    },
+    {
+      "role": "contract-disposition",
+      "artifact": {
+        "artifactId": "CD-WB-NOT-APPLICABLE",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:9106e8688a0820ea3a2a8da1a58ee5da89fe472f3b8fe348c74179bdd38ab9f1",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/contract-disposition.json"
+      }
+    },
+    {
+      "role": "capability-catalog",
+      "artifact": {
+        "artifactId": "CC-WB-DOGFOOD",
+        "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+        "mediaType": "application/vnd.devrelay.capability-catalog+json",
+        "digest": "sha256:9a334bebf4042240847e095496dbf86d7cb354a2f7cad82a9cbeed8530078c63",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/capability-catalog.json"
+      }
+    },
+    {
+      "role": "repository-context",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/repository-snapshot.json"
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "id": "WI-WB-ADAPTERS",
+      "objective": "Publish replaceable OpenSpec and Spec Kit task adapters that expose planning only.",
+      "bounded-scope": {
+        "included": [
+          "Define both adapters for both WorkBreakdown operations.",
+          "Constrain commands, configuration, and declared capabilities to planning outputs."
+        ],
+        "excluded": [
+          "Invoking OpenSpec or Spec Kit implementation commands.",
+          "Hard-coupling either operation to a provider."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-ADAPTER-MANIFESTS",
+          "description": "Versioned OpenSpec and Spec Kit WorkBreakdown plug-in manifests.",
+          "artifactKind": "ModulePluginSet"
+        }
+      ],
+      "work-type": "configuration-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-ADAPTER-SELECTION-001",
+        "AC-WB-NO-EXECUTION-001",
+        "AC-WB-OUTPUT-CONTRACT-001"
+      ],
+      "architecture-refs": [
+        "EL-WB-ADAPTER-PORT"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-CONTRACT-AUTHORING"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-WB-DOMAIN-CONTRACTS",
+          "relation": "after",
+          "rationale": "The plug-in surface should follow the canonical artifact contract; WorkDependencyAnalysis must decide the authoritative edge.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-ADAPTERS",
+            "method": "Validate both plug-in manifests and scan their capabilities and commands.",
+            "successCriteria": "Both operations are replaceable, planning-only, and contain no execution/build authority."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/plugin-conformance",
+          "description": "Both operations are replaceable, planning-only, and contain no execution/build authority."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/0"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/6"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/7"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/6"
+        }
+      ]
+    },
+    {
+      "id": "WI-WB-DOCUMENTATION",
+      "objective": "Document WorkBreakdown configuration, boundaries, outputs, Gate behavior, and dogfood evidence.",
+      "bounded-scope": {
+        "included": [
+          "Publish module usage and trust-boundary documentation.",
+          "Record bounded-fixture limitations and downstream ownership."
+        ],
+        "excluded": [
+          "Claiming that planned work has been executed or verified."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-DOCUMENTATION",
+          "description": "Release documentation and deterministic dogfood evidence package.",
+          "artifactKind": "DocumentationSet"
+        }
+      ],
+      "work-type": "documentation-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-NO-EXECUTION-001",
+        "AC-WB-OUTPUT-CONTRACT-001"
+      ],
+      "architecture-refs": [
+        "EL-DEVRELAY-SYSTEM",
+        "EL-WB-DOWNSTREAM"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-TECHNICAL-WRITING"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-WB-VERIFICATION",
+          "relation": "related",
+          "rationale": "Documentation should cite final verification evidence; the hint is not an authoritative dependency.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-DOCUMENTATION",
+            "method": "Review documentation against the approved requirements and architecture boundaries.",
+            "successCriteria": "Operators can configure and audit WorkBreakdown without mistaking plans for execution."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/documentation-review",
+          "description": "Operators can configure and audit WorkBreakdown without mistaking plans for execution."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/6"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/7"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/0"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/11"
+        }
+      ]
+    },
+    {
+      "id": "WI-WB-DOMAIN-CONTRACTS",
+      "objective": "Define closed provider-neutral WorkBreakdown artifacts and validation semantics.",
+      "bounded-scope": {
+        "included": [
+          "Define exact WorkItemDraft, coverage, state, baseline, change, and continuation shapes.",
+          "Validate source closure, capability references, coverage, and deterministic delta application."
+        ],
+        "excluded": [
+          "Dependency-cycle or ordering validation.",
+          "Assignment, estimates, scheduling, implementation, or status tracking."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-ARTIFACT-SCHEMA",
+          "description": "Closed WorkBreakdown artifact schema.",
+          "artifactKind": "JsonSchema"
+        },
+        {
+          "id": "DEL-WB-ARTIFACT-VALIDATOR",
+          "description": "Context-neutral artifact and lineage validators.",
+          "artifactKind": "RuntimeLibrary"
+        }
+      ],
+      "work-type": "code-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-DECOMPOSE-CHANGE-001",
+        "AC-WB-DECOMPOSE-ESTABLISH-001",
+        "AC-WB-NO-EXECUTION-001",
+        "AC-WB-OUTPUT-CONTRACT-001",
+        "AC-WB-WORK-ITEM-CONTRACT-001"
+      ],
+      "architecture-refs": [
+        "EL-DEVRELAY-MODULES",
+        "EL-WB-MODULE",
+        "EL-WB-VALIDATORS"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-CONTRACT-AUTHORING",
+        "CAP-NODEJS-ENGINEERING"
+      ],
+      "dependency-hints": [],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-DOMAIN-CONTRACTS",
+            "method": "Run positive and negative schema, lineage, coverage, and delta fixtures.",
+            "successCriteria": "Only exact authorized, source-closed WorkBreakdown candidates validate."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/domain-contract-tests",
+          "description": "Only exact authorized, source-closed WorkBreakdown candidates validate."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/2"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/3"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/6"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/7"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/9"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/2"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/4"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/5"
+        }
+      ]
+    },
+    {
+      "id": "WI-WB-GATE",
+      "objective": "Implement the WorkBreakdown Gate and exact baseline promotion boundary.",
+      "bounded-scope": {
+        "included": [
+          "Reject unscoped work, uncovered scope, unresolved evidence, and invalid references.",
+          "Keep no-work approval under Gate authority and promote an exact immutable baseline."
+        ],
+        "excluded": [
+          "Cycle detection, missing-dependency policy, or impossible-ordering analysis."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-GATE",
+          "description": "WorkBreakdown candidate approval and baseline promotion Gate.",
+          "artifactKind": "GateRuntime"
+        }
+      ],
+      "work-type": "code-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-COVERAGE-DISPOSITIONS-001",
+        "AC-WB-GATE-BOUNDARY-001"
+      ],
+      "architecture-refs": [
+        "EL-WB-GATE"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-CONTRACT-AUTHORING",
+        "CAP-NODEJS-ENGINEERING"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-WB-DOMAIN-CONTRACTS",
+          "relation": "after",
+          "rationale": "Gate promotion consumes canonical candidate contracts; dependency authority remains downstream.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-GATE",
+            "method": "Exercise candidate rejection, evidence resolution, Gate-owned approval, and exact promotion tests.",
+            "successCriteria": "Only complete authorized candidates can become a WorkBreakdownBaseline."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/gate-tests",
+          "description": "Only complete authorized candidates can become a WorkBreakdownBaseline."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/1"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/4"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/8"
+        }
+      ]
+    },
+    {
+      "id": "WI-WB-RUNTIME",
+      "objective": "Implement deterministic state routing, exact input binding, checkpointing, and pre-adapter drift handling.",
+      "bounded-scope": {
+        "included": [
+          "Route unbaselined and baselined states through Core.",
+          "Detect content, version, repository revision, tree, and approved-change lineage drift before adapter entry.",
+          "Checkpoint and replay effects deterministically."
+        ],
+        "excluded": [
+          "Choosing a plug-in through model improvisation."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-RUNTIME",
+          "description": "Registered WorkBreakdown runtime contracts and drift guard.",
+          "artifactKind": "RuntimeLibrary"
+        },
+        {
+          "id": "DEL-WB-MODULE-MANIFEST",
+          "description": "State-routed WorkBreakdown module manifest.",
+          "artifactKind": "ModuleDefinition"
+        }
+      ],
+      "work-type": "code-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-ADAPTER-SELECTION-001",
+        "AC-WB-DECOMPOSE-CHANGE-001",
+        "AC-WB-DECOMPOSE-ESTABLISH-001",
+        "AC-WB-INPUT-PINNING-001"
+      ],
+      "architecture-refs": [
+        "EL-DEVRELAY-CORE",
+        "EL-WB-PREFLIGHT"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-NODEJS-ENGINEERING"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-WB-DOMAIN-CONTRACTS",
+          "relation": "after",
+          "rationale": "Runtime input contracts must exist before integration; WorkDependencyAnalysis owns final ordering.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-RUNTIME",
+            "method": "Run both route fixtures, effect replay, and stale-baseline zero-adapter tests.",
+            "successCriteria": "Routing and replay are deterministic and baseline_drift never enters the adapter."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/runtime-tests",
+          "description": "Routing and replay are deterministic and baseline_drift never enters the adapter."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/0"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/2"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/3"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/5"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/1"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/7"
+        }
+      ]
+    },
+    {
+      "id": "WI-WB-TRACEABILITY",
+      "objective": "Add trusted WorkBreakdown planning projection to TraceabilityGraph 1.1.",
+      "bounded-scope": {
+        "included": [
+          "Observe approved requirement and architecture baselines.",
+          "Derive only upstream-to-downstream candidate planning edges from validated typed references.",
+          "Persist atomic merge and replay proof in ModuleExecutionRecord."
+        ],
+        "excluded": [
+          "Graph mutation by adapters.",
+          "Inverse, dependency, implementation, completion, or verification edges."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-TRACEABILITY-CONTRIBUTOR",
+          "description": "Trusted WorkBreakdown and approved-baseline observer contributors.",
+          "artifactKind": "TraceabilityContributorSet"
+        },
+        {
+          "id": "DEL-WB-TRACEABILITY-VOCABULARY",
+          "description": "Compatible traceability 1.1 planning vocabulary extension.",
+          "artifactKind": "TraceabilityContract"
+        }
+      ],
+      "work-type": "code-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-COVERAGE-DISPOSITIONS-001",
+        "AC-WB-TRACEABILITY-001"
+      ],
+      "architecture-refs": [
+        "EL-DEVRELAY-GRAPH",
+        "EL-WB-CONTRIBUTOR",
+        "EL-WB-OBSERVERS"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-NODEJS-ENGINEERING",
+        "CAP-TEST-ENGINEERING"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-WB-DOMAIN-CONTRACTS",
+          "relation": "after",
+          "rationale": "Projection consumes validated typed references; this remains a planning hint.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-TRACEABILITY",
+            "method": "Project, validate, merge, replay, query, and inspect every candidate planning edge.",
+            "successCriteria": "Every typed reference yields exactly one allowed forward planning edge and a verifiable atomic merge proof."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/traceability-tests",
+          "description": "Every typed reference yields exactly one allowed forward planning edge and a verifiable atomic merge proof."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/1"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/8"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/3"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/9"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/10"
+        }
+      ]
+    },
+    {
+      "id": "WI-WB-VERIFICATION",
+      "objective": "Release-gate WorkBreakdown across contracts, runtime, adapters, Gate, traceability, and packaging.",
+      "bounded-scope": {
+        "included": [
+          "Run focused and full tests, syntax checks, package inspection, and deterministic dogfood replay.",
+          "Check Core neutrality and planning-only boundaries."
+        ],
+        "excluded": [
+          "Treating dependency hints as an authoritative DAG.",
+          "Executing any planned work item through WorkBreakdown."
+        ]
+      },
+      "deliverables": [
+        {
+          "id": "DEL-WB-RELEASE-EVIDENCE",
+          "description": "Release verification and regression evidence.",
+          "artifactKind": "VerificationEvidenceSet"
+        }
+      ],
+      "work-type": "test-change",
+      "acceptance-criterion-refs": [
+        "AC-WB-GATE-BOUNDARY-001",
+        "AC-WB-INPUT-PINNING-001",
+        "AC-WB-NO-EXECUTION-001",
+        "AC-WB-TRACEABILITY-001",
+        "AC-WB-WORK-ITEM-CONTRACT-001"
+      ],
+      "architecture-refs": [
+        "EL-DEVRELAY-SYSTEM",
+        "EL-WB-DOWNSTREAM"
+      ],
+      "contract-refs": [],
+      "required-capabilities": [
+        "CAP-RELEASE-ENGINEERING",
+        "CAP-TEST-ENGINEERING"
+      ],
+      "dependency-hints": [
+        {
+          "work-item-ref": "WI-WB-RUNTIME",
+          "relation": "after",
+          "rationale": "Runtime behavior must be available for end-to-end verification; WorkDependencyAnalysis decides the authoritative DAG.",
+          "authority": "hint"
+        },
+        {
+          "work-item-ref": "WI-WB-TRACEABILITY",
+          "relation": "after",
+          "rationale": "Graph behavior must be available for end-to-end verification; WorkDependencyAnalysis decides the authoritative DAG.",
+          "authority": "hint"
+        }
+      ],
+      "verification-plan": {
+        "checks": [
+          {
+            "id": "VC-WB-VERIFICATION",
+            "method": "Run npm verification, release catalog/check, focused dogfood tests, and independent review.",
+            "successCriteria": "All release gates pass with deterministic outputs and no forbidden execution semantics."
+          }
+        ]
+      },
+      "required-evidence": [
+        {
+          "kind": "work-breakdown/release-gate",
+          "description": "All release gates pass with deterministic outputs and no forbidden execution semantics."
+        }
+      ],
+      "source-refs": [
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/4"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/5"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/6"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/8"
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+            "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+            "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+          },
+          "jsonPointer": "/requirements/acceptanceCriteria/9"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/0"
+        },
+        {
+          "role": "architecture-baseline",
+          "artifact": {
+            "artifactId": "architecture-baseline-work-breakdown-v1",
+            "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+            "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+          },
+          "jsonPointer": "/sections/architectureModel/content/elements/11"
+        }
+      ]
+    }
+  ],
+  "coverageDispositions": [
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-ADAPTER-SELECTION-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-ADAPTERS",
+        "WI-WB-RUNTIME"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-COVERAGE-DISPOSITIONS-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-GATE",
+        "WI-WB-TRACEABILITY"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-DECOMPOSE-CHANGE-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOMAIN-CONTRACTS",
+        "WI-WB-RUNTIME"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-DECOMPOSE-ESTABLISH-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOMAIN-CONTRACTS",
+        "WI-WB-RUNTIME"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-GATE-BOUNDARY-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-GATE",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-INPUT-PINNING-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-RUNTIME",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-NO-EXECUTION-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-ADAPTERS",
+        "WI-WB-DOCUMENTATION",
+        "WI-WB-DOMAIN-CONTRACTS",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-OUTPUT-CONTRACT-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-ADAPTERS",
+        "WI-WB-DOCUMENTATION",
+        "WI-WB-DOMAIN-CONTRACTS"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-TRACEABILITY-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-TRACEABILITY",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-WORK-ITEM-CONTRACT-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOMAIN-CONTRACTS",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-CORE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-RUNTIME"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-GRAPH",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-TRACEABILITY"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-MODULES",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOMAIN-CONTRACTS"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-SYSTEM",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOCUMENTATION",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-ADAPTER-PORT",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-ADAPTERS"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-CONTRIBUTOR",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-TRACEABILITY"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-DOWNSTREAM",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOCUMENTATION",
+        "WI-WB-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-GATE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-GATE"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-MODULE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOMAIN-CONTRACTS"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-OBSERVERS",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-TRACEABILITY"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-PREFLIGHT",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-RUNTIME"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-VALIDATORS",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WB-DOMAIN-CONTRACTS"
+      ]
+    }
+  ],
+  "approvalEvidence": [
+    {
+      "artifactId": "work-breakdown-gate-dogfood-v1",
+      "schema": "https://devrelay.dev/evidence/work-breakdown-gate-review/v1",
+      "mediaType": "text/markdown",
+      "digest": "sha256:d449dd66987cf8505e0b121da05a76bd43887a9ffa8552bbf5865b8b6d97d94c",
+      "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/work-breakdown-gate.md"
+    }
+  ],
+  "sourceRefs": [
+    {
+      "role": "project-work-breakdown-state",
+      "artifact": {
+        "artifactId": "PWBS-WB-DOGFOOD",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:5b6016e6e9485fd3dc8681d376bb74976c16bc02e818b8667dcf70c084825c1b",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/project-work-breakdown-state.json"
+      },
+      "jsonPointer": "/state"
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/requirements-baseline.json"
+      },
+      "jsonPointer": "/requirements/purpose"
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:005fcec20ca10d27d06dc84bf35c2e4c24144099a7ba28cb516759036afa703e",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-overview-baseline.json"
+      },
+      "jsonPointer": "/overview/purpose"
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+      },
+      "jsonPointer": "/sections/technicalDesign"
+    },
+    {
+      "role": "repository-context",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/repository-snapshot.json"
+      },
+      "jsonPointer": "/revision"
+    }
+  ]
+}

@@ -14,13 +14,20 @@ The provider-neutral engineering capability:
 
 - stable ID and exact version;
 - operations and semantic input/output ports;
-- declarative input relationships;
+- declarative required and forbidden input relationships;
 - finite outcomes and outcome-specific result contracts;
 - evidence kinds and portable options;
 - optional deterministic routing from one declared state schema;
+- optional required adapter execution mode per operation;
 - optional ordered adapter steps and handoff ports;
 - optional declarative continuation mapping that classifies lineage and control
   inputs for portable chain resume.
+
+Each port declares either one `schema` with its `mediaTypes`, or a closed list
+of `variants` that pairs each accepted schema with its own media types. The
+forms are mutually exclusive. Port cardinality applies to the union as a whole;
+Core rejects cross-paired references and never coerces one variant into
+another.
 
 It does not contain commands, native paths, model choices, requested host
 capabilities, or implementation configuration.
@@ -41,6 +48,11 @@ evidence semantics. The registry snapshots and binds the supplied
 `adapter.invoke` callable at registration, so replacing that property later
 cannot change an already registered plug-in. The external host remains
 responsible for state and effects intentionally captured by the callable.
+
+When an operation declares `adapterExecution`, registration rejects a plug-in
+whose `pure` or `effect` classification differs. This lets a Module require a
+checkpoint-capable effect boundary when its downstream Gate depends on a
+verified terminal checkpoint.
 
 ### `ModuleInvocation`
 
@@ -139,6 +151,21 @@ lineage.
 
 See `docs/traceability-graph.md` for the vocabulary, query, diagnostic,
 storage, and contributor contracts.
+
+## Input and execution compatibility
+
+An input rule may require companion inputs and may forbid incompatible inputs.
+Core validates both sets before adapter entry, so mutually exclusive control
+paths never depend on adapter precedence or model interpretation.
+
+An operation may declare `adapterExecution: pure | effect`. The field is
+optional for backward compatibility; when present, it is an exact plug-in
+compatibility requirement. Effect execution requires the normal checkpoint
+store and produces the replay boundary used by checkpoint-dependent Gates.
+
+Outcomes declared by a registered input guard are owned by that guard. Core
+rejects an adapter or adapter chain that attempts to return a guard-owned
+outcome after the guard has passed.
 
 ## Deterministic operation routing
 

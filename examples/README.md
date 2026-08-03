@@ -20,6 +20,14 @@ disposition. Architecture examples pass the approved
 `project-overview-baseline` explicitly. Core does not inject it from global or
 conversational state.
 
+WorkBreakdown examples include both deterministic routes, exact state and
+change-package bindings, bounded Spec Kit/OpenSpec native task artifacts, one
+closed initial draft and promoted baseline, an add/update/retire change that
+preserves unrelated work, clarification lineage, and the exact
+`baseline_drift` guard result. These newer fixtures use real packaged-byte
+digests and remain planning-only; they do not execute either upstream tool or
+any proposed work item.
+
 Executable proof lives in:
 
 - `test/requirements-runtime.test.mjs`, `test/requirements-runtime-lineage.test.mjs`, and `test/requirements-typed-contract.test.mjs` for both requirements plug-ins, typed candidates, provenance, full-body changes, and clarification resume;
@@ -30,7 +38,13 @@ Executable proof lives in:
   checkpoint-backed resume;
 - `test/architecture-change-runtime.test.mjs` for design-change execution and
   compatible modeler replacement, with ProjectOverview context included in
-  invocation and resume lineage.
+  invocation and resume lineage;
+- `test/work-breakdown-examples.test.mjs` for packaged establish/change,
+  clarification, native-source, adapter-selection, typed-delta, and drift
+  fixtures;
+- `test/work-breakdown-dogfood.test.mjs` for the full released runtime,
+  checkpoint replay, Gate commit payload, TraceabilityGraph merge, forward
+  planning edges, exhaustive coverage, and zero-adapter-call drift proof.
 
 The plug-in examples are bounded manifests and conformance fixtures. They are
 not live OpenSpec, GitHub Spec Kit, Structurizr, or MADR command adapters.

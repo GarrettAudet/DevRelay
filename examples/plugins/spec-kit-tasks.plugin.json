@@ -1,0 +1,85 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "spec-kit-tasks",
+    "version": "0.1.0",
+    "description": "Bounded GitHub Spec Kit tasks adapter for WorkBreakdown."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.1.0"
+      },
+      "operations": [
+        {
+          "id": "establish-breakdown",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "planningOutputRoot",
+              "toolName",
+              "toolVersion",
+              "nativeOperation",
+              "command",
+              "featureName",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": { "type": "string", "minLength": 1 },
+              "planningOutputRoot": { "type": "string", "minLength": 1 },
+              "toolName": { "const": "GitHub Spec Kit" },
+              "toolVersion": { "type": "string", "minLength": 1 },
+              "nativeOperation": { "const": "work.decompose" },
+              "command": { "const": "/speckit.tasks" },
+              "featureName": { "type": "string", "minLength": 1 },
+              "bridge": { "const": "agent-command" }
+            }
+          },
+          "capabilities": [
+            { "kind": "filesystem.read", "scope": "config:projectRoot" },
+            { "kind": "filesystem.write", "scope": "config:planningOutputRoot" },
+            { "kind": "network.connect", "scope": "host:implementation-engine" }
+          ]
+        },
+        {
+          "id": "decompose-change",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectRoot",
+              "planningOutputRoot",
+              "toolName",
+              "toolVersion",
+              "nativeOperation",
+              "command",
+              "featureName",
+              "bridge"
+            ],
+            "properties": {
+              "projectRoot": { "type": "string", "minLength": 1 },
+              "planningOutputRoot": { "type": "string", "minLength": 1 },
+              "toolName": { "const": "GitHub Spec Kit" },
+              "toolVersion": { "type": "string", "minLength": 1 },
+              "nativeOperation": { "const": "work.decompose" },
+              "command": { "const": "/speckit.tasks" },
+              "featureName": { "type": "string", "minLength": 1 },
+              "bridge": { "const": "agent-command" }
+            }
+          },
+          "capabilities": [
+            { "kind": "filesystem.read", "scope": "config:projectRoot" },
+            { "kind": "filesystem.write", "scope": "config:planningOutputRoot" },
+            { "kind": "network.connect", "scope": "host:implementation-engine" }
+          ]
+        }
+      ]
+    }
+  ]
+}

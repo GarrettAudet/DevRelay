@@ -16,6 +16,7 @@ import {
   TRACEABILITY_UPDATE_SCHEMA,
   TRACEABILITY_NODE_KINDS,
   TRACEABILITY_VOCABULARY,
+  assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityDiagnosticId,
   traceabilityEdgeId,
@@ -963,9 +964,13 @@ export function diagnoseTraceabilityGraph(snapshot) {
       ]).has(node.kind) && id !== startId) return true;
       for (const edge of incoming.get(id) ?? []) {
         if (
-          !new Set(["contracted-by", "implemented-by", "planned-by"]).has(
-            edge.kind,
-          )
+          !new Set([
+            "contracted-by",
+            "implemented-by",
+            "implementation-planned-by",
+            "planned-by",
+            "realization-planned-by",
+          ]).has(edge.kind)
         ) continue;
         if (!seen.has(edge.sourceNodeId)) {
           seen.add(edge.sourceNodeId);
@@ -997,8 +1002,10 @@ export function diagnoseTraceabilityGraph(snapshot) {
     "contracted-by",
     "designed-by",
     "implemented-by",
+    "implementation-planned-by",
     "planned-by",
     "produces",
+    "realization-planned-by",
     "realized-by",
     "specified-by",
     "tested-by",
@@ -1438,6 +1445,10 @@ function verifyJsonLoaded(
 }
 
 function materializeMerge({ prepared, base, current, graphId, projectId }) {
+  assertTraceabilityVocabularyTransition(
+    current.value.vocabulary,
+    prepared.update.vocabulary,
+  );
   validateChangePreconditions(prepared.update, base.value);
   const applied = applyChanges(prepared.update, base.value, current.value);
   const hasChanges = applied.effective.nodes.length + applied.effective.edges.length > 0;
@@ -1459,7 +1470,7 @@ function materializeMerge({ prepared, base, current, graphId, projectId }) {
     projectId,
     revision: current.value.revision + 1,
     horizon: maxHorizon([current.value.horizon, prepared.update.horizon]),
-    vocabulary: TRACEABILITY_VOCABULARY,
+    vocabulary: immutableJson(prepared.update.vocabulary),
     parentGraph: immutableJson(current.ref),
     lastAppliedUpdate: immutableJson(prepared.updateRef),
     appliedUpdates,
