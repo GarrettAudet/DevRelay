@@ -1,0 +1,35 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-work-dependency-analysis-module-v1",
+  "statement": "Define DevRelay's WorkDependencyAnalysis module through RequirementsGathering and ArchitectureDesign so an approved WorkBreakdownBaseline becomes a verified dependency DAG before specialist assignment or execution.",
+  "objectives": [
+    "Turn non-authoritative WorkItem dependency hints into a complete candidate dependency graph.",
+    "Make dependency ordering authoritative only after a separate WorkDependency Gate.",
+    "Reject cycles, missing dependencies, invalid references, and impossible ordering before downstream assignment.",
+    "Enable safe dependency-aware parallel execution without assigning, scheduling, or executing work.",
+    "Keep dependency analysis provider-neutral and replaceable through bounded plug-ins.",
+    "Extend TraceabilityGraph through a trusted contributor rather than adapter-authored graph operations."
+  ],
+  "constraints": [
+    "The exact approved WorkBreakdownBaseline is the source of the work-item universe.",
+    "WorkBreakdown dependency hints remain proposals until analysis and Gate approval.",
+    "Adapters cannot access or mutate TraceabilityGraph.",
+    "Specialist assignment, scheduling, status, implementation, and verification remain downstream.",
+    "The module cannot claim semantic completeness from graph-shape validation alone.",
+    "The first implementation remains an incremental module slice rather than a scheduler or general control plane."
+  ],
+  "acceptanceCriteria": [
+    "Every approved work item appears exactly once in the dependency candidate graph.",
+    "Every dependency hint receives an explicit evidence-backed disposition.",
+    "Only WorkDependency Gate can promote a candidate to an authoritative WorkDependencyBaseline.",
+    "The Gate rejects invalid endpoints, duplicate or self edges, cycles, unresolved missing dependencies, and impossible ordering.",
+    "A later scheduler can derive runnable work from the approved DAG without stored assignments or execution waves.",
+    "Configured adapters are replaceable without changing generic Core or the canonical dependency contract.",
+    "Trusted traceability projection stores forward planning relationships only and never claims work completion."
+  ],
+  "assumptions": [
+    "The operation lifecycle, trust boundary, input set, parallelism projection, and V1 plug-in bindings require owner confirmation.",
+    "The OpenSpec chat bridge records this run but does not claim OpenSpec CLI execution."
+  ]
+}

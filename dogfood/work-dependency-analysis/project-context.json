@@ -1,0 +1,33 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay 0.3.0 has executable RequirementsGathering, ArchitectureDesign, WorkBreakdown, and a trusted TraceabilityGraph sidecar. WorkDependencyAnalysis is the next declared lifecycle module and is at interactive requirements clarification.",
+  "stakeholders": [
+    "DevRelay maintainers",
+    "Workflow authors",
+    "Module and adapter authors",
+    "IDE and orchestration hosts",
+    "Specialist-assignment and execution modules",
+    "Reviewers responsible for safe parallel execution"
+  ],
+  "domainConstraints": [
+    "Generic Core owns exact artifact loading, deterministic routing, adapter resolution, checkpointing, validation, and progression.",
+    "Modules own provider-neutral contracts while adapters own bounded native-tool capabilities.",
+    "Candidate and approved authority remain distinct and Gate promotion is explicit.",
+    "Effectful model output is checkpointed and replayed rather than assumed bit-reproducible.",
+    "Adapters never receive TraceabilityGraph and never submit graph operations.",
+    "Dependency analysis cannot become assignment, scheduling, work execution, or a provider wrapper."
+  ],
+  "conventions": [
+    "Use exact immutable module and adapter versions.",
+    "Use SHA-256-bound artifacts and raw-byte verification at runtime boundaries.",
+    "Use JSON Schema draft 2020-12 and Ajv validation.",
+    "Use lowercase kebab-case ports, operations, relationships, and machine outcomes.",
+    "Store forward graph relationships only and derive reverse traversal at query time.",
+    "Preserve native analyzer output as subordinate evidence rather than canonical authority.",
+    "Prove generic behavior through positive, negative, replay, drift, and Core special-case tests."
+  ],
+  "sourceRefs": []
+}

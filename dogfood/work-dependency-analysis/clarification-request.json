@@ -1,0 +1,88 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationRequestSet",
+  "requestSetId": "clarification-request-work-dependency-analysis-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-work-dependency-analysis-module-v1",
+        "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+        "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-bef184c",
+        "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-WDA-OPERATION-LIFECYCLE-001",
+      "prompt": "Should WorkDependencyAnalysis expose one analyze-dependencies operation that recomputes a complete graph for each exact WorkBreakdownBaseline, or separate establish and change operations?",
+      "rationale": "This determines routing, baseline evolution, change semantics, and whether stale dependency state can accumulate.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "One full-snapshot analyze-dependencies operation (recommended)",
+        "Separate establish-dependencies and analyze-change operations"
+      ]
+    },
+    {
+      "id": "Q-WDA-TRUST-BOUNDARY-001",
+      "prompt": "Which boundary should own dependency proposals, graph mechanics, semantic completeness, and authoritative promotion?",
+      "rationale": "Graph mechanics are deterministic, but an untrusted analyzer cannot prove by omission that no semantic dependency is missing.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Adapter proposes; trusted Core validates mechanics; WorkDependencyGate verifies semantic completeness and promotes (recommended)",
+        "Core derives dependencies only from explicit WorkBreakdown hints",
+        "Adapter returns the final authoritative dependency graph"
+      ]
+    },
+    {
+      "id": "Q-WDA-INPUT-CONTEXT-001",
+      "prompt": "What exact context should the analyzer receive in addition to WorkBreakdownBaseline and ProjectOverviewBaseline?",
+      "rationale": "Acceptance criteria, architecture boundaries, contracts, repository structure, and explicit policy can reveal dependencies absent from terse work-item hints.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Exact requirements, architecture, contract disposition, repository context, and versioned DependencyPolicy, coherence-checked against WorkBreakdown (recommended)",
+        "Only WorkBreakdownBaseline and ProjectOverviewBaseline",
+        "Let each adapter request undeclared context as needed"
+      ]
+    },
+    {
+      "id": "Q-WDA-PARALLELISM-001",
+      "prompt": "Should WorkDependencyAnalysis store execution waves, or only the DAG from which a later scheduler derives the runnable frontier?",
+      "rationale": "Persisted waves become stale when runtime capacity or completion state changes and blur analysis with scheduling.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Store the DAG only; derive runnable frontiers downstream (recommended)",
+        "Store the DAG plus canonical parallel execution waves"
+      ]
+    },
+    {
+      "id": "Q-WDA-PLUGIN-SURFACE-001",
+      "prompt": "Which bounded dependency-analysis plug-ins should V1 define?",
+      "rationale": "Spec Kit has dependency-ordered tasks and read-only cross-artifact analysis; default OpenSpec tasks lack a formal item-level DAG, so an OpenSpec binding needs a custom DevRelay artifact schema.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "SpecKitAnalyzeAdapter plus an OpenSpec custom dependency-artifact adapter (recommended)",
+        "Provider-neutral adapter contract and deterministic validator only in V1",
+        "Reuse existing task-generation adapters without a new bounded capability"
+      ]
+    }
+  ]
+}
