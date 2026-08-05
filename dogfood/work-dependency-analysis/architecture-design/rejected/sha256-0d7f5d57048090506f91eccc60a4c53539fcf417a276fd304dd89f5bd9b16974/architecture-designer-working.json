@@ -1,0 +1,1002 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureDesignerWorkingArtifact",
+  "workingArtifactId": "architecture-designer-working-work-dependency-analysis-v1",
+  "operation": "design-change",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-work-dependency-analysis-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:3cc676aa1e988b166d21c5cc63f16def169c67f19bb48d7b07946bb5cdb37052",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/project-architecture-state.json"
+  },
+  "baseInputs": [
+    {
+      "role": "project-architecture-state",
+      "artifact": {
+        "artifactId": "project-architecture-state-work-dependency-analysis-v1",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:3cc676aa1e988b166d21c5cc63f16def169c67f19bb48d7b07946bb5cdb37052",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/project-architecture-state.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-wda-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-wda-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:b915cba9e0af8480229611aff735f265d38bd8c1c4d5fabf19b64432549c16bf",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/project-context.json"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/repository-snapshot.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+      }
+    },
+    {
+      "role": "architecture-baseline-project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-context.json"
+      }
+    },
+    {
+      "role": "architecture-baseline-repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/repository-snapshot.json"
+      }
+    }
+  ],
+  "technicalDesign": {
+    "mode": "embedded",
+    "content": {
+      "technicalDesignId": "TD-WDA-001",
+      "objective": "Introduce deterministic provider-neutral dependency analysis between WorkBreakdown and SpecialistAssignment.",
+      "scope": {
+        "level": "change",
+        "boundary": "WorkDependencyAnalysis 0.1.0 architecture over the approved WorkBreakdown output.",
+        "in": [
+          "One full immutable WorkBreakdown analysis snapshot",
+          "Declared version-, digest-, or commit-pinned context slices",
+          "Native structured proposer and optional proposal adapters",
+          "Core-owned Graphology-DAG mechanics and OPA policy evaluation",
+          "Advisory Spec Kit consistency review",
+          "WorkDependencyGate promotion and forward traceability"
+        ],
+        "out": [
+          "Specialist assignment",
+          "Estimates, waves, schedules, or mutable runtime readiness",
+          "Work execution or code modification",
+          "Completion or verification evidence"
+        ]
+      },
+      "problemSummary": "Approved work items need authoritative ordering without allowing a planner or model to own validation, policy, workflow routing, or execution.",
+      "solutionSummary": "Build one full snapshot, invoke a bounded proposal capability, run Core-owned graph mechanics and OPA policy, request advisory consistency review, and submit the exact candidate to WorkDependencyGate.",
+      "requirementsDrivers": [
+        "Every approved work item appears exactly once in the candidate graph.",
+        "Every hint is dispositioned and every context slice is pinned and verified.",
+        "Cycles, invalid endpoints, missing dependencies, and impossible ordering fail closed.",
+        "Proposal, mechanics, policy, review, gate, and graph authority remain separate."
+      ],
+      "behaviorFlows": [
+        "Core loads the exact WorkBreakdownBaseline and creates one immutable WorkBreakdownAnalysisSnapshot.",
+        "Core verifies each declared ContextSlice before any proposer runs.",
+        "The configured proposer returns one canonical DependencyProposal.",
+        "Core normalizes ordering, validates graph mechanics through its Graphology-DAG implementation, and evaluates pinned OPA policy.",
+        "Spec Kit returns bounded advisory consistency findings over the normalized candidate.",
+        "WorkDependencyGate performs semantic completeness review and controls exact promotion.",
+        "A trusted contributor derives only forward candidate dependency relationships for checkpointed graph merge."
+      ],
+      "dataResponsibilities": [
+        "WorkBreakdownAnalysisSnapshot owns complete work-item coverage and exact upstream lineage.",
+        "ContextSlice owns purpose, source version or commit, deterministic selector, extracted digest, and coverage references.",
+        "DependencyProposal owns proposed edges, evidence, and dependency-hint dispositions without approval authority.",
+        "Core graph mechanics own canonical node and edge ordering plus cycle witnesses.",
+        "OPA evaluation evidence binds bundle digest, entrypoint, input digest, engine version, and raw result.",
+        "WorkDependencyGate owns semantic completeness and baseline promotion."
+      ],
+      "failureHandling": [
+        "Input lineage or extracted-content drift fails before proposer entry.",
+        "Unknown work items, duplicate nodes or edges, self-dependencies, and cycles fail with canonical diagnostics.",
+        "OPA-denied relationships and unresolved blocking reviewer or Gate findings prevent promotion.",
+        "Checkpoint mismatch fails closed and never repeats an already checkpointed adapter effect."
+      ],
+      "securityPrivacy": [
+        "Proposal adapters receive only the full declared snapshot and admitted context slices.",
+        "Adapters cannot access TraceabilityGraph, mutate Core state, approve artifacts, or execute work.",
+        "OPA input is canonical and excludes undeclared native context."
+      ],
+      "performanceReliabilityOperability": [
+        "Canonical sorting makes graph digests independent of library traversal order.",
+        "Exact checkpoint replay returns the same validated step results without adapter reinvocation.",
+        "A static DAG avoids stale persisted waves; downstream derives current runnable frontiers."
+      ],
+      "compatibilityMigrationRollout": [
+        "Graphology and OPA remain replaceable behind canonical Core ports.",
+        "Task Master and OpenSpec are optional proposers with no special canonical fields.",
+        "Spec Kit is an advisory reviewer only and cannot add authoritative edges."
+      ],
+      "verificationIntent": [
+        "Test complete node coverage, hint disposition, pinned context verification, canonical graph ordering, and zero-call replay.",
+        "Test self-edge and multi-node cycle witnesses, missing dependencies, OPA denials, unresolved review findings, and Gate rejection.",
+        "Test native, Task Master, and OpenSpec proposal bindings against one contract and prove Core contains no provider special cases.",
+        "Test forward-only traceability merge and the downstream-only runnable-frontier boundary."
+      ],
+      "interfaceIntentIds": [
+        "IF-WDA-PROPOSER",
+        "IF-WDA-GRAPH-MECHANICS",
+        "IF-WDA-POLICY",
+        "IF-WDA-CONSISTENCY",
+        "IF-WDA-GATE",
+        "IF-WDA-TRACEABILITY"
+      ],
+      "constraintIds": [
+        "CON-WDA-IMMUTABLE-INPUT",
+        "CON-WDA-CORE-AUTHORITY",
+        "CON-WDA-PINNED-POLICY",
+        "CON-WDA-STATIC-DAG",
+        "CON-WDA-PLUGIN-TRUST",
+        "CON-WDA-ANALYSIS-ONLY",
+        "CON-WDA-FORWARD-TRACE"
+      ],
+      "sourceRequirementIds": [
+        "US-WDA-ANALYZE-001",
+        "US-WDA-PARALLEL-001",
+        "US-WDA-PLUGINS-001",
+        "US-WDA-VERIFY-001",
+        "NFR-WDA-DETERMINISM-001",
+        "CON-WDA-NO-EXECUTION-001",
+        "CON-WDA-PROVIDER-NEUTRAL-001",
+        "CON-WDA-TRACE-DIRECTION-001",
+        "US-DEV-EXTEND-001",
+        "US-DEV-ORCHESTRATE-001",
+        "US-DEV-SPECIFY-001",
+        "US-DEV-VERIFY-001",
+        "NFR-DEV-DETERMINISM-001",
+        "NFR-DEV-PORTABILITY-001",
+        "NFR-DEV-TRACEABILITY-001",
+        "CON-DEV-ARTIFACT-CONTRACTS-001",
+        "CON-DEV-GATE-SEPARATION-001",
+        "CON-DEV-PROVIDER-NEUTRAL-001"
+      ],
+      "sourceRefs": []
+    }
+  },
+  "interfaceIntent": {
+    "mode": "embedded",
+    "content": {
+      "interfaceIntentSetId": "INTERFACES-DEVRELAY-WDA-001",
+      "interfaces": [
+        {
+          "id": "IF-WB-PLANNER",
+          "name": "Bounded planning adapter",
+          "purpose": "Bounded planning adapter",
+          "ownerBoundary": "EL-WB-ADAPTER-PORT",
+          "providerElementId": "EL-WB-ADAPTER-PORT",
+          "consumerElementIds": [
+            "EL-WB-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact immutable canonical artifacts"
+          ],
+          "semanticOutputs": [
+            "Validated provider-neutral artifact or explicit failure"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable semantics across compatible adapters"
+          ],
+          "securityPrivacyIntent": [
+            "No graph or code-execution authority crosses this boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-DEV-EXTEND-001",
+            "NFR-DEV-PORTABILITY-001",
+            "CON-DEV-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WB-GATE",
+          "name": "Coverage and promotion gate",
+          "purpose": "Coverage and promotion gate",
+          "ownerBoundary": "EL-WB-GATE",
+          "providerElementId": "EL-WB-GATE",
+          "consumerElementIds": [
+            "EL-WB-MODULE",
+            "EL-WB-DOWNSTREAM"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact immutable canonical artifacts"
+          ],
+          "semanticOutputs": [
+            "Validated provider-neutral artifact or explicit failure"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable semantics across compatible adapters"
+          ],
+          "securityPrivacyIntent": [
+            "No graph or code-execution authority crosses this boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-DEV-ORCHESTRATE-001",
+            "US-DEV-VERIFY-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WB-TRACEABILITY",
+          "name": "Trusted planning projection",
+          "purpose": "Trusted planning projection",
+          "ownerBoundary": "EL-WB-CONTRIBUTOR",
+          "providerElementId": "EL-WB-CONTRIBUTOR",
+          "consumerElementIds": [
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact immutable canonical artifacts"
+          ],
+          "semanticOutputs": [
+            "Validated provider-neutral artifact or explicit failure"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable semantics across compatible adapters"
+          ],
+          "securityPrivacyIntent": [
+            "No graph or code-execution authority crosses this boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-DEV-SPECIFY-001",
+            "NFR-DEV-TRACEABILITY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-PROPOSER",
+          "name": "Canonical dependency proposal",
+          "purpose": "Canonical dependency proposal",
+          "ownerBoundary": "EL-WDA-PROPOSER-PORT",
+          "providerElementId": "EL-WDA-PROPOSER-PORT",
+          "consumerElementIds": [
+            "EL-WDA-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "WorkBreakdownAnalysisSnapshot",
+            "ContextSliceSet"
+          ],
+          "semanticOutputs": [
+            "DependencyProposal",
+            "NativeArtifactBundle"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-GRAPH-MECHANICS",
+          "name": "Canonical DAG mechanics",
+          "purpose": "Canonical DAG mechanics",
+          "ownerBoundary": "EL-WDA-GRAPH-MECHANICS",
+          "providerElementId": "EL-WDA-GRAPH-MECHANICS",
+          "consumerElementIds": [
+            "EL-WDA-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Normalized DependencyProposal"
+          ],
+          "semanticOutputs": [
+            "Canonical graph digest",
+            "Mechanical diagnostics",
+            "Cycle witness"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-POLICY",
+          "name": "Pinned dependency policy evaluation",
+          "purpose": "Pinned dependency policy evaluation",
+          "ownerBoundary": "EL-WDA-OPA",
+          "providerElementId": "EL-WDA-OPA",
+          "consumerElementIds": [
+            "EL-WDA-MODULE",
+            "EL-WDA-GATE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Canonical policy input",
+            "Pinned bundle and entrypoint"
+          ],
+          "semanticOutputs": [
+            "Normalized policy decision set",
+            "Raw-result evidence"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-CONSISTENCY",
+          "name": "Advisory consistency review",
+          "purpose": "Advisory consistency review",
+          "ownerBoundary": "EL-WDA-SPECKIT-REVIEWER",
+          "providerElementId": "EL-WDA-SPECKIT-REVIEWER",
+          "consumerElementIds": [
+            "EL-WDA-MODULE",
+            "EL-WDA-GATE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Normalized candidate",
+            "Exact upstream artifacts"
+          ],
+          "semanticOutputs": [
+            "Bounded consistency findings"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "US-WDA-VERIFY-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-GATE",
+          "name": "Dependency semantic gate and promotion",
+          "purpose": "Dependency semantic gate and promotion",
+          "ownerBoundary": "EL-WDA-GATE",
+          "providerElementId": "EL-WDA-GATE",
+          "consumerElementIds": [
+            "EL-WDA-MODULE",
+            "EL-WB-DOWNSTREAM"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact candidate and evidence package"
+          ],
+          "semanticOutputs": [
+            "Approved WorkDependencyBaseline or rejection"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "US-WDA-PARALLEL-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-TRACEABILITY",
+          "name": "Trusted dependency traceability projection",
+          "purpose": "Trusted dependency traceability projection",
+          "ownerBoundary": "EL-WDA-CONTRIBUTOR",
+          "providerElementId": "EL-WDA-CONTRIBUTOR",
+          "consumerElementIds": [
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Validated dependency candidate"
+          ],
+          "semanticOutputs": [
+            "Forward candidate dependency update set"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        }
+      ]
+    }
+  },
+  "architectureConstraints": {
+    "mode": "embedded",
+    "content": {
+      "constraintSetId": "CONSTRAINTS-DEVRELAY-WDA-001",
+      "constraints": [
+        {
+          "id": "CON-WB-PLANNING-ONLY",
+          "category": "operational",
+          "strength": "must",
+          "statement": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+          "rationale": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-MODULE"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-WB-PLANNER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-ORCHESTRATE-001",
+            "CON-DEV-MODULE-INVENTORY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-PREFLIGHT",
+          "category": "availability",
+          "strength": "must",
+          "statement": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+          "rationale": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-PREFLIGHT"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-DETERMINISM-001",
+            "US-DEV-SPECIFY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-UPSTREAM",
+          "category": "data",
+          "strength": "must",
+          "statement": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+          "rationale": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-OBSERVERS"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WB-CONTRIBUTOR"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-DETERMINISM-001",
+            "US-DEV-SPECIFY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-DELTA",
+          "category": "data",
+          "strength": "must",
+          "statement": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+          "rationale": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-DETERMINISM-001",
+            "US-DEV-SPECIFY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-COVERAGE",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+          "rationale": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-DETERMINISM-001",
+            "US-DEV-SPECIFY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-TRACE-VERSION",
+          "category": "compatibility",
+          "strength": "must",
+          "statement": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+          "rationale": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-DEVRELAY-GRAPH"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WB-CONTRIBUTOR"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-TRACEABILITY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-IMMUTABLE-INPUT",
+          "category": "data",
+          "strength": "must",
+          "statement": "Core must build one complete immutable analysis snapshot and admit only verified declared context slices before proposer entry.",
+          "rationale": "Core must build one complete immutable analysis snapshot and admit only verified declared context slices before proposer entry.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-SNAPSHOT"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-CORE-AUTHORITY",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Core owns graph mechanics and policy normalization; WorkDependencyGate alone owns semantic approval and promotion.",
+          "rationale": "Core owns graph mechanics and policy normalization; WorkDependencyGate alone owns semantic approval and promotion.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-GRAPH-MECHANICS"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WDA-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-PINNED-POLICY",
+          "category": "data",
+          "strength": "must",
+          "statement": "OPA evaluation must bind the policy bundle digest, entrypoint, canonical input digest, engine version, and raw result evidence.",
+          "rationale": "OPA evaluation must bind the policy bundle digest, entrypoint, canonical input digest, engine version, and raw result evidence.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-OPA"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-WDA-POLICY"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-STATIC-DAG",
+          "category": "operational",
+          "strength": "must",
+          "statement": "The approved artifact stores a static DAG only; mutable readiness and runnable frontiers are derived downstream.",
+          "rationale": "The approved artifact stores a static DAG only; mutable readiness and runnable frontiers are derived downstream.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-PLUGIN-TRUST",
+          "category": "security",
+          "strength": "must",
+          "statement": "Proposers and reviewers cannot route, mutate Core or TraceabilityGraph, evaluate promotion policy, approve candidates, or execute work.",
+          "rationale": "Proposers and reviewers cannot route, mutate Core or TraceabilityGraph, evaluate promotion policy, approve candidates, or execute work.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-PROPOSER-PORT"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WDA-SPECKIT-REVIEWER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001",
+            "CON-DEV-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-ANALYSIS-ONLY",
+          "category": "operational",
+          "strength": "must",
+          "statement": "WorkDependencyAnalysis cannot assign, estimate, schedule, execute, modify code, or record completion.",
+          "rationale": "WorkDependencyAnalysis cannot assign, estimate, schedule, execute, modify code, or record completion.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-MODULE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "CON-WDA-NO-EXECUTION-001",
+            "US-WDA-PARALLEL-001",
+            "CON-DEV-MODULE-INVENTORY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-FORWARD-TRACE",
+          "category": "data",
+          "strength": "must",
+          "statement": "Traceability stores forward candidate dependency assertions only and derives reverse traversal at query time.",
+          "rationale": "Traceability stores forward candidate dependency assertions only and derives reverse traversal at query time.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-CONTRIBUTOR"
+            },
+            {
+              "kind": "element",
+              "id": "EL-DEVRELAY-GRAPH"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        }
+      ]
+    }
+  },
+  "nativeArtifacts": {
+    "mode": "embedded",
+    "content": {
+      "nativeArtifactSetId": "NATIVE-WDA-DESIGNER-001",
+      "entries": [
+        {
+          "id": "NA-WDA-OPENSPEC-DESIGN",
+          "artifact": {
+            "artifactId": "openspec-design-work-dependency-analysis-v1",
+            "schema": "https://devrelay.dev/native/openspec-design/v1",
+            "mediaType": "text/markdown",
+            "digest": "sha256:e1523cd5a34acdbfbfb21d6b504be5c32661ed84fc3cef5b41bb4dc3ed22938d",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/design.md"
+          },
+          "role": "technical-design-source",
+          "logicalPath": "dogfood/work-dependency-analysis/architecture-design/design.md",
+          "producedBy": {
+            "stage": "designer",
+            "adapterId": "openspec-design",
+            "adapterVersion": "0.1.0",
+            "tool": {
+              "name": "OpenSpec",
+              "version": "1.0"
+            }
+          },
+          "disposition": "generated",
+          "canonicalMappings": [
+            {
+              "section": "technicalDesign",
+              "entityIds": [
+                "TD-WDA-001"
+              ],
+              "jsonPointers": [
+                "/sections/technicalDesign"
+              ]
+            },
+            {
+              "section": "interfaceIntent",
+              "entityIds": [
+                "IF-WDA-PROPOSER",
+                "IF-WDA-GRAPH-MECHANICS",
+                "IF-WDA-POLICY",
+                "IF-WDA-CONSISTENCY",
+                "IF-WDA-GATE",
+                "IF-WDA-TRACEABILITY"
+              ],
+              "jsonPointers": [
+                "/sections/interfaceIntent"
+              ]
+            },
+            {
+              "section": "architectureConstraints",
+              "entityIds": [
+                "CON-WDA-IMMUTABLE-INPUT",
+                "CON-WDA-CORE-AUTHORITY",
+                "CON-WDA-PINNED-POLICY",
+                "CON-WDA-STATIC-DAG",
+                "CON-WDA-PLUGIN-TRUST",
+                "CON-WDA-ANALYSIS-ONLY",
+                "CON-WDA-FORWARD-TRACE"
+              ],
+              "jsonPointers": [
+                "/sections/architectureConstraints"
+              ]
+            }
+          ],
+          "warnings": []
+        }
+      ]
+    }
+  },
+  "assumptions": [
+    {
+      "id": "ASM-WDA-BASELINE-CURRENT",
+      "statement": "The supplied WorkBreakdown architecture baseline is the current approved architecture state and the repository revision remains 9cb4f2b8d340142557027fc0477440722d4f8286.",
+      "status": "confirmed",
+      "blocking": false
+    },
+    {
+      "id": "ASM-WDA-CONTRACTS-DEFERRED",
+      "statement": "Detailed JSON artifact schemas remain a ContractGeneration or module-implementation concern; ArchitectureDesign records semantic interface intent only.",
+      "status": "confirmed",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-WDA-PROPOSER-AUTHORITY",
+      "statement": "A proposal implementation could be mistaken for the authoritative dependency engine.",
+      "impact": "Plugin-specific behavior could bypass Core mechanics, policy, or Gate review.",
+      "mitigation": "Constrain every proposer to DependencyProposal and test forbidden authority and Core special cases."
+    },
+    {
+      "id": "RISK-WDA-CONTEXT-DRIFT",
+      "statement": "Context slices could be stale, incomplete, or selected opportunistically.",
+      "impact": "Dependencies would be inferred from unauthorized or inconsistent context.",
+      "mitigation": "Construct the full snapshot in Core and verify declared source and extracted-content digests before proposer entry."
+    },
+    {
+      "id": "RISK-WDA-LIBRARY-LEAKAGE",
+      "statement": "Graphology traversal or OPA native results could leak into canonical artifacts.",
+      "impact": "Library swaps would alter DevRelay semantics or digests.",
+      "mitigation": "Normalize all ordering, diagnostics, policy decisions, and evidence through Core-owned contracts."
+    },
+    {
+      "id": "RISK-WDA-STALE-WAVES",
+      "statement": "Persisted execution waves would become stale as work state changes.",
+      "impact": "Downstream scheduling could incorrectly serialize or release work.",
+      "mitigation": "Persist only the static DAG and derive runnable frontiers downstream from current state."
+    },
+    {
+      "id": "RISK-WDA-REVIEWER-OVERREACH",
+      "statement": "The consistency reviewer could be treated as a source of authoritative edges.",
+      "impact": "Advisory model output would silently change the approved dependency graph.",
+      "mitigation": "Allow findings only; WorkDependencyGate owns resolution and exact approval."
+    }
+  ],
+  "sourceRefs": []
+}

@@ -1,0 +1,180 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "architecture-design-change-work-dependency-analysis-v1",
+  "runId": "work-dependency-analysis-architecture-run-v1",
+  "nodeId": "architecture-design",
+  "module": {
+    "id": "architecture-design",
+    "version": "0.1.0",
+    "operation": "design-change"
+  },
+  "adapters": [
+    {
+      "step": "designer",
+      "plugin": {
+        "id": "openspec-design",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "1.0",
+        "changeName": "work-dependency-analysis",
+        "schema": "devrelay-architecture",
+        "artifact": "design.md",
+        "bridge": "agent-command",
+        "toolName": "OpenSpec"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/openspec/changes"
+        },
+        {
+          "kind": "network.connect",
+          "scope": "host:implementation-engine"
+        }
+      ]
+    },
+    {
+      "step": "modeler",
+      "plugin": {
+        "id": "structurizr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "5.0",
+        "workspacePath": "dogfood/work-dependency-analysis/architecture-design/workspace.dsl",
+        "exportFormat": "static",
+        "toolName": "Structurizr DSL"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/architecture"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "structurizr-export"
+        }
+      ]
+    },
+    {
+      "step": "decision-recorder",
+      "plugin": {
+        "id": "madr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "templateVersion": "4.0",
+        "decisionsPath": "C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design",
+        "toolName": "MADR",
+        "toolVersion": "4.0"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "project-architecture-state": [
+      {
+        "artifactId": "project-architecture-state-work-dependency-analysis-v1",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:3cc676aa1e988b166d21c5cc63f16def169c67f19bb48d7b07946bb5cdb37052",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/project-architecture-state.json"
+      }
+    ],
+    "routing-decision": [
+      {
+        "artifactId": "module-route-decision-work-dependency-analysis-architecture-v1",
+        "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+        "mediaType": "application/vnd.devrelay.module-route-decision+json",
+        "digest": "sha256:fdda1f77f552cc7d82ddc4bd678b8113c85b1bdd6fb98ea101f6411a710736df",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/module-route-decision.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1-wda-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1-wda-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:b915cba9e0af8480229611aff735f265d38bd8c1c4d5fabf19b64432549c16bf",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/repository-snapshot.json"
+      }
+    ],
+    "architecture-baseline": [
+      {
+        "artifactId": "architecture-baseline-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/architecture-baseline.json"
+      }
+    ],
+    "architecture-baseline-project-context": [
+      {
+        "artifactId": "project-context-devrelay-work-breakdown-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/project-context.json"
+      }
+    ],
+    "architecture-baseline-repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-7d3b9c1",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/repository-snapshot.json"
+      }
+    ]
+  },
+  "options": {}
+}

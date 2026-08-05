@@ -7,6 +7,7 @@ import { createModuleRegistry } from "../../src/module-registry.mjs";
 import { requirementsRuntimeArtifactContracts } from "../../src/requirements-runtime-contracts.mjs";
 import {
   buildWorkingRequirements,
+  mergeProjectRequirements,
   goal,
   projectContext,
   questions,
@@ -50,6 +51,18 @@ const artifactTypes = Object.freeze({
     "https://devrelay.dev/artifacts/requirements-gathering-continuation/v1",
     "application/vnd.devrelay.requirements-gathering-continuation+json",
   ]),
+  requirementsBaseline: Object.freeze([
+    "https://devrelay.dev/artifacts/requirements-baseline/v1",
+    "application/vnd.devrelay.requirements-baseline+json",
+  ]),
+  projectOverviewBaseline: Object.freeze([
+    "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+    "application/vnd.devrelay.project-overview-baseline+json",
+  ]),
+  projectOverviewMarkdown: Object.freeze([
+    "https://devrelay.dev/artifacts/project-overview-markdown/v1",
+    "text/markdown; charset=utf-8",
+  ]),
 });
 
 function jsonBytes(value) {
@@ -76,6 +89,18 @@ function createArtifactStore() {
       });
       values.set(artifactId, bytes);
       files.set(fileName, bytes);
+      return ref;
+    },
+    addExisting(artifactId, type, bytes, uri) {
+      const [schema, mediaType] = artifactTypes[type];
+      const ref = Object.freeze({
+        artifactId,
+        schema,
+        mediaType,
+        digest: sha256Digest(bytes),
+        uri,
+      });
+      values.set(artifactId, Buffer.from(bytes));
       return ref;
     },
     artifacts: Object.freeze({
@@ -146,7 +171,38 @@ const repositorySnapshot = Object.freeze({
   excludedPaths: [".git/**", "node_modules/**"],
 });
 
+const requirementsBaselineBytes = await readFile(
+  new URL("project/history/1.0.0/requirements-baseline.json", root),
+);
+const projectOverviewBaselineBytes = await readFile(
+  new URL("project/history/1.0.0/project-overview-baseline.json", root),
+);
+const projectOverviewMarkdownBytes = await readFile(
+  new URL("project/history/1.0.0/ProjectOverview.md", root),
+);
+const requirementsBaseline = JSON.parse(requirementsBaselineBytes.toString("utf8"));
+const projectOverviewBaseline = JSON.parse(
+  projectOverviewBaselineBytes.toString("utf8"),
+);
 const store = createArtifactStore();
+const requirementsBaselineRef = store.addExisting(
+  requirementsBaseline.baselineId,
+  "requirementsBaseline",
+  requirementsBaselineBytes,
+  "file:///C:/repos/DevRelay/project/requirements-baseline.json",
+);
+const projectOverviewBaselineRef = store.addExisting(
+  projectOverviewBaseline.baselineId,
+  "projectOverviewBaseline",
+  projectOverviewBaselineBytes,
+  "file:///C:/repos/DevRelay/project/project-overview-baseline.json",
+);
+store.addExisting(
+  projectOverviewBaseline.renderedDocument.artifact.artifactId,
+  "projectOverviewMarkdown",
+  projectOverviewMarkdownBytes,
+  "file:///C:/repos/DevRelay/ProjectOverview.md",
+);
 const goalRef = store.addJson("goal.json", goal.goalId, "goal", goal);
 const projectContextRef = store.addJson(
   "project-context.json",
@@ -170,13 +226,36 @@ const baseInputs = Object.freeze([
     role: "repository-snapshot",
     artifact: pointer(repositorySnapshotRef),
   }),
+  Object.freeze({
+    role: "requirements-baseline",
+    artifact: pointer(requirementsBaselineRef),
+  }),
+  Object.freeze({
+    role: "project-overview-baseline",
+    artifact: pointer(projectOverviewBaselineRef),
+  }),
 ]);
 const sourceRefs = () => [
   { role: "goal", artifact: pointer(goalRef) },
   { role: "project-context", artifact: pointer(projectContextRef) },
   { role: "repository-snapshot", artifact: pointer(repositorySnapshotRef) },
+  {
+    role: "requirements-baseline",
+    artifact: pointer(requirementsBaselineRef),
+  },
+  {
+    role: "project-overview-baseline",
+    artifact: pointer(projectOverviewBaselineRef),
+  },
 ];
-const workingRequirements = buildWorkingRequirements(sourceRefs);
+const workingRequirements = mergeProjectRequirements(
+  requirementsBaseline.requirements,
+  buildWorkingRequirements(sourceRefs),
+  [
+    { role: "requirements-baseline", artifact: pointer(requirementsBaselineRef) },
+    { role: "project-overview-baseline", artifact: pointer(projectOverviewBaselineRef) },
+  ],
+);
 
 const invocation = Object.freeze({
   apiVersion: "devrelay.dev/v1alpha1",
@@ -195,6 +274,8 @@ const invocation = Object.freeze({
     goal: [goalRef],
     "project-context": [projectContextRef],
     "repository-snapshot": [repositorySnapshotRef],
+    "requirements-baseline": [requirementsBaselineRef],
+    "project-overview-baseline": [projectOverviewBaselineRef],
   },
   options: {},
   config: {
@@ -264,6 +345,7 @@ const registry = createModuleRegistry({
               "WorkDependency Gate rejects cycles, missing dependencies, and impossible ordering.",
               "Assignment, scheduling, execution, implementation status, and verification remain downstream.",
               "Adapters cannot access or mutate TraceabilityGraph.",
+              "The exact global DevRelay V1 RequirementsBaseline and ProjectOverviewBaseline are the approved pre-state for this change.",
             ],
             unresolvedQuestionIds: questions.map(({ id }) => id),
             sourceRefs: sourceRefs(),
@@ -347,6 +429,8 @@ const executionProof = Object.freeze({
   checkpointDigest: sha256Digest(checkpointBytes),
   request: pointer(clarificationRequestRef),
   continuation: pointer(continuationRef),
+  requirementsBaseline: pointer(requirementsBaselineRef),
+  projectOverviewBaseline: pointer(projectOverviewBaselineRef),
   resultDigest: sha256Digest(resultBytes),
   promotableCandidateProduced: false,
   architectureProgressionAllowed: false,
@@ -359,7 +443,7 @@ await writeFile(
 const transcript =
   "# WorkDependencyAnalysis RequirementsGathering clarification\n\n" +
   "Status: `needs_clarification`\n\n" +
-  "RequirementsGathering executed through the bounded `openspec@0.1.0` contract. No OpenSpec CLI execution is claimed, no promotable requirements candidate exists, and ArchitectureDesign is blocked until every question below is answered.\n\n" +
+  "RequirementsGathering executed as a change against the exact global DevRelay V1 requirements and ProjectOverview baselines through the bounded `openspec@0.1.0` contract. No OpenSpec CLI execution is claimed, no promotable change candidate exists, and ArchitectureDesign is blocked until every question below is answered.\n\n" +
   questions
     .map(
       (question, index) =>
@@ -379,7 +463,7 @@ await writeFile(
 const readme =
   "# WorkDependencyAnalysis dogfood\n\n" +
   "This directory records the module-by-module run for DevRelay's next lifecycle slice.\n\n" +
-  "Current state: RequirementsGathering is checkpointed at `needs_clarification`. The exact request, continuation, and effect-checkpoint bundle form the resumable package; no requirements baseline, ProjectOverview baseline, architecture candidate, or implementation is authorized.\n\n" +
+  "Current state: RequirementsGathering is checkpointed at `needs_clarification` as a change against the exact global DevRelay V1 RequirementsBaseline and ProjectOverviewBaseline. The exact request, continuation, baseline inputs, and effect-checkpoint bundle form the resumable package; no WorkDependencyAnalysis requirements change, architecture candidate, or implementation is authorized.\n\n" +
   "Regenerate the checkpoint from repository root with:\n\n" +
   "```powershell\nnode dogfood\\work-dependency-analysis\\materialize-clarification.mjs\n```\n";
 await writeFile(

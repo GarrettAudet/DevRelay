@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/work-dependency-analysis-artifacts.schema.json",
+  "oneOf": [
+    { "$ref": "#/$defs/projectState" },
+    { "$ref": "#/$defs/opaPolicyBundle" },
+    { "$ref": "#/$defs/contextSliceSet" },
+    { "$ref": "#/$defs/snapshot" },
+    { "$ref": "#/$defs/proposal" },
+    { "$ref": "#/$defs/graphResult" },
+    { "$ref": "#/$defs/policyDecisionSet" },
+    { "$ref": "#/$defs/consistencyReview" },
+    { "$ref": "#/$defs/candidate" },
+    { "$ref": "#/$defs/baseline" }
+  ],
+  "$defs": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "schema", "mediaType", "digest", "uri"],
+      "properties": {
+        "artifactId": { "type": "string", "minLength": 1 },
+        "schema": { "type": "string", "format": "uri" },
+        "mediaType": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "inputBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "artifact": { "$ref": "#/$defs/artifactRef" }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact", "jsonPointer"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "artifact": { "$ref": "#/$defs/artifactRef" },
+        "jsonPointer": { "type": "string", "pattern": "^(|/.*)$" }
+      }
+    },
+    "sourceVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": {
+          "enum": ["artifact-version", "repository-commit", "content-digest"]
+        },
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "contextSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "purpose",
+        "sourceArtifact",
+        "sourceKind",
+        "sourceVersion",
+        "selector",
+        "extractedContentDigest",
+        "coveredRefs"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^CTX-[A-Z0-9-]+$" },
+        "purpose": { "type": "string", "minLength": 1 },
+        "sourceArtifact": { "$ref": "#/$defs/artifactRef" },
+        "sourceKind": { "type": "string", "minLength": 1 },
+        "sourceVersion": { "$ref": "#/$defs/sourceVersion" },
+        "selector": { "type": "string", "pattern": "^(|/.*)$" },
+        "extractedContentDigest": { "$ref": "#/$defs/digest" },
+        "coveredRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" }
+        }
+      }
+    },
+    "contextSliceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "sliceSetId", "slices"],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "ContextSliceSet" },
+        "sliceSetId": { "type": "string", "pattern": "^CTXS-[A-Z0-9-]+$" },
+        "slices": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/contextSlice" }
+        }
+      }
+    },
+    "projectState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion",
+        "kind",
+        "stateId",
+        "state",
+        "workBreakdownBaseline",
+        "projectOverviewBaseline",
+        "contextSliceSet",
+        "policyBundle"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "ProjectWorkDependencyState" },
+        "stateId": { "type": "string", "pattern": "^PWDS-[A-Z0-9-]+$" },
+        "state": { "const": "ready" },
+        "workBreakdownBaseline": { "$ref": "#/$defs/artifactRef" },
+        "projectOverviewBaseline": { "$ref": "#/$defs/artifactRef" },
+        "contextSliceSet": { "$ref": "#/$defs/artifactRef" },
+        "policyBundle": { "$ref": "#/$defs/artifactRef" },
+        "currentWorkDependencyBaseline": { "$ref": "#/$defs/artifactRef" }
+      }
+    },
+    "opaPolicyBundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "policyId", "version", "wasm", "entrypoint",
+        "opaCompilerVersion"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "OpaPolicyBundle" },
+        "policyId": { "type": "string", "pattern": "^OPA-[A-Z0-9-]+$" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "wasm": { "$ref": "#/$defs/artifactRef" },
+        "entrypoint": { "type": "string", "minLength": 1 },
+        "opaCompilerVersion": { "type": "string", "minLength": 1 }
+      }
+    },    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "snapshotId", "workBreakdownBaseline",
+        "projectOverviewBaseline", "contextSliceSet", "workItems",
+        "contextSlices", "workItemIds", "workItemsDigest", "contentDigest"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "WorkBreakdownAnalysisSnapshot" },
+        "snapshotId": { "type": "string", "pattern": "^WDAS-[A-Z0-9-]+$" },
+        "workBreakdownBaseline": { "$ref": "#/$defs/artifactRef" },
+        "projectOverviewBaseline": { "$ref": "#/$defs/artifactRef" },
+        "contextSliceSet": { "$ref": "#/$defs/artifactRef" },
+        "workItems": { "type": "array", "items": { "type": "object" } },
+        "contextSlices": { "type": "array", "items": { "type": "object" } },
+        "workItemIds": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" }
+        },
+        "workItemsDigest": { "$ref": "#/$defs/digest" },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "dependencyEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "prerequisiteId", "dependentId", "rationale", "evidence",
+        "policyDisposition"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^DEP-[A-Z0-9-]+$" },
+        "prerequisiteId": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+        "dependentId": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+        "policyDisposition": { "enum": ["allow", "deny"] }
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "proposalId", "proposer", "snapshotId",
+        "snapshotDigest", "nodes", "edges", "hintDispositions",
+        "contextSliceIds", "proposalDigest"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "DependencyProposal" },
+        "proposalId": { "type": "string", "pattern": "^DPROP-[A-Z0-9-]+$" },
+        "proposer": { "type": "object" },
+        "snapshotId": { "type": "string", "pattern": "^WDAS-[A-Z0-9-]+$" },
+        "snapshotDigest": { "$ref": "#/$defs/digest" },
+        "nodes": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "edges": { "type": "array", "items": { "type": "object" } },
+        "hintDispositions": { "type": "array", "items": { "type": "object" } },
+        "contextSliceIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "proposalDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "required": ["code", "severity", "message"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["info", "warning", "error"] },
+        "subject": { "type": "string" },
+        "message": { "type": "string", "minLength": 1 }
+      }
+    },
+    "graphResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "status", "implementation", "nodes", "edges",
+        "graphDigest", "topologicalOrder", "generations", "cycleWitness", "diagnostics"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "WorkDependencyGraphMechanicsResult" },
+        "status": { "enum": ["valid", "invalid"] },
+        "implementation": { "type": "object" },
+        "nodes": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/dependencyEdge" } },
+        "graphDigest": { "$ref": "#/$defs/digest" },
+        "topologicalOrder": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "generations": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } },
+        "cycleWitness": { "type": "array", "items": { "type": "string" } },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "policyDecisionSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "evaluationStatus", "allow", "policyBundle",
+        "entrypoint", "inputDigest", "engine", "rawResult", "edgeDecisions",
+        "denials", "diagnostics"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "OpaPolicyDecisionSet" },
+        "evaluationStatus": { "enum": ["evaluated", "undefined", "malformed", "evaluation-error"] },
+        "allow": { "type": "boolean" },
+        "policyBundle": { "$ref": "#/$defs/artifactRef" },
+        "entrypoint": { "type": "string", "minLength": 1 },
+        "inputDigest": { "$ref": "#/$defs/digest" },
+        "engine": { "type": "object" },
+        "rawResult": { "$ref": "#/$defs/artifactRef" },
+        "edgeDecisions": { "type": "array", "items": { "type": "object" } },
+        "denials": { "type": "array", "items": { "type": "object" } },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "consistencyReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "reviewId", "reviewer", "graphDigest", "advisory", "status", "findings"],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "WorkDependencyConsistencyReview" },
+        "reviewId": { "type": "string", "pattern": "^WDCR-[A-Z0-9-]+$" },
+        "reviewer": { "type": "object" },
+        "graphDigest": { "$ref": "#/$defs/digest" },
+        "advisory": { "const": true },
+        "status": { "enum": ["pass", "warning", "blocking"] },
+        "findings": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "candidateId", "operation", "inputBindings",
+        "snapshot", "proposal", "graphMechanics", "policyDecisionSet",
+        "consistencyReview", "nodes", "edges", "graphDigest",
+        "topologicalOrder", "hintDispositions", "nativeArtifacts", "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "WorkDependencyCandidate" },
+        "candidateId": { "type": "string", "pattern": "^WDC-[A-Z0-9-]+$" },
+        "operation": { "const": "analyze-dependencies" },
+        "inputBindings": { "type": "array", "items": { "$ref": "#/$defs/inputBinding" } },
+        "opaPolicyBundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "policyId", "version", "wasm", "entrypoint",
+        "opaCompilerVersion"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "OpaPolicyBundle" },
+        "policyId": { "type": "string", "pattern": "^OPA-[A-Z0-9-]+$" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "wasm": { "$ref": "#/$defs/artifactRef" },
+        "entrypoint": { "type": "string", "minLength": 1 },
+        "opaCompilerVersion": { "type": "string", "minLength": 1 }
+      }
+    },    "snapshot": { "$ref": "#/$defs/artifactRef" },
+        "proposal": { "$ref": "#/$defs/artifactRef" },
+        "graphMechanics": { "$ref": "#/$defs/artifactRef" },
+        "policyDecisionSet": { "$ref": "#/$defs/artifactRef" },
+        "consistencyReview": { "$ref": "#/$defs/artifactRef" },
+        "nodes": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/dependencyEdge" } },
+        "graphDigest": { "$ref": "#/$defs/digest" },
+        "topologicalOrder": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "hintDispositions": { "type": "array", "items": { "type": "object" } },
+        "nativeArtifacts": { "type": "array", "items": { "$ref": "#/$defs/artifactRef" } },
+        "sourceRefs": { "type": "array", "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apiVersion", "kind", "baselineId", "version", "approvedCandidate",
+        "workBreakdownBaseline", "nodes", "edges", "graphDigest",
+        "topologicalOrder", "policyEvidence", "consistencyEvidence",
+        "approvalEvidence", "sourceRefs"
+      ],
+      "properties": {
+        "apiVersion": { "$ref": "#/$defs/apiVersion" },
+        "kind": { "const": "WorkDependencyBaseline" },
+        "baselineId": { "type": "string", "pattern": "^WDB-[A-Z0-9-]+$" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "approvedCandidate": { "$ref": "#/$defs/artifactRef" },
+        "workBreakdownBaseline": { "$ref": "#/$defs/artifactRef" },
+        "nodes": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/dependencyEdge" } },
+        "graphDigest": { "$ref": "#/$defs/digest" },
+        "topologicalOrder": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "policyEvidence": { "$ref": "#/$defs/artifactRef" },
+        "consistencyEvidence": { "$ref": "#/$defs/artifactRef" },
+        "approvalEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/artifactRef" } },
+        "sourceRefs": { "type": "array", "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@ import test from "node:test";
 
 import { canonicalJson, canonicalJsonDigest } from "../src/content-digest.mjs";
 import {
+  architectureBaselineObserverContributor,
   architectureControlTraceabilityContributor,
   architectureTraceabilityContributor,
 } from "../src/architecture-traceability-contributor.mjs";
@@ -470,5 +471,87 @@ test("Architecture and approved requirements projections validate together throu
       ({ kind }) => kind === "artifact-reference",
     ).length,
     4,
+  );
+});
+
+test("Approved architecture baseline projection ignores historical citations absent from the current requirements baseline", async () => {
+  const [baseline, requirements] = await Promise.all([
+    readJson("dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json"),
+    readJson("project/requirements-baseline.json"),
+  ]);
+  const currentRequirementIds = new Set(
+    [
+      "businessObjectives",
+      "successMetrics",
+      "stakeholders",
+      "users",
+      "capabilities",
+      "userJourneys",
+      "userStories",
+      "acceptanceCriteria",
+      "nonFunctionalRequirements",
+      "constraints",
+    ].flatMap((field) =>
+      (requirements.requirements[field] ?? []).map(({ id }) => id),
+    ),
+  );
+  const citedRequirementIds = new Set();
+  const collectCitations = (value) => {
+    if (Array.isArray(value)) {
+      for (const child of value) collectCitations(child);
+      return;
+    }
+    if (value === null || typeof value !== "object") return;
+    for (const [key, child] of Object.entries(value)) {
+      if (key === "sourceRequirementIds" && Array.isArray(child)) {
+        for (const id of child) citedRequirementIds.add(id);
+      } else {
+        collectCitations(child);
+      }
+    }
+  };
+  collectCitations(baseline.sections);
+  const staleRequirementIds = new Set(
+    [...citedRequirementIds].filter((id) => !currentRequirementIds.has(id)),
+  );
+  assert.ok(staleRequirementIds.size > 0);
+
+  const context = {
+    graphId: "devrelay/work-breakdown",
+    projectId: "devrelay",
+    invocation: {
+      module: {
+        id: "work-breakdown",
+        version: "0.1.0",
+        operation: "decompose-change",
+      },
+    },
+    moduleResult: { status: "completed", outcome: "decomposed" },
+    loadedInputs: {
+      "requirements-baseline": [entry(baseline.requirementsBaseline, requirements)],
+      "architecture-baseline": [
+        entry(
+          {
+            artifactId: baseline.baselineId,
+            schema: "https://devrelay.dev/artifacts/architecture-baseline/v1",
+            mediaType: "application/vnd.devrelay.architecture-baseline+json",
+            digest: canonicalJsonDigest(baseline),
+            uri: "memory://fixtures/architecture-baseline-wda.json",
+          },
+          baseline,
+        ),
+      ],
+    },
+  };
+  assert.equal(architectureBaselineObserverContributor.match(context), true);
+  const projected = await architectureBaselineObserverContributor.project(context);
+  const designedBy = findEdges(projected, "designed-by");
+  assert.equal(
+    designedBy.some(({ source }) => staleRequirementIds.has(source.stableId)),
+    false,
+  );
+  assert.equal(
+    designedBy.some(({ source }) => currentRequirementIds.has(source.stableId)),
+    true,
   );
 });

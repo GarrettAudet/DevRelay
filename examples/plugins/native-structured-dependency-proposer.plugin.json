@@ -1,0 +1,19 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "native-structured-dependency-proposer",
+    "version": "0.1.0",
+    "description": "Default deterministic proposer that converts bounded WorkItem dependency hints into a provider-neutral DependencyProposal."
+  },
+  "implements": [{
+    "module": { "id": "work-dependency-analysis", "version": "0.1.0" },
+    "operations": [{
+      "id": "analyze-dependencies",
+      "role": "proposer",
+      "execution": "effect",
+      "configSchema": { "type": "object", "additionalProperties": false },
+      "capabilities": []
+    }]
+  }]
+}

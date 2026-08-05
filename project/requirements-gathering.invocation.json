@@ -1,0 +1,69 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-devrelay-v1-openspec",
+  "runId": "project-baseline-devrelay-v1",
+  "nodeId": "requirements-gathering",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-devrelay-v1-project-baseline",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef",
+        "uri": "file:///C:/repos/DevRelay/project/goal.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b",
+        "uri": "file:///C:/repos/DevRelay/project/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4",
+        "uri": "file:///C:/repos/DevRelay/project/repository-snapshot.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "C:/repos/DevRelay",
+    "toolName": "OpenSpec",
+    "toolVersion": "conversation-contract-v1",
+    "nativeOperation": "requirements.gather",
+    "changeName": "devrelay-v1-project-baseline",
+    "schema": "devrelay-requirements",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "C:/repos/DevRelay"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "C:/repos/DevRelay/openspec/changes"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

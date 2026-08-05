@@ -1,0 +1,189 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "work-dependency-analysis",
+    "version": "0.1.0",
+    "description": "Convert a complete approved WorkBreakdownBaseline plus version-pinned context slices into one policy-allowed deterministic static dependency DAG without assigning, scheduling, or executing work."
+  },
+  "routing": {
+    "stateSchema": "https://devrelay.dev/artifacts/project-work-dependency-state/v1",
+    "discriminator": "/state",
+    "rules": [
+      {
+        "value": "ready",
+        "operation": "analyze-dependencies",
+        "reasonCode": "WORK_BREAKDOWN_BASELINE_READY"
+      }
+    ],
+    "stateInput": "project-work-dependency-state",
+    "decisionInput": "routing-decision"
+  },
+  "operations": [
+    {
+      "id": "analyze-dependencies",
+      "description": "Recompute the full candidate work graph, evaluate mechanics and policy in Core, and obtain an advisory consistency review.",
+      "adapterExecution": "effect",
+      "inputs": [
+        {
+          "name": "project-work-dependency-state",
+          "schema": "https://devrelay.dev/artifacts/project-work-dependency-state/v1",
+          "mediaTypes": ["application/vnd.devrelay.project-work-dependency-state+json"],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "routing-decision",
+          "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+          "mediaTypes": ["application/vnd.devrelay.module-route-decision+json"],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "work-breakdown-baseline",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+          "mediaTypes": ["application/vnd.devrelay.work-breakdown-baseline+json"],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "context-slice-set",
+          "schema": "https://devrelay.dev/artifacts/context-slice-set/v1",
+          "mediaTypes": ["application/vnd.devrelay.context-slice-set+json"],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "dependency-policy-bundle",
+          "schema": "https://devrelay.dev/artifacts/opa-policy-bundle/v1",
+          "mediaTypes": ["application/vnd.devrelay.opa-policy-bundle+json"],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "work-dependency-candidate",
+          "schema": "https://devrelay.dev/artifacts/work-dependency-candidate/v1",
+          "mediaTypes": ["application/vnd.devrelay.work-dependency-candidate+json"],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "inputRules": [],
+      "outcomes": [
+        "analyzed",
+        "needs_clarification",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "analyzed": {
+          "status": "completed",
+          "requiredInputs": [
+            "project-work-dependency-state",
+            "routing-decision",
+            "work-breakdown-baseline",
+            "project-overview-baseline",
+            "context-slice-set",
+            "dependency-policy-bundle"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": ["work-dependency-candidate"],
+          "allowedOutputs": ["work-dependency-candidate"],
+          "requiredEvidence": [
+            {
+              "kind": "work-dependency/graph-mechanics",
+              "statuses": ["pass"],
+              "artifactOutput": "work-dependency-candidate"
+            },
+            {
+              "kind": "work-dependency/opa-policy",
+              "statuses": ["pass"],
+              "artifactOutput": "work-dependency-candidate"
+            },
+            {
+              "kind": "work-dependency/consistency-review",
+              "statuses": ["pass"],
+              "artifactOutput": "work-dependency-candidate"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": ["work-dependency-candidate"],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": ["work-dependency-candidate"],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "work-dependency/graph-mechanics",
+        "work-dependency/opa-policy",
+        "work-dependency/consistency-review"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposerId": { "type": "string", "minLength": 1 },
+          "reviewerId": { "type": "string", "minLength": 1 },
+          "policyEntrypoint": { "const": "devrelay/work_dependency/decision" }
+        }
+      },
+      "extensionPorts": [
+        {
+          "id": "dependency-proposer",
+          "role": "proposer",
+          "inputSchema": "https://devrelay.dev/artifacts/work-breakdown-analysis-snapshot/v1",
+          "outputSchema": "https://devrelay.dev/artifacts/dependency-proposal/v1",
+          "required": true
+        },
+        {
+          "id": "consistency-reviewer",
+          "role": "reviewer",
+          "inputSchema": "https://devrelay.dev/artifacts/work-dependency-graph-mechanics-result/v1",
+          "outputSchema": "https://devrelay.dev/artifacts/work-dependency-consistency-review/v1",
+          "required": true
+        }
+      ],
+      "orchestrationPlan": [
+        { "id": "snapshot", "kind": "core", "handler": "work-dependency/snapshot-builder" },
+        { "id": "proposal", "kind": "extension-port", "handler": "dependency-proposer" },
+        { "id": "mechanics", "kind": "core", "handler": "work-dependency/graphology-dag" },
+        { "id": "policy", "kind": "core", "handler": "work-dependency/opa-policy" },
+        { "id": "review", "kind": "extension-port", "handler": "consistency-reviewer" },
+        { "id": "candidate", "kind": "core", "handler": "work-dependency/candidate-assembler" },
+        { "id": "checkpoint", "kind": "core", "handler": "work-dependency/checkpoint" }
+      ]
+    }
+  ]
+}

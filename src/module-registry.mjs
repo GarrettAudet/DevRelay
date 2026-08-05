@@ -57,7 +57,7 @@ export function assertVerifiedCheckpointReplayReceipt(receipt) {
   if (!isRecord(receipt) || !verifiedCheckpointReplayReceipts.has(receipt)) {
     fail(
       "DR2214",
-      "requirements gate requires an in-process verified checkpoint replay receipt",
+      "gate requires an in-process verified checkpoint replay receipt",
     );
   }
   return receipt;
@@ -2859,6 +2859,120 @@ export function createModuleRegistry({
     return startIndex;
   }
 
+  async function verifyCheckpointedChainExecution(runtime) {
+    const { context, invocation: invocationSnapshot, resolution } = runtime;
+    for (const plan of resolution.steps) {
+      const stepInvocation = createStepInvocation({
+        apiVersion: "devrelay.dev/v1alpha1",
+        kind: "ModuleStepInvocation",
+        invocationId: invocationSnapshot.invocationId,
+        runId: invocationSnapshot.runId,
+        nodeId: invocationSnapshot.nodeId,
+        invocationFingerprint: resolution.invocationFingerprint,
+        chainFingerprint: resolution.chainFingerprint,
+        module: invocationSnapshot.module,
+        step: plan.stepDefinition.id,
+        plugin: plan.binding.plugin,
+        inputs: invocationSnapshot.inputs,
+        priorResults: runtime.priorResults,
+        options: invocationSnapshot.options,
+        config: plan.binding.config,
+        grants: plan.binding.grants,
+      });
+      assertSchema(
+        documentValidators.moduleStepInvocation,
+        stepInvocation,
+        "DR2213",
+        `checkpointed step ${plan.stepDefinition.id} invocation`,
+      );
+      const checkpoint = await readCheckpoint(
+        context.checkpoints,
+        stepCheckpointKey(stepInvocation),
+      );
+      if (checkpoint === undefined || checkpoint === null) {
+        fail(
+          "DR2213",
+          `checkpoint-only verification requires the exact ${plan.stepDefinition.id} checkpoint`,
+        );
+      }
+      const envelope = immutableCopy(checkpoint);
+      validateStepResultBinding(stepInvocation, envelope);
+      const producer = producerFor(stepInvocation);
+
+      if (envelope.disposition === "terminal") {
+        const moduleResult = validateResult(
+          invocationSnapshot,
+          envelope.moduleResult,
+        );
+        assertAdapterOutcomeNotGuardOwned(runtime, moduleResult);
+        if (
+          plan.stepDefinition.kind !== "terminal" &&
+          !resolution.operationDefinition.adapterChain.earlyTerminalOutcomes.includes(
+            moduleResult.outcome,
+          )
+        ) {
+          fail(
+            "DR2213",
+            `checkpointed step ${plan.stepDefinition.id} cannot terminate with outcome "${moduleResult.outcome}"`,
+          );
+        }
+        const loadedOutputs = await loadPortArtifacts(
+          moduleResult.outputs,
+          resolution.operationDefinition.outputs,
+          "output",
+          runtime,
+          producer,
+        );
+        const receipt = immutableCopy({
+          apiVersion: "devrelay.dev/v1alpha1",
+          kind: "VerifiedCheckpointReplayReceipt",
+          invocation: invocationSnapshot,
+          producer,
+          moduleResult,
+          loadedInputs: exposeLoadedArtifacts(runtime.loadedInputs),
+          loadedOutputs: exposeLoadedArtifacts(loadedOutputs),
+        });
+        verifiedCheckpointReplayReceipts.add(receipt);
+        return receipt;
+      }
+
+      if (plan.stepDefinition.kind === "terminal") {
+        fail(
+          "DR2213",
+          `checkpoint-only verification requires terminal step ${plan.stepDefinition.id} to return a terminal result`,
+        );
+      }
+      validateStepOutputs(envelope.outputs, plan.stepDefinition);
+      const loadedHandoff = await loadPortArtifacts(
+        envelope.outputs,
+        plan.stepDefinition.outputs,
+        "handoff",
+        runtime,
+        producer,
+      );
+      runtime.loadedHandoffs[plan.stepDefinition.id] = loadedHandoff;
+      runtime.priorResults.push(
+        immutableCopy({
+          step: plan.stepDefinition.id,
+          plugin: plan.binding.plugin,
+          sourceInvocation: {
+            invocationId: stepInvocation.invocationId,
+            invocationFingerprint: stepInvocation.invocationFingerprint,
+            plugin: plan.binding.plugin,
+            stepInvocationDigest: stepInvocation.stepInvocationDigest,
+          },
+          stepInvocationDigest: stepInvocation.stepInvocationDigest,
+          digest: canonicalJsonDigest(envelope),
+          outputs: envelope.outputs,
+        }),
+      );
+    }
+    fail(
+      "DR2213",
+      "checkpoint-only verification reached the end of a chain without a terminal result",
+    );
+  }
+
   async function verifyCheckpointedExecution(invocation, context = {}) {
     const invocationSnapshot = immutableCopy(invocation);
     const resolution = resolve(invocationSnapshot);
@@ -2871,13 +2985,19 @@ export function createModuleRegistry({
     } catch (error) {
       runtimeFailure(error);
     }
-    if (
-      resolution.mode !== "single" ||
-      resolution.pluginOperation.execution !== "effect"
-    ) {
+    const checkpointedExecution =
+      (resolution.mode === "single" &&
+        resolution.pluginOperation.execution === "effect") ||
+      (resolution.mode === "chain" &&
+        resolution.steps.every(
+          ({ pluginOperation }) =>
+            pluginOperation.execution === "effect" ||
+            resolution.operationDefinition.adapterChain.resume !== undefined,
+        ));
+    if (!checkpointedExecution) {
       fail(
         "DR2213",
-        "checkpoint-only verification requires a checkpointed single-adapter effect",
+        "checkpoint-only verification requires a fully checkpointed effect execution",
       );
     }
     if (
@@ -2905,6 +3025,10 @@ export function createModuleRegistry({
       runtime,
     );
     await enforceDeterministicRoute(runtime);
+
+    if (resolution.mode === "chain") {
+      return verifyCheckpointedChainExecution(runtime);
+    }
 
     const stepInvocation = singleStepInvocation(invocationSnapshot, resolution);
     const checkpoint = await readCheckpoint(

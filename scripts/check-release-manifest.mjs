@@ -87,7 +87,7 @@ exact(
 exact(
   manifest.plugins,
   canonicalPlugins,
-  "plugin IDs, versions, module owners, or operation/step bindings changed",
+  "plugin IDs, versions, module owners, or operation/step/role bindings changed",
 );
 if (!Array.isArray(manifest.files)) {
   fail("files must be an array");
@@ -210,20 +210,20 @@ for (const expected of canonicalPlugins) {
     expected.manifest + " module owner changed",
   );
   const actualBindings = (implementation.operations ?? [])
-    .map(({ id, step }) => ({
+    .map(({ id, step, role }) => ({
       operation: id,
       step: step ?? null,
+      ...(role ? { role } : {}),
     }))
-    .sort((left, right) =>
-      (left.operation + ":" + (left.step ?? "")).localeCompare(
-        right.operation + ":" + (right.step ?? ""),
-        "en",
-      ),
-    );
+    .sort((left, right) => {
+      const leftKey = `${left.operation}:${left.step ?? ""}:${left.role ?? ""}`;
+      const rightKey = `${right.operation}:${right.step ?? ""}:${right.role ?? ""}`;
+      return leftKey.localeCompare(rightKey, "en");
+    });
   exact(
     actualBindings,
     expected.bindings,
-    expected.manifest + " operation/step bindings changed",
+    expected.manifest + " operation/step/role bindings changed",
   );
 }
 

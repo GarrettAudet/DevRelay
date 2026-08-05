@@ -1,0 +1,87 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-work-dependency-analysis-openspec-superseding-v1",
+  "runId": "dogfood-work-dependency-analysis-v1",
+  "nodeId": "requirements-gathering",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-work-dependency-analysis-module-v1",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/goal.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/repository-snapshot.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "C:/repos/DevRelay",
+    "toolName": "OpenSpec",
+    "toolVersion": "conversation-contract-v1",
+    "nativeOperation": "requirements.gather",
+    "changeName": "work-dependency-analysis-module-v1",
+    "schema": "devrelay-requirements",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "C:/repos/DevRelay"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "C:/repos/DevRelay/openspec/changes"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

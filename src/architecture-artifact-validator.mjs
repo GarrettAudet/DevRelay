@@ -789,6 +789,7 @@ function validateTraceability(
   citations,
   approvedRequirementIds,
   resolvedTargetKinds,
+  { allowHistoricalCitations = false } = {},
 ) {
   assertUnique(
     traceability,
@@ -810,7 +811,10 @@ function validateTraceability(
       }
     }
     for (const requirementId of citations.keys()) {
-      if (!approvedRequirementIds.has(requirementId)) {
+      if (
+        !approvedRequirementIds.has(requirementId) &&
+        !allowHistoricalCitations
+      ) {
         fail(`architecture cites unapproved requirement ${requirementId}`);
       }
     }
@@ -832,6 +836,7 @@ function validateTraceability(
       );
       const key = `${target.kind}:${target.id}`;
       if (
+        entry.disposition === "designed" &&
         resolvedTargetKinds[target.kind] === true &&
         !citedTargets.has(key)
       ) {
@@ -845,9 +850,25 @@ function validateTraceability(
         `traceability ${entry.requirementId} has targets despite no impact`,
       );
     }
+    if (
+      entry.disposition === "already-designed" &&
+      targets.size === 0
+    ) {
+      fail(
+        `traceability ${entry.requirementId} has no baseline target despite already-designed disposition`,
+      );
+    }
   }
 
   for (const [requirementId, citedTargets] of citations) {
+    if (
+      allowHistoricalCitations &&
+      !byRequirement.has(requirementId) &&
+      (!approvedRequirementIds ||
+        !approvedRequirementIds.has(requirementId))
+    ) {
+      continue;
+    }
     const trace = byRequirement.get(requirementId);
     if (!trace) {
       fail(
@@ -856,7 +877,7 @@ function validateTraceability(
     }
     if (trace.disposition !== "designed") {
       fail(
-        `requirement ${requirementId} is cited but marked no architecture impact`,
+        `requirement ${requirementId} is cited but marked ${trace.disposition}`,
       );
     }
     const traced = new Set(
@@ -969,6 +990,15 @@ function validateSections(
           );
         }
         index.change.add(change.changeId);
+        if (approvedRequirementIds) {
+          for (const requirementId of change.sourceRequirementIds) {
+            if (!approvedRequirementIds.has(requirementId)) {
+              fail(
+                `change ${change.changeId} cites unapproved requirement ${requirementId}`,
+              );
+            }
+          }
+        }
         addRequirementCitation(
           citations,
           change.sourceRequirementIds,
@@ -979,6 +1009,15 @@ function validateSections(
     }
     for (const change of changes.decisionChanges) {
       index.change.add(change.changeId);
+      if (approvedRequirementIds) {
+        for (const requirementId of change.sourceRequirementIds) {
+          if (!approvedRequirementIds.has(requirementId)) {
+            fail(
+              `change ${change.changeId} cites unapproved requirement ${requirementId}`,
+            );
+          }
+        }
+      }
       addRequirementCitation(
         citations,
         change.sourceRequirementIds,
@@ -1003,6 +1042,9 @@ function validateSections(
         constraint: Boolean(constraints),
         decision: Boolean(decisions),
         change: Boolean(changes),
+      },
+      {
+        allowHistoricalCitations: Boolean(changes),
       },
     );
   }
@@ -1726,6 +1768,79 @@ function consumeDecisionDifference(expected, decisionId, operation, label) {
   expected.delete(decisionId);
 }
 
+const BASELINE_REUSABLE_TARGET_KINDS = Object.freeze([
+  "element",
+  "relationship",
+  "interface",
+  "constraint",
+  "decision",
+]);
+
+function validateBaselineRequirementReuse({
+  baseMaps,
+  targetMaps,
+  architectureChangeSet,
+  approvedRequirementIds,
+}) {
+  if (!approvedRequirementIds) {
+    return;
+  }
+
+  for (const kind of BASELINE_REUSABLE_TARGET_KINDS) {
+    const base = requireResolvedEntityMap(
+      baseMaps,
+      kind,
+      "historical requirement citation verification",
+    );
+    const target = requireResolvedEntityMap(
+      targetMaps,
+      kind,
+      "historical requirement citation verification",
+    );
+    for (const [entityId, entity] of target) {
+      const historicalIds = (entity.sourceRequirementIds ?? []).filter(
+        (requirementId) => !approvedRequirementIds.has(requirementId),
+      );
+      if (historicalIds.length === 0) {
+        continue;
+      }
+      const baselineEntity = base.get(entityId);
+      if (
+        !baselineEntity ||
+        canonicalJsonDigest(baselineEntity) !== canonicalJsonDigest(entity)
+      ) {
+        fail(
+          `${kind} ${entityId} changes while retaining historical requirement citation ${historicalIds[0]}`,
+        );
+      }
+    }
+  }
+
+  for (const entry of architectureChangeSet.traceability) {
+    if (entry.disposition !== "already-designed") {
+      continue;
+    }
+    for (const targetRef of entry.targets) {
+      if (!BASELINE_REUSABLE_TARGET_KINDS.includes(targetRef.kind)) {
+        fail(
+          `already-designed traceability ${entry.requirementId} targets non-reusable ${targetRef.kind}:${targetRef.id}`,
+        );
+      }
+      const before = baseMaps[targetRef.kind]?.get(targetRef.id);
+      const after = targetMaps[targetRef.kind]?.get(targetRef.id);
+      if (
+        !before ||
+        !after ||
+        canonicalJsonDigest(before) !== canonicalJsonDigest(after)
+      ) {
+        fail(
+          `already-designed traceability ${entry.requirementId} does not target an unchanged baseline entity ${targetRef.kind}:${targetRef.id}`,
+        );
+      }
+    }
+  }
+}
+
 export function validateArchitectureChangeSetAgainstBaseline({
   architectureBaseline,
   architectureBaselineRef,
@@ -1769,6 +1884,12 @@ export function validateArchitectureChangeSetAgainstBaseline({
     architectureChangeSet.sections,
     options,
   );
+  validateBaselineRequirementReuse({
+    baseMaps,
+    targetMaps,
+    architectureChangeSet,
+    approvedRequirementIds: options.approvedRequirementIds,
+  });
   for (const [collectionName, kind] of Object.entries(
     CHANGE_COLLECTION_KINDS,
   )) {

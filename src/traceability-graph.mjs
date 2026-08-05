@@ -6,6 +6,7 @@ import {
 import {
   TRACEABILITY_ANALYZER,
   TRACEABILITY_EDGE_KINDS,
+  TRACEABILITY_EDGE_KINDS_V1_1,
   TRACEABILITY_GRAPH_MEDIA_TYPE,
   TRACEABILITY_GRAPH_SCHEMA,
   TRACEABILITY_HORIZONS,
@@ -16,6 +17,7 @@ import {
   TRACEABILITY_UPDATE_SCHEMA,
   TRACEABILITY_NODE_KINDS,
   TRACEABILITY_VOCABULARY,
+  TRACEABILITY_VOCABULARY_V1_1,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityDiagnosticId,
@@ -1651,6 +1653,19 @@ function normalizeBase(store, graphId, projectId, baseGraph) {
   );
 }
 
+function selectUpdateVocabulary(baseVocabulary, rawProjects) {
+  const usesOnlyV1_1Edges = rawProjects.every(({ projected }) =>
+    projected.edges.every(({ kind }) => TRACEABILITY_EDGE_KINDS_V1_1.includes(kind)),
+  );
+  if (
+    baseVocabulary.version === TRACEABILITY_VOCABULARY_V1_1.version &&
+    baseVocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_1.contractDigest &&
+    usesOnlyV1_1Edges
+  ) {
+    return TRACEABILITY_VOCABULARY_V1_1;
+  }
+  return TRACEABILITY_VOCABULARY;
+}
 function preparedValue(baseGraphRef, updateEntry) {
   const checkpoint = immutableJson({
     baseGraphRef,
@@ -2003,7 +2018,7 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
       projectId,
       baseGraph: immutableJson(base.ref),
       horizon: maxHorizon(rawProjects.map(({ projected }) => projected.horizon)),
-      vocabulary: TRACEABILITY_VOCABULARY,
+      vocabulary: selectUpdateVocabulary(base.value.vocabulary, rawProjects),
       producer: producer(invocation, invocationFingerprint, moduleResult),
       sourceArtifacts,
       scopes,

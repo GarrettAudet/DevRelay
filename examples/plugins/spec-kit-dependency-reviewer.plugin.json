@@ -1,0 +1,33 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "spec-kit-dependency-reviewer",
+    "version": "0.1.0",
+    "description": "Bounded GitHub Spec Kit consistency reviewer for a Core-computed dependency graph; its findings are advisory until WorkDependencyGate evaluates them."
+  },
+  "implements": [{
+    "module": { "id": "work-dependency-analysis", "version": "0.1.0" },
+    "operations": [{
+      "id": "analyze-dependencies",
+      "role": "reviewer",
+      "execution": "effect",
+      "configSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["projectRoot", "reviewOutputRoot", "toolVersion", "bridge"],
+        "properties": {
+          "projectRoot": { "type": "string", "minLength": 1 },
+          "reviewOutputRoot": { "type": "string", "minLength": 1 },
+          "toolVersion": { "type": "string", "minLength": 1 },
+          "bridge": { "const": "agent-command" }
+        }
+      },
+      "capabilities": [
+        { "kind": "filesystem.read", "scope": "config:projectRoot" },
+        { "kind": "filesystem.write", "scope": "config:reviewOutputRoot" },
+        { "kind": "network.connect", "scope": "host:implementation-engine" }
+      ]
+    }]
+  }]
+}

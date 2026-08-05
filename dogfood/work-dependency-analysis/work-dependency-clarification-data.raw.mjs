@@ -41,7 +41,7 @@ export const projectContext = Object.freeze({
   projectId: "devrelay",
   lifecycle: "existing",
   summary:
-    "DevRelay 0.3.0 has executable RequirementsGathering, ArchitectureDesign, WorkBreakdown, and a trusted TraceabilityGraph sidecar. WorkDependencyAnalysis is the next declared lifecycle module and is at interactive requirements clarification.",
+    "DevRelay has one approved project-wide V1 RequirementsBaseline and ProjectOverviewBaseline covering the complete fourteen-component lifecycle. RequirementsGathering, ArchitectureDesign, WorkBreakdown, and the TraceabilityGraph sidecar are implemented; WorkDependencyAnalysis is the next module at interactive requirements clarification.",
   stakeholders: [
     "DevRelay maintainers",
     "Workflow authors",

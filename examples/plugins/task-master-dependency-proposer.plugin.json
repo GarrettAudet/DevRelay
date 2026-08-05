@@ -1,0 +1,33 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "task-master-dependency-proposer",
+    "version": "0.1.0",
+    "description": "Optional bounded Task Master proposal adapter; it returns only a DependencyProposal over the immutable analysis snapshot."
+  },
+  "implements": [{
+    "module": { "id": "work-dependency-analysis", "version": "0.1.0" },
+    "operations": [{
+      "id": "analyze-dependencies",
+      "role": "proposer",
+      "execution": "effect",
+      "configSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["projectRoot", "nativeOutputRoot", "toolVersion", "bridge"],
+        "properties": {
+          "projectRoot": { "type": "string", "minLength": 1 },
+          "nativeOutputRoot": { "type": "string", "minLength": 1 },
+          "toolVersion": { "type": "string", "minLength": 1 },
+          "bridge": { "const": "process" }
+        }
+      },
+      "capabilities": [
+        { "kind": "filesystem.read", "scope": "config:projectRoot" },
+        { "kind": "filesystem.write", "scope": "config:nativeOutputRoot" },
+        { "kind": "process.spawn", "scope": "tool:task-master" }
+      ]
+    }]
+  }]
+}

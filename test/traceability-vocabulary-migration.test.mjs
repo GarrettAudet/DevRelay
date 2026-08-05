@@ -9,6 +9,7 @@ import {
 import {
   TRACEABILITY_EDGE_KINDS,
   TRACEABILITY_EDGE_KINDS_V1_0,
+  TRACEABILITY_EDGE_KINDS_V1_1,
   TRACEABILITY_ENDPOINT_POLICY_VERSION,
   TRACEABILITY_GRAPH_MEDIA_TYPE,
   TRACEABILITY_GRAPH_SCHEMA,
@@ -16,6 +17,7 @@ import {
   TRACEABILITY_NODE_KINDS,
   TRACEABILITY_VOCABULARY,
   TRACEABILITY_VOCABULARY_V1_0,
+  TRACEABILITY_VOCABULARY_V1_1,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityEdgeId,
@@ -95,7 +97,7 @@ function assertionEdge({
   return { ...material, contentDigest: traceabilityContentDigest(material) };
 }
 
-test("traceability 1.1 identity binds its complete vocabulary while 1.0 stays exact", () => {
+test("traceability 1.2 identity adds forward dependency edges while prior versions stay exact", () => {
   assert.equal(
     TRACEABILITY_VOCABULARY_V1_0.contractDigest,
     canonicalJsonDigest({ id: "devrelay.traceability/v1", version: "1.0.0" }),
@@ -104,7 +106,7 @@ test("traceability 1.1 identity binds its complete vocabulary while 1.0 stays ex
     TRACEABILITY_VOCABULARY.contractDigest,
     canonicalJsonDigest({
       id: "devrelay.traceability/v1",
-      version: "1.1.0",
+      version: "1.2.0",
       horizons: TRACEABILITY_HORIZONS,
       nodeKinds: TRACEABILITY_NODE_KINDS,
       edgeKinds: TRACEABILITY_EDGE_KINDS,
@@ -121,6 +123,8 @@ test("traceability 1.1 identity binds its complete vocabulary while 1.0 stays ex
   );
   assert.equal(TRACEABILITY_EDGE_KINDS.includes("implementation-planned-by"), true);
   assert.equal(TRACEABILITY_EDGE_KINDS.includes("realization-planned-by"), true);
+  assert.equal(TRACEABILITY_EDGE_KINDS_V1_1.includes("prerequisite-for"), false);
+  assert.equal(TRACEABILITY_EDGE_KINDS.includes("prerequisite-for"), true);
   assert.equal(TRACEABILITY_HORIZONS.includes("implementation"), true);
 });
 
@@ -168,10 +172,25 @@ test("vocabulary migration permits upgrade and rejects downgrade", () => {
   );
   assert.equal(
     assertTraceabilityVocabularyTransition(
+      TRACEABILITY_VOCABULARY_V1_1,
+      TRACEABILITY_VOCABULARY,
+    ),
+    TRACEABILITY_VOCABULARY,
+  );
+  assert.equal(
+    assertTraceabilityVocabularyTransition(
       TRACEABILITY_VOCABULARY,
       TRACEABILITY_VOCABULARY,
     ),
     TRACEABILITY_VOCABULARY,
+  );
+  assert.throws(
+    () =>
+      assertTraceabilityVocabularyTransition(
+        TRACEABILITY_VOCABULARY,
+        TRACEABILITY_VOCABULARY_V1_1,
+      ),
+    (error) => error.code === "TG_VOCABULARY_DOWNGRADE",
   );
   assert.throws(
     () =>
@@ -183,7 +202,7 @@ test("vocabulary migration permits upgrade and rejects downgrade", () => {
   );
 });
 
-test("a 1.1 update on a valid 1.0 parent creates a 1.1 child with exact lineage", async () => {
+test("a 1.2 update on a valid 1.0 parent creates a 1.2 child with exact lineage", async () => {
   const graphId = "vocabulary-migration";
   const projectId = "migration-project";
   const architecture = assertionNode({

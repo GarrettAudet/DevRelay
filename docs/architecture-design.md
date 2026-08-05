@@ -78,6 +78,7 @@ establish-baseline
 design-change
   RequirementsBaseline + ProjectOverviewBaseline
   + ArchitectureBaseline + ProjectArchitectureState
+  + historical baseline context/repository pointers when they differ
   -> designer: OpenSpecDesignAdapter
   -> modeler: StructurizrAdapter
   -> decision-recorder: MADRAdapter
@@ -92,6 +93,17 @@ runtime suite executes both V1 circuits and replaces the Structurizr binding
 with a second compatible modeler without changing the Module or generic Core.
 The same generic machinery passes `project-overview-baseline` to every step;
 there is no product- or Module-specific injection branch.
+
+For `design-change`, current target context and historical baseline lineage are
+distinct facts. When the approved `ArchitectureBaseline` points to an older
+`ProjectContext` or `RepositorySnapshot`, the invocation must supply those exact
+artifacts through the optional
+`architecture-baseline-project-context` and
+`architecture-baseline-repository-snapshot` ports. Core validates the baseline
+against those immutable historical inputs while the project state separately
+binds the current context and repository. Omitting the historical input when a
+pointer differs fails closed; Core never rewrites the approved baseline merely
+to align it with current state.
 
 ## One primary output
 
@@ -219,6 +231,16 @@ invent a direct support link absent from the canonical artifacts. An explicit
 `no-architecture-impact` disposition is recorded as a stable architecture
 change assertion rather than silently dropping the requirement.
 
+For a change set, `already-designed` is a third explicit coverage disposition.
+It may target only an element, interface, constraint, or decision that is
+byte-for-byte unchanged from the approved architecture baseline. Historical
+`sourceRequirementIds` remain valid only on such unchanged baseline entities;
+they are never rewritten merely to attach a newly approved lifecycle
+requirement. The trusted contributor records the new lifecycle link in
+TraceabilityGraph while the canonical architecture entity retains its existing
+identity and source lineage. Any changed entity must instead cite the current
+approved requirement and use `designed`.
+
 Architecture contributors own only architecture assertions and their links to
 requirements. They cannot replace or retire requirements facts. Architecture
 candidates remain candidate authority until a future Architecture Gate
@@ -240,6 +262,16 @@ The Architecture Gate evaluates fitness against requirements, constraints,
 risks, the approved project overview, interface intent, decisions, and required
 evidence. Progression binds the gate decision to the exact primary-candidate,
 requirements-baseline, project-overview-baseline, and state digests.
+
+When a candidate includes a native Structurizr workspace, the Gate can require
+`architecture/structurizr-native-conformance` evidence. The proof runs the
+pinned official Structurizr validator, exports the parsed workspace model,
+normalizes that export into DevRelay identities, and compares elements,
+relationships, hierarchy, and views against the canonical architecture
+candidate. A passing proof is digest-bound to both the native workspace and the
+candidate. Container views contain top-level containers; component views are
+scoped to one container and contain that container's components. Fixture
+handoffs alone are not native-model conformance evidence.
 
 ## Bounded upstream capabilities
 

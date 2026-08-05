@@ -10,10 +10,10 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.3.0` is a private, source-only release containing DevRelay Core,
+DevRelay `0.4.0` is a private, source-only release containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
-`architecture-design@0.1.0`, and `work-breakdown@0.1.0`. Source-package
-versions and immutable Module
+`architecture-design@0.1.0`, `work-breakdown@0.1.0`, and
+`work-dependency-analysis@0.1.0`. Source-package versions and immutable Module
 versions are intentionally independent. The package is `UNLICENSED` and is
 not published to the public npm registry. Access to the source does not grant
 permission to use or redistribute it; see [LICENSE](LICENSE) and
@@ -22,7 +22,9 @@ permission to use or redistribute it; see [LICENSE](LICENSE) and
 The release contains Core, schemas, versioned manifests, fixtures, and bounded
 adapter contracts, plus an in-memory reference graph and checkpoint store. It
 does not contain a durable graph backend, approval-gate contributors, or live
-OpenSpec, GitHub Spec Kit, Structurizr, or MADR command adapters.
+OpenSpec, GitHub Spec Kit, Task Master, Structurizr, or MADR command adapters.
+WorkDependencyAnalysis does include its provider-neutral native structured
+proposer.
 
 ## Source setup and verification
 
@@ -37,7 +39,7 @@ npm run release:check
 `verify` parses JSON, checks JavaScript syntax and LF-only text, and runs
 the complete suite. `release:check` also verifies the release digest catalog
 as a mandatory release input, builds an allowlisted tarball in a temporary
-directory, installs it offline, and smoke-tests the package root and all three
+directory, installs it offline, and smoke-tests the package root and all four
 module manifests.
 
 ## Library quickstart
@@ -208,7 +210,19 @@ GoalArtifact + ProjectContext + optional paired baselines
   -> separate WorkBreakdown Gate
   -> WorkBreakdownBaseline
   -> WorkDependencyAnalysis owns the authoritative dependency DAG
+  -> SpecialistAssignment selects a compatible executor for ready work
+  -> WorkExecution performs one authorized bounded work item
+  -> WorkItemVerification proves that work item against its evidence plan
+  -> ChangeIntegration combines individually verified changes safely
+  -> SystemVerification validates the integrated system
+  -> BusinessAcceptance evaluates objectives, metrics, and acceptance criteria
 ```
+
+`ArchitectureDiscovery` is conditional for an existing repository without a
+validated architecture baseline or current snapshot. `ContractGeneration` is
+conditional when approved interface intent requires formal APIs, schemas,
+events, protocols, or other machine-readable contracts. These fourteen
+lifecycle components are the complete owner-approved V1 inventory.
 
 `TraceabilityGraph` runs beside this sequence rather than appearing as another
 box in it. Requirements executions project objectives, capabilities, stories,
@@ -251,6 +265,15 @@ body. `ProjectOverview.md` is a deterministic UTF-8-without-BOM, NFC, LF-only
 rendering with a final newline. Its exact raw-byte digest is carried by the
 structured artifact, so the Markdown is readable evidence rather than a second
 editable source of truth.
+
+The current project-wide pair is stored under `project/`, and the generated
+readable projection is the repository-root `ProjectOverview.md`. Existing
+module-specific overviews under `dogfood/architecture-design/` and
+`dogfood/work-breakdown/` remain immutable historical feature evidence; they
+are not the current DevRelay project context. Future features and Modules must
+evolve the global pair through RequirementsChangeSet and
+ProjectOverviewChangeSetDraft artifacts rather than establish another initial
+project overview.
 
 The Requirements Gate promotes the requirements and overview candidates as one
 version-aligned pair. An approved change always creates a new pair, including
@@ -339,6 +362,43 @@ That outcome is guard-owned; an adapter cannot claim it after preflight has
 passed.
 Successful validated candidates are projected by a trusted contributor as
 planning facts only; no implemented, realized, or verified claim is created.
+
+### WorkDependencyAnalysis 0.1.0
+
+WorkDependencyAnalysis turns the complete approved work breakdown and exact
+project context into one static, policy-allowed dependency DAG. It consumes a
+full `WorkBreakdownBaseline`, `ProjectOverviewBaseline`, repository- and
+version-pinned context slices, deterministic routing state, and an exact OPA
+policy-bundle manifest.
+
+```text
+Full work-breakdown snapshot
+  + version-pinned relevant context slices
+  -> deterministic snapshot builder
+  -> configured dependency proposer
+  -> Core Graphology-DAG mechanics
+  -> Core OPA WASM policy evaluation
+  -> bounded advisory consistency reviewer
+  -> WorkDependencyCandidate
+  -> terminal checkpoint
+```
+
+Proposers may declare typed work-item references and evidence only. They cannot
+create graph nodes, choose traceability relationships, evaluate policy, approve
+the result, schedule work, or execute it. Core owns graph mechanics and policy
+decisions; the configured reviewer is advisory and has no promotion authority.
+
+The Module has one deterministic operation, `analyze-dependencies`, and returns
+one primary success artifact, `WorkDependencyCandidate`. The separate
+WorkDependency Gate derives the candidate from an unforgeable checkpoint replay
+receipt, verifies exact approval and proposed-baseline raw bytes, and returns
+the only promotable `WorkDependencyBaseline` payload.
+
+Only a promoted baseline contributes dependency traceability. The trusted
+contributor stores the forward planning relationship
+`WorkItem prerequisite -> prerequisite-for -> WorkItem dependent`. No inverse
+edge, scheduling fact, assignment, implementation claim, or completion claim is
+created.
 
 ## Stable contracts
 
@@ -459,9 +519,30 @@ zero additional times; a stale-baseline run and its replay also invoke it zero
 times. The Gate uses the verified checkpoint receipt and commits the exact
 raw-byte-bound baseline payload.
 
-No upstream OpenSpec, Spec Kit, Structurizr, or MADR CLI was executed. The
-checked-in fixtures prove DevRelay's bounded adapter and normalization
-contracts, not live command interoperability or completed implementation work.
+The released WorkBreakdown proof did not execute upstream OpenSpec, Spec Kit,
+Structurizr, or MADR command adapters; its checked-in fixtures prove bounded
+adapter and normalization contracts, not live command interoperability or
+completed implementation work. The later WorkDependencyAnalysis architecture
+candidate separately runs a pinned official Structurizr validator and JSON
+exporter as Gate conformance evidence. That verifier is not a live Structurizr
+adapter and does not expand the released module's authority.
+
+The released WorkDependencyAnalysis dogfood run uses the promoted 11-item work
+breakdown, the exact ProjectOverview, and three version-pinned slices covering
+requirements, architecture, and repository revision. The native structured
+proposer ran once, Core used real Graphology-DAG mechanics and the pinned OPA
+WASM policy bundle, and a bounded Spec Kit fixture performed the advisory
+review. Exact retry used the terminal checkpoint with zero proposer or reviewer
+calls. The candidate, Gate review, approval candidate, and checkpoint are
+byte-stable across independent materializations.
+
+The exact owner-approved candidate was promoted to a byte-bound
+`WorkDependencyBaseline`. Its trusted contributor atomically merged 10 forward
+`prerequisite-for` edges into TraceabilityGraph revision 3 and stored the
+checkpoint, update, merge receipt, graph checkpoint, and execution record.
+Replaying promotion returns the identical baseline and merge proof without
+invoking a proposer or reviewer. That baseline now authorizes progression to
+`SpecialistAssignment`.
 
 ## Repository
 
@@ -473,16 +554,19 @@ contracts/
   project-overview-artifacts.schema.json
   architecture-design-artifacts.schema.json
   work-breakdown-artifacts.schema.json
+  work-dependency-analysis-artifacts.schema.json
   traceability-graph-artifacts.schema.json
 docs/
   module-contract.md
   requirements-gathering.md
   architecture-design.md
   work-breakdown.md
+  work-dependency-analysis.md
   traceability-graph.md
 dogfood/
   architecture-design/
   work-breakdown/
+  work-dependency-analysis/
 examples/
   artifacts/
   invocations/
@@ -494,10 +578,13 @@ openspec/schemas/
   devrelay-requirements/
   devrelay-architecture/
   devrelay-work-breakdown/
+policies/
+  work-dependency-analysis/
 release/
   0.1.0.json
   0.2.0.json
   0.3.0.json
+  0.4.0.json
 scripts/
   verify.mjs
   release-check.mjs
@@ -510,6 +597,7 @@ src/
   project-overview-*.mjs
   architecture-*.mjs
   work-breakdown-*.mjs
+  work-dependency-*.mjs
   traceability-*.mjs
   module-execution-record-validator.mjs
   index.mjs
@@ -528,7 +616,6 @@ For the test and static-analysis subset:
 npm run verify
 ```
 
-The next lifecycle module is WorkDependencyAnalysis. It consumes an approved
-`WorkBreakdownBaseline`, turns non-authoritative dependency hints into a
-validated dependency DAG, and rejects cycles, missing dependencies, and
-impossible ordering before specialist assignment.
+`WorkDependencyAnalysis@0.1.0` is released with its exact byte-bound baseline
+and graph merge proof. The next lifecycle module to build through the dogfood
+sequence is `SpecialistAssignment`.

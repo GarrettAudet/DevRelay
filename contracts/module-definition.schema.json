@@ -133,7 +133,37 @@
         },
         "adapterChain": {
           "$ref": "#/$defs/adapterChain"
+        },
+        "extensionPorts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/extensionPort" }
+        },
+        "orchestrationPlan": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/orchestrationPlanStep" }
         }
+      }
+    },
+    "extensionPort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "inputSchema", "outputSchema", "required"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$" },
+        "role": { "enum": ["proposer", "reviewer"] },
+        "inputSchema": { "type": "string", "format": "uri" },
+        "outputSchema": { "type": "string", "format": "uri" },
+        "required": { "type": "boolean" }
+      }
+    },
+    "orchestrationPlanStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "handler"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$" },
+        "kind": { "enum": ["core", "extension-port"] },
+        "handler": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._/-][a-z0-9]+)*$" }
       }
     },
     "adapterChain": {

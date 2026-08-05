@@ -2,7 +2,7 @@
 
 Status: `needs_clarification`
 
-RequirementsGathering executed through the bounded `openspec@0.1.0` contract. No OpenSpec CLI execution is claimed, no promotable requirements candidate exists, and ArchitectureDesign is blocked until every question below is answered.
+RequirementsGathering executed as a change against the exact global DevRelay V1 requirements and ProjectOverview baselines through the bounded `openspec@0.1.0` contract. No OpenSpec CLI execution is claimed, no promotable change candidate exists, and ArchitectureDesign is blocked until every question below is answered.
 
 1. **Should WorkDependencyAnalysis expose one analyze-dependencies operation that recomputes a complete graph for each exact WorkBreakdownBaseline, or separate establish and change operations?**
 

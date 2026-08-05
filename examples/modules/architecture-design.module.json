@@ -266,7 +266,8 @@
       },
       "evidence": [
         "architecture/chain-provenance",
-        "architecture/contract-validation"
+        "architecture/contract-validation",
+        "architecture/structurizr-native-conformance"
       ],
       "optionsSchema": {
         "type": "object",
@@ -402,6 +403,24 @@
           ],
           "cardinality": "one",
           "required": true
+        },
+        {
+          "name": "architecture-baseline-project-context",
+          "schema": "https://devrelay.dev/artifacts/project-context/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-context+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        },
+        {
+          "name": "architecture-baseline-repository-snapshot",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.repository-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": false
         },
         {
           "name": "repository-snapshot",
@@ -570,7 +589,8 @@
       },
       "evidence": [
         "architecture/chain-provenance",
-        "architecture/contract-validation"
+        "architecture/contract-validation",
+        "architecture/structurizr-native-conformance"
       ],
       "optionsSchema": {
         "type": "object",
@@ -633,6 +653,8 @@
             "project-overview-baseline",
             "project-context",
             "architecture-baseline",
+            "architecture-baseline-project-context",
+            "architecture-baseline-repository-snapshot",
             "repository-snapshot"
           ],
           "controlInputs": [

@@ -1,0 +1,34 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "openspec-dependency-proposer",
+    "version": "0.1.0",
+    "description": "Optional bounded OpenSpec proposal adapter; it may propose dependencies from admitted tasks context but cannot run graph mechanics, policy, Gate, or traceability."
+  },
+  "implements": [{
+    "module": { "id": "work-dependency-analysis", "version": "0.1.0" },
+    "operations": [{
+      "id": "analyze-dependencies",
+      "role": "proposer",
+      "execution": "effect",
+      "configSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["projectRoot", "nativeOutputRoot", "toolVersion", "changeName", "bridge"],
+        "properties": {
+          "projectRoot": { "type": "string", "minLength": 1 },
+          "nativeOutputRoot": { "type": "string", "minLength": 1 },
+          "toolVersion": { "type": "string", "minLength": 1 },
+          "changeName": { "type": "string", "minLength": 1 },
+          "bridge": { "const": "agent-command" }
+        }
+      },
+      "capabilities": [
+        { "kind": "filesystem.read", "scope": "config:projectRoot" },
+        { "kind": "filesystem.write", "scope": "config:nativeOutputRoot" },
+        { "kind": "network.connect", "scope": "host:implementation-engine" }
+      ]
+    }]
+  }]
+}

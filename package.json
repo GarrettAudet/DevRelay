@@ -1,6 +1,6 @@
 {
   "name": "devrelay",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "license": "UNLICENSED",
   "description": "A deterministic runner for composable software-engineering modules with lifecycle traceability.",
@@ -12,6 +12,7 @@
     "./modules/requirements-gathering.module.json": "./examples/modules/requirements-gathering.module.json",
     "./modules/architecture-design.module.json": "./examples/modules/architecture-design.module.json",
     "./modules/work-breakdown.module.json": "./examples/modules/work-breakdown.module.json",
+    "./modules/work-dependency-analysis.module.json": "./examples/modules/work-dependency-analysis.module.json",
     "./plugins/github-spec-kit.plugin.json": "./examples/plugins/github-spec-kit.plugin.json",
     "./plugins/openspec.plugin.json": "./examples/plugins/openspec.plugin.json",
     "./plugins/spec-kit-plan.plugin.json": "./examples/plugins/spec-kit-plan.plugin.json",
@@ -19,6 +20,10 @@
     "./plugins/structurizr.plugin.json": "./examples/plugins/structurizr.plugin.json",
     "./plugins/openspec-tasks.plugin.json": "./examples/plugins/openspec-tasks.plugin.json",
     "./plugins/spec-kit-tasks.plugin.json": "./examples/plugins/spec-kit-tasks.plugin.json",
+    "./plugins/native-structured-dependency-proposer.plugin.json": "./examples/plugins/native-structured-dependency-proposer.plugin.json",
+    "./plugins/openspec-dependency-proposer.plugin.json": "./examples/plugins/openspec-dependency-proposer.plugin.json",
+    "./plugins/spec-kit-dependency-reviewer.plugin.json": "./examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+    "./plugins/task-master-dependency-proposer.plugin.json": "./examples/plugins/task-master-dependency-proposer.plugin.json",
     "./plugins/madr.plugin.json": "./examples/plugins/madr.plugin.json",
     "./examples/artifacts/*": "./examples/artifacts/*",
     "./examples/invocations/*": "./examples/invocations/*",
@@ -26,6 +31,7 @@
     "./examples/results/*": "./examples/results/*",
     "./examples/README.md": "./examples/README.md",
     "./openspec/*": "./openspec/*",
+    "./policies/work-dependency-analysis/*": "./policies/work-dependency-analysis/*",
     "./release/*": "./release/*",
     "./package.json": "./package.json"
   },
@@ -41,6 +47,7 @@
     "examples/modules/requirements-gathering.module.json",
     "examples/modules/architecture-design.module.json",
     "examples/modules/work-breakdown.module.json",
+    "examples/modules/work-dependency-analysis.module.json",
     "examples/plugins/github-spec-kit.plugin.json",
     "examples/plugins/openspec.plugin.json",
     "examples/plugins/spec-kit-plan.plugin.json",
@@ -49,6 +56,11 @@
     "examples/plugins/madr.plugin.json",
     "examples/plugins/openspec-tasks.plugin.json",
     "examples/plugins/spec-kit-tasks.plugin.json",
+    "examples/plugins/native-structured-dependency-proposer.plugin.json",
+    "examples/plugins/openspec-dependency-proposer.plugin.json",
+    "examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+    "examples/plugins/task-master-dependency-proposer.plugin.json",
+    "policies/",
     "openspec/",
     "release/",
     "README.md",
@@ -68,6 +80,12 @@
     "node": ">=20"
   },
   "dependencies": {
-    "ajv": "8.20.0"
+    "@open-policy-agent/opa-wasm": "1.10.0",
+    "ajv": "8.20.0",
+    "graphology": "0.26.0",
+    "graphology-dag": "0.4.1"
+  },
+  "overrides": {
+    "fast-uri": "3.1.5"
   }
 }

@@ -30,6 +30,19 @@ RequirementsDraft      RequirementsChangeSet     clarification
 
 The module validates artifact structure, exact lineage, and handoff integrity. It does not judge requirements completeness or testability, approve, merge, or baseline its own output; those policy decisions belong to the separate gate.
 
+### Project baseline versus feature work
+
+DevRelay has one current project-wide `RequirementsBaseline` +
+`ProjectOverviewBaseline` pair under `project/`. The root
+`ProjectOverview.md` is its exact deterministic readable projection and is
+the context supplied explicitly to downstream lifecycle Modules.
+
+An initial project uses `drafted` once to establish that pair. Subsequent
+feature and Module work supplies the current pair and produces
+`RequirementsChangeSet` + `ProjectOverviewChangeSetDraft`. Historical
+module-specific dogfood overviews remain immutable source evidence; they do
+not replace the current project context.
+
 ## Inputs
 
 | Port | Required | Meaning |

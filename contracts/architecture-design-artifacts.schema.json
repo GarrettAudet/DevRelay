@@ -231,7 +231,9 @@
             "project-context",
             "repository-snapshot",
             "current-architecture-snapshot",
-            "architecture-baseline"
+            "architecture-baseline",
+            "architecture-baseline-project-context",
+            "architecture-baseline-repository-snapshot"
           ]
         },
         "artifact": {
@@ -242,7 +244,7 @@
     "baseInputSet": {
       "type": "array",
       "minItems": 4,
-      "maxItems": 7,
+      "maxItems": 9,
       "items": {
         "$ref": "https://devrelay.dev/contracts/architecture-design-artifacts.schema.json#/$defs/baseInput"
       }
@@ -2152,6 +2154,7 @@
         "disposition": {
           "enum": [
             "designed",
+            "already-designed",
             "no-architecture-impact"
           ]
         },
@@ -2172,7 +2175,10 @@
           "if": {
             "properties": {
               "disposition": {
-                "const": "designed"
+                "enum": [
+                  "designed",
+                  "already-designed"
+                ]
               }
             },
             "required": [

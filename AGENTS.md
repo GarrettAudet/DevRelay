@@ -25,6 +25,21 @@ The executable contract slices are:
   update plus merge proof in `ModuleExecutionRecord`. It is not a Module,
   adapter, gate, or workflow stage.
 
+The complete owner-approved V1 lifecycle inventory is recorded in the root
+`ProjectOverview.md` and its structured pair under `project/`:
+
+```text
+RequirementsGathering -> RequirementsGate -> ArchitectureDiscovery?
+-> ArchitectureDesign -> ArchitectureGate -> ContractGeneration?
+-> WorkBreakdown -> WorkDependencyAnalysis -> SpecialistAssignment
+-> WorkExecution -> WorkItemVerification -> ChangeIntegration
+-> SystemVerification -> BusinessAcceptance
+```
+
+Question marks identify deterministic conditional Modules, not optional
+product scope. TraceabilityGraph runs beside this lifecycle and is not an
+additional stage.
+
 RequirementsGathering supports bounded OpenSpec and GitHub Spec Kit
 requirements bindings. ArchitectureDesign V1 uses bounded Spec Kit plan or
 OpenSpec design bindings, followed by Structurizr and MADR bindings.
@@ -90,6 +105,10 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
 - `ProjectOverview.md` is a deterministic UTF-8/NFC/LF rendering of a
   structured ProjectOverview artifact. Its raw bytes are digest-bound evidence,
   never an independently editable source of truth.
+- DevRelay has one current project-wide `RequirementsBaseline` +
+  `ProjectOverviewBaseline` pair under `project/`. Feature- or Module-specific
+  dogfood overviews are immutable historical evidence, not replacement project
+  context. Future lifecycle slices evolve the global pair through change sets.
 - The Requirements Gate promotes a requirements candidate and its matching
   project-overview candidate as one atomic pair. A requirements change always
   creates a new paired `ProjectOverviewBaseline`, even when the projected

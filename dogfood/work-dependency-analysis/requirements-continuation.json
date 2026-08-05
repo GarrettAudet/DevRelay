@@ -4,7 +4,7 @@
   "continuationId": "requirements-continuation-work-dependency-analysis-v1",
   "clarificationRequest": {
     "artifactId": "clarification-request-work-dependency-analysis-v1",
-    "digest": "sha256:ebf9c77d2af7e3e185b0b5ad8d8d915d1ddedd3f90eb19c5320716dfaa57c899"
+    "digest": "sha256:04f7c69811477602b77dd1ac89aad030429f65cd18deb51ea255a09a060a9c3b"
   },
   "baseInputs": [
     {
@@ -18,21 +18,35 @@
       "role": "project-context",
       "artifact": {
         "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-        "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+        "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
       }
     },
     {
       "role": "repository-snapshot",
       "artifact": {
-        "artifactId": "repository-snapshot-devrelay-bef184c",
-        "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+        "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+        "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1",
+        "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1",
+        "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
       }
     }
   ],
   "sourceInvocation": {
     "invocationId": "invocation-requirements-work-dependency-analysis-openspec-clarify-v1",
-    "invocationFingerprint": "sha256:6d03a1d6ac3e6294e8d4f4db8a2d5f41ba2decf8b1b80e24d661c13a6e4cdf6b",
-    "stepInvocationDigest": "sha256:9979cf2d524d358339cc4ba90234bfe99ef394febc1b82d227874b42690451e3",
+    "invocationFingerprint": "sha256:48c9208cf536eac27469321d956e8450a3d530e56cc6b9576f324670ced3efbc",
+    "stepInvocationDigest": "sha256:7ef8e4cc97b31bd69f58ad87b2bed80e9c1f9c3c3ad1f01a40ad54a1a16fec35",
     "plugin": {
       "id": "openspec",
       "version": "0.1.0"
@@ -40,32 +54,128 @@
   },
   "workingRequirements": {
     "purpose": {
-      "statement": "Convert an exact approved WorkBreakdownBaseline into a complete candidate dependency graph that becomes authoritative only after deterministic and semantic Gate verification.",
+      "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
       "sourceRefs": [
         {
-          "role": "goal",
+          "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "goal-work-dependency-analysis-module-v1",
-            "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            "artifactId": "project-overview-baseline-devrelay-v1",
+            "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
           }
         },
         {
-          "role": "project-context",
+          "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-            "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
-          }
-        },
-        {
-          "role": "repository-snapshot",
-          "artifact": {
-            "artifactId": "repository-snapshot-devrelay-bef184c",
-            "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+            "artifactId": "requirements-baseline-devrelay-v1",
+            "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
           }
         }
       ]
     },
     "businessObjectives": [
+      {
+        "id": "BO-DEV-DETERMINISM-001",
+        "statement": "Make software-engineering progression reproducible and fail closed when required inputs, evidence, or approvals are invalid.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-MODULARITY-001",
+        "statement": "Allow best-in-class engineering capabilities to be replaced without changing canonical workflow semantics or generic Core.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-QUALITY-001",
+        "statement": "Require scoped verification and evidence before work, changes, systems, or business outcomes advance.",
+        "stakeholderIds": [
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-TRACEABILITY-001",
+        "statement": "Trace every approved business objective through requirements, design, planned work, implementation, verification, integration, and acceptance.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "BO-WDA-CORRECTNESS-001",
         "statement": "Prevent invalid, cyclic, incomplete, or impossible dependency plans from reaching assignment and execution.",
@@ -86,14 +196,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -118,14 +242,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -150,20 +288,138 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "successMetrics": [
+      {
+        "id": "SM-DEV-DETERMINISM-001",
+        "name": "Deterministic progression",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001"
+        ],
+        "measure": "Repeated Core-owned routing, validation, replay, and gate decisions for identical content-addressed inputs.",
+        "target": "100 percent identical outcomes and digests.",
+        "measurementMethod": "Run positive, negative, drift, checkpoint, replay, and gate conformance suites.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MODULARITY-001",
+        "name": "Adapter-independent semantics",
+        "businessObjectiveIds": [
+          "BO-DEV-MODULARITY-001"
+        ],
+        "measure": "Compatible adapter replacements requiring a product-specific behavioral branch in generic Core.",
+        "target": "Zero branches.",
+        "measurementMethod": "Execute adapter replacement fixtures and scan generic Core for product identifiers.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-QUALITY-001",
+        "name": "Verified progression",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001"
+        ],
+        "measure": "Lifecycle transitions occurring without the configured passing evidence and approval record.",
+        "target": "Zero transitions.",
+        "measurementMethod": "Audit module execution records, gate decisions, verification evidence, and acceptance receipts.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-TRACEABILITY-001",
+        "name": "Lifecycle trace coverage",
+        "businessObjectiveIds": [
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "measure": "Approved business objectives with a complete trace to implementation and passing verification evidence by BusinessAcceptance.",
+        "target": "100 percent or an explicit approved disposition.",
+        "measurementMethod": "Run TraceabilityGraph coverage and orphan diagnostics at each lifecycle horizon.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "SM-WDA-CORE-SPECIAL-CASES-001",
         "name": "Generic Core product branches",
@@ -185,14 +441,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -218,14 +488,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -251,20 +535,112 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "stakeholders": [
+      {
+        "id": "STK-DEV-MAINTAINER-001",
+        "name": "DevRelay maintainer",
+        "role": "Own the provider-neutral kernel, contracts, gates, and trusted contributors.",
+        "category": "owner",
+        "interests": [
+          "Minimal Core special cases.",
+          "Versioned extensible contracts."
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "STK-DEV-OWNER-001",
+        "name": "DevRelay product owner",
+        "role": "Defines business intent, V1 scope, and approval policy.",
+        "category": "owner",
+        "interests": [
+          "Complete V1 lifecycle.",
+          "Reproducible accepted software outcomes."
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "STK-DEV-WORKFLOW-AUTHOR-001",
+        "name": "Workflow author",
+        "role": "Configures modules, adapters, gates, and evidence policy for an engineering project.",
+        "category": "user",
+        "interests": [
+          "Clear module handoffs.",
+          "Replaceable engineering capabilities."
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "STK-WDA-ADAPTER-AUTHOR-001",
         "name": "Dependency adapter author",
@@ -286,14 +662,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -319,14 +709,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -352,14 +756,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -385,20 +803,63 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "users": [
+      {
+        "id": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "name": "Engineering workflow author",
+        "description": "A maintainer or engineering lead who configures and operates DevRelay from a goal through business acceptance.",
+        "stakeholderIds": [
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "needs": [
+          "Inspect exact artifacts, decisions, evidence, and progression state.",
+          "Run a complete engineering lifecycle without relying on model memory.",
+          "Swap compatible adapters without redesigning the workflow."
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "USR-WDA-WORKFLOW-AUTHOR-001",
         "name": "Dependency-planning workflow author",
@@ -423,20 +884,157 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "capabilities": [
+      {
+        "id": "CAP-DEV-EXTENSIBILITY-001",
+        "name": "Replaceable engineering capabilities",
+        "description": "Bind interchangeable bounded adapters to stable provider-neutral module operations.",
+        "businessObjectiveIds": [
+          "BO-DEV-MODULARITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-LIFECYCLE-001",
+        "name": "Deterministic lifecycle orchestration",
+        "description": "Route exact state through the approved V1 lifecycle and stop invalid work before it propagates.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-QUALITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-SPECIFICATION-001",
+        "name": "Structured engineering contracts",
+        "description": "Represent requirements, architecture, contracts, work, changes, evidence, and acceptance as versioned artifacts.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-VERIFICATION-001",
+        "name": "Evidence-based verification and acceptance",
+        "description": "Require scoped evidence at work-item, integrated-system, and business-acceptance boundaries.",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001",
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "CAP-WDA-ANALYZE-001",
         "name": "Work dependency analysis",
@@ -464,14 +1062,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -502,20 +1114,85 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "userJourneys": [
+      {
+        "id": "UJ-DEV-GOAL-TO-ACCEPTANCE-001",
+        "name": "Move an approved goal to business acceptance",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-DEV-EXTENSIBILITY-001",
+          "CAP-DEV-LIFECYCLE-001",
+          "CAP-DEV-SPECIFICATION-001",
+          "CAP-DEV-VERIFICATION-001"
+        ],
+        "trigger": "A project goal or approved change enters DevRelay.",
+        "outcome": "The integrated system is accepted or progression stops with explicit clarification, diagnostics, redesign, rejection, or missing evidence.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Establish approved requirements, architecture, and applicable interface contracts.",
+            "expectedOutcome": "The authorized scope and design are explicit and traceable."
+          },
+          {
+            "sequence": 2,
+            "action": "Decompose, order, and assign bounded work.",
+            "expectedOutcome": "Only dependency-ready work reaches compatible specialists."
+          },
+          {
+            "sequence": 3,
+            "action": "Execute and verify each work item before integration.",
+            "expectedOutcome": "Only individually verified changes enter integration."
+          },
+          {
+            "sequence": 4,
+            "action": "Verify the integrated system and evaluate business acceptance.",
+            "expectedOutcome": "Acceptance is bound to objectives, criteria, and passing evidence."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "UJ-WDA-APPROVE-001",
         "name": "Analyze and approve work dependencies",
@@ -555,20 +1232,160 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "userStories": [
+      {
+        "id": "US-DEV-EXTEND-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-EXTENSIBILITY-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Replace a configured engineering capability without changing the lifecycle contract.",
+        "benefit": "The workflow can remain best-in-class as tools evolve.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-ADAPTER-BOUNDARY-001",
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-ORCHESTRATE-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-LIFECYCLE-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Run the exact V1 lifecycle with deterministic conditional routing and approval boundaries.",
+        "benefit": "Invalid or incomplete work cannot silently propagate downstream.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-CONDITIONAL-ROUTING-001",
+          "AC-DEV-FULL-V1-SCOPE-001",
+          "AC-DEV-GATE-PROGRESSION-001",
+          "AC-DEV-RESUME-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-SPECIFY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-SPECIFICATION-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Use explicit structured artifacts for every lifecycle handoff.",
+        "benefit": "Engineering state is reproducible without conversational memory.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-ARTIFACT-HANDOFF-001",
+          "AC-DEV-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-VERIFY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-VERIFICATION-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Require evidence before work items, integrated changes, or business outcomes are accepted.",
+        "benefit": "Progression reflects proven engineering completion rather than model confidence.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GATE-PROGRESSION-001",
+          "AC-DEV-VERIFICATION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "US-WDA-ANALYZE-001",
         "userId": "USR-WDA-WORKFLOW-AUTHOR-001",
@@ -596,14 +1413,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -635,14 +1466,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -673,14 +1518,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -712,20 +1571,223 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "acceptanceCriteria": [
+      {
+        "id": "AC-DEV-ADAPTER-BOUNDARY-001",
+        "statement": "Adapters receive only declared inputs and capability grants and cannot route workflow, approve artifacts, mutate TraceabilityGraph, or create undeclared Core behavior.",
+        "verification": "Run prohibited-capability, hidden-context, graph-access, and Core-special-case fixtures for each adapter family.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-ARTIFACT-HANDOFF-001",
+        "statement": "Every lifecycle handoff uses a schema-valid, immutable, content-addressed artifact with explicit lineage and no reliance on conversational memory.",
+        "verification": "Audit every V1 module manifest, invocation, result contract, checkpoint, and downstream input binding.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-CONDITIONAL-ROUTING-001",
+        "statement": "ArchitectureDiscovery runs only for an existing repository without a validated architecture baseline or current snapshot, and ContractGeneration runs only when approved interface intent requires formal contracts.",
+        "verification": "Execute every eligible and ineligible state fixture and verify Core-owned route decisions and zero adapter calls on rejected routes.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-FULL-V1-SCOPE-001",
+        "statement": "The approved project overview contains exactly RequirementsGathering, RequirementsGate, ArchitectureDiscovery, ArchitectureDesign, ArchitectureGate, ContractGeneration, WorkBreakdown, WorkDependencyAnalysis, SpecialistAssignment, WorkExecution, WorkItemVerification, ChangeIntegration, SystemVerification, and BusinessAcceptance in that order.",
+        "verification": "Compare the ordered owner-approved inventory with the deterministic scope projection and fail on omission, addition, reordering, or conditionality drift.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-GATE-PROGRESSION-001",
+        "statement": "A configured gate prevents progression until exact candidate, policy, evidence, approval, and baseline-promotion requirements pass.",
+        "verification": "Attempt progression with missing, stale, forged, rejected, and passing gate inputs at each implemented boundary.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-MODEL-INDEPENDENCE-001",
+        "statement": "Changing the AI model or bounded implementation tool does not alter the canonical module sequence, artifact contracts, gates, or traceability vocabulary.",
+        "verification": "Run compatible adapter substitutions and compare canonical outputs, validation, route, and graph contracts.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-RESUME-001",
+        "statement": "Interrupted effectful executions resume only from exact validated checkpoints and do not repeat already checkpointed effects.",
+        "verification": "Interrupt and replay each effectful execution profile and assert exact lineage with zero duplicate adapter calls.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-TRACEABILITY-001",
+        "statement": "TraceabilityGraph can traverse each accepted business objective through requirements, architecture, contracts when applicable, planned work, changes, tests, evidence, integration, and acceptance while diagnosing missing links.",
+        "verification": "Run forward and reverse lifecycle queries plus orphan, unscoped-work, and missing-evidence diagnostics at each implemented horizon.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-VERIFICATION-001",
+        "statement": "WorkItemVerification and SystemVerification record scoped passing evidence before ChangeIntegration and BusinessAcceptance respectively.",
+        "verification": "Exercise passing and failing evidence packages and verify downstream progression remains blocked until the required proof passes.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "AC-WDA-CYCLE-001",
         "statement": "WorkDependency Gate rejects self-dependencies and every directed cycle with a deterministic cycle witness.",
@@ -742,14 +1804,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -770,14 +1846,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -798,14 +1888,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -826,14 +1930,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -854,14 +1972,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -882,14 +2014,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -910,14 +2056,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -938,14 +2098,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -966,14 +2140,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -994,14 +2182,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1022,20 +2224,124 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "nonFunctionalRequirements": [
+      {
+        "id": "NFR-DEV-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Core-owned routing, validation, checkpoint replay, traceability projection, and gate preparation must be deterministic for exact inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Canonical route, result, diagnostic, update, and receipt digest equality.",
+        "target": "100 percent equality for deterministic Core-owned behavior.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-RESUME-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-PORTABILITY-001",
+        "category": "compatibility",
+        "statement": "Canonical lifecycle contracts must remain independent of IDE, AI provider, model, operating host, and bounded external tool.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Compatible host and adapter substitutions requiring canonical contract changes.",
+        "target": "Zero substitutions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-TRACEABILITY-001",
+        "category": "observability",
+        "statement": "Every accepted lifecycle assertion must retain exact artifact, contributor, execution, authority, and graph-version provenance.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Accepted graph assertions lacking complete resolvable provenance.",
+        "target": "Zero assertions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "NFR-WDA-DETERMINISM-001",
         "category": "reliability",
@@ -1065,20 +2371,148 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "constraints": [
+      {
+        "id": "CON-DEV-ARTIFACT-CONTRACTS-001",
+        "category": "technical",
+        "statement": "Every stage must exchange canonical structured artifacts and cannot rely on conversational memory as authority.",
+        "rationale": "Explicit artifacts make lifecycle state reproducible and verifiable.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-ARTIFACT-HANDOFF-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-GATE-SEPARATION-001",
+        "category": "business",
+        "statement": "Producing modules cannot approve or promote their own candidates; configured gates own progression decisions.",
+        "rationale": "Separate authority prevents production from becoming self-approval.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-GATE-PROGRESSION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MODULE-INVENTORY-001",
+        "category": "business",
+        "statement": "V1 lifecycle scope is limited to the fourteen owner-approved components recorded in the project overview.",
+        "rationale": "A closed inventory prevents silent V1 scope expansion.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-CONDITIONAL-ROUTING-001",
+          "AC-DEV-FULL-V1-SCOPE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-PROVIDER-NEUTRAL-001",
+        "category": "technical",
+        "statement": "Canonical Core and module contracts cannot depend on one AI model, provider, IDE, or external engineering product.",
+        "rationale": "The workflow owns engineering semantics; tools only perform bounded capabilities.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-ADAPTER-BOUNDARY-001",
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "CON-WDA-NO-EXECUTION-001",
         "category": "technical",
@@ -1106,14 +2540,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1144,14 +2592,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1183,20 +2645,314 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "scope": [
+      {
+        "id": "SCOPE-DEV-V1-010-REQUIREMENTS-GATHERING",
+        "statement": "RequirementsGathering [module]: RequirementsGathering converts an explicit goal and project context into a canonical requirements candidate and deterministic ProjectOverview candidate.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-020-REQUIREMENTS-GATE",
+        "statement": "RequirementsGate [gate]: RequirementsGate validates and approves one exact RequirementsBaseline and ProjectOverviewBaseline pair before architecture progression.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-030-ARCHITECTURE-DISCOVERY",
+        "statement": "ArchitectureDiscovery [module; conditional]: ArchitectureDiscovery conditionally establishes a validated current-architecture snapshot for an existing repository that has no architecture baseline.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-040-ARCHITECTURE-DESIGN",
+        "statement": "ArchitectureDesign [module]: ArchitectureDesign converts approved requirements into a new architecture candidate or a proposed architecture change.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-050-ARCHITECTURE-GATE",
+        "statement": "ArchitectureGate [gate]: ArchitectureGate validates architectural fitness, evidence, and approval before establishing or updating the ArchitectureBaseline.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-060-CONTRACT-GENERATION",
+        "statement": "ContractGeneration [module; conditional]: ContractGeneration conditionally produces and validates API, schema, event, protocol, and other machine-readable interface contracts when the approved design requires them.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-070-WORK-BREAKDOWN",
+        "statement": "WorkBreakdown [module]: WorkBreakdown converts approved scope into a complete set of bounded, traceable, independently executable and verifiable work items without executing them.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-080-WORK-DEPENDENCY-ANALYSIS",
+        "statement": "WorkDependencyAnalysis [module]: WorkDependencyAnalysis validates authoritative ordering and dependencies between approved work items before assignment or execution.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-090-SPECIALIST-ASSIGNMENT",
+        "statement": "SpecialistAssignment [module]: SpecialistAssignment selects a compatible human or implementation engine for each ready work item from explicit capability requirements and policy.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-100-WORK-EXECUTION",
+        "statement": "WorkExecution [module]: WorkExecution performs one authorized work item against exact inputs and returns bounded deliverables, changes, diagnostics, and evidence without owning acceptance.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-110-WORK-ITEM-VERIFICATION",
+        "statement": "WorkItemVerification [module]: WorkItemVerification checks each executed work item against its verification plan and required evidence before it can enter integration.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-120-CHANGE-INTEGRATION",
+        "statement": "ChangeIntegration [module]: ChangeIntegration combines individually verified changes in dependency-safe order and records the exact integrated state.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-130-SYSTEM-VERIFICATION",
+        "statement": "SystemVerification [module]: SystemVerification validates the integrated system across functional, security, performance, operational, documentation, and other configured quality policies.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-140-BUSINESS-ACCEPTANCE",
+        "statement": "BusinessAcceptance [module]: BusinessAcceptance evaluates the verified system against approved business objectives, success metrics, scope, and acceptance criteria and records the final disposition.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "SCOPE-WDA-ADAPTERS-001",
         "statement": "Bounded replaceable analysis manifests and conformance fixtures.",
@@ -1212,14 +2968,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1239,14 +3009,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1266,14 +3050,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1293,14 +3091,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1320,20 +3132,118 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "nonGoals": [
+      {
+        "id": "NG-DEV-AI-WRAPPER-001",
+        "statement": "Build another monolithic coding agent or AI-provider wrapper.",
+        "rationale": "DevRelay standardizes deterministic engineering workflow rather than code generation.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-IMPLICIT-AUTHORITY-001",
+        "statement": "Treat model confidence, adapter output, chat history, or successful execution as implicit approval.",
+        "rationale": "Only explicit validated gates and evidence authorize progression.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-UPSTREAM-REIMPLEMENTATION-001",
+        "statement": "Reimplement full upstream tools such as OpenSpec, Spec Kit, Structurizr, or MADR inside Core.",
+        "rationale": "DevRelay invokes only bounded replaceable capabilities.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-V1-SCOPE-EXPANSION-001",
+        "statement": "Add lifecycle modules outside the approved V1 inventory without a new requirements change and overview baseline.",
+        "rationale": "V1 scope must remain deliberate and auditable.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "NG-WDA-ASSIGNMENT-001",
         "statement": "Choose a specialist, model, agent, or human.",
@@ -1350,14 +3260,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1378,14 +3302,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1406,14 +3344,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1434,20 +3386,152 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "terminology": [
+      {
+        "id": "TERM-DEV-CONDITIONAL-MODULE-001",
+        "term": "Conditional module",
+        "definition": "A lifecycle module invoked only when exact Core-owned state and approved policy satisfy its declared condition.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-ENGINEERING-GATE-001",
+        "term": "Engineering gate",
+        "definition": "A separate validation and approval boundary that decides whether an exact candidate may become an approved baseline or progress downstream.",
+        "aliases": [
+          "Gate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-MODULE-001",
+        "term": "Module",
+        "definition": "A provider-neutral lifecycle contract defining exact inputs, action, outputs, outcomes, evidence, and progression boundary.",
+        "aliases": [
+          "Engineering module"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-PROJECT-OVERVIEW-001",
+        "term": "ProjectOverviewBaseline",
+        "definition": "The compact approved project-wide context deterministically projected from the paired RequirementsBaseline and explicitly supplied to downstream modules.",
+        "aliases": [
+          "Project overview"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-TRACEABILITY-GRAPH-001",
+        "term": "TraceabilityGraph",
+        "definition": "A Core-owned cross-cutting lifecycle index that records validated artifact relationships beside the module sequence without becoming a workflow stage.",
+        "aliases": [
+          "Traceability graph"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "TERM-WDA-DEPENDENCY-DAG-001",
         "term": "Work dependency DAG",
@@ -1467,14 +3551,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1496,14 +3594,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1525,14 +3637,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1556,14 +3682,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1585,19 +3725,77 @@
           "role": "project-context",
           "artifact": {
             "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-            "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+            "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+          }
+        },
+        {
+          "role": "project-overview-baseline",
+          "artifact": {
+            "artifactId": "project-overview-baseline-devrelay-v1",
+            "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
           }
         },
         {
           "role": "repository-snapshot",
           "artifact": {
-            "artifactId": "repository-snapshot-devrelay-bef184c",
-            "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+            "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+            "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+          }
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-devrelay-v1",
+            "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
           }
         }
       ]
     },
     "assumptions": [
+      {
+        "id": "ASM-DEV-CONDITIONAL-MODULES-001",
+        "statement": "ArchitectureDiscovery and ContractGeneration are conditional lifecycle modules rather than mandatory work for every project or change.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-DEV-V1-INVENTORY-001",
+        "statement": "The fourteen lifecycle components in the approved scope are the complete DevRelay V1 inventory.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
       {
         "id": "ASM-WDA-INPUT-CONTEXT-001",
         "statement": "The analyzer receives exact requirements, architecture, contract, repository, overview, WorkBreakdown, and policy context.",
@@ -1615,14 +3813,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1644,14 +3856,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1673,14 +3899,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1702,14 +3942,28 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
@@ -1731,47 +3985,81 @@
             "role": "project-context",
             "artifact": {
               "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-              "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-bef184c",
-              "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
             }
           }
         ]
       }
     ],
     "dependencies": [
+      "A durable host for artifact, checkpoint, graph, approval, and execution-record persistence.",
       "Approved ProjectOverview, requirements, architecture, contract-disposition, and repository contracts.",
       "Approved WorkBreakdown 0.1.0 and exact WorkBreakdownBaseline contract.",
+      "Bounded adapters or compatible implementations for configured module capabilities.",
+      "Explicit human or automated approval policy at configured gates.",
       "Generic registry, effect checkpoint, Gate replay, and TraceabilityGraph boundaries.",
-      "Owner responses to the five blocking requirements questions."
+      "Owner responses to the five blocking requirements questions.",
+      "Versioned canonical contracts for each V1 module and lifecycle artifact."
     ],
     "risks": [
+      "Adapter-native semantics may leak into canonical contracts unless conformance remains strict.",
       "Ambiguous edge direction could duplicate inverse facts.",
       "Analyzer silence could be mistaken for proof that no dependency is missing.",
+      "Conditional routing may become implicit unless every condition remains state-driven and evidence-bound.",
+      "Gate proliferation may add friction unless quick paths remain clear and policy is risk-adjusted.",
       "Hidden adapter-selected context could violate deterministic invocation contracts.",
+      "Module boundaries may drift into duplicated responsibility unless every contract keeps one primary purpose.",
       "Reused task adapters could blur decomposition and dependency authority.",
-      "Stored execution waves could couple static dependencies to changing runtime state."
+      "Stored execution waves could couple static dependencies to changing runtime state.",
+      "Traceability may become incomplete when future contributors omit required lifecycle relationships or evidence horizons."
     ],
     "deliverables": [
+      "A complete V1 module and gate contract inventory.",
+      "A deterministic provider-neutral orchestration kernel and host integration boundary.",
+      "A project-wide RequirementsBaseline, ProjectOverviewBaseline, and generated ProjectOverview.md.",
       "Approved WorkDependencyAnalysis architecture.",
       "Approved WorkDependencyAnalysis requirements and ProjectOverview baseline.",
       "Bounded manifests, fixtures, dogfood evidence, release docs, and audit results.",
-      "Canonical artifacts, manifest, Gate, runtime contracts, and trusted contributor."
+      "Canonical artifacts, manifest, Gate, runtime contracts, and trusted contributor.",
+      "Executable conformance fixtures and verification evidence for every implemented lifecycle slice.",
+      "TraceabilityGraph coverage from business objectives through business acceptance.",
+      "Versioned bounded adapter manifests for replaceable external engineering capabilities."
     ],
     "requiredEvidence": [
       "architecture/gate-approval",
+      "business/acceptance",
       "dependency/checkpoint-replay",
       "dependency/graph-mechanics",
       "dependency/semantic-policy",
+      "integration/change-proof",
       "release/full-verification",
       "requirements/gate-promotion",
       "requirements/interactive-clarification",
-      "traceability/checkpoint-merge"
+      "requirements/source-provenance",
+      "traceability/checkpoint-merge",
+      "verification/system-evidence",
+      "verification/work-item-evidence"
     ],
     "sourceRefs": [
       {
@@ -1785,14 +4073,28 @@
         "role": "project-context",
         "artifact": {
           "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-          "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+          "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+        }
+      },
+      {
+        "role": "project-overview-baseline",
+        "artifact": {
+          "artifactId": "project-overview-baseline-devrelay-v1",
+          "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
         }
       },
       {
         "role": "repository-snapshot",
         "artifact": {
-          "artifactId": "repository-snapshot-devrelay-bef184c",
-          "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+          "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+          "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+        }
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1",
+          "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
         }
       }
     ]
@@ -1802,7 +4104,8 @@
     "The approved WorkBreakdownBaseline owns the work-item universe.",
     "WorkDependency Gate rejects cycles, missing dependencies, and impossible ordering.",
     "Assignment, scheduling, execution, implementation status, and verification remain downstream.",
-    "Adapters cannot access or mutate TraceabilityGraph."
+    "Adapters cannot access or mutate TraceabilityGraph.",
+    "The exact global DevRelay V1 RequirementsBaseline and ProjectOverviewBaseline are the approved pre-state for this change."
   ],
   "unresolvedQuestionIds": [
     "Q-WDA-OPERATION-LIFECYCLE-001",
@@ -1823,14 +4126,28 @@
       "role": "project-context",
       "artifact": {
         "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
-        "digest": "sha256:21a862134d9a2c29ae32db34a57e1a9b6d930cdef334328b538e629204063902"
+        "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
       }
     },
     {
       "role": "repository-snapshot",
       "artifact": {
-        "artifactId": "repository-snapshot-devrelay-bef184c",
-        "digest": "sha256:721a897e0a753c70efd720438aa5639a8742b93fb883a67f8a666de6f40987b9"
+        "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+        "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1",
+        "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1",
+        "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
       }
     }
   ]

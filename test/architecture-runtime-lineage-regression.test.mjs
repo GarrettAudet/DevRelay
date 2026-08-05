@@ -427,4 +427,21 @@ test("snapshot and baseline internals bind to invocation provenance", async () =
   const staleBaseline = clone(baseline);
   staleBaseline.repositorySnapshot.digest = `sha256:${"f".repeat(64)}`;
   await assert.rejects(baselineValidator(staleBaseline, baselineContext));
+
+  const historicalBaseline = clone(baseline);
+  historicalBaseline.projectContext.digest = `sha256:${"e".repeat(64)}`;
+  historicalBaseline.repositorySnapshot.digest = `sha256:${"f".repeat(64)}`;
+  const historicalInputs = clone(baselineInputs);
+  historicalInputs["architecture-baseline-project-context"] = [
+    loaded(historicalBaseline.projectContext),
+  ];
+  historicalInputs["architecture-baseline-repository-snapshot"] = [
+    loaded(historicalBaseline.repositorySnapshot, repositorySnapshot),
+  ];
+  const historicalContext = contextFor({
+    operation: "design-change",
+    loadedInputs: historicalInputs,
+    ref: baselineRef,
+  });
+  await assert.doesNotReject(baselineValidator(historicalBaseline, historicalContext));
 });

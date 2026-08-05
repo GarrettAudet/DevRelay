@@ -123,8 +123,20 @@ requirements observations before architecture links are applied. The observer
 does not promote a draft; it creates a separate source-bound
 `requirements/baseline` scope.
 
-Future contributors extend the same graph with contract, work-item, code
-change, test, and verification-evidence nodes. They use the same update,
+WorkBreakdown observes its exact approved requirements, ProjectOverview, and
+architecture inputs, then projects candidate WorkItem nodes and only these
+forward planning relationships:
+
+```text
+AcceptanceCriterion -> planned-by -> WorkItem
+ArchitectureElement -> implementation-planned-by -> WorkItem
+Contract -> realization-planned-by -> WorkItem
+```
+
+Those assertions remain candidate authority and never claim execution,
+implementation, realization, testing, or verification. Future contributors
+extend the same graph with contract, code-change, test, integration,
+verification-evidence, and acceptance nodes. They use the same update,
 authority, provenance, checkpoint, and merge contracts rather than adding a
 new orchestration special case.
 
@@ -156,7 +168,8 @@ auditable even when their endpoint is retired.
 RequirementsGathering and ArchitectureDesign emit candidates. Their facts
 remain `candidate` until the corresponding approval gate contributes a
 lifecycle activation update. A draft must never appear approved merely because
-it was merged into the graph.
+it was merged into the graph. WorkBreakdown follows the same rule; its approved
+baseline facts require a later trusted activation observer.
 
 ## Queries and diagnostics
 
@@ -245,6 +258,6 @@ checkpoint-first application with exact idempotency and replay reconciliation.
 
 This release does not ship Neo4j, a hosted graph service, live upstream tool
 adapters, or approval-gate contributors. It defines the graph contracts,
-reference engine, RequirementsGathering and ArchitectureDesign contributors,
-and the graph-aware Core execution boundary on which those integrations can be
-added without changing Module semantics.
+reference engine, RequirementsGathering, ArchitectureDesign, and WorkBreakdown
+contributors, and the graph-aware Core execution boundary on which those
+integrations can be added without changing Module semantics.

@@ -1,0 +1,2662 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsDraft",
+  "draftId": "requirements-draft-devrelay-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-devrelay-v1-project-baseline",
+        "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-v1",
+        "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+        "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+      }
+    }
+  ],
+  "goal": {
+    "artifactId": "goal-devrelay-v1-project-baseline",
+    "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+  },
+  "projectContext": {
+    "artifactId": "project-context-devrelay-v1",
+    "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+  },
+  "requirements": {
+    "purpose": {
+      "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-devrelay-v1-project-baseline",
+            "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+          }
+        },
+        {
+          "role": "owner-confirmation",
+          "artifact": {
+            "artifactId": "owner-v1-lifecycle-approval",
+            "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+          },
+          "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-v1",
+            "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+            "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+          }
+        }
+      ]
+    },
+    "businessObjectives": [
+      {
+        "id": "BO-DEV-DETERMINISM-001",
+        "statement": "Make software-engineering progression reproducible and fail closed when required inputs, evidence, or approvals are invalid.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-MODULARITY-001",
+        "statement": "Allow best-in-class engineering capabilities to be replaced without changing canonical workflow semantics or generic Core.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-QUALITY-001",
+        "statement": "Require scoped verification and evidence before work, changes, systems, or business outcomes advance.",
+        "stakeholderIds": [
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-TRACEABILITY-001",
+        "statement": "Trace every approved business objective through requirements, design, planned work, implementation, verification, integration, and acceptance.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "successMetrics": [
+      {
+        "id": "SM-DEV-DETERMINISM-001",
+        "name": "Deterministic progression",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001"
+        ],
+        "measure": "Repeated Core-owned routing, validation, replay, and gate decisions for identical content-addressed inputs.",
+        "target": "100 percent identical outcomes and digests.",
+        "measurementMethod": "Run positive, negative, drift, checkpoint, replay, and gate conformance suites.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MODULARITY-001",
+        "name": "Adapter-independent semantics",
+        "businessObjectiveIds": [
+          "BO-DEV-MODULARITY-001"
+        ],
+        "measure": "Compatible adapter replacements requiring a product-specific behavioral branch in generic Core.",
+        "target": "Zero branches.",
+        "measurementMethod": "Execute adapter replacement fixtures and scan generic Core for product identifiers.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-QUALITY-001",
+        "name": "Verified progression",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001"
+        ],
+        "measure": "Lifecycle transitions occurring without the configured passing evidence and approval record.",
+        "target": "Zero transitions.",
+        "measurementMethod": "Audit module execution records, gate decisions, verification evidence, and acceptance receipts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-TRACEABILITY-001",
+        "name": "Lifecycle trace coverage",
+        "businessObjectiveIds": [
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "measure": "Approved business objectives with a complete trace to implementation and passing verification evidence by BusinessAcceptance.",
+        "target": "100 percent or an explicit approved disposition.",
+        "measurementMethod": "Run TraceabilityGraph coverage and orphan diagnostics at each lifecycle horizon.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "stakeholders": [
+      {
+        "id": "STK-DEV-MAINTAINER-001",
+        "name": "DevRelay maintainer",
+        "role": "Own the provider-neutral kernel, contracts, gates, and trusted contributors.",
+        "category": "owner",
+        "interests": [
+          "Minimal Core special cases.",
+          "Versioned extensible contracts."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "STK-DEV-OWNER-001",
+        "name": "DevRelay product owner",
+        "role": "Defines business intent, V1 scope, and approval policy.",
+        "category": "owner",
+        "interests": [
+          "Complete V1 lifecycle.",
+          "Reproducible accepted software outcomes."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "STK-DEV-WORKFLOW-AUTHOR-001",
+        "name": "Workflow author",
+        "role": "Configures modules, adapters, gates, and evidence policy for an engineering project.",
+        "category": "user",
+        "interests": [
+          "Clear module handoffs.",
+          "Replaceable engineering capabilities."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "users": [
+      {
+        "id": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "name": "Engineering workflow author",
+        "description": "A maintainer or engineering lead who configures and operates DevRelay from a goal through business acceptance.",
+        "stakeholderIds": [
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "needs": [
+          "Inspect exact artifacts, decisions, evidence, and progression state.",
+          "Run a complete engineering lifecycle without relying on model memory.",
+          "Swap compatible adapters without redesigning the workflow."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "CAP-DEV-EXTENSIBILITY-001",
+        "name": "Replaceable engineering capabilities",
+        "description": "Bind interchangeable bounded adapters to stable provider-neutral module operations.",
+        "businessObjectiveIds": [
+          "BO-DEV-MODULARITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-LIFECYCLE-001",
+        "name": "Deterministic lifecycle orchestration",
+        "description": "Route exact state through the approved V1 lifecycle and stop invalid work before it propagates.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-QUALITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-SPECIFICATION-001",
+        "name": "Structured engineering contracts",
+        "description": "Represent requirements, architecture, contracts, work, changes, evidence, and acceptance as versioned artifacts.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-VERIFICATION-001",
+        "name": "Evidence-based verification and acceptance",
+        "description": "Require scoped evidence at work-item, integrated-system, and business-acceptance boundaries.",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001",
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "userJourneys": [
+      {
+        "id": "UJ-DEV-GOAL-TO-ACCEPTANCE-001",
+        "name": "Move an approved goal to business acceptance",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-DEV-EXTENSIBILITY-001",
+          "CAP-DEV-LIFECYCLE-001",
+          "CAP-DEV-SPECIFICATION-001",
+          "CAP-DEV-VERIFICATION-001"
+        ],
+        "trigger": "A project goal or approved change enters DevRelay.",
+        "outcome": "The integrated system is accepted or progression stops with explicit clarification, diagnostics, redesign, rejection, or missing evidence.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Establish approved requirements, architecture, and applicable interface contracts.",
+            "expectedOutcome": "The authorized scope and design are explicit and traceable."
+          },
+          {
+            "sequence": 2,
+            "action": "Decompose, order, and assign bounded work.",
+            "expectedOutcome": "Only dependency-ready work reaches compatible specialists."
+          },
+          {
+            "sequence": 3,
+            "action": "Execute and verify each work item before integration.",
+            "expectedOutcome": "Only individually verified changes enter integration."
+          },
+          {
+            "sequence": 4,
+            "action": "Verify the integrated system and evaluate business acceptance.",
+            "expectedOutcome": "Acceptance is bound to objectives, criteria, and passing evidence."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "userStories": [
+      {
+        "id": "US-DEV-EXTEND-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-EXTENSIBILITY-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Replace a configured engineering capability without changing the lifecycle contract.",
+        "benefit": "The workflow can remain best-in-class as tools evolve.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-ADAPTER-BOUNDARY-001",
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-ORCHESTRATE-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-LIFECYCLE-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Run the exact V1 lifecycle with deterministic conditional routing and approval boundaries.",
+        "benefit": "Invalid or incomplete work cannot silently propagate downstream.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-CONDITIONAL-ROUTING-001",
+          "AC-DEV-FULL-V1-SCOPE-001",
+          "AC-DEV-GATE-PROGRESSION-001",
+          "AC-DEV-RESUME-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-SPECIFY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-SPECIFICATION-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Use explicit structured artifacts for every lifecycle handoff.",
+        "benefit": "Engineering state is reproducible without conversational memory.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-ARTIFACT-HANDOFF-001",
+          "AC-DEV-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-VERIFY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-VERIFICATION-001",
+        "userJourneyIds": [
+          "UJ-DEV-GOAL-TO-ACCEPTANCE-001"
+        ],
+        "need": "Require evidence before work items, integrated changes, or business outcomes are accepted.",
+        "benefit": "Progression reflects proven engineering completion rather than model confidence.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GATE-PROGRESSION-001",
+          "AC-DEV-VERIFICATION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "acceptanceCriteria": [
+      {
+        "id": "AC-DEV-ADAPTER-BOUNDARY-001",
+        "statement": "Adapters receive only declared inputs and capability grants and cannot route workflow, approve artifacts, mutate TraceabilityGraph, or create undeclared Core behavior.",
+        "verification": "Run prohibited-capability, hidden-context, graph-access, and Core-special-case fixtures for each adapter family.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-ARTIFACT-HANDOFF-001",
+        "statement": "Every lifecycle handoff uses a schema-valid, immutable, content-addressed artifact with explicit lineage and no reliance on conversational memory.",
+        "verification": "Audit every V1 module manifest, invocation, result contract, checkpoint, and downstream input binding.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-CONDITIONAL-ROUTING-001",
+        "statement": "ArchitectureDiscovery runs only for an existing repository without a validated architecture baseline or current snapshot, and ContractGeneration runs only when approved interface intent requires formal contracts.",
+        "verification": "Execute every eligible and ineligible state fixture and verify Core-owned route decisions and zero adapter calls on rejected routes.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-FULL-V1-SCOPE-001",
+        "statement": "The approved project overview contains exactly RequirementsGathering, RequirementsGate, ArchitectureDiscovery, ArchitectureDesign, ArchitectureGate, ContractGeneration, WorkBreakdown, WorkDependencyAnalysis, SpecialistAssignment, WorkExecution, WorkItemVerification, ChangeIntegration, SystemVerification, and BusinessAcceptance in that order.",
+        "verification": "Compare the ordered owner-approved inventory with the deterministic scope projection and fail on omission, addition, reordering, or conditionality drift.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-GATE-PROGRESSION-001",
+        "statement": "A configured gate prevents progression until exact candidate, policy, evidence, approval, and baseline-promotion requirements pass.",
+        "verification": "Attempt progression with missing, stale, forged, rejected, and passing gate inputs at each implemented boundary.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-MODEL-INDEPENDENCE-001",
+        "statement": "Changing the AI model or bounded implementation tool does not alter the canonical module sequence, artifact contracts, gates, or traceability vocabulary.",
+        "verification": "Run compatible adapter substitutions and compare canonical outputs, validation, route, and graph contracts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-RESUME-001",
+        "statement": "Interrupted effectful executions resume only from exact validated checkpoints and do not repeat already checkpointed effects.",
+        "verification": "Interrupt and replay each effectful execution profile and assert exact lineage with zero duplicate adapter calls.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-TRACEABILITY-001",
+        "statement": "TraceabilityGraph can traverse each accepted business objective through requirements, architecture, contracts when applicable, planned work, changes, tests, evidence, integration, and acceptance while diagnosing missing links.",
+        "verification": "Run forward and reverse lifecycle queries plus orphan, unscoped-work, and missing-evidence diagnostics at each implemented horizon.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-VERIFICATION-001",
+        "statement": "WorkItemVerification and SystemVerification record scoped passing evidence before ChangeIntegration and BusinessAcceptance respectively.",
+        "verification": "Exercise passing and failing evidence packages and verify downstream progression remains blocked until the required proof passes.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "nonFunctionalRequirements": [
+      {
+        "id": "NFR-DEV-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Core-owned routing, validation, checkpoint replay, traceability projection, and gate preparation must be deterministic for exact inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Canonical route, result, diagnostic, update, and receipt digest equality.",
+        "target": "100 percent equality for deterministic Core-owned behavior.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-RESUME-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-PORTABILITY-001",
+        "category": "compatibility",
+        "statement": "Canonical lifecycle contracts must remain independent of IDE, AI provider, model, operating host, and bounded external tool.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Compatible host and adapter substitutions requiring canonical contract changes.",
+        "target": "Zero substitutions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-TRACEABILITY-001",
+        "category": "observability",
+        "statement": "Every accepted lifecycle assertion must retain exact artifact, contributor, execution, authority, and graph-version provenance.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Accepted graph assertions lacking complete resolvable provenance.",
+        "target": "Zero assertions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CON-DEV-ARTIFACT-CONTRACTS-001",
+        "category": "technical",
+        "statement": "Every stage must exchange canonical structured artifacts and cannot rely on conversational memory as authority.",
+        "rationale": "Explicit artifacts make lifecycle state reproducible and verifiable.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-ARTIFACT-HANDOFF-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-GATE-SEPARATION-001",
+        "category": "business",
+        "statement": "Producing modules cannot approve or promote their own candidates; configured gates own progression decisions.",
+        "rationale": "Separate authority prevents production from becoming self-approval.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-GATE-PROGRESSION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MODULE-INVENTORY-001",
+        "category": "business",
+        "statement": "V1 lifecycle scope is limited to the fourteen owner-approved components recorded in the project overview.",
+        "rationale": "A closed inventory prevents silent V1 scope expansion.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-CONDITIONAL-ROUTING-001",
+          "AC-DEV-FULL-V1-SCOPE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-PROVIDER-NEUTRAL-001",
+        "category": "technical",
+        "statement": "Canonical Core and module contracts cannot depend on one AI model, provider, IDE, or external engineering product.",
+        "rationale": "The workflow owns engineering semantics; tools only perform bounded capabilities.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-ADAPTER-BOUNDARY-001",
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "SCOPE-DEV-V1-010-REQUIREMENTS-GATHERING",
+        "statement": "RequirementsGathering [module]: RequirementsGathering converts an explicit goal and project context into a canonical requirements candidate and deterministic ProjectOverview candidate.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-020-REQUIREMENTS-GATE",
+        "statement": "RequirementsGate [gate]: RequirementsGate validates and approves one exact RequirementsBaseline and ProjectOverviewBaseline pair before architecture progression.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-030-ARCHITECTURE-DISCOVERY",
+        "statement": "ArchitectureDiscovery [module; conditional]: ArchitectureDiscovery conditionally establishes a validated current-architecture snapshot for an existing repository that has no architecture baseline.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-040-ARCHITECTURE-DESIGN",
+        "statement": "ArchitectureDesign [module]: ArchitectureDesign converts approved requirements into a new architecture candidate or a proposed architecture change.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-050-ARCHITECTURE-GATE",
+        "statement": "ArchitectureGate [gate]: ArchitectureGate validates architectural fitness, evidence, and approval before establishing or updating the ArchitectureBaseline.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-060-CONTRACT-GENERATION",
+        "statement": "ContractGeneration [module; conditional]: ContractGeneration conditionally produces and validates API, schema, event, protocol, and other machine-readable interface contracts when the approved design requires them.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-070-WORK-BREAKDOWN",
+        "statement": "WorkBreakdown [module]: WorkBreakdown converts approved scope into a complete set of bounded, traceable, independently executable and verifiable work items without executing them.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-080-WORK-DEPENDENCY-ANALYSIS",
+        "statement": "WorkDependencyAnalysis [module]: WorkDependencyAnalysis validates authoritative ordering and dependencies between approved work items before assignment or execution.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-090-SPECIALIST-ASSIGNMENT",
+        "statement": "SpecialistAssignment [module]: SpecialistAssignment selects a compatible human or implementation engine for each ready work item from explicit capability requirements and policy.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-100-WORK-EXECUTION",
+        "statement": "WorkExecution [module]: WorkExecution performs one authorized work item against exact inputs and returns bounded deliverables, changes, diagnostics, and evidence without owning acceptance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-110-WORK-ITEM-VERIFICATION",
+        "statement": "WorkItemVerification [module]: WorkItemVerification checks each executed work item against its verification plan and required evidence before it can enter integration.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-120-CHANGE-INTEGRATION",
+        "statement": "ChangeIntegration [module]: ChangeIntegration combines individually verified changes in dependency-safe order and records the exact integrated state.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-130-SYSTEM-VERIFICATION",
+        "statement": "SystemVerification [module]: SystemVerification validates the integrated system across functional, security, performance, operational, documentation, and other configured quality policies.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-140-BUSINESS-ACCEPTANCE",
+        "statement": "BusinessAcceptance [module]: BusinessAcceptance evaluates the verified system against approved business objectives, success metrics, scope, and acceptance criteria and records the final disposition.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "nonGoals": [
+      {
+        "id": "NG-DEV-AI-WRAPPER-001",
+        "statement": "Build another monolithic coding agent or AI-provider wrapper.",
+        "rationale": "DevRelay standardizes deterministic engineering workflow rather than code generation.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-IMPLICIT-AUTHORITY-001",
+        "statement": "Treat model confidence, adapter output, chat history, or successful execution as implicit approval.",
+        "rationale": "Only explicit validated gates and evidence authorize progression.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-UPSTREAM-REIMPLEMENTATION-001",
+        "statement": "Reimplement full upstream tools such as OpenSpec, Spec Kit, Structurizr, or MADR inside Core.",
+        "rationale": "DevRelay invokes only bounded replaceable capabilities.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-V1-SCOPE-EXPANSION-001",
+        "statement": "Add lifecycle modules outside the approved V1 inventory without a new requirements change and overview baseline.",
+        "rationale": "V1 scope must remain deliberate and auditable.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "terminology": [
+      {
+        "id": "TERM-DEV-CONDITIONAL-MODULE-001",
+        "term": "Conditional module",
+        "definition": "A lifecycle module invoked only when exact Core-owned state and approved policy satisfy its declared condition.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-ENGINEERING-GATE-001",
+        "term": "Engineering gate",
+        "definition": "A separate validation and approval boundary that decides whether an exact candidate may become an approved baseline or progress downstream.",
+        "aliases": [
+          "Gate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-MODULE-001",
+        "term": "Module",
+        "definition": "A provider-neutral lifecycle contract defining exact inputs, action, outputs, outcomes, evidence, and progression boundary.",
+        "aliases": [
+          "Engineering module"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-PROJECT-OVERVIEW-001",
+        "term": "ProjectOverviewBaseline",
+        "definition": "The compact approved project-wide context deterministically projected from the paired RequirementsBaseline and explicitly supplied to downstream modules.",
+        "aliases": [
+          "Project overview"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-TRACEABILITY-GRAPH-001",
+        "term": "TraceabilityGraph",
+        "definition": "A Core-owned cross-cutting lifecycle index that records validated artifact relationships beside the module sequence without becoming a workflow stage.",
+        "aliases": [
+          "Traceability graph"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "currentStatus": {
+      "lifecycle": "existing",
+      "phase": "planning",
+      "summary": "DevRelay V1 scope is fixed at fourteen lifecycle components. RequirementsGathering, ArchitectureDesign, WorkBreakdown, and the TraceabilityGraph sidecar are implemented; WorkDependencyAnalysis is the next module under requirements clarification.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-devrelay-v1-project-baseline",
+            "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+          }
+        },
+        {
+          "role": "owner-confirmation",
+          "artifact": {
+            "artifactId": "owner-v1-lifecycle-approval",
+            "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+          },
+          "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-v1",
+            "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+            "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+          }
+        }
+      ]
+    },
+    "assumptions": [
+      {
+        "id": "ASM-DEV-CONDITIONAL-MODULES-001",
+        "statement": "ArchitectureDiscovery and ContractGeneration are conditional lifecycle modules rather than mandatory work for every project or change.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-DEV-V1-INVENTORY-001",
+        "statement": "The fourteen lifecycle components in the approved scope are the complete DevRelay V1 inventory.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v1-project-baseline",
+              "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+            }
+          },
+          {
+            "role": "owner-confirmation",
+            "artifact": {
+              "artifactId": "owner-v1-lifecycle-approval",
+              "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+            },
+            "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v1",
+              "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+              "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+            }
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "A durable host for artifact, checkpoint, graph, approval, and execution-record persistence.",
+      "Bounded adapters or compatible implementations for configured module capabilities.",
+      "Explicit human or automated approval policy at configured gates.",
+      "Versioned canonical contracts for each V1 module and lifecycle artifact."
+    ],
+    "risks": [
+      "Adapter-native semantics may leak into canonical contracts unless conformance remains strict.",
+      "Conditional routing may become implicit unless every condition remains state-driven and evidence-bound.",
+      "Gate proliferation may add friction unless quick paths remain clear and policy is risk-adjusted.",
+      "Module boundaries may drift into duplicated responsibility unless every contract keeps one primary purpose.",
+      "Traceability may become incomplete when future contributors omit required lifecycle relationships or evidence horizons."
+    ],
+    "deliverables": [
+      "A complete V1 module and gate contract inventory.",
+      "A deterministic provider-neutral orchestration kernel and host integration boundary.",
+      "A project-wide RequirementsBaseline, ProjectOverviewBaseline, and generated ProjectOverview.md.",
+      "Executable conformance fixtures and verification evidence for every implemented lifecycle slice.",
+      "TraceabilityGraph coverage from business objectives through business acceptance.",
+      "Versioned bounded adapter manifests for replaceable external engineering capabilities."
+    ],
+    "requiredEvidence": [
+      "architecture/gate-approval",
+      "business/acceptance",
+      "integration/change-proof",
+      "release/full-verification",
+      "requirements/gate-promotion",
+      "requirements/source-provenance",
+      "traceability/checkpoint-merge",
+      "verification/system-evidence",
+      "verification/work-item-evidence"
+    ],
+    "sourceRefs": [
+      {
+        "role": "goal",
+        "artifact": {
+          "artifactId": "goal-devrelay-v1-project-baseline",
+          "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+        }
+      },
+      {
+        "role": "owner-confirmation",
+        "artifact": {
+          "artifactId": "owner-v1-lifecycle-approval",
+          "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+        },
+        "location": "Complete V1 lifecycle inventory and global-overview migration approval"
+      },
+      {
+        "role": "project-context",
+        "artifact": {
+          "artifactId": "project-context-devrelay-v1",
+          "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+        }
+      },
+      {
+        "role": "repository-snapshot",
+        "artifact": {
+          "artifactId": "repository-snapshot-devrelay-project-9cb4f2b",
+          "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+        }
+      }
+    ]
+  }
+}

@@ -64,6 +64,18 @@ export const canonicalModules = Object.freeze([
     ],
     plugins: ["openspec-tasks", "spec-kit-tasks"],
   },
+  {
+    id: "work-dependency-analysis",
+    version: "0.1.0",
+    definition: "examples/modules/work-dependency-analysis.module.json",
+    operations: [{ id: "analyze-dependencies", steps: [] }],
+    plugins: [
+      "native-structured-dependency-proposer",
+      "openspec-dependency-proposer",
+      "spec-kit-dependency-reviewer",
+      "task-master-dependency-proposer",
+    ],
+  },
 ]);
 
 export const canonicalPlugins = Object.freeze([
@@ -135,6 +147,42 @@ export const canonicalPlugins = Object.freeze([
       { operation: "establish-baseline", step: "modeler" },
     ],
   },
+  {
+    id: "native-structured-dependency-proposer",
+    version: "0.1.0",
+    manifest: "examples/plugins/native-structured-dependency-proposer.plugin.json",
+    module: { id: "work-dependency-analysis", version: "0.1.0" },
+    bindings: [
+      { operation: "analyze-dependencies", step: null, role: "proposer" },
+    ],
+  },
+  {
+    id: "openspec-dependency-proposer",
+    version: "0.1.0",
+    manifest: "examples/plugins/openspec-dependency-proposer.plugin.json",
+    module: { id: "work-dependency-analysis", version: "0.1.0" },
+    bindings: [
+      { operation: "analyze-dependencies", step: null, role: "proposer" },
+    ],
+  },
+  {
+    id: "spec-kit-dependency-reviewer",
+    version: "0.1.0",
+    manifest: "examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+    module: { id: "work-dependency-analysis", version: "0.1.0" },
+    bindings: [
+      { operation: "analyze-dependencies", step: null, role: "reviewer" },
+    ],
+  },
+  {
+    id: "task-master-dependency-proposer",
+    version: "0.1.0",
+    manifest: "examples/plugins/task-master-dependency-proposer.plugin.json",
+    module: { id: "work-dependency-analysis", version: "0.1.0" },
+    bindings: [
+      { operation: "analyze-dependencies", step: null, role: "proposer" },
+    ],
+  },
 ]);
 
 export const canonicalPackageExports = Object.freeze({
@@ -146,6 +194,8 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/modules/architecture-design.module.json",
   "./modules/work-breakdown.module.json":
     "./examples/modules/work-breakdown.module.json",
+  "./modules/work-dependency-analysis.module.json":
+    "./examples/modules/work-dependency-analysis.module.json",
   "./plugins/github-spec-kit.plugin.json":
     "./examples/plugins/github-spec-kit.plugin.json",
   "./plugins/openspec.plugin.json":
@@ -160,6 +210,14 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/plugins/openspec-tasks.plugin.json",
   "./plugins/spec-kit-tasks.plugin.json":
     "./examples/plugins/spec-kit-tasks.plugin.json",
+  "./plugins/native-structured-dependency-proposer.plugin.json":
+    "./examples/plugins/native-structured-dependency-proposer.plugin.json",
+  "./plugins/openspec-dependency-proposer.plugin.json":
+    "./examples/plugins/openspec-dependency-proposer.plugin.json",
+  "./plugins/spec-kit-dependency-reviewer.plugin.json":
+    "./examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+  "./plugins/task-master-dependency-proposer.plugin.json":
+    "./examples/plugins/task-master-dependency-proposer.plugin.json",
   "./plugins/madr.plugin.json": "./examples/plugins/madr.plugin.json",
   "./examples/artifacts/*": "./examples/artifacts/*",
   "./examples/invocations/*": "./examples/invocations/*",
@@ -167,6 +225,7 @@ export const canonicalPackageExports = Object.freeze({
   "./examples/results/*": "./examples/results/*",
   "./examples/README.md": "./examples/README.md",
   "./openspec/*": "./openspec/*",
+  "./policies/work-dependency-analysis/*": "./policies/work-dependency-analysis/*",
   "./release/*": "./release/*",
   "./package.json": "./package.json",
 });
@@ -257,6 +316,9 @@ export function roleFor(path) {
   }
   if (path.startsWith("openspec/")) {
     return "bounded-adapter-schema";
+  }
+  if (path.startsWith("policies/")) {
+    return "policy-artifact";
   }
   if (path.startsWith("release/")) {
     return "release-artifact";

@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-devrelay-v1-project-baseline",
+  "statement": "Establish one project-wide DevRelay V1 requirements and ProjectOverview baseline that defines the complete deterministic engineering lifecycle and becomes explicit context for every downstream module.",
+  "objectives": [
+    "Define the complete V1 lifecycle from requirements gathering through business acceptance.",
+    "Keep every lifecycle capability provider-neutral, modular, replaceable, and contract-driven.",
+    "Make progression deterministic through explicit artifacts, validation, evidence, and approval boundaries.",
+    "Maintain end-to-end traceability without allowing adapters to own orchestration or graph authority.",
+    "Preserve existing module-specific dogfood baselines as immutable historical evidence rather than treating them as the global project overview."
+  ],
+  "constraints": [
+    "ArchitectureDiscovery runs only for an existing repository without a validated architecture baseline or current-architecture snapshot.",
+    "ContractGeneration runs only when the approved architecture requires APIs, schemas, events, protocols, or another formal interface contract.",
+    "AI models and external engineering tools remain interchangeable bounded implementation engines.",
+    "Gates are explicit approval boundaries and are not silently collapsed into producing modules.",
+    "ProjectOverview.md is a deterministic projection of the paired structured requirements baseline and is never edited independently.",
+    "TraceabilityGraph remains a cross-cutting Core service rather than a lifecycle stage."
+  ],
+  "acceptanceCriteria": [
+    "The project overview lists exactly the fourteen owner-approved V1 lifecycle components in their approved order.",
+    "ArchitectureDiscovery and ContractGeneration are explicitly marked conditional with deterministic invocation conditions.",
+    "The project overview is derived from a validated requirements candidate and promoted as an atomic RequirementsBaseline and ProjectOverviewBaseline pair.",
+    "Every future downstream module invocation can receive the exact global ProjectOverviewBaseline through a declared input.",
+    "Feature and module requirements evolve the global pair through change sets rather than overwriting historical baselines."
+  ],
+  "assumptions": [
+    "The owner-approved V1 lifecycle inventory is complete for V1.",
+    "Module-specific approval gates may remain attached progression controls without expanding the owner-approved module inventory."
+  ]
+}

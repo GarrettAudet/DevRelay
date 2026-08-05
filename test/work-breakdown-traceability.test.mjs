@@ -478,7 +478,7 @@ test("approved observers and candidate contribution validate and merge atomicall
     ),
   );
   const merged = await service.mergePrepared(prepared);
-  assert.equal(merged.snapshot.vocabulary.version, "1.1.0");
+  assert.equal(merged.snapshot.vocabulary.version, "1.2.0");
   assert.equal(
     merged.snapshot.nodes.filter(
       ({ kind, authority, scope }) =>

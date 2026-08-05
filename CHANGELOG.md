@@ -4,6 +4,69 @@ All notable DevRelay source releases are recorded here. Module versions are
 immutable once released; a semantic contract change requires a new module
 version.
 
+## Unreleased
+
+No changes yet.
+
+## 0.4.0 - 2026-08-04
+
+### Added
+
+- `work-dependency-analysis@0.1.0` with one deterministic
+  `analyze-dependencies` operation over the complete approved
+  `WorkBreakdownBaseline` plus version-pinned project and repository context
+  slices.
+- A native structured dependency proposer as the default, optional Task Master
+  and OpenSpec proposal-adapter contracts, and a bounded Spec Kit consistency
+  reviewer. Core selects configured roles without product-specific branches.
+- Core-owned deterministic snapshot construction, Graphology-DAG mechanics,
+  exact OPA WASM policy evaluation, candidate assembly, checkpointing, and
+  zero-extension-call replay.
+- A separate WorkDependency Gate that derives all approval inputs from an
+  unforgeable checkpoint replay receipt, verifies exact approval and baseline
+  bytes, and returns the only promotable `WorkDependencyBaseline` payload.
+- Trusted post-promotion dependency traceability contribution using only the
+  forward planning edge `WorkItem prerequisite -> prerequisite-for -> WorkItem
+  dependent`; no inverse edge or implementation claim is stored.
+- Traceability vocabulary `1.2.0`, while preserving exact `1.0.0` and `1.1.0`
+  validation and avoiding graph-version churn when an update uses only an older
+  vocabulary's edge set.
+- Dogfood evidence over 11 work items and 10 dependencies, including exact
+  context/policy binding, cycle and drift failure boundaries, advisory-review
+  separation, OPA denial, traceability authority, and deterministic checkpoint
+  replay and promotion evidence.
+
+### Changed
+
+- Established one Gate-validated project-wide DevRelay V1
+  `RequirementsBaseline` + `ProjectOverviewBaseline` pair and exact generated
+  root `ProjectOverview.md`, recording the complete fourteen-component V1
+  lifecycle and conditional ArchitectureDiscovery/ContractGeneration routes.
+- Rebound the WorkDependencyAnalysis RequirementsGathering clarification to
+  the exact global pair as a requirements change while preserving prior
+  module-specific overviews as immutable historical dogfood evidence.
+- Corrected TraceabilityGraph documentation to include the released
+  WorkBreakdown contributor and planning-only relationships.
+- Reworked the WorkDependencyAnalysis ArchitectureDesign candidate into valid
+  C4 container/component hierarchy and correctly scoped container/component
+  views; added pinned official Structurizr validate/export normalization proof.
+- Added `already-designed` architecture coverage for exact unchanged baseline
+  entities so new lifecycle links do not churn historical
+  `sourceRequirementIds` or manufacture architecture modifications.
+
+### Release scope
+
+- The source package is `0.4.0`; RequirementsGathering, ArchitectureDesign,
+  WorkBreakdown, and WorkDependencyAnalysis remain at immutable `0.1.0`
+  semantic-module versions.
+- WorkDependencyAnalysis produces a static dependency baseline only. Assignment,
+  scheduling, execution, and completion facts remain downstream.
+- The native structured proposer is shipped. OpenSpec and Task Master proposal
+  adapters and the Spec Kit consistency reviewer remain bounded contracts, not
+  live upstream command integrations.
+- The bundled TraceabilityGraph and checkpoint stores remain in-memory reference
+  implementations; production hosts must provide durable atomic stores.
+
 ## 0.3.0 - 2026-08-02
 
 ### Added

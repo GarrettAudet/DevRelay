@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay is a provider-neutral deterministic orchestration runtime for spec-driven software engineering. V1 spans requirements, architecture, contracts, work planning, dependency analysis, specialist assignment, execution, verification, integration, and business acceptance, with TraceabilityGraph running alongside the lifecycle.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "DevRelay maintainers",
+    "Workflow and module authors",
+    "Adapter authors",
+    "IDE and orchestration hosts",
+    "Engineering reviewers and approvers"
+  ],
+  "domainConstraints": [
+    "Every stage exchanges explicit immutable artifacts rather than conversational memory.",
+    "Generic Core owns routing, adapter resolution, validation, checkpointing, traceability merge, and progression.",
+    "Modules define provider-neutral semantics while adapters expose bounded external-tool capabilities.",
+    "Adapters never receive TraceabilityGraph and never author graph operations.",
+    "Candidate and approved authority remain separate and Gate promotion is explicit.",
+    "Verification is required before downstream progression."
+  ],
+  "conventions": [
+    "Use exact semantic versions and SHA-256-bound artifacts at runtime boundaries.",
+    "Use JSON Schema draft 2020-12 for portable contracts.",
+    "Use lowercase kebab-case operation, port, relationship, and outcome identifiers.",
+    "Store forward lifecycle relationships and derive reverse traversal at query time.",
+    "Keep native tool artifacts as subordinate evidence rather than canonical authority.",
+    "Treat the root ProjectOverview.md as generated readable evidence for the structured project baseline."
+  ],
+  "sourceRefs": []
+}

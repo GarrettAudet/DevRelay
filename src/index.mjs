@@ -87,6 +87,11 @@ export {
 export { architectureRuntimeArtifactContracts } from "./architecture-runtime-contracts.mjs";
 
 export {
+  ArchitectureGateValidationError,
+  validateArchitectureGatePromotion,
+} from "./architecture-gate.mjs";
+
+export {
   SharedArtifactValidationError,
   validateSharedArtifact,
 } from "./shared-artifact-validator.mjs";
@@ -188,13 +193,57 @@ export {
 
 export {
   TRACEABILITY_EDGE_KINDS_V1_0,
+  TRACEABILITY_EDGE_KINDS_V1_1,
   TRACEABILITY_ENDPOINT_POLICY_VERSION,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_1,
   TRACEABILITY_HORIZONS_V1_0,
   TRACEABILITY_NODE_KINDS_V1_0,
   TRACEABILITY_VOCABULARY_V1_0,
+  TRACEABILITY_VOCABULARY_V1_1,
   assertTraceabilityVocabularyTransition,
 } from "./traceability-artifact-validator.mjs";
 export {
   architectureBaselineObserverContributor,
   createArchitectureBaselineObserverContributor,
 } from "./architecture-traceability-contributor.mjs";
+
+export {
+  WORK_DEPENDENCY_ARTIFACT_CONTRACTS,
+  WorkDependencyArtifactValidationError,
+  validateWorkDependencyArtifact,
+  workDependencyRuntimeArtifactContracts,
+} from "./work-dependency-artifact-validator.mjs";
+export {
+  WORK_DEPENDENCY_GRAPH_IMPLEMENTATION,
+  WorkDependencyGraphError,
+  analyzeDependencyGraph,
+  deriveRunnableFrontier,
+} from "./work-dependency-graph.mjs";
+export {
+  WorkDependencySnapshotError,
+  buildWorkBreakdownAnalysisSnapshot,
+  createContextSlice,
+} from "./work-dependency-snapshot.mjs";
+export {
+  DependencyProposalValidationError,
+  createNativeDependencyProposal,
+  validateDependencyProposal,
+} from "./work-dependency-native-proposer.mjs";
+export {
+  WorkDependencyPolicyError,
+  evaluateWorkDependencyPolicy,
+} from "./work-dependency-opa.mjs";
+export {
+  WorkDependencyRuntimeError,
+  assertVerifiedWorkDependencyReceipt,
+  createWorkDependencyAnalysisRuntime,
+} from "./work-dependency-runtime.mjs";
+export {
+  WORK_DEPENDENCY_GATE_APPROVAL_CONTRACT,
+  WorkDependencyGateValidationError,
+  promoteWorkDependencyBaseline,
+} from "./work-dependency-gate.mjs";
+export {
+  createWorkDependencyBaselineTraceabilityContributor,
+  workDependencyBaselineTraceabilityContributor,
+} from "./work-dependency-traceability-contributor.mjs";

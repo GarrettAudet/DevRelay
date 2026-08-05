@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
@@ -40,6 +41,16 @@ const textExtensions = new Set([
   ".txt",
   ".yaml",
   ".yml",
+]);
+const immutableRawArtifacts = new Map([
+  [
+    "dogfood/work-dependency-analysis/architecture-design/architecture-gate-owner-approval.json",
+    "102439efcb9d8244151b583ac7c89710685a1cf9f2b81ab9c76bd27543ad939e",
+  ],
+  [
+    "project/architecture-gate-owner-approval-work-dependency-analysis-v1.json",
+    "102439efcb9d8244151b583ac7c89710685a1cf9f2b81ab9c76bd27543ad939e",
+  ],
 ]);
 const extensionOf = (path) => {
   const name = basename(path);
@@ -157,7 +168,10 @@ function checkLfPolicy(files) {
   for (const path of candidates) {
     const bytes = readFileSync(path);
     if (bytes.includes(13)) {
-      failures.push(portablePath(relative(repositoryRoot, path)));
+      const relativePath = portablePath(relative(repositoryRoot, path));
+      const expectedDigest = immutableRawArtifacts.get(relativePath);
+      const actualDigest = createHash("sha256").update(bytes).digest("hex");
+      if (expectedDigest !== actualDigest) failures.push(relativePath);
     }
   }
   if (failures.length > 0) {
@@ -232,13 +246,16 @@ const requiredPackageFiles = [
   "contracts/requirements-gathering-artifacts.schema.json",
   "contracts/traceability-graph-artifacts.schema.json",
   "contracts/work-breakdown-artifacts.schema.json",
+  "contracts/work-dependency-analysis-artifacts.schema.json",
   "docs/architecture-design.md",
   "docs/requirements-gathering.md",
   "docs/traceability-graph.md",
   "docs/work-breakdown.md",
+  "docs/work-dependency-analysis.md",
   "examples/modules/architecture-design.module.json",
   "examples/modules/requirements-gathering.module.json",
   "examples/modules/work-breakdown.module.json",
+  "examples/modules/work-dependency-analysis.module.json",
   "examples/plugins/github-spec-kit.plugin.json",
   "examples/plugins/madr.plugin.json",
   "examples/plugins/openspec-design.plugin.json",
@@ -247,6 +264,12 @@ const requiredPackageFiles = [
   "examples/plugins/structurizr.plugin.json",
   "examples/plugins/openspec-tasks.plugin.json",
   "examples/plugins/spec-kit-tasks.plugin.json",
+  "examples/plugins/native-structured-dependency-proposer.plugin.json",
+  "examples/plugins/openspec-dependency-proposer.plugin.json",
+  "examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+  "examples/plugins/task-master-dependency-proposer.plugin.json",
+  "policies/work-dependency-analysis/dependency.rego",
+  "policies/work-dependency-analysis/policy.wasm",
   "openspec/schemas/devrelay-work-breakdown/schema.yaml",
   "openspec/schemas/devrelay-work-breakdown/templates/tasks.md",
   "src/architecture-traceability-contributor.mjs",
@@ -262,6 +285,14 @@ const requiredPackageFiles = [
   "src/work-breakdown-gate.mjs",
   "src/work-breakdown-runtime-contracts.mjs",
   "src/work-breakdown-traceability-contributor.mjs",
+  "src/work-dependency-artifact-validator.mjs",
+  "src/work-dependency-gate.mjs",
+  "src/work-dependency-graph.mjs",
+  "src/work-dependency-native-proposer.mjs",
+  "src/work-dependency-opa.mjs",
+  "src/work-dependency-runtime.mjs",
+  "src/work-dependency-snapshot.mjs",
+  "src/work-dependency-traceability-contributor.mjs",
 ];
 
 function assertPackageMetadata(packageDocument) {
@@ -278,6 +309,21 @@ function assertPackageMetadata(packageDocument) {
   }
   if (packageDocument.dependencies?.ajv !== "8.20.0") {
     throw new Error("Ajv must be pinned exactly to 8.20.0");
+  }
+  const workDependencyPins = {
+    "@open-policy-agent/opa-wasm": "1.10.0",
+    graphology: "0.26.0",
+    "graphology-dag": "0.4.1",
+  };
+  for (const [name, version] of Object.entries(workDependencyPins)) {
+    if (packageDocument.dependencies?.[name] !== version) {
+      throw new Error(`${name} must be pinned exactly to ${version}`);
+    }
+  }
+  if (packageDocument.overrides?.["fast-uri"] !== "3.1.5") {
+    throw new Error(
+      "fast-uri must remain pinned to the audited 3.1.5 override",
+    );
   }
   if (packageDocument.main !== "./src/index.mjs") {
     throw new Error("package main must point to the intentional public API");
@@ -366,6 +412,11 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     'if (typeof api.validateWorkBreakdownCandidateAgainstInputs !== "function") throw new Error("missing WorkBreakdown candidate validator export");',
     'if (typeof api.applyWorkBreakdownChangeSet !== "function") throw new Error("missing WorkBreakdown change application export");',
     'if (typeof api.validateWorkBreakdownGatePromotion !== "function") throw new Error("missing WorkBreakdown Gate export");',
+    'if (typeof api.workDependencyRuntimeArtifactContracts !== "function") throw new Error("missing WorkDependencyAnalysis contracts export");',
+    'if (typeof api.createWorkDependencyAnalysisRuntime !== "function") throw new Error("missing WorkDependencyAnalysis runtime export");',
+    'if (typeof api.analyzeDependencyGraph !== "function") throw new Error("missing Graphology-DAG Core export");',
+    'if (typeof api.promoteWorkDependencyBaseline !== "function") throw new Error("missing WorkDependency Gate export");',
+    'if (typeof api.workDependencyBaselineTraceabilityContributor !== "object") throw new Error("missing WorkDependency traceability contributor export");',
     'if (typeof api.createTraceabilityGraphService !== "function") throw new Error("missing TraceabilityGraph service export");',
     'if (typeof api.createInMemoryTraceabilityStore !== "function") throw new Error("missing TraceabilityGraph store export");',
     'if (typeof api.createInMemoryTraceabilityCheckpointStore !== "function") throw new Error("missing traceability checkpoint store export");',
@@ -374,7 +425,7 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     'if (!Array.isArray(api.requirementsTraceabilityContributors)) throw new Error("missing Requirements traceability contributors export");',
     'if (!Array.isArray(api.architectureTraceabilityContributors)) throw new Error("missing Architecture traceability contributors export");',
     'if (!Array.isArray(api.workBreakdownTraceabilityContributors)) throw new Error("missing WorkBreakdown traceability contributors export");',
-    'if (api.TRACEABILITY_VOCABULARY.version !== "1.1.0") throw new Error("unexpected traceability vocabulary");',
+    'if (api.TRACEABILITY_VOCABULARY.version !== "1.2.0") throw new Error("unexpected traceability vocabulary");',
     'const { createRequire } = await import("node:module");',
     "const require = createRequire(import.meta.url);",
     `require.resolve(${JSON.stringify(
@@ -386,6 +437,12 @@ function installAndImport(tarball, packageName, temporaryRoot) {
     `require.resolve(${JSON.stringify(
       `${packageName}/modules/work-breakdown.module.json`,
     )});`,
+    `require.resolve(${JSON.stringify(`${packageName}/modules/work-dependency-analysis.module.json`)});`,
+    `require.resolve(${JSON.stringify(`${packageName}/plugins/native-structured-dependency-proposer.plugin.json`)});`,
+    `require.resolve(${JSON.stringify(`${packageName}/plugins/openspec-dependency-proposer.plugin.json`)});`,
+    `require.resolve(${JSON.stringify(`${packageName}/plugins/spec-kit-dependency-reviewer.plugin.json`)});`,
+    `require.resolve(${JSON.stringify(`${packageName}/plugins/task-master-dependency-proposer.plugin.json`)});`,
+    `require.resolve(${JSON.stringify(`${packageName}/policies/work-dependency-analysis/policy.wasm`)});`,
   ].join("\n");
   run(process.execPath, ["--input-type=module", "--eval", smokeProgram], {
     cwd: consumer,

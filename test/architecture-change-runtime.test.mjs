@@ -3,6 +3,10 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { architectureRuntimeArtifactContracts } from "../src/architecture-runtime-contracts.mjs";
+import {
+  ArchitectureGateValidationError,
+  validateArchitectureGatePromotion,
+} from "../src/architecture-gate.mjs";
 import { sha256Digest } from "../src/content-digest.mjs";
 import { renderProjectOverviewMarkdownBytes } from "../src/project-overview.mjs";
 import { ContractError, createModuleRegistry } from "../src/module-registry.mjs";
@@ -380,11 +384,17 @@ async function changeRuntime({
   };
 
   return {
+    architectureBaseline,
+    architectureBaselineRef: baselineRef,
     baselineProjectOverviewRef:
       architectureBaseline.projectOverviewBaseline,
     calls,
+    changeSet,
+    changeSetRef,
     invocation,
     projectOverviewRef,
+    repositoryRef,
+    requirementsRef,
     registry,
     store,
   };
@@ -540,4 +550,196 @@ test("design-change rejects stale ProjectOverview refs in state and candidate", 
       "madr",
     ]);
   });
+});
+function architectureGateRef(artifactId, schema, mediaType, bytes) {
+  return {
+    artifactId,
+    schema,
+    mediaType,
+    digest: sha256Digest(bytes),
+    uri: `artifact://architecture-gate/${artifactId}`,
+  };
+}
+
+function architectureGateRequest(fixture, checkpointReplay) {
+  const gateReviewBytes = Buffer.from("exact architecture gate review\n", "utf8");
+  const gateReview = architectureGateRef(
+    "architecture-gate-review-change-runtime",
+    "https://devrelay.dev/evidence/architecture-gate-review/v1",
+    "text/markdown",
+    gateReviewBytes,
+  );
+  const conformanceBytes = Buffer.from('{"status":"pass"}\n', "utf8");
+  const conformance = architectureGateRef(
+    "structurizr-proof-change-runtime",
+    "https://devrelay.dev/evidence/structurizr-conformance-proof/v1",
+    "application/vnd.devrelay.structurizr-conformance-proof+json",
+    conformanceBytes,
+  );
+  const evidenceBytes = new Map([
+    [gateReview.artifactId, gateReviewBytes],
+    [conformance.artifactId, conformanceBytes],
+  ]);
+  const evidenceResolver = async (ref) => ({
+    ref,
+    bytes: evidenceBytes.get(ref.artifactId),
+  });
+
+  const ownerApproval = {
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "ArchitectureGateOwnerApproval",
+    approvalId: "architecture-gate-owner-approval-change-runtime",
+    authority: "project-owner",
+    decision: "approve",
+    policyVersion: "architecture-gate/0.1.0",
+    candidate: structuredClone(fixture.changeSetRef),
+    gateReview,
+    requiredEvidence: [conformance],
+    repositoryRevision: "fixture-commit",
+  };
+  const ownerApprovalBytes = Buffer.from(
+    `${JSON.stringify(ownerApproval, null, 2)}\n`,
+    "utf8",
+  );
+  const ownerApprovalRef = architectureGateRef(
+    ownerApproval.approvalId,
+    "https://devrelay.dev/evidence/architecture-gate-owner-approval/v1",
+    "application/vnd.devrelay.architecture-gate-owner-approval+json",
+    ownerApprovalBytes,
+  );
+  const sections = structuredClone(fixture.changeSet.sections);
+  for (const decision of sections.decisionRecords.content.decisions) {
+    if (decision.status === "proposed") decision.status = "accepted";
+  }
+  const baseline = {
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "ArchitectureBaseline",
+    baselineId: "architecture-baseline-change-runtime-v2",
+    approvedDraft: structuredClone(fixture.changeSetRef),
+    requirementsBaseline: structuredClone(
+      fixture.changeSet.targetRequirementsBaseline,
+    ),
+    projectOverviewBaseline: structuredClone(
+      fixture.changeSet.targetProjectOverviewBaseline,
+    ),
+    projectContext: structuredClone(fixture.changeSet.projectContext),
+    repositorySnapshot: structuredClone(
+      fixture.changeSet.repositorySnapshot,
+    ),
+    sections,
+    approvalPolicyVersion: ownerApproval.policyVersion,
+    approvalEvidence: [gateReview, conformance, ownerApprovalRef],
+    sourceRefs: structuredClone(fixture.changeSet.sourceRefs),
+  };
+  const baselineBytes = Buffer.from(
+    `${JSON.stringify(baseline, null, 2)}\n`,
+    "utf8",
+  );
+  const baselineRef = architectureGateRef(
+    baseline.baselineId,
+    "https://devrelay.dev/artifacts/architecture-baseline/v1",
+    "application/vnd.devrelay.architecture-baseline+json",
+    baselineBytes,
+  );
+  return {
+    checkpointReplay,
+    ownerApproval,
+    ownerApprovalRef,
+    ownerApprovalBytes,
+    baseline,
+    baselineRef,
+    baselineBytes,
+    evidenceResolver,
+  };
+}
+
+test("ArchitectureGate promotes only an exact replayed change and raw-byte owner approval", async () => {
+  const fixture = await changeRuntime();
+  const checkpointStore = checkpoints();
+  await fixture.registry.execute(fixture.invocation, {
+    artifacts: fixture.store.artifacts,
+    checkpoints: checkpointStore,
+  });
+  const checkpointReplay =
+    await fixture.registry.verifyCheckpointedExecution(
+      fixture.invocation,
+      {
+        artifacts: fixture.store.artifacts,
+        checkpoints: checkpointStore,
+      },
+    );
+  const request = architectureGateRequest(fixture, checkpointReplay);
+  const promoted = await validateArchitectureGatePromotion(request);
+  assert.equal(promoted.operation, "design-change");
+  assert.deepEqual(promoted.candidateRef, fixture.changeSetRef);
+  assert.deepEqual(
+    promoted.previousBaselineRef,
+    fixture.architectureBaselineRef,
+  );
+  assert.equal(
+    promoted.commitPayload.baseline.bytesBase64,
+    request.baselineBytes.toString("base64"),
+  );
+  assert.equal(Object.isFrozen(promoted.commitPayload), true);
+  assert.ok(
+    promoted.baseline.sections.decisionRecords.content.decisions.every(
+      ({ status }) => status !== "proposed",
+    ),
+  );
+
+  await assert.rejects(
+    () =>
+      validateArchitectureGatePromotion({
+        ...request,
+        checkpointReplay: structuredClone(checkpointReplay),
+      }),
+    ArchitectureGateValidationError,
+  );
+  await assert.rejects(
+    () =>
+      validateArchitectureGatePromotion({
+        ...request,
+        baselineBytes: Buffer.concat([
+          request.baselineBytes,
+          Buffer.from(" ", "utf8"),
+        ]),
+      }),
+    ArchitectureGateValidationError,
+  );
+
+  const staleApproval = structuredClone(request.ownerApproval);
+  staleApproval.candidate.digest = `sha256:${"f".repeat(64)}`;
+  const staleApprovalBytes = Buffer.from(
+    `${JSON.stringify(staleApproval, null, 2)}\n`,
+    "utf8",
+  );
+  const staleApprovalRef = architectureGateRef(
+    staleApproval.approvalId,
+    request.ownerApprovalRef.schema,
+    request.ownerApprovalRef.mediaType,
+    staleApprovalBytes,
+  );
+  await assert.rejects(
+    () =>
+      validateArchitectureGatePromotion({
+        ...request,
+        ownerApproval: staleApproval,
+        ownerApprovalRef: staleApprovalRef,
+        ownerApprovalBytes: staleApprovalBytes,
+      }),
+    ArchitectureGateValidationError,
+  );
+  const missingCheckpointKey = checkpointStore.values.keys().next().value;
+  const missingCheckpoint = checkpointStore.values.get(missingCheckpointKey);
+  checkpointStore.values.delete(missingCheckpointKey);
+  await assert.rejects(
+    () =>
+      fixture.registry.verifyCheckpointedExecution(fixture.invocation, {
+        artifacts: fixture.store.artifacts,
+        checkpoints: checkpointStore,
+      }),
+    (error) => error instanceof ContractError && error.code === "DR2213",
+  );
+  assert.equal(fixture.calls.length, 3);
+  checkpointStore.values.set(missingCheckpointKey, missingCheckpoint);
 });

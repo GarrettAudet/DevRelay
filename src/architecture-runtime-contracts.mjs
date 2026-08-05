@@ -6,6 +6,7 @@ import {
   validateArchitectureChangeSetAgainstState,
   validateArchitectureDraftAgainstState,
 } from "./architecture-artifact-validator.mjs";
+import { normativeRequirementIds } from "./requirements-artifact-validator.mjs";
 import {
   validateArchitectureClarificationHandoff,
   validateArchitectureClarificationIssuance,
@@ -193,6 +194,16 @@ function assertPointer(label, actual, expected) {
   }
 }
 
+function assertCurrentOrHistoricalPointer(label, actual, currentPort, historicalPort, context) {
+  const current = loadedRef(context, currentPort);
+  if (samePointer(actual, current)) return;
+  const historical = loadedRef(context, historicalPort);
+  if (!historical) {
+    failLineage(`${label} differs from current state without explicit ${historicalPort}`);
+  }
+  assertPointer(label, actual, historical);
+}
+
 function assertStateLineage(state, context) {
   for (const [field, port] of Object.entries(STATE_POINTER_PORTS)) {
     const stateHas = state[field] !== undefined;
@@ -269,23 +280,20 @@ function assertArchitectureBaselineLineage(baseline, context) {
     state.value.architectureBaseline,
     context.ref,
   );
-  assertPointer(
+  assertCurrentOrHistoricalPointer(
     "architecture baseline project context",
     baseline.projectContext,
-    loadedRef(context, "project-context"),
+    "project-context",
+    "architecture-baseline-project-context",
+    context,
   );
-  const stateRepository = state.value.repositorySnapshot;
-  const baselineRepository = baseline.repositorySnapshot;
-  if (Boolean(stateRepository) !== Boolean(baselineRepository)) {
-    failLineage(
-      "architecture baseline repository presence does not match project state",
-    );
-  }
-  if (baselineRepository) {
-    assertPointer(
+  if (baseline.repositorySnapshot) {
+    assertCurrentOrHistoricalPointer(
       "architecture baseline repository",
-      baselineRepository,
-      loadedRef(context, "repository-snapshot"),
+      baseline.repositorySnapshot,
+      "repository-snapshot",
+      "architecture-baseline-repository-snapshot",
+      context,
     );
   }
 }
@@ -879,6 +887,9 @@ async function validateArchitectureRuntimeArtifact(value, context) {
           baselineOptions.resolveAttached?.(ref)
         );
       },
+      approvedRequirementIds: new Set(
+        normativeRequirementIds(requirements.value.requirements),
+      ),
     };
     validateArchitectureChangeSetAgainstState({
       projectArchitectureState: state.value,

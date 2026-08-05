@@ -608,6 +608,109 @@ test("change and no-change dispositions are mutually exclusive", () => {
   expectArtifactError(contradictory);
 });
 
+test("already-designed coverage and historical citations require unchanged baseline entities", () => {
+  const baseline = clone(get("architecture-baseline-001.json"));
+  const changeSet = clone(get("architecture-change-set-draft-001.json"));
+  const changedElementIds = new Set(
+    changeSet.changes.elementChanges.map(({ entityId }) => entityId),
+  );
+  const targetElements = new Map(
+    changeSet.sections.architectureModel.content.elements.map((entity) => [
+      entity.id,
+      entity,
+    ]),
+  );
+  const baselineElement = baseline.sections.architectureModel.content.elements
+    .find(
+      (entity) =>
+        targetElements.has(entity.id) && !changedElementIds.has(entity.id),
+    );
+  assert.ok(baselineElement);
+  const targetElement = targetElements.get(baselineElement.id);
+  baselineElement.sourceRequirementIds.push("US-HISTORICAL-001");
+  targetElement.sourceRequirementIds.push("US-HISTORICAL-001");
+  baseline.sections.diagrams.content.architectureModelDigest =
+    canonicalJsonDigest(
+      baseline.sections.architectureModel.content,
+    );
+  changeSet.sections.diagrams.content.architectureModelDigest =
+    canonicalJsonDigest(
+      changeSet.sections.architectureModel.content,
+    );
+
+  const alreadyDesignedRequirementId = "US-ARCH-ALREADY-DESIGNED-001";
+  changeSet.traceability.push({
+    requirementId: alreadyDesignedRequirementId,
+    disposition: "already-designed",
+    targets: [{ kind: "element", id: baselineElement.id }],
+    rationale:
+      "The exact approved baseline entity already provides this capability.",
+  });
+  const approvedRequirementIds = new Set([
+    ...changeSet.traceability.map(({ requirementId }) => requirementId),
+  ]);
+  const options = { approvedRequirementIds };
+  assert.equal(validateArchitectureArtifact(changeSet, options), changeSet);
+  assert.equal(
+    validateArchitectureChangeSetAgainstBaseline({
+      architectureBaseline: baseline,
+      architectureBaselineRef: changeSet.baseArchitectureBaseline,
+      architectureChangeSet: changeSet,
+      options,
+    }).architectureChangeSet,
+    changeSet,
+  );
+
+  const nonBaselineTarget = clone(changeSet);
+  const changedElementChange = nonBaselineTarget.changes.elementChanges.find(
+    ({ operation }) => operation !== "remove",
+  );
+  assert.ok(changedElementChange);
+  nonBaselineTarget.traceability.at(-1).targets = [
+    { kind: "element", id: changedElementChange.entityId },
+  ];
+  assert.throws(
+    () =>
+      validateArchitectureChangeSetAgainstBaseline({
+        architectureBaseline: baseline,
+        architectureBaselineRef: nonBaselineTarget.baseArchitectureBaseline,
+        architectureChangeSet: nonBaselineTarget,
+        options,
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
+  const changedHistoricalEntity = clone(changeSet);
+  const changedEntity = changedHistoricalEntity.sections.architectureModel
+    .content.elements.find(({ id }) => id === baselineElement.id);
+  changedEntity.description = "A forged change retaining historical citations.";
+  changedHistoricalEntity.sections.diagrams.content.architectureModelDigest =
+    canonicalJsonDigest(
+      changedHistoricalEntity.sections.architectureModel.content,
+    );
+  assert.throws(
+    () =>
+      validateArchitectureChangeSetAgainstBaseline({
+        architectureBaseline: baseline,
+        architectureBaselineRef:
+          changedHistoricalEntity.baseArchitectureBaseline,
+        architectureChangeSet: changedHistoricalEntity,
+        options,
+      }),
+    ArchitectureArtifactValidationError,
+  );
+
+  const directCitation = clone(changeSet);
+  const directTarget = directCitation.sections.architectureModel.content
+    .elements.find(({ id }) => id === baselineElement.id);
+  directTarget.sourceRequirementIds.push(alreadyDesignedRequirementId);
+  directCitation.sections.diagrams.content.architectureModelDigest =
+    canonicalJsonDigest(directCitation.sections.architectureModel.content);
+  assert.throws(
+    () => validateArchitectureArtifact(directCitation, options),
+    ArchitectureArtifactValidationError,
+  );
+});
 test("native files are subordinate and cannot point back to canonical outputs", () => {
   const baselineDesigner = get(
     "architecture-draft-001.json",

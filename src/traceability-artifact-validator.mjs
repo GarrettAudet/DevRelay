@@ -99,10 +99,10 @@ export const TRACEABILITY_VOCABULARY_V1_0 = Object.freeze({
   contractDigest: canonicalJsonDigest(VOCABULARY_MATERIAL_V1_0),
 });
 
-export const TRACEABILITY_ENDPOINT_POLICY_VERSION = "1.1.0";
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_1 = "1.1.0";
 export const TRACEABILITY_HORIZONS = TRACEABILITY_HORIZONS_V1_0;
 export const TRACEABILITY_NODE_KINDS = TRACEABILITY_NODE_KINDS_V1_0;
-export const TRACEABILITY_EDGE_KINDS = Object.freeze([
+export const TRACEABILITY_EDGE_KINDS_V1_1 = Object.freeze([
   "accepted-by",
   "affects",
   "applies-to",
@@ -133,9 +133,30 @@ export const TRACEABILITY_EDGE_KINDS = Object.freeze([
   "verified-by",
 ]);
 
-const VOCABULARY_MATERIAL = Object.freeze({
+const VOCABULARY_MATERIAL_V1_1 = Object.freeze({
   id: "devrelay.traceability/v1",
   version: "1.1.0",
+  horizons: TRACEABILITY_HORIZONS,
+  nodeKinds: TRACEABILITY_NODE_KINDS,
+  edgeKinds: TRACEABILITY_EDGE_KINDS_V1_1,
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_1,
+});
+
+export const TRACEABILITY_VOCABULARY_V1_1 = Object.freeze({
+  id: VOCABULARY_MATERIAL_V1_1.id,
+  version: VOCABULARY_MATERIAL_V1_1.version,
+  contractDigest: canonicalJsonDigest(VOCABULARY_MATERIAL_V1_1),
+});
+
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION = "1.2.0";
+export const TRACEABILITY_EDGE_KINDS = Object.freeze([
+  ...TRACEABILITY_EDGE_KINDS_V1_1,
+  "prerequisite-for",
+].sort());
+
+const VOCABULARY_MATERIAL = Object.freeze({
+  id: "devrelay.traceability/v1",
+  version: "1.2.0",
   horizons: TRACEABILITY_HORIZONS,
   nodeKinds: TRACEABILITY_NODE_KINDS,
   edgeKinds: TRACEABILITY_EDGE_KINDS,
@@ -169,14 +190,22 @@ export const TRACEABILITY_MERGE_ENGINE = Object.freeze({
 
 const NODE_KINDS = new Set(TRACEABILITY_NODE_KINDS);
 const EDGE_KINDS = new Set(TRACEABILITY_EDGE_KINDS);
+const EDGE_KINDS_V1_1 = new Set(TRACEABILITY_EDGE_KINDS_V1_1);
 const EDGE_KINDS_V1_0 = new Set(TRACEABILITY_EDGE_KINDS_V1_0);
 const CURRENT_VOCABULARY_PROFILE = Object.freeze({
+  version: "1.2.0",
   endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION,
   edgeKinds: EDGE_KINDS,
 });
 const LEGACY_VOCABULARY_PROFILE = Object.freeze({
+  version: "1.0.0",
   endpointPolicyVersion: "1.0.0",
   edgeKinds: EDGE_KINDS_V1_0,
+});
+const V1_1_VOCABULARY_PROFILE = Object.freeze({
+  version: "1.1.0",
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_1,
+  edgeKinds: EDGE_KINDS_V1_1,
 });
 const ARCHITECTURE_KINDS = new Set([
   "architecture-change",
@@ -491,13 +520,13 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
       return targetKind === "work-item";
     case "implementation-planned-by":
       return (
-        profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+        profile.endpointPolicyVersion !== "1.0.0" &&
         sourceKind === "architecture-element" &&
         targetKind === "work-item"
       );
     case "realization-planned-by":
       return (
-        profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+        profile.endpointPolicyVersion !== "1.0.0" &&
         sourceKind === "contract" &&
         targetKind === "work-item"
       );
@@ -511,13 +540,19 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
       return sourceKind === "test" && targetKind === "verification-evidence";
     case "depends-on":
       return sourceKind !== "artifact-reference" && targetKind !== "artifact-reference";
+    case "prerequisite-for":
+      return (
+        profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+        sourceKind === "work-item" &&
+        targetKind === "work-item"
+      );
     default:
       return false;
   }
 }
 
 function assertPlanningEdgeAuthority(edge, source, target, profile) {
-  if (profile.endpointPolicyVersion !== TRACEABILITY_ENDPOINT_POLICY_VERSION) {
+  if (profile.endpointPolicyVersion === "1.0.0") {
     return;
   }
   if (
@@ -705,6 +740,9 @@ function assertVocabulary(vocabulary) {
   if (sameContract(vocabulary, TRACEABILITY_VOCABULARY)) {
     return CURRENT_VOCABULARY_PROFILE;
   }
+  if (sameContract(vocabulary, TRACEABILITY_VOCABULARY_V1_1)) {
+    return V1_1_VOCABULARY_PROFILE;
+  }
   if (sameContract(vocabulary, TRACEABILITY_VOCABULARY_V1_0)) {
     return LEGACY_VOCABULARY_PROFILE;
   }
@@ -717,12 +755,14 @@ export function assertTraceabilityVocabularyTransition(
 ) {
   const parentProfile = assertVocabulary(parentVocabulary);
   const updateProfile = assertVocabulary(updateVocabulary);
-  if (
-    parentProfile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
-    updateProfile.endpointPolicyVersion === "1.0.0"
-  ) {
+  const rank = new Map([
+    ["1.0.0", 0],
+    ["1.1.0", 1],
+    ["1.2.0", 2],
+  ]);
+  if (rank.get(updateProfile.version) < rank.get(parentProfile.version)) {
     fail(
-      "a legacy traceability update cannot downgrade a current graph",
+      "a traceability update cannot downgrade the graph vocabulary",
       "TG_VOCABULARY_DOWNGRADE",
     );
   }

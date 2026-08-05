@@ -3,10 +3,11 @@
 ## Release identity
 
 This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
-`architecture-design@0.1.0`, and `work-breakdown@0.1.0` as one private source
-release, version `0.3.0`. The source package also advances the immutable
-TraceabilityGraph vocabulary from exact legacy `1.0.0` support to current
-`1.1.0` planning-edge semantics.
+`architecture-design@0.1.0`, `work-breakdown@0.1.0`, and
+`work-dependency-analysis@0.1.0` as one private source release, version
+`0.4.0`. The source package also advances the immutable TraceabilityGraph
+vocabulary to current `1.2.0` dependency-planning semantics while preserving
+exact `1.0.0` and `1.1.0` support.
 
 `package.json` intentionally retains `"private": true` and
 `"license": "UNLICENSED"`. Do not run `npm publish`. The local package tarball
@@ -33,10 +34,15 @@ release.
   authoritative graph-node membership, revision-control lineage and mutual
   exclusion, effect-only compatible adapters, and Core-reserved guard
   outcomes.
+- WorkDependencyAnalysis full-snapshot routing, native structured proposals,
+  Core-owned Graphology-DAG mechanics, exact OPA WASM policy evaluation,
+  bounded advisory review, deterministic checkpoints, and a separate
+  raw-byte-bound WorkDependency Gate through the public API.
 - Closed TraceabilityGraph snapshot, update, receipt, diagnostic-report, and
   ModuleExecutionRecord contracts through the public JavaScript API.
-- Trusted RequirementsGathering, ArchitectureDesign, and WorkBreakdown
-  contributors; exact planning-edge authority; legacy/current vocabulary
+- Trusted RequirementsGathering, ArchitectureDesign, WorkBreakdown, and
+  WorkDependencyAnalysis contributors; exact planning-edge authority;
+  legacy/current vocabulary
   compatibility; checkpoint-first idempotent application; optimistic disjoint
   rebase; forward/reverse traversal; and lifecycle coverage diagnostics.
 - Artifact-reference accounting anchors for semantic-empty transitions, so
@@ -52,12 +58,26 @@ implementations. Production hosts must supply durable atomic stores. This
 release does not include approval-gate contributors, so draft graph facts
 remain candidates; it never infers approval from a successful module result.
 
-Live OpenSpec, GitHub Spec Kit, Structurizr, and MADR command adapters are not
-included. The manifests define bounded capabilities and the tests exercise
-contract adapters and fixtures. Release notes and user-facing descriptions
-must preserve that distinction. `ArchitectureDiscovery` is a required
-prerequisite contract when an existing system lacks a validated current
-architecture snapshot; an executable discovery Module is not included.
+Live OpenSpec, GitHub Spec Kit, Task Master, Structurizr, and MADR command
+adapters are not included. The manifests define bounded capabilities and the
+tests exercise contract adapters and fixtures. WorkDependencyAnalysis does
+ship its provider-neutral native structured proposer; OpenSpec and Task Master
+remain optional proposal contracts, and Spec Kit remains a bounded advisory
+review contract. Release notes and user-facing descriptions must preserve that
+distinction. `ArchitectureDiscovery` is a required prerequisite contract when
+an existing system lacks a validated current architecture snapshot; an
+executable discovery Module is not included.
+
+Source-checkout Architecture Gate evidence may invoke a pinned official
+Structurizr validator and JSON exporter to prove that a native workspace
+normalizes into its canonical DevRelay candidate. This is a conformance
+verifier, not a shipped command adapter.
+
+The source checkout also carries one Gate-validated project-wide DevRelay V1
+RequirementsBaseline and ProjectOverviewBaseline under `project/`, with the
+exact generated root `ProjectOverview.md` recording all fourteen approved
+lifecycle components. These repository-operating artifacts are intentionally
+outside the controlled npm tarball surface.
 
 ## Reproduce the release checks
 
@@ -78,7 +98,7 @@ working tree:
 5. verifies the mandatory final release digest catalog.
 6. builds an allowlisted package in a temporary directory.
 7. installs that tarball offline and smoke-tests the package root,
-   TraceabilityGraph surface, and all three module manifests from a disposable
+   TraceabilityGraph surface, and all four module manifests from a disposable
    consumer.
 
 Use `npm run verify` for the static checks and test suite without packaging.
@@ -86,13 +106,18 @@ Use `npm run verify` for the static checks and test suite without packaging.
 ## Release checklist
 
 - [ ] Work from a clean checkout of the intended commit.
-- [ ] Confirm package, RequirementsGathering, ArchitectureDesign, and
-      WorkBreakdown versions.
+- [ ] Confirm package, RequirementsGathering, ArchitectureDesign,
+      WorkBreakdown, and WorkDependencyAnalysis versions.
 - [ ] Confirm paired Requirements/ProjectOverview promotion and explicit
       ArchitectureDesign project-overview input coverage.
 - [ ] Confirm WorkBreakdown drift blocks before adapter entry and the Gate
       rejects unscoped, uncovered, stale, or invalid-reference candidates using
       only an unforgeable replay receipt and exact baseline bytes.
+- [ ] Confirm WorkDependencyAnalysis uses the complete pinned work-breakdown
+      snapshot, rejects cycles and policy violations, and promotes only the
+      exact replay-bound candidate and baseline bytes.
+- [ ] Confirm the trusted dependency contributor stores only forward
+      `prerequisite-for` planning edges and records the atomic graph merge proof.
 - [ ] Confirm graph-aware execution checkpoints before merge, retries without
       adapter reinvocation, and proves the exact applied update.
 - [ ] Confirm candidate/approved scope separation, contributor ownership, and

@@ -40,6 +40,14 @@ const sortedStringArrayKeys = new Set([
   "userJourneyIds",
 ]);
 
+const mergeRecordKeys = [...sortedCollectionKeys];
+const mergeStringKeys = [
+  "deliverables",
+  "dependencies",
+  "requiredEvidence",
+  "risks",
+];
+
 function compareText(left, right) {
   return left.localeCompare(right, "en", { sensitivity: "variant" });
 }
@@ -47,6 +55,24 @@ function compareText(left, right) {
 function canonicalize(value, key = "") {
   if (Array.isArray(value)) {
     const entries = value.map((entry) => canonicalize(entry));
+    if (key === "sourceRefs") {
+      return entries.sort((left, right) =>
+        compareText(
+          [
+            left.role,
+            left.artifact.artifactId,
+            left.artifact.digest,
+            left.location ?? "",
+          ].join("\u0000"),
+          [
+            right.role,
+            right.artifact.artifactId,
+            right.artifact.digest,
+            right.location ?? "",
+          ].join("\u0000"),
+        ),
+      );
+    }
     if (sortedCollectionKeys.has(key)) {
       return entries.sort((left, right) => compareText(left.id, right.id));
     }
@@ -69,6 +95,59 @@ function canonicalize(value, key = "") {
   );
 }
 
+function rebaseSourceRefs(value, sourceRefs) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => rebaseSourceRefs(entry, sourceRefs));
+  }
+  if (value === null || typeof value !== "object") {
+    return value;
+  }
+  return Object.fromEntries(
+    Object.entries(value).map(([key, child]) => [
+      key,
+      key === "sourceRefs"
+        ? structuredClone(sourceRefs)
+        : rebaseSourceRefs(child, sourceRefs),
+    ]),
+  );
+}
+
 export function buildWorkingRequirements(makeSourceRefs) {
   return canonicalize(buildUnsortedRequirements(makeSourceRefs));
+}
+
+export function mergeProjectRequirements(
+  projectBaseline,
+  moduleChange,
+  baselineSourceRefs,
+) {
+  projectBaseline = rebaseSourceRefs(projectBaseline, baselineSourceRefs);
+  const merged = {
+    ...projectBaseline,
+    purpose: projectBaseline.purpose,
+    currentStatus: moduleChange.currentStatus,
+  };
+  for (const key of mergeRecordKeys) {
+    merged[key] = [...projectBaseline[key], ...moduleChange[key]];
+  }
+  for (const key of mergeStringKeys) {
+    merged[key] = [...new Set([...projectBaseline[key], ...moduleChange[key]])];
+  }
+  const sourceRefs = new Map();
+  for (const sourceRef of [
+    ...projectBaseline.sourceRefs,
+    ...moduleChange.sourceRefs,
+  ]) {
+    sourceRefs.set(
+      [
+        sourceRef.role,
+        sourceRef.artifact.artifactId,
+        sourceRef.artifact.digest,
+        sourceRef.location ?? "",
+      ].join("\u0000"),
+      sourceRef,
+    );
+  }
+  merged.sourceRefs = [...sourceRefs.values()];
+  return canonicalize(merged);
 }

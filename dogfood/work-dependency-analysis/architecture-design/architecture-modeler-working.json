@@ -1,0 +1,983 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureModelerWorkingArtifact",
+  "workingArtifactId": "architecture-modeler-working-work-dependency-analysis-v1",
+  "operation": "design-change",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-work-dependency-analysis-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:3cc676aa1e988b166d21c5cc63f16def169c67f19bb48d7b07946bb5cdb37052",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/project-architecture-state.json"
+  },
+  "designerWorkingArtifact": {
+    "artifactId": "architecture-designer-working-work-dependency-analysis-v1",
+    "schema": "https://devrelay.dev/artifacts/architecture-designer-working/v1",
+    "mediaType": "application/vnd.devrelay.architecture-designer-working+json",
+    "digest": "sha256:3ab49b68c61718230ccfa705a589d7af97f675eadeb4141b59609012ec1abf33",
+    "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/architecture-designer-working.json"
+  },
+  "architectureModel": {
+    "mode": "embedded",
+    "content": {
+      "modelId": "MODEL-DEVRELAY-WDA-002",
+      "notation": {
+        "name": "C4",
+        "version": "1.0"
+      },
+      "elements": [
+        {
+          "id": "EL-DEVRELAY-SYSTEM",
+          "name": "DevRelay",
+          "type": "software-system",
+          "description": "Deterministic orchestration runtime for composable software-engineering modules.",
+          "responsibilities": [
+            "Progress exact approved artifacts through provider-neutral modules, gates, and trusted traceability."
+          ],
+          "tags": [
+            "System"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-EXTENSIBILITY-001",
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-CORE-NEUTRALITY-001",
+            "NFR-WB-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-DEVRELAY-CORE",
+          "name": "Generic Core",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Owns generic registration, state-derived routing, exact adapter resolution, checkpoints, replay, and progression.",
+          "technology": "Node.js",
+          "responsibilities": [
+            "Load exact state and artifact contracts.",
+            "Route without product-specific branches.",
+            "Checkpoint and replay bounded effects and control results."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-EXTENSIBILITY-001",
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-CORE-NEUTRALITY-001",
+            "NFR-WB-DETERMINISM-001",
+            "NFR-WB-REPLAY-001",
+            "CON-WB-INPUT-IMMUTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-DEVRELAY-GRAPH",
+          "name": "TraceabilityGraph",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Core-owned sidecar for trusted lifecycle traceability contributions and atomic merge proofs.",
+          "technology": "Provider-neutral graph contract",
+          "responsibilities": [
+            "Replay approved upstream observer contributions.",
+            "Keep candidate and approved authority distinct.",
+            "Validate and atomically merge registered contributor updates."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-ATOMICITY-001",
+            "NFR-WB-PROVENANCE-001",
+            "NFR-WB-REPLAY-001",
+            "CON-WB-ADAPTER-TRUST-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-MODULE",
+          "name": "WorkBreakdown Module",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Converts exact approved scope into bounded, traceable, independently executable and verifiable work-item candidates.",
+          "technology": "JSON Schema and JavaScript",
+          "responsibilities": [
+            "Own establish-breakdown and decompose-change semantic contracts.",
+            "Normalize configured planning adapter output.",
+            "Return candidates without executing work."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-DECOMPOSITION-001",
+            "NFR-WB-DETERMINISM-001",
+            "NFR-WB-PROVENANCE-001",
+            "CON-WB-DEPENDENCY-BOUNDARY-001",
+            "CON-WB-DOWNSTREAM-BOUNDARY-001",
+            "CON-WB-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-VALIDATORS",
+          "name": "Context-neutral Upstream Validators",
+          "type": "component",
+          "parentId": "EL-WB-MODULE",
+          "description": "Composes schema and semantic validators for requirements, project overview, architecture, contract, repository, and capability inputs without reusing ArchitectureDesign operation-specific runtime contracts.",
+          "technology": "JavaScript validation contracts",
+          "responsibilities": [
+            "Validate exact upstream artifacts in a WorkBreakdown-neutral context.",
+            "Enforce approved absence unions and cross-artifact lineage."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "NFR-WB-DETERMINISM-001",
+            "NFR-WB-PROVENANCE-001",
+            "CON-WB-INPUT-IMMUTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-ADAPTER-PORT",
+          "name": "Configured Planning Adapter Port",
+          "type": "component",
+          "parentId": "EL-WB-MODULE",
+          "description": "Provider-neutral port for one bounded work-decomposition capability selected by configuration.",
+          "technology": "Agent-command bridge",
+          "responsibilities": [
+            "Invoke Spec Kit tasks, OpenSpec tasks, or a compatible planner through the same canonical contract.",
+            "Allow read and planning-artifact output only."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-EXTENSIBILITY-001",
+            "NFR-WB-CORE-NEUTRALITY-001",
+            "CON-WB-ADAPTER-TRUST-001",
+            "CON-WB-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-PREFLIGHT",
+          "name": "Registered WorkBreakdown Preflight",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-CORE",
+          "description": "Generic guard registered on the loaded ProjectWorkBreakdownState artifact contract with its own persisted producer identity.",
+          "technology": "Registered artifact-contract guard",
+          "responsibilities": [
+            "Detect exact baseline, disposition, revision, and tree drift before adapter entry.",
+            "Schema-validate baseline_drift results.",
+            "Checkpoint and replay the control result without adapter entry."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-DETERMINISM-001",
+            "NFR-WB-REPLAY-001",
+            "CON-WB-INPUT-IMMUTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-GATE",
+          "name": "WorkBreakdown Gate",
+          "type": "component",
+          "parentId": "EL-WB-MODULE",
+          "description": "Derives the authoritative coverage universe, resolves evidence, owns no-work approval, and promotes approved planned work.",
+          "technology": "Deterministic gate policy",
+          "responsibilities": [
+            "Reject unscoped or uncovered work.",
+            "Approve or reject already-satisfied and no-work-required dispositions.",
+            "Atomically promote a baseline or apply an exact typed delta."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-DECOMPOSITION-001",
+            "NFR-WB-DETERMINISM-001",
+            "NFR-WB-PROVENANCE-001",
+            "CON-WB-DEPENDENCY-BOUNDARY-001",
+            "CON-WB-DOWNSTREAM-BOUNDARY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-CONTRIBUTOR",
+          "name": "WorkBreakdown Traceability Contributor",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-GRAPH",
+          "description": "Trusted projector of validated candidate work items into limited planning relationships.",
+          "technology": "Trusted versioned contributor",
+          "responsibilities": [
+            "Create only approved planning edge kinds.",
+            "Preserve candidate authority until gate activation.",
+            "Never create inverse or factual completion edges."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-ATOMICITY-001",
+            "NFR-WB-PROVENANCE-001",
+            "CON-WB-ADAPTER-TRUST-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-OBSERVERS",
+          "name": "Approved Baseline Observers",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-GRAPH",
+          "description": "Replays approved RequirementsBaseline, ArchitectureBaseline, and applicable ContractBaseline graph contributions before WorkBreakdown candidate edges.",
+          "technology": "Trusted observer contracts",
+          "responsibilities": [
+            "Materialize approved upstream endpoints and authority.",
+            "Forbid contract endpoints and contract refs when ApprovedNotApplicable is selected."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-PROVENANCE-001",
+            "NFR-WB-REPLAY-001",
+            "CON-WB-ADAPTER-TRUST-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WB-DOWNSTREAM",
+          "name": "Downstream Work Modules",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "WorkDependencyAnalysis, SpecialistAssignment, WorkExecution, and Verification own ordering, assignment, execution, and proof.",
+          "technology": "Future provider-neutral modules",
+          "responsibilities": [
+            "Validate the dependency DAG.",
+            "Assign specialists.",
+            "Perform work and collect completion evidence."
+          ],
+          "tags": [
+            "Container"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "CON-WB-DEPENDENCY-BOUNDARY-001",
+            "CON-WB-DOWNSTREAM-BOUNDARY-001",
+            "CON-WB-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-MODULE",
+          "name": "WorkDependencyAnalysis",
+          "type": "container",
+          "parentId": "EL-DEVRELAY-SYSTEM",
+          "description": "Coordinates one complete static dependency-analysis candidate without assigning or executing work.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Normalize dependency proposals",
+            "Coordinate bounded reviewer and Core-owned verification capabilities"
+          ],
+          "tags": [
+            "Container",
+            "LifecycleModule",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-WDA-PARALLEL-001",
+            "US-WDA-PLUGINS-001",
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-WDA-NO-EXECUTION-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001",
+            "CON-WDA-TRACE-DIRECTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-SNAPSHOT",
+          "name": "Snapshot Builder",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-CORE",
+          "description": "Builds one immutable full WorkBreakdown snapshot and verifies declared context slices.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Bind the exact WorkBreakdownBaseline",
+            "Verify source and extracted-content digests"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-GRAPH-MECHANICS",
+          "name": "Graph Mechanics",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-CORE",
+          "description": "Owns canonical DAG mechanics while using pinned Graphology and Graphology-DAG internally.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Reject invalid endpoints, duplicates, self-dependencies, and cycles",
+            "Emit canonical diagnostics"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-OPA",
+          "name": "OPA Policy Evaluator",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-CORE",
+          "description": "Evaluates a pinned policy bundle over one canonical JSON input and normalizes the decision set.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Bind bundle, entrypoint, input, engine, and raw result evidence",
+            "Return policy decisions without promotion authority"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-GATE",
+          "name": "WorkDependency Gate",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-CORE",
+          "description": "Owns semantic completeness review, exact approval, and dependency-baseline promotion.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Reject unresolved missing dependencies and impossible ordering",
+            "Promote only the exact candidate"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "US-WDA-PARALLEL-001",
+            "CON-DEV-GATE-SEPARATION-001",
+            "US-DEV-VERIFY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-CONTRIBUTOR",
+          "name": "Traceability Contributor",
+          "type": "component",
+          "parentId": "EL-DEVRELAY-CORE",
+          "description": "Derives forward candidate dependency relationships after candidate validation.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Emit only approved relationship vocabulary",
+            "Checkpoint updates before atomic graph merge"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-PROPOSER-PORT",
+          "name": "Dependency Proposal Port",
+          "type": "component",
+          "parentId": "EL-WDA-MODULE",
+          "description": "Admits the native structured proposer or an optional configured proposal adapter through one contract.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Expose only DependencyProposal semantics",
+            "Prevent adapter authority leakage"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-NATIVE-PROPOSER",
+          "name": "Native Structured Proposer",
+          "type": "component",
+          "parentId": "EL-WDA-MODULE",
+          "description": "Default provider-neutral proposer over the complete snapshot and declared context slices.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Propose dependency edges",
+            "Disposition every dependency hint"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-WDA-PLUGINS-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-OPTIONAL-PROPOSERS",
+          "name": "Optional Adapter Bridge",
+          "type": "component",
+          "parentId": "EL-WDA-MODULE",
+          "description": "Task Master and OpenSpec bindings that may propose only the canonical DependencyProposal.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Normalize native proposal output",
+            "Preserve subordinate native evidence"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001",
+            "US-DEV-EXTEND-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "EL-WDA-SPECKIT-REVIEWER",
+          "name": "Spec Kit Consistency Reviewer",
+          "type": "component",
+          "parentId": "EL-WDA-MODULE",
+          "description": "Advisory consistency and coverage reviewer over the normalized proposal.",
+          "technology": "Provider-neutral DevRelay contract",
+          "responsibilities": [
+            "Report bounded findings",
+            "Never create authoritative edges or approve progression"
+          ],
+          "tags": [
+            "Component",
+            "WorkDependencyAnalysis"
+          ],
+          "properties": {},
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "US-WDA-VERIFY-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        }
+      ],
+      "relationships": [
+        {
+          "id": "REL-CORE-GRAPH",
+          "sourceElementId": "EL-DEVRELAY-CORE",
+          "targetElementId": "EL-DEVRELAY-GRAPH",
+          "description": "Submits checkpointed updates from trusted contributors.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-ATOMICITY-001",
+            "NFR-WB-PROVENANCE-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-CORE-WB-ROUTE",
+          "sourceElementId": "EL-DEVRELAY-CORE",
+          "targetElementId": "EL-WB-MODULE",
+          "description": "Derives establish-breakdown or decompose-change from loaded trusted project state.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "NFR-WB-CORE-NEUTRALITY-001",
+            "NFR-WB-DETERMINISM-001",
+            "CON-WB-INPUT-IMMUTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-PREFLIGHT-ADAPTER",
+          "sourceElementId": "EL-WB-PREFLIGHT",
+          "targetElementId": "EL-WB-ADAPTER-PORT",
+          "description": "Allows adapter entry only when exact lineage and drift checks pass.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "NFR-WB-DETERMINISM-001",
+            "CON-WB-INPUT-IMMUTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-GATE-DOWNSTREAM",
+          "sourceElementId": "EL-WB-GATE",
+          "targetElementId": "EL-WB-DOWNSTREAM",
+          "description": "Releases only an approved WorkBreakdownBaseline or applied change set.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-DECOMPOSITION-001",
+            "CON-WB-DEPENDENCY-BOUNDARY-001",
+            "CON-WB-DOWNSTREAM-BOUNDARY-001",
+            "CON-WB-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-CORE-CONTRIBUTOR",
+          "sourceElementId": "EL-DEVRELAY-CORE",
+          "targetElementId": "EL-WB-CONTRIBUTOR",
+          "description": "Invokes the trusted contributor only for a validated canonical candidate.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-PROVENANCE-001",
+            "CON-WB-ADAPTER-TRUST-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-CORE-WDA",
+          "sourceElementId": "EL-DEVRELAY-CORE",
+          "targetElementId": "EL-WDA-MODULE",
+          "description": "Executes the registered provider-neutral WorkDependencyAnalysis contract.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "NFR-WDA-DETERMINISM-001",
+            "US-DEV-ORCHESTRATE-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-WB-WDA",
+          "sourceElementId": "EL-WB-MODULE",
+          "targetElementId": "EL-WDA-MODULE",
+          "description": "Supplies one exact approved WorkBreakdownBaseline for analysis.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-DEV-ORCHESTRATE-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-WDA-GRAPH",
+          "sourceElementId": "EL-WDA-MODULE",
+          "targetElementId": "EL-DEVRELAY-GRAPH",
+          "description": "Submits only trusted checkpointed dependency traceability updates.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-WDA-DOWNSTREAM",
+          "sourceElementId": "EL-WDA-MODULE",
+          "targetElementId": "EL-WB-DOWNSTREAM",
+          "description": "Releases only an approved static dependency DAG to SpecialistAssignment.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-NO-EXECUTION-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-SNAPSHOT-PROPOSER",
+          "sourceElementId": "EL-WDA-SNAPSHOT",
+          "targetElementId": "EL-WDA-PROPOSER-PORT",
+          "description": "Provides the complete snapshot and only declared pinned context slices.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-PROPOSER-NATIVE",
+          "sourceElementId": "EL-WDA-PROPOSER-PORT",
+          "targetElementId": "EL-WDA-NATIVE-PROPOSER",
+          "description": "Dispatches to the default native structured proposer.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-WDA-PLUGINS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-PROPOSER-OPTIONAL",
+          "sourceElementId": "EL-WDA-PROPOSER-PORT",
+          "targetElementId": "EL-WDA-OPTIONAL-PROPOSERS",
+          "description": "Dispatches to the configured optional adapter bridge when selected.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001",
+            "US-DEV-EXTEND-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-PROPOSER-MECHANICS",
+          "sourceElementId": "EL-WDA-PROPOSER-PORT",
+          "targetElementId": "EL-WDA-GRAPH-MECHANICS",
+          "description": "Submits a normalized proposal for Core-owned structural validation.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-MECHANICS-OPA",
+          "sourceElementId": "EL-WDA-GRAPH-MECHANICS",
+          "targetElementId": "EL-WDA-OPA",
+          "description": "Supplies the canonical graph and mechanical diagnostics for pinned policy evaluation.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-PROPOSER-REVIEWER",
+          "sourceElementId": "EL-WDA-PROPOSER-PORT",
+          "targetElementId": "EL-WDA-SPECKIT-REVIEWER",
+          "description": "Requests an advisory cross-artifact consistency review.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "US-WDA-VERIFY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-MECHANICS-GATE",
+          "sourceElementId": "EL-WDA-GRAPH-MECHANICS",
+          "targetElementId": "EL-WDA-GATE",
+          "description": "Supplies canonical graph mechanics and cycle evidence.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-OPA-GATE",
+          "sourceElementId": "EL-WDA-OPA",
+          "targetElementId": "EL-WDA-GATE",
+          "description": "Supplies normalized pinned policy decisions and raw-result evidence.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-REVIEWER-GATE",
+          "sourceElementId": "EL-WDA-SPECKIT-REVIEWER",
+          "targetElementId": "EL-WDA-GATE",
+          "description": "Supplies bounded advisory findings without approval authority.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "US-WDA-VERIFY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-GATE-CONTRIBUTOR",
+          "sourceElementId": "EL-WDA-GATE",
+          "targetElementId": "EL-WDA-CONTRIBUTOR",
+          "description": "Supplies a validated exact candidate for deterministic graph projection.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-TRACE-DIRECTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "REL-WDA-CONTRIBUTOR-GRAPH",
+          "sourceElementId": "EL-WDA-CONTRIBUTOR",
+          "targetElementId": "EL-DEVRELAY-GRAPH",
+          "description": "Submits checkpointed forward candidate relationships for atomic merge.",
+          "interactionStyle": "synchronous",
+          "tags": [],
+          "sourceRequirementIds": [
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        }
+      ],
+      "sourceRefs": []
+    }
+  },
+  "diagrams": {
+    "mode": "embedded",
+    "content": {
+      "diagramSetId": "DIAGRAMS-DEVRELAY-WDA-002",
+      "architectureModelId": "MODEL-DEVRELAY-WDA-002",
+      "architectureModelDigest": "sha256:909d443bbfb4a7575cb5e624d02bd0f538aa4613c7d16df03af8699e9b845b02",
+      "views": [
+        {
+          "viewKey": "VIEW-WDA-CONTAINERS",
+          "type": "container",
+          "title": "DevRelay top-level containers",
+          "purpose": "Show the lifecycle module, Generic Core, TraceabilityGraph, and downstream container boundaries.",
+          "audience": [
+            "engineering",
+            "architecture"
+          ],
+          "scopeElementId": "EL-DEVRELAY-SYSTEM",
+          "elementIds": [
+            "EL-DEVRELAY-CORE",
+            "EL-DEVRELAY-GRAPH",
+            "EL-WB-MODULE",
+            "EL-WB-DOWNSTREAM",
+            "EL-WDA-MODULE"
+          ],
+          "relationshipIds": [
+            "REL-CORE-GRAPH",
+            "REL-CORE-WB-ROUTE",
+            "REL-CORE-WDA",
+            "REL-WB-WDA",
+            "REL-WDA-GRAPH",
+            "REL-WDA-DOWNSTREAM"
+          ],
+          "renderings": [
+            {
+              "format": "structurizr",
+              "artifact": {
+                "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+                "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                "mediaType": "text/vnd.structurizr.dsl",
+                "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+                "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+              }
+            }
+          ]
+        },
+        {
+          "viewKey": "VIEW-WDA-CORE-COMPONENTS",
+          "type": "component",
+          "title": "Generic Core components for WorkDependencyAnalysis",
+          "purpose": "Show snapshot construction, graph mechanics, OPA policy, Gate, and traceability ownership.",
+          "audience": [
+            "engineering",
+            "architecture",
+            "verification"
+          ],
+          "scopeElementId": "EL-DEVRELAY-CORE",
+          "elementIds": [
+            "EL-WB-PREFLIGHT",
+            "EL-WDA-SNAPSHOT",
+            "EL-WDA-GRAPH-MECHANICS",
+            "EL-WDA-OPA",
+            "EL-WDA-GATE",
+            "EL-WDA-CONTRIBUTOR"
+          ],
+          "relationshipIds": [
+            "REL-MECHANICS-OPA",
+            "REL-MECHANICS-GATE",
+            "REL-OPA-GATE",
+            "REL-GATE-CONTRIBUTOR"
+          ],
+          "renderings": [
+            {
+              "format": "structurizr",
+              "artifact": {
+                "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+                "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                "mediaType": "text/vnd.structurizr.dsl",
+                "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+                "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+              }
+            }
+          ]
+        },
+        {
+          "viewKey": "VIEW-WDA-MODULE-COMPONENTS",
+          "type": "component",
+          "title": "WorkDependencyAnalysis module components",
+          "purpose": "Show the bounded proposal port, native proposer, optional adapter bridge, and advisory reviewer.",
+          "audience": [
+            "engineering",
+            "architecture",
+            "extension-authors"
+          ],
+          "scopeElementId": "EL-WDA-MODULE",
+          "elementIds": [
+            "EL-WDA-PROPOSER-PORT",
+            "EL-WDA-NATIVE-PROPOSER",
+            "EL-WDA-OPTIONAL-PROPOSERS",
+            "EL-WDA-SPECKIT-REVIEWER"
+          ],
+          "relationshipIds": [
+            "REL-PROPOSER-NATIVE",
+            "REL-PROPOSER-OPTIONAL",
+            "REL-PROPOSER-REVIEWER"
+          ],
+          "renderings": [
+            {
+              "format": "structurizr",
+              "artifact": {
+                "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+                "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                "mediaType": "text/vnd.structurizr.dsl",
+                "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+                "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "nativeArtifacts": {
+    "mode": "embedded",
+    "content": {
+      "nativeArtifactSetId": "NATIVE-WDA-MODELER-001",
+      "entries": [
+        {
+          "id": "NA-WDA-STRUCTURIZR",
+          "artifact": {
+            "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+            "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+            "mediaType": "text/vnd.structurizr.dsl",
+            "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+            "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+          },
+          "role": "structurizr-workspace",
+          "logicalPath": "dogfood/work-dependency-analysis/architecture-design/workspace.dsl",
+          "producedBy": {
+            "stage": "modeler",
+            "adapterId": "structurizr",
+            "adapterVersion": "0.1.0",
+            "tool": {
+              "name": "Structurizr DSL",
+              "version": "2026.06.28"
+            }
+          },
+          "disposition": "generated",
+          "canonicalMappings": [
+            {
+              "section": "architectureModel",
+              "entityIds": [
+                "MODEL-DEVRELAY-WDA-002"
+              ],
+              "jsonPointers": [
+                "/sections/architectureModel"
+              ]
+            },
+            {
+              "section": "diagrams",
+              "entityIds": [
+                "VIEW-WDA-CONTAINERS",
+                "VIEW-WDA-CORE-COMPONENTS",
+                "VIEW-WDA-MODULE-COMPONENTS"
+              ],
+              "jsonPointers": [
+                "/sections/diagrams"
+              ]
+            }
+          ],
+          "warnings": []
+        }
+      ]
+    }
+  },
+  "sourceRefs": []
+}

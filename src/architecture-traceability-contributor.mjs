@@ -345,7 +345,7 @@ function addUniqueNode(nodes, node) {
 
 async function projectSelectedArchitecture(
   context,
-  { candidate, requirements, requirementsField, traceability },
+  { candidate, requirements, requirementsField, traceability, currentRequirementIds },
 ) {
   const nodes = new Map();
   const edges = new Map();
@@ -394,6 +394,9 @@ async function projectSelectedArchitecture(
   const rememberCitations = (traceKind, id, entity, loaded, basePointer) => {
     const ids = entity.sourceRequirementIds ?? [];
     for (const [position, requirementId] of ids.entries()) {
+      if (currentRequirementIds && !currentRequirementIds.has(requirementId)) {
+        continue;
+      }
       const key = `${requirementId}\u0000${targetKey(traceKind, id)}`;
       const locator = sourceLocator(
         loaded,
@@ -763,11 +766,22 @@ async function projectApprovedBaseline(context) {
   if (!sameRef(baseline.value.requirementsBaseline, requirements.ref)) {
     fail("ArchitectureBaseline does not bind the exact loaded RequirementsBaseline");
   }
+  const currentRequirementIds = new Set(
+    [
+      "businessObjectives", "successMetrics", "stakeholders", "users",
+      "capabilities", "userJourneys", "userStories", "acceptanceCriteria",
+      "nonFunctionalRequirements", "constraints",
+    ].flatMap((field) =>
+      (requirements.value.requirements[field] ?? []).map(({ id }) => id),
+    ),
+  );
+
   return projectSelectedArchitecture(context, {
     candidate: baseline,
     requirements,
     requirementsField: "requirementsBaseline",
     traceability: undefined,
+    currentRequirementIds,
   });
 }
 
