@@ -1,0 +1,44 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChangeIntegrationTestEvidence",
+  "evidenceId": "dr4200-historical-provenance-repair-tests-001",
+  "result": "PASS",
+  "runs": [
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/verifier-regression.test.mjs dogfood/bootstrap-open-spec-requirements-adapter/verification/dr4200-work-item-verification-001/adversarial-verifier.test.mjs",
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "command": "node --test expanded requirements/runtime/project-overview/schema/module-contract/hardening set",
+      "passed": 89,
+      "failed": 0
+    },
+    {
+      "command": "node --check src/openspec-requirements-adapter.mjs; node --check src/requirements-runtime-contracts.mjs; public import assertion",
+      "passed": 3,
+      "failed": 0
+    },
+    {
+      "command": "npm.cmd test",
+      "passed": 817,
+      "failed": 0,
+      "durationMs": 473086.6524
+    },
+    {
+      "command": "npm.cmd run verify",
+      "static": {
+        "jsonFiles": 2615,
+        "javascriptModules": 409,
+        "lfOnlyTextFiles": 3271,
+        "downstreamOperationsWithProjectOverview": 13
+      },
+      "passed": 817,
+      "failed": 0,
+      "dynamicDurationMs": 469770.6974
+    }
+  ],
+  "environmentNote": "The PowerShell npm.ps1 shim was blocked by local execution policy before package execution; the same package script was run successfully through npm.cmd.",
+  "postSuiteApprovedDigestsMatch": true,
+  "testGeneratedSideEffectsOutsideApprovedSet": []
+}

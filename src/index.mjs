@@ -46,6 +46,13 @@ export {
   validateRequirementsBaselinePromotion,
 } from "./requirements-artifact-validator.mjs";
 export { requirementsRuntimeArtifactContracts } from "./requirements-runtime-contracts.mjs";
+export {
+  OPENSPEC_REQUIREMENTS_BINDING,
+  OPENSPEC_REQUIREMENTS_CAPABILITY,
+  OpenSpecRequirementsAdapter,
+  OpenSpecRequirementsAdapterError,
+  createOpenSpecRequirementsAdapter,
+} from "./openspec-requirements-adapter.mjs";
 
 export {
   PROJECT_OVERVIEW_DOCUMENT,
@@ -268,6 +275,11 @@ export {
   deriveContractGenerationRoute,
 } from "./contract-generation-runtime.mjs";
 export {
+  CONTRACT_GENERATION_HOST_CAPABILITIES,
+  ContractGenerationHostExecutorAdapterError,
+  createJsonSchemaContractHostGenerator,
+} from "./contract-generation-host-executor-adapter.mjs";
+export {
   CONTRACT_GATE_APPROVAL_CONTRACT,
   ContractGateValidationError,
   approveContractsNotApplicable,
@@ -447,6 +459,14 @@ export {
   validateArchitectureDiscoveryArtifact,
 } from "./architecture-discovery-artifact-validator.mjs";
 export {
+  ARCHITECTURE_HOST_EXECUTOR_CAPABILITIES,
+  ArchitectureHostExecutorAdapterError,
+  createOpenSpecDesignHostExecutorAdapter,
+  createStructurizrHostExecutorAdapter,
+  createMadrHostExecutorAdapter,
+  createArchitectureDesignHostExecutorRegistry,
+} from "./architecture-host-executor-adapters.mjs";
+export {
   routeArchitectureDiscovery,
   selectArchitectureDiscoveryRoute,
 } from "./architecture-discovery-routing.mjs";
@@ -483,3 +503,14 @@ export {
   LifecycleRunReportArtifactValidationError,
   validateLifecycleRunReportArtifact,
 } from "./lifecycle-run-report-artifact-validator.mjs";
+export {
+  LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
+  createCanonicalChangeIntegrationClosure,
+  createLifecycleRunReportTraceabilityContributor,
+  createLifecycleRunReportTraceabilityDiagnostics,
+  createLifecycleRunReportTraceabilityInput,
+  createLifecycleRunReportTraceabilityMergeProof,
+  createLifecycleRunReportTraceabilityUpdateSet,
+  lifecycleRunReportTraceabilityContributor,
+  resolveLifecycleRunReportCanonicalClosure,
+} from "./lifecycle-run-report-traceability-contributor.mjs";

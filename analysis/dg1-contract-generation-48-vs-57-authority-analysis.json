@@ -1,0 +1,126 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ReadOnlyAuthorityAnalysis",
+  "analysisId": "DG1-CONTRACT-GENERATION-48-VS-57-2026-08-10",
+  "incrementId": "DGI-LIFECYCLE-RUN-REPORT-2026-08-10",
+  "status": "complete-read-only",
+  "recommendation": {
+    "route": "B",
+    "confidence": 0.99,
+    "decision": "Correct and transactionally rematerialize the capability-gap lineage using item.contractGeneration.required === true. The authoritative set is 48; do not request an architecture revision for the nine internal interfaces.",
+    "reason": "Every disputed interface is architecture-authorized but explicitly marked contractGeneration.required=false with suggestedKinds=[]. The 57 count is the total interface count caused by a selector bug, while ContractGeneration Core selects the 48 explicitly required interfaces."
+  },
+  "disputedInterfaces": [
+    {
+      "id": "IF-WB-GATE",
+      "domain": "WorkBreakdown",
+      "firstRepositoryAppearance": { "commit": "bef184c550e71b2a6b4a41847243f468d4ab71ec", "date": "2026-08-02T18:12:40-06:00", "subject": "feat: add deterministic work breakdown module", "requirements": "dogfood/work-breakdown/requirements-baseline.json", "architecture": "dogfood/work-breakdown/architecture-design/architecture-baseline.json", "module": "examples/modules/work-breakdown.module.json", "traceability": "dogfood/work-breakdown/work-breakdown/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": false, "sourceRequirementIds": ["US-WB-COVERAGE-001", "US-WB-GOVERNANCE-001", "NFR-WB-ATOMICITY-001"], "acceptanceCriteriaExist": true },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal module/Gate API; released runtime uses module-owned schemas and Gate contracts, not a project ContractGeneration target"
+    },
+    {
+      "id": "IF-WB-PLANNER",
+      "domain": "WorkBreakdown",
+      "firstRepositoryAppearance": { "commit": "bef184c550e71b2a6b4a41847243f468d4ab71ec", "date": "2026-08-02T18:12:40-06:00", "subject": "feat: add deterministic work breakdown module", "requirements": "dogfood/work-breakdown/requirements-baseline.json", "architecture": "dogfood/work-breakdown/architecture-design/architecture-baseline.json", "module": "examples/modules/work-breakdown.module.json", "traceability": "dogfood/work-breakdown/work-breakdown/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": false, "sourceRequirementIds": ["US-WB-DECOMPOSITION-001", "US-WB-EXTENSIBILITY-001", "CON-WB-ADAPTER-TRUST-001", "CON-WB-NO-EXECUTION-001"], "acceptanceCriteriaExist": true },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal extension-port API; released runtime binds planners through module/plugin contracts"
+    },
+    {
+      "id": "IF-WB-TRACEABILITY",
+      "domain": "WorkBreakdown",
+      "firstRepositoryAppearance": { "commit": "bef184c550e71b2a6b4a41847243f468d4ab71ec", "date": "2026-08-02T18:12:40-06:00", "subject": "feat: add deterministic work breakdown module", "requirements": "dogfood/work-breakdown/requirements-baseline.json", "architecture": "dogfood/work-breakdown/architecture-design/architecture-baseline.json", "module": "examples/modules/work-breakdown.module.json", "traceability": "dogfood/work-breakdown/work-breakdown/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": false, "sourceRequirementIds": ["US-WB-COVERAGE-001", "NFR-WB-PROVENANCE-001", "NFR-WB-REPLAY-001", "CON-WB-ADAPTER-TRUST-001"], "acceptanceCriteriaExist": true },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal trusted-contributor API; contributor code and traceability vocabulary own its runtime contract"
+    },
+    {
+      "id": "IF-WDA-CONSISTENCY",
+      "domain": "WorkDependencyAnalysis",
+      "firstRepositoryAppearance": { "commit": "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5", "date": "2026-08-04T22:28:25-06:00", "subject": "release: add WorkDependencyAnalysis 0.1.0", "requirements": "project/requirements-baseline.json at that revision", "architecture": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "module": "examples/modules/work-dependency-analysis.module.json", "traceability": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": true, "sourceRequirementIds": ["US-WDA-PLUGINS-001", "US-WDA-VERIFY-001", "CON-WDA-PROVIDER-NEUTRAL-001"], "acceptanceCriteriaIds": ["AC-WDA-CONSISTENCY-REVIEW-001", "AC-WDA-PLUGIN-BOUNDARY-001"] },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal advisory reviewer API; module/plugin schemas are sufficient"
+    },
+    {
+      "id": "IF-WDA-GATE",
+      "domain": "WorkDependencyAnalysis",
+      "firstRepositoryAppearance": { "commit": "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5", "date": "2026-08-04T22:28:25-06:00", "subject": "release: add WorkDependencyAnalysis 0.1.0", "requirements": "project/requirements-baseline.json at that revision", "architecture": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "module": "examples/modules/work-dependency-analysis.module.json", "traceability": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": true, "sourceRequirementIds": ["US-WDA-VERIFY-001", "US-WDA-PARALLEL-001", "CON-DEV-GATE-SEPARATION-001"], "acceptanceCriteriaIds": ["AC-WDA-MISSING-001", "AC-WDA-ORDERING-001", "AC-WDA-PARALLEL-BOUNDARY-001", "AC-DEV-GATE-PROGRESSION-001"] },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal Gate API; WorkDependencyGate owns its module-specific promotion schemas"
+    },
+    {
+      "id": "IF-WDA-GRAPH-MECHANICS",
+      "domain": "WorkDependencyAnalysis",
+      "firstRepositoryAppearance": { "commit": "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5", "date": "2026-08-04T22:28:25-06:00", "subject": "release: add WorkDependencyAnalysis 0.1.0", "requirements": "project/requirements-baseline.json at that revision", "architecture": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "module": "examples/modules/work-dependency-analysis.module.json", "traceability": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": true, "sourceRequirementIds": ["US-WDA-VERIFY-001", "NFR-WDA-DETERMINISM-001", "CON-WDA-PROVIDER-NEUTRAL-001"], "acceptanceCriteriaIds": ["AC-WDA-GRAPH-MECHANICS-001", "AC-WDA-DETERMINISM-001", "AC-WDA-PLUGIN-BOUNDARY-001"] },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal Core mechanics API; not an adapter- or project-domain contract"
+    },
+    {
+      "id": "IF-WDA-POLICY",
+      "domain": "WorkDependencyAnalysis",
+      "firstRepositoryAppearance": { "commit": "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5", "date": "2026-08-04T22:28:25-06:00", "subject": "release: add WorkDependencyAnalysis 0.1.0", "requirements": "project/requirements-baseline.json at that revision", "architecture": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "module": "examples/modules/work-dependency-analysis.module.json", "traceability": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": true, "sourceRequirementIds": ["US-WDA-VERIFY-001", "NFR-WDA-DETERMINISM-001"], "acceptanceCriteriaIds": ["AC-WDA-OPA-POLICY-001", "AC-WDA-DETERMINISM-001"] },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal pinned-policy API; module artifacts and policy bundle own its executable contract"
+    },
+    {
+      "id": "IF-WDA-PROPOSER",
+      "domain": "WorkDependencyAnalysis",
+      "firstRepositoryAppearance": { "commit": "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5", "date": "2026-08-04T22:28:25-06:00", "subject": "release: add WorkDependencyAnalysis 0.1.0", "requirements": "project/requirements-baseline.json at that revision", "architecture": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "module": "examples/modules/work-dependency-analysis.module.json", "traceability": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": true, "sourceRequirementIds": ["US-WDA-ANALYZE-001", "US-WDA-PLUGINS-001", "CON-WDA-PROVIDER-NEUTRAL-001"], "acceptanceCriteriaIds": ["AC-WDA-NATIVE-PROPOSER-001", "AC-WDA-PLUGIN-BOUNDARY-001", "AC-WDA-CONTEXT-SLICES-001"] },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal extension-port API; exact plugin manifests and module schemas bind it"
+    },
+    {
+      "id": "IF-WDA-TRACEABILITY",
+      "domain": "WorkDependencyAnalysis",
+      "firstRepositoryAppearance": { "commit": "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5", "date": "2026-08-04T22:28:25-06:00", "subject": "release: add WorkDependencyAnalysis 0.1.0", "requirements": "project/requirements-baseline.json at that revision", "architecture": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "module": "examples/modules/work-dependency-analysis.module.json", "traceability": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json" },
+      "requirementsAuthority": { "approved": true, "currentGlobal": true, "sourceRequirementIds": ["US-WDA-PARALLEL-001", "CON-WDA-TRACE-DIRECTION-001", "NFR-DEV-TRACEABILITY-001"], "acceptanceCriteriaIds": ["AC-WDA-TRACEABILITY-001", "AC-DEV-TRACEABILITY-001"] },
+      "architectureAuthority": { "approved": true, "current": true, "contractGenerationRequired": false, "suggestedKinds": [] },
+      "contract": { "exists": false, "validArchitectureLineage": false },
+      "runtimeClassification": "internal trusted-contributor API; graph contributor contracts govern it"
+    }
+  ],
+  "commonFindings": {
+    "acceptedPrefix": "WorkBreakdown and WorkDependencyAnalysis are accepted-working components, but accepted-prefix artifacts contain none of the nine IDs and do not override per-interface ContractGeneration disposition.",
+    "auditPackage": "The reviewed top-level Mode 2 audit artifacts contain none of the nine IDs. They define lifecycle/promotion policy, not interface contract selection.",
+    "traceability": "All nine have approved architecture/baseline interface-intent nodes in the current historical snapshot; graph presence establishes architecture observation, not contract-required status.",
+    "contracts": "No CT-IF-WB-* or CT-IF-WDA-* artifact exists anywhere in the repository. The current CB-DEVRELAY-006 has 48 contracts and none of the disputed nine.",
+    "capabilityGapDerivation": "Generated, not manually enumerated: immutable materialize.mjs line 60 filters item.required !== false. Since Architecture InterfaceIntent stores the field at item.contractGeneration.required, all 57 interfaces pass. The correct predicate yields 48.",
+    "releasedExecution": "Excluding these nine from project ContractGeneration does not prevent WorkBreakdown or WorkDependencyAnalysis execution. Their runtime APIs are already governed by module-owned artifact schemas, module definitions, plugin manifests, Gate code, policies, and contributor contracts."
+  },
+  "authorityCorrection": {
+    "earliestWrongArtifact": { "path": "C:/Users/garre/.codex/worktrees/190a/DevRelay-v04-work-dependency-analysis/dogfood/prefix-integrity-repair-dg1-continuation-2026-08-10/materialize.mjs", "rawSha256": "sha256:43d31875b1ac9f1cb9ab3727038c9c659ffea5b2b97d3d1bedee5d0184ad7e63", "line": 60, "fault": "reads nonexistent top-level item.required instead of item.contractGeneration.required" },
+    "firstWrongMaterializedArtifact": { "path": "C:/Users/garre/.codex/worktrees/190a/DevRelay-v04-work-dependency-analysis/dogfood/prefix-integrity-repair-dg1-continuation-2026-08-10/contract-generation-capability-gap.json", "rawSha256": "sha256:4325ec7b9a7d283905be4f62f69928ddcd5b42cce2e283ab8caf7b318b92f03c" },
+    "minimalPath": ["Correct the selector source", "Transactionally rematerialize the capability gap, run report, planning handoff, and complete content-addressed manifest", "Resume ContractGeneration with the 48 exact required intents", "Preserve the prior 6ddd manifest as superseded immutable evidence"],
+    "routeAImpact": "A revision setting the nine flags true would be a new semantic architecture decision, not repair. ArchitectureGate promotion would supersede dcab...; CB-DEVRELAY-006 is pinned to dcab... and would require ContractGeneration/ContractGate replacement. Every downstream artifact pinned to the old architecture/contract pair would become stale and require replay.",
+    "routeBImpact": "No baseline, Gate, graph, or released runtime change. Only the incorrect candidate evidence lineage is superseded and regenerated.",
+    "routeC": "Use Route A only if an owner makes a new product decision that these internal APIs must become externally generated project contracts; no current evidence supports that decision."
+  },
+  "keyEvidence": [
+    { "path": "project/architecture-baseline.json", "rawSha256": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc" },
+    { "path": "project/requirements-baseline.json", "rawSha256": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948" },
+    { "path": "project/contract-baseline.json", "rawSha256": "sha256:919e64203cd557f6379b9c6e5909570ccca48e987b4a8ccda48b4715a7cd329a" },
+    { "path": "project/architecture-promotion.commit.json", "rawSha256": "sha256:b3cfb31abf4dfdfe4bf5edf230146c4bcb4e98554d83c4775aa450a3386e3752" },
+    { "path": "project/architecture-gate-owner-approval-work-dependency-analysis-v1.json", "rawSha256": "sha256:102439efcb9d8244151b583ac7c89710685a1cf9f2b81ab9c76bd27543ad939e" },
+    { "path": "dogfood/work-breakdown/requirements-baseline.json", "rawSha256": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311" },
+    { "path": "dogfood/work-breakdown/architecture-design/architecture-baseline.json", "rawSha256": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58" },
+    { "path": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json", "rawSha256": "sha256:962026b876a429bf06ca82d93a1410e8203804e89009999ff727fe5741e71691" },
+    { "path": "project/history/traceability/snapshots/093d92c0abb05bac94e682af9c72289a04620866d3842a217f97962d9296b2ed.json", "rawSha256": "sha256:3c055fb373890a98a1cd2df5ab519a38608b345282056700abca68de926b5030" },
+    { "path": "examples/modules/work-breakdown.module.json", "rawSha256": "sha256:89414b0ed0efa84584db86fc97b319feaf43b7c438ad81b0f68788a4a7167b75" },
+    { "path": "examples/modules/work-dependency-analysis.module.json", "rawSha256": "sha256:7cea4b60fd4b74fa1fb24835668e25cffffe09cbdcbc06f371c2d7794dc64a60" }
+  ],
+  "mutations": { "candidate": false, "product": false, "evidence": false, "baselines": false, "gates": false, "graph": false, "git": false }
+}

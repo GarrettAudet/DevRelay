@@ -1,4 +1,4 @@
-import { canonicalJsonDigest } from "./content-digest.mjs";
+import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 import { projectOverviewRuntimeArtifactContracts } from "./project-overview-runtime-contracts.mjs";
 import { validateRequirementsArtifact } from "./requirements-artifact-validator.mjs";
 import { validateSharedArtifact } from "./shared-artifact-validator.mjs";
@@ -167,11 +167,11 @@ function assertCitationClosure(
   additionalSourceRefs = [],
 ) {
   const allowed = new Map();
+  const exactAdditionalSourceRefs = new Set(
+    additionalSourceRefs.map((sourceRef) => canonicalJson(sourceRef)),
+  );
   for (const [role, artifact] of expectedBaseInputs(context)) {
     addAllowedRole(allowed, artifact, role);
-  }
-  for (const sourceRef of additionalSourceRefs) {
-    addAllowedRole(allowed, sourceRef.artifact, sourceRef.role);
   }
   if (allowNativeSources) {
     for (const loaded of context.loadedArtifacts?.["native-source-bundle"] ?? []) {
@@ -182,6 +182,9 @@ function assertCitationClosure(
   }
   for (const sourceRef of collectSourceRefs(value)) {
     const roles = allowed.get(pointerKey(sourceRef.artifact));
+    if (exactAdditionalSourceRefs.has(canonicalJson(sourceRef))) {
+      continue;
+    }
     if (!roles) {
       fail(
         `${owner} cites evidence that is neither an exact base input nor an allowed native source`,
@@ -193,6 +196,11 @@ function assertCitationClosure(
       );
     }
   }
+}
+
+function approvedBaselineSourceRefs(context) {
+  const baseline = oneLoaded(context.loadedInputs, "requirements-baseline");
+  return baseline ? collectSourceRefs(baseline.value.requirements) : [];
 }
 
 function assertProjectLifecycle(body, projectContext, owner) {
@@ -448,6 +456,7 @@ async function assertClarificationResume(context) {
     context,
     "clarification continuation",
     false,
+    approvedBaselineSourceRefs(context),
   );
   await assertSourceCheckpoint(request, continuation, context);
 }
@@ -498,6 +507,7 @@ function assertClarificationIssuance(context) {
     context,
     "clarification continuation",
     false,
+    approvedBaselineSourceRefs(context),
   );
   assertSourceInvocation(continuation.value, context);
 }

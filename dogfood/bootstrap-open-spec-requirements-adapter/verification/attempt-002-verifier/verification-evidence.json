@@ -1,0 +1,70 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationEvidence",
+  "verificationId": "bootstrap-open-spec-requirements-adapter-independent-verification-attempt-002",
+  "subject": {
+    "workItemId": "bootstrap-open-spec-requirements-adapter-001",
+    "attempt": 2,
+    "handoffPath": "dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/work-item-handoff.json",
+    "handoffRawDigest": "sha256:585d4447e8142e52d34391e5bd08edddd9ef24cb4fa361488cd01f7f99a4fb36"
+  },
+  "lineage": {
+    "attempt001RevisionRequestPreserved": "sha256:54a16f512e99442366f69b60fe0f0ec2046094390d5bed2f76d0afa9cad6610d",
+    "attempt001EvidencePreserved": "sha256:c38489a1f932159592c5003595155b6d51b8f8bd932031d0409f9e1f0063a2c7",
+    "attempt001RegressionPreserved": "sha256:2cf29086c9286dce7821c4f3fed887b6048a25c072eea13b5b1d8c23592f2ad6"
+  },
+  "candidateIntegrity": {
+    "allFiveAttempt002DeclaredRawDigestsMatch": true,
+    "candidateBytesMutated": false,
+    "declaredScopeAllowed": true,
+    "unrelatedDirtyWorktreeChangesExcluded": true
+  },
+  "independentFixture": {
+    "path": "dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002-verifier/independent-baseline-revision.test.mjs",
+    "result": "pass",
+    "assertions": [
+      "checkpoint-shaped clarification response approves ArchitectureRevisionRequest against an exact approved baseline pair",
+      "terminal outcome is change_set_drafted and no greenfield outputs exist",
+      "requirements changedSections independently recomputed as the exhaustive lexically sorted top-level diff",
+      "ProjectOverview changedSections independently recomputed through the released deterministic projection and diff",
+      "RequirementsChangeSet binds the exact prior requirements reference and canonical prior-body digest",
+      "ProjectOverviewChangeSetDraft binds the exact prior overview reference",
+      "NativeSourceBundle canonical outputs are exactly the change-set pair",
+      "the exact returned native spec bytes are retained"
+    ]
+  },
+  "testRuns": [
+    { "command": "node --test test/openspec-requirements-adapter.test.mjs", "passed": 6, "failed": 0 },
+    { "command": "node --test dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/verifier-regression.test.mjs", "passed": 6, "failed": 0 },
+    { "command": "node --test focused plus requirements/project-overview runtime and schema adjacent suites", "passed": 55, "failed": 0 },
+    { "command": "node --test dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002-verifier/independent-baseline-revision.test.mjs", "passed": 1, "failed": 0 },
+    { "command": "node --check src/openspec-requirements-adapter.mjs and git diff --check on attempt-002 paths", "passed": 2, "failed": 0 }
+  ],
+  "negativeCoverage": [
+    "missing baseline pair member",
+    "requirements/project-overview pair digest mismatch",
+    "stale project-overview projection",
+    "exact no-op replacement",
+    "baseline-bound greenfield outcome",
+    "malformed output and binding/provider substitution",
+    "Gate, graph, route, promotion, and provider authority-bearing output",
+    "unbound hidden context",
+    "fresh executor count one and exact Core replay count zero"
+  ],
+  "surfaceAndMaturity": {
+    "rootExportPresent": true,
+    "packageSubpathExportPresent": true,
+    "documentationTruthful": true,
+    "maturity": "reusable executable OpenSpec RequirementsGathering adapter with host-supplied capability executor; no OpenSpec CLI interoperability claim"
+  },
+  "authorityAudit": {
+    "providerNeutral": true,
+    "hostExecutorOnly": true,
+    "gateAuthority": false,
+    "graphAuthority": false,
+    "routeAuthority": false,
+    "promotionAuthority": false
+  },
+  "decision": "pass",
+  "promotionAuthorized": true
+}

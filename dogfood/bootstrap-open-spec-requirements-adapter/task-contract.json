@@ -1,0 +1,34 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemContract",
+  "workItemId": "bootstrap-open-spec-requirements-adapter-001",
+  "status": "authorized-exception",
+  "purpose": "Repair the released RequirementsGathering circuit by adding the reusable bounded OpenSpec adapter that the release contract promises but did not previously ship.",
+  "scope": {
+    "included": [
+      "provider-neutral host-supplied capability executor binding",
+      "initial requirements elicitation",
+      "cross-invocation clarification continuation",
+      "canonical RequirementsGathering output normalization and persistence",
+      "released runtime checkpoint replay proof",
+      "public package exports, documentation, and generic fixtures"
+    ],
+    "excluded": [
+      "OpenSpec CLI execution or interoperability claims",
+      "provider-specific API calls",
+      "operation routing",
+      "RequirementsGate approval or baseline promotion",
+      "TraceabilityGraph mutation",
+      "changes to approved project baselines or persisted lifecycle state"
+    ]
+  },
+  "acceptance": [
+    "The adapter has no feature-specific answers or hidden project context.",
+    "A fresh effect calls the host executor exactly once and Core replay calls it zero times.",
+    "Native proposal and clarification responses are strictly validated and normalized into declared outcomes only.",
+    "Clarification continuation is exact, checkpoint-bound, and independent of conversational memory.",
+    "Malformed output, binding drift, provider substitution, and authority-bearing operations fail closed.",
+    "Two unrelated feature fixtures execute through requirements-gathering@0.1.0."
+  ],
+  "maturity": "reusable executable adapter with host-supplied capability executor"
+}

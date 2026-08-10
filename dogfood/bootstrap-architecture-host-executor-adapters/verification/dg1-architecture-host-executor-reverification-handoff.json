@@ -1,0 +1,143 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "VerificationHandoff",
+  "handoffId": "dg1-architecture-host-executor-independent-reverification-982e-2026-08-10",
+  "incrementId": "DGI-LIFECYCLE-RUN-REPORT-2026-08-10",
+  "candidateRoot": "C:/Users/garre/.codex/worktrees/f3a9/DevRelay-v04-work-dependency-analysis",
+  "verifierRoot": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis",
+  "supersedes": "verification/dg1-architecture-host-executor-verification-handoff.json",
+  "outcome": "PASS",
+  "closed": true,
+  "replacementClosure": {
+    "workExecutionHandoff": {
+      "path": "dogfood/bootstrap-architecture-host-executor-adapters/work-execution-handoff.json",
+      "byteLength": 7840,
+      "rawDigest": "sha256:d918a4c41c0442bfe28b7caf718fa3ee4389c26990f650706c832642a3374dfa",
+      "match": true
+    },
+    "evidenceManifest": {
+      "path": "dogfood/bootstrap-architecture-host-executor-adapters/evidence-manifest.json",
+      "byteLength": 4279,
+      "rawDigest": "sha256:09ff01e80fddb2c03cb215df4660abd48ad79c92744e9c5badb9a9ed41cae856",
+      "match": true,
+      "entryCount": 19,
+      "allEntryDigestsAndByteLengthsMatch": true
+    },
+    "planningEvidenceDigest": "sha256:45637fb614b5fd8c6e175bedeca69802bb2aad2f87ea94e3bf7469296814f516"
+  },
+  "exactRevisedCandidate": [
+    { "path": "src/architecture-host-executor-adapters.mjs", "byteLength": 17022, "rawDigest": "sha256:4d4ec08d51c509dc4239aad2bd5baf20b48ad07cedd0ef98a358b0cdb6f7c972" },
+    { "path": "test/architecture-host-executor-adapters.test.mjs", "byteLength": 14062, "rawDigest": "sha256:640a0fa4e5a6c88fe40a0c3e1c4cfc0092cbeca5a1914f4e1c63206d3aca4ab3" },
+    { "path": "test/architecture-host-executor-dg1-continuation.test.mjs", "byteLength": 1462, "rawDigest": "sha256:57cc0a6c0b62c247f8b392227b4b8b5b480c7606ff6f4c128474d839b16efaca" },
+    { "path": "dogfood/bootstrap-architecture-host-executor-adapters/materialize-dg1.mjs", "byteLength": 25398, "rawDigest": "sha256:5d2e597d571c3e21a2f25011eab1f80c3087e7e197647d8100b3ad93fbce9434" },
+    { "path": "README.md", "byteLength": 31136, "rawDigest": "sha256:d42f3173f50048aa9284aeda47e1723f09e9c65d8b3e45e5cacc949e396ad826" },
+    { "path": "docs/architecture-design.md", "byteLength": 16827, "rawDigest": "sha256:7b47152e4229e4ef0d7baf2101e201e1aa3dd1a5658a727798a50546b39153ce" },
+    { "path": "src/index.mjs", "byteLength": 17652, "rawDigest": "sha256:e2aab9ccb3d1413cd35445531e197b4fd2556a4159b87da45b6fba52118d5dea" },
+    { "path": "package.json", "byteLength": 7181, "rawDigest": "sha256:aa649c18dd0171a13d8f6e61bad65e5d0dbb5c31df7c72b6b05874681fc8f7d8" }
+  ],
+  "previousFixClosure": [
+    {
+      "id": "DG1-VER-001",
+      "status": "closed",
+      "evidence": "The common parseResponse path admits only contract-defined and fixture-conformant maturity. The verifier-owned static zero-CLI exploit is rejected, and the explicit producer regression rejects live-conformant with realCliExecuted=true on OpenSpec Design, Structurizr, and MADR."
+    },
+    {
+      "id": "DG1-VER-002",
+      "status": "closed",
+      "evidence": "test/architecture-host-executor-dg1-continuation.test.mjs exists at 1462 bytes with digest sha256:57cc0a6c0b62c247f8b392227b4b8b5b480c7606ff6f4c128474d839b16efaca and passes independently."
+    }
+  ],
+  "commands": [
+    {
+      "command": "node --test test/architecture-host-executor-adapters.test.mjs test/architecture-host-executor-dg1-continuation.test.mjs test/architecture-change-runtime.test.mjs test/architecture-design.test.mjs",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e",
+      "result": "27 passed, 0 failed"
+    },
+    {
+      "command": "node --test test/architecture-host-executor-dg1-continuation.test.mjs",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e",
+      "result": "1 passed, 0 failed"
+    },
+    {
+      "command": "node --test verification/architecture-host-executor-adversarial.test.mjs",
+      "cwd": "verifier worktree",
+      "result": "1 passed, 0 failed; unsupported static live claim rejected"
+    },
+    {
+      "command": "node dogfood/bootstrap-architecture-host-executor-adapters/materialize-dg1.mjs",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e",
+      "result": "pass; first calls 1/1/1; checkpoints 3; replay additional calls 0/0/0; all 11 output files byte-identical to producer evidence"
+    },
+    {
+      "command": "node --check on adapter and both focused test files; direct module import; package subpath import",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e",
+      "result": "pass"
+    }
+  ],
+  "executionProof": {
+    "firstExecutionCalls": { "openspec-design": 1, "structurizr": 1, "madr": 1 },
+    "checkpointCount": 3,
+    "replayAdditionalCalls": { "openspec-design": 0, "structurizr": 0, "madr": 0 },
+    "identicalReplayBytes": true,
+    "terminalArtifact": {
+      "byteLength": 655666,
+      "rawDigest": "sha256:7210022b0ed8ab5bbf1aca80319b13ac96006a7851ab086d56f26c74052e4b17"
+    },
+    "terminalResult": {
+      "byteLength": 2395,
+      "rawDigest": "sha256:3b3ad23e634f89ce49aa10e104cc68014526165ff0b310bcee4f5d0e90f84246"
+    },
+    "canonicalArtifactValidation": "pass",
+    "historicalFixtureInlineAdaptersOnPath": false
+  },
+  "boundaryFindings": {
+    "exactModuleOperationStepPluginVersionConfigurationGrants": "pass",
+    "declaredContentAddressedInputsOnly": "pass",
+    "exactPriorHandoffPrefixAndInvocationLineage": "pass",
+    "malformedStaleCrossInvocationAndSubstitutedHandoffs": "rejected",
+    "nativeBytesAndProvenanceCompleteness": "enforced",
+    "invalidC4NestingAndWrongViewMembership": "rejected",
+    "incompleteMadrRecords": "rejected",
+    "terminalOutputMismatch": "rejected",
+    "replaySideEffects": "none",
+    "hiddenContext": "not observed",
+    "adapterCoreGateGraphPromotionAuthority": "not observed",
+    "providerAuthoredLiveConformance": "rejected on all three adapter paths"
+  },
+  "packageAndDependencies": {
+    "directImport": "pass",
+    "packageSubpathExport": "pass",
+    "rootSourceExport": "present by inspection",
+    "syntaxChecks": "pass",
+    "newDependencyDeclared": false,
+    "packageLockDependencyDiff": false,
+    "dependencyInstallationPerformed": false
+  },
+  "environment": {
+    "isolation": "Fresh verifier-owned copy; producer candidate was never executed in place.",
+    "dependencies": "Reused pre-existing C:/repos/DevRelay/node_modules through a verifier-owned junction; no installation or lockfile change.",
+    "limitationsAffectingOutcome": []
+  },
+  "assumptions": [
+    "The planning evidence source remained immutable during this verification.",
+    "Fixture conformance is the maximum maturity claimed by the DG-1 evidence."
+  ],
+  "residualRisks": [
+    "No live OpenSpec, Structurizr, or MADR CLI compatibility was tested or inferred.",
+    "OpenSpec Design remains bound only to design-change in this version."
+  ],
+  "mutationAudit": {
+    "candidateBytesAltered": false,
+    "baselinesAltered": false,
+    "traceabilityGraphAltered": false,
+    "completionStateAltered": false,
+    "gateStateAltered": false,
+    "gitStageCommitPushRemoteAltered": false,
+    "verifierOwnedFilesOnly": true
+  },
+  "rawDigest": {
+    "algorithm": "sha256",
+    "encoding": "raw file bytes",
+    "sidecar": "verification/dg1-architecture-host-executor-reverification-handoff.sha256"
+  }
+}

@@ -21,6 +21,9 @@
     "./modules/system-verification.module.json": "./examples/modules/system-verification.module.json",
     "./plugins/github-spec-kit.plugin.json": "./examples/plugins/github-spec-kit.plugin.json",
     "./plugins/openspec.plugin.json": "./examples/plugins/openspec.plugin.json",
+    "./adapters/openspec-requirements": "./src/openspec-requirements-adapter.mjs",
+    "./adapters/architecture-host-executors": "./src/architecture-host-executor-adapters.mjs",
+    "./adapters/contract-generation-host-executor": "./src/contract-generation-host-executor-adapter.mjs",
     "./plugins/spec-kit-plan.plugin.json": "./examples/plugins/spec-kit-plan.plugin.json",
     "./plugins/openspec-design.plugin.json": "./examples/plugins/openspec-design.plugin.json",
     "./plugins/structurizr.plugin.json": "./examples/plugins/structurizr.plugin.json",
@@ -106,7 +109,7 @@
     "examples/plugins/review-system-verifier.plugin.json"
   ],
   "scripts": {
-    "test": "node --test",
+    "test": "node scripts/run-tests.mjs --test-concurrency=1",
     "verify": "node scripts/verify.mjs",
     "release:catalog": "node scripts/generate-release-manifest.mjs",
     "release:check": "node scripts/release-check.mjs"

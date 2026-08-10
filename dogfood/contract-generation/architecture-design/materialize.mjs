@@ -595,7 +595,7 @@ register(projectContextRef, read("dogfood/contract-generation/project-context.js
 register(repositorySnapshotRef, read("dogfood/contract-generation/repository-snapshot.json"));
 register(architectureBaselineRef, read("project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/architecture-baseline.json"));
 register(architectureBaselineProjectContextRef, read("dogfood/lifecycle-run-report/project-context.json"));
-register(architectureBaselineRepositorySnapshotRef, read("dogfood/lifecycle-run-report/repository-snapshot.json"));
+register(architectureBaselineRepositorySnapshotRef, read("dogfood/contract-generation/repository-snapshot.json"));
 for (const entry of architectureBaseline.sections.nativeArtifacts.content.entries) {
   register(entry.artifact, read(entry.logicalPath));
 }

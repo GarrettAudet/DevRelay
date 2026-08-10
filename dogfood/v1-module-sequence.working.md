@@ -1,8 +1,14 @@
 # DevRelay V1 module sequence (working ledger)
 
 Status: active, temporary, non-authoritative coordination record
-Current target: `ArchitectureDiscovery -> LifecycleRunReport`
-Last advanced: ArchitectureDiscovery 0.1.0 completed its eight-item dogfood DAG, real-repository release path, and 735-test pre-documentation package gate; DevRelay 0.9.0 promotion is active
+Current target: `LifecycleRunReport` prefix-integrity increment
+Last advanced: DG-1 integrated the reusable ContractGeneration host binding and
+closed the 48-vs-57 authority conflict in favor of the 48 version-pinned
+interface intents. ContractGate is the next separate authority boundary.
+
+Current reconciled status is maintained in
+[`CURRENT_STATUS.md`](../CURRENT_STATUS.md). This working ledger retains
+historical construction detail and cannot approve or promote anything.
 
 This ledger makes the recursive dogfood run human-readable. Canonical authority
 remains in digest-bound module artifacts, Gate approvals, promoted baselines,

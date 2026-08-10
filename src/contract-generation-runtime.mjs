@@ -9,6 +9,7 @@ import {
   createJsonSchemaContractBundle,
 } from "./contract-format-registry.mjs";
 import { loadOwnedJsonArtifact } from "./loaded-json-artifact-integrity.mjs";
+import { selectRequiredContractGenerationIntents } from "./contract-generation-intent-selection.mjs";
 
 const VERIFIED_RECEIPTS = new WeakSet();
 const MODULE = Object.freeze({ id: "contract-generation", version: "0.1.0" });
@@ -115,8 +116,7 @@ function nativeRecord(entry) {
 function requiredIntents(architecture) {
   const interfaces = architecture?.sections?.interfaceIntent?.content?.interfaces;
   if (!Array.isArray(interfaces)) fail("ArchitectureBaseline omits interface intents");
-  return interfaces
-    .filter((entry) => entry.contractGeneration?.required === true)
+  return selectRequiredContractGenerationIntents(architecture)
     .map((entry) => {
       if (
         !Array.isArray(entry.contractGeneration.suggestedKinds) ||

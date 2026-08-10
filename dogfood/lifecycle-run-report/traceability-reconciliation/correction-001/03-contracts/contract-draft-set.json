@@ -1,0 +1,87 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ContractDraftSet",
+  "draftSetId": "CDS-RUN-TRACEABILITY-001",
+  "priorBaseline": {
+    "baselineId": "CB-DEVRELAY-006",
+    "version": "1.5.0",
+    "digest": "sha256:919e64203cd557f6379b9c6e5909570ccca48e987b4a8ccda48b4715a7cd329a"
+  },
+  "targets": [
+    {
+      "contractId": "CT-IF-RUN-TRACEABILITY-INPUT",
+      "title": "LifecycleRunReportTraceabilityInput",
+      "format": "json-schema",
+      "providerNeutral": true,
+      "required": [
+        "validated lifecycle artifacts",
+        "seven completion facts",
+        "canonical closure refs",
+        "base graph ref"
+      ],
+      "graphMutationApi": false
+    },
+    {
+      "contractId": "CT-IF-RUN-CANONICAL-CLOSURE",
+      "title": "CanonicalChangeIntegrationClosure",
+      "format": "json-schema",
+      "providerNeutral": true,
+      "required": [
+        "exact typed source refs",
+        "closure diagnostics"
+      ],
+      "graphMutationApi": false
+    },
+    {
+      "contractId": "CT-IF-RUN-TRACEABILITY-UPDATE-SET",
+      "title": "LifecycleRunReportTraceabilityUpdateSet",
+      "format": "json-schema",
+      "providerNeutral": true,
+      "required": [
+        "standardized nodes and allowlisted edges",
+        "contributor identity"
+      ],
+      "graphMutationApi": false
+    },
+    {
+      "contractId": "CT-IF-RUN-TRACEABILITY-DIAGNOSTICS",
+      "title": "LifecycleRunReportTraceabilityDiagnostics",
+      "format": "json-schema",
+      "providerNeutral": true,
+      "required": [
+        "missing/invalid/duplicate dispositions",
+        "orphan observations"
+      ],
+      "graphMutationApi": false
+    },
+    {
+      "contractId": "CT-IF-RUN-TRACEABILITY-MERGE-PROOF",
+      "title": "LifecycleRunReportTraceabilityMergeProof",
+      "format": "json-schema",
+      "providerNeutral": true,
+      "required": [
+        "checkpoint digest",
+        "base/result graph digests",
+        "atomic receipt",
+        "idempotent replay proof"
+      ],
+      "graphMutationApi": false
+    }
+  ],
+  "canonicalDiff": {
+    "added": [
+      "CT-IF-RUN-TRACEABILITY-INPUT",
+      "CT-IF-RUN-CANONICAL-CLOSURE",
+      "CT-IF-RUN-TRACEABILITY-UPDATE-SET",
+      "CT-IF-RUN-TRACEABILITY-DIAGNOSTICS",
+      "CT-IF-RUN-TRACEABILITY-MERGE-PROOF"
+    ],
+    "changed": [],
+    "removed": []
+  },
+  "formatValidation": {
+    "valid": true,
+    "validatorOwner": "Core",
+    "schemas": 5
+  }
+}

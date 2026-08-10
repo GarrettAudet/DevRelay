@@ -1,0 +1,28 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapChangeIntegrationTestEvidence",
+  "integrationId": "bootstrap-open-spec-requirements-adapter-change-integration-attempt-002",
+  "inScope": [
+    { "command": "node --test test/openspec-requirements-adapter.test.mjs", "passed": 6, "failed": 0 },
+    { "command": "node --test dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/verifier-regression.test.mjs", "passed": 6, "failed": 0 },
+    { "command": "node --test adjacent requirements/project-overview/runtime/schema suite", "passed": 55, "failed": 0 },
+    { "command": "node --check src/openspec-requirements-adapter.mjs and root/subpath import checks", "passed": 3, "failed": 0 }
+  ],
+  "broadVerification": {
+    "command": "npm.cmd test",
+    "passed": 795,
+    "failed": 8,
+    "failureClasses": [
+      "two immutable bootstrap verifier fixtures reference absent .verifier-candidate-* snapshots",
+      "two unrelated lifecycle-run-report verifier fixtures reference external worktrees without Ajv",
+      "one ArchitectureDiscovery export assertion conflicts with preserved lifecycle-run-report exports",
+      "three unrelated dogfood tests detect pre-existing repository-snapshot digest drift"
+    ]
+  },
+  "repositoryVerifier": {
+    "command": "node scripts/verify.mjs",
+    "result": "failed",
+    "reason": "pre-existing lifecycle-run-report files violate the LF-only policy"
+  },
+  "decision": "fail-closed"
+}

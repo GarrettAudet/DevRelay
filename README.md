@@ -3,6 +3,13 @@
 DevRelay is a small deterministic runner for composable software-engineering
 Modules with a Core-owned lifecycle traceability sidecar.
 
+For the reconciled working-tree checkpoint, active Gate, module maturity,
+promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
+For a self-contained implementation-owner pickup, see
+[handoff/2026-08-10-lifecycle-run-report-pickup/README.md](handoff/2026-08-10-lifecycle-run-report-pickup/README.md).
+This status page is a human-readable projection; digest-bound lifecycle
+artifacts and Gate records remain authoritative.
+
 It does not replace engineering tools, coding agents, or model providers. A
 semantic Module defines a stable engineering contract, configured adapters
 implement bounded capabilities, and DevRelay Core owns routing, sequencing,
@@ -342,7 +349,15 @@ candidate, not independent Module outcomes.
 
 These manifests bind only relevant upstream capabilities. DevRelay does not
 run the full OpenSpec, Spec Kit, Structurizr, or MADR workflow as a monolith.
-Live command adapters are not shipped or claimed in this pass.
+Reusable bounded host-executor adapters for the design-change chain are
+available from `devrelay/adapters/architecture-host-executors`, including a
+factory that assembles their exact published ModuleRegistry bindings. These
+are provider-response and fixture conformant, not a claim of live upstream CLI
+conformance. This adapter version rejects all provider-authored
+`live-conformant` responses; live maturity requires a future separately
+versioned trusted execution-attestation contract. OpenSpec Design has no
+`establish-baseline` manifest binding;
+that chain continues to require the separately configured Spec Kit designer.
 
 Core does not inject project context from global state or conversational memory.
 The exact `project-overview-baseline` is a required declared invocation input,

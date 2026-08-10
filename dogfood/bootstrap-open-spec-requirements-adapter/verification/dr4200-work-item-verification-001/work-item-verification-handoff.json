@@ -1,0 +1,59 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkItemVerificationHandoff",
+  "verificationId": "dr4200-openspec-requirements-provenance-repair-wiv-001",
+  "subject": {
+    "candidateWorktree": "C:/Users/garre/.codex/worktrees/7eeb/DevRelay-v04-work-dependency-analysis",
+    "workerHandoff": "dogfood/bootstrap-open-spec-requirements-adapter/verification/dr4200-historical-provenance-repair-001/work-execution-handoff.json",
+    "workerHandoffRawDigest": "sha256:d10487318060df066fecbdc9305362101fe2b5d8892cbf094a0908add20d38c6"
+  },
+  "outcome": "PASS",
+  "failClosed": true,
+  "candidateDigestComparison": [
+    { "path": "src/openspec-requirements-adapter.mjs", "declared": "sha256:365111ac2482c824299a89075bc2773bf87e8fc6286a41af7191f84d314ca048", "observed": "sha256:365111ac2482c824299a89075bc2773bf87e8fc6286a41af7191f84d314ca048", "match": true },
+    { "path": "src/requirements-runtime-contracts.mjs", "declared": "sha256:043b6ea72f0205477f34ff70a1980918d0c8f36270894e1057c5804f926f41fb", "observed": "sha256:043b6ea72f0205477f34ff70a1980918d0c8f36270894e1057c5804f926f41fb", "match": true },
+    { "path": "test/openspec-requirements-adapter.test.mjs", "declared": "sha256:e79269ebf85d6916cb49ee674fefad441e4b289b7298775543fe9cd46706b77d", "observed": "sha256:e79269ebf85d6916cb49ee674fefad441e4b289b7298775543fe9cd46706b77d", "match": true },
+    { "path": "dogfood/bootstrap-open-spec-requirements-adapter/verification/dr4200-historical-provenance-repair-001/minimized-source-ref-fixture.json", "declared": "sha256:8995089cc0e9d09f341e9a9ce969555a4a9e036c71ef083b52d7b3fe9fa59a69", "observed": "sha256:8995089cc0e9d09f341e9a9ce969555a4a9e036c71ef083b52d7b3fe9fa59a69", "match": true }
+  ],
+  "lineageEvidence": {
+    "diagnostic": "sha256:067dd267608bd3463dfeb1ebb49884dbf7b8954a3006d4b5633ed1c478dd68c1",
+    "executorResponse": "sha256:be882bef99ff0b2838d8d6fd55cfbd93651599a9274fab2b808d5fb6e32f9ceb",
+    "parentHandoff": "sha256:9b27c1944225d46c6b0eaffd5b5b3b0d14fb20109dfe79941ce684dae05f023e",
+    "invocation": "sha256:a7609ffaf37c02ecbbdcebc7a8a2aaaf742b0ba600773e64eca04d490f65b383",
+    "requirementsBaseline": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+    "projectOverviewBaseline": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985",
+    "repositorySnapshot": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+  },
+  "testEvidence": [
+    { "scope": "focused worker and regression entrypoint", "passed": 14, "failed": 0 },
+    { "scope": "verifier-owned adversarial matrix", "artifactRawDigest": "sha256:446542832a6eb8e917c31313a13363992536004e5a4d1ab0f9884e2cfc6adb4f", "passed": 2, "failed": 0 },
+    { "scope": "expanded requirements/runtime/schema contracts", "passed": 96, "failed": 0 },
+    { "scope": "syntax and public import checks", "passed": 3, "failed": 0 },
+    { "scope": "repository-wide npm test", "result": "environment-blocked", "reason": "read-only candidate denied dogfood fixture materializers with EPERM after relevant requirements coverage passed" }
+  ],
+  "verifiedBehavior": [
+    "Fresh ASCII-safe clarification traverses the actual adapter and executor, returns needs_clarification, checkpoints it, and exact replay makes zero additional executor calls.",
+    "Exact clarification response continuation traverses the real runtime, returns change_set_drafted, preserves native artifacts and provenance, computes exhaustive changed sections, and exact replay makes zero additional calls.",
+    "Exact approved historical sourceRefs pass in workingRequirements and full replacement; mutation of role, artifactId, digest, schema, mediaType, uri, location, jsonPointer, or addition of fields changes whole-reference identity and fails closed.",
+    "New sourceRefs require a declared base role and its exact invocation pointer.",
+    "Forbidden authority, provider or binding substitution, hidden context, stale/no-op/baseline drift, pair mismatch, malformed output, and greenfield output from a baseline invocation remain fail closed."
+  ],
+  "residualRisks": [
+    "The full repository suite could not complete in the read-only candidate worktree because unrelated dogfood tests materialize checked-in fixtures; this is an environment limitation, not a relevant assertion failure.",
+    "Historical sourceRef authorization proves exact membership in the supplied approved baseline, not continued retrievability of every historical artifact.",
+    "Durable checkpoint and artifact persistence remain host responsibilities; live OpenSpec CLI interoperability is not claimed."
+  ],
+  "integrationAuthorization": {
+    "authorized": true,
+    "scope": "Only the four digest-matched files declared by the worker handoff.",
+    "conditions": ["ChangeIntegration must revalidate the exact candidate digests.", "No unrelated dirty-worktree changes are authorized."]
+  },
+  "mutations": {
+    "candidate": false,
+    "baselines": false,
+    "traceabilityGraph": false,
+    "completionState": false,
+    "committed": false,
+    "pushed": false
+  }
+}

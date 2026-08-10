@@ -1,0 +1,90 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChangeIntegrationReceipt",
+  "receiptId": "dg1-architecture-host-executor-change-integration-2026-08-10",
+  "incrementId": "DGI-LIFECYCLE-RUN-REPORT-2026-08-10",
+  "workItemId": "DG-1",
+  "closed": true,
+  "outcome": "FIX",
+  "scope": "Bounded byte integration and verification only; no promotion, baseline mutation, Gate progression, PB repair, commit, stage, or push.",
+  "sources": {
+    "candidateRoot": "C:/Users/garre/.codex/worktrees/f3a9/DevRelay-v04-work-dependency-analysis",
+    "workExecutionHandoff": { "path": "dogfood/bootstrap-architecture-host-executor-adapters/work-execution-handoff.json", "byteLength": 7840, "rawDigest": "sha256:d918a4c41c0442bfe28b7caf718fa3ee4389c26990f650706c832642a3374dfa" },
+    "evidenceManifest": { "path": "dogfood/bootstrap-architecture-host-executor-adapters/evidence-manifest.json", "byteLength": 4279, "rawDigest": "sha256:09ff01e80fddb2c03cb215df4660abd48ad79c92744e9c5badb9a9ed41cae856", "entryCount": 19, "allEntriesDigestLengthAndScopeValidated": true },
+    "independentPassHandoff": { "sourcePath": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis/verification/dg1-architecture-host-executor-reverification-handoff.json", "rawDigest": "sha256:b612ab3f805a36e1e2e432c43f262f862d0b2b70807dc5c6cdcc9309b87682bc" },
+    "independentHandoffSidecar": { "sourcePath": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis/verification/dg1-architecture-host-executor-reverification-handoff.sha256", "rawDigest": "sha256:e51b3b74575f516f8c5689dfb0700c46063c34a566a4235c9c2dede90989f39b" },
+    "verifierAdversarialTest": { "sourcePath": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis/verification/architecture-host-executor-adversarial.test.mjs", "rawDigest": "sha256:114242c2fb244433689c437a0074e566042cfac714bd70daa0eb3ae218fd9759", "classification": "verifier-owned evidence, not a product runtime test" }
+  },
+  "repositoryBefore": {
+    "branch": "codex/v0.5-lifecycle-run-report",
+    "head": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "tree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "remote": "origin https://github.com/GarrettAudet/DevRelay.git",
+    "upstreamDivergence": { "behind": 0, "ahead": 0 },
+    "dirtySnapshot": { "path": "pre-integration-dirty-snapshot.json", "entryCount": 195, "rawDigest": "sha256:af822df2efa3c425589eea9007c6e027ebe59abb346a4094cf790e61728edc30" }
+  },
+  "prefixRepairProof": {
+    "mode": "Mode 2 bounded accepted-prefix repair",
+    "candidateHeadAndTreeMatchSavedProject": true,
+    "candidateHead": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "candidateTree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "sharedFiles": ["README.md", "docs/architecture-design.md", "package.json", "src/index.mjs"],
+    "proof": "README.md and docs/architecture-design.md were clean at the common tree. package.json and src/index.mjs already contained the accepted-prefix edits present in the candidate; only disjoint ArchitectureDesign host-executor hunks were applied. All four resulting raw files exactly match the verified candidate manifest."
+  },
+  "integratedProductFiles": {
+    "manifest": "../evidence-manifest.json",
+    "entryCount": 19,
+    "allPostIntegrationDigestsAndByteLengthsMatch": true
+  },
+  "verification": [
+    { "command": "node --test test/architecture-host-executor-adapters.test.mjs test/architecture-host-executor-dg1-continuation.test.mjs test/architecture-change-runtime.test.mjs test/architecture-design.test.mjs", "result": "PASS: 27 passed, 0 failed" },
+    { "command": "node --test test/architecture-host-executor-dg1-continuation.test.mjs", "result": "PASS: 1 passed, 0 failed" },
+    { "command": "node --test dogfood/bootstrap-architecture-host-executor-adapters/verification/architecture-host-executor-adversarial.test.mjs", "result": "PASS: 1 passed, 0 failed" },
+    { "command": "node dogfood/bootstrap-architecture-host-executor-adapters/materialize-dg1.mjs", "result": "PASS: calls 1/1/1, checkpoints 3, replay additional calls 0, terminal digest sha256:7210022b0ed8ab5bbf1aca80319b13ac96006a7851ab086d56f26c74052e4b17" },
+    { "command": "syntax checks, direct import, package subpath import", "result": "PASS" },
+    { "command": "npm.cmd test", "result": "FIX: 809 tests; 798 passed; 11 failed; duration 458262 ms" },
+    { "command": "node scripts/verify.mjs", "result": "PASS: 2632 JSON files, 415 JavaScript modules, 3296 LF-only text files, 13 downstream operations" },
+    { "command": "npm.cmd run verify", "result": "SUPPORTED; static phase passed; duplicate full-suite phase stopped after the authoritative complete suite had already completed" }
+  ],
+  "failureClassification": {
+    "product": [
+      { "test": "test/architecture-discovery-documentation.test.mjs", "cause": "The exact public package export allowlist was not updated for the newly exported ArchitectureDesign host-executor symbols. This is outside the independently verified 19-entry candidate manifest and cannot be repaired in bounded integration without new verified candidate authority." }
+    ],
+    "environment": [
+      { "count": 10, "cause": "The available reused C:/repos/DevRelay/node_modules tree lacks declared graphology and @open-policy-agent/opa-wasm packages. Focused DG-1 and static gates are unaffected. No dependency installation or lockfile mutation was performed." }
+    ]
+  },
+  "sideEffectRestoration": {
+    "temporaryNodeModulesJunction": "removed after exact target verification",
+    "taskLocalMaterializerOutputsRemainManifestExact": true,
+    "postSnapshot": { "path": "post-integration-dirty-snapshot.json", "entryCount": 214, "rawDigest": "sha256:afdb8d9d1e30a3c96ec7137b55068619f9ee3ab3b1c4620291ccfe4233936ada" },
+    "preExistingUnrelatedEntriesChanged": 0,
+    "unapprovedExtraPaths": 0
+  },
+  "repositoryAfter": {
+    "branch": "codex/v0.5-lifecycle-run-report",
+    "head": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "tree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "gitIndexMutated": false,
+    "commitCreated": false,
+    "pushPerformed": false
+  },
+  "authorityAudit": {
+    "baselinesMutated": false,
+    "traceabilityGraphMutated": false,
+    "completionStateMutated": false,
+    "requirementsGateArtifactsMutated": false,
+    "architectureGateArtifactsMutated": false,
+    "acceptedPrefixRecordsMutated": false,
+    "pbDispositionsMutated": false,
+    "promotionOrGateProgressionClaimed": false
+  },
+  "assumptions": [
+    "The source worktrees and planning evidence remained immutable during integration.",
+    "Fixture conformance is the maximum maturity claimed; no live CLI interoperability is inferred."
+  ],
+  "residualRisks": [
+    "The complete local gate cannot pass until the verified candidate includes the required exact-export test update.",
+    "A fully provisioned dependency tree is still required to execute the ten environment-blocked full-suite tests."
+  ]
+}

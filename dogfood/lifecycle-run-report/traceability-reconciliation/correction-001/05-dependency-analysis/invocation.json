@@ -1,0 +1,34 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "PlanningModuleInvocation",
+  "executionId": "RUN-TRACE-WORK-DEPENDENCY-ANALYSIS-001",
+  "stage": "work-dependency-analysis",
+  "operation": "analyze-dependencies",
+  "inputBindings": [
+    {
+      "artifactId": "WBB-WB-DOGFOOD",
+      "kind": "WorkBreakdownBaseline",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/04-work-breakdown/work-breakdown-baseline.json",
+      "digest": "sha256:cd1e837fcdaad7a9ba77e52e7558a43bd3309707f4828c2de0ecbc6f09cca957"
+    }
+  ],
+  "adapterBindings": [
+    {
+      "pluginId": "native-structured-dependency-proposer",
+      "version": "0.1.0",
+      "maturity": "local-runtime"
+    },
+    {
+      "pluginId": "spec-kit-dependency-reviewer",
+      "version": "0.1.0",
+      "maturity": "bounded-contract-fixture",
+      "liveUpstreamInvoked": false
+    },
+    {
+      "pluginId": "opa-policy",
+      "version": "1.10.0",
+      "maturity": "local-wasm"
+    }
+  ],
+  "initiatedBy": "approved-change-delegation"
+}

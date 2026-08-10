@@ -1,11 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { pathToFileURL } from "node:url";
 import { canonicalJsonDigest } from "../../../../../../src/content-digest.mjs";
+import * as candidate from "../../../../../../src/lifecycle-run-report-markdown.mjs";
 
-const workerRoot = "C:/Users/garre/.codex/worktrees/5ab3/DevRelay-v04-work-dependency-analysis";
-const candidate = await import(pathToFileURL(`${workerRoot}/src/lifecycle-run-report-markdown.mjs`));
 const ref = artifactId => ({ artifactId, digest: canonicalJsonDigest({ artifactId }) });
 const seal = (value, field) => ({ ...value, [field]: canonicalJsonDigest(Object.fromEntries(Object.entries(value).filter(([key]) => !["apiVersion", "kind", field].includes(key)))) });
 const metric = name => ({ name, availability:"measured", value:1, unit:"milliseconds", provenance:{ kind:"host", artifact:ref(`clock-${name}`) } });

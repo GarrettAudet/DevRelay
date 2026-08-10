@@ -1,5 +1,40 @@
 # RequirementsGathering `0.1.0`
 
+## Executable OpenSpec adapter
+
+The package exports `createOpenSpecRequirementsAdapter` (and the equivalent
+`OpenSpecRequirementsAdapter` class) from the root surface and from
+`devrelay/adapters/openspec-requirements`. This is the executable binding for
+`requirements-gathering@0.1.0` / `openspec@0.1.0`.
+
+The adapter is provider-neutral. A host supplies `executeCapability(request)`
+(or the `executor` alias), `loadArtifact(reference)`, and
+`persistArtifact(...)` ports. Core owns effect checkpointing: a fresh effect
+calls the capability executor exactly once, while exact checkpoint replay does
+not invoke the adapter or executor. Clarification resumes carry the exact
+request, response, and continuation artifacts without native or conversational
+session memory.
+
+For establishment, the executor returns a bounded `OpenSpecRequirementsProposal` or
+`OpenSpecRequirementsClarification` envelope and exact native proposal/spec
+bytes. Every response must echo the capability binding. Provider fields,
+operation or route selection, Gate/promotion assertions, graph operations,
+unbound sources, malformed native paths, and binding substitution fail closed.
+
+For baseline revision, the invocation must carry the exact approved
+`RequirementsBaseline` and `ProjectOverviewBaseline` pair. The same bounded
+proposal response supplies only the full replacement body. The adapter validates
+the prior pair, derives the exhaustive lexically sorted requirements diff,
+constructs `RequirementsChangeSet`, derives the project-overview projection and
+its exhaustive diff/disposition, and emits the paired
+`ProjectOverviewChangeSetDraft`. Pair drift, stale projections, no-op revisions,
+or a greenfield outcome against baseline inputs fail closed.
+
+Maturity is **reusable executable adapter with a host-supplied capability
+executor** for both new-baseline establishment and approved-baseline revision,
+including clarification/resume. It does not invoke or prove interoperability
+with the OpenSpec CLI.
+
 ## Responsibility
 
 `RequirementsGathering` turns an explicit goal and project context into a typed

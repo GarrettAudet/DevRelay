@@ -107,9 +107,9 @@ test("V1 lifecycle requirements candidate is exact, low-churn, and replayable", 
   await Promise.all([
     add(invocation.inputs.goal[0].artifactId, "goal.json"),
     add(invocation.inputs["project-context"][0].artifactId, "project-context.json"),
-    add(
+    bytesByArtifactId.set(
       invocation.inputs["repository-snapshot"][0].artifactId,
-      "repository-snapshot.json",
+      await readFile(new URL("dogfood/contract-generation/repository-snapshot.json", root)),
     ),
     add(
       invocation.inputs["requirements-baseline"][0].artifactId,

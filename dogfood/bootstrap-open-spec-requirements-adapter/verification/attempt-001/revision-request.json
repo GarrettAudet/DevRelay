@@ -1,0 +1,23 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemRevisionRequest",
+  "revisionRequestId": "bootstrap-open-spec-requirements-adapter-revision-001",
+  "workItemId": "bootstrap-open-spec-requirements-adapter-001",
+  "attempt": 1,
+  "decision": "fix",
+  "blockingCode": "RG-OPEN-SPEC-CHANGE-NORMALIZATION-MISSING",
+  "summary": "Implement the released existing-baseline path inside the reusable adapter; the declared residual boundary cannot be accepted.",
+  "requiredChanges": [
+    "Support both establish-baseline and revise-baseline operations exactly as declared by RequirementsGathering, without adapter-selected routing.",
+    "When exact RequirementsBaseline and ProjectOverviewBaseline inputs are present, normalize the native full replacement into a valid RequirementsChangeSet and paired ProjectOverviewChangeSetDraft instead of greenfield drafts.",
+    "Bind both candidates to the exact prior raw-byte digests and all exact base inputs.",
+    "Compute the exhaustive canonical requirements changedSections and project-overview changedSections; derive changeDisposition, including unchanged projection sections, in adapter/runtime code rather than hand-authored host logic.",
+    "Add a verifier-reproducible test where a checkpoint-bound clarification response approves ArchitectureRevisionRequest against existing baselines and the terminal result passes the released change-set outcome contract.",
+    "Retain native OpenSpec proposal/spec artifacts and provenance and preserve all existing provider, authority, binding, lineage, replay, and package-surface guarantees."
+  ],
+  "forbiddenWorkarounds": [
+    "returning RequirementsDraft or ProjectOverviewDraft for a baseline-bound invocation",
+    "delegating canonical change-set construction or changed-section computation to hand-authored host logic",
+    "adding Gate, graph, routing, promotion, provider-call, or feature-specific authority"
+  ]
+}

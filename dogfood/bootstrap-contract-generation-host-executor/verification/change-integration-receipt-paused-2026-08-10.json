@@ -1,0 +1,110 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChangeIntegrationReceipt",
+  "receiptId": "dg1-contract-generation-route-b-change-integration-2026-08-10",
+  "incrementId": "DGI-LIFECYCLE-RUN-REPORT-2026-08-10",
+  "status": "closed-paused",
+  "outcome": "PAUSED",
+  "scope": "Bounded ChangeIntegration of the independently verified ContractGeneration host generator and Route B lineage correction only.",
+  "sources": {
+    "candidateRoot": "C:/Users/garre/.codex/worktrees/626b/DevRelay-v04-work-dependency-analysis",
+    "verifierRoot": "C:/Users/garre/.codex/worktrees/ef22/DevRelay-v04-work-dependency-analysis",
+    "originalImmutableManifest": { "byteLength": 4652, "rawDigest": "sha256:6dddece4148cee24389595e2d971993f859f62df2fb0fd4da9fc1f00416bd311" },
+    "routeBHumanAnalysis": { "byteLength": 8948, "rawDigest": "sha256:981ab4dd7472108506e20d2d65d7236a015c2c57816b3a1e07f2c95f6c0a75a2" },
+    "routeBMachineAnalysis": { "byteLength": 16728, "rawDigest": "sha256:a088dceb7c94cab1b69565e945588c35fd4e9816bce4b03a9d5b58a9da0989df" },
+    "replacementManifest": { "byteLength": 4914, "rawDigest": "sha256:80882dc2fdbe1178f2728812175eebb5cde8ccaf97957076142f8e6c1861b8f0", "entryCount": 20, "allEntriesValidatedBeforeAndAfter": true },
+    "workExecutionHandoff": { "byteLength": 1979, "rawDigest": "sha256:97a319c40822ceb3572a8ceef9debec8e821670bdefe2a327b41afab4b38edba" },
+    "independentPassHandoff": { "byteLength": 9699, "rawDigest": "sha256:fc21173074510c478a34f1f406569f1e2412c33b208413d3d6ec0db6ebc74140" },
+    "existingArchitectureIntegrationReceipt": "sha256:86a907932a4c897a5ea5523038c6c0987ab27abc32d49fa68cb124b66244d489"
+  },
+  "lineage": {
+    "route": "B",
+    "originalEvidenceImmutable": true,
+    "replacementSupersedesOriginal": true,
+    "selector": "entry?.contractGeneration?.required === true",
+    "totalArchitectureInterfaces": 57,
+    "selectedRequiredInterfaces": 48,
+    "excludedInternalInterfaces": 9,
+    "contractGateAction": false
+  },
+  "repositoryBefore": {
+    "branch": "codex/v0.5-lifecycle-run-report",
+    "head": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "tree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "upstream": "origin/codex/v0.5-lifecycle-run-report",
+    "divergence": { "behind": 0, "ahead": 0 },
+    "dirtySnapshot": { "path": "pre-integration-dirty-snapshot.json", "entryCount": 228, "rawDigest": "sha256:68ec9cc74da1787ac2d8ec78f457a60400ef3c028377eb141e4cb8875d451d00" }
+  },
+  "integration": {
+    "commonHead": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "newFilesCopiedExact": true,
+    "sharedFiles": [
+      { "path": "package.json", "proof": "Saved and candidate deltas from common HEAD were disjoint; added only the contract-generation adapter subpath while preserving prior adapter exports and custom test command." },
+      { "path": "src/index.mjs", "proof": "Saved and candidate deltas from common HEAD were disjoint; added only the three-symbol ContractGeneration host-adapter export block." }
+    ],
+    "integratedProductManifest": "sha256:80882dc2fdbe1178f2728812175eebb5cde8ccaf97957076142f8e6c1861b8f0",
+    "terminalCandidate": { "artifactId": "CCS-DC7A978C15992619", "byteLength": 50648, "rawDigest": "sha256:361173cb70a33c2631daef341512cd5115f806b25cd9a48b759cc612968e2d2b" },
+    "runtimeProof": "sha256:a4c03f4b080e4e11360ea79bcf581c490c4df5d32d4a05d8ac42fe45666e0647",
+    "correctedCapabilityGap": "sha256:e2895d4d59e3fc8f99715fcb4731215f68bcc0115fb05124d9d4a6c6b5f2c107"
+  },
+  "verification": [
+    { "name": "focused selector, adapter, runtime, change, canonical, surface, and adversarial tests", "result": "PASS: 20 passed, 0 failed, 1 intentional no-environment skip; explicit continuation separately passed" },
+    { "name": "explicit DG-1 continuation", "result": "PASS: 1 passed, 0 failed" },
+    { "name": "two materializations", "result": "PASS: each 1 call, 1 checkpoint, 0 replay calls; identical manifest and terminal digest" },
+    { "name": "syntax, direct adapter import, package subpath, exact public surfaces", "result": "PASS for adapter/subpath/surface; whole-root import environment-limited by missing graphology" },
+    { "name": "static verifier", "result": "PASS: 2649 JSON files, 421 JavaScript modules, 3320 LF-only text files, 13 downstream operations" },
+    { "name": "authoritative complete custom suite, single run", "result": "ENVIRONMENT-LIMITED: 821 tests, 810 passed, 10 failed, 1 skipped; all 10 failures are pre-existing missing graphology or @open-policy-agent/opa-wasm dependency failures" }
+  ],
+  "environmentLimitations": {
+    "supportedMatrixFullSuiteGreen": false,
+    "dependencyRuntime": "Temporary junction to existing C:/repos/DevRelay/node_modules; removed after the run.",
+    "missingDependencies": ["graphology", "@open-policy-agent/opa-wasm"],
+    "networkOnlyStructurizr": "External Structurizr validation remains unavailable under sandbox network policy; no live interoperability claim is made.",
+    "newProductRegressionObserved": false
+  },
+  "preservation": {
+    "preExistingUnrelatedEntriesChanged": 0,
+    "allUnrelatedBytesReauditedAgainstCandidateCommon-state": true,
+    "acceptedPrefixPreserved": true,
+    "lifecycleRunReportWorkPreserved": true,
+    "generatedSideEffectsRestoredOrManifestExact": true,
+    "temporaryDependencyJunctionRemoved": true,
+    "postSnapshot": { "path": "post-integration-dirty-snapshot.json", "entryCount": 249, "rawDigest": "sha256:6776b2971e46166f4427346857772518fad7671ae48664da20ca66e26929d9bc" }
+  },
+  "repositoryAfter": {
+    "branch": "codex/v0.5-lifecycle-run-report",
+    "head": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "tree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "indexMutated": false,
+    "commitCreated": false,
+    "pushPerformed": false
+  },
+  "authorityProof": {
+    "contractGateOrPromotion": false,
+    "baselineMutation": false,
+    "traceabilityGraphMutation": false,
+    "completionMutation": false,
+    "acceptedPrefixMutation": false,
+    "pbMutation": false,
+    "downstreamModuleImplementation": false
+  },
+  "assumptions": [
+    "The reviewed Mode 2 audit package is lifecycle and promotion authority and contains none of the nine disputed interface IDs.",
+    "Fixture-conformant generation is the maximum maturity claimed; no live provider interoperability is inferred."
+  ],
+  "residualRisks": [
+    "ContractGate has not reviewed or promoted CCS-DC7A978C15992619.",
+    "A fully provisioned dependency environment is still required for a supported-matrix green complete-suite proof.",
+    "No live provider or external Structurizr service was executed."
+  ],
+  "pauseCheckpoint": {
+    "requested": true,
+    "safeBoundary": "Integration bytes, verifier evidence, two deterministic materializations, focused verification, static verification, the single complete custom-suite run, junction cleanup, and unrelated dirty-byte preservation audit are complete. No command is running.",
+    "pendingChecks": [
+      "On explicit resume only, re-read this receipt and verify its sidecar before deciding whether any additional closure check is required.",
+      "A supported-matrix complete-suite run remains pending until graphology and @open-policy-agent/opa-wasm are available; do not represent the current environment-limited run as supported-matrix green.",
+      "ContractGate review and any promotion remain separate, unauthorized future work."
+    ],
+    "preciseResumeAction": "Verify change-integration-receipt.sha256, confirm branch/HEAD/tree and unrelated dirty bytes still match this checkpoint, then continue only the explicitly authorized ChangeIntegration closure or stop for separate ContractGate authority. Do not rerun completed checks unless drift is detected or the user explicitly requests it."
+  }
+}

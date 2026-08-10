@@ -21,11 +21,11 @@ const expected = Object.freeze({
 
 const paths = Object.freeze({
   candidate:
-    "dogfood/lifecycle-run-report/architecture-design/architecture-change-set-draft.json",
+    "dogfood/lifecycle-run-report/architecture-design/fixture-history/promoted-architecture-change-set-draft.json",
   gateReview:
-    "dogfood/lifecycle-run-report/architecture-design/architecture-gate-candidate.md",
+    "dogfood/lifecycle-run-report/architecture-design/fixture-history/promoted-architecture-gate-candidate.md",
   conformance:
-    "dogfood/lifecycle-run-report/architecture-design/structurizr-conformance-proof.json",
+    "dogfood/lifecycle-run-report/architecture-design/fixture-history/promoted-structurizr-conformance-proof.json",
   approval:
     "dogfood/lifecycle-run-report/architecture-design/architecture-gate-owner-approval.json",
   baseline:

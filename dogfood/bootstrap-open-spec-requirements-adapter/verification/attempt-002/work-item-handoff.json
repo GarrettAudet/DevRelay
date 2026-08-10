@@ -1,0 +1,65 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkItemHandoff",
+  "workItemId": "bootstrap-open-spec-requirements-adapter-001",
+  "attempt": 2,
+  "status": "repair-complete",
+  "lineage": {
+    "revisionRequestRawDigest": "sha256:54a16f512e99442366f69b60fe0f0ec2046094390d5bed2f76d0afa9cad6610d",
+    "verificationEvidenceRawDigest": "sha256:c38489a1f932159592c5003595155b6d51b8f8bd932031d0409f9e1f0063a2c7",
+    "attempt001HandoffRawDigest": "sha256:6c708a888383c95cf6ec22ac05ec50df9e90be3707e21a83ed892d42a2e11380",
+    "blockingCodeResolved": "RG-OPEN-SPEC-CHANGE-NORMALIZATION-MISSING"
+  },
+  "changedFiles": [
+    { "path": "src/openspec-requirements-adapter.mjs", "rawDigest": "sha256:3937e2a9e7abbedd9dc8d16ae840bffb02d78fbf409a9b5b348e556d1958192d" },
+    { "path": "test/openspec-requirements-adapter.test.mjs", "rawDigest": "sha256:a43203168b694ba61b9d79f3b1940c77bba2c42dd3db9363f774067d56f947e3" },
+    { "path": "docs/requirements-gathering.md", "rawDigest": "sha256:9cf395d3d0eb107c92ad79a5d7491c214f06ee839b0a02659548777737186fa5" },
+    { "path": "dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/attempt-contract.json", "rawDigest": "sha256:b11dec84202830b29ab247e8e41553ce4ab213567c81ec283c438669b367a413" },
+    { "path": "dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/verifier-regression.test.mjs", "rawDigest": "sha256:760e0d89d827a8fbefb64e8d27b17784e6baec2868371d52ec3acc0ee85f874a" }
+  ],
+  "repair": [
+    "The reusable adapter now implements both semantic RequirementsGathering paths: new-baseline establishment and exact approved-baseline revision.",
+    "Baseline revision validates and binds the exact RequirementsBaseline and ProjectOverviewBaseline raw references and verifies their canonical projection relationship.",
+    "A bounded host OpenSpec full replacement is normalized inside the adapter to RequirementsChangeSet and paired ProjectOverviewChangeSetDraft.",
+    "Requirements and project-overview changedSections and changeDisposition are derived deterministically and exhaustively from canonical prior/replacement bodies.",
+    "Pair drift, stale projection, missing pair members, no-op revision, greenfield outcome, hidden context, provider substitution, and authority-bearing output fail closed.",
+    "ArchitectureRevisionRequest clarification resumes without conversational memory and returns change_set_drafted through the released runtime.",
+    "Native proposal/spec bytes and provenance remain digest bound; executor calls remain one fresh and zero replay."
+  ],
+  "testEvidence": [
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs",
+      "result": "pass",
+      "counts": { "passed": 6, "failed": 0 }
+    },
+    {
+      "command": "node --test dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/verifier-regression.test.mjs",
+      "result": "pass",
+      "counts": { "passed": 6, "failed": 0 },
+      "note": "Attempt-002 regression entrypoint links the independently supplied attempt-001 fixture digest and executes the corrected released-runtime assertions."
+    },
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs test/requirements-runtime.test.mjs test/requirements-runtime-lineage.test.mjs test/project-overview-runtime.test.mjs test/project-overview.test.mjs test/openspec-bounded-schemas.test.mjs test/module-contract.test.mjs test/contract-hardening.test.mjs test/schema-enforcement.test.mjs",
+      "result": "pass",
+      "counts": { "passed": 55, "failed": 0 }
+    },
+    {
+      "command": "node --check src/openspec-requirements-adapter.mjs and git diff --check on attempt-002 paths",
+      "result": "pass"
+    }
+  ],
+  "maturity": "reusable executable OpenSpec RequirementsGathering adapter with host-supplied capability executor; no OpenSpec CLI interoperability claim",
+  "residualLimits": [
+    "The host capability executor remains responsible for obtaining bounded native OpenSpec output.",
+    "Durable atomic artifact and checkpoint persistence remains a host responsibility.",
+    "Known unrelated dirty worktree files were preserved and excluded from this handoff."
+  ],
+  "stateMutations": {
+    "baselines": false,
+    "traceabilityGraph": false,
+    "completionState": false,
+    "integrated": false,
+    "committed": false,
+    "pushed": false
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationEvidence",
+  "verificationId": "bootstrap-open-spec-requirements-adapter-verification-attempt-001",
+  "subject": {
+    "workItemId": "bootstrap-open-spec-requirements-adapter-001",
+    "handoffPath": "dogfood/bootstrap-open-spec-requirements-adapter/work-item-handoff.json",
+    "handoffRawDigest": "sha256:6c708a888383c95cf6ec22ac05ec50df9e90be3707e21a83ed892d42a2e11380"
+  },
+  "candidateIntegrity": {
+    "allDeclaredRawDigestsMatch": true,
+    "declaredFiles": 7,
+    "candidateBytesMutated": false
+  },
+  "scopeReview": {
+    "declaredCandidateFilesWithinBootstrapScope": true,
+    "unrelatedPreExistingWorktreeChangesExcluded": true,
+    "notes": "The candidate handoff lists only the task contract, context receipt, adapter, public exports, package surface, focused test, and requirements documentation. Other dirty worktree paths were not attributed to this candidate."
+  },
+  "tests": [
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs",
+      "result": "pass",
+      "counts": { "passed": 4, "failed": 0 },
+      "environment": "verifier copy of exact candidate bytes under the saved project, resolving the saved project's local Ajv dependency"
+    },
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs test/requirements-runtime.test.mjs test/requirements-runtime-lineage.test.mjs test/openspec-bounded-schemas.test.mjs test/module-contract.test.mjs test/contract-hardening.test.mjs test/schema-enforcement.test.mjs",
+      "result": "pass",
+      "counts": { "passed": 42, "failed": 0 }
+    },
+    {
+      "command": "node --test dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-001/existing-baseline-architecture-revision.test.mjs",
+      "result": "defect-reproduced",
+      "counts": { "passed": 1, "failed": 0 },
+      "finding": "After an exact clarification response approving ArchitectureRevisionRequest with both approved baselines bound, the adapter returns outcome drafted with RequirementsDraft and ProjectOverviewDraft and emits neither RequirementsChangeSet nor ProjectOverviewChangeSetDraft."
+    }
+  ],
+  "acceptedBehavior": [
+    "provider-neutral host executor and no provider calls",
+    "fresh arbitrary goals and clarification issuance",
+    "checkpoint-bound cross-invocation continuation",
+    "native OpenSpec bytes and provenance retention",
+    "strict binding, provider, authority, and lineage checks exercised by focused tests",
+    "one executor call for fresh effects and zero on exact Core replay",
+    "no Gate, graph, routing, or promotion authority",
+    "public package export and bounded maturity documentation"
+  ],
+  "blockingFindings": [
+    {
+      "code": "RG-OPEN-SPEC-CHANGE-NORMALIZATION-MISSING",
+      "severity": "error",
+      "summary": "The reusable adapter implements only greenfield draft normalization.",
+      "evidence": [
+        "MODULE is hard-coded to operation gather instead of supporting the module's establish-baseline and revise-baseline operation semantics.",
+        "proposalResult always constructs RequirementsDraft and ProjectOverviewDraft even when requirements-baseline and project-overview-baseline are exact invocation inputs.",
+        "No candidate code constructs or validates RequirementsChangeSet or ProjectOverviewChangeSetDraft, binds exact prior digests, or computes exhaustive changed sections.",
+        "The released runtime rejects a full-draft outcome for a baseline-bound invocation, so the adapter cannot complete the actual revise-baseline circuit."
+      ]
+    }
+  ],
+  "decision": "fix",
+  "promotionAuthorized": false
+}

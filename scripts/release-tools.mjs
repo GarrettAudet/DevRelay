@@ -245,7 +245,7 @@ export function runTests() {
   // Dogfood tests replay and promote exact shared project baselines. Running
   // test files concurrently lets independent lifecycle runs overwrite those
   // shared fixtures and makes verification depend on scheduler timing.
-  run(process.execPath, ["--test", "--test-concurrency=1"]);
+  run(process.execPath, ["scripts/run-tests.mjs", "--test-concurrency=1"]);
 }
 
 export function runVerification() {

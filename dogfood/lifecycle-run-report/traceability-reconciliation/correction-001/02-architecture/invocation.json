@@ -1,0 +1,45 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "PlanningModuleInvocation",
+  "executionId": "RUN-TRACE-ARCHITECTURE-DESIGN-001",
+  "stage": "architecture-design",
+  "operation": "design-change",
+  "inputBindings": [
+    {
+      "artifactId": "requirements-baseline-devrelay-v1-run-traceability-001",
+      "kind": "RequirementsBaseline",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/01-requirements/requirements-baseline.json",
+      "digest": "sha256:fe7235914e037cd1dd985fc0f57b8756d456cbccfb8c5dbacf9f30c35184adf5"
+    },
+    {
+      "artifactId": "project-overview-baseline-devrelay-v1-run-traceability-001",
+      "kind": "ProjectOverviewBaseline",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/01-requirements/project-overview-baseline.json",
+      "digest": "sha256:ad13f91aedc17052a0bf41faf633e387345a98fd1727c0db69ee1887ea523bea"
+    }
+  ],
+  "adapterBindings": [
+    {
+      "pluginId": "openspec-design",
+      "version": "0.1.0",
+      "step": "designer",
+      "maturity": "bounded-contract-fixture",
+      "liveUpstreamInvoked": false
+    },
+    {
+      "pluginId": "structurizr",
+      "version": "0.1.0",
+      "step": "modeler",
+      "maturity": "local-conformance-fixture",
+      "liveUpstreamInvoked": false
+    },
+    {
+      "pluginId": "madr",
+      "version": "0.1.0",
+      "step": "decision-recorder",
+      "maturity": "bounded-contract-fixture",
+      "liveUpstreamInvoked": false
+    }
+  ],
+  "initiatedBy": "approved-change-delegation"
+}

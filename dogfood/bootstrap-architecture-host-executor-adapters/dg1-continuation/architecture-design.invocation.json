@@ -1,0 +1,180 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "architecture-design-dg1-prefix-integrity-repair",
+  "runId": "dg1-prefix-integrity-repair",
+  "nodeId": "architecture-design",
+  "module": {
+    "id": "architecture-design",
+    "version": "0.1.0",
+    "operation": "design-change"
+  },
+  "adapters": [
+    {
+      "step": "designer",
+      "plugin": {
+        "id": "openspec-design",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "1.0",
+        "changeName": "prefix-integrity-repair-dg1",
+        "schema": "devrelay-architecture",
+        "artifact": "design.md",
+        "bridge": "agent-command",
+        "toolName": "OpenSpec"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/openspec/changes"
+        },
+        {
+          "kind": "network.connect",
+          "scope": "host:implementation-engine"
+        }
+      ]
+    },
+    {
+      "step": "modeler",
+      "plugin": {
+        "id": "structurizr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "2026.06.28",
+        "workspacePath": "dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/workspace.dsl",
+        "exportFormat": "static",
+        "toolName": "Structurizr DSL"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/architecture"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "structurizr-export"
+        }
+      ]
+    },
+    {
+      "step": "decision-recorder",
+      "plugin": {
+        "id": "madr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "templateVersion": "4.0",
+        "decisionsPath": "C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation",
+        "toolName": "MADR",
+        "toolVersion": "4.0"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "project-architecture-state": [
+      {
+        "artifactId": "project-architecture-state-dg1-prefix-integrity-repair",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:b10fd14f6c9c684e87194c156f165a40c18ef91e3f1a084ff4bf96d7eed0df53",
+        "uri": "file:///C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/project-architecture-state.json"
+      }
+    ],
+    "routing-decision": [
+      {
+        "artifactId": "module-route-decision-dg1-prefix-integrity-repair",
+        "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+        "mediaType": "application/vnd.devrelay.module-route-decision+json",
+        "digest": "sha256:7b7465d29239899b1aa50bfe329cb974824217d37def7e6d91722844ec9532f7",
+        "uri": "file:///C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/module-route-decision.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-prefix-integrity-repair-11d431aed58a530d97c1a34b",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:1e1b13dcd5ad89ae7ab6738b4f7ff8174d28c78b80741587f715e741c11532ec",
+        "uri": "file:///C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/requirements-baseline.planning-evidence.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-prefix-integrity-repair-2db85f4cfc7a07bb9a523942",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:f6891f26e82d6d3315cdaba151f18c0e911de7b5cb1b7b8f8ccb3767f2cb4100",
+        "uri": "file:///C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/project-overview-baseline.planning-evidence.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "devrelay-prefix-integrity-repair",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:fa610d45399a34d8ab5781b70aa866f4a04228430777a77b2cf5ea15ad1c9b7b",
+        "uri": "file:///C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/repository-snapshot.json"
+      }
+    ],
+    "architecture-baseline": [
+      {
+        "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+        "uri": "file:///C:/repos/DevRelay/dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation/architecture-baseline.json"
+      }
+    ],
+    "architecture-baseline-project-context": [
+      {
+        "artifactId": "project-context-devrelay-architecture-discovery-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:98553600fd8344af9db86eddfdc832dc6ab1997034fbe730e06c9ea787037478",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/project-context.json"
+      }
+    ],
+    "architecture-baseline-repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/repository-snapshot.json"
+      }
+    ]
+  },
+  "options": {}
+}

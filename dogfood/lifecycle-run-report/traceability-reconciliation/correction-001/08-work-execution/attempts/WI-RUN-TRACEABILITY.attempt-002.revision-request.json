@@ -1,0 +1,96 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemRevisionRequest",
+  "requestId": "WIRR-WI-RUN-TRACEABILITY-002",
+  "workItemId": "WI-RUN-TRACEABILITY",
+  "predecessorExecutionId": "WE-RUN-TRACEABILITY-ATTEMPT-001",
+  "requestedExecutionId": "WE-RUN-TRACEABILITY-ATTEMPT-002",
+  "route": "fix",
+  "attempt": 2,
+  "bindings": {
+    "taskContract": {
+      "artifactId": "WETC-WI-RUN-TRACEABILITY-001",
+      "digest": "sha256:145d9a2f4883680edc1e26c13f7b53a4c4a3abb96fea6ca5024483f7f41d8b38",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/08-work-execution/WI-RUN-TRACEABILITY.attempt-001.task.json"
+    },
+    "rawHandoff": {
+      "artifactId": "WI-RUN-TRACEABILITY.attempt-001.handoff.raw.json",
+      "digest": "sha256:ab336b2ba95cc5f4e65cc3a167f1627f2a15ea0fd779f3f896655b05449ccfe5",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/08-work-execution/WI-RUN-TRACEABILITY.attempt-001.handoff.raw.json"
+    },
+    "candidate": {
+      "artifactId": "WIVC-RUN-TRACEABILITY-001",
+      "digest": "sha256:cf438796eceba9405f86464528d0d85e8e3d2247adc758972156cdd145304cf8",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/09-work-item-verification/artifacts/gate-candidate.json"
+    },
+    "evidence": {
+      "artifactId": "NVE-RUN-TRACEABILITY-001",
+      "digest": "sha256:5d68010a774a6abc666bb01487e93c7ac0d9e95124e8b4d878b07b17f5572691",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/09-work-item-verification/artifacts/normalized-evidence.json"
+    },
+    "gateRejection": {
+      "artifactId": "WIVGR-RUN-TRACEABILITY-001",
+      "digest": "sha256:a3d905eccb18079a4b02c238265a99a3fc44d0da041595782cb1ae92c6d3b3ab",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/09-work-item-verification/artifacts/gate-decision.json"
+    },
+    "checkpoint": {
+      "artifactId": "VAT-RUN-TRACEABILITY-001",
+      "digest": "sha256:68d2a532899306beb6389e8b150dfc928be9dd6f421291b064adcfce18ecb562",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/09-work-item-verification/artifacts/checkpoint.json"
+    },
+    "externalVerificationContext": {
+      "artifactId": "WI-RUN-TRACEABILITY.attempt-001.independent-adversarial.test.mjs",
+      "digest": "sha256:65af6e888ac3f41b4db964a5ce74b2b18fffb01e646bb7e08f978c5ad536b699",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/09-work-item-verification/independent-adversarial.test.mjs"
+    },
+    "repositoryState": {
+      "artifactId": "repository-snapshot-devrelay-0.9.0",
+      "digest": "sha256:93661467d24c69a9798e8c0e52ee79bc68c32fa2a2966ff413064da1e9b79e75",
+      "path": "dogfood/lifecycle-run-report/repository-snapshot.json"
+    }
+  },
+  "approvedLineage": {
+    "requirements": "sha256:fe7235914e037cd1dd985fc0f57b8756d456cbccfb8c5dbacf9f30c35184adf5",
+    "projectOverview": "sha256:ad13f91aedc17052a0bf41faf633e387345a98fd1727c0db69ee1887ea523bea",
+    "architecture": "sha256:e6a15362d942969edd8f2c452eb3a5ce6437ea3a7010f8982e1e9d2b00f17f4d",
+    "contracts": "sha256:a63a25cbcbbc9d34b3b4f090fc1c7e75a4c05f00952ddc5d7426cb7917e100f4",
+    "workBreakdown": "sha256:cd1e837fcdaad7a9ba77e52e7558a43bd3309707f4828c2de0ecbc6f09cca957",
+    "workDependency": "sha256:8ff55ee33cc2e979fe233d87244216adc9bf816cf2ce79f72dbd7dbcf811ea92",
+    "specialistAssignment": "sha256:73eb8a717bd7a6811efd29db7ee8b9707dc1fc17ba5257985bf09591438d4313",
+    "runnableFrontier": "sha256:42f3a816dae6499129db7dc22f94625c522ec4696f1720e5701175a1373f9716"
+  },
+  "fixConditions": [
+    "Accept exact persisted raw UTF-8 JSON bytes when the raw digest matches and the decoded semantic value matches the loaded value; do not require compact canonical serialization or strip or alter source bytes.",
+    "Detect and reject duplicate loaded sources before any deduplication.",
+    "Implement provider-neutral creation and validation of the declared LifecycleRunReport TraceabilityUpdateSet, TraceabilityDiagnostics, and TraceabilityMergeProof surfaces while preserving Core-only atomic merge authority, no adapter mutation, conflict safety, prior and result graph versions, update digest, execution ID, checkpoint, and idempotent replay.",
+    "Register all five new artifact kinds in the released LifecycleRunReport validator and export the contributor and reconciliation public API from src/index.mjs.",
+    "Add real-history tests using the seven actual pinned persisted source artifacts plus adversarial absence, duplicate, corrupt, substitution, lineage, maturity, ordering, conflict, replay, public-export, and validator cases. The verifier-owned suite remains read-only external evidence.",
+    "Do not integrate, mutate graph state, progress the DAG, commit, push, or run downstream verification."
+  ],
+  "workerAuthority": {
+    "allowedWritePaths": [
+      "contracts/lifecycle-run-report-artifacts.schema.json",
+      "src/lifecycle-run-report-traceability-contributor.mjs",
+      "src/lifecycle-run-report-artifact-validator.mjs",
+      "src/index.mjs",
+      "test/lifecycle-run-report-traceability.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not mutate the graph outside trusted Core merge or execute a merge during WorkExecution.",
+      "Do not give adapters graph access or operation-authoring authority.",
+      "Do not edit approved requirements, architecture, contracts, WorkBreakdown, DAG, assignment, frontier, completion facts, or verifier-owned evidence.",
+      "Do not integrate, advance lifecycle state, run downstream verification, commit, merge, tag, push, or create a pull request."
+    ]
+  },
+  "externalVerification": {
+    "required": true,
+    "workerWritable": false,
+    "artifact": {
+      "artifactId": "WI-RUN-TRACEABILITY.attempt-001.independent-adversarial.test.mjs",
+      "digest": "sha256:65af6e888ac3f41b4db964a5ce74b2b18fffb01e646bb7e08f978c5ad536b699"
+    }
+  },
+  "progressionAllowed": false,
+  "authority": "trusted-core-host"
+}

@@ -1,0 +1,50 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkItemHandoff",
+  "workItemId": "bootstrap-open-spec-requirements-adapter-001",
+  "status": "implemented-with-declared-limit",
+  "bootstrapException": "Authorized repair for a released plug-in contract that previously had fixtures and metadata but no executable reusable adapter.",
+  "maturity": "reusable executable adapter with host-supplied capability executor; no OpenSpec CLI interoperability claim",
+  "changedFiles": [
+    { "path": "dogfood/bootstrap-open-spec-requirements-adapter/task-contract.json", "rawDigest": "sha256:806486d1421dc51d41713fde9d27403b1389a2bfd04563828721df6314eca268" },
+    { "path": "dogfood/bootstrap-open-spec-requirements-adapter/context-delivery-receipt.json", "rawDigest": "sha256:4a91f1d39b54b0bd025f5f2da2d90fda75a7a25f1ca22a9883de1e5ddd076e1c" },
+    { "path": "src/openspec-requirements-adapter.mjs", "rawDigest": "sha256:ad399edddb32a6de6a2a9e12f542537676aaa2c8f7dff0fe18b7a4aa06ce4527" },
+    { "path": "src/index.mjs", "rawDigest": "sha256:ffb28bb915a61c1e5c9f5df9449833fd4128e2894651b1144b5cfeafaec17d61" },
+    { "path": "package.json", "rawDigest": "sha256:9b7055d057e6dc688bb3b457a311e5d11197136dd8e274276d735bc3082b468e" },
+    { "path": "test/openspec-requirements-adapter.test.mjs", "rawDigest": "sha256:b5f14e772c7ded0ef13d65ac8c11ed349c7bca311b075bff60eb30b5e7853ea4" },
+    { "path": "docs/requirements-gathering.md", "rawDigest": "sha256:9f1f14e71c0440da79db95457f9ee49967eafcbd47af4d20930525be3504a7c7" }
+  ],
+  "testEvidence": [
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs",
+      "result": "pass",
+      "summary": "4 tests passed: two unrelated goals, fresh/replay executor counts, clarification continuation, negative boundaries, and package surface."
+    },
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs test/requirements-runtime.test.mjs test/requirements-runtime-lineage.test.mjs test/openspec-bounded-schemas.test.mjs test/module-contract.test.mjs test/contract-hardening.test.mjs test/schema-enforcement.test.mjs",
+      "result": "pass",
+      "summary": "42 adjacent RequirementsGathering, schema, runtime-lineage, and contract tests passed."
+    },
+    {
+      "command": "node scripts/release-check.mjs",
+      "result": "environment-and-pre-existing-worktree-failures",
+      "summary": "Static verification passed. The broader spawned suite was not clean because historical verifier tests resolve other isolated worktrees without Ajv, and an ArchitectureDiscovery public-surface assertion sees unrelated pre-existing lifecycle-run-report exports in src/index.mjs."
+    }
+  ],
+  "behaviorProved": [
+    "exact requirements-gathering@0.1.0 / openspec@0.1.0 binding",
+    "host-supplied provider-neutral executor called once per fresh Core effect and never on replay",
+    "digest-verified input loading and host-controlled durable artifact persistence",
+    "strict native proposal/spec/clarification response envelope and binding echo",
+    "native byte and provenance preservation",
+    "new-goal draft and exact cross-invocation clarification continuation outcomes",
+    "rejection of missing executor, malformed output, hidden context, provider/binding substitution, and authority-bearing fields"
+  ],
+  "residualLimits": [
+    "The bootstrap slice does not normalize baseline-bound RequirementsChangeSet proposals.",
+    "The host capability executor remains responsible for obtaining native OpenSpec output; no OpenSpec CLI was invoked or proven.",
+    "Durable atomic storage remains a host responsibility.",
+    "Broad release verification is not clean for the unrelated environmental and pre-existing worktree failures recorded in testEvidence."
+  ],
+  "gitActions": { "committed": false, "pushed": false }
+}

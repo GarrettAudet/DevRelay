@@ -290,7 +290,22 @@ tests prove default-chain resolution, both operation paths, and compatible
 modeler replacement. V1 designer adapters use only the `agent-command` bridge
 and request no process-spawn capability. A future `process-json` bridge must
 ship as a separately reviewed plug-in version with explicit grants. Live CLI
-adapters are not shipped or claimed in this pass. In particular,
+CLI adapters are not shipped or claimed in this pass. Reusable host-executor
+adapters are exported from `devrelay/adapters/architecture-host-executors` for
+the exact `openspec-design@0.1.0`, `structurizr@0.1.0`, and `madr@0.1.0`
+bindings. They load only content-addressed invocation inputs and checkpointed
+prior handoffs, invoke one explicit host capability, preserve digest-bound
+native bytes plus executor/tool/model/prompt/environment identity, and validate
+a closed provider response before returning the declared handoff or terminal
+candidate. Core still owns routing, chain order, checkpoint replay, artifact
+lineage, Gate authority, and traceability. This adapter version accepts only
+provider response maturity `contract-defined` or `fixture-conformant` and
+rejects every provider-authored `live-conformant` claim. A future live binding
+requires a separately versioned Core/host-trusted execution-attestation
+contract; a provider boolean cannot grant that maturity. OpenSpec Design binds only
+`design-change/designer`, so Spec Kit remains the designer for
+`establish-baseline`; the factory does not fabricate an OpenSpec baseline
+binding. In particular,
 `structurizr-export` is a tool-neutral adapter capability name, not a
 dependency on the retired legacy Structurizr CLI distribution.
 

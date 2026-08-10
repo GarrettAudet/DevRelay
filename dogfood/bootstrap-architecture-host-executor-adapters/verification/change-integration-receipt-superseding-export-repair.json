@@ -1,0 +1,110 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChangeIntegrationReceipt",
+  "receiptId": "dg1-architecture-host-executor-change-integration-export-repair-2026-08-10",
+  "incrementId": "DGI-LIFECYCLE-RUN-REPORT-2026-08-10",
+  "workItemId": "DG-1",
+  "closed": true,
+  "outcome": "PASS",
+  "supportedMatrixFullSuiteGreen": false,
+  "supersedes": {
+    "path": "change-integration-receipt.json",
+    "byteLength": 6989,
+    "rawDigest": "sha256:3eda05f20c1e59d011d379933b165228ffadf21b46d740f6f0c14a9079bce7ef",
+    "outcome": "FIX"
+  },
+  "scope": "Bounded verified export-surface repair and evidence revision only; no promotion, baseline mutation, Gate progression, PB repair, stage, commit, or push.",
+  "sources": {
+    "candidateRoot": "C:/Users/garre/.codex/worktrees/f3a9/DevRelay-v04-work-dependency-analysis",
+    "workExecutionHandoff": { "byteLength": 9557, "rawDigest": "sha256:f1af9c21ca0f3fc2ccfbfbe23648f4e0f2245fca8228183e7de3501dc007553d" },
+    "evidenceManifest": { "byteLength": 4759, "rawDigest": "sha256:a6d9a1a961cc953dee484e46d530e984a497c18059fd9cdbedef6736c24876e8", "entryCount": 20, "allEntriesDigestLengthAndScopeValidated": true },
+    "independentPassHandoff": { "sourcePath": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis/verification/dg1-change-integration-export-reverification-handoff.json", "byteLength": 7824, "rawDigest": "sha256:bab399043fd03c7cadcaedba25fccf38c4281695ff5cb976bbefd9af4562497a" },
+    "independentPassSidecar": { "sourcePath": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis/verification/dg1-change-integration-export-reverification-handoff.sha256", "byteLength": 124, "rawDigest": "sha256:4240b9873ea70a08451a837cc44bae186b609fda9a6412b1bc11de8a1901494e" }
+  },
+  "repositoryBefore": {
+    "branch": "codex/v0.5-lifecycle-run-report",
+    "head": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "tree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "dirtySnapshot": { "path": "pre-export-repair-dirty-snapshot.json", "entryCount": 214, "rawDigest": "sha256:afdb8d9d1e30a3c96ec7137b55068619f9ee3ab3b1c4620291ccfe4233936ada" }
+  },
+  "integratedDelta": [
+    { "path": "test/architecture-discovery-documentation.test.mjs", "byteLength": 4240, "rawDigest": "sha256:eb542af0536fd810656ac4e81b9a9201c8ac325eae5dcd8d1ab930311ab8c7ee", "change": "Exact 24-name root export allowlist plus exact six-name host-executor package-subpath assertion." },
+    { "path": "dogfood/bootstrap-architecture-host-executor-adapters/evidence-manifest.json", "byteLength": 4759, "rawDigest": "sha256:a6d9a1a961cc953dee484e46d530e984a497c18059fd9cdbedef6736c24876e8", "change": "Transactional replacement manifest with prior integration FIX lineage and 20 entries." },
+    { "path": "dogfood/bootstrap-architecture-host-executor-adapters/work-execution-handoff.json", "byteLength": 9557, "rawDigest": "sha256:f1af9c21ca0f3fc2ccfbfbe23648f4e0f2245fca8228183e7de3501dc007553d", "change": "Transactional replacement handoff closing the export-surface repair." }
+  ],
+  "prefixAndOverlapProof": {
+    "candidateAndSavedHeadMatch": true,
+    "commonHead": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "testFilePreexistingDirtyChangePreserved": true,
+    "explanation": "The verified test file contains the saved project's existing three-line dirty delta and the disjoint export-surface repair. The resulting raw bytes exactly match the replacement manifest. The other 19 product entries remained manifest-exact."
+  },
+  "verification": [
+    { "command": "node --test test/architecture-host-executor-adapters.test.mjs test/architecture-host-executor-dg1-continuation.test.mjs test/architecture-change-runtime.test.mjs test/architecture-design.test.mjs test/architecture-discovery-documentation.test.mjs", "result": "PASS: 30 passed, 0 failed" },
+    { "command": "explicit continuation test", "result": "PASS: 1 passed, 0 failed" },
+    { "command": "materialize-dg1.mjs", "result": "PASS: executor calls 1/1/1, checkpoints 3, replay additional calls 0, terminal digest sha256:7210022b0ed8ab5bbf1aca80319b13ac96006a7851ab086d56f26c74052e4b17" },
+    { "command": "prior verifier adversarial test", "result": "PASS: 1 passed, 0 failed" },
+    { "command": "adapter/index/test syntax; direct adapter import; package subpath import; exact root source assertions", "result": "PASS: exact six host-executor symbols and exact 24-name root section" },
+    { "command": "node scripts/verify.mjs static phase", "result": "PASS: 2636 JSON files, 415 JavaScript modules, 3300 LF-only text files, 13 downstream operations" },
+    { "command": "npm.cmd test", "result": "ENVIRONMENT-LIMITED: 810 tests, 800 passed, 10 failed; prior ArchitectureDiscovery product failure closed" }
+  ],
+  "completeSuiteEnvironmentFailures": {
+    "count": 10,
+    "causes": [
+      "ERR_MODULE_NOT_FOUND: graphology from src/work-dependency-graph.mjs",
+      "ERR_MODULE_NOT_FOUND: @open-policy-agent/opa-wasm from src/work-dependency-opa.mjs"
+    ],
+    "tests": [
+      "test/business-acceptance-release.test.mjs",
+      "test/lifecycle-run-report-frontier.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs: dogfood candidate",
+      "test/work-dependency-analysis-dogfood.test.mjs: owner-approved promotion",
+      "test/work-dependency-failure-boundaries.test.mjs",
+      "test/work-dependency-graph.test.mjs",
+      "test/work-dependency-opa.test.mjs",
+      "test/work-dependency-runtime.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs: WIV WorkDependencyAnalysis",
+      "test/work-item-verification-release.test.mjs"
+    ],
+    "classification": "Unsupported local dependency environment; not product PASS evidence and not a green supported-matrix proof.",
+    "dependencyInstallationPerformed": false
+  },
+  "productOutcome": {
+    "priorExportSurfaceRegressionClosed": true,
+    "targetedAndStaticProductGatesPass": true,
+    "exact20EntryIntegrationPass": true,
+    "integrationOutcome": "PASS"
+  },
+  "sideEffectAndDirtyPreservation": {
+    "temporaryNodeModulesJunctionRemoved": true,
+    "materializerOutputsRemainManifestExact": true,
+    "postSnapshot": { "path": "post-export-repair-dirty-snapshot.json", "entryCount": 214, "rawDigest": "sha256:a186a41d5cd3e0ef398215afb50e1028c4b95abcfd0a8f52d083f840a5be3efd" },
+    "preExistingUnrelatedEntriesChanged": 0,
+    "unapprovedExtraPaths": 0
+  },
+  "repositoryAfter": {
+    "branch": "codex/v0.5-lifecycle-run-report",
+    "head": "3b39efb32acb7b7bedfc121b4586947595b08f7c",
+    "tree": "287e77b7d1cac52728f65973bbf39d7ac3544935",
+    "gitIndexMutated": false,
+    "commitCreated": false,
+    "pushPerformed": false
+  },
+  "authorityAudit": {
+    "baselinesMutated": false,
+    "traceabilityGraphMutated": false,
+    "completionStateMutated": false,
+    "requirementsGateArtifactsMutated": false,
+    "architectureGateArtifactsMutated": false,
+    "acceptedPrefixRecordsMutated": false,
+    "pbDispositionsMutated": false,
+    "promotionOrGateProgressionClaimed": false
+  },
+  "assumptions": [
+    "Source and verifier worktrees remained immutable during this integration.",
+    "Fixture conformance remains the maximum maturity claimed; no live CLI compatibility is inferred."
+  ],
+  "residualRisks": [
+    "A fully provisioned supported dependency environment is required for a green complete-suite proof.",
+    "No live OpenSpec, Structurizr, or MADR CLI was executed."
+  ]
+}

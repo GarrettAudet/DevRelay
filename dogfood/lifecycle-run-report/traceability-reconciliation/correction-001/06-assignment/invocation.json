@@ -1,0 +1,35 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "PlanningModuleInvocation",
+  "executionId": "RUN-TRACE-SPECIALIST-ASSIGNMENT-001",
+  "stage": "specialist-assignment",
+  "operation": "assign-specialists",
+  "inputBindings": [
+    {
+      "artifactId": "WBB-WB-DOGFOOD",
+      "kind": "WorkBreakdownBaseline",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/04-work-breakdown/work-breakdown-baseline.json",
+      "digest": "sha256:cd1e837fcdaad7a9ba77e52e7558a43bd3309707f4828c2de0ecbc6f09cca957"
+    },
+    {
+      "artifactId": "WDB-RUN-DOGFOOD-TRACEABILITY-001",
+      "kind": "WorkDependencyBaseline",
+      "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/05-dependency-analysis/work-dependency-baseline.json",
+      "digest": "sha256:8ff55ee33cc2e979fe233d87244216adc9bf816cf2ce79f72dbd7dbcf811ea92"
+    }
+  ],
+  "adapterBindings": [
+    {
+      "pluginId": "a2a-profile-source",
+      "version": "0.1.0",
+      "maturity": "bounded-snapshot-fixture",
+      "liveDiscovery": false
+    },
+    {
+      "pluginId": "native-specialist-ranker",
+      "version": "0.1.0",
+      "maturity": "local-runtime"
+    }
+  ],
+  "initiatedBy": "approved-change-delegation"
+}

@@ -1,0 +1,61 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RunnableFrontier",
+  "frontierId": "RUN-FRONTIER-TRACEABILITY-001",
+  "authoritativePriorFrontierDigest": "sha256:bf37e93b3ea375d83636a7db03073a13995d8829778f30a773d4fed7ba303617",
+  "workDependencyBaseline": {
+    "artifactId": "WDB-RUN-DOGFOOD-TRACEABILITY-001",
+    "kind": "WorkDependencyBaseline",
+    "path": "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/05-dependency-analysis/work-dependency-baseline.json",
+    "digest": "sha256:8ff55ee33cc2e979fe233d87244216adc9bf816cf2ce79f72dbd7dbcf811ea92"
+  },
+  "completionFacts": [
+    {
+      "workItemId": "WI-RUN-CONTRACTS",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-CONTRACTS.json",
+      "digest": "sha256:7826fc7d0ab3a1c3599f03eb3424f151227b76b0f57c8103f8e46ce231e3dcd9"
+    },
+    {
+      "workItemId": "WI-RUN-CONTENT-POLICY",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-CONTENT-POLICY.json",
+      "digest": "sha256:a46c79fc6fb7cfcbeb307e441630b9b55ac19288027bf55db60e15eb48c017fd"
+    },
+    {
+      "workItemId": "WI-RUN-LEDGER",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-LEDGER.json",
+      "digest": "sha256:9c58b395561faab70e47f5128e1f9f579d8ce5c40e237f6843869e971cc68e83"
+    },
+    {
+      "workItemId": "WI-RUN-OBSERVATIONS",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-OBSERVATIONS.json",
+      "digest": "sha256:2bdaaab8ffb8e2824d08ac9c1c34bc9f40dfd355b81731582abf5024fc38b04e"
+    },
+    {
+      "workItemId": "WI-RUN-FRONTIER",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-FRONTIER.json",
+      "digest": "sha256:941068f6ca1c51ef5c06abb6d14b5703efb8b2d7f9eb2fba1800bc0190697cd6"
+    },
+    {
+      "workItemId": "WI-RUN-SNAPSHOT",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-SNAPSHOT.json",
+      "digest": "sha256:7fe643792c59d0e3ab0b871d3006206e4aedc9d97854d8f02317e3c012fca29a"
+    },
+    {
+      "workItemId": "WI-RUN-MARKDOWN",
+      "path": "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-MARKDOWN.json",
+      "digest": "sha256:51129553b16418d6e7e82cf71b2778da96882732d9929516e8d2aaf4f2063670"
+    }
+  ],
+  "derivedReadyWorkItems": [
+    "WI-RUN-TRACEABILITY"
+  ],
+  "blocked": {
+    "WI-RUN-VERIFICATION": [
+      "WI-RUN-TRACEABILITY"
+    ],
+    "WI-RUN-DOCUMENTATION": [
+      "WI-RUN-VERIFICATION"
+    ]
+  },
+  "derivation": "Set subtraction plus all-prerequisites-completed over the approved static DAG; no caller-selected readiness."
+}

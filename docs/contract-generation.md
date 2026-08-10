@@ -44,6 +44,16 @@ The live V1 path is JSON Schema draft 2020-12. OpenAPI, AsyncAPI, and Protobuf
 bindings currently provide fixture-conformant manifests behind the same port;
 they are not claimed as live upstream integrations.
 
+The reusable JSON Schema host-generator factory validates the exact
+`contract-generation@0.1.0` operation, `generate` step,
+`json-schema-contract-generator@0.1.0` binding, closed configuration, and empty
+grant set. It loads only the request's content-addressed input bindings, invokes
+one explicit host capability, validates a closed response and byte-bound native
+evidence, and returns the canonical `GeneratedContractBundle` to Core. Provider
+or fixture conformance is evidence maturity only; this adapter does not accept a
+provider-authored live-conformance claim or receive Gate, graph, routing, or
+baseline authority.
+
 ## Traceability
 
 The trusted candidate contributor derives only forward

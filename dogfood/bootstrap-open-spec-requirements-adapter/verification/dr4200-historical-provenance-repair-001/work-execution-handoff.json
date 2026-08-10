@@ -1,0 +1,138 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkExecutionHandoff",
+  "handoffId": "openspec-requirements-dr4200-historical-provenance-repair-001",
+  "status": "closed",
+  "scope": "Narrow repair of the integrated reusable OpenSpec RequirementsGathering adapter after the exact DR4200 dogfood failure; ArchitectureRevisionRequest planning and lifecycle-state progression are excluded.",
+  "sourceFailureLineage": {
+    "sourceThreadId": "019fb17e-9ac6-7301-b6af-26cb97e59383",
+    "sourceWorktree": "C:/Users/garre/.codex/worktrees/3505/DevRelay-v04-work-dependency-analysis",
+    "diagnostic": {
+      "path": "dogfood/architecture-revision-request-planning-recovery-001/clarification/FAIL-CLOSED.json",
+      "rawDigest": "sha256:067dd267608bd3463dfeb1ebb49884dbf7b8954a3006d4b5633ed1c478dd68c1",
+      "code": "DR4200"
+    },
+    "executorResponse": {
+      "path": "dogfood/architecture-revision-request-planning-recovery-001/clarification/executor-response.json",
+      "rawDigest": "sha256:be882bef99ff0b2838d8d6fd55cfbd93651599a9274fab2b808d5fb6e32f9ceb"
+    },
+    "parentHandoff": {
+      "path": "dogfood/architecture-revision-request-planning-recovery-001/parent-handoff.json",
+      "rawDigest": "sha256:9b27c1944225d46c6b0eaffd5b5b3b0d14fb20109dfe79941ce684dae05f023e"
+    },
+    "invocation": {
+      "path": "dogfood/architecture-revision-request-planning-recovery-001/clarification/invocation.json",
+      "rawDigest": "sha256:a7609ffaf37c02ecbbdcebc7a8a2aaaf742b0ba600773e64eca04d490f65b383"
+    },
+    "exactInputs": {
+      "requirementsBaselineRawDigest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+      "projectOverviewBaselineRawDigest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985",
+      "repositorySnapshotRawDigest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+    }
+  },
+  "successfulIntegrationLineage": {
+    "attempt001RevisionRequestRawDigest": "sha256:54a16f512e99442366f69b60fe0f0ec2046094390d5bed2f76d0afa9cad6610d",
+    "attempt001VerificationEvidenceRawDigest": "sha256:c38489a1f932159592c5003595155b6d51b8f8bd932031d0409f9e1f0063a2c7",
+    "attempt001HandoffRawDigest": "sha256:6c708a888383c95cf6ec22ac05ec50df9e90be3707e21a83ed892d42a2e11380",
+    "attempt001RegressionRawDigest": "sha256:2cf29086c9286dce7821c4f3fed887b6048a25c072eea13b5b1d8c23592f2ad6",
+    "attempt002HandoffRawDigest": "sha256:585d4447e8142e52d34391e5bd08edddd9ef24cb4fa361488cd01f7f99a4fb36"
+  },
+  "changedFiles": [
+    {
+      "path": "src/openspec-requirements-adapter.mjs",
+      "rawDigest": "sha256:365111ac2482c824299a89075bc2773bf87e8fc6286a41af7191f84d314ca048"
+    },
+    {
+      "path": "src/requirements-runtime-contracts.mjs",
+      "rawDigest": "sha256:043b6ea72f0205477f34ff70a1980918d0c8f36270894e1057c5804f926f41fb"
+    },
+    {
+      "path": "test/openspec-requirements-adapter.test.mjs",
+      "rawDigest": "sha256:e79269ebf85d6916cb49ee674fefad441e4b289b7298775543fe9cd46706b77d"
+    },
+    {
+      "path": "dogfood/bootstrap-open-spec-requirements-adapter/verification/dr4200-historical-provenance-repair-001/minimized-source-ref-fixture.json",
+      "rawDigest": "sha256:8995089cc0e9d09f341e9a9ce969555a4a9e036c71ef083b52d7b3fe9fa59a69"
+    }
+  ],
+  "behavior": [
+    "An exact approved requirements/project-overview baseline pair contributes a closed set of whole historical sourceRef values from the approved requirements body.",
+    "A native workingRequirements body or full replacement may retain any of those sourceRefs only with exact role, artifact pointer, digest, optional location, and all other sourceRef fields unchanged.",
+    "New sourceRefs remain restricted to declared base input roles paired with exact invocation ArtifactRefs.",
+    "Clarification issuance and resume apply the same exact historical identity rule at the runtime lineage boundary.",
+    "Forbidden authority fields, provider binding, pair validation, exhaustive change validation, no-op and stale checks, executor boundary, native provenance, checkpoints, and replay behavior remain closed."
+  ],
+  "testEvidence": [
+    {
+      "command": "node --test test/openspec-requirements-adapter.test.mjs",
+      "result": "pass",
+      "counts": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    {
+      "command": "node --test dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002/verifier-regression.test.mjs",
+      "result": "pass",
+      "counts": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    {
+      "command": "node --test focused requirements, lineage, typed-contract, project-overview, bounded-schema, module-contract, hardening, and schema suites",
+      "result": "pass",
+      "counts": {
+        "passed": 74,
+        "failed": 0
+      }
+    },
+    {
+      "command": "npm.cmd test",
+      "result": "pass"
+    },
+    {
+      "command": "node --check changed runtime source files and git diff --check on repair paths",
+      "result": "pass"
+    }
+  ],
+  "acceptanceEvidence": {
+    "freshExactBaselineClarificationOutcome": "needs_clarification",
+    "clarificationOptionsAsciiSafe": true,
+    "freshExecutorCalls": 1,
+    "exactClarificationReplayAdditionalExecutorCalls": 0,
+    "approvedContinuationOutcome": "change_set_drafted",
+    "exactContinuationReplayAdditionalExecutorCalls": 0,
+    "adversarialCases": [
+      "mutated historical role",
+      "mutated historical artifactId",
+      "mutated historical digest",
+      "mutated historical location",
+      "newly injected non-base role and pointer",
+      "new base role with a non-invocation pointer",
+      "forbidden authority field",
+      "provider or binding substitution"
+    ]
+  },
+  "assumptions": [
+    "Whole-sourceRef canonical JSON identity is the required semantic identity; unchanged approved historical refs may be repeated in native working bodies without position-sensitive authorization.",
+    "The current working-tree snapshot, including the untracked integrated adapter and tests, is authoritative.",
+    "Installing package-lock-pinned dependencies into ignored node_modules for verification does not alter product or lifecycle state."
+  ],
+  "residualRisks": [
+    "Historical authorization is scoped to exact sourceRef values in the supplied approved RequirementsBaseline; it does not prove that referenced historical artifacts remain independently retrievable.",
+    "Durable artifact and checkpoint persistence remains a host responsibility.",
+    "The host-supplied capability executor remains responsible for producing bounded native OpenSpec output; no live OpenSpec CLI interoperability is claimed.",
+    "Unrelated dirty LifecycleRunReport and other worktree changes remain present and were not modified or included in this handoff."
+  ],
+  "stateMutations": {
+    "requirementsBaseline": false,
+    "projectOverviewBaseline": false,
+    "traceabilityGraph": false,
+    "completionState": false,
+    "architectureRevisionRequestImplemented": false,
+    "committed": false,
+    "pushed": false
+  },
+  "handoffDigestNote": "This handoff file is the digest manifest and is intentionally not self-referential in changedFiles."
+}

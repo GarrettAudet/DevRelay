@@ -66,7 +66,7 @@ test("owner approval promotes one exact restart-safe architecture baseline and r
     readJson(`${dogfood}architecture-gate-promotion-proof.json`),
     readJson("project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/architecture-promotion.pending.json"),
     readJson("project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/architecture-promotion.commit.json"),
-    readJson(`${dogfood}architecture-change-set-draft.json`),
+    readJson(`${dogfood}fixture-history/promoted-architecture-change-set-draft.json`),
     readBytes("dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json"),
     readBytes(
       "project/history/architecture/architecture-baseline-devrelay-v1-wda-001/architecture-baseline.json",

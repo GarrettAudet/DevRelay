@@ -1,0 +1,46 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureChangeSetDraft",
+  "changeSetId": "ACS-RUN-TRACEABILITY-001",
+  "priorArchitecture": {
+    "baselineId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+    "digest": "sha256:f7465a6ea7788bc29a1fec45079816bb88a97ed799524afc43775d59c9210dd9"
+  },
+  "design": {
+    "component": "LifecycleRunReportTraceabilityContributor",
+    "trust": "Core-owned registered contributor",
+    "registration": "exact versioned contributor registry entry; no module-ID branch in generic Core",
+    "canonicalSourceClosure": {
+      "bootstrapChangeIntegration": [
+        "ModuleResult",
+        "IntegratedChangeRecord",
+        "VerifiedWorkItemSubject",
+        "ChangeIntegrationTraceabilityInput",
+        "IntegrationInputBinding",
+        "post RepositorySnapshot",
+        "referenced WorkItem",
+        "referenced ChangeSet"
+      ],
+      "policy": "resolve exact digest-bound refs for all seven completions or fail closed"
+    },
+    "allowedRelationships": [
+      "satisfies",
+      "implements",
+      "verified-by",
+      "integrated-as",
+      "derived-from"
+    ],
+    "execution": "validate canonical inputs; derive standardized operations; checkpoint exact update; Core atomic merge; return receipt and merge proof; replay checkpoint without adapter",
+    "adapterBoundary": "Adapters never receive graph service and never author operations."
+  },
+  "decisions": [
+    "Authorize one trusted contributor for LifecycleRunReport reconciliation.",
+    "Admit bootstrap history only through canonical source closure.",
+    "Reuse Core contributor registry, validation, checkpoint, allowlist, merge, and replay mechanisms."
+  ],
+  "supportingArtifacts": {
+    "openspecDesign": "design.md",
+    "structurizrModel": "workspace.dsl",
+    "madrDecision": "0008-adr-run-008.proposed.md"
+  }
+}

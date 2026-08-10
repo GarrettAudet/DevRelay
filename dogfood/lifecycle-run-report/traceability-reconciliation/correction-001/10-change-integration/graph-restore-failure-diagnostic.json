@@ -1,0 +1,34 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChangeIntegrationFailureDiagnostic",
+  "code": "TG_HISTORICAL_UPDATE_CLOSURE_INCOMPLETE",
+  "stage": "trusted-core-graph-restore-preflight",
+  "disposition": "fail-closed-before-prepare-or-merge",
+  "baseGraph": {
+    "revision": 11,
+    "digest": "sha256:b53dd8c73fbac999d25c37979ba3c0a9c12ff97c15f34429422fe05aebb2ded5"
+  },
+  "referencedUpdates": 11,
+  "recoverableExactUpdates": 7,
+  "missingExactUpdates": [
+    {"artifactId":"traceability-update-5890f4a3acc56f17","digest":"sha256:4d7d052f347a91b104506510dc09dad51dceeb488bac5675a89ce7ca8af45067"},
+    {"artifactId":"traceability-update-a5bacedaf0304876","digest":"sha256:d8fde060e3a21be13c5d90307dca6bda5a44e95055a31e292175dee99fabf37a"},
+    {"artifactId":"traceability-update-c1d204064ac0a969","digest":"sha256:b9b77863db97ccfe1aa36c24224e5cd523030500908afb208b5883b24b6a8822"},
+    {"artifactId":"traceability-update-ed387cf70c79f759","digest":"sha256:dc46268ba73b6924b2c473d2fb6294dbef7267dfd0846b72525c6fa58da84681"}
+  ],
+  "searches": [
+    "current saved repository JSON object closure",
+    "all reachable Git-history JSON blobs by raw and canonical SHA-256"
+  ],
+  "effects": {
+    "graphPrepared": false,
+    "graphMerged": false,
+    "changeIntegrationGateReleased": false,
+    "completionFactCreated": false,
+    "frontierAdvanced": false,
+    "downstreamVerificationExecuted": false,
+    "commitCreated": false,
+    "pushPerformed": false
+  },
+  "message": "The released TraceabilityGraph service requires every update referenced by the exact revision-11 snapshot so it can validate historical source-artifact closure. Four exact update byte artifacts are unavailable. Substituting a modified base snapshot or fabricated update would violate the approved base digest and fail-closed invariants."
+}

@@ -1,0 +1,161 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "VerificationHandoff",
+  "handoffId": "dg1-change-integration-export-surface-independent-reverification-982e-2026-08-10",
+  "incrementId": "DGI-LIFECYCLE-RUN-REPORT-2026-08-10",
+  "candidateRoot": "C:/Users/garre/.codex/worktrees/f3a9/DevRelay-v04-work-dependency-analysis",
+  "verifierRoot": "C:/Users/garre/.codex/worktrees/982e/DevRelay-v04-work-dependency-analysis",
+  "supersedes": "verification/dg1-architecture-host-executor-reverification-handoff.json",
+  "outcome": "PASS",
+  "closed": true,
+  "closureDigests": {
+    "workExecutionHandoff": {
+      "path": "dogfood/bootstrap-architecture-host-executor-adapters/work-execution-handoff.json",
+      "byteLength": 9557,
+      "rawDigest": "sha256:f1af9c21ca0f3fc2ccfbfbe23648f4e0f2245fca8228183e7de3501dc007553d",
+      "match": true
+    },
+    "evidenceManifest": {
+      "path": "dogfood/bootstrap-architecture-host-executor-adapters/evidence-manifest.json",
+      "byteLength": 4759,
+      "rawDigest": "sha256:a6d9a1a961cc953dee484e46d530e984a497c18059fd9cdbedef6736c24876e8",
+      "entryCount": 20,
+      "allEntryDigestsAndByteLengthsMatch": true
+    },
+    "sourceIntegrationFixReceipt": {
+      "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/dogfood/bootstrap-architecture-host-executor-adapters/verification/change-integration-receipt.json",
+      "byteLength": 6989,
+      "rawDigest": "sha256:3eda05f20c1e59d011d379933b165228ffadf21b46d740f6f0c14a9079bce7ef",
+      "match": true,
+      "sourceOutcome": "FIX"
+    }
+  },
+  "revisedExportCandidate": [
+    {
+      "path": "test/architecture-discovery-documentation.test.mjs",
+      "byteLength": 4240,
+      "rawDigest": "sha256:eb542af0536fd810656ac4e81b9a9201c8ac325eae5dcd8d1ab930311ab8c7ee"
+    },
+    {
+      "path": "src/index.mjs",
+      "byteLength": 17652,
+      "rawDigest": "sha256:e2aab9ccb3d1413cd35445531e197b4fd2556a4159b87da45b6fba52118d5dea"
+    },
+    {
+      "path": "package.json",
+      "byteLength": 7181,
+      "rawDigest": "sha256:aa649c18dd0171a13d8f6e61bad65e5d0dbb5c31df7c72b6b05874681fc8f7d8"
+    }
+  ],
+  "publicSurfaceVerification": {
+    "preexistingArchitectureDiscoveryExactSliceCount": 18,
+    "intendedAddedRootExports": [
+      "ARCHITECTURE_HOST_EXECUTOR_CAPABILITIES",
+      "ArchitectureHostExecutorAdapterError",
+      "createArchitectureDesignHostExecutorRegistry",
+      "createMadrHostExecutorAdapter",
+      "createOpenSpecDesignHostExecutorAdapter",
+      "createStructurizrHostExecutorAdapter"
+    ],
+    "observedArchitectureDiscoveryExactSliceCount": 24,
+    "observedAddedCount": 6,
+    "rootSourceExactEquality": "pass",
+    "packageSubpathRuntimeExactEquality": "pass",
+    "directAdapterModuleRuntimeExactEquality": "pass",
+    "extraExportMutationRejected": true,
+    "missingExportMutationRejected": true,
+    "exactEqualityWeakened": false,
+    "notes": "The overall ArchitectureDiscovery section equality checks all 24 names. A separate runtime package-subpath equality checks precisely the six host-executor keys. The six-key filter does not weaken the overall equality because undeclared section names still fail the 24-name assertion."
+  },
+  "commands": [
+    {
+      "command": "node --test test/architecture-host-executor-adapters.test.mjs test/architecture-host-executor-dg1-continuation.test.mjs test/architecture-change-runtime.test.mjs test/architecture-design.test.mjs test/architecture-discovery-documentation.test.mjs",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-changeintegration-reverify-982e",
+      "result": "30 passed, 0 failed"
+    },
+    {
+      "command": "node --test verification/architecture-host-executor-adversarial.test.mjs",
+      "cwd": "verifier worktree",
+      "result": "1 passed, 0 failed; static zero-CLI live-conformance self-attestation rejected"
+    },
+    {
+      "command": "node dogfood/bootstrap-architecture-host-executor-adapters/materialize-dg1.mjs",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-changeintegration-reverify-982e",
+      "result": "pass; first calls 1/1/1; checkpoints 3; replay additional calls 0/0/0; all 11 materialized files byte-identical to producer evidence"
+    },
+    {
+      "command": "node --check adapter, root index, and export-surface test; direct module import; package-subpath import",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-changeintegration-reverify-982e",
+      "result": "pass"
+    },
+    {
+      "command": "verifier-owned exact-set assertion with simulated extra and missing names",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-changeintegration-reverify-982e",
+      "result": "pass; root 24=18+6, subpath exactly 6, both extra and missing mutations fail equality"
+    },
+    {
+      "command": "node scripts/verify.mjs",
+      "cwd": "C:/Users/garre/AppData/Local/Temp/devrelay-changeintegration-reverify-982e",
+      "result": "static phase passed: 2630 JSON, 413 JavaScript, 3292 LF-only text files, 13 downstream operations; subsequent full-suite phase encountered independently confirmed environment failures and was stopped after relevant evidence was collected"
+    }
+  ],
+  "executionAndTrustBoundary": {
+    "firstExecutionCalls": { "openspec-design": 1, "structurizr": 1, "madr": 1 },
+    "checkpointCount": 3,
+    "replayAdditionalCalls": { "openspec-design": 0, "structurizr": 0, "madr": 0 },
+    "identicalReplayBytes": true,
+    "terminalArtifact": {
+      "byteLength": 655666,
+      "rawDigest": "sha256:7210022b0ed8ab5bbf1aca80319b13ac96006a7851ab086d56f26c74052e4b17"
+    },
+    "terminalResult": {
+      "byteLength": 2395,
+      "rawDigest": "sha256:3b3ad23e634f89ce49aa10e104cc68014526165ff0b310bcee4f5d0e90f84246"
+    },
+    "allThreeProviderAuthoredLiveConformanceClaimsRejected": true,
+    "malformedStaleCrossInvocationSubstitutedHandoffsRejected": true,
+    "nativeByteAndProvenanceCompletenessEnforced": true,
+    "c4AndMadrCanonicalValidation": "pass",
+    "hiddenOrCoreGateGraphPromotionAuthority": "not observed",
+    "priorIndependentTrustBoundaryPassStillHolds": true
+  },
+  "environmentLimitations": [
+    {
+      "limitation": "The reused C:/repos/DevRelay/node_modules tree lacks graphology.",
+      "evidence": "The directory is absent and root package import fails ERR_MODULE_NOT_FOUND at src/work-dependency-graph.mjs."
+    },
+    {
+      "limitation": "The reused dependency tree also lacks @open-policy-agent/opa-wasm.",
+      "evidence": "The declared package directory is absent."
+    },
+    {
+      "limitation": "Some unrelated full-suite ContractGeneration checks attempted network access blocked by the verification sandbox.",
+      "evidence": "fetch failed with EACCES after the static phase and after relevant targeted suites passed."
+    }
+  ],
+  "environmentLimitationsUsedAsPassEvidence": false,
+  "assumptions": [
+    "The source integration receipt and planning evidence remained immutable during verification.",
+    "Fixture conformance is the maximum maturity claimed; no live CLI compatibility is inferred."
+  ],
+  "residualRisks": [
+    "A fully provisioned dependency tree is still required for a complete root-package runtime import and unrelated full-suite graph/OPA coverage.",
+    "No live OpenSpec, Structurizr, or MADR CLI was executed."
+  ],
+  "mutationAudit": {
+    "candidateExecutedInPlace": false,
+    "candidateBytesAltered": false,
+    "baselinesAltered": false,
+    "traceabilityGraphAltered": false,
+    "completionStateAltered": false,
+    "gateStateAltered": false,
+    "gitIndexCommitPushRemoteAltered": false,
+    "dependencyInstallationPerformed": false,
+    "verifierOwnedFilesOnly": true
+  },
+  "rawDigest": {
+    "algorithm": "sha256",
+    "encoding": "raw file bytes",
+    "sidecar": "verification/dg1-change-integration-export-reverification-handoff.sha256"
+  }
+}
