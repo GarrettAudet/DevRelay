@@ -1,0 +1,105 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-COVERAGE-GATE.attempt-001",
+  "attempt": 1,
+  "workItem": {
+    "id": "WI-BA-COVERAGE-GATE",
+    "objective": "Bind exact technical coverage and exhaustive business scope through the owner Gate, approval, checkpoint, and replay boundary.",
+    "boundedScope": [
+      "src/business-acceptance-gate.mjs",
+      "test/business-acceptance-gate.test.mjs"
+    ],
+    "deliverables": [
+      "Coverage-aware owner Gate lineage",
+      "Updated positive and negative Gate conformance fixtures"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "gate-engineering",
+      "cryptographic-lineage",
+      "test-engineering"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CONTRACTS",
+      "WI-BA-COVERAGE-CORE"
+    ],
+    "verificationPlan": [
+      "Validate the exact BusinessAcceptanceTechnicalCoverage before any owner call and bind its ref through subject, evaluation, owner approvedContext, checkpoint replay, and final record lineage.",
+      "Reject missing, stale, substituted, malformed, or self-certified coverage output-free and without rerunning technical tests."
+    ],
+    "requiredEvidence": [
+      "business-acceptance/coverage-gate-tests"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-CONTRACTS",
+    "WI-BA-COVERAGE-CORE"
+  ],
+  "dependencyCompletion": [
+    {
+      "artifactId": "WI-BA-COVERAGE-CORE.attempt-003.handoff",
+      "digest": "sha256:daf96f8d7caa968ff87754dfe19731879fa2637e9e352e37f16f31935a4f7b41",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-003.handoff.raw.json"
+    },
+    {
+      "artifactId": "WI-BA-COVERAGE-TRACEABILITY.attempt-004.handoff",
+      "digest": "sha256:492690e18ff0337266373fdd6d0b2d8b4fd41c9ffdeca1f7959819520e29209c",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-TRACEABILITY.attempt-004.handoff.raw.json"
+    }
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-COVERAGE-GATE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "gate-engineering",
+      "cryptographic-lineage",
+      "test-engineering"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/business-acceptance-gate.mjs",
+      "test/business-acceptance-gate.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance",
+      "non-allowlisted edits"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-GATE.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:306c3eb7687f516beb28677d71c13850821d1570f971682d3974433c00663046"
+}

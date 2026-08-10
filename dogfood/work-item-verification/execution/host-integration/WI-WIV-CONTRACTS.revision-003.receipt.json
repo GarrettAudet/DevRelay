@@ -1,0 +1,37 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHostIntegrationReceipt",
+  "receiptId": "WIVHIR-WI-WIV-CONTRACTS-REVISION-003",
+  "executionId": "WE-WIV-REWORK-001-WI-WIV-CONTRACTS-ATTEMPT-003",
+  "workItemId": "WI-WIV-CONTRACTS",
+  "task": {
+    "threadId": "019fdb4e-405b-7010-8ae5-47962fac15d2",
+    "worktree": "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis",
+    "contracts": [
+      {"relativePath": "dogfood/work-item-verification/execution/task-contracts/WI-WIV-CONTRACTS.attempt-002.task.json", "bytes": 2175, "digest": "sha256:c2c67474a6929db4317b1e7be59f9092f1ea80cae1e9d8c652192bb09e847267"},
+      {"relativePath": "dogfood/work-item-verification/execution/task-contracts/WI-WIV-CONTRACTS.attempt-003.task.json", "bytes": 1293, "digest": "sha256:227a0d50aa4ae0fc5480cea5ffc35569d1f401bf45427126c76ef98fc65cb1fd"}
+    ]
+  },
+  "attempts": [
+    {"attempt": 2, "agentOutcome": "pass", "parentOutcome": "fix", "integrated": false, "handoff": {"relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-002.handoff.raw.json", "bytes": 3491, "digest": "sha256:03450ec6c12d29e13bad074300c3dcf3e3b5d2838bd3c9d003a31fe66049696b"}},
+    {"attempt": 3, "agentOutcome": "block", "parentOutcome": "pass-with-dependent-rework", "integrated": true, "handoff": {"relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-003.handoff.raw.json", "bytes": 3927, "digest": "sha256:604df0388a24e5ceeec6b257d40f784adc8b92ffc9e441350bdbaa358e3121de"}}
+  ],
+  "parentReview": {
+    "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-003.parent-review.json",
+    "bytes": 1615,
+    "digest": "sha256:18a28fcb0fef2af74690d9d72fbabb6e02b1e663a6e8cfcd49ca66975ff4209c"
+  },
+  "integratedFiles": [
+    {"relativePath": "contracts/work-item-verification-artifacts.schema.json", "bytes": 12069, "digest": "sha256:e6eb6fb218a8f29da51cce8bac36f301ba8df299a023f0eedcdf1f1a557425c0"},
+    {"relativePath": "src/work-item-verification-artifact-validator.mjs", "bytes": 13116, "digest": "sha256:6c9b2b0ea456559c656de2cee617c82ce00f9e6c81bb520ec755d050fba9e3bc"},
+    {"relativePath": "test/work-item-verification-contracts.test.mjs", "bytes": 15097, "digest": "sha256:4296ce8a8e44046a83c41fb817c82abd62e2f67df94b2015a339551cebdea2bf"}
+  ],
+  "verification": [
+    {"command": "node --test --test-concurrency=1 test/work-item-verification-contracts.test.mjs test/work-item-verification-input-guard.test.mjs", "outcome": "pass", "tests": 16},
+    {"command": "node --test --test-concurrency=1 test/work-item-verification-checkpoint.test.mjs test/work-item-verification-contracts.test.mjs", "outcome": "pass-after-dependent-rework", "tests": 18}
+  ],
+  "lifecycleDisposition": "provisional-host-integrated",
+  "nextRequiredStage": "dependent-adapter-and-normalizer-rework",
+  "authoritativeVerifiedCompletionFactCreated": false,
+  "authoritativeIntegratedCompletionFactCreated": false
+}

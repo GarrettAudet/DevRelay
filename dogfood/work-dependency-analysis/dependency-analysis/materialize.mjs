@@ -1,7 +1,7 @@
-import { execFileSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
+import { assertLoadedJsonValueFidelity, repositoryArtifactUriFromUrl } from "../../_support/repository-artifact-uri.mjs";
 
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../../../src/content-digest.mjs";
 import { createNativeDependencyProposal } from "../../../src/work-dependency-native-proposer.mjs";
@@ -10,10 +10,7 @@ import { createContextSlice } from "../../../src/work-dependency-snapshot.mjs";
 
 const ROOT = new URL("../../../", import.meta.url);
 const OUTPUT = new URL("./", import.meta.url);
-const REPOSITORY_REVISION = execFileSync("git", ["rev-parse", "HEAD"], {
-  cwd: fileURLToPath(ROOT),
-  encoding: "utf8",
-}).trim();
+const REPOSITORY_REVISION = "9cb4f2b8d340142557027fc0477440722d4f8286";
 
 function stableId(value) {
   return (
@@ -40,6 +37,7 @@ async function loadedFile(relativePath, schema, mediaType) {
   const url = new URL(relativePath, ROOT);
   const bytes = await readFile(url);
   const value = JSON.parse(bytes);
+  assertLoadedJsonValueFidelity(bytes, value);
   return {
     value,
     bytes,
@@ -48,7 +46,7 @@ async function loadedFile(relativePath, schema, mediaType) {
       bytes,
       schema,
       mediaType,
-      uri: pathToFileURL(fileURLToPath(url)).href,
+      uri: repositoryArtifactUriFromUrl(ROOT, url),
     }),
   };
 }
@@ -67,7 +65,7 @@ async function exactJsonFile(name, value, schema, mediaType, artifactId) {
       schema,
       mediaType,
       artifactId,
-      uri: pathToFileURL(fileURLToPath(url)).href,
+      uri: repositoryArtifactUriFromUrl(ROOT, url),
     }),
   };
 }
@@ -105,22 +103,22 @@ function specKitReview(graphMechanics) {
 }
 
 const workBreakdown = await loadedFile(
-  "project/work-breakdown-baseline.json",
+  "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-baseline.json",
   "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
   "application/vnd.devrelay.work-breakdown-baseline+json",
 );
 const projectOverview = await loadedFile(
-  "project/project-overview-baseline.json",
+  "project/history/1.1.0/project-overview-baseline.json",
   "https://devrelay.dev/artifacts/project-overview-baseline/v1",
   "application/vnd.devrelay.project-overview-baseline+json",
 );
 const requirements = await loadedFile(
-  "project/requirements-baseline.json",
+  "project/history/1.1.0/requirements-baseline.json",
   "https://devrelay.dev/artifacts/requirements-baseline/v1",
   "application/vnd.devrelay.requirements-baseline+json",
 );
 const architecture = await loadedFile(
-  "project/architecture-baseline.json",
+  "dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json",
   "https://devrelay.dev/artifacts/architecture-baseline/v1",
   "application/vnd.devrelay.architecture-baseline+json",
 );
@@ -186,9 +184,10 @@ const policyWasm = {
     schema: "https://devrelay.dev/native/opa-wasm/v1",
     mediaType: "application/wasm",
     digest: sha256Digest(policyWasmBytes),
-    uri: pathToFileURL(
-      fileURLToPath(new URL("policies/work-dependency-analysis/policy.wasm", ROOT)),
-    ).href,
+    uri: repositoryArtifactUriFromUrl(
+      ROOT,
+      new URL("policies/work-dependency-analysis/policy.wasm", ROOT),
+    ),
   },
 };
 const policyBundle = await exactJsonFile(

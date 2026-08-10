@@ -108,17 +108,12 @@ async function ensurePinnedJava(rootPath, lock) {
       path.dirname(path.dirname(javaPath)),
     );
     await mkdir(extractionRoot, { recursive: true });
-    const result = spawnSync(
-      "powershell.exe",
-      [
-        "-NoProfile",
-        "-Command",
-        "Expand-Archive -LiteralPath $args[0] -DestinationPath $args[1] -Force",
-        archivePath,
-        extractionRoot,
-      ],
-      { encoding: "utf8", windowsHide: true },
-    );
+    const extraction = powershellExtractionInvocation(archivePath, extractionRoot);
+    const result = spawnSync("powershell.exe", extraction.args, {
+      encoding: "utf8",
+      windowsHide: true,
+      env: { ...process.env, ...extraction.env },
+    });
     if (result.status !== 0) {
       throw new Error(
         `Temurin extraction failed: ${result.stderr || result.stdout}`,
@@ -127,6 +122,23 @@ async function ensurePinnedJava(rootPath, lock) {
   }
   assertJava21(javaPath);
   return javaPath;
+}
+
+export function powershellExtractionInvocation(archivePath, extractionRoot) {
+  if (typeof archivePath !== "string" || archivePath.length === 0 || typeof extractionRoot !== "string" || extractionRoot.length === 0) {
+    throw new TypeError("archive path and extraction root are required");
+  }
+  return Object.freeze({
+    args: Object.freeze([
+      "-NoProfile",
+      "-Command",
+      "Expand-Archive -LiteralPath $env:DEVRELAY_ARCHIVE_PATH -DestinationPath $env:DEVRELAY_EXTRACTION_ROOT -Force",
+    ]),
+    env: Object.freeze({
+      DEVRELAY_ARCHIVE_PATH: archivePath,
+      DEVRELAY_EXTRACTION_ROOT: extractionRoot,
+    }),
+  });
 }
 
 export async function ensureStructurizrToolchain({

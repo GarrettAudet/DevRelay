@@ -1,0 +1,37 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-CONTRACTS-006",
+  "executionId": "WE-WIV-REWORK-002-WI-WIV-CONTRACTS-ATTEMPT-006",
+  "workItemId": "WI-WIV-CONTRACTS",
+  "status": "executing",
+  "attempt": 6,
+  "revisionLineage": {
+    "predecessorTaskContract": {"artifactId": "WETC-WI-WIV-CONTRACTS-005"},
+    "route": "clarify",
+    "reason": "Remove self-asserted unable-to-proceed evaluation semantics and preserve it as a pre-evaluation module outcome."
+  },
+  "approvedDecision": {
+    "policyEvaluationOutcomes": ["verified", "failed", "needs-evidence"],
+    "preEvaluationOutcomes": ["baseline-drift", "unable-to-proceed"],
+    "preEvaluationOutcomesProduceEvaluation": false,
+    "preEvaluationOutcomesProduceGateCandidate": false
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "contracts/work-item-verification-artifacts.schema.json",
+      "src/work-item-verification-artifact-validator.mjs",
+      "test/work-item-verification-contracts.test.mjs",
+      "examples/modules/work-item-verification.module.json"
+    ],
+    "forbiddenActions": [
+      "Do not change runtime, adapters, normalizer, binding, checkpoint, baselines, dogfood artifacts, or package files.",
+      "Do not create approval, integration, graph, or progression facts.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "task": {
+    "threadId": "019fdb4e-405b-7010-8ae5-47962fac15d2",
+    "worktree": "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis"
+  }
+}

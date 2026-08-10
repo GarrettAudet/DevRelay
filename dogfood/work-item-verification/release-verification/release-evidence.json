@@ -1,0 +1,44 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkItemVerificationReleaseEvidenceSet",
+  "evidenceId": "DEL-WIV-RELEASE-EVIDENCE",
+  "workItemId": "WI-WIV-VERIFICATION",
+  "attempt": 2,
+  "outcome": "pass",
+  "subject": {
+    "workItemId": "WI-WE-CONTRACTS",
+    "hostIntegrationReceipt": "dogfood/work-execution/execution/host-integration/WI-WE-CONTRACTS.receipt.json",
+    "rawBytesDigest": "sha256:9c527d427bbc106f2971b683445659337b820da8fe6e95b59d453e46cb2c69b2",
+    "embeddedReceiptDigest": "sha256:c3d09b5b44ea81ee918319d73d0b92cb167f03f7d486f106d5b92d5aba9843f3"
+  },
+  "executableEvidence": {
+    "releaseTest": "test/work-item-verification-release.test.mjs",
+    "publicRootOnly": true,
+    "checkpointReplayZeroAdditionalVerifierCalls": true,
+    "candidateTraceProjection": true,
+    "approvedTraceProjection": true,
+    "atomicInMemoryGraphMergeProof": true,
+    "negativeOutcomesProven": [
+      "baseline-context-drift",
+      "self-verification",
+      "verifier-substitution",
+      "failed",
+      "needs-evidence",
+      "gate-approval-forgery"
+    ]
+  },
+  "verificationSummary": {
+    "releaseBoundary": { "tests": 5, "passed": 5, "failed": 0 },
+    "focusedExistingWiv": { "tests": 74, "passed": 74, "failed": 0 },
+    "directTraceability": { "tests": 37, "passed": 37, "failed": 0 },
+    "canonicalGate": {
+      "outcome": "fail",
+      "classification": "unrelated-environment-and-pre-existing-contract-generation-failures",
+      "summary": "Static verification, including immutable CRLF allowlisting, passes. This restricted run is later blocked by Structurizr network fetch denial; the parent independently reports the subsequent pre-existing ContractGeneration ProjectOverview raw-byte digest mismatch."
+    }
+  },
+  "releaseDisposition": "Proposed pass for parent review; no lifecycle authority is created by this evidence.",
+  "liveProviderConformanceClaimed": false,
+  "changeIntegrationFactCreated": false,
+  "authoritativeVerificationCompletionFactCreated": false
+}

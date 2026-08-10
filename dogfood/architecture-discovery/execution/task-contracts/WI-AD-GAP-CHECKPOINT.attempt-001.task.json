@@ -1,0 +1,279 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-AD-GAP-CHECKPOINT-001",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-GAP-CHECKPOINT-ATTEMPT-001",
+  "workItemId": "WI-AD-GAP-CHECKPOINT",
+  "attempt": 1,
+  "status": "prepared",
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "requiredGrants": [
+      "GRANT-PROCESS-SPAWN",
+      "GRANT-REPOSITORY-WRITE"
+    ],
+    "requiredTools": [
+      "TOOL-NODE"
+    ],
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "workItemRef": "WI-AD-GAP-CHECKPOINT"
+  },
+  "prerequisiteCompletion": {
+    "receiptId": "CIHIR-WI-AD-ANALYSIS-NORMALIZATION-001",
+    "digest": "sha256:1da595361b1a09b2d5adc4091d442cc1e9724c9c66c3d46a3accfec63507de84"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/architecture-discovery-gap-policy.mjs",
+      "src/architecture-discovery-checkpoint.mjs",
+      "test/architecture-discovery-gap-checkpoint.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not implement traceability, documentation, exports, release behavior, ArchitectureGate, or downstream design.",
+      "Do not let adapters classify materiality, fabricate confidence, mutate repositories, approve architecture, merge graph updates, or bypass exact checkpoint replay.",
+      "Do not commit, tag, merge, publish, promote, or integrate."
+    ]
+  },
+  "contextPaths": [
+    "README.md",
+    "ProjectOverview.md",
+    "project/requirements-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-baseline.json",
+    "project/contract-disposition.json",
+    "dogfood/architecture-discovery/architecture-design/architecture-change-set-draft.json",
+    "dogfood/architecture-discovery/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/architecture-discovery/dependency-analysis/work-dependency-baseline.json",
+    "dogfood/architecture-discovery/assignment/specialist-assignment-baseline.json",
+    "dogfood/architecture-discovery/execution/host-integration/WI-AD-ANALYSIS-NORMALIZATION.receipt.json",
+    "contracts/architecture-discovery-artifacts.schema.json",
+    "src/architecture-discovery-artifact-validator.mjs",
+    "examples/modules/architecture-discovery.module.json",
+    "src/operation-router.mjs",
+    "src/change-integration-input-guard.mjs",
+    "test/operation-router.test.mjs",
+    "src/architecture-discovery-routing.mjs",
+    "src/architecture-discovery-input-guard.mjs",
+    "test/architecture-discovery-routing.test.mjs",
+    "src/architecture-discovery-native-inventory.mjs",
+    "examples/plugins/native-architecture-discovery.plugin.json",
+    "test/architecture-discovery-native-inventory.test.mjs"
+  ],
+  "hostRuntimeSupply": {
+    "dependencyResolver": {
+      "mode": "bare-package-resolution-only",
+      "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/.tmp-devrelay-dependency-loader.mjs",
+      "digest": "sha256:7806bde635ad93006403a185c925b09f3187bc9de582d6266910f9df9a31bcd5"
+    },
+    "dependencyTree": {
+      "authority": "host-read-supply",
+      "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/node_modules",
+      "repositoryWriteGrant": false
+    }
+  },
+  "verification": {
+    "acceptance": "Blocking material discovery gaps deterministically produce clarification checkpoints, while documented non-blocking low-confidence observations may proceed without losing evidence.",
+    "commands": [
+      "node --test test/architecture-discovery-gap-checkpoint.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "architecture-discovery/gap-checkpoint-tests",
+        "description": "Blocking, non-blocking, low-confidence, replay, stale-input, substituted-checkpoint, and zero-call-resume fixtures prove deterministic gap routing."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify if approved artifacts leave a public material-gap or progression decision unresolved.",
+    "Stop with fix if the focused suite fails or the implementation requires a write outside allowedWritePaths.",
+    "Stop after the exact bounded handoff; Core owns verification, integration, traceability merge, and progression."
+  ],
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-AD-DOGFOOD-WI-AD-GAP-CHECKPOINT-ATTEMPT-001",
+      "workItemId": "WI-AD-GAP-CHECKPOINT",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "architecture-discovery/gap-checkpoint-tests",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-AD-GAP-CHECKPOINT",
+    "objective": "Classify material discovery gaps and checkpoint deterministic completion or clarification outcomes.",
+    "bounded-scope": {
+      "included": [
+        "Block only gaps material to safe downstream architecture work.",
+        "Allow documented non-blocking low-confidence observations and provide zero-call exact replay."
+      ],
+      "excluded": [
+        "Silently suppressing gaps, treating low confidence as fact, invoking adapters during replay, or approving architecture."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-AD-GAP-CHECKPOINT",
+        "description": "Confidence and gap gate with immutable checkpoint replay.",
+        "artifactKind": "RuntimeLibrary"
+      }
+    ],
+    "work-type": "code-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-AD-CONFIDENCE-001",
+      "AC-DEV-AD-DETERMINISM-001",
+      "AC-DEV-AD-REPLAY-001"
+    ],
+    "architecture-refs": [
+      "EL-AD-CHECKPOINT",
+      "EL-AD-GAP-GATE"
+    ],
+    "contract-refs": [
+      "CT-IF-AD-CHECKPOINT",
+      "CT-IF-AD-GAP-POLICY"
+    ],
+    "required-capabilities": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "dependency-hints": [
+      {
+        "work-item-ref": "WI-AD-ANALYSIS-NORMALIZATION",
+        "relation": "after",
+        "rationale": "Gap classification consumes only canonical normalized observations.",
+        "authority": "hint"
+      }
+    ],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-AD-GAP-CHECKPOINT",
+          "method": "Exercise complete, non-blocking uncertainty, material gap, conflicting fact, stale snapshot, retry, changed input, and zero-call replay fixtures.",
+          "successCriteria": "Material gaps deterministically request clarification; safe uncertainty remains explicit; exact replay invokes no adapter."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "architecture-discovery/gap-checkpoint-tests",
+        "description": "Material gaps deterministically request clarification; safe uncertainty remains explicit; exact replay invokes no adapter."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/1"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/2"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/7"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/92"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/93"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/1"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/2"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-AD-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:27a455f35f18e838f8da3a367c2239a85fc14724eab240748d174129c6e7ce15",
+          "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  },
+  "contentDigest": "sha256:e04a9328d2f35a969369bd9ae5ff8d248f15729be3c92205ce3e3afd043ad540"
+}

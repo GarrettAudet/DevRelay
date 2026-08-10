@@ -10,10 +10,13 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.4.0` is a private, source-only release containing DevRelay Core,
+DevRelay `0.9.0` is a private, source-only release containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
-`architecture-design@0.1.0`, `work-breakdown@0.1.0`, and
-`work-dependency-analysis@0.1.0`. Source-package versions and immutable Module
+`architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
+`work-dependency-analysis@0.1.0`, `specialist-assignment@1.0.0`,
+`work-execution@0.1.0`, `work-item-verification@0.1.0`, and
+`change-integration@0.1.0`, and `system-verification@0.1.0`. Source-package
+versions and immutable Module
 versions are intentionally independent. The package is `UNLICENSED` and is
 not published to the public npm registry. Access to the source does not grant
 permission to use or redistribute it; see [LICENSE](LICENSE) and
@@ -23,8 +26,12 @@ The release contains Core, schemas, versioned manifests, fixtures, and bounded
 adapter contracts, plus an in-memory reference graph and checkpoint store. It
 does not contain a durable graph backend, approval-gate contributors, or live
 OpenSpec, GitHub Spec Kit, Task Master, Structurizr, or MADR command adapters.
-WorkDependencyAnalysis does include its provider-neutral native structured
-proposer.
+ArchitectureDiscovery includes its deterministic offline native inventory plug-in; optional analyzers remain bounded adapter ports.
+WorkDependencyAnalysis includes its provider-neutral native structured proposer,
+ContractGeneration includes its deterministic JSON Schema generator, and
+ChangeIntegration includes its bounded local Git adapter.
+SystemVerification includes fixture-conformant test and review verifier
+bindings; it creates no BusinessAcceptance fact or decision.
 
 ## Source setup and verification
 
@@ -39,7 +46,7 @@ npm run release:check
 `verify` parses JSON, checks JavaScript syntax and LF-only text, and runs
 the complete suite. `release:check` also verifies the release digest catalog
 as a mandatory release input, builds an allowlisted tarball in a temporary
-directory, installs it offline, and smoke-tests the package root and all four
+directory, installs it offline, and smoke-tests the package root and all eleven
 module manifests.
 
 ## Library quickstart
@@ -218,6 +225,28 @@ GoalArtifact + ProjectContext + optional paired baselines
   -> BusinessAcceptance evaluates objectives, metrics, and acceptance criteria
 ```
 
+[WorkItemVerification 0.1.0 operator and adapter guide](docs/work-item-verification.md)
+documents the verification boundary, exact artifacts, operator routes, and
+extension contract. It describes the released provider-neutral verification contract and its
+fixture-conformant test/review adapter bindings.
+
+[ChangeIntegration 0.1.0 operator and adapter guide](docs/change-integration.md)
+documents exact verified-subject binding, deterministic plans, local target
+compare-and-swap, conflict and uncertain-effect recovery, outcomes,
+traceability, and the separate downstream SystemVerification boundary.
+
+[ArchitectureDiscovery 0.1.0 operator and adapter guide](docs/architecture-discovery.md)
+documents deterministic routing, offline inventory and source-consent controls,
+optional analyzers, confidence and gaps, replay, observational traceability,
+and the separate ArchitectureDesign authority boundary.
+
+[SystemVerification 0.1.0 operator and adapter guide](docs/system-verification.md)
+
+[BusinessAcceptance Gate operator guide](docs/business-acceptance.md)
+documents the immutable integrated-system subject, obligation and evidence
+contract, verifier boundary, checkpoint replay, trusted forward traceability,
+and the separate downstream BusinessAcceptanceGate boundary.
+
 `ArchitectureDiscovery` is conditional for an existing repository without a
 validated architecture baseline or current snapshot. `ContractGeneration` is
 conditional when approved interface intent requires formal APIs, schemas,
@@ -289,9 +318,10 @@ ArchitectureDesign is one Module with two operations:
 
 An existing repository with no architecture baseline and no validated current
 architecture snapshot has an explicit `architecture-discovery#discover`
-prerequisite. That prerequisite must be satisfied by the caller in `0.1.0`;
-DevRelay does not ship an executable ArchitectureDiscovery Module. Project
-state selects the route; a model or adapter cannot improvise it.
+prerequisite. DevRelay ships the bounded `ArchitectureDiscovery 0.1.0`
+contract and its verified Core building blocks; the host composes the effect
+execution and durable stores. Project state selects the route; a model or
+adapter cannot improvise it.
 
 The V1 configured chains are:
 

@@ -1,0 +1,36 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-DOCUMENTATION-ATTEMPT-001",
+  "workItemId": "WI-AD-DOCUMENTATION",
+  "outcome": "pass",
+  "changedFiles": [
+    "docs/architecture-discovery.md",
+    "README.md",
+    "src/index.mjs",
+    "test/architecture-discovery-documentation.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/architecture-discovery-documentation.test.mjs",
+      "exitCode": 0,
+      "summary": "2 tests passed; 0 failed."
+    },
+    {
+      "command": "node --test test/architecture-discovery-*.test.mjs",
+      "exitCode": 0,
+      "summary": "36 tests passed; 0 failed."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "architecture-discovery/documentation-review",
+      "relativePath": "docs/architecture-discovery.md",
+      "digest": "sha256:6b0d03106a410090635737c70f9fc8f8e85080b199486c7fa0b2d35e1fddab7a"
+    }
+  ],
+  "notes": "Documented the verified operator circuit, offline privacy and consent boundary, observational authority, adapter maturity, confidence and gap policy, replay, traceability, ArchitectureDesign handoff, and six required operator scenarios. Exposed only verified ArchitectureDiscovery functions and constants.",
+  "residualRisks": [
+    "none"
+  ]
+}

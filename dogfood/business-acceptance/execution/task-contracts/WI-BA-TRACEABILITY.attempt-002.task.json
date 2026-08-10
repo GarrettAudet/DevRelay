@@ -1,0 +1,106 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-TRACEABILITY.attempt-002",
+  "workItem": {
+    "id": "WI-BA-TRACEABILITY",
+    "objective": "Extend TraceabilityGraph with backward-compatible acceptance semantics and a trusted Gate contributor.",
+    "boundedScope": [
+      "src/traceability-artifact-validator.mjs",
+      "src/business-acceptance-traceability-contributor.mjs",
+      "test/business-acceptance-traceability.test.mjs",
+      "test/traceability-vocabulary-migration.test.mjs"
+    ],
+    "deliverables": [
+      "Traceability vocabulary 1.5 profile",
+      "Trusted forward-only acceptance contributor",
+      "Atomic merge and migration tests"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "graph-modeling",
+      "traceability"
+    ],
+    "dependencyHints": [
+      "WI-BA-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Preserve versions 1.0 through 1.4",
+      "Reject inverse, candidate, rejected, missing-evidence, and orphan acceptance facts"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/traceability-tests"
+    ],
+    "sourceRefs": [
+      "goal-business-acceptance-gate-v1",
+      "D-BA-TRACE-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-TRACEABILITY",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "graph-modeling",
+      "traceability"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "contracts/traceability-graph-artifacts.schema.json",
+      "src/traceability-artifact-validator.mjs",
+      "src/business-acceptance-traceability-contributor.mjs",
+      "test/business-acceptance-traceability.test.mjs",
+      "test/traceability-vocabulary-migration.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "graph operations outside trusted contributor",
+      "unbound owner approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-TRACEABILITY.attempt-002.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:71ae023bd51673c765284b9288c694a122e8549e412ded925f7a751f0a7cd916",
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-TRACEABILITY.attempt-001",
+      "digest": "sha256:73790d905f15e68d91e06079a47a44e58b9bd3b5bca9770cdd64715ec2b1bd9c",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-TRACEABILITY.attempt-001.task.json"
+    },
+    "reason": "Vocabulary 1.5 adds a public acceptance horizon; the runtime validator and published TraceabilityGraph schema must change atomically and remain consistent."
+  },
+  "requiredCorrections": [
+    "Update the published TraceabilityGraph schema and runtime validator together; do not construct a private in-memory schema fork.",
+    "Keep 1.0 through 1.4 contract identities and endpoint behavior byte-compatible while adding the explicit 1.5 profile.",
+    "Prove schema, validator, contributor, and migration behavior in the focused tests."
+  ]
+}

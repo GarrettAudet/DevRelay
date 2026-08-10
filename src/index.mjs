@@ -247,3 +247,239 @@ export {
   createWorkDependencyBaselineTraceabilityContributor,
   workDependencyBaselineTraceabilityContributor,
 } from "./work-dependency-traceability-contributor.mjs";
+
+export {
+  CONTRACT_GENERATION_ARTIFACT_CONTRACTS,
+  ContractGenerationArtifactValidationError,
+  contractGenerationRuntimeArtifactContracts,
+  validateContractGenerationArtifact,
+} from "./contract-generation-artifact-validator.mjs";
+export {
+  JSON_SCHEMA_VALIDATOR,
+  ContractFormatValidationError,
+  createContractFormatRegistry,
+  createJsonSchemaContractBundle,
+} from "./contract-format-registry.mjs";
+export { createContractCanonicalDiff } from "./contract-canonical-diff.mjs";
+export {
+  ContractGenerationRuntimeError,
+  assertVerifiedContractGenerationReceipt,
+  createContractGenerationRuntime,
+  deriveContractGenerationRoute,
+} from "./contract-generation-runtime.mjs";
+export {
+  CONTRACT_GATE_APPROVAL_CONTRACT,
+  ContractGateValidationError,
+  approveContractsNotApplicable,
+  promoteContractBaseline,
+} from "./contract-gate.mjs";
+export {
+  contractBaselineTraceabilityContributor,
+  contractCandidateTraceabilityContributor,
+  contractControlTraceabilityContributor,
+  contractTraceabilityContributors,
+  createContractBaselineTraceabilityContributor,
+  createContractCandidateTraceabilityContributor,
+  createContractControlTraceabilityContributor,
+} from "./contract-traceability-contributor.mjs";
+
+export {
+  SpecialistAssignmentError,
+  assembleSpecialistAssignmentDraft,
+  evaluateSpecialistEligibility,
+  normalizeA2AAgentCard,
+  rankSpecialistsDeterministically,
+} from "./specialist-assignment.mjs";
+export {
+  SPECIALIST_ASSIGNMENT_ARTIFACT_CONTRACTS,
+  SpecialistAssignmentArtifactValidationError,
+  validateSpecialistAssignmentArtifact,
+} from "./specialist-assignment-artifact-validator.mjs";
+export {
+  SpecialistAssignmentRuntimeError,
+  createSpecialistAssignmentRuntime,
+} from "./specialist-assignment-runtime.mjs";
+export {
+  SpecialistAssignmentGateError,
+  promoteSpecialistAssignmentBaseline,
+} from "./specialist-assignment-gate.mjs";
+export {
+  specialistAssignmentBaselineTraceabilityContributor,
+  specialistAssignmentCandidateTraceabilityContributor,
+} from "./specialist-assignment-traceability-contributor.mjs";
+export {
+  TRACEABILITY_EDGE_KINDS_V1_2,
+  TRACEABILITY_EDGE_KINDS_V1_3,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_2,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_3,
+  TRACEABILITY_NODE_KINDS_V1_1,
+  TRACEABILITY_NODE_KINDS_V1_2,
+  TRACEABILITY_NODE_KINDS_V1_3,
+  TRACEABILITY_VOCABULARY_V1_2,
+  TRACEABILITY_VOCABULARY_V1_3,
+} from "./traceability-artifact-validator.mjs";
+export {
+  workItemVerificationApprovedTraceabilityContributor,
+  workItemVerificationCandidateTraceabilityContributor,
+  workItemVerificationTraceabilityContributors,
+} from "./work-item-verification-traceability-contributor.mjs";
+export {
+  changeIntegrationTraceabilityContributor,
+  createChangeIntegrationTraceabilityContributor,
+} from "./change-integration-traceability-contributor.mjs";
+export {
+  CHANGE_INTEGRATION_ARTIFACT_KINDS,
+  ChangeIntegrationArtifactValidationError,
+  validateChangeIntegrationArtifact,
+} from "./change-integration-artifact-validator.mjs";
+export {
+  ChangeIntegrationInputError,
+  bindChangeIntegrationInputs,
+  guardChangeIntegrationInputs,
+} from "./change-integration-input-guard.mjs";
+export {
+  buildChangeIntegrationPlan,
+  buildIntegrationPlan,
+} from "./change-integration-plan-builder.mjs";
+export {
+  authorizeChangeIntegrationEffect,
+  executeChangeIntegrationTargetCas,
+} from "./change-integration-target-cas.mjs";
+export {
+  createChangeIntegrationLocalGitAdapter,
+  createLocalGitIntegrationAdapter,
+  localGitIntegrationConfiguration,
+  localGitIntegrationConfigurationDigest,
+} from "./change-integration-local-git-adapter.mjs";
+export {
+  ChangeIntegrationCheckpointError,
+  changeIntegrationCheckpointKey,
+  createChangeIntegrationCheckpointController,
+} from "./change-integration-checkpoint.mjs";
+export {
+  ChangeIntegrationResultValidationError,
+  assembleChangeIntegrationResult,
+  validateChangeIntegrationResult,
+  validateIntegrationResult,
+} from "./change-integration-result-validator.mjs";
+export {
+  approveWorkItemVerification,
+  assembleWorkItemVerificationGateCandidate,
+} from "./work-item-verification-gate.mjs";
+export { validateWorkItemVerificationArtifact } from "./work-item-verification-artifact-validator.mjs";
+export {
+  bindWorkItemVerificationSubject,
+  expandWorkItemVerificationObligations,
+} from "./work-item-verification-input-guard.mjs";
+export { validateVerifierBindingSet } from "./work-item-verification-verifier-binding.mjs";
+export { createWorkItemVerificationCheckpointController } from "./work-item-verification-checkpoint.mjs";
+export { normalizeWorkItemVerificationEvidence } from "./work-item-verification-evidence-normalizer.mjs";
+export { evaluateWorkItemVerificationPolicy } from "./work-item-verification-policy-evaluator.mjs";
+export { adaptTestVerifierResult } from "./work-item-verification-test-verifier-adapter.mjs";
+export { adaptReviewVerifierResult } from "./work-item-verification-review-verifier-adapter.mjs";
+export {
+  SYSTEM_VERIFICATION_ARTIFACT_KINDS,
+  SystemVerificationArtifactValidationError,
+  validateSystemVerificationArtifact,
+} from "./system-verification-artifact-validator.mjs";
+export {
+  SystemVerificationCoreError,
+  validateIntegratedSystemCandidate,
+  expandSystemVerificationObligations,
+  expandVerificationObligations,
+  normalizeSystemVerificationEvidence,
+  normalizeRawSystemVerificationObservations,
+  evaluateSystemVerificationPolicy,
+  evaluateVerificationPolicy,
+  assembleSystemVerificationResult,
+  executeSystemVerification,
+} from "./system-verification-core.mjs";
+export {
+  SystemVerificationCheckpointError,
+  validateSystemVerificationCheckpoint,
+  createSystemVerificationCheckpointController,
+  systemVerificationCheckpointKey,
+} from "./system-verification-checkpoint.mjs";
+export {
+  TEST_SYSTEM_VERIFIER,
+  SystemVerificationTestAdapterError,
+  adaptSystemTestResult,
+} from "./system-verification-test-adapter.mjs";
+export {
+  REVIEW_SYSTEM_VERIFIER,
+  SystemVerificationReviewAdapterError,
+  adaptSystemReviewResult,
+} from "./system-verification-review-adapter.mjs";
+export {
+  createSystemVerificationTraceabilityContributor,
+  systemVerificationTraceabilityContributor,
+} from "./system-verification-traceability-contributor.mjs";
+export {
+  BUSINESS_ACCEPTANCE_ARTIFACT_KINDS,
+  BusinessAcceptanceArtifactValidationError,
+  validateBusinessAcceptanceArtifact,
+} from "./business-acceptance-artifact-validator.mjs";
+export {
+  BusinessAcceptanceCoreError,
+  deriveBusinessScopeIdentities,
+  deriveBusinessAcceptanceTechnicalCoverage,
+  bindBusinessAcceptanceSubject,
+  evaluateBusinessAcceptanceEvidence,
+  assembleBusinessAcceptanceCandidate,
+  executeBusinessAcceptance,
+} from "./business-acceptance-core.mjs";
+export {
+  BusinessAcceptanceGateError,
+  businessAcceptanceGateCheckpointKey,
+  executeBusinessAcceptanceGate,
+} from "./business-acceptance-gate.mjs";
+export {
+  BusinessAcceptanceCheckpointError,
+  createBusinessAcceptanceCheckpointController,
+} from "./business-acceptance-checkpoint.mjs";
+export {
+  createBusinessAcceptanceTraceabilityContributor,
+  businessAcceptanceTraceabilityContributor,
+} from "./business-acceptance-traceability-contributor.mjs";
+
+export {
+  ARCHITECTURE_DISCOVERY_ARTIFACT_KINDS,
+  validateArchitectureDiscoveryArtifact,
+} from "./architecture-discovery-artifact-validator.mjs";
+export {
+  routeArchitectureDiscovery,
+  selectArchitectureDiscoveryRoute,
+} from "./architecture-discovery-routing.mjs";
+export {
+  bindArchitectureDiscoveryInputs,
+  guardArchitectureDiscoveryInputs,
+} from "./architecture-discovery-input-guard.mjs";
+export {
+  createNativeArchitectureInventory,
+  runNativeArchitectureInventory,
+} from "./architecture-discovery-native-inventory.mjs";
+export {
+  ARCHITECTURE_DISCOVERY_ANALYZER_PORT_VERSION,
+  createArchitectureDiscoveryAnalyzerRegistry,
+} from "./architecture-discovery-analyzer-registry.mjs";
+export {
+  createCurrentArchitectureSnapshot,
+  normalizeArchitectureDiscoveryObservations,
+} from "./architecture-discovery-observation-normalizer.mjs";
+export {
+  applyArchitectureDiscoveryGapPolicy,
+  evaluateArchitectureDiscoveryGapPolicy,
+} from "./architecture-discovery-gap-policy.mjs";
+export {
+  architectureDiscoveryCheckpointKey,
+  createArchitectureDiscoveryCheckpointController,
+} from "./architecture-discovery-checkpoint.mjs";
+export {
+  architectureDiscoveryTraceabilityContributor,
+  createArchitectureDiscoveryTraceabilityContributor,
+} from "./architecture-discovery-traceability-contributor.mjs";
+export {
+  LIFECYCLE_RUN_REPORT_ARTIFACT_KINDS,
+  LifecycleRunReportArtifactValidationError,
+  validateLifecycleRunReportArtifact,
+} from "./lifecycle-run-report-artifact-validator.mjs";

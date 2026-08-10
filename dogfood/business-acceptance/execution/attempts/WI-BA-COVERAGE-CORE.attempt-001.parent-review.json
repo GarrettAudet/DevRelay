@@ -1,0 +1,27 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-COVERAGE-CORE-001",
+  "taskId": "WI-BA-COVERAGE-CORE.attempt-001",
+  "workItemId": "WI-BA-COVERAGE-CORE",
+  "handoff": {
+    "artifactId": "WI-BA-COVERAGE-CORE.attempt-001.handoff",
+    "digest": "sha256:74100bdbaca9cc9a08159f3893034c5e1d7c646eb5a89b2fc9a2d1d7d766ab2c",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-001.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "findings": [
+    "Accept the repository's real raw-byte RequirementsBaseline digest contract. When an input supplies value/ref/bytes, verify sha256(bytes) equals ref.digest and that parsing bytes reproduces value before deriving coverage. Do not compare a pretty-printed raw digest to canonicalJsonDigest(value). Preserve closed semantic-digest validation for direct digest-bound artifacts.",
+    "Use exactly the same business-scope identity algorithm as the trusted RequirementsBaseline traceability contributor. Add a cross-slice test that projects the same approved scope statement through requirements traceability and proves Core's derived scopeId equals the graph node stableId.",
+    "Reject a graph snapshot unless its exact loaded bytes/ref/checkpoint and graph envelope are valid; preserve zero-call replay and all prior substitution failures."
+  ],
+  "acceptedEvidence": [
+    {
+      "kind": "business-acceptance/coverage-core-tests",
+      "relativePath": "test/business-acceptance-core.test.mjs",
+      "digest": "sha256:e128f9a5571c7753a34c309fbe3f1dba979064191cbe2a9940fe15586f433590"
+    }
+  ],
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:41800b2d7485a426d0574aa31daba7014621a9f2050e67a3188c9a528b8895b2"
+}

@@ -1,0 +1,36 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "local-git-integration",
+    "version": "0.1.0",
+    "description": "Bounded local Git implementation of the ChangeIntegration adapter port."
+  },
+  "implements": [
+    {
+      "module": { "id": "change-integration", "version": "0.1.0" },
+      "operations": [
+        {
+          "id": "integrate-change",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["repositoryPath", "gitExecutable", "timeoutMs", "maxOutputBytes"],
+            "properties": {
+              "repositoryPath": { "type": "string", "minLength": 1 },
+              "gitExecutable": { "type": "string", "minLength": 1 },
+              "timeoutMs": { "type": "integer", "minimum": 1, "maximum": 300000 },
+              "maxOutputBytes": { "type": "integer", "minimum": 1024, "maximum": 16777216 }
+            }
+          },
+          "capabilities": [
+            { "kind": "filesystem.read", "scope": "config:repositoryPath" },
+            { "kind": "filesystem.write", "scope": "config:repositoryPath" },
+            { "kind": "process.spawn", "scope": "config:gitExecutable" }
+          ]
+        }
+      ]
+    }
+  ]
+}

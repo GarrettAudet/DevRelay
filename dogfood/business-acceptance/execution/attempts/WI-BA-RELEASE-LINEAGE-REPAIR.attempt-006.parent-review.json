@@ -1,0 +1,46 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-006",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "task": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006",
+    "digest": "sha256:2ece21d915786028aff933c488c5d86f8d7ec4db6aa51aaeef030160cd4e1146",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.handoff",
+    "digest": "sha256:ff6cb69466d3121466aeb0ab5e811ad2287280b9bb3e2a60f4e9f2cc5c2d22fb",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.handoff.raw.json"
+  },
+  "integrationManifest": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest",
+    "digest": "sha256:a1517ae6df2b8d4968d7740016b3b24a84c77cea8392a079c9b9e68ab76ef41c",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest.json"
+  },
+  "integrationReceipt": {
+    "artifactId": "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-006",
+    "digest": "sha256:2c3f1a7a67cfc57e24d64685f761ba2e2728aec5282a9187ba220f2a5635288c",
+    "rawDigest": "sha256:188bdaa2e7cf9c6603176ba454c2362316c194552c38454cb361965b9ea6d454",
+    "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.receipt.json"
+  },
+  "outcome": "pass",
+  "acceptedEvidence": [
+    "The parent independently reproduced the exact 180-operation set: 97 creates and 83 compare-and-swap replacements with no unsafe, duplicate, source-drift, or parent-pre-state-drift entry.",
+    "All 180 operations applied under their pinned pre-state hashes with zero deletions and zero post-copy digest mismatches.",
+    "The parent-root focused suite passed 13 of 13 and actually regenerated the affected ContractGeneration, WorkBreakdown, WorkDependencyAnalysis, and promotion artifacts.",
+    "All 11 portable manifest artifacts are byte-identical between the worker and parent roots, match their declared raw SHA-256 digests, and contain zero file:/// references.",
+    "Two consecutive parent canonical verifier runs passed 696 of 696 without restoration after two consecutive worker runs passed the same 696 of 696 set."
+  ],
+  "residualRisks": [
+    "The custom public ContractGeneration and WorkDependency loaded-artifact boundaries still require a separate release-hardening work item to reject a caller-supplied parsed value that differs from its digest-bound raw JSON bytes.",
+    "ArchitectureDiscovery and LifecycleRunReport remain required before full V1 project BusinessAcceptance."
+  ],
+  "nextAction": {
+    "route": "pass",
+    "instruction": "Close the separate loaded-artifact byte/value integrity gap, then complete the 0.8.0 release check before beginning ArchitectureDiscovery."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:94c69c214c87411e62af80f789b9c368ba2590adf7eb63fb49b563dd6d43e5f1"
+}

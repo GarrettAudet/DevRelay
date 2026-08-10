@@ -39,6 +39,13 @@ export const canonicalModules = Object.freeze([
     plugins: ["github-spec-kit", "openspec"],
   },
   {
+    id: "architecture-discovery",
+    version: "0.1.0",
+    definition: "examples/modules/architecture-discovery.module.json",
+    operations: [{ id: "discover", steps: [] }],
+    plugins: ["native-architecture-discovery"],
+  },
+  {
     id: "architecture-design",
     version: "0.1.0",
     definition: "examples/modules/architecture-design.module.json",
@@ -53,6 +60,21 @@ export const canonicalModules = Object.freeze([
       },
     ],
     plugins: ["madr", "openspec-design", "spec-kit-plan", "structurizr"],
+  },
+  {
+    id: "contract-generation",
+    version: "0.1.0",
+    definition: "examples/modules/contract-generation.module.json",
+    operations: [
+      { id: "establish-contracts", steps: [] },
+      { id: "generate-contract-change", steps: [] },
+    ],
+    plugins: [
+      "asyncapi-contract-generator",
+      "json-schema-contract-generator",
+      "openapi-contract-generator",
+      "protobuf-contract-generator",
+    ],
   },
   {
     id: "work-breakdown",
@@ -76,15 +98,77 @@ export const canonicalModules = Object.freeze([
       "task-master-dependency-proposer",
     ],
   },
+  {
+    id: "specialist-assignment",
+    version: "1.0.0",
+    definition: "examples/modules/specialist-assignment.module.json",
+    operations: [{ id: "assign-specialists", steps: [] }],
+    plugins: ["a2a-profile-source", "native-specialist-ranker"],
+  },
+  {
+    id: "work-execution",
+    version: "0.1.0",
+    definition: "examples/modules/work-execution.module.json",
+    operations: [{ id: "execute-work-item", steps: [] }],
+    plugins: [],
+  },
+  {
+    id: "work-item-verification",
+    version: "0.1.0",
+    definition: "examples/modules/work-item-verification.module.json",
+    operations: [{ id: "verify-work-item", steps: [] }],
+    plugins: ["review-verifier", "test-verifier"],
+  },
+  {
+    id: "change-integration",
+    version: "0.1.0",
+    definition: "examples/modules/change-integration.module.json",
+    operations: [{ id: "integrate-change", steps: [] }],
+    plugins: ["local-git-integration"],
+  },
+  {
+    id: "system-verification",
+    version: "0.1.0",
+    definition: "examples/modules/system-verification.module.json",
+    operations: [{ id: "verify-system", steps: [] }],
+    plugins: ["review-system-verifier", "test-system-verifier"],
+  },
 ]);
 
 export const canonicalPlugins = Object.freeze([
+  {
+    id: "native-architecture-discovery",
+    version: "0.1.0",
+    manifest: "examples/plugins/native-architecture-discovery.plugin.json",
+    module: { id: "architecture-discovery", version: "0.1.0" },
+    bindings: [{ operation: "discover", step: null, role: "proposer" }],
+  },
+  {
+    id: "asyncapi-contract-generator",
+    version: "0.1.0",
+    manifest: "examples/plugins/asyncapi-contract-generator.plugin.json",
+    module: { id: "contract-generation", version: "0.1.0" },
+    bindings: [
+      { operation: "establish-contracts", step: null, role: "proposer" },
+      { operation: "generate-contract-change", step: null, role: "proposer" },
+    ],
+  },
   {
     id: "github-spec-kit",
     version: "0.1.0",
     manifest: "examples/plugins/github-spec-kit.plugin.json",
     module: { id: "requirements-gathering", version: "0.1.0" },
     bindings: [{ operation: "gather", step: null }],
+  },
+  {
+    id: "json-schema-contract-generator",
+    version: "0.1.0",
+    manifest: "examples/plugins/json-schema-contract-generator.plugin.json",
+    module: { id: "contract-generation", version: "0.1.0" },
+    bindings: [
+      { operation: "establish-contracts", step: null, role: "proposer" },
+      { operation: "generate-contract-change", step: null, role: "proposer" },
+    ],
   },
   {
     id: "madr",
@@ -94,6 +178,16 @@ export const canonicalPlugins = Object.freeze([
     bindings: [
       { operation: "design-change", step: "decision-recorder" },
       { operation: "establish-baseline", step: "decision-recorder" },
+    ],
+  },
+  {
+    id: "openapi-contract-generator",
+    version: "0.1.0",
+    manifest: "examples/plugins/openapi-contract-generator.plugin.json",
+    module: { id: "contract-generation", version: "0.1.0" },
+    bindings: [
+      { operation: "establish-contracts", step: null, role: "proposer" },
+      { operation: "generate-contract-change", step: null, role: "proposer" },
     ],
   },
   {
@@ -118,6 +212,16 @@ export const canonicalPlugins = Object.freeze([
     bindings: [
       { operation: "decompose-change", step: null },
       { operation: "establish-breakdown", step: null },
+    ],
+  },
+  {
+    id: "protobuf-contract-generator",
+    version: "0.1.0",
+    manifest: "examples/plugins/protobuf-contract-generator.plugin.json",
+    module: { id: "contract-generation", version: "0.1.0" },
+    bindings: [
+      { operation: "establish-contracts", step: null, role: "proposer" },
+      { operation: "generate-contract-change", step: null, role: "proposer" },
     ],
   },
   {
@@ -183,6 +287,55 @@ export const canonicalPlugins = Object.freeze([
       { operation: "analyze-dependencies", step: null, role: "proposer" },
     ],
   },
+  {
+    id: "a2a-profile-source",
+    version: "1.0.0",
+    manifest: "examples/plugins/a2a-profile-source.plugin.json",
+    module: { id: "specialist-assignment", version: "1.0.0" },
+    bindings: [{ operation: "assign-specialists", step: null, role: "proposer" }],
+  },
+  {
+    id: "native-specialist-ranker",
+    version: "1.0.0",
+    manifest: "examples/plugins/native-specialist-ranker.plugin.json",
+    module: { id: "specialist-assignment", version: "1.0.0" },
+    bindings: [{ operation: "assign-specialists", step: null, role: "proposer" }],
+  },
+  {
+    id: "review-verifier",
+    version: "1.0.0",
+    manifest: "examples/plugins/review-verifier.plugin.json",
+    module: { id: "work-item-verification", version: "0.1.0" },
+    bindings: [{ operation: "verify-work-item", step: null, role: "proposer" }],
+  },
+  {
+    id: "test-verifier",
+    version: "1.0.0",
+    manifest: "examples/plugins/test-verifier.plugin.json",
+    module: { id: "work-item-verification", version: "0.1.0" },
+    bindings: [{ operation: "verify-work-item", step: null, role: "proposer" }],
+  },
+  {
+    id: "local-git-integration",
+    version: "0.1.0",
+    manifest: "examples/plugins/local-git-integration.plugin.json",
+    module: { id: "change-integration", version: "0.1.0" },
+    bindings: [{ operation: "integrate-change", step: null }],
+  },
+  {
+    id: "review-system-verifier",
+    version: "1.0.0",
+    manifest: "examples/plugins/review-system-verifier.plugin.json",
+    module: { id: "system-verification", version: "0.1.0" },
+    bindings: [{ operation: "verify-system", step: null, role: "proposer" }],
+  },
+  {
+    id: "test-system-verifier",
+    version: "1.0.0",
+    manifest: "examples/plugins/test-system-verifier.plugin.json",
+    module: { id: "system-verification", version: "0.1.0" },
+    bindings: [{ operation: "verify-system", step: null, role: "proposer" }],
+  },
 ]);
 
 export const canonicalPackageExports = Object.freeze({
@@ -196,6 +349,18 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/modules/work-breakdown.module.json",
   "./modules/work-dependency-analysis.module.json":
     "./examples/modules/work-dependency-analysis.module.json",
+  "./modules/contract-generation.module.json":
+    "./examples/modules/contract-generation.module.json",
+  "./modules/specialist-assignment.module.json":
+    "./examples/modules/specialist-assignment.module.json",
+  "./modules/work-execution.module.json":
+    "./examples/modules/work-execution.module.json",
+  "./modules/work-item-verification.module.json":
+    "./examples/modules/work-item-verification.module.json",
+  "./modules/change-integration.module.json":
+    "./examples/modules/change-integration.module.json",
+  "./modules/system-verification.module.json":
+    "./examples/modules/system-verification.module.json",
   "./plugins/github-spec-kit.plugin.json":
     "./examples/plugins/github-spec-kit.plugin.json",
   "./plugins/openspec.plugin.json":
@@ -218,7 +383,29 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/plugins/spec-kit-dependency-reviewer.plugin.json",
   "./plugins/task-master-dependency-proposer.plugin.json":
     "./examples/plugins/task-master-dependency-proposer.plugin.json",
+  "./plugins/json-schema-contract-generator.plugin.json":
+    "./examples/plugins/json-schema-contract-generator.plugin.json",
+  "./plugins/openapi-contract-generator.plugin.json":
+    "./examples/plugins/openapi-contract-generator.plugin.json",
+  "./plugins/asyncapi-contract-generator.plugin.json":
+    "./examples/plugins/asyncapi-contract-generator.plugin.json",
+  "./plugins/protobuf-contract-generator.plugin.json":
+    "./examples/plugins/protobuf-contract-generator.plugin.json",
   "./plugins/madr.plugin.json": "./examples/plugins/madr.plugin.json",
+  "./plugins/a2a-profile-source.plugin.json":
+    "./examples/plugins/a2a-profile-source.plugin.json",
+  "./plugins/native-specialist-ranker.plugin.json":
+    "./examples/plugins/native-specialist-ranker.plugin.json",
+  "./plugins/review-verifier.plugin.json":
+    "./examples/plugins/review-verifier.plugin.json",
+  "./plugins/test-verifier.plugin.json":
+    "./examples/plugins/test-verifier.plugin.json",
+  "./plugins/local-git-integration.plugin.json":
+    "./examples/plugins/local-git-integration.plugin.json",
+  "./plugins/review-system-verifier.plugin.json":
+    "./examples/plugins/review-system-verifier.plugin.json",
+  "./plugins/test-system-verifier.plugin.json":
+    "./examples/plugins/test-system-verifier.plugin.json",
   "./examples/artifacts/*": "./examples/artifacts/*",
   "./examples/invocations/*": "./examples/invocations/*",
   "./examples/native/*": "./examples/native/*",

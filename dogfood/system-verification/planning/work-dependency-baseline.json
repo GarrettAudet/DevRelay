@@ -1,0 +1,60 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkDependencyBaseline",
+  "baselineId": "WD-SV-DOGFOOD-001",
+  "nodes": [
+    "WI-SV-CONTRACTS",
+    "WI-SV-CORE",
+    "WI-SV-ADAPTERS",
+    "WI-SV-TRACEABILITY",
+    "WI-SV-DOCUMENTATION",
+    "WI-SV-RELEASE"
+  ],
+  "edges": [
+    {
+      "prerequisite": "WI-SV-CONTRACTS",
+      "dependent": "WI-SV-CORE"
+    },
+    {
+      "prerequisite": "WI-SV-CONTRACTS",
+      "dependent": "WI-SV-ADAPTERS"
+    },
+    {
+      "prerequisite": "WI-SV-CONTRACTS",
+      "dependent": "WI-SV-TRACEABILITY"
+    },
+    {
+      "prerequisite": "WI-SV-CONTRACTS",
+      "dependent": "WI-SV-DOCUMENTATION"
+    },
+    {
+      "prerequisite": "WI-SV-CORE",
+      "dependent": "WI-SV-DOCUMENTATION"
+    },
+    {
+      "prerequisite": "WI-SV-ADAPTERS",
+      "dependent": "WI-SV-DOCUMENTATION"
+    },
+    {
+      "prerequisite": "WI-SV-TRACEABILITY",
+      "dependent": "WI-SV-DOCUMENTATION"
+    },
+    {
+      "prerequisite": "WI-SV-CORE",
+      "dependent": "WI-SV-RELEASE"
+    },
+    {
+      "prerequisite": "WI-SV-ADAPTERS",
+      "dependent": "WI-SV-RELEASE"
+    },
+    {
+      "prerequisite": "WI-SV-TRACEABILITY",
+      "dependent": "WI-SV-RELEASE"
+    },
+    {
+      "prerequisite": "WI-SV-DOCUMENTATION",
+      "dependent": "WI-SV-RELEASE"
+    }
+  ],
+  "contentDigest": "sha256:f72eb6a62ebb0e68c0d5a6802fc02c798c67e3435d84157d73f012b138347ad7"
+}

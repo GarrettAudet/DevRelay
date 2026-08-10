@@ -1,0 +1,56 @@
+{
+    "apiVersion":  "devrelay.dev/v1alpha1",
+    "kind":  "BootstrapWorkExecutionTaskContract",
+    "contractId":  "WETC-WI-WIV-POLICY-GATE-001",
+    "executionId":  "WE-WIV-FRONTIER-006-WI-WIV-POLICY-GATE",
+    "workItemId":  "WI-WIV-POLICY-GATE",
+    "status":  "clarification-required",
+    "attempt":  1,
+    "readinessProof":  {
+                           "workDependencyBaseline":  {
+                                                          "artifactId":  "WDB-WIV-DOGFOOD",
+                                                          "digest":  "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8",
+                                                          "graphDigest":  "sha256:70b5976096eb193170571d59fc87307a1153712d287c93c294c48663784974b4"
+                                                      },
+                           "incomingEdges":  [
+                                                 {
+                                                     "id":  "DEP-70475E09D2327691",
+                                                     "prerequisiteId":  "WI-WIV-EVIDENCE-NORMALIZATION",
+                                                     "disposition":  "provisional-host-integrated"
+                                                 },
+                                                 {
+                                                     "id":  "DEP-8C8C9C9AF125B9A8",
+                                                     "prerequisiteId":  "WI-WIV-VERIFIER-BINDING",
+                                                     "disposition":  "provisional-host-integrated"
+                                                 }
+                                             ],
+                           "readyWorkItemIds":  [
+                                                    "WI-WIV-POLICY-GATE"
+                                                ]
+                       },
+    "assignment":  {
+                       "workItemRef":  "WI-WIV-POLICY-GATE",
+                       "specialistProfileRef":  "PROFILE-DEVRELAY-ENGINEERING",
+                       "capabilityCoverage":  [
+                                                  "CAP-NODEJS-ENGINEERING",
+                                                  "CAP-TEST-ENGINEERING"
+                                              ]
+                   },
+    "authority":  {
+                      "allowedWritePaths":  [
+                                                "src/work-item-verification-policy-evaluator.mjs",
+                                                "src/work-item-verification-gate.mjs",
+                                                "test/work-item-verification-policy-gate.test.mjs"
+                                            ],
+                      "forbiddenActions":  [
+                                               "Do not change completed prerequisite artifacts or execute another DAG item.",
+                                               "Do not approve a Gate candidate, integrate, mutate TraceabilityGraph, or progress the workflow.",
+                                               "Do not modify baselines, package files, dogfood Gate evidence, or create commits."
+                                           ]
+                  },
+    "task":  {
+                 "threadId":  "019fdd25-edb6-7cb1-98ef-660b2229e003",
+                 "clientThreadId":  "client-new-thread:b7b8dca3-fea9-4c6e-9292-84e76ee5df7b",
+                 "worktree":  "C:/Users/garre/.codex/worktrees/d4f2/DevRelay-v04-work-dependency-analysis"
+             }
+}

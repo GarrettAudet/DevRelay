@@ -1,0 +1,189 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005",
+  "workItem": {
+    "id": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "objective": "Complete and prove the provider-neutral artifact-identity repair started in attempt 004 without weakening validation or rewriting immutable history.",
+    "boundedScope": [
+      "dogfood/_support/",
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs",
+      "test/dogfood-portable-artifact-identity.test.mjs"
+    ],
+    "deliverables": [
+      "A strict provider-neutral devrelay://repository URI helper whose legacy file-URI normalization accepts only explicitly repository-owned locations and rejects unrelated local paths even when they contain common names such as project, dogfood, or test",
+      "Affected materializers and promoters that normalize repository-owned proposal and source references before canonical candidate construction while preserving exact loaded-value/raw-byte fidelity",
+      "A fixed cross-root digest manifest with zero local file URIs and exact raw SHA-256 digests for every affected canonical candidate and newest immutable replay",
+      "A WorkDependencyAnalysis dogfood proof that actually executes materialize.mjs before candidate and replay digest assertions",
+      "Updated independent fixed digest assertions for the final portable bytes",
+      "A passing affected focused suite and two consecutive passing canonical npm.cmd run verify executions without restoring state",
+      "A complete raw BootstrapWorkItemHandoff listing changed paths, generation lineage, exact manifest entries, commands, test counts, and both canonical outcomes"
+    ],
+    "workType": "configuration-change",
+    "acceptanceCriterionRefs": [],
+    "architectureRefs": [],
+    "contractRefs": [],
+    "requiredCapabilities": [
+      "deterministic-artifact-identity",
+      "portable-uri-design",
+      "immutable-replay-management",
+      "traceability-engineering",
+      "cross-workspace-integration-testing",
+      "release-engineering"
+    ],
+    "dependencyHints": [
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004"
+    ],
+    "verificationPlan": [
+      "Recompute and validate the attempt-004 task, handoff, and parent-review digests before editing.",
+      "Run the affected focused suite and record every stale assertion or actual behavioral failure separately.",
+      "Keep expected digests independent and literal; never compute an expected value from the artifact under test.",
+      "Add negative coverage proving unrelated file:/// paths containing a known top-level segment are rejected rather than silently mapped into repository identity.",
+      "Assert every manifest-listed artifact contains no file:/// URI, no physical worker or parent checkout root, and exactly matches its fixed SHA-256 digest.",
+      "Assert the WorkDependencyAnalysis dogfood scenario invokes materialize.mjs in the test process flow before reading the candidate.",
+      "Assert every normalized loaded input value is deep-equal to JSON.parse of the exact digest-bound raw bytes supplied with it; normalize only a separate cloned proposal/source input before candidate construction.",
+      "If final corrections alter immutable bytes, create a later replay or scenario generation and preserve every attempt-004 generation byte-for-byte.",
+      "Run the complete focused suite to green, then run npm.cmd run verify twice consecutively from the worker checkout without restoration; both must pass.",
+      "Record the fixed manifest entries and exact results in the raw handoff. Parent will independently construct the artifacts in C:/tmp, require cross-root raw-byte equality, integrate using create-only and compare-and-swap semantics, and rerun verification."
+    ],
+    "requiredEvidence": [
+      "artifact-uri-contract/provider-neutral-strict-boundary",
+      "verification/no-local-file-uri",
+      "verification/loaded-value-byte-fidelity",
+      "verification/materializer-executed",
+      "verification/focused-suite-pass",
+      "verification/consecutive-canonical-gates",
+      "verification/cross-root-byte-equality-ready",
+      "dogfood/immutable-history-preservation"
+    ],
+    "sourceRefs": [
+      "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-004",
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff",
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "specialistProfileRef": "PROFILE-DEVRELAY-DETERMINISTIC-REPLAY-ENGINEER",
+    "capabilityCoverage": [
+      "deterministic-artifact-identity",
+      "portable-uri-design",
+      "immutable-replay-management",
+      "traceability-engineering",
+      "cross-workspace-integration-testing",
+      "release-engineering"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test",
+      "npm",
+      "sha256"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "This is a bounded fix continuation over the same isolated dogfood surfaces. The existing specialist retains implementation context; the parent remains the independent cross-root verifier, reviewer, and sole integration owner.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevision": "working-tree:codex/v0.5-lifecycle-run-report",
+    "priorOutcome": "incomplete-verification-not-passed",
+    "priorHandoffDigest": "sha256:afbba238150a11a11e18a823c645b1adf8572f3b28f15110c52b1cec12c80c0a",
+    "portableUriContract": {
+      "scheme": "devrelay",
+      "authority": "repository",
+      "example": "devrelay://repository/project/project-contract-state.json",
+      "identityRule": "The same approved repository-relative artifact has identical URI and canonical bytes in every physical checkout.",
+      "ownershipRule": "A local file URI is normalizable only when the host can prove its repository-relative location against an explicit approved repository root or approved legacy root alias; matching an incidental path-segment name is insufficient."
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "dogfood/_support/",
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs",
+      "test/dogfood-portable-artifact-identity.test.mjs"
+    ],
+    "forbidden": [
+      "normalize arbitrary local paths merely because they contain a common repository top-level segment name",
+      "bind assertions or replay identity to the worker or parent absolute checkout path",
+      "derive expected digests from the actual candidate under test",
+      "allow loaded.value to differ from the JSON parse of loaded.bytes",
+      "weaken ArtifactRef, contentDigest, traceability ownership, checkpoint, or immutable replay validation",
+      "ignore or strip URI differences after canonical candidate creation",
+      "overwrite or delete immutable history",
+      "depend on test execution order or one checkout root",
+      "fabricate passing or cross-root evidence",
+      "change product requirements",
+      "seal release 0.8.0",
+      "start ArchitectureDiscovery"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 5,
+  "dependencyCompletion": [
+    {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff",
+      "digest": "sha256:afbba238150a11a11e18a823c645b1adf8572f3b28f15110c52b1cec12c80c0a",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff.raw.json",
+      "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+      "outcome": "fix"
+    }
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004",
+      "digest": "sha256:1c094e830c8d6d1116b00b48c6ca8807d3419483451538901e8074ac74445cea",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff",
+      "digest": "sha256:afbba238150a11a11e18a823c645b1adf8572f3b28f15110c52b1cec12c80c0a",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-004",
+      "digest": "sha256:941bc2d7071c367fdd095ce0d6eadecd94a54294dec2d44975ede59d703b30e7",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.parent-review.json"
+    }
+  },
+  "taskDigest": "sha256:81d58d243e841d1fa01412a0194f02e379c5411b79c9f1fa45386f82fd9859af",
+  "requiredCorrections": [
+    "Finish the independent fixed assertions and obtain the missing focused and two-run canonical evidence.",
+    "Tighten legacy repository ownership recognition and add negative tests for incidental common path-segment names.",
+    "Prove materializer execution and loaded-value/raw-byte fidelity rather than relying on copied candidate bytes.",
+    "Preserve attempt-004 immutable generations and return exact manifest digests for parent-root reconstruction."
+  ]
+}

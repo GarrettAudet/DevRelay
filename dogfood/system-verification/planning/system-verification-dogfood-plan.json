@@ -1,0 +1,457 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "SystemVerificationDogfoodPlan",
+  "planId": "SV-DOGFOOD-PLAN-001",
+  "goal": {
+    "apiVersion": "devrelay.dev/v1alpha1",
+    "kind": "GoalArtifact",
+    "goalId": "goal-system-verification-module-v1",
+    "objective": "Build a provider-neutral SystemVerification module that deterministically verifies one immutable fully integrated system candidate against approved system-level functional and quality obligations without granting business acceptance.",
+    "constraints": [
+      "Core owns candidate binding, obligation expansion, policy evaluation, outcome selection, checkpoint replay, and progression.",
+      "Verifier adapters may report raw observations and native evidence only.",
+      "BusinessAcceptance remains a separate downstream Core Gate.",
+      "The V1 slice must be releasable within the active eight-hour completion window."
+    ],
+    "acceptanceCriteria": [
+      "Exact version-pinned inputs produce byte-identical obligations, evaluation, diagnostics, result, and traceability proposal.",
+      "Every approved system-level acceptance criterion and applicable non-functional requirement has an explicit satisfied, failed, or missing-evidence disposition.",
+      "Only passing policy evaluation may produce verified and permit BusinessAcceptanceGate progression.",
+      "Baseline, repository, integration-fact, evidence, adapter, and policy substitution fail closed.",
+      "Traceability adds forward factual AcceptanceCriterion to Evidence links only after verified evaluation."
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D-SV-SUBJECT-001",
+      "statement": "The subject is one immutable IntegratedSystemCandidate binding the final RepositorySnapshot, all required IntegratedChangeRecords, authoritative integrated-completion facts, and the complete approved project baselines."
+    },
+    {
+      "id": "D-SV-OBLIGATIONS-001",
+      "statement": "Core deterministically expands applicable acceptance criteria and non-functional requirements into a complete SystemVerificationObligationSet; adapters cannot add, remove, or redefine obligations."
+    },
+    {
+      "id": "D-SV-EVIDENCE-001",
+      "statement": "Configured verifier adapters return raw observations and native evidence only; Core normalizes evidence and evaluates the version-pinned SystemVerificationPolicy."
+    },
+    {
+      "id": "D-SV-ENVIRONMENT-001",
+      "statement": "Verification environment context is explicit and version-pinned as VerificationEnvironmentSnapshot or ApprovedNotApplicable; conversational or ambient environment state is invalid."
+    },
+    {
+      "id": "D-SV-OUTCOMES-001",
+      "statement": "Closed outcomes are verified, failed, needs-evidence, baseline-drift, and unable-to-proceed; only verified progresses to BusinessAcceptanceGate."
+    },
+    {
+      "id": "D-SV-BOUNDARY-001",
+      "statement": "SystemVerification cannot modify code, integrate changes, deploy software, alter approved scope, or grant business acceptance."
+    }
+  ],
+  "requirementsGate": {
+    "outcome": "approved",
+    "clarificationRequired": false
+  },
+  "architectureDesign": {
+    "operation": "design-change",
+    "designer": "OpenSpecDesignAdapter",
+    "modeler": "StructurizrAdapter",
+    "decisionRecorder": "MADRAdapter",
+    "outcome": "approved"
+  },
+  "contractGeneration": {
+    "disposition": "ContractBaseline",
+    "formats": [
+      "JSON Schema"
+    ],
+    "outcome": "approved"
+  },
+  "workBreakdown": {
+    "operation": "decompose-change",
+    "workItems": [
+      {
+        "id": "WI-SV-CONTRACTS",
+        "objective": "Define the closed SystemVerification artifact schemas and semantic ModuleDefinition.",
+        "boundedScope": [
+          "contracts/system-verification-artifacts.schema.json",
+          "examples/modules/system-verification.module.json",
+          "src/system-verification-artifact-validator.mjs",
+          "test/system-verification-contracts.test.mjs"
+        ],
+        "deliverables": [
+          "Closed canonical artifact family",
+          "One-operation provider-neutral module manifest",
+          "Schema validator and positive/negative tests"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "schema-design",
+          "deterministic-contracts"
+        ],
+        "dependencyHints": [],
+        "verificationPlan": [
+          "Run focused contract tests",
+          "Reject unknown fields, stale digests, forbidden authority, and invalid outcomes"
+        ],
+        "requiredEvidence": [
+          "system-verification/contract-tests"
+        ],
+        "sourceRefs": [
+          "goal-system-verification-module-v1",
+          "D-SV-SUBJECT-001",
+          "D-SV-OUTCOMES-001"
+        ]
+      },
+      {
+        "id": "WI-SV-CORE",
+        "objective": "Implement Core-owned subject binding, obligation expansion, evidence normalization, policy evaluation, and replay-safe result assembly.",
+        "boundedScope": [
+          "src/system-verification-core.mjs",
+          "src/system-verification-checkpoint.mjs",
+          "test/system-verification-core.test.mjs"
+        ],
+        "deliverables": [
+          "Deterministic verification pipeline",
+          "Immutable checkpoint replay",
+          "Fail-closed drift and substitution behavior"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "runtime-engineering",
+          "verification-policy"
+        ],
+        "dependencyHints": [
+          "WI-SV-CONTRACTS"
+        ],
+        "verificationPlan": [
+          "Exercise every outcome",
+          "Prove exact replay invokes zero verifier calls",
+          "Exercise stale baselines, subject, evidence, and policy"
+        ],
+        "requiredEvidence": [
+          "system-verification/core-tests"
+        ],
+        "sourceRefs": [
+          "goal-system-verification-module-v1",
+          "D-SV-OBLIGATIONS-001",
+          "D-SV-EVIDENCE-001"
+        ]
+      },
+      {
+        "id": "WI-SV-ADAPTERS",
+        "objective": "Provide bounded test and review verifier adapter bindings for system-level evidence collection.",
+        "boundedScope": [
+          "src/system-verification-test-adapter.mjs",
+          "src/system-verification-review-adapter.mjs",
+          "examples/plugins/test-system-verifier.plugin.json",
+          "examples/plugins/review-system-verifier.plugin.json",
+          "test/system-verification-adapters.test.mjs"
+        ],
+        "deliverables": [
+          "Two interchangeable proposer-only adapters",
+          "Canonical raw observation mapping",
+          "Adapter conformance tests"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "adapter-engineering",
+          "test-automation"
+        ],
+        "dependencyHints": [
+          "WI-SV-CONTRACTS"
+        ],
+        "verificationPlan": [
+          "Run both bindings through the same contract",
+          "Reject adapter-owned decisions and graph operations"
+        ],
+        "requiredEvidence": [
+          "system-verification/adapter-tests"
+        ],
+        "sourceRefs": [
+          "goal-system-verification-module-v1",
+          "D-SV-EVIDENCE-001"
+        ]
+      },
+      {
+        "id": "WI-SV-TRACEABILITY",
+        "objective": "Add the trusted SystemVerification traceability contributor and forward-only evidence facts.",
+        "boundedScope": [
+          "src/system-verification-traceability-contributor.mjs",
+          "test/system-verification-traceability.test.mjs"
+        ],
+        "deliverables": [
+          "Trusted deterministic contributor",
+          "Atomic graph-update tests",
+          "Orphan and missing-evidence diagnostics"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "graph-modeling",
+          "traceability"
+        ],
+        "dependencyHints": [
+          "WI-SV-CONTRACTS"
+        ],
+        "verificationPlan": [
+          "Project verified facts only",
+          "Reject inverse, candidate, failed, missing-evidence, and adapter-authored facts"
+        ],
+        "requiredEvidence": [
+          "system-verification/traceability-tests"
+        ],
+        "sourceRefs": [
+          "goal-system-verification-module-v1",
+          "D-SV-BOUNDARY-001"
+        ]
+      },
+      {
+        "id": "WI-SV-DOCUMENTATION",
+        "objective": "Document SystemVerification inputs, trust boundary, outcomes, plug-in contract, replay, and BusinessAcceptance handoff.",
+        "boundedScope": [
+          "docs/system-verification.md",
+          "README.md",
+          "examples/README.md",
+          "test/system-verification-documentation.test.mjs"
+        ],
+        "deliverables": [
+          "Human-readable operator guide",
+          "README links",
+          "Documentation conformance test"
+        ],
+        "workType": "documentation-change",
+        "requiredCapabilities": [
+          "technical-writing",
+          "verification-domain"
+        ],
+        "dependencyHints": [
+          "WI-SV-CONTRACTS",
+          "WI-SV-CORE",
+          "WI-SV-ADAPTERS",
+          "WI-SV-TRACEABILITY"
+        ],
+        "verificationPlan": [
+          "Assert lifecycle and authority boundaries",
+          "Assert exact inputs and outcomes"
+        ],
+        "requiredEvidence": [
+          "system-verification/documentation-tests"
+        ],
+        "sourceRefs": [
+          "goal-system-verification-module-v1",
+          "D-SV-ENVIRONMENT-001",
+          "D-SV-OUTCOMES-001"
+        ]
+      },
+      {
+        "id": "WI-SV-RELEASE",
+        "objective": "Expose and package the complete SystemVerification slice and prove one end-to-end deterministic run.",
+        "boundedScope": [
+          "src/index.mjs",
+          "package.json",
+          "package-lock.json",
+          "release/",
+          "test/system-verification-release.test.mjs",
+          "dogfood/system-verification/"
+        ],
+        "deliverables": [
+          "Public exports and package inventory",
+          "End-to-end proof",
+          "Release manifest and gate evidence"
+        ],
+        "workType": "configuration-change",
+        "requiredCapabilities": [
+          "release-engineering",
+          "integration-testing"
+        ],
+        "dependencyHints": [
+          "WI-SV-CORE",
+          "WI-SV-ADAPTERS",
+          "WI-SV-TRACEABILITY",
+          "WI-SV-DOCUMENTATION"
+        ],
+        "verificationPlan": [
+          "Run focused SystemVerification suite",
+          "Run npm verify and release check",
+          "Prove no BusinessAcceptance fact exists"
+        ],
+        "requiredEvidence": [
+          "system-verification/release-gate"
+        ],
+        "sourceRefs": [
+          "goal-system-verification-module-v1",
+          "D-SV-BOUNDARY-001"
+        ]
+      }
+    ],
+    "outcome": "approved"
+  },
+  "workDependencyAnalysis": {
+    "edges": [
+      {
+        "prerequisite": "WI-SV-CONTRACTS",
+        "dependent": "WI-SV-CORE"
+      },
+      {
+        "prerequisite": "WI-SV-CONTRACTS",
+        "dependent": "WI-SV-ADAPTERS"
+      },
+      {
+        "prerequisite": "WI-SV-CONTRACTS",
+        "dependent": "WI-SV-TRACEABILITY"
+      },
+      {
+        "prerequisite": "WI-SV-CONTRACTS",
+        "dependent": "WI-SV-DOCUMENTATION"
+      },
+      {
+        "prerequisite": "WI-SV-CORE",
+        "dependent": "WI-SV-DOCUMENTATION"
+      },
+      {
+        "prerequisite": "WI-SV-ADAPTERS",
+        "dependent": "WI-SV-DOCUMENTATION"
+      },
+      {
+        "prerequisite": "WI-SV-TRACEABILITY",
+        "dependent": "WI-SV-DOCUMENTATION"
+      },
+      {
+        "prerequisite": "WI-SV-CORE",
+        "dependent": "WI-SV-RELEASE"
+      },
+      {
+        "prerequisite": "WI-SV-ADAPTERS",
+        "dependent": "WI-SV-RELEASE"
+      },
+      {
+        "prerequisite": "WI-SV-TRACEABILITY",
+        "dependent": "WI-SV-RELEASE"
+      },
+      {
+        "prerequisite": "WI-SV-DOCUMENTATION",
+        "dependent": "WI-SV-RELEASE"
+      }
+    ],
+    "cycleCount": 0,
+    "outcome": "approved"
+  },
+  "specialistAssignment": {
+    "assignments": [
+      {
+        "workItemRef": "WI-SV-CONTRACTS",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "schema-design",
+          "deterministic-contracts"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-SV-CORE",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "runtime-engineering",
+          "verification-policy"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-SV-ADAPTERS",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "adapter-engineering",
+          "test-automation"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-SV-TRACEABILITY",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "graph-modeling",
+          "traceability"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-SV-DOCUMENTATION",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "technical-writing",
+          "verification-domain"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-SV-RELEASE",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "release-engineering",
+          "integration-testing"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      }
+    ],
+    "outcome": "approved"
+  },
+  "contentDigest": "sha256:1b425df7e0e30d5e726ee9482f9dce98b93cf96c3944f6579e33b1080d7ec5a1"
+}

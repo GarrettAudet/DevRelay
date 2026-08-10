@@ -1,0 +1,117 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-COVERAGE-CORE.attempt-003",
+  "workItem": {
+    "id": "WI-BA-COVERAGE-CORE",
+    "objective": "Derive exact criterion coverage from the verified result and graph, then evaluate objectives, metrics, and business scope without rerunning tests.",
+    "boundedScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "deliverables": [
+      "Trusted technical-coverage derivation",
+      "Business-scope dispositions",
+      "Zero-call replay with coverage drift rejection"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "runtime-engineering",
+      "graph-analysis",
+      "business-policy"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Require every approved criterion to reach passing evidence",
+      "Reject graph, result, baseline, scope, and coverage substitutions before owner Gate"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/coverage-core-tests"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-COVERAGE-CORE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "runtime-engineering",
+      "graph-analysis",
+      "business-policy"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-003.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 3,
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-COVERAGE-CORE.attempt-002",
+      "digest": "sha256:41128ed11399f3624257b6707cff11f3b74f325266dc7068876a58d4dc6b3341",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-COVERAGE-CORE.attempt-002.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-COVERAGE-CORE.attempt-002.handoff",
+      "digest": "sha256:61749ac173dbe127de6296073928637c8a09be18aac2c30a1733aa821655c5b3",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-002.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-COVERAGE-CORE-002",
+      "digest": "sha256:453de3b08fd8e156168b156db485b8b124421b58e56ed8fc491bc2846af00b5e",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-002.parent-review.json"
+    }
+  },
+  "requiredCorrections": [
+    "Use the exact approved canonical shape: RequirementsBaseline.requirements.scope is an array of typed {id, statement, sourceRefs} records. Do not read scope.inScope and do not invent BS hashes.",
+    "deriveBusinessScopeIdentities must preserve every authoritative scope.id exactly, validate non-empty unique id and statement values, retain code-unit deterministic ordering by id, and fail closed on malformed or duplicate records.",
+    "Add a production-fixture test against project/requirements-baseline.json proving every current scope record is exhaustively returned with the same SCOPE-* identity, exact statement, and no omissions. Preserve the attempt-002 raw-byte and graph-envelope corrections."
+  ],
+  "taskDigest": "sha256:101d772abed8101ebdf3b4ca5a83af65b481cd04da71348b2adc90563d3f8057"
+}

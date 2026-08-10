@@ -1,0 +1,439 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BusinessAcceptanceDogfoodPlan",
+  "planId": "BA-DOGFOOD-PLAN-001",
+  "goal": {
+    "apiVersion": "devrelay.dev/v1alpha1",
+    "kind": "GoalArtifact",
+    "goalId": "goal-business-acceptance-gate-v1",
+    "objective": "Build a deterministic Core-owned BusinessAcceptanceGate that decides whether one exactly verified system satisfies the approved business objectives and success metrics, using explicit evidence and exact owner approval.",
+    "constraints": [
+      "BusinessAcceptance is a Core Gate, not an executable module and not a plug-in slot.",
+      "A verified SystemVerificationResult is necessary but cannot itself grant business acceptance.",
+      "Every current business objective and success metric must receive one explicit disposition.",
+      "Owner approval must bind the exact candidate raw bytes and all version-pinned project context.",
+      "The Gate cannot deploy, release, mutate implementation, alter requirements, or fabricate evidence."
+    ],
+    "acceptanceCriteria": [
+      "Exact inputs produce a byte-stable exhaustive BusinessAcceptanceCandidate.",
+      "Missing, stale, contradictory, or unrelated evidence cannot produce accepted.",
+      "Only an exact raw-byte-bound owner approval can produce BusinessAcceptanceRecord(outcome=accepted).",
+      "Rejected and needs-evidence outcomes cannot complete the lifecycle.",
+      "Traceability adds forward business-objective and success-metric acceptance/evidence facts only after exact acceptance.",
+      "Replay is idempotent and changed baselines, policy, evidence, system verification, candidate, or approval fail closed."
+    ]
+  },
+  "upstream": {
+    "requirementsBaseline": {
+      "artifactId": "RequirementsBaseline",
+      "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098",
+      "relativePath": "project/requirements-baseline.json"
+    },
+    "projectOverviewBaseline": {
+      "artifactId": "ProjectOverviewBaseline",
+      "digest": "sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73",
+      "relativePath": "project/project-overview-baseline.json"
+    },
+    "architectureBaseline": {
+      "artifactId": "ArchitectureBaseline",
+      "digest": "sha256:b5914c8c4490fb2ad962725ebe5acec9baf6ac5db5dfc154b3eee45c15adff9f",
+      "relativePath": "project/architecture-baseline.json"
+    },
+    "contractDisposition": {
+      "artifactId": "ContractDisposition",
+      "digest": "sha256:703ebe115ecf296b9ee072d3411396ed8b7a2bd45e7974c88eaddb18d7f0de75",
+      "relativePath": "project/contract-disposition.json"
+    },
+    "systemVerificationRelease": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    },
+    "systemVerificationHandoff": {
+      "artifactId": "WI-SV-RELEASE-HANDOFF",
+      "digest": "sha256:21bf6e22714fa4fef49aaed14ca250ab9fc4c1447b14a046f249e4f2c467af47",
+      "relativePath": "dogfood/system-verification/execution/attempts/WI-SV-RELEASE.attempt-002.handoff.raw.json"
+    }
+  },
+  "decisions": [
+    {
+      "id": "D-BA-BOUNDARY-001",
+      "statement": "BusinessAcceptanceGate is Core-owned authority with no adapter execution; external evidence collectors may be introduced later only as bounded upstream producers."
+    },
+    {
+      "id": "D-BA-SUBJECT-001",
+      "statement": "The acceptance subject binds the exact verified SystemVerificationResult, paired RequirementsBaseline and ProjectOverviewBaseline, ArchitectureBaseline, ContractDisposition, repository release snapshot, policy, business evidence, and TraceabilityGraph checkpoint."
+    },
+    {
+      "id": "D-BA-COVERAGE-001",
+      "statement": "Core exhaustively disposes every approved business objective and success metric as satisfied, failed, or needs-evidence and rejects omitted, duplicate, or unapproved scope."
+    },
+    {
+      "id": "D-BA-APPROVAL-001",
+      "statement": "Evidence evaluation produces a candidate only; a separate exact owner approval over raw candidate bytes produces the authoritative BusinessAcceptanceRecord."
+    },
+    {
+      "id": "D-BA-OUTCOMES-001",
+      "statement": "Closed outcomes are accepted, rejected, needs-evidence, baseline-drift, and unable-to-proceed; only accepted completes the V1 construction lifecycle."
+    },
+    {
+      "id": "D-BA-TRACE-001",
+      "statement": "Traceability vocabulary 1.5 adds an acceptance horizon and business-acceptance-record node, with forward objective/metric accepted-by and verified-by facts and no inverse edges."
+    },
+    {
+      "id": "D-BA-NO-DEPLOY-001",
+      "statement": "Business acceptance records product acceptance only; release, deployment, production verification, monitoring, and operations remain outside V1."
+    }
+  ],
+  "requirementsGathering": {
+    "plugin": "OpenSpec",
+    "operation": "gather-change",
+    "artifact": "GoalArtifact plus exact current requirements/project context",
+    "outcome": "requirements-change-draft"
+  },
+  "requirementsGate": {
+    "outcome": "approved",
+    "clarificationRequired": false
+  },
+  "architectureDesign": {
+    "operation": "design-change",
+    "designer": "OpenSpecDesignAdapter",
+    "modeler": "StructurizrAdapter",
+    "decisionRecorder": "MADRAdapter",
+    "outcome": "approved"
+  },
+  "contractGeneration": {
+    "operation": "generate-contract-change",
+    "generator": "JSONSchemaContractGenerator",
+    "outcome": "approved"
+  },
+  "workBreakdown": {
+    "operation": "decompose-change",
+    "adapter": "OpenSpecTasksAdapter",
+    "workItems": [
+      {
+        "id": "WI-BA-CONTRACTS",
+        "objective": "Define the closed BusinessAcceptance artifact family and deterministic semantic validator.",
+        "boundedScope": [
+          "contracts/business-acceptance-artifacts.schema.json",
+          "src/business-acceptance-artifact-validator.mjs",
+          "test/business-acceptance-contracts.test.mjs"
+        ],
+        "deliverables": [
+          "Closed acceptance subject, policy, evidence, evaluation, candidate, approval, and record contracts",
+          "Positive and fail-closed schema/lineage tests"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "schema-design",
+          "deterministic-contracts"
+        ],
+        "dependencyHints": [],
+        "verificationPlan": [
+          "Validate the full canonical family",
+          "Reject unknown fields, incomplete coverage, stale digests, downstream authority, and invalid outcomes"
+        ],
+        "requiredEvidence": [
+          "business-acceptance/contract-tests"
+        ],
+        "sourceRefs": [
+          "goal-business-acceptance-gate-v1",
+          "D-BA-SUBJECT-001",
+          "D-BA-OUTCOMES-001"
+        ]
+      },
+      {
+        "id": "WI-BA-CORE",
+        "objective": "Implement exact subject binding, exhaustive business evidence evaluation, deterministic candidate assembly, and checkpoint replay.",
+        "boundedScope": [
+          "src/business-acceptance-core.mjs",
+          "src/business-acceptance-checkpoint.mjs",
+          "test/business-acceptance-core.test.mjs"
+        ],
+        "deliverables": [
+          "Core-owned evidence evaluation",
+          "Complete objective and metric dispositions",
+          "Zero-call exact replay and drift detection"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "runtime-engineering",
+          "business-policy"
+        ],
+        "dependencyHints": [
+          "WI-BA-CONTRACTS"
+        ],
+        "verificationPlan": [
+          "Exercise accepted-candidate, rejected, and needs-evidence paths",
+          "Reject all lineage substitutions before evaluation"
+        ],
+        "requiredEvidence": [
+          "business-acceptance/core-tests"
+        ],
+        "sourceRefs": [
+          "goal-business-acceptance-gate-v1",
+          "D-BA-COVERAGE-001",
+          "D-BA-APPROVAL-001"
+        ]
+      },
+      {
+        "id": "WI-BA-GATE",
+        "objective": "Implement raw-byte-bound owner approval and authoritative BusinessAcceptanceRecord creation.",
+        "boundedScope": [
+          "src/business-acceptance-gate.mjs",
+          "test/business-acceptance-gate.test.mjs"
+        ],
+        "deliverables": [
+          "Exact approval verifier",
+          "Accepted/rejected record assembly",
+          "Idempotent Gate replay"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "approval-gates",
+          "cryptographic-lineage"
+        ],
+        "dependencyHints": [
+          "WI-BA-CONTRACTS",
+          "WI-BA-CORE"
+        ],
+        "verificationPlan": [
+          "Approve only exact eligible candidates",
+          "Reject cloned, stale, modified, ambiguous, or non-owner approvals"
+        ],
+        "requiredEvidence": [
+          "business-acceptance/gate-tests"
+        ],
+        "sourceRefs": [
+          "goal-business-acceptance-gate-v1",
+          "D-BA-APPROVAL-001"
+        ]
+      },
+      {
+        "id": "WI-BA-TRACEABILITY",
+        "objective": "Extend TraceabilityGraph with backward-compatible acceptance semantics and a trusted Gate contributor.",
+        "boundedScope": [
+          "src/traceability-artifact-validator.mjs",
+          "src/business-acceptance-traceability-contributor.mjs",
+          "test/business-acceptance-traceability.test.mjs",
+          "test/traceability-vocabulary-migration.test.mjs"
+        ],
+        "deliverables": [
+          "Traceability vocabulary 1.5 profile",
+          "Trusted forward-only acceptance contributor",
+          "Atomic merge and migration tests"
+        ],
+        "workType": "code-change",
+        "requiredCapabilities": [
+          "graph-modeling",
+          "traceability"
+        ],
+        "dependencyHints": [
+          "WI-BA-CONTRACTS"
+        ],
+        "verificationPlan": [
+          "Preserve versions 1.0 through 1.4",
+          "Reject inverse, candidate, rejected, missing-evidence, and orphan acceptance facts"
+        ],
+        "requiredEvidence": [
+          "business-acceptance/traceability-tests"
+        ],
+        "sourceRefs": [
+          "goal-business-acceptance-gate-v1",
+          "D-BA-TRACE-001"
+        ]
+      },
+      {
+        "id": "WI-BA-RELEASE",
+        "objective": "Document, export, package, and prove one exact accepted end-to-end V1 lifecycle run.",
+        "boundedScope": [
+          "docs/business-acceptance.md",
+          "README.md",
+          "RELEASE.md",
+          "CHANGELOG.md",
+          "src/index.mjs",
+          "package.json",
+          "package-lock.json",
+          "scripts/release-catalog.mjs",
+          "scripts/release-tools.mjs",
+          "release/",
+          "test/business-acceptance-documentation.test.mjs",
+          "test/business-acceptance-release.test.mjs",
+          "dogfood/business-acceptance/"
+        ],
+        "deliverables": [
+          "Human-readable Gate guide",
+          "Public Core Gate exports",
+          "DevRelay 0.8.0 catalog",
+          "Exact accepted lifecycle proof"
+        ],
+        "workType": "configuration-change",
+        "requiredCapabilities": [
+          "release-engineering",
+          "integration-testing",
+          "technical-writing"
+        ],
+        "dependencyHints": [
+          "WI-BA-GATE",
+          "WI-BA-TRACEABILITY"
+        ],
+        "verificationPlan": [
+          "Run focused BusinessAcceptance tests",
+          "Run canonical verify and release checks",
+          "Prove acceptance completes construction without deployment authority"
+        ],
+        "requiredEvidence": [
+          "business-acceptance/release-gate"
+        ],
+        "sourceRefs": [
+          "goal-business-acceptance-gate-v1",
+          "D-BA-NO-DEPLOY-001"
+        ]
+      }
+    ],
+    "outcome": "approved"
+  },
+  "workDependencyAnalysis": {
+    "proposer": "native-structured",
+    "policy": "OPA",
+    "mechanics": "Graphology-DAG",
+    "edges": [
+      {
+        "prerequisite": "WI-BA-CONTRACTS",
+        "dependent": "WI-BA-CORE"
+      },
+      {
+        "prerequisite": "WI-BA-CONTRACTS",
+        "dependent": "WI-BA-GATE"
+      },
+      {
+        "prerequisite": "WI-BA-CORE",
+        "dependent": "WI-BA-GATE"
+      },
+      {
+        "prerequisite": "WI-BA-CONTRACTS",
+        "dependent": "WI-BA-TRACEABILITY"
+      },
+      {
+        "prerequisite": "WI-BA-GATE",
+        "dependent": "WI-BA-RELEASE"
+      },
+      {
+        "prerequisite": "WI-BA-TRACEABILITY",
+        "dependent": "WI-BA-RELEASE"
+      }
+    ],
+    "cycleCount": 0,
+    "outcome": "approved"
+  },
+  "specialistAssignment": {
+    "discovery": "A2A profile source",
+    "ranker": "native deterministic",
+    "assignments": [
+      {
+        "workItemRef": "WI-BA-CONTRACTS",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "schema-design",
+          "deterministic-contracts"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-BA-CORE",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "runtime-engineering",
+          "business-policy"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-BA-GATE",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "approval-gates",
+          "cryptographic-lineage"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-BA-TRACEABILITY",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "graph-modeling",
+          "traceability"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      },
+      {
+        "workItemRef": "WI-BA-RELEASE",
+        "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+        "capabilityCoverage": [
+          "release-engineering",
+          "integration-testing",
+          "technical-writing"
+        ],
+        "requiredTools": [
+          "filesystem",
+          "node-test"
+        ],
+        "requiredGrants": [
+          "filesystem.read",
+          "filesystem.write",
+          "process.spawn"
+        ],
+        "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+        "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+      }
+    ],
+    "outcome": "approved"
+  },
+  "workExecution": {
+    "hostBinding": "one visible Codex task per ready work item",
+    "initialFrontier": [
+      "WI-BA-CONTRACTS"
+    ]
+  },
+  "contentDigest": "sha256:b9ab3d52fab8c6542ef5a28c9e98d33d5b25dbe6040a7be8df9fe773702a9228"
+}

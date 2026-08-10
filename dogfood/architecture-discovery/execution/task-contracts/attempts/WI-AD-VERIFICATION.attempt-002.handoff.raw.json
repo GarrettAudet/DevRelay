@@ -1,0 +1,55 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-VERIFICATION-ATTEMPT-002",
+  "workItemId": "WI-AD-VERIFICATION",
+  "outcome": "pass",
+  "changedFiles": [
+    "test/architecture-discovery-release.test.mjs",
+    "dogfood/architecture-discovery/release/release-gate-evidence.json",
+    "test/project-baseline.test.mjs",
+    "dogfood/work-execution/assignment/promote.mjs",
+    "test/work-execution-specialist-assignment-dogfood.test.mjs",
+    "dogfood/work-execution/assignment/replay-v6/candidate-traceability-update.json",
+    "dogfood/work-execution/assignment/replay-v6/candidate-traceability-merge-receipt.json",
+    "dogfood/work-execution/assignment/replay-v6/approved-traceability-update.json",
+    "dogfood/work-execution/assignment/replay-v6/approved-traceability-merge-receipt.json",
+    "dogfood/work-execution/assignment/replay-v6/traceability-graph-snapshot.json",
+    "dogfood/work-execution/assignment/replay-v6/specialist-assignment-promotion-proof.json",
+    "dogfood/work-item-verification/assignment/promote.mjs",
+    "test/work-item-verification-planning-dogfood.test.mjs",
+    "dogfood/work-item-verification/assignment/replay-v7/candidate-traceability-update.json",
+    "dogfood/work-item-verification/assignment/replay-v7/candidate-traceability-merge-receipt.json",
+    "dogfood/work-item-verification/assignment/replay-v7/approved-traceability-update.json",
+    "dogfood/work-item-verification/assignment/replay-v7/approved-traceability-merge-receipt.json",
+    "dogfood/work-item-verification/assignment/replay-v7/traceability-graph-snapshot.json",
+    "dogfood/work-item-verification/assignment/replay-v7/specialist-assignment-promotion-proof.json",
+    "src/architecture-discovery-observation-normalizer.mjs",
+    "src/traceability-graph.mjs",
+    "test/architecture-discovery-normalization.test.mjs",
+    "test/traceability-opaque-artifact.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/architecture-discovery-normalization.test.mjs test/traceability-opaque-artifact.test.mjs test/architecture-discovery-release.test.mjs test/project-baseline.test.mjs test/work-execution-specialist-assignment-dogfood.test.mjs test/work-item-verification-planning-dogfood.test.mjs",
+      "exitCode": 0,
+      "summary": "16 tests passed; observation byte binding, opaque evidence resolution, real-repository release flow, baseline drift repairs, and immutable replay-generation advances all passed."
+    },
+    {
+      "command": "npm.cmd run verify",
+      "exitCode": 0,
+      "summary": "Static verification passed and all 735 package tests passed after running the configured Structurizr-dependent checks with network access."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "architecture-discovery/release-gate",
+      "relativePath": "dogfood/architecture-discovery/release/release-gate-evidence.json",
+      "digest": "sha256:eb3a74fcbc8f6e671f59469a24dd274806fb30812ee91e3ff47ac1b71aa94098"
+    }
+  ],
+  "notes": "Verified exact retry lineage to attempt 001. Preserved all valid attempt-001 changes and immutable replay-v5/replay-v6 history. Observation ArtifactRefs now bind complete canonical artifact bytes, and TraceabilityGraph verifies and preserves non-JSON evidence as opaque bytes while rejecting caller-supplied decoded values.",
+  "residualRisks": [
+    "none"
+  ]
+}

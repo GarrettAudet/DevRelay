@@ -1,0 +1,2125 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureDesignerWorkingArtifact",
+  "workingArtifactId": "architecture-designer-working-contract-generation-v1",
+  "operation": "design-change",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-contract-generation-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:6c02a91b3f1259bff0f4eeb4fad84f5f08b072323e99405a392488088e0b9937",
+    "uri": "file:///C:/repos/DevRelay/dogfood/contract-generation/architecture-design/project-architecture-state.json"
+  },
+  "baseInputs": [
+    {
+      "role": "project-architecture-state",
+      "artifact": {
+        "artifactId": "project-architecture-state-contract-generation-v1",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:6c02a91b3f1259bff0f4eeb4fad84f5f08b072323e99405a392488088e0b9937",
+        "uri": "file:///C:/repos/DevRelay/dogfood/contract-generation/architecture-design/project-architecture-state.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-contract-generation-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:cd07170d8ea48ba98a1c4f45d30ade2e83992e0fd4433cb049fbf0af7c34e8cb",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-contract-generation-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:c440350f162c530a0180661ad7f6812551d0a184298f256a52239e5b2e9de699",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-contract-generation-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:574fbd2a9a41598854b4328a23e3f4e5628469d3bd8a294da2017ffd9b0eaa0e",
+        "uri": "file:///C:/repos/DevRelay/dogfood/contract-generation/project-context.json"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/contract-generation/repository-snapshot.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-devrelay-v1-lifecycle-run-report-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:a2bc5b38377337dbc6e86eb45821b9fab4eca4be044693944442c6c45153fa29",
+        "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+      }
+    },
+    {
+      "role": "architecture-baseline-project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-lifecycle-run-report-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:b031933401e1904b50f664351919337976e14b193a266d0f77b4c44451f1142c",
+        "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/project-context.json"
+      }
+    },
+    {
+      "role": "architecture-baseline-repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/repository-snapshot.json"
+      }
+    }
+  ],
+  "technicalDesign": {
+    "mode": "embedded",
+    "content": {
+      "technicalDesignId": "TD-CG-001",
+      "objective": "Generate complete typed contract candidates through replaceable adapters while keeping routing, validation, compatibility, traceability, and promotion authority in DevRelay.",
+      "scope": {
+        "level": "change",
+        "boundary": "ContractGeneration and ContractGate over the approved architecture interface-intent universe.",
+        "in": [
+          "State-routed establish-contracts and generate-contract-change operations",
+          "Provider-neutral generator port with JSON Schema 2020-12 as the first live binding",
+          "Optional OpenAPI, AsyncAPI, Protobuf, and future bindings through the same contract",
+          "Independent Core-owned kind-specific format validation",
+          "Canonical contract diff and compatibility evidence",
+          "Typed ContractDraftSet and ContractChangeSetDraft outcomes",
+          "Separate candidate and approved traceability projections",
+          "ContractGate baseline, change, and ApprovedNotApplicable authority"
+        ],
+        "out": [
+          "Architecture intent creation or modification",
+          "Work decomposition, assignment, scheduling, execution, or verification",
+          "Adapter-authored graph operations or Gate decisions",
+          "Implicit contract-kind selection or provider-specific Core branches",
+          "Claiming optional generator bindings are live before live conformance evidence exists"
+        ]
+      },
+      "problemSummary": "Approved architecture interface intent must become exact machine-readable contracts before WorkBreakdown, but generator tools cannot be trusted with lifecycle, compatibility, graph, or approval authority.",
+      "solutionSummary": "State-route one ContractGeneration module, invoke a configured contract-kind generator, independently validate and canonically diff its output in Core, project candidate traceability, and let ContractGate alone promote baseline or not-applicable truth and approved graph facts.",
+      "requirementsDrivers": [
+        "Every required InterfaceIntent is covered exactly once or blocks.",
+        "Generator implementations remain replaceable behind one semantic port.",
+        "Validation and compatibility decisions are independent of generators.",
+        "Exact retry reuses checkpoints and drift stops before effects.",
+        "Candidate and approved traceability never share authority.",
+        "WorkBreakdown never consumes missing or candidate-only contract truth."
+      ],
+      "behaviorFlows": [
+        "Core resolves exact architecture, contract state, project context, repository context, operation, adapter binding, validator, and policy inputs.",
+        "The configured adapter generates typed draft entries and subordinate native artifacts and is checkpointed before further processing.",
+        "Core independently validates each entry through the pinned contract-kind validator.",
+        "For generate-contract-change, Core computes one canonical complete diff against the exact current ContractBaseline.",
+        "The candidate contributor projects non-authoritative InterfaceIntent to ContractDraft facts with an atomic merge proof.",
+        "ContractGate checks coverage, compatibility, replay, evidence, and approval and returns exact promotable bytes or a blocked decision.",
+        "The approved observer activates InterfaceIntent to Contract facts, retires superseded facts, and releases WorkBreakdown only after promotion."
+      ],
+      "dataResponsibilities": [
+        "ContractDraftEntry owns contract identity, kind, dialect, semantic source, exact bytes, and validation evidence.",
+        "ContractDraftSet owns the complete establish-contracts candidate universe.",
+        "ContractChangeSetDraft owns the complete generate-contract-change target plus canonical typed changes.",
+        "ContractValidationProof owns validator identity, version, input digest, normalized digest, and findings.",
+        "ContractCompatibilityAssessment owns policy identity and compatibility dispositions without approval authority.",
+        "ContractBaseline owns only exact ContractGate-promoted contract truth.",
+        "ApprovedNotApplicable owns a Gate-approved zero-required-intent disposition."
+      ],
+      "failureHandling": [
+        "Unknown or stale state, architecture, contract baseline, adapter binding, validator, or policy fails before adapter entry.",
+        "Invalid typed output or native-byte mismatch fails before checkpoint progression.",
+        "Format validation, reference resolution, canonical diff, or compatibility failure blocks ContractGate.",
+        "Missing or duplicate InterfaceIntent coverage blocks promotion.",
+        "Candidate traceability failure prevents a successful graph-aware execution record.",
+        "Approved projection failure prevents atomic Gate completion and WorkBreakdown release."
+      ],
+      "securityPrivacy": [
+        "Adapters receive explicit minimum grants and cannot access graph, Gate, secrets, or undeclared network endpoints.",
+        "Validators resolve only allowed content-addressed local references unless policy explicitly declares a pinned source.",
+        "Native artifacts remain subordinate evidence and cannot override canonical contract bytes."
+      ],
+      "performanceReliabilityOperability": [
+        "Canonical ordering and content addressing make validation, diff, Gate preparation, and traceability replayable.",
+        "Effect checkpoints isolate generator retries from pure validation and diff recomputation.",
+        "Per-entry validation findings keep large contract sets diagnosable without partial promotion.",
+        "Closed binding maturity distinguishes the live JSON Schema path from fixture-conformant optional formats."
+      ],
+      "compatibilityMigrationRollout": [
+        "V1 ships JSON Schema draft 2020-12 generation and validation first.",
+        "OpenAPI, AsyncAPI, and Protobuf adapters use identical operation and result semantics as optional bindings.",
+        "New validators register by contract kind and exact version without Core product branches.",
+        "Existing interface intents retain identity; later contract changes compare against exact approved baseline bytes."
+      ],
+      "verificationIntent": [
+        "Test both state-selected operations and the zero-required-intent ContractGate branch.",
+        "Test exact InterfaceIntent coverage, unscoped entries, duplicates, stale baselines, and binding drift.",
+        "Run real JSON Schema 2020-12 compilation plus positive and negative instance fixtures.",
+        "Test canonical diff ordering, add/modify/remove digests, and compatibility policy evidence.",
+        "Test effect checkpoint replay with zero adapter calls and pure validation/diff determinism.",
+        "Test separate candidate and approved graph scopes, atomic merges, retirement, and replay.",
+        "Test WorkBreakdown rejects candidate-only, stale, or absent contract dispositions."
+      ],
+      "interfaceIntentIds": [
+        "IF-CG-GENERATOR-INVOCATION",
+        "IF-CG-FORMAT-VALIDATION",
+        "IF-CG-CANONICAL-DIFF",
+        "IF-CG-GATE-CANDIDATE",
+        "IF-CG-CANDIDATE-TRACEABILITY",
+        "IF-CG-APPROVED-TRACEABILITY"
+      ],
+      "constraintIds": [
+        "CON-CG-STATE-ROUTING",
+        "CON-CG-ADAPTER-NON-AUTHORITY",
+        "CON-CG-INDEPENDENT-VALIDATION",
+        "CON-CG-CANONICAL-DIFF",
+        "CON-CG-FORMAT-PORTABILITY",
+        "CON-CG-CHECKPOINT-REPLAY",
+        "CON-CG-TRACEABILITY-AUTHORITY",
+        "CON-CG-WORK-BARRIER"
+      ],
+      "sourceRequirementIds": [
+        "US-DEV-CONTRACT-GENERATION-001",
+        "NFR-DEV-CONTRACT-DETERMINISM-001",
+        "CON-DEV-CONTRACT-AUTHORITY-001",
+        "CON-DEV-CONTRACT-FORMAT-EXTENSION-001",
+        "CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001"
+      ],
+      "sourceRefs": []
+    }
+  },
+  "interfaceIntent": {
+    "mode": "embedded",
+    "content": {
+      "interfaceIntentSetId": "INTERFACES-DEVRELAY-CG-001",
+      "interfaces": [
+        {
+          "id": "IF-WB-PLANNER",
+          "name": "Bounded planning adapter",
+          "purpose": "Bounded planning adapter",
+          "ownerBoundary": "EL-WB-ADAPTER-PORT",
+          "providerElementId": "EL-WB-ADAPTER-PORT",
+          "consumerElementIds": [
+            "EL-WB-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact immutable canonical artifacts"
+          ],
+          "semanticOutputs": [
+            "Validated provider-neutral artifact or explicit failure"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable semantics across compatible adapters"
+          ],
+          "securityPrivacyIntent": [
+            "No graph or code-execution authority crosses this boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WB-DECOMPOSITION-001",
+            "US-WB-EXTENSIBILITY-001",
+            "CON-WB-ADAPTER-TRUST-001",
+            "CON-WB-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WB-GATE",
+          "name": "Coverage and promotion gate",
+          "purpose": "Coverage and promotion gate",
+          "ownerBoundary": "EL-WB-GATE",
+          "providerElementId": "EL-WB-GATE",
+          "consumerElementIds": [
+            "EL-WB-MODULE",
+            "EL-WB-DOWNSTREAM"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact immutable canonical artifacts"
+          ],
+          "semanticOutputs": [
+            "Validated provider-neutral artifact or explicit failure"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable semantics across compatible adapters"
+          ],
+          "securityPrivacyIntent": [
+            "No graph or code-execution authority crosses this boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-ATOMICITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WB-TRACEABILITY",
+          "name": "Trusted planning projection",
+          "purpose": "Trusted planning projection",
+          "ownerBoundary": "EL-WB-CONTRIBUTOR",
+          "providerElementId": "EL-WB-CONTRIBUTOR",
+          "consumerElementIds": [
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact immutable canonical artifacts"
+          ],
+          "semanticOutputs": [
+            "Validated provider-neutral artifact or explicit failure"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable semantics across compatible adapters"
+          ],
+          "securityPrivacyIntent": [
+            "No graph or code-execution authority crosses this boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "NFR-WB-PROVENANCE-001",
+            "NFR-WB-REPLAY-001",
+            "CON-WB-ADAPTER-TRUST-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-PROPOSER",
+          "name": "Canonical dependency proposal",
+          "purpose": "Canonical dependency proposal",
+          "ownerBoundary": "EL-WDA-PROPOSER-PORT",
+          "providerElementId": "EL-WDA-PROPOSER-PORT",
+          "consumerElementIds": [
+            "EL-WDA-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "WorkBreakdownAnalysisSnapshot",
+            "ContextSliceSet"
+          ],
+          "semanticOutputs": [
+            "DependencyProposal",
+            "NativeArtifactBundle"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-GRAPH-MECHANICS",
+          "name": "Canonical DAG mechanics",
+          "purpose": "Canonical DAG mechanics",
+          "ownerBoundary": "EL-WDA-GRAPH-MECHANICS",
+          "providerElementId": "EL-WDA-GRAPH-MECHANICS",
+          "consumerElementIds": [
+            "EL-WDA-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Normalized DependencyProposal"
+          ],
+          "semanticOutputs": [
+            "Canonical graph digest",
+            "Mechanical diagnostics",
+            "Cycle witness"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-POLICY",
+          "name": "Pinned dependency policy evaluation",
+          "purpose": "Pinned dependency policy evaluation",
+          "ownerBoundary": "EL-WDA-OPA",
+          "providerElementId": "EL-WDA-OPA",
+          "consumerElementIds": [
+            "EL-WDA-MODULE",
+            "EL-WDA-GATE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Canonical policy input",
+            "Pinned bundle and entrypoint"
+          ],
+          "semanticOutputs": [
+            "Normalized policy decision set",
+            "Raw-result evidence"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-CONSISTENCY",
+          "name": "Advisory consistency review",
+          "purpose": "Advisory consistency review",
+          "ownerBoundary": "EL-WDA-SPECKIT-REVIEWER",
+          "providerElementId": "EL-WDA-SPECKIT-REVIEWER",
+          "consumerElementIds": [
+            "EL-WDA-MODULE",
+            "EL-WDA-GATE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Normalized candidate",
+            "Exact upstream artifacts"
+          ],
+          "semanticOutputs": [
+            "Bounded consistency findings"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "US-WDA-VERIFY-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-GATE",
+          "name": "Dependency semantic gate and promotion",
+          "purpose": "Dependency semantic gate and promotion",
+          "ownerBoundary": "EL-WDA-GATE",
+          "providerElementId": "EL-WDA-GATE",
+          "consumerElementIds": [
+            "EL-WDA-MODULE",
+            "EL-WB-DOWNSTREAM"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact candidate and evidence package"
+          ],
+          "semanticOutputs": [
+            "Approved WorkDependencyBaseline or rejection"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "US-WDA-PARALLEL-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-WDA-TRACEABILITY",
+          "name": "Trusted dependency traceability projection",
+          "purpose": "Trusted dependency traceability projection",
+          "ownerBoundary": "EL-WDA-CONTRIBUTOR",
+          "providerElementId": "EL-WDA-CONTRIBUTOR",
+          "consumerElementIds": [
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Validated dependency candidate"
+          ],
+          "semanticOutputs": [
+            "Forward candidate dependency update set"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics"
+          ],
+          "failureBehavior": "Fail closed without partial progression.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible implementations"
+          ],
+          "securityPrivacyIntent": [
+            "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate and checkpoint before progression"
+          ],
+          "contractGeneration": {
+            "required": false,
+            "suggestedKinds": []
+          },
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-WORKFLOW-FACTS",
+          "name": "Trusted workflow fact append",
+          "purpose": "Trusted workflow fact append",
+          "ownerBoundary": "EL-RUN-FACT-RECORDER",
+          "providerElementId": "EL-RUN-FACT-RECORDER",
+          "consumerElementIds": [
+            "EL-RUN-LEDGER"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact module, Gate, adapter, checkpoint, approval, and progression facts"
+          ],
+          "semanticOutputs": [
+            "Content-addressed RunRecord append receipt"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Reject invalid lineage, authority, duplicate identity with divergent bytes, or non-canonical ordering without changing the ledger.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Trusted facts contain references and bounded summaries rather than secret values or unrestricted logs"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-INSPECT-RUN-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-HOST-OBSERVATIONS",
+          "name": "Non-authoritative host observation append",
+          "purpose": "Non-authoritative host observation append",
+          "ownerBoundary": "EL-RUN-OBSERVATION-INGRESS",
+          "providerElementId": "EL-RUN-OBSERVATION-INGRESS",
+          "consumerElementIds": [
+            "EL-RUN-LEDGER"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Sourced duration, wait, adapter-call, retry, replay, token, and cost observations"
+          ],
+          "semanticOutputs": [
+            "Validated RunObservation or explicit rejection"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Reject missing provenance, invalid availability disposition, secret-bearing content, or attempted authority without changing lifecycle state.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Observation content follows least-content collection and explicit sensitivity classification",
+            "Credentials, secrets, prompts, and raw tool logs are excluded by default"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-GAUGE-PERFORMANCE-001",
+            "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+            "NFR-DEV-RUN-REPORT-PRIVACY-001",
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT",
+          "name": "Canonical lifecycle run snapshot",
+          "purpose": "Canonical lifecycle run snapshot",
+          "ownerBoundary": "EL-RUN-SNAPSHOT-PROJECTOR",
+          "providerElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+          "consumerElementIds": [
+            "EL-RUN-CONTENT-POLICY",
+            "EL-RUN-MARKDOWN-RENDERER"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact RunLedger lineage",
+            "Exact TraceabilityGraph checkpoint",
+            "Adapter maturity and comparability dispositions"
+          ],
+          "semanticOutputs": [
+            "LifecycleRunSnapshot with stages, artifacts, metrics, paths, diagnostics, and next action"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Fail closed on unresolvable lineage, graph mismatch, unknown record kind, or missing metric availability disposition.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Snapshot fields are classified before rendering and retain content-addressed source links"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-INSPECT-RUN-001",
+            "US-DEV-GAUGE-PERFORMANCE-001",
+            "US-DEV-UNDERSTAND-ADAPTERS-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-COMPARABILITY",
+          "name": "Exact run comparability decision",
+          "purpose": "Exact run comparability decision",
+          "ownerBoundary": "EL-RUN-COMPARABILITY",
+          "providerElementId": "EL-RUN-COMPARABILITY",
+          "consumerElementIds": [
+            "EL-RUN-SNAPSHOT-PROJECTOR"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact module, operation, input, policy, circuit, and host comparison dimensions"
+          ],
+          "semanticOutputs": [
+            "Comparable or non-comparable disposition with reasons"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Return non-comparable for missing or mismatched dimensions; never infer relative performance.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Comparison uses digests and bounded host classifications rather than sensitive environment contents"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-GAUGE-PERFORMANCE-001",
+            "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-CONTENT-POLICY",
+          "name": "Deterministic report content policy",
+          "purpose": "Deterministic report content policy",
+          "ownerBoundary": "EL-RUN-CONTENT-POLICY",
+          "providerElementId": "EL-RUN-CONTENT-POLICY",
+          "consumerElementIds": [
+            "EL-RUN-MARKDOWN-RENDERER"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Canonical LifecycleRunSnapshot field set"
+          ],
+          "semanticOutputs": [
+            "Allow, omit, or redact disposition for every protected field"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Unknown classification or policy failure omits protected content and records an explicit disposition.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Default-deny secret, credential, unrestricted prompt, and raw tool-log content",
+            "Redaction preserves audit references without protected bytes"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "NFR-DEV-RUN-REPORT-PRIVACY-001",
+            "US-DEV-INSPECT-RUN-001",
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-REPORT-ACCESS",
+          "name": "Read-only lifecycle report access",
+          "purpose": "Read-only lifecycle report access",
+          "ownerBoundary": "EL-RUN-REPORT-PORT",
+          "providerElementId": "EL-RUN-REPORT-PORT",
+          "consumerElementIds": [
+            "EL-WB-DOWNSTREAM"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact run identity and optional validated report view selector"
+          ],
+          "semanticOutputs": [
+            "LifecycleRunReport.md",
+            "LifecycleRunSnapshot reference",
+            "Linked evidence references"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Unknown runs or invalid selectors fail without returning unrelated or unredacted data.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Access is read-only and returns only content-policy-approved report bytes"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-INSPECT-RUN-001",
+            "US-DEV-GAUGE-PERFORMANCE-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "NFR-DEV-RUN-REPORT-PRIVACY-001",
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+            "NFR-DEV-PORTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-INTEGRATED-COMPLETION",
+          "name": "Verified integrated-completion fact",
+          "purpose": "Verified integrated-completion fact",
+          "ownerBoundary": "EL-RUN-COMPLETION-REGISTRY",
+          "providerElementId": "EL-RUN-COMPLETION-REGISTRY",
+          "consumerElementIds": [
+            "EL-RUN-FRONTIER-RESOLVER"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact WorkItem, ChangeSet, passing verification, and integration evidence references"
+          ],
+          "semanticOutputs": [
+            "Immutable IntegratedCompletionFact"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Reject missing, stale, candidate-only, failing, or unrelated verification and integration evidence.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Completion facts contain artifact references and bounded dispositions rather than code or credentials"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-RUN-FRONTIERS-001",
+            "CON-DEV-GATE-SEPARATION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-RUN-READY-FRONTIER",
+          "name": "Deterministic ready-frontier derivation",
+          "purpose": "Deterministic ready-frontier derivation",
+          "ownerBoundary": "EL-RUN-FRONTIER-RESOLVER",
+          "providerElementId": "EL-RUN-FRONTIER-RESOLVER",
+          "consumerElementIds": [
+            "EL-WB-DOWNSTREAM"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Immutable WorkDependencyBaseline",
+            "Approved IntegratedCompletionFact set"
+          ],
+          "semanticOutputs": [
+            "Ready WorkItem IDs",
+            "Blocked, completed, and failed dependency dispositions"
+          ],
+          "protocolConstraints": [
+            "Exact versions and SHA-256 digests",
+            "Canonical provider-neutral semantics",
+            "Explicit availability and authority dispositions"
+          ],
+          "failureBehavior": "Reject DAG drift, unknown work items, conflicting completion facts, or readiness inferred from assignment or unintegrated work.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible hosts and renderers",
+            "Unknown fields and unsupported maturity or availability values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "The resolver reads only approved dependency and completion facts and cannot execute work"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before append or projection",
+            "Preserve exact source lineage and deterministic ordering"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-RUN-FRONTIERS-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "US-DEV-ORCHESTRATE-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-CG-GENERATOR-INVOCATION",
+          "name": "Bounded contract generator invocation",
+          "purpose": "Bounded contract generator invocation",
+          "ownerBoundary": "EL-CG-GENERATOR-PORT",
+          "providerElementId": "EL-CG-GENERATOR-PORT",
+          "consumerElementIds": [
+            "EL-CG-JSON-SCHEMA-ADAPTER",
+            "EL-CG-OPTIONAL-ADAPTERS"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "State-selected operation",
+            "Exact required InterfaceIntent set",
+            "Current ContractBaseline when changing contracts",
+            "Configured contract kind, adapter version, options, and grants"
+          ],
+          "semanticOutputs": [
+            "Typed ContractDraftSet or ContractChangeSetDraft proposal",
+            "NativeArtifactBundle",
+            "Generator provenance and diagnostics"
+          ],
+          "protocolConstraints": [
+            "Exact artifact versions and SHA-256 digests",
+            "Canonical provider-neutral contract-kind semantics",
+            "Closed authority, compatibility, and validation dispositions"
+          ],
+          "failureBehavior": "Reject missing intent coverage, undeclared contract kinds, stale baselines, invalid typed output, or adapter-selected routing.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible generators and hosts",
+            "Unknown contract kinds, fields, validators, or policy values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Adapters receive only exact declared inputs and grants and cannot access Gate or TraceabilityGraph services"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before checkpoint or Gate preparation",
+            "Preserve exact interface-intent, baseline, adapter, validator, and evidence lineage"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-FORMAT-EXTENSION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-CG-FORMAT-VALIDATION",
+          "name": "Independent contract format validation",
+          "purpose": "Independent contract format validation",
+          "ownerBoundary": "EL-CG-VALIDATOR-REGISTRY",
+          "providerElementId": "EL-CG-VALIDATOR-REGISTRY",
+          "consumerElementIds": [
+            "EL-CG-CANONICAL-DIFFER",
+            "EL-CG-GATE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Canonical contract candidate bytes",
+            "Declared contract kind and dialect",
+            "Pinned validator identity, version, and policy"
+          ],
+          "semanticOutputs": [
+            "Validation disposition",
+            "Normalized contract digest",
+            "Closed validation finding set and validator evidence"
+          ],
+          "protocolConstraints": [
+            "Exact artifact versions and SHA-256 digests",
+            "Canonical provider-neutral contract-kind semantics",
+            "Closed authority, compatibility, and validation dispositions"
+          ],
+          "failureBehavior": "Unknown kind, dialect, validator, unresolved reference, invalid bytes, or validator drift fails closed before Gate preparation.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible generators and hosts",
+            "Unknown contract kinds, fields, validators, or policy values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Validation is read-only and cannot rewrite candidate bytes or invoke undeclared network resolution"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before checkpoint or Gate preparation",
+            "Preserve exact interface-intent, baseline, adapter, validator, and evidence lineage"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "CON-DEV-CONTRACT-FORMAT-EXTENSION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-CG-CANONICAL-DIFF",
+          "name": "Canonical contract change analysis",
+          "purpose": "Canonical contract change analysis",
+          "ownerBoundary": "EL-CG-CANONICAL-DIFFER",
+          "providerElementId": "EL-CG-CANONICAL-DIFFER",
+          "consumerElementIds": [
+            "EL-CG-GATE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact current ContractBaseline",
+            "Validated normalized candidate set",
+            "Pinned compatibility vocabulary"
+          ],
+          "semanticOutputs": [
+            "Ordered additions, modifications, and removals",
+            "Expected prior and target digests",
+            "Compatibility evidence inputs"
+          ],
+          "protocolConstraints": [
+            "Exact artifact versions and SHA-256 digests",
+            "Canonical provider-neutral contract-kind semantics",
+            "Closed authority, compatibility, and validation dispositions"
+          ],
+          "failureBehavior": "Baseline drift, duplicate identity, ambiguous rename, invalid reference, or nondeterministic normalization stops before ContractGate.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible generators and hosts",
+            "Unknown contract kinds, fields, validators, or policy values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "The differ is pure and reads only validated content-addressed contract artifacts"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before checkpoint or Gate preparation",
+            "Preserve exact interface-intent, baseline, adapter, validator, and evidence lineage"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-CG-GATE-CANDIDATE",
+          "name": "ContractGate candidate preparation",
+          "purpose": "ContractGate candidate preparation",
+          "ownerBoundary": "EL-CG-GATE",
+          "providerElementId": "EL-CG-GATE",
+          "consumerElementIds": [
+            "EL-WB-MODULE"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Checkpoint-replayed typed candidate",
+            "Independent format-validation evidence",
+            "Canonical diff and compatibility evidence",
+            "Exact owner or policy approval"
+          ],
+          "semanticOutputs": [
+            "ContractBaseline",
+            "Updated ContractBaseline",
+            "ApprovedNotApplicable disposition",
+            "Promotion proof and WorkBreakdown progression decision"
+          ],
+          "protocolConstraints": [
+            "Exact artifact versions and SHA-256 digests",
+            "Canonical provider-neutral contract-kind semantics",
+            "Closed authority, compatibility, and validation dispositions"
+          ],
+          "failureBehavior": "Uncovered required intent, unscoped contract, invalid compatibility, missing approval, replay mismatch, or exact-byte drift blocks promotion.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible generators and hosts",
+            "Unknown contract kinds, fields, validators, or policy values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Only ContractGate returns promotable raw bytes and progression authority"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before checkpoint or Gate preparation",
+            "Preserve exact interface-intent, baseline, adapter, validator, and evidence lineage"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-CG-CANDIDATE-TRACEABILITY",
+          "name": "Candidate contract traceability projection",
+          "purpose": "Candidate contract traceability projection",
+          "ownerBoundary": "EL-CG-CANDIDATE-CONTRIBUTOR",
+          "providerElementId": "EL-CG-CANDIDATE-CONTRIBUTOR",
+          "consumerElementIds": [
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Validated ContractGeneration ModuleResult",
+            "Exact InterfaceIntent and draft-entry references"
+          ],
+          "semanticOutputs": [
+            "Candidate-scoped InterfaceIntent to ContractDraft update",
+            "Traceability checkpoint and merge proof"
+          ],
+          "protocolConstraints": [
+            "Exact artifact versions and SHA-256 digests",
+            "Canonical provider-neutral contract-kind semantics",
+            "Closed authority, compatibility, and validation dispositions"
+          ],
+          "failureBehavior": "Unknown intent, undeclared draft, arbitrary relationship, graph drift, or missing contributor fails before merge.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible generators and hosts",
+            "Unknown contract kinds, fields, validators, or policy values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "The contributor is trusted Core infrastructure and accepts no adapter-authored graph operations"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before checkpoint or Gate preparation",
+            "Preserve exact interface-intent, baseline, adapter, validator, and evidence lineage"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "IF-CG-APPROVED-TRACEABILITY",
+          "name": "Approved contract traceability projection",
+          "purpose": "Approved contract traceability projection",
+          "ownerBoundary": "EL-CG-APPROVED-OBSERVER",
+          "providerElementId": "EL-CG-APPROVED-OBSERVER",
+          "consumerElementIds": [
+            "EL-DEVRELAY-GRAPH"
+          ],
+          "interactionStyle": "synchronous",
+          "semanticInputs": [
+            "Exact ContractGate promotion proof",
+            "Promoted ContractBaseline or ApprovedNotApplicable artifact"
+          ],
+          "semanticOutputs": [
+            "Approved InterfaceIntent to Contract facts",
+            "Retirement or supersession updates",
+            "Traceability checkpoint and merge proof"
+          ],
+          "protocolConstraints": [
+            "Exact artifact versions and SHA-256 digests",
+            "Canonical provider-neutral contract-kind semantics",
+            "Closed authority, compatibility, and validation dispositions"
+          ],
+          "failureBehavior": "Candidate-only evidence, stale promotion proof, divergent baseline bytes, or invalid retirement horizon fails before merge.",
+          "compatibilityObligations": [
+            "Stable canonical behavior across compatible generators and hosts",
+            "Unknown contract kinds, fields, validators, or policy values fail closed"
+          ],
+          "securityPrivacyIntent": [
+            "Approved facts activate only after exact Gate promotion and preserve historical candidate lineage"
+          ],
+          "deliveryConsistencyIntent": [
+            "Validate canonical structured bytes before checkpoint or Gate preparation",
+            "Preserve exact interface-intent, baseline, adapter, validator, and evidence lineage"
+          ],
+          "contractGeneration": {
+            "required": true,
+            "suggestedKinds": [
+              "json-schema"
+            ]
+          },
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        }
+      ]
+    }
+  },
+  "architectureConstraints": {
+    "mode": "embedded",
+    "content": {
+      "constraintSetId": "CONSTRAINTS-DEVRELAY-CG-001",
+      "constraints": [
+        {
+          "id": "CON-WB-PLANNING-ONLY",
+          "category": "operational",
+          "strength": "must",
+          "statement": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+          "rationale": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-MODULE"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-WB-PLANNER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "CON-WB-DOWNSTREAM-BOUNDARY-001",
+            "CON-WB-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-PREFLIGHT",
+          "category": "availability",
+          "strength": "must",
+          "statement": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+          "rationale": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-PREFLIGHT"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-WB-ATOMICITY-001",
+            "NFR-WB-DETERMINISM-001",
+            "NFR-WB-PROVENANCE-001",
+            "NFR-WB-REPLAY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-UPSTREAM",
+          "category": "data",
+          "strength": "must",
+          "statement": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+          "rationale": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-OBSERVERS"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WB-CONTRIBUTOR"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "NFR-WB-PROVENANCE-001",
+            "CON-WB-INPUT-IMMUTABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-DELTA",
+          "category": "data",
+          "strength": "must",
+          "statement": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+          "rationale": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WB-GOVERNANCE-001",
+            "NFR-WB-ATOMICITY-001",
+            "NFR-WB-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-COVERAGE",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+          "rationale": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WB-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WB-COVERAGE-001",
+            "US-WB-GOVERNANCE-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WB-TRACE-VERSION",
+          "category": "compatibility",
+          "strength": "must",
+          "statement": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+          "rationale": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-DEVRELAY-GRAPH"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WB-CONTRIBUTOR"
+            }
+          ],
+          "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-WB-PROVENANCE-001",
+            "NFR-WB-REPLAY-001",
+            "NFR-WB-CORE-NEUTRALITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-IMMUTABLE-INPUT",
+          "category": "data",
+          "strength": "must",
+          "statement": "Core must build one complete immutable analysis snapshot and admit only verified declared context slices before proposer entry.",
+          "rationale": "Core must build one complete immutable analysis snapshot and admit only verified declared context slices before proposer entry.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-SNAPSHOT"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-ANALYZE-001",
+            "NFR-WDA-DETERMINISM-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-CORE-AUTHORITY",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Core owns graph mechanics and policy normalization; WorkDependencyGate alone owns semantic approval and promotion.",
+          "rationale": "Core owns graph mechanics and policy normalization; WorkDependencyGate alone owns semantic approval and promotion.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-GRAPH-MECHANICS"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WDA-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-PINNED-POLICY",
+          "category": "data",
+          "strength": "must",
+          "statement": "OPA evaluation must bind the policy bundle digest, entrypoint, canonical input digest, engine version, and raw result evidence.",
+          "rationale": "OPA evaluation must bind the policy bundle digest, entrypoint, canonical input digest, engine version, and raw result evidence.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-OPA"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-WDA-POLICY"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-VERIFY-001",
+            "NFR-WDA-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-STATIC-DAG",
+          "category": "operational",
+          "strength": "must",
+          "statement": "The approved artifact stores a static DAG only; mutable readiness and runnable frontiers are derived downstream.",
+          "rationale": "The approved artifact stores a static DAG only; mutable readiness and runnable frontiers are derived downstream.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-GATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-PARALLEL-001",
+            "CON-WDA-NO-EXECUTION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-PLUGIN-TRUST",
+          "category": "security",
+          "strength": "must",
+          "statement": "Proposers and reviewers cannot route, mutate Core or TraceabilityGraph, evaluate promotion policy, approve candidates, or execute work.",
+          "rationale": "Proposers and reviewers cannot route, mutate Core or TraceabilityGraph, evaluate promotion policy, approve candidates, or execute work.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-PROPOSER-PORT"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WDA-SPECKIT-REVIEWER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-WDA-PLUGINS-001",
+            "CON-WDA-PROVIDER-NEUTRAL-001",
+            "CON-DEV-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-ANALYSIS-ONLY",
+          "category": "operational",
+          "strength": "must",
+          "statement": "WorkDependencyAnalysis cannot assign, estimate, schedule, execute, modify code, or record completion.",
+          "rationale": "WorkDependencyAnalysis cannot assign, estimate, schedule, execute, modify code, or record completion.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-MODULE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "CON-WDA-NO-EXECUTION-001",
+            "US-WDA-PARALLEL-001",
+            "CON-DEV-MODULE-INVENTORY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-WDA-FORWARD-TRACE",
+          "category": "data",
+          "strength": "must",
+          "statement": "Traceability stores forward candidate dependency assertions only and derives reverse traversal at query time.",
+          "rationale": "Traceability stores forward candidate dependency assertions only and derives reverse traversal at query time.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-WDA-CONTRIBUTOR"
+            },
+            {
+              "kind": "element",
+              "id": "EL-DEVRELAY-GRAPH"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+          "sourceRequirementIds": [
+            "CON-WDA-TRACE-DIRECTION-001",
+            "NFR-DEV-TRACEABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-NON-AUTHORITY",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "RunLedger, host observations, snapshots, and reports cannot route modules, select adapters, mutate canonical artifacts or TraceabilityGraph, satisfy evidence, approve Gates, or alter progression.",
+          "rationale": "RunLedger, host observations, snapshots, and reports cannot route modules, select adapters, mutate canonical artifacts or TraceabilityGraph, satisfy evidence, approve Gates, or alter progression.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-REPORTING"
+            },
+            {
+              "kind": "element",
+              "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+            "US-DEV-INSPECT-RUN-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-APPEND-ONLY",
+          "category": "data",
+          "strength": "must",
+          "statement": "RunLedger records are append-only, content-addressed, execution-bound, and reject duplicate identities with divergent bytes.",
+          "rationale": "RunLedger records are append-only, content-addressed, execution-bound, and reject duplicate identities with divergent bytes.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-LEDGER"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-RUN-WORKFLOW-FACTS"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-INSPECT-RUN-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+            "CON-DEV-ARTIFACT-CONTRACTS-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-OBSERVATION-DISPOSITION",
+          "category": "data",
+          "strength": "must",
+          "statement": "Every configured observation is captured with exact provenance or explicitly not-reported or not-applicable; absence is never interpreted as zero.",
+          "rationale": "Every configured observation is captured with exact provenance or explicitly not-reported or not-applicable; absence is never interpreted as zero.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-OBSERVATION-INGRESS"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-RUN-HOST-OBSERVATIONS"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-GAUGE-PERFORMANCE-001",
+            "NFR-DEV-RUN-REPORT-OBSERVABILITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-DYNAMIC-PROJECTION",
+          "category": "operational",
+          "strength": "must",
+          "statement": "Lifecycle projection discovers stages, Gates, adapters, branches, retries, resumes, and frontiers from standardized records without module or product identifier branches.",
+          "rationale": "Lifecycle projection discovers stages, Gates, adapters, branches, retries, resumes, and frontiers from standardized records without module or product identifier branches.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-INSPECT-RUN-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "US-DEV-EXTEND-001",
+            "CON-DEV-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-BYTE-DETERMINISM",
+          "category": "operational",
+          "strength": "must",
+          "statement": "Identical ledger, graph, maturity, policy, and renderer inputs produce byte-identical LifecycleRunSnapshot and LifecycleRunReport.md artifacts.",
+          "rationale": "Identical ledger, graph, maturity, policy, and renderer inputs produce byte-identical LifecycleRunSnapshot and LifecycleRunReport.md artifacts.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+            },
+            {
+              "kind": "element",
+              "id": "EL-RUN-MARKDOWN-RENDERER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "US-DEV-INSPECT-RUN-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-COMPARABILITY",
+          "category": "operational",
+          "strength": "must",
+          "statement": "Relative performance claims require an explicit comparable disposition over module, operation, input, policy, circuit, and relevant host dimensions.",
+          "rationale": "Relative performance claims require an explicit comparable disposition over module, operation, input, policy, circuit, and relevant host dimensions.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-COMPARABILITY"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-RUN-COMPARABILITY"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-GAUGE-PERFORMANCE-001",
+            "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-CONTENT-POLICY",
+          "category": "security",
+          "strength": "must",
+          "statement": "Reports exclude secrets, credentials, unrestricted prompts, and raw tool logs by default while preserving content-addressed audit links and explicit redaction or omission dispositions.",
+          "rationale": "Reports exclude secrets, credentials, unrestricted prompts, and raw tool logs by default while preserving content-addressed audit links and explicit redaction or omission dispositions.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-CONTENT-POLICY"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-RUN-CONTENT-POLICY"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "NFR-DEV-RUN-REPORT-PRIVACY-001",
+            "US-DEV-INSPECT-RUN-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-MATURITY-VOCABULARY",
+          "category": "data",
+          "strength": "must",
+          "statement": "Adapter binding maturity is exactly contract-defined, fixture-conformant, live-conformant, or release-ready and is never conflated with a Core-owned implementation.",
+          "rationale": "Adapter binding maturity is exactly contract-defined, fixture-conformant, live-conformant, or release-ready and is never conflated with a Core-owned implementation.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-MATURITY-RESOLVER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-UNDERSTAND-ADAPTERS-001",
+            "US-DEV-EXTEND-001",
+            "CON-DEV-PROVIDER-NEUTRAL-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-STATIC-DAG",
+          "category": "operational",
+          "strength": "must",
+          "statement": "The WorkDependencyBaseline remains immutable; Core derives readiness only from that DAG plus separately approved verified integrated-completion facts.",
+          "rationale": "The WorkDependencyBaseline remains immutable; Core derives readiness only from that DAG plus separately approved verified integrated-completion facts.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-COMPLETION-REGISTRY"
+            },
+            {
+              "kind": "element",
+              "id": "EL-RUN-FRONTIER-RESOLVER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-RUN-FRONTIERS-001",
+            "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+            "CON-DEV-GATE-SEPARATION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-RUN-CROSS-CUTTING",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Lifecycle Reporting and TraceabilityGraph remain cross-cutting infrastructure and cannot appear as additional lifecycle stages.",
+          "rationale": "Lifecycle Reporting and TraceabilityGraph remain cross-cutting infrastructure and cannot appear as additional lifecycle stages.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-RUN-REPORTING"
+            },
+            {
+              "kind": "element",
+              "id": "EL-DEVRELAY-GRAPH"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-INSPECT-RUN-001",
+            "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+            "CON-DEV-MODULE-INVENTORY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-STATE-ROUTING",
+          "category": "operational",
+          "strength": "must",
+          "statement": "Core selects establish-contracts or generate-contract-change solely from exact contract state; only ContractGate may select ApprovedNotApplicable from an approved zero-required-intent architecture.",
+          "rationale": "Core selects establish-contracts or generate-contract-change solely from exact contract state; only ContractGate may select ApprovedNotApplicable from an approved zero-required-intent architecture.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-ROUTE-GUARD"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-CG-GATE-CANDIDATE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-ADAPTER-NON-AUTHORITY",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Contract generator adapters cannot route operations, select undeclared contract kinds, validate their own authority, approve compatibility, promote baselines, mutate TraceabilityGraph, or release WorkBreakdown.",
+          "rationale": "Contract generator adapters cannot route operations, select undeclared contract kinds, validate their own authority, approve compatibility, promote baselines, mutate TraceabilityGraph, or release WorkBreakdown.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-GENERATOR-PORT"
+            },
+            {
+              "kind": "element",
+              "id": "EL-CG-OPTIONAL-ADAPTERS"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "CON-DEV-CONTRACT-FORMAT-EXTENSION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-INDEPENDENT-VALIDATION",
+          "category": "operational",
+          "strength": "must",
+          "statement": "Every generated contract is independently validated by a version-pinned kind-specific Core validator before canonical diff or ContractGate preparation.",
+          "rationale": "Every generated contract is independently validated by a version-pinned kind-specific Core validator before canonical diff or ContractGate preparation.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-VALIDATOR-REGISTRY"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-CG-FORMAT-VALIDATION"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "CON-DEV-CONTRACT-FORMAT-EXTENSION-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-CANONICAL-DIFF",
+          "category": "data",
+          "strength": "must",
+          "statement": "Contract changes use a canonical complete comparison with ordered additions, modifications, removals, expected prior digests, target digests, and compatibility evidence.",
+          "rationale": "Contract changes use a canonical complete comparison with ordered additions, modifications, removals, expected prior digests, target digests, and compatibility evidence.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-CANONICAL-DIFFER"
+            },
+            {
+              "kind": "interface",
+              "id": "IF-CG-CANONICAL-DIFF"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-FORMAT-PORTABILITY",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "JSON Schema, OpenAPI, AsyncAPI, Protobuf, and future generators bind through the same provider-neutral operation and typed candidate contract; generic Core contains no product or interface-ID branches.",
+          "rationale": "JSON Schema, OpenAPI, AsyncAPI, Protobuf, and future generators bind through the same provider-neutral operation and typed candidate contract; generic Core contains no product or interface-ID branches.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-GENERATOR-PORT"
+            },
+            {
+              "kind": "element",
+              "id": "EL-CG-OPTIONAL-ADAPTERS"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-FORMAT-EXTENSION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-CHECKPOINT-REPLAY",
+          "category": "operational",
+          "strength": "must",
+          "statement": "Effectful generation checkpoints exact adapter results before downstream validation; identical retry replays without adapter invocation and any baseline, binding, validator, or policy drift fails before adapter entry.",
+          "rationale": "Effectful generation checkpoints exact adapter results before downstream validation; identical retry replays without adapter invocation and any baseline, binding, validator, or policy drift fails before adapter entry.",
+          "appliesTo": [
+            {
+              "kind": "interface",
+              "id": "IF-CG-GENERATOR-INVOCATION"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-TRACEABILITY-AUTHORITY",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "Candidate and approved contract facts use separate trusted contributors, scopes, checkpoints, and merge proofs; candidate facts never satisfy an approved contract reference.",
+          "rationale": "Candidate and approved contract facts use separate trusted contributors, scopes, checkpoints, and merge proofs; candidate facts never satisfy an approved contract reference.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-CANDIDATE-CONTRIBUTOR"
+            },
+            {
+              "kind": "element",
+              "id": "EL-CG-APPROVED-OBSERVER"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "NFR-DEV-CONTRACT-DETERMINISM-001"
+          ],
+          "sourceRefs": []
+        },
+        {
+          "id": "CON-CG-WORK-BARRIER",
+          "category": "organizational",
+          "strength": "must",
+          "statement": "WorkBreakdown progression requires an exact approved ContractBaseline or ApprovedNotApplicable artifact and corresponding ContractGate promotion proof.",
+          "rationale": "WorkBreakdown progression requires an exact approved ContractBaseline or ApprovedNotApplicable artifact and corresponding ContractGate promotion proof.",
+          "appliesTo": [
+            {
+              "kind": "element",
+              "id": "EL-CG-GATE"
+            },
+            {
+              "kind": "element",
+              "id": "EL-WB-MODULE"
+            }
+          ],
+          "verificationIntent": "Dedicated positive, negative, drift, replay, compatibility, authority, and traceability conformance fixtures.",
+          "sourceRequirementIds": [
+            "US-DEV-CONTRACT-GENERATION-001",
+            "CON-DEV-CONTRACT-AUTHORITY-001",
+            "CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001"
+          ],
+          "sourceRefs": []
+        }
+      ]
+    }
+  },
+  "nativeArtifacts": {
+    "mode": "embedded",
+    "content": {
+      "nativeArtifactSetId": "NATIVE-CG-DESIGNER-001",
+      "entries": [
+        {
+          "id": "NA-CG-OPENSPEC-DESIGN",
+          "artifact": {
+            "artifactId": "openspec-design-contract-generation-v1",
+            "schema": "https://devrelay.dev/native/openspec-design/v1",
+            "mediaType": "text/markdown",
+            "digest": "sha256:d91ed90b743c0ce2fd5241b277e9a8acb5f1d2364bb44e97f48361a6c16e167b",
+            "uri": "file:///C:/repos/DevRelay/dogfood/contract-generation/architecture-design/design.md"
+          },
+          "role": "technical-design-source",
+          "logicalPath": "dogfood/contract-generation/architecture-design/design.md",
+          "producedBy": {
+            "stage": "designer",
+            "adapterId": "openspec-design",
+            "adapterVersion": "0.1.0",
+            "tool": {
+              "name": "OpenSpec",
+              "version": "1.0"
+            }
+          },
+          "disposition": "generated",
+          "canonicalMappings": [
+            {
+              "section": "technicalDesign",
+              "entityIds": [
+                "TD-CG-001"
+              ],
+              "jsonPointers": [
+                "/sections/technicalDesign"
+              ]
+            },
+            {
+              "section": "interfaceIntent",
+              "entityIds": [
+                "IF-CG-GENERATOR-INVOCATION",
+                "IF-CG-FORMAT-VALIDATION",
+                "IF-CG-CANONICAL-DIFF",
+                "IF-CG-GATE-CANDIDATE",
+                "IF-CG-CANDIDATE-TRACEABILITY",
+                "IF-CG-APPROVED-TRACEABILITY"
+              ],
+              "jsonPointers": [
+                "/sections/interfaceIntent"
+              ]
+            },
+            {
+              "section": "architectureConstraints",
+              "entityIds": [
+                "CON-CG-STATE-ROUTING",
+                "CON-CG-ADAPTER-NON-AUTHORITY",
+                "CON-CG-INDEPENDENT-VALIDATION",
+                "CON-CG-CANONICAL-DIFF",
+                "CON-CG-FORMAT-PORTABILITY",
+                "CON-CG-CHECKPOINT-REPLAY",
+                "CON-CG-TRACEABILITY-AUTHORITY",
+                "CON-CG-WORK-BARRIER"
+              ],
+              "jsonPointers": [
+                "/sections/architectureConstraints"
+              ]
+            }
+          ],
+          "warnings": []
+        }
+      ]
+    }
+  },
+  "assumptions": [
+    {
+      "id": "ASM-CG-BASELINE-CURRENT",
+      "statement": "The supplied ArchitectureBaseline is the exact approved lifecycle-reporting baseline and the target requirements/ProjectOverview pair is exactly version 1.3.0.",
+      "status": "confirmed",
+      "blocking": false
+    },
+    {
+      "id": "ASM-CG-JSON-SCHEMA-FIRST",
+      "statement": "JSON Schema draft 2020-12 is the first live generation and validation path; optional formats remain fixture-conformant until live evidence exists.",
+      "status": "confirmed",
+      "blocking": false
+    },
+    {
+      "id": "ASM-CG-GATE-DISPOSITION",
+      "statement": "ContractGate, not ContractGeneration, owns ApprovedNotApplicable and WorkBreakdown progression authority.",
+      "status": "confirmed",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-CG-SELF-HOSTING",
+      "statement": "ContractGeneration introduces contract intents needed to describe its own typed boundaries.",
+      "impact": "A circular bootstrap could prevent the first ContractBaseline from being established.",
+      "mitigation": "Bootstrap the released module schemas as version-pinned source contracts, then require the live JSON Schema path to regenerate and byte-or-semantically compare every required interface before Gate promotion."
+    },
+    {
+      "id": "RISK-CG-GENERATOR-AUTHORITY",
+      "statement": "A generator may return syntactically valid but incomplete or semantically incompatible contracts.",
+      "impact": "WorkBreakdown could plan against incomplete or unsafe interface truth.",
+      "mitigation": "Keep format validation, canonical diff, semantic coverage, compatibility policy, and promotion outside the adapter."
+    },
+    {
+      "id": "RISK-CG-FORMAT-LEAK",
+      "statement": "JSON Schema-specific concepts may leak into the canonical module contract.",
+      "impact": "OpenAPI, AsyncAPI, Protobuf, or future adapters would require Core special cases.",
+      "mitigation": "Keep canonical entries typed by provider-neutral kind/dialect/bytes/evidence and register kind-specific validators at the edge."
+    },
+    {
+      "id": "RISK-CG-FALSE-COMPATIBILITY",
+      "statement": "Canonical syntax diff alone may be mistaken for semantic compatibility.",
+      "impact": "Breaking changes could be approved as backward-compatible.",
+      "mitigation": "Store mechanical diff as evidence input and let ContractGate apply an explicit kind-aware compatibility policy with approval."
+    },
+    {
+      "id": "RISK-CG-CANDIDATE-ACTIVATION",
+      "statement": "Candidate contract graph facts may be mistaken for approved implementation constraints.",
+      "impact": "Work planning could reference unapproved contracts.",
+      "mitigation": "Use separate contributors, scopes, edge vocabularies, checkpoints, and Gate-activated approved facts."
+    }
+  ],
+  "sourceRefs": []
+}

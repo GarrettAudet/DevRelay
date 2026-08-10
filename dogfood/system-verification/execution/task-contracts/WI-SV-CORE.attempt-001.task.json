@@ -1,0 +1,86 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-SV-CORE.attempt-001",
+  "workItem": {
+    "id": "WI-SV-CORE",
+    "objective": "Implement Core-owned subject binding, obligation expansion, evidence normalization, policy evaluation, and replay-safe result assembly.",
+    "boundedScope": [
+      "src/system-verification-core.mjs",
+      "src/system-verification-checkpoint.mjs",
+      "test/system-verification-core.test.mjs"
+    ],
+    "deliverables": [
+      "Deterministic verification pipeline",
+      "Immutable checkpoint replay",
+      "Fail-closed drift and substitution behavior"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "runtime-engineering",
+      "verification-policy"
+    ],
+    "dependencyHints": [
+      "WI-SV-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Exercise every outcome",
+      "Prove exact replay invokes zero verifier calls",
+      "Exercise stale baselines, subject, evidence, and policy"
+    ],
+    "requiredEvidence": [
+      "system-verification/core-tests"
+    ],
+    "sourceRefs": [
+      "goal-system-verification-module-v1",
+      "D-SV-OBLIGATIONS-001",
+      "D-SV-EVIDENCE-001"
+    ]
+  },
+  "dependencies": [
+    "WI-SV-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-SV-CORE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "runtime-engineering",
+      "verification-policy"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevisionRequired": true
+  },
+  "authority": {
+    "writeScope": [
+      "src/system-verification-core.mjs",
+      "src/system-verification-checkpoint.mjs",
+      "test/system-verification-core.test.mjs"
+    ],
+    "forbidden": [
+      "BusinessAcceptance",
+      "deployment",
+      "scope mutation",
+      "graph operations",
+      "downstream approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/system-verification/execution/attempts/WI-SV-CORE.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:f0264a17539d9e258a54761317401c49a60b1d0cd844f6467b8f03de11825255"
+}

@@ -1,0 +1,50 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-SUBJECT-OBLIGATIONS-001",
+  "executionId": "WE-WIV-FRONTIER-002-WI-WIV-SUBJECT-OBLIGATIONS-ATTEMPT-001",
+  "workItemId": "WI-WIV-SUBJECT-OBLIGATIONS",
+  "status": "executed",
+  "readinessProof": {
+    "workDependencyBaseline": {
+      "artifactId": "WDB-WIV-DOGFOOD",
+      "digest": "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8"
+    },
+    "completedWorkItemIds": ["WI-WIV-CONTRACTS"],
+    "incomingEdges": ["DEP-1FA7184F42CFAF3A"],
+    "readyWorkItemIds": [
+      "WI-WIV-ATTEMPT-CHECKPOINT",
+      "WI-WIV-SUBJECT-OBLIGATIONS"
+    ]
+  },
+  "assignment": {
+    "workItemRef": "WI-WIV-SUBJECT-OBLIGATIONS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ]
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/work-item-verification-input-guard.mjs",
+      "test/work-item-verification-input-guard.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not execute another DAG item.",
+      "Do not select or invoke verifiers or decide a Gate outcome.",
+      "Do not modify schemas, project baselines, or dogfood Gate evidence.",
+      "Do not verify, approve, integrate, or create graph operations.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "verification": {
+    "requiredEvidenceKind": "work-item-verification/input-and-obligation-tests",
+    "acceptance": "Exact version-pinned inputs yield one byte-stable complete obligation set; missing, stale, mismatched, reordered, duplicate, and unauthorized inputs fail closed."
+  },
+  "task": {
+    "threadId": "019fdb5b-4f76-7962-85e4-f3959faef3fa",
+    "worktree": "C:/Users/garre/.codex/worktrees/6d03/DevRelay-v04-work-dependency-analysis"
+  }
+}

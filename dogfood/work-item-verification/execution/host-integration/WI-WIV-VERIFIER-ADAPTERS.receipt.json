@@ -1,0 +1,83 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHostIntegrationReceipt",
+  "receiptId": "WIVHIR-WI-WIV-VERIFIER-ADAPTERS-002",
+  "executionId": "WE-WIV-FRONTIER-004-WI-WIV-VERIFIER-ADAPTERS",
+  "workItemId": "WI-WIV-VERIFIER-ADAPTERS",
+  "task": {
+    "threadId": "019fdb7e-31f6-7b51-a96f-b45c3128a3a3",
+    "worktree": "C:/Users/garre/.codex/worktrees/70c8/DevRelay-v04-work-dependency-analysis",
+    "contract": {
+      "relativePath": "dogfood/work-item-verification/execution/task-contracts/WI-WIV-VERIFIER-ADAPTERS.attempt-001.task.json",
+      "bytes": 1921,
+      "digest": "sha256:d846f68de17d1347a526e700fea7c8e82e8876f6add0e5fd6877a79520c76414"
+    }
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "agentOutcome": "pass",
+      "parentOutcome": "revision-request",
+      "integrated": false,
+      "handoff": {
+        "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-VERIFIER-ADAPTERS.attempt-001.handoff.raw.json",
+        "bytes": 2896,
+        "digest": "sha256:1a111cb53a406b2096eb7f693952e8c56e4737751f5d275fd09bd15bdaf93f82"
+      }
+    },
+    {
+      "attempt": 2,
+      "agentOutcome": "pass",
+      "parentOutcome": "pass",
+      "integrated": true,
+      "handoff": {
+        "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-VERIFIER-ADAPTERS.attempt-002.handoff.raw.json",
+        "bytes": 2515,
+        "digest": "sha256:89592a1f2c3e565109611c32354bede5ad1938f293a25122e17fd03ca9d26ad0"
+      }
+    }
+  ],
+  "parentReview": {
+    "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-VERIFIER-ADAPTERS.attempt-002.parent-review.json",
+    "bytes": 1426,
+    "digest": "sha256:947b6c90e437adc84a0ab0c16aac1f4218342dd29a109ab0898d75a83382d4f2"
+  },
+  "integratedFiles": [
+    {
+      "relativePath": "src/work-item-verification-test-verifier-adapter.mjs",
+      "bytes": 4372,
+      "digest": "sha256:f079633edd95f3092ef5b0c151d6edf0edd2b98a96028d310227cb387e1dd03e"
+    },
+    {
+      "relativePath": "src/work-item-verification-review-verifier-adapter.mjs",
+      "bytes": 4098,
+      "digest": "sha256:a624ccfe7066b7142d0802c3f1cc26d37f0ed5d976d0f3b02c90a3950695f1bb"
+    },
+    {
+      "relativePath": "examples/plugins/test-verifier.plugin.json",
+      "bytes": 687,
+      "digest": "sha256:b35735b134bebc4e807167b3fffbdf0dfe1b7c10516da81cde293025e891c399"
+    },
+    {
+      "relativePath": "examples/plugins/review-verifier.plugin.json",
+      "bytes": 639,
+      "digest": "sha256:1290ac1f78f1e16e698a8ae25be7d0fd41ae4ed32a113805c66091bdca036a63"
+    },
+    {
+      "relativePath": "test/work-item-verification-verifier-adapters.test.mjs",
+      "bytes": 6392,
+      "digest": "sha256:02000a578c920f441822588e685be4c19facd1b76bf4cf162e5c2c7d1ca26d1e"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test --test-concurrency=1 test/work-item-verification-verifier-adapters.test.mjs test/work-item-verification-contracts.test.mjs test/work-item-verification-checkpoint.test.mjs test/work-item-verification-verifier-binding.test.mjs",
+      "outcome": "pass",
+      "tests": 26
+    }
+  ],
+  "lifecycleDisposition": "provisional-host-integrated",
+  "nextRequiredStage": "WorkItemVerification-after-module-release",
+  "authoritativeVerifiedCompletionFactCreated": false,
+  "authoritativeIntegratedCompletionFactCreated": false
+}

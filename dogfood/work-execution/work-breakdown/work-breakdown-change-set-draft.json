@@ -1,0 +1,3784 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkBreakdownChangeSetDraft",
+  "changeSetId": "WBCS-WE-001",
+  "operation": "decompose-change",
+  "currentBaseline": {
+    "artifactId": "WBB-WB-DOGFOOD",
+    "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+    "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+    "digest": "sha256:4ef3f9ff4a15ffcd2a152d0a3a30532bd438c7b0d6e20a83db65bb9aa3580e84",
+    "uri": "file:///C:/repos/DevRelay/project/work-breakdown-baseline.json"
+  },
+  "inputBindings": [
+    {
+      "role": "project-work-breakdown-state",
+      "artifact": {
+        "artifactId": "PWBS-WE-BASELINED-001",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:ae67a5af648c2173429ae00f60196652b7db0d612e6cea971b08a3d9d2427547",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/project-work-breakdown-state.json"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-work-execution-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:6cae194ccf525e5cd3190fd021aed052fc10f373fd1c1eb09d6b6ee002e844f7",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+        "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+      }
+    },
+    {
+      "role": "contract-disposition",
+      "artifact": {
+        "artifactId": "CD-DEVRELAY-003",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+        "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+      }
+    },
+    {
+      "role": "capability-catalog",
+      "artifact": {
+        "artifactId": "CC-WB-DOGFOOD",
+        "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+        "mediaType": "application/vnd.devrelay.capability-catalog+json",
+        "digest": "sha256:9a334bebf4042240847e095496dbf86d7cb354a2f7cad82a9cbeed8530078c63",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/work-breakdown/capability-catalog.json"
+      }
+    },
+    {
+      "role": "current-repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+      }
+    },
+    {
+      "role": "current-work-breakdown-baseline",
+      "artifact": {
+        "artifactId": "WBB-WB-DOGFOOD",
+        "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+        "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+        "digest": "sha256:4ef3f9ff4a15ffcd2a152d0a3a30532bd438c7b0d6e20a83db65bb9aa3580e84",
+        "uri": "file:///C:/repos/DevRelay/project/work-breakdown-baseline.json"
+      }
+    },
+    {
+      "role": "approved-change-package",
+      "artifact": {
+        "artifactId": "ACP-WE-001",
+        "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+        "mediaType": "application/vnd.devrelay.approved-change-package+json",
+        "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-ASSEMBLY-GATE",
+      "priorItemDigest": "sha256:540fa8283759bad57ce9067c13723b59149977203eb2fd3ee3ea07f57748c205",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-CATALOGS-POLICY",
+      "priorItemDigest": "sha256:e2c363614d24046fc71d5e8beeb9cb6ab4e286606eeeafa2ef8f8566316eff7a",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-CONTRACTS",
+      "priorItemDigest": "sha256:94e168e20d5e2751a92d71e8820ef32464d1c2c7d1b84814b3cb497bc259b80a",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-DOCUMENTATION",
+      "priorItemDigest": "sha256:e1d0caff30aebf2764e37b9a2ffb8c774921e8385f850a706da2e520eb57cb14",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-ELIGIBILITY",
+      "priorItemDigest": "sha256:55693a2ec065e8b405a2ac63e9761a9c7fc33a85b1be198a98b2bf537b5a8d90",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-NATIVE-RANKER",
+      "priorItemDigest": "sha256:60b3209d537bfce993395c18a81dd58497cb76a2cfee661b86fcf1507e3df5fb",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-OPTIONAL-ADAPTERS",
+      "priorItemDigest": "sha256:18a576144ae9b9ec6917ee39c1f16047f95b63eec6fb3bee3a4b56ca41dec5a9",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-TRACEABILITY",
+      "priorItemDigest": "sha256:b6e582a932d16bf6fa7c4f9112a1c2519074f01797d07285a9a07aed4e4e1b1a",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "retire",
+      "workItemId": "WI-SA-VERIFICATION",
+      "priorItemDigest": "sha256:87f7ba8486bbbe93abc480a044b73342b6a5a9456b3fcd12fbc26ca3f942ba67",
+      "rationale": "The prior SpecialistAssignment deliverable is present in the pinned repository revision and has exact passing Gate evidence; retain its scope as already satisfied instead of carrying completed work into the WorkExecution plan."
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-A2A-ADAPTER",
+        "objective": "Implement an optional A2A executor behind the same WorkExecution port.",
+        "bounded-scope": {
+          "included": [
+            "Bind a version-pinned A2A Agent Card and selected skill to one execution attempt.",
+            "Normalize A2A task, artifact, diagnostic, and terminal-state evidence into the canonical raw executor result."
+          ],
+          "excluded": [
+            "A2A-specific Core branches, capability inference from prose, or remote-agent verification authority."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-A2A-ADAPTER",
+            "description": "A2A WorkExecution adapter manifest and conformance fixtures.",
+            "artifactKind": "ModulePlugin"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BINDING-001",
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-ISOLATION-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-A2A-EXECUTOR-ADAPTER",
+          "EL-WE-EXECUTOR-PORT"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-EXECUTOR-INVOCATION"
+        ],
+        "required-capabilities": [
+          "CAP-CONTRACT-AUTHORING",
+          "CAP-NODEJS-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-BINDING",
+            "relation": "after",
+            "rationale": "A2A invocation requires an exact approved executor binding.",
+            "authority": "hint"
+          },
+          {
+            "work-item-ref": "WI-WE-ATTEMPT-CHECKPOINT",
+            "relation": "after",
+            "rationale": "Remote task effects use the same immutable attempt semantics.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-A2A-ADAPTER",
+              "method": "Normalize pinned Agent Card, task, artifact, authentication, cancellation, failure, and terminal-state fixtures through the common executor port.",
+              "successCriteria": "A2A remains an optional replaceable executor whose canonical behavior and authority match the Codex task binding."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/a2a-conformance",
+            "description": "A2A remains an optional replaceable executor whose canonical behavior and authority match the Codex task binding."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/27"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/30"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/56"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/54"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/22"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-ATTEMPT-CHECKPOINT",
+        "objective": "Implement immutable execution-attempt identity, effect checkpointing, interruption, failure, retry lineage, and zero-call replay.",
+        "bounded-scope": {
+          "included": [
+            "Create a new immutable ExecutionAttempt for each actual invocation.",
+            "Checkpoint exact executor result bytes before canonical progression.",
+            "Link retries to but never overwrite predecessors."
+          ],
+          "excluded": [
+            "Treating replay as a new invocation, overwriting failed attempts, verification, or integration."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-ATTEMPT-CHECKPOINT",
+            "description": "ExecutionAttempt lifecycle and checkpoint controller.",
+            "artifactKind": "RuntimeLibrary"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-DETERMINISM-001",
+          "AC-DEV-WE-RETRY-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-CHECKPOINT",
+          "EL-WE-INPUT-GUARD"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-EXECUTOR-INVOCATION"
+        ],
+        "required-capabilities": [
+          "CAP-NODEJS-ENGINEERING",
+          "CAP-TEST-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-CONTRACTS",
+            "relation": "after",
+            "rationale": "Attempt and checkpoint artifacts must validate against the canonical contracts.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-ATTEMPT-CHECKPOINT",
+              "method": "Exercise success, failure, interruption, retry, exact replay, changed-input, duplicate identity, and predecessor-drift fixtures.",
+              "successCriteria": "Every effect is represented by one immutable attempt and exact retry performs zero executor calls with byte-identical canonical replay."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/attempt-checkpoint-tests",
+            "description": "Every effect is represented by one immutable attempt and exact retry performs zero executor calls with byte-identical canonical replay."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/29"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/34"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/61"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/57"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/22"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-BINDING",
+        "objective": "Validate version-pinned SpecialistProfile-to-executor bindings and declarative host authority.",
+        "bounded-scope": {
+          "included": [
+            "Resolve the exact assigned profile, executor adapter, version, configuration, tools, grants, and host policy.",
+            "Reject stale, mismatched, missing, substituted, or authority-expanding bindings.",
+            "Define host conformance fixtures for allowed and denied permission paths."
+          ],
+          "excluded": [
+            "Portable Core claiming operating-system enforcement or choosing readiness."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-BINDING",
+            "description": "ExecutionBinding validator and policy model.",
+            "artifactKind": "RuntimeLibrary"
+          },
+          {
+            "id": "DEL-WE-HOST-CONFORMANCE",
+            "description": "Host permission conformance fixtures.",
+            "artifactKind": "ConformanceFixtureSet"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BINDING-001",
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-ISOLATION-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-BINDING-VALIDATOR",
+          "EL-WE-INPUT-GUARD"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-EXECUTION-BINDING"
+        ],
+        "required-capabilities": [
+          "CAP-CONTRACT-AUTHORING",
+          "CAP-NODEJS-ENGINEERING",
+          "CAP-TEST-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-CONTRACTS",
+            "relation": "after",
+            "rationale": "ExecutionBinding validation consumes the closed canonical schemas.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-BINDING",
+              "method": "Run exact, stale, missing, mismatched-profile, substituted-adapter, grant-expansion, and host allow-deny fixtures.",
+              "successCriteria": "Only the exact approved binding reaches the executor port, while host effects remain explicit externally enforced obligations."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/binding-host-tests",
+            "description": "Only the exact approved binding reaches the executor port, while host effects remain explicit externally enforced obligations."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/27"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/30"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/59"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/57"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/21"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-CODEX-TASK-ADAPTER",
+        "objective": "Implement the first WorkExecution adapter using one user-visible Codex task per work item.",
+        "bounded-scope": {
+          "included": [
+            "Create a task with the exact bounded work contract, context bundle, authority demand, and handoff schema.",
+            "Preserve task identity, returned raw bytes, diagnostics, and artifacts as executor evidence."
+          ],
+          "excluded": [
+            "Bundling multiple work items into one task, hidden subagent execution, self-verification, or direct integration."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-CODEX-TASK-ADAPTER",
+            "description": "Codex task executor adapter and conformance fixtures.",
+            "artifactKind": "ModulePlugin"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-ISOLATION-001",
+          "AC-DEV-WE-ONE-ITEM-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-CODEX-TASK-ADAPTER",
+          "EL-WE-EXECUTOR-PORT"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-EXECUTOR-INVOCATION"
+        ],
+        "required-capabilities": [
+          "CAP-CONTRACT-AUTHORING",
+          "CAP-NODEJS-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-BINDING",
+            "relation": "after",
+            "rationale": "The task adapter may run only after exact binding validation.",
+            "authority": "hint"
+          },
+          {
+            "work-item-ref": "WI-WE-ATTEMPT-CHECKPOINT",
+            "relation": "after",
+            "rationale": "Task effects require immutable attempt and checkpoint semantics.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-CODEX-TASK-ADAPTER",
+              "method": "Create fixture tasks for success, failure, interruption, malformed handoff, authority expansion, and exact retry.",
+              "successCriteria": "Each runnable work item maps to one auditable user-visible task without acquiring readiness, verification, integration, or graph authority."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/codex-task-conformance",
+            "description": "Each runnable work item maps to one auditable user-visible task without acquiring readiness, verification, integration, or graph authority."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/30"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/31"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/55"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/54"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/22"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-CONTRACTS",
+        "objective": "Define the closed provider-neutral WorkExecution artifacts, module surface, and executor port.",
+        "bounded-scope": {
+          "included": [
+            "Define readiness, binding, attempt, result, evidence, diagnostics, retry, and traceability contracts.",
+            "Forbid executor-owned verification, completion, integration, graph, and readiness authority."
+          ],
+          "excluded": [
+            "Selecting a concrete executor for an invocation, executing work, verifying changes, or integrating changes."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-SCHEMAS",
+            "description": "Closed WorkExecution JSON schemas.",
+            "artifactKind": "JsonSchemaSet"
+          },
+          {
+            "id": "DEL-WE-MODULE",
+            "description": "Versioned WorkExecution module definition and executor port.",
+            "artifactKind": "ModuleDefinition"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BINDING-001",
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-OUTPUT-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-EXECUTOR-PORT",
+          "EL-WE-MODULE"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-CANDIDATE-TRACEABILITY",
+          "CT-IF-WE-EXECUTION-BINDING",
+          "CT-IF-WE-EXECUTOR-INVOCATION",
+          "CT-IF-WE-READINESS-PROOF",
+          "CT-IF-WE-RESULT-ASSEMBLY"
+        ],
+        "required-capabilities": [
+          "CAP-CONTRACT-AUTHORING",
+          "CAP-NODEJS-ENGINEERING"
+        ],
+        "dependency-hints": [],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-CONTRACTS",
+              "method": "Compile all schemas and exercise positive, negative, unknown-field, forbidden-authority, and executor-substitution fixtures.",
+              "successCriteria": "Only closed provider-neutral WorkExecution artifacts validate and the executor port exposes no downstream authority."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/contract-tests",
+            "description": "Only closed provider-neutral WorkExecution artifacts validate and the executor port exposes no downstream authority."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/27"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/32"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/53"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/54"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/20"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/21"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/22"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/23"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/24"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-DOCUMENTATION",
+        "objective": "Document WorkExecution configuration, task handoff, host boundary, artifacts, outcomes, retries, and extension points.",
+        "bounded-scope": {
+          "included": [
+            "Explain readiness, binding, one-item execution, Codex task and A2A adapters, evidence, traceability, and downstream barriers.",
+            "Provide operator examples for success, failure, interruption, retry, and resume."
+          ],
+          "excluded": [
+            "Claiming portable Core enforces host permissions or that executor output is verified or integrated."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-DOCUMENTATION",
+            "description": "WorkExecution operator, adapter, and IDE documentation.",
+            "artifactKind": "DocumentationSet"
+          }
+        ],
+        "work-type": "documentation-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-ISOLATION-001",
+          "AC-DEV-WE-RETRY-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-A2A-EXECUTOR-ADAPTER",
+          "EL-WE-CODEX-TASK-ADAPTER",
+          "EL-WE-MODULE"
+        ],
+        "contract-refs": [],
+        "required-capabilities": [
+          "CAP-TECHNICAL-WRITING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-VERIFICATION",
+            "relation": "after",
+            "rationale": "Documentation must cite final verified behavior and exact artifact examples.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-DOCUMENTATION",
+              "method": "Review documentation against approved requirements, architecture, contracts, release evidence, and actual user-visible task handoffs.",
+              "successCriteria": "Operators can run and audit WorkExecution without confusing execution with readiness, verification, completion, or integration."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/documentation-review",
+            "description": "Operators can run and audit WorkExecution without confusing execution with readiness, verification, completion, or integration."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/30"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/34"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/53"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/55"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/56"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-READINESS",
+        "objective": "Implement Core-owned selection and proof of exactly one runnable work item.",
+        "bounded-scope": {
+          "included": [
+            "Derive the ready frontier from the approved dependency DAG and integrated completion facts.",
+            "Bind exactly one selected WorkItem and its prerequisite evidence to a RunnableFrontierProof."
+          ],
+          "excluded": [
+            "Executor-selected readiness, scheduling policy, DAG mutation, or multi-item execution."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-READINESS",
+            "description": "Deterministic runnable-frontier and one-item validator.",
+            "artifactKind": "RuntimeLibrary"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-ONE-ITEM-001",
+          "AC-DEV-WE-READINESS-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-FRONTIER-VALIDATOR",
+          "EL-WE-INPUT-GUARD"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-READINESS-PROOF"
+        ],
+        "required-capabilities": [
+          "CAP-NODEJS-ENGINEERING",
+          "CAP-TEST-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-CONTRACTS",
+            "relation": "after",
+            "rationale": "Readiness proof must conform to the canonical WorkExecution contracts.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-READINESS",
+              "method": "Exercise ready, blocked, stale-completion, changed-DAG, forged-frontier, absent-item, multi-item, and shuffled-input fixtures.",
+              "successCriteria": "Core alone produces a byte-stable one-item readiness proof and blocks every non-runnable invocation before executor entry."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/readiness-tests",
+            "description": "Core alone produces a byte-stable one-item readiness proof and blocks every non-runnable invocation before executor entry."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/31"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/33"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/57"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/58"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/23"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-RESULT-ASSEMBLY",
+        "objective": "Assemble canonical WorkExecution outputs from checkpoint-replayed executor bytes.",
+        "bounded-scope": {
+          "included": [
+            "Validate proposed mutations against bounded scope.",
+            "Produce exactly one ChangeSetDraft, one ExecutionEvidenceBundle, diagnostics, and the immutable attempt record.",
+            "Reject verified, complete, integrated, or undeclared output claims."
+          ],
+          "excluded": [
+            "Running verification, deciding completion, mutating the repository baseline, or integrating changes."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-RESULT-ASSEMBLY",
+            "description": "Deterministic WorkExecution result assembler and validators.",
+            "artifactKind": "RuntimeLibrary"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-DETERMINISM-001",
+          "AC-DEV-WE-OUTPUT-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-CHECKPOINT",
+          "EL-WE-RESULT-ASSEMBLER"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-RESULT-ASSEMBLY"
+        ],
+        "required-capabilities": [
+          "CAP-CONTRACT-AUTHORING",
+          "CAP-NODEJS-ENGINEERING",
+          "CAP-TEST-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-ATTEMPT-CHECKPOINT",
+            "relation": "after",
+            "rationale": "Canonical assembly consumes only checkpoint-replayed executor bytes.",
+            "authority": "hint"
+          },
+          {
+            "work-item-ref": "WI-WE-CONTRACTS",
+            "relation": "after",
+            "rationale": "Outputs must conform to the closed result contracts.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-RESULT-ASSEMBLY",
+              "method": "Exercise exact output, missing output, extra mutation, scope escape, malformed evidence, forbidden authority, and byte-stable replay fixtures.",
+              "successCriteria": "Successful execution yields exactly one proposed change and evidence bundle without any downstream completion claim."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/result-assembly-tests",
+            "description": "Successful execution yields exactly one proposed change and evidence bundle without any downstream completion claim."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/29"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/32"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/60"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/61"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/24"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-TRACEABILITY",
+        "objective": "Project candidate execution attempts and produced change drafts through a trusted forward-only contributor.",
+        "bounded-scope": {
+          "included": [
+            "Derive WorkItem attempted-by ExecutionAttempt and successful ExecutionAttempt produces ChangeSetDraft relationships.",
+            "Persist update digest, execution identity, graph version, checkpoint, and atomic merge proof."
+          ],
+          "excluded": [
+            "Executor-authored graph operations, verified-by facts, implemented-by facts, integrated facts, or inverse edges."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-TRACEABILITY",
+            "description": "WorkExecution candidate traceability contributor and merge proof.",
+            "artifactKind": "TraceabilityContributor"
+          }
+        ],
+        "work-type": "code-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-TRACEABILITY-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-TRACEABILITY-CONTRIBUTOR"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-CANDIDATE-TRACEABILITY"
+        ],
+        "required-capabilities": [
+          "CAP-NODEJS-ENGINEERING",
+          "CAP-TEST-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-RESULT-ASSEMBLY",
+            "relation": "after",
+            "rationale": "Traceability projects only validated canonical attempts and change drafts.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-TRACEABILITY",
+              "method": "Project, validate, atomically merge, replay, and query allowed attempt edges while rejecting arbitrary and downstream factual edges.",
+              "successCriteria": "Only trusted candidate attempted-by and produces facts enter TraceabilityGraph with complete reproducible provenance."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/traceability-tests",
+            "description": "Only trusted candidate attempted-by and produces facts enter TraceabilityGraph with complete reproducible provenance."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/35"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/62"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/20"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "add",
+      "workItem": {
+        "id": "WI-WE-VERIFICATION",
+        "objective": "Release-gate WorkExecution across readiness, binding, host boundaries, attempts, adapters, output assembly, traceability, and packaging.",
+        "bounded-scope": {
+          "included": [
+            "Run focused and full regressions, drift, replay, interruption, authority, substitution, isolation, and package checks.",
+            "Dogfood the ready frontier through separate user-visible execution tasks."
+          ],
+          "excluded": [
+            "Performing WorkItemVerification or claiming that proposed changes are integrated."
+          ]
+        },
+        "deliverables": [
+          {
+            "id": "DEL-WE-RELEASE-EVIDENCE",
+            "description": "WorkExecution release verification evidence.",
+            "artifactKind": "VerificationEvidenceSet"
+          }
+        ],
+        "work-type": "test-change",
+        "acceptance-criterion-refs": [
+          "AC-DEV-WE-BINDING-001",
+          "AC-DEV-WE-BOUNDARY-001",
+          "AC-DEV-WE-DETERMINISM-001",
+          "AC-DEV-WE-ISOLATION-001",
+          "AC-DEV-WE-ONE-ITEM-001",
+          "AC-DEV-WE-OUTPUT-001",
+          "AC-DEV-WE-READINESS-001",
+          "AC-DEV-WE-RETRY-001",
+          "AC-DEV-WE-TRACEABILITY-001"
+        ],
+        "architecture-refs": [
+          "EL-WE-A2A-EXECUTOR-ADAPTER",
+          "EL-WE-BINDING-VALIDATOR",
+          "EL-WE-CHECKPOINT",
+          "EL-WE-CODEX-TASK-ADAPTER",
+          "EL-WE-EXECUTOR-PORT",
+          "EL-WE-FRONTIER-VALIDATOR",
+          "EL-WE-INPUT-GUARD",
+          "EL-WE-MODULE",
+          "EL-WE-RESULT-ASSEMBLER",
+          "EL-WE-TRACEABILITY-CONTRIBUTOR"
+        ],
+        "contract-refs": [
+          "CT-IF-WE-CANDIDATE-TRACEABILITY",
+          "CT-IF-WE-EXECUTION-BINDING",
+          "CT-IF-WE-EXECUTOR-INVOCATION",
+          "CT-IF-WE-READINESS-PROOF",
+          "CT-IF-WE-RESULT-ASSEMBLY"
+        ],
+        "required-capabilities": [
+          "CAP-RELEASE-ENGINEERING",
+          "CAP-TEST-ENGINEERING"
+        ],
+        "dependency-hints": [
+          {
+            "work-item-ref": "WI-WE-CODEX-TASK-ADAPTER",
+            "relation": "after",
+            "rationale": "The primary dogfood executor must be available.",
+            "authority": "hint"
+          },
+          {
+            "work-item-ref": "WI-WE-A2A-ADAPTER",
+            "relation": "after",
+            "rationale": "Executor substitution must be testable.",
+            "authority": "hint"
+          },
+          {
+            "work-item-ref": "WI-WE-RESULT-ASSEMBLY",
+            "relation": "after",
+            "rationale": "Canonical output behavior must be complete.",
+            "authority": "hint"
+          },
+          {
+            "work-item-ref": "WI-WE-TRACEABILITY",
+            "relation": "after",
+            "rationale": "Candidate traceability must be complete.",
+            "authority": "hint"
+          }
+        ],
+        "verification-plan": {
+          "checks": [
+            {
+              "id": "VC-WE-VERIFICATION",
+              "method": "Run the canonical package gate, module dogfood frontier, mutation tests, zero-call replay, adapter substitution, and independent contract review.",
+              "successCriteria": "All WorkExecution release gates pass deterministically while verification and integration remain downstream."
+            }
+          ]
+        },
+        "required-evidence": [
+          {
+            "kind": "work-execution/release-gate",
+            "description": "All WorkExecution release gates pass deterministically while verification and integration remain downstream."
+          }
+        ],
+        "source-refs": [
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/27"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/28"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/29"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/30"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/31"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/32"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/33"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/34"
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+              "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+              "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+              "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+            },
+            "jsonPointer": "/requirements/acceptanceCriteria/35"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/56"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/59"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/61"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/55"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/54"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/58"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/57"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/53"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/60"
+          },
+          {
+            "role": "architecture-baseline",
+            "artifact": {
+              "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+              "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+              "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+              "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+              "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+            },
+            "jsonPointer": "/sections/architectureModel/content/elements/62"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/20"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/21"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/22"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/23"
+          },
+          {
+            "role": "contract-disposition",
+            "artifact": {
+              "artifactId": "CD-DEVRELAY-003",
+              "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+              "mediaType": "application/vnd.devrelay.contract-disposition+json",
+              "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+              "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+            },
+            "jsonPointer": "/contractTargets/24"
+          },
+          {
+            "role": "approved-change-package",
+            "artifact": {
+              "artifactId": "ACP-WE-001",
+              "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+              "mediaType": "application/vnd.devrelay.approved-change-package+json",
+              "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+            },
+            "jsonPointer": "/authorizedScope"
+          }
+        ]
+      }
+    }
+  ],
+  "coverageDispositions": [
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-BOUNDARY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-COMPLETE-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-DETERMINISM-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-ELIGIBILITY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-FAIL-CLOSED-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-PLUGIN-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SA-TRACEABILITY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-SPECIALIST-BOUNDARY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-BINDING-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-A2A-ADAPTER",
+        "WI-WE-BINDING",
+        "WI-WE-CONTRACTS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-BOUNDARY-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-A2A-ADAPTER",
+        "WI-WE-BINDING",
+        "WI-WE-CODEX-TASK-ADAPTER",
+        "WI-WE-CONTRACTS",
+        "WI-WE-DOCUMENTATION",
+        "WI-WE-READINESS",
+        "WI-WE-RESULT-ASSEMBLY",
+        "WI-WE-TRACEABILITY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-DETERMINISM-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-ATTEMPT-CHECKPOINT",
+        "WI-WE-RESULT-ASSEMBLY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-ISOLATION-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-A2A-ADAPTER",
+        "WI-WE-BINDING",
+        "WI-WE-CODEX-TASK-ADAPTER",
+        "WI-WE-DOCUMENTATION",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-ONE-ITEM-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CODEX-TASK-ADAPTER",
+        "WI-WE-READINESS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-OUTPUT-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CONTRACTS",
+        "WI-WE-RESULT-ASSEMBLY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-READINESS-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-READINESS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-RETRY-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-ATTEMPT-CHECKPOINT",
+        "WI-WE-DOCUMENTATION",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-DEV-WE-TRACEABILITY-001",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-TRACEABILITY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-ADAPTER-SELECTION-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-COVERAGE-DISPOSITIONS-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-DECOMPOSE-CHANGE-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-DECOMPOSE-ESTABLISH-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-GATE-BOUNDARY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-INPUT-PINNING-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-NO-EXECUTION-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-OUTPUT-CONTRACT-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-TRACEABILITY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WB-WORK-ITEM-CONTRACT-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-CONSISTENCY-REVIEW-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-CONTEXT-SLICES-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-CYCLE-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-DETERMINISM-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-GRAPH-COVERAGE-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-GRAPH-MECHANICS-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-HINT-DISPOSITION-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-INPUT-COHERENCE-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-MISSING-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-NATIVE-PROPOSER-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-NO-EXECUTION-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-OPA-POLICY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-ORDERING-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-PARALLEL-BOUNDARY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-PLUGIN-BOUNDARY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "acceptance-criterion",
+      "scopeRef": "AC-WDA-TRACEABILITY-001",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-CORE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-GRAPH",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-MODULES",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-DEVRELAY-SYSTEM",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-APPROVED-CONTRIBUTOR",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-CANDIDATE-ASSEMBLER",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-CANDIDATE-CONTRIBUTOR",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-ELIGIBILITY-EVALUATOR",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-GATE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-INPUT-GUARD",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-MODULE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-NATIVE-RANKER",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-OPTIONAL-ADAPTERS",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-SA-RANKER-PORT",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-ADAPTER-PORT",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-CONTRIBUTOR",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-DOWNSTREAM",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-GATE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-MODULE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-OBSERVERS",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-PREFLIGHT",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WB-VALIDATORS",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-CONTRIBUTOR",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-GATE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-GRAPH-MECHANICS",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-MODULE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-NATIVE-PROPOSER",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-OPA",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-OPTIONAL-PROPOSERS",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-PROPOSER-PORT",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-SNAPSHOT",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WDA-SPECKIT-REVIEWER",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-A2A-EXECUTOR-ADAPTER",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-A2A-ADAPTER",
+        "WI-WE-DOCUMENTATION",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-BINDING-VALIDATOR",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-BINDING",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-CHECKPOINT",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-ATTEMPT-CHECKPOINT",
+        "WI-WE-RESULT-ASSEMBLY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-CODEX-TASK-ADAPTER",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CODEX-TASK-ADAPTER",
+        "WI-WE-DOCUMENTATION",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-EXECUTOR-PORT",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-A2A-ADAPTER",
+        "WI-WE-CODEX-TASK-ADAPTER",
+        "WI-WE-CONTRACTS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-FRONTIER-VALIDATOR",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-READINESS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-INPUT-GUARD",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-ATTEMPT-CHECKPOINT",
+        "WI-WE-BINDING",
+        "WI-WE-READINESS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-MODULE",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CONTRACTS",
+        "WI-WE-DOCUMENTATION",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-RESULT-ASSEMBLER",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-RESULT-ASSEMBLY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "architecture",
+      "scopeRef": "EL-WE-TRACEABILITY-CONTRIBUTOR",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-TRACEABILITY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-SA-APPROVED-TRACEABILITY",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-SA-CANDIDATE-ASSEMBLY",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-SA-CANDIDATE-TRACEABILITY",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-SA-ELIGIBILITY-EVALUATION",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-SA-GATE-CANDIDATE",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-SA-RANKER-INVOCATION",
+      "disposition": "already-satisfied",
+      "rationale": "The prior SpecialistAssignment module work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new WorkExecution work.",
+      "currentEvidence": [
+        {
+          "artifactId": "work-breakdown-gate-promotion-specialist-assignment-v1",
+          "schema": "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+          "mediaType": "application/json",
+          "digest": "sha256:70f884665e8540b6e9b1c8628ed01c7b2d785769eae4bdc2bffbd9039e504904",
+          "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/work-breakdown/work-breakdown-gate-promotion-proof.json"
+        },
+        {
+          "artifactId": "repository-snapshot-devrelay-4bda7fe",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+          "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+          "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+        }
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-WE-CANDIDATE-TRACEABILITY",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CONTRACTS",
+        "WI-WE-TRACEABILITY",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-WE-EXECUTION-BINDING",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-BINDING",
+        "WI-WE-CONTRACTS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-WE-EXECUTOR-INVOCATION",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-A2A-ADAPTER",
+        "WI-WE-ATTEMPT-CHECKPOINT",
+        "WI-WE-CODEX-TASK-ADAPTER",
+        "WI-WE-CONTRACTS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-WE-READINESS-PROOF",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CONTRACTS",
+        "WI-WE-READINESS",
+        "WI-WE-VERIFICATION"
+      ]
+    },
+    {
+      "scopeKind": "contract",
+      "scopeRef": "CT-IF-WE-RESULT-ASSEMBLY",
+      "disposition": "planned",
+      "workItemRefs": [
+        "WI-WE-CONTRACTS",
+        "WI-WE-RESULT-ASSEMBLY",
+        "WI-WE-VERIFICATION"
+      ]
+    }
+  ],
+  "resultingWorkItemsDigest": "sha256:4a22265d05dfed71c55f2a61bcf9dd3514ebcc95191b4a5e763d184a3a8bad91",
+  "nativeArtifacts": [
+    {
+      "artifactId": "openspec-tasks-work-execution-v1",
+      "schema": "https://devrelay.dev/native/openspec/tasks/v1",
+      "mediaType": "text/markdown",
+      "digest": "sha256:5c86f7369373c0f9d7e12c878d226f7ade83e30b5b8d4888aca49851d9964ca3",
+      "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/tasks.md"
+    }
+  ],
+  "sourceRefs": [
+    {
+      "role": "project-work-breakdown-state",
+      "artifact": {
+        "artifactId": "PWBS-WE-BASELINED-001",
+        "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v1",
+        "mediaType": "application/vnd.devrelay.project-work-breakdown-state+json",
+        "digest": "sha256:ae67a5af648c2173429ae00f60196652b7db0d612e6cea971b08a3d9d2427547",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/project-work-breakdown-state.json"
+      },
+      "jsonPointer": "/state"
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      },
+      "jsonPointer": "/requirements/purpose"
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-work-execution-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:6cae194ccf525e5cd3190fd021aed052fc10f373fd1c1eb09d6b6ee002e844f7",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      },
+      "jsonPointer": "/overview/purpose"
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-devrelay-v1-work-execution-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:08d77bce4e294a4ba25374acc8a338dd0c159cd760577d991000c0efe00d5c1d",
+        "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+      },
+      "jsonPointer": "/sections/technicalDesign"
+    },
+    {
+      "role": "contract-disposition",
+      "artifact": {
+        "artifactId": "CD-DEVRELAY-003",
+        "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+        "mediaType": "application/vnd.devrelay.contract-disposition+json",
+        "digest": "sha256:9f964b80981be0be8a818d622983d8bc3dfa22f2281fb84229b499768921bbf6",
+        "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+      },
+      "jsonPointer": "/mode"
+    },
+    {
+      "role": "current-repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/repository-snapshot.json"
+      },
+      "jsonPointer": "/revision"
+    },
+    {
+      "role": "current-work-breakdown-baseline",
+      "artifact": {
+        "artifactId": "WBB-WB-DOGFOOD",
+        "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+        "mediaType": "application/vnd.devrelay.work-breakdown-baseline+json",
+        "digest": "sha256:4ef3f9ff4a15ffcd2a152d0a3a30532bd438c7b0d6e20a83db65bb9aa3580e84",
+        "uri": "file:///C:/repos/DevRelay/project/work-breakdown-baseline.json"
+      },
+      "jsonPointer": "/workItems"
+    },
+    {
+      "role": "approved-change-package",
+      "artifact": {
+        "artifactId": "ACP-WE-001",
+        "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+        "mediaType": "application/vnd.devrelay.approved-change-package+json",
+        "digest": "sha256:c0dbbed3b90959dd598e5812f685e71e137a2deb1a24023f66759355a127e2f2",
+        "uri": "file:///C:/repos/DevRelay/dogfood/work-execution/work-breakdown/approved-change-package.json"
+      },
+      "jsonPointer": "/authorizedScope"
+    }
+  ]
+}

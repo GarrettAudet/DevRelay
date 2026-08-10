@@ -1,0 +1,21 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-business-acceptance-gate-v1",
+  "objective": "Build a deterministic Core-owned BusinessAcceptanceGate that decides whether one exactly verified system satisfies the approved business objectives and success metrics, using explicit evidence and exact owner approval.",
+  "constraints": [
+    "BusinessAcceptance is a Core Gate, not an executable module and not a plug-in slot.",
+    "A verified SystemVerificationResult is necessary but cannot itself grant business acceptance.",
+    "Every current business objective and success metric must receive one explicit disposition.",
+    "Owner approval must bind the exact candidate raw bytes and all version-pinned project context.",
+    "The Gate cannot deploy, release, mutate implementation, alter requirements, or fabricate evidence."
+  ],
+  "acceptanceCriteria": [
+    "Exact inputs produce a byte-stable exhaustive BusinessAcceptanceCandidate.",
+    "Missing, stale, contradictory, or unrelated evidence cannot produce accepted.",
+    "Only an exact raw-byte-bound owner approval can produce BusinessAcceptanceRecord(outcome=accepted).",
+    "Rejected and needs-evidence outcomes cannot complete the lifecycle.",
+    "Traceability adds forward business-objective and success-metric acceptance/evidence facts only after exact acceptance.",
+    "Replay is idempotent and changed baselines, policy, evidence, system verification, candidate, or approval fail closed."
+  ]
+}

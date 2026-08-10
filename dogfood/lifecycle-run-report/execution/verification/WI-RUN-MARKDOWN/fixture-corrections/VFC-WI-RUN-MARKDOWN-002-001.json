@@ -1,0 +1,52 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "VerificationFixtureCorrection",
+  "correctionId": "VFC-WI-RUN-MARKDOWN-002-001",
+  "workItemId": "WI-RUN-MARKDOWN",
+  "attempt": 2,
+  "diagnosis": {
+    "classification": "verifier-fixture-invalid-snapshot",
+    "rootCause": "The adversarial fixture reversed digest-bound snapshot arrays without resealing snapshotDigest, so released validation rejected the fixture before rendering.",
+    "independentOwner": "trusted-core-host/work-item-verification",
+    "candidateSourceDisposition": "unchanged",
+    "taskContractDisposition": "unchanged"
+  },
+  "priorFixture": {
+    "path": "dogfood/lifecycle-run-report/execution/verification/WI-RUN-MARKDOWN/fixture-history/adversarial-verifier.attempt-002-rejection.raw.mjs",
+    "digest": "sha256:a0192e7313be5975b328d026943858a8cc9ac9f2798372e86f01ab804ccd61cc"
+  },
+  "correctedFixture": {
+    "path": "dogfood/lifecycle-run-report/execution/verification/WI-RUN-MARKDOWN/attempt-001/adversarial-verifier.test.mjs",
+    "digest": "sha256:496e1fbaa0f89d2bf4b6f544793c9f806c060931e3b100fb6788a0f7de7948bc"
+  },
+  "authorizedCorrection": "After reordering only, delete snapshotDigest and recompute it from the exact body excluding apiVersion, kind, and snapshotDigest using canonicalJsonDigest. No assertion or requirement changes are authorized.",
+  "rejectedEvaluation": {
+    "candidateDigest": "sha256:a61633dfde132e068afec826cd7fafe5adc4102dd81d2d2d2494a23db61dc548",
+    "evidenceDigest": "sha256:39402246241b458bff3d220c567dbb80a4ac04df4988c1f8fb2ff3263e2b9434",
+    "gateRejectionDigest": "sha256:b7e224410682c282ecba80eaa4cbe3b6896cb0323e46a15fa437eae52daa92d7",
+    "checkpointDigest": "sha256:253fc3129abff4f9f968672a8a0ba4ffefb7eafd1d0bff430bd4222e29b8ea3d"
+  },
+  "lineage": {
+    "task": {
+      "path": "dogfood/lifecycle-run-report/execution/task-contracts/WI-RUN-MARKDOWN.attempt-002.task.json",
+      "digest": "sha256:33461a9742d6fc9f5bcb5b34a93b694c0b8f0feca6645a6c5b54f2a48dcde39c"
+    },
+    "revision": {
+      "path": "dogfood/lifecycle-run-report/execution/task-contracts/attempts/WI-RUN-MARKDOWN.attempt-002.revision-request.json",
+      "digest": "sha256:8429c5e2c1c093a8c0bb6c6bd731adca9071240cc169bddecb3ec9e73a968a0b"
+    },
+    "rawHandoff": {
+      "path": "dogfood/lifecycle-run-report/execution/task-contracts/attempts/WI-RUN-MARKDOWN.attempt-002.handoff.raw.json",
+      "digest": "sha256:809b259eb8c495d6088e1c5c991fe5867fb7c565158d57cb2fa5167d0e34d9cb"
+    }
+  },
+  "closure": {
+    "candidateSourceChanged": false,
+    "taskContractChanged": false,
+    "assertionsChanged": false,
+    "requirementWeakened": false,
+    "priorRejectionPreserved": true
+  },
+  "authority": "verification-fixture-owner",
+  "correctionDigest": "sha256:d0af25fdd89c1d2dc395bf3d1a5fa1b7a6bb1ca6bde553af02f93038344075d2"
+}

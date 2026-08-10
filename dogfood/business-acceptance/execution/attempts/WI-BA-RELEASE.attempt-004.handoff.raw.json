@@ -1,0 +1,59 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE.attempt-004",
+  "workItemId": "WI-BA-RELEASE",
+  "status": "completed-with-environment-blocked-canonical-gate",
+  "summary": "DevRelay 0.8.0 is sealed with one accepted lifecycle proof binding the current approved 1.6.0 baseline pair, a verified SystemVerificationResult, exhaustive technical and business coverage, canonical raw candidate and owner approval bytes, and an atomic vocabulary-1.5 acceptance merge with zero blocking diagnostics.",
+  "changedPaths": [
+    "CHANGELOG.md",
+    "README.md",
+    "RELEASE.md",
+    "docs/business-acceptance.md",
+    "dogfood/business-acceptance/accepted-run/",
+    "dogfood/business-acceptance/materialize-accepted-run.mjs",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-004.handoff.raw.json",
+    "package-lock.json",
+    "package.json",
+    "release/0.8.0.json",
+    "scripts/release-tools.mjs",
+    "src/index.mjs",
+    "test/business-acceptance-documentation.test.mjs",
+    "test/business-acceptance-release.test.mjs"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:87417330dcd4de55421923bb9f813033ad1a56524059372fd8c83bc1be1d9226",
+    "planningRevisionDigest": "sha256:d50d9755710f0ad962137d9473227053045fe369220d574c3ff5d6212d654c97",
+    "dependencyReceiptDigests": [
+      "sha256:712501d1b6ed7453ea3cbfc29a1cd65a89f56048c5f1a53c074173c40ce89576",
+      "sha256:cd2f057433a18232486680ebd2e13bffa3e4d365ff3ab66ef173b3f194325187"
+    ],
+    "writeScopeRespected": true
+  },
+  "proof": {
+    "outcome": "accepted",
+    "technicalCriteria": { "required": 72, "passing": 72 },
+    "businessObjectives": { "required": 8, "satisfied": 8 },
+    "successMetrics": { "required": 9, "satisfied": 9 },
+    "businessScope": { "required": 31, "satisfied": 31 },
+    "technicalTestsExecutedByBusinessAcceptance": 0,
+    "traceabilityVocabulary": "1.5.0",
+    "traceabilityMerge": "atomic",
+    "blockingDiagnostics": 0,
+    "canonicalCandidateBytes": true,
+    "canonicalOwnerApprovalBytes": true
+  },
+  "verification": {
+    "focused": { "tests": 50, "passed": 50, "failed": 0 },
+    "releaseProof": { "tests": 4, "passed": 4, "failed": 0 },
+    "releaseCatalog": { "version": "0.8.0", "rawByteDigests": 2168, "packageFiles": 255 },
+    "immutablePackageAndOfflineConsumer": { "status": "passed", "packageFiles": 255, "rootImport": "passed" },
+    "canonicalVerify": { "status": "environment-blocked", "reason": "Existing Structurizr bootstrap invokes PowerShell Expand-Archive without receiving its pinned Temurin archive argument; this script is outside authority.writeScope." },
+    "releaseCheck": { "status": "not-claimable", "reason": "release:check includes canonical verify and cannot pass until the out-of-scope Structurizr bootstrap defect is corrected." }
+  },
+  "preservation": {
+    "priorAttemptsModified": false,
+    "onlyAttempt004HandoffWritten": true
+  },
+  "handoff": "Parent reviews the accepted proof and release surface, then owns correction of the out-of-scope Structurizr bootstrap and final canonical verify/release:check integration."
+}

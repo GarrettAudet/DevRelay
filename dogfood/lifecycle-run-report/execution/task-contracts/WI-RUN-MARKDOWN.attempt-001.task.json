@@ -1,0 +1,327 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-RUN-MARKDOWN-001",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-MARKDOWN-ATTEMPT-001",
+  "workItemId": "WI-RUN-MARKDOWN",
+  "attempt": 1,
+  "status": "prepared",
+  "readyFrontier": {
+    "frontierId": "RF-AFTER-WI-RUN-SNAPSHOT-005",
+    "frontierDigest": "sha256:ffb0a5bc8182858d0e54e3b65f667de5fa0ab6e5a5c50bdc8c99421117c0e2ac",
+    "readyWorkItemIds": [
+      "WI-RUN-MARKDOWN"
+    ],
+    "completionFacts": [
+      {
+        "artifactId": "ICF-WI-RUN-CONTENT-POLICY-002",
+        "digest": "sha256:3dc759bc9eb3ff0e93c1807451e8868d259900cf138719dbff6e13e8636659a4"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-CONTRACTS-003",
+        "digest": "sha256:dbcf9bb53baf8ac2da5d949b4f2f5cd1e5313de8a2a1de09172e19f2936b01af"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-FRONTIER-001",
+        "digest": "sha256:434b25764793df164a55a25a6906cc4e23f0f336bba4c3f65f86bd6e2ec887f6"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-LEDGER-002",
+        "digest": "sha256:3d703966bb1a22b1a96f421d40c1df0e5eb511b3bf69314e6f88a1bbeddd0966"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-OBSERVATIONS-001",
+        "digest": "sha256:331395f83640be6bec8fc6d9e39f16d901307d7c1f86fa9cc00222bf593cb526"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-SNAPSHOT-005",
+        "digest": "sha256:c49e53ce1c493185c8f4c7e7c3422d0145244efccbca79c402eace1e57eeacb9"
+      }
+    ]
+  },
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TECHNICAL-WRITING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "requiredGrants": [
+      "GRANT-PROCESS-SPAWN",
+      "GRANT-REPOSITORY-WRITE"
+    ],
+    "requiredTools": [
+      "TOOL-NODE"
+    ],
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "workItemRef": "WI-RUN-MARKDOWN"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/lifecycle-run-report-markdown.mjs",
+      "test/lifecycle-run-report-markdown.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not change src/index.mjs.",
+      "Do not integrate candidate bytes, mutate TraceabilityGraph or lifecycle state, control progression, or claim verification, Gate, or ChangeIntegration authority.",
+      "Do not modify the approved WorkBreakdownBaseline, WorkDependencyBaseline, SpecialistAssignmentBaseline, dependency DAG, or IntegratedCompletionFacts.",
+      "Do not hard-code a fixed lifecycle module count or render policy-denied content.",
+      "Do not commit, merge, tag, push, or create a pull request."
+    ]
+  },
+  "contextPaths": [
+    "ProjectOverview.md",
+    "project/requirements-baseline.json",
+    "project/project-overview-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-baseline.json",
+    "project/contract-disposition.json",
+    "dogfood/lifecycle-run-report/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/lifecycle-run-report/dependency-analysis/work-dependency-baseline.json",
+    "dogfood/lifecycle-run-report/assignment/specialist-assignment-baseline.json",
+    "dogfood/lifecycle-run-report/work-breakdown/approved-change-package.json",
+    "dogfood/lifecycle-run-report/repository-snapshot.json",
+    "contracts/lifecycle-run-report-artifacts.schema.json",
+    "src/lifecycle-run-report-artifact-validator.mjs",
+    "src/lifecycle-run-report-content-policy.mjs",
+    "src/lifecycle-run-report-snapshot.mjs",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-CONTENT-POLICY.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-CONTRACTS.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-FRONTIER.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-LEDGER.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-OBSERVATIONS.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-SNAPSHOT.json"
+  ],
+  "verification": {
+    "acceptance": "The same approved snapshot, policy, configuration, and renderer version produce byte-identical primary LifecycleRunReport.md bytes with a human-readable executive summary and stage table, policy-filtered content, complete source links, and correct behavior for arbitrary module counts plus conditional, skipped, failed, resumed, parallel, and repeating-frontier cases under reordered equivalent inputs.",
+    "commands": [
+      "node --experimental-loader=file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-snapshot-dependency-loader.mjs --test test/lifecycle-run-report-markdown.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "lifecycle-run-report/markdown-tests",
+        "description": "The same approved snapshot, policy, configuration, and renderer version produce byte-identical readable Markdown with complete links."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify only if approved artifacts leave a material rendering, policy, or authority decision unresolved.",
+    "Stop with fix if deterministic primary LifecycleRunReport.md rendering, policy filtering, source links, dynamic module handling, lifecycle state cases, or reordered-input byte identity cannot be proven within allowedWritePaths.",
+    "Stop after the exact closed handoff; trusted Core owns verification and progression, and ChangeIntegration owns integration."
+  ],
+  "hostRuntimeSupply": {
+    "dependencyResolver": {
+      "mode": "project-first-then-version-pinned-host-fallback",
+      "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/.tmp-devrelay-snapshot-dependency-loader.mjs",
+      "digest": "sha256:e85449c2efb54cfc1c8e6589df05c49937f23ac990d8cfba5a31ec3f95e4d648"
+    },
+    "dependencyTrees": [
+      {
+        "authority": "project-read-supply",
+        "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/node_modules",
+        "repositoryWriteGrant": false
+      },
+      {
+        "authority": "host-read-supply",
+        "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/node_modules",
+        "repositoryWriteGrant": false,
+        "exactPackages": [
+          {
+            "name": "ajv",
+            "version": "8.20.0"
+          }
+        ]
+      }
+    ]
+  },
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-RUN-DOGFOOD-WI-RUN-MARKDOWN-ATTEMPT-001",
+      "workItemId": "WI-RUN-MARKDOWN",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "lifecycle-run-report/markdown-tests",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-RUN-MARKDOWN",
+    "objective": "Render the canonical snapshot into the primary human-readable LifecycleRunReport.md and a bounded read-only access response.",
+    "bounded-scope": {
+      "included": [
+        "Begin with an executive summary and plain-language stage table.",
+        "Show operation, adapters, outcome, Gate, rework, performance, outputs, traceability, and next action with exact artifact links."
+      ],
+      "excluded": [
+        "Embedding unsanitized source, controlling progression, or treating Markdown as canonical authority."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-RUN-MARKDOWN",
+        "description": "Deterministic Markdown renderer, LifecycleRunReport.md example, and read-only report access port.",
+        "artifactKind": "DocumentationGenerator"
+      }
+    ],
+    "work-type": "code-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-RUN-DYNAMIC-001",
+      "AC-DEV-RUN-HUMAN-READABLE-001",
+      "AC-DEV-RUN-METRICS-001",
+      "AC-DEV-RUN-SECURITY-001"
+    ],
+    "architecture-refs": [
+      "EL-RUN-MARKDOWN-RENDERER",
+      "EL-RUN-REPORT-PORT"
+    ],
+    "contract-refs": [
+      "CT-IF-RUN-REPORT-ACCESS"
+    ],
+    "required-capabilities": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TECHNICAL-WRITING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "dependency-hints": [
+      {
+        "work-item-ref": "WI-RUN-CONTENT-POLICY",
+        "relation": "after",
+        "rationale": "Only policy-approved content may be rendered.",
+        "authority": "hint"
+      },
+      {
+        "work-item-ref": "WI-RUN-SNAPSHOT",
+        "relation": "after",
+        "rationale": "Rendering consumes one validated canonical snapshot.",
+        "authority": "hint"
+      }
+    ],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-RUN-MARKDOWN",
+          "method": "Render representative complete, partial, failed, skipped, resumed, parallel, and repeating-frontier snapshots and compare exact bytes and human-readable sections.",
+          "successCriteria": "The same approved snapshot, policy, configuration, and renderer version produce byte-identical readable Markdown with complete links."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "lifecycle-run-report/markdown-tests",
+        "description": "The same approved snapshot, policy, configuration, and renderer version produce byte-identical readable Markdown with complete links."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/37"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/38"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/39"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/41"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/31"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/32"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/26"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-RUN-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:3acdebe84741c1aee374a46bd3efb48a3904ab69617e71eaf6676c0d7f7170f7",
+          "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  }
+}

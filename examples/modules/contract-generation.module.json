@@ -1,0 +1,101 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "contract-generation",
+    "version": "0.1.0",
+    "description": "Convert approved required architecture interface intents into validated machine-readable contract candidates without granting generators validation, compatibility, Gate, or graph authority."
+  },
+  "routing": {
+    "stateSchema": "https://devrelay.dev/artifacts/project-contract-state/v1",
+    "discriminator": "/state",
+    "rules": [
+      {
+        "value": "unbaselined",
+        "operation": "establish-contracts",
+        "reasonCode": "CONTRACT_BASELINE_ABSENT"
+      },
+      {
+        "value": "baselined",
+        "operation": "generate-contract-change",
+        "reasonCode": "CONTRACT_BASELINE_PRESENT"
+      }
+    ],
+    "stateInput": "project-contract-state",
+    "decisionInput": "routing-decision"
+  },
+  "operations": [
+    {
+      "id": "establish-contracts",
+      "description": "Generate the initial contract candidate set for every required approved interface intent.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-contract-state", "schema": "https://devrelay.dev/artifacts/project-contract-state/v1", "mediaTypes": ["application/vnd.devrelay.project-contract-state+json"], "cardinality": "one", "required": true },
+        { "name": "routing-decision", "schema": "https://devrelay.dev/artifacts/module-route-decision/v1", "mediaTypes": ["application/vnd.devrelay.module-route-decision+json"], "cardinality": "one", "required": true },
+        { "name": "architecture-baseline", "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1", "mediaTypes": ["application/vnd.devrelay.architecture-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "contract-draft-set", "schema": "https://devrelay.dev/artifacts/contract-draft-set/v1", "mediaTypes": ["application/vnd.devrelay.contract-draft-set+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["generated", "needs_clarification", "unable_to_proceed", "execution_failed"],
+      "resultContracts": {
+        "generated": { "status": "completed", "requiredInputs": ["project-contract-state", "routing-decision", "architecture-baseline", "project-overview-baseline"], "forbiddenInputs": [], "requiredOutputs": ["contract-draft-set"], "allowedOutputs": ["contract-draft-set"], "requiredEvidence": [{ "kind": "contract-generation/format-validation", "statuses": ["pass"], "artifactOutput": "contract-draft-set" }, { "kind": "contract-generation/canonical-diff", "statuses": ["pass"], "artifactOutput": "contract-draft-set" }], "diagnosticsRequired": false },
+        "needs_clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable_to_proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution_failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["contract-generation/format-validation", "contract-generation/canonical-diff"],
+      "optionsSchema": { "type": "object", "additionalProperties": false, "properties": { "generatorBindings": { "type": "object" }, "validatorRegistryDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } } },
+      "extensionPorts": [
+        { "id": "contract-generator", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/contract-generator-request/v1", "outputSchema": "https://devrelay.dev/artifacts/generated-contract-bundle/v1", "required": true }
+      ],
+      "orchestrationPlan": [
+        { "id": "route", "kind": "core", "handler": "contract-generation/route-guard" },
+        { "id": "generate", "kind": "extension-port", "handler": "contract-generator" },
+        { "id": "validate", "kind": "core", "handler": "contract-generation/format-validator-registry" },
+        { "id": "diff", "kind": "core", "handler": "contract-generation/canonical-diff" },
+        { "id": "candidate", "kind": "core", "handler": "contract-generation/candidate-assembler" },
+        { "id": "checkpoint", "kind": "core", "handler": "contract-generation/checkpoint" }
+      ]
+    },
+    {
+      "id": "generate-contract-change",
+      "description": "Generate a proposed contract change set against the exact current ContractBaseline.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-contract-state", "schema": "https://devrelay.dev/artifacts/project-contract-state/v1", "mediaTypes": ["application/vnd.devrelay.project-contract-state+json"], "cardinality": "one", "required": true },
+        { "name": "routing-decision", "schema": "https://devrelay.dev/artifacts/module-route-decision/v1", "mediaTypes": ["application/vnd.devrelay.module-route-decision+json"], "cardinality": "one", "required": true },
+        { "name": "architecture-baseline", "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1", "mediaTypes": ["application/vnd.devrelay.architecture-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "current-contract-baseline", "schema": "https://devrelay.dev/artifacts/contract-baseline/v1", "mediaTypes": ["application/vnd.devrelay.contract-baseline+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "contract-change-set-draft", "schema": "https://devrelay.dev/artifacts/contract-change-set-draft/v1", "mediaTypes": ["application/vnd.devrelay.contract-change-set-draft+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["generated", "needs_clarification", "baseline_drift", "unable_to_proceed", "execution_failed"],
+      "resultContracts": {
+        "generated": { "status": "completed", "requiredInputs": ["project-contract-state", "routing-decision", "architecture-baseline", "project-overview-baseline", "current-contract-baseline"], "forbiddenInputs": [], "requiredOutputs": ["contract-change-set-draft"], "allowedOutputs": ["contract-change-set-draft"], "requiredEvidence": [{ "kind": "contract-generation/format-validation", "statuses": ["pass"], "artifactOutput": "contract-change-set-draft" }, { "kind": "contract-generation/canonical-diff", "statuses": ["pass"], "artifactOutput": "contract-change-set-draft" }], "diagnosticsRequired": false },
+        "needs_clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline_drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable_to_proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution_failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["contract-generation/format-validation", "contract-generation/canonical-diff"],
+      "optionsSchema": { "type": "object", "additionalProperties": false, "properties": { "generatorBindings": { "type": "object" }, "validatorRegistryDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } } },
+      "extensionPorts": [
+        { "id": "contract-generator", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/contract-generator-request/v1", "outputSchema": "https://devrelay.dev/artifacts/generated-contract-bundle/v1", "required": true }
+      ],
+      "orchestrationPlan": [
+        { "id": "route", "kind": "core", "handler": "contract-generation/route-guard" },
+        { "id": "generate", "kind": "extension-port", "handler": "contract-generator" },
+        { "id": "validate", "kind": "core", "handler": "contract-generation/format-validator-registry" },
+        { "id": "diff", "kind": "core", "handler": "contract-generation/canonical-diff" },
+        { "id": "candidate", "kind": "core", "handler": "contract-generation/candidate-assembler" },
+        { "id": "checkpoint", "kind": "core", "handler": "contract-generation/checkpoint" }
+      ]
+    }
+  ]
+}

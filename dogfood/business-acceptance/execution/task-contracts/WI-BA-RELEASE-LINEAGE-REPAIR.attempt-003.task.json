@@ -1,0 +1,181 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003",
+  "workItem": {
+    "id": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "objective": "Eliminate sequence-dependent dogfood state by giving each lifecycle scenario version-pinned context and isolated mutable outputs and replay generations, then prove canonical verification is repeatable in the integrated checkout.",
+    "boundedScope": [
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "project/history/contracts/",
+      "project/history/work-breakdown/",
+      "project/history/work-dependency/",
+      "project/history/traceability/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs"
+    ],
+    "deliverables": [
+      "Scenario-local, version-pinned context slices for baseline ContractGeneration, SpecialistAssignment ContractGeneration, WorkDependencyAnalysis, and WorkItemVerification planning",
+      "Scenario-local mutable output paths that do not overwrite another dogfood scenario's candidate or gate inputs",
+      "New immutable replay generations or scenario namespaces where current replay names collide; all earlier replay bytes remain untouched",
+      "Exact digest assertions regenerated only from the isolated scenario-local artifacts",
+      "Order-independence evidence from the affected tests in at least two different orders",
+      "Two consecutive passing npm.cmd run verify executions from the same checkout"
+    ],
+    "workType": "configuration-change",
+    "acceptanceCriterionRefs": [],
+    "architectureRefs": [],
+    "contractRefs": [],
+    "requiredCapabilities": [
+      "deterministic-fixture-design",
+      "traceability-engineering",
+      "immutable-replay-management",
+      "release-engineering",
+      "integration-testing"
+    ],
+    "dependencyHints": [
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002"
+    ],
+    "verificationPlan": [
+      "Reproduce the seven independent-parent failures and map every mutable read and write used by the six affected tests.",
+      "Classify each shared path as immutable input, scenario-local mutable output, or project promotion target; do not rely on test ordering for correctness.",
+      "Replace live cross-scenario reads with exact version-pinned context slices whose content hashes are validated before materialization.",
+      "Keep promotion idempotency checks scenario-local and preserve all existing immutable replay directories without overwrite or deletion.",
+      "Run the six affected tests in the canonical order and a reversed or deliberately permuted order; both must pass.",
+      "Run npm.cmd run verify twice consecutively from the same checkout without restoring files between runs; both runs must pass 694 of 694 with zero immutable collisions.",
+      "Do not regenerate release/0.8.0.json or claim release readiness; parent owns independent integration and release decisions."
+    ],
+    "requiredEvidence": [
+      "dogfood/scenario-isolation-map",
+      "dogfood/version-pinned-context",
+      "dogfood/immutable-history-preservation",
+      "verification/order-independence",
+      "verification/consecutive-canonical-gates"
+    ],
+    "sourceRefs": [
+      "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-002",
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff",
+      "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "specialistProfileRef": "PROFILE-DEVRELAY-DETERMINISTIC-REPLAY-ENGINEER",
+    "capabilityCoverage": [
+      "deterministic-fixture-design",
+      "traceability-engineering",
+      "immutable-replay-management",
+      "release-engineering",
+      "integration-testing"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test",
+      "npm"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The seven failures are one coupled scenario-isolation defect spanning version-pinned fixture inputs and immutable replay outputs; the same specialist retains lineage and avoids conflicting partial repairs.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevision": "working-tree:codex/v0.5-lifecycle-run-report",
+    "failureEvidence": {
+      "command": "npm.cmd run verify",
+      "testCount": 694,
+      "passing": 687,
+      "failing": 7,
+      "testConcurrency": 1,
+      "classification": [
+        "shared-mutable-dogfood-output-aliasing",
+        "serial-order-dependence",
+        "scenario-context-drift",
+        "immutable-replay-generation-collision"
+      ]
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "project/history/contracts/",
+      "project/history/work-breakdown/",
+      "project/history/work-dependency/",
+      "project/history/traceability/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs"
+    ],
+    "forbidden": [
+      "depend on test execution order",
+      "weaken traceability ownership or digest validation",
+      "overwrite or delete immutable history",
+      "replace exact assertions with self-derived tautologies",
+      "fabricate passing evidence",
+      "change product requirements",
+      "seal release 0.8.0",
+      "start ArchitectureDiscovery"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 3,
+  "dependencyCompletion": [
+    {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff",
+      "digest": "sha256:24920e6ce584985aae24a55b1936b528bf7b58016ec7c61d576b2ec9db150b13",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff.raw.json",
+      "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR"
+    }
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002",
+      "digest": "sha256:3069a09ec0065ee8f3b21677d88f797c6d719efa193bf6de9ffb2fccb591690c",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff",
+      "digest": "sha256:24920e6ce584985aae24a55b1936b528bf7b58016ec7c61d576b2ec9db150b13",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-002",
+      "digest": "sha256:4ad86223c9540de704a959924bbfe730b170630a5c1f99998a68d35efea6fc4e",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.parent-review.json"
+    }
+  },
+  "taskDigest": "sha256:63c1de6f6c04632288dacaf410424e0d5cdedb8a2f2205031a8519d61e669de5",
+  "requiredCorrections": [
+    "Make every affected dogfood scenario hermetic with version-pinned inputs and non-overlapping mutable output paths.",
+    "Advance or namespace immutable replay outputs instead of reusing replay-v3 with different bytes.",
+    "Prove the repair survives changed test order and two back-to-back canonical verifier runs."
+  ]
+}

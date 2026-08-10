@@ -65,22 +65,22 @@ function memoryStore() {
 
 async function fixture() {
   const workBreakdown = await loadedFile(
-    "project/work-breakdown-baseline.json",
+    "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-baseline.json",
     "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
     "application/vnd.devrelay.work-breakdown-baseline+json",
   );
   const projectOverview = await loadedFile(
-    "project/project-overview-baseline.json",
+    "project/history/1.1.0/project-overview-baseline.json",
     "https://devrelay.dev/artifacts/project-overview-baseline/v1",
     "application/vnd.devrelay.project-overview-baseline+json",
   );
   const requirements = await loadedFile(
-    "project/requirements-baseline.json",
+    "project/history/1.1.0/requirements-baseline.json",
     "https://devrelay.dev/artifacts/requirements-baseline/v1",
     "application/vnd.devrelay.requirements-baseline+json",
   );
   const architecture = await loadedFile(
-    "project/architecture-baseline.json",
+    "dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json",
     "https://devrelay.dev/artifacts/architecture-baseline/v1",
     "application/vnd.devrelay.architecture-baseline+json",
   );
@@ -226,6 +226,50 @@ test("runtime owns snapshot, Graphology-DAG, OPA, checkpoint replay, and adapter
     checkpoints,
   });
   return { inputs, first, receipt };
+});
+
+test("runtime rejects substituted JSON and isolates semantics from mutation during checkpoint await", async () => {
+  const substituted = await fixture();
+  substituted.policyBundle.value = { ...substituted.policyBundle.value, policyId: "OPA-SUBSTITUTED" };
+  let proposerCalls = 0;
+  const rejectingRuntime = createWorkDependencyAnalysisRuntime({
+    proposer: {
+      id: "test.must-not-run",
+      version: "0.1.0",
+      async propose() {
+        proposerCalls += 1;
+      },
+    },
+  });
+  await assert.rejects(
+    rejectingRuntime.execute({ executionId: "WDA-SUBSTITUTION", ...substituted, checkpoints: memoryStore() }),
+    /parsed value does not match its exact raw bytes/,
+  );
+  assert.equal(proposerCalls, 0);
+
+  const isolated = await fixture();
+  const expectedCount = isolated.workBreakdown.value.workItems.length;
+  const checkpoints = memoryStore();
+  checkpoints.get = async () => {
+    isolated.workBreakdown.value.workItems.length = 0;
+    return undefined;
+  };
+  const runtime = createWorkDependencyAnalysisRuntime({
+    proposer: {
+      id: "native-structured-dependency-proposer",
+      version: "0.1.0",
+      async propose(snapshot) {
+        assert.equal(snapshot.workItems.length, expectedCount);
+        return createNativeDependencyProposal(snapshot);
+      },
+    },
+  });
+  const result = await runtime.execute({
+    executionId: "WDA-MUTATION-ISOLATION",
+    ...isolated,
+    checkpoints,
+  });
+  assert.equal(result.candidate.nodes.length, expectedCount);
 });
 
 test("Gate promotes only an exact approved static-DAG baseline", async () => {

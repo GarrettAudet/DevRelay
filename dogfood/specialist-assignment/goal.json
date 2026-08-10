@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-specialist-assignment-module-v1",
+  "statement": "Define DevRelay's SpecialistAssignment module and Gate so every approved work item is matched to one eligible provider-neutral specialist profile before execution.",
+  "objectives": [
+    "Assign the complete approved work plan rather than only the current ready frontier.",
+    "Keep eligibility and approval authority in Core while allowing replaceable deterministic ranking.",
+    "Keep profiles provider-neutral so WorkExecution can later bind a human, AI model, agent, or automation runtime.",
+    "Fail closed when any work item is unassignable instead of promoting a partial baseline.",
+    "Extend TraceabilityGraph through trusted contributors rather than ranker-authored graph operations."
+  ],
+  "constraints": [
+    "The exact approved WorkBreakdownBaseline owns the work-item universe.",
+    "The exact approved WorkDependencyBaseline is immutable assignment context and cannot be modified by this module.",
+    "Core owns hard capability, tool, grant, and policy eligibility checks.",
+    "Rankers can choose only among the exact eligible profiles supplied by Core.",
+    "Scheduling, availability, concrete runtime binding, execution, and DAG mutation remain downstream."
+  ],
+  "acceptanceCriteria": [
+    "Every approved work item receives exactly one eligible provider-neutral specialist profile or the complete candidate returns needs-clarification.",
+    "Exact baselines, catalogs, policies, bindings, selections, and Gate approval are content-bound.",
+    "Changing a conformant ranker requires no provider, product, or work-item branch in generic Core.",
+    "A ranker cannot select a profile excluded by Core eligibility checks.",
+    "Checkpoint replay never reinvokes an effectful ranker and input drift stops before extension entry.",
+    "Trusted traceability projection links work items forward to assigned profiles without claiming execution or completion."
+  ],
+  "assumptions": [
+    "Assignment scope, cardinality, authority, failure behavior, and downstream boundary require owner confirmation.",
+    "The OpenSpec chat bridge records this clarification run but does not claim OpenSpec CLI execution."
+  ]
+}

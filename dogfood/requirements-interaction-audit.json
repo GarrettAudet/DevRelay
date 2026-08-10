@@ -1,0 +1,771 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsDogfoodAudit",
+  "auditId": "requirements-dogfood-audit-0.8.0",
+  "releaseCatalog": {
+    "path": "release/0.8.0.json",
+    "version": "0.8.0",
+    "digest": "sha256:eca17fe57fb95e7b59e1595ef1ecc4c6bed4f86c38467dda87a0ad466abd8182"
+  },
+  "policy": {
+    "rule": "A built module is not proven recursively dogfooded unless RequirementsGathering has either a closed request/response/resume/Gate chain or a machine-verifiable explicit no-clarification disposition.",
+    "transcriptAloneIsSufficient": false,
+    "candidateGenerationAloneIsSufficient": false,
+    "passingImplementationTestsAreSufficient": false
+  },
+  "summary": {
+    "moduleCount": 13,
+    "statusCounts": {
+      "awaiting-clarification": 1,
+      "candidate-only-no-interview-evidence": 4,
+      "closed-interactive": 3,
+      "interactive-evidence-incomplete": 3,
+      "requirements-run-missing": 2
+    },
+    "provenClosedInteractiveCount": 3,
+    "nonCompliantOrOpenCount": 10
+  },
+  "records": [
+    {
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/architecture-design",
+      "classification": {
+        "status": "interactive-evidence-incomplete",
+        "progressionAllowed": false,
+        "finding": "Some interaction evidence exists, but the request/response/continuation/resume/Gate chain is incomplete and cannot independently prove the user-facing workflow."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": true,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": false,
+        "gateCandidate": false,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "dogfood/architecture-design/clarification-transcript.md",
+          "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342",
+          "byteCount": 5526
+        },
+        {
+          "path": "dogfood/architecture-design/goal.json",
+          "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62",
+          "byteCount": 3069
+        },
+        {
+          "path": "dogfood/architecture-design/requirements-gathering.invocation.json",
+          "digest": "sha256:9b602830932bdf54fc1ba88ec8720f7aefc75e03b5b82c90d1aea0dc1b0a196a",
+          "byteCount": 2315
+        },
+        {
+          "path": "dogfood/architecture-design/requirements-gathering.result.json",
+          "digest": "sha256:2cfecc1fd81b9ce00988bebebee52954aaec9a2876155f4a52e1d536f262758b",
+          "byteCount": 2513
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "architecture-discovery",
+        "version": null,
+        "releaseStatus": "active-unreleased"
+      },
+      "requirementsEvidenceRoot": "dogfood/architecture-discovery",
+      "classification": {
+        "status": "interactive-evidence-incomplete",
+        "progressionAllowed": false,
+        "finding": "Some interaction evidence exists, but the request/response/continuation/resume/Gate chain is incomplete and cannot independently prove the user-facing workflow."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": true,
+        "clarificationTranscript": true,
+        "clarificationResponse": true,
+        "continuation": true,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": true,
+        "gateCandidate": true,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "dogfood/architecture-discovery/clarification-request.json",
+          "digest": "sha256:6aa1fe1016271cf1667689acce942944f1b6ec4d97d759967b8176f92289cc0e",
+          "byteCount": 3278
+        },
+        {
+          "path": "dogfood/architecture-discovery/clarification-response.json",
+          "digest": "sha256:b632416e9cd0101c9d62e8e20a480930ef4fa19acfdd5b8511a6baa13ef57f47",
+          "byteCount": 940
+        },
+        {
+          "path": "dogfood/architecture-discovery/clarification-transcript.md",
+          "digest": "sha256:c8ce911d62ecb06821148a6887d4e727fdd74b83f74eff0f99d98d9c24dc4a59",
+          "byteCount": 2042
+        },
+        {
+          "path": "dogfood/architecture-discovery/goal.json",
+          "digest": "sha256:a5f1c2f26363ca705ac3059ba4f3ee26b2d3eed0b1cac316eb273bf8f2a4363b",
+          "byteCount": 2583
+        },
+        {
+          "path": "dogfood/architecture-discovery/requirements-change.invocation.json",
+          "digest": "sha256:24299b2bf0834be345e89a64f00265e28c36748e7cdd53024cf5ed37be594896",
+          "byteCount": 4309
+        },
+        {
+          "path": "dogfood/architecture-discovery/requirements-change.result.json",
+          "digest": "sha256:c2d5248c0ae097fa637153cdce3da99fe22aaef8931c6f5664b3420fad03eafc",
+          "byteCount": 2522
+        },
+        {
+          "path": "dogfood/architecture-discovery/requirements-continuation.json",
+          "digest": "sha256:40a2bc4f14c46934f76bea6179a93f9835d7f304b6877d3c4545e8478a5946dc",
+          "byteCount": 291888
+        },
+        {
+          "path": "dogfood/architecture-discovery/requirements-gate-candidate.json",
+          "digest": "sha256:af725fdd68978eb0f20c2836d7518a857d08bbd62143a61fcf15b32977945df1",
+          "byteCount": 1404
+        },
+        {
+          "path": "dogfood/architecture-discovery/requirements-gathering.invocation.json",
+          "digest": "sha256:acd97c5bd7f5cc6cbe36c7f182192d9c22ede60c3802b2119f1ab919c75dbde6",
+          "byteCount": 2832
+        },
+        {
+          "path": "dogfood/architecture-discovery/requirements-gathering.result.json",
+          "digest": "sha256:27455575322bb2a398da327da4086078d4e266108b071d09cdae060488386ea1",
+          "byteCount": 1261
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "business-acceptance",
+        "version": null,
+        "releaseStatus": "active-unreleased"
+      },
+      "requirementsEvidenceRoot": "dogfood/business-acceptance",
+      "classification": {
+        "status": "requirements-run-missing",
+        "progressionAllowed": false,
+        "finding": "No executable RequirementsGathering invocation/result pair is present for this module construction run."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": false,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": false,
+        "requirementsResult": false,
+        "initialAndResumeRuns": false,
+        "gateCandidate": false,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "dogfood/business-acceptance/goal.json",
+          "digest": "sha256:e7079cc7d2318f7301f048042fcaed312890df51cbc5ab338e1fce2ad1570487",
+          "byteCount": 1507
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "change-integration",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/change-integration",
+      "classification": {
+        "status": "candidate-only-no-interview-evidence",
+        "progressionAllowed": false,
+        "finding": "A machine RequirementsGathering run exists, but no question transcript or explicit no-clarification decision proves that the user-facing requirements interview occurred."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": false,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": false,
+        "gateCandidate": true,
+        "ownerApproval": true
+      },
+      "evidence": [
+        {
+          "path": "dogfood/change-integration/goal.json",
+          "digest": "sha256:ef3f803ea6c7b06639edddf88bb90bdc0cca28b181706d115164fa8a525206d5",
+          "byteCount": 2296
+        },
+        {
+          "path": "dogfood/change-integration/requirements-change.invocation.json",
+          "digest": "sha256:580a3514b3a457c52669056de63995154acdebacafd55489b236c6bfcfb06f15",
+          "byteCount": 2804
+        },
+        {
+          "path": "dogfood/change-integration/requirements-change.result.json",
+          "digest": "sha256:d3f323a90ad2de4e0af9295de7f93e2203b36c0bfa88cc6b215bab00c82d0ec8",
+          "byteCount": 2483
+        },
+        {
+          "path": "dogfood/change-integration/requirements-gate-candidate.json",
+          "digest": "sha256:bafcc2ffeaa8165b9c181e2d8a26d20f632fd34dd16409dd7ce368fddc5b17f3",
+          "byteCount": 1207
+        },
+        {
+          "path": "dogfood/change-integration/requirements-gate-owner-approval.json",
+          "digest": "sha256:41462698d26c35a1da4984e512b1108e728ef885abb6120db28ce6e031a07f78",
+          "byteCount": 1783
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "contract-generation",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/contract-generation",
+      "classification": {
+        "status": "closed-interactive",
+        "progressionAllowed": true,
+        "finding": "Machine-verifiable clarification request, human-readable transcript, owner response, resumable continuation, resumed execution, and exact Gate approval are present."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": true,
+        "clarificationTranscript": true,
+        "clarificationResponse": true,
+        "continuation": true,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": true,
+        "gateCandidate": true,
+        "ownerApproval": true
+      },
+      "evidence": [
+        {
+          "path": "dogfood/contract-generation/clarification-request.json",
+          "digest": "sha256:07df4b227925956dde96ccf136acdf6c2fbccb13fa279e3b3c56a81603a2ef6e",
+          "byteCount": 4101
+        },
+        {
+          "path": "dogfood/contract-generation/clarification-response.json",
+          "digest": "sha256:9c647b96a5d4351fb8e64d5719394b6b8c0a56ac19d6d7a702293c93afdf9b51",
+          "byteCount": 1051
+        },
+        {
+          "path": "dogfood/contract-generation/clarification-transcript.md",
+          "digest": "sha256:f2408b34be685085153973d538c9d4e4299523cdd341a2eddf3b970373d15513",
+          "byteCount": 2722
+        },
+        {
+          "path": "dogfood/contract-generation/goal.json",
+          "digest": "sha256:74bcdc11b8b1b4e7ab37a5a805c25ef1de0320f501dcb6c9395c17dcf963311f",
+          "byteCount": 2755
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-change.invocation.json",
+          "digest": "sha256:f211b97a7fe47c6491305c52509c56e32348b50575a3ac48d1363d30898cc4fd",
+          "byteCount": 4252
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-change.result.json",
+          "digest": "sha256:d2699951e774b8cd789b8d7b55d9fc6df6f1bbbd8e5e44f1368a4d8ab26c9319",
+          "byteCount": 2492
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-continuation.json",
+          "digest": "sha256:3d486fd9fbad18f9622ed84bfe1985fbd2eddc305300df5e22f59fcdafba8325",
+          "byteCount": 176981
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-gate-candidate.json",
+          "digest": "sha256:bcf7015a4b54e54544dd3e0a69f88e5562956c70f3929dbc0701c0f1c6e7181f",
+          "byteCount": 1404
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-gate-owner-approval.json",
+          "digest": "sha256:161d4171f7a921ac5e0e757830ed8106bfb563a122f07f0b2146befc190afcc6",
+          "byteCount": 2004
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-gathering.invocation.json",
+          "digest": "sha256:09fd0f18a20aaa456c72e5c597f7ca0c663611c77e152ddf3e8d248358d43792",
+          "byteCount": 2793
+        },
+        {
+          "path": "dogfood/contract-generation/requirements-gathering.result.json",
+          "digest": "sha256:a94ceec9e7f4120508f5e90b3f2b0c3504043a1c69a7a2fdc9944323a1b03edb",
+          "byteCount": 1246
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "lifecycle-run-report",
+        "version": null,
+        "releaseStatus": "active-unreleased"
+      },
+      "requirementsEvidenceRoot": "dogfood/lifecycle-run-report",
+      "classification": {
+        "status": "candidate-only-no-interview-evidence",
+        "progressionAllowed": false,
+        "finding": "A machine RequirementsGathering run exists, but no question transcript or explicit no-clarification decision proves that the user-facing requirements interview occurred."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": false,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": false,
+        "gateCandidate": false,
+        "ownerApproval": true
+      },
+      "evidence": [
+        {
+          "path": "dogfood/lifecycle-run-report/goal.json",
+          "digest": "sha256:a1cf4d6563810dc5a88e792bb47acd4e245626b7132ba8ef91876e2deef615ec",
+          "byteCount": 2850
+        },
+        {
+          "path": "dogfood/lifecycle-run-report/requirements-change.invocation.json",
+          "digest": "sha256:dd007c740670e7532e33d42b702528d05a33d909850e1ade31f16356bd3fd609",
+          "byteCount": 3229
+        },
+        {
+          "path": "dogfood/lifecycle-run-report/requirements-change.result.json",
+          "digest": "sha256:8ee7e1115c2a450232a5cafb5360dc504b9ec0fe6877d405da86c51faa65c3ed",
+          "byteCount": 2572
+        },
+        {
+          "path": "dogfood/lifecycle-run-report/requirements-gate-owner-approval.json",
+          "digest": "sha256:0051aeca68c72069b7030b518a8b43021f0adb4f7288809532b3891fba593afe",
+          "byteCount": 1367
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "project",
+      "classification": {
+        "status": "candidate-only-no-interview-evidence",
+        "progressionAllowed": false,
+        "finding": "A machine RequirementsGathering run exists, but no question transcript or explicit no-clarification decision proves that the user-facing requirements interview occurred."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": false,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": false,
+        "gateCandidate": false,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "project/goal.json",
+          "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef",
+          "byteCount": 2594
+        },
+        {
+          "path": "project/requirements-gathering.invocation.json",
+          "digest": "sha256:8813e2a6e9a2443f21ec46799ae2d4c49b9d4c7c448b1c994a52f938656f25c4",
+          "byteCount": 2228
+        },
+        {
+          "path": "project/requirements-gathering.result.json",
+          "digest": "sha256:6255c7d8305af943aa516a38f5b297e0305813f637365d1daf8ea5136f1107c3",
+          "byteCount": 2375
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "specialist-assignment",
+        "version": "1.0.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/specialist-assignment",
+      "classification": {
+        "status": "closed-interactive",
+        "progressionAllowed": true,
+        "finding": "Machine-verifiable clarification request, human-readable transcript, owner response, resumable continuation, resumed execution, and exact Gate approval are present."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": true,
+        "clarificationTranscript": true,
+        "clarificationResponse": true,
+        "continuation": true,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": true,
+        "gateCandidate": true,
+        "ownerApproval": true
+      },
+      "evidence": [
+        {
+          "path": "dogfood/specialist-assignment/clarification-request.json",
+          "digest": "sha256:29368f1a9b30e131d924fc89351e3c4c252fbd386fb5248127a1861509827ef0",
+          "byteCount": 3930
+        },
+        {
+          "path": "dogfood/specialist-assignment/clarification-response.json",
+          "digest": "sha256:f40bfafe90eb4b3ed70bbd2f4bcb5ff80212419d31be3d8879e0e15a4d1097ac",
+          "byteCount": 1214
+        },
+        {
+          "path": "dogfood/specialist-assignment/clarification-transcript.md",
+          "digest": "sha256:dbab59bc0003c73aff92baab9ad1abf9782e9721daac3c63c4d9d250bba1c454",
+          "byteCount": 2385
+        },
+        {
+          "path": "dogfood/specialist-assignment/goal.json",
+          "digest": "sha256:214f0432c1d08d764d535de4f1f8c97ff3489385c3aa2d98ad1262b7ad628357",
+          "byteCount": 2279
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-change.invocation.json",
+          "digest": "sha256:ff6c11ee5b2247308f158793b6c3f88d9b7e3060c5307250dafd4576648125b4",
+          "byteCount": 4298
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-change.result.json",
+          "digest": "sha256:4dcc80f94768dd0657a9ffce946614f6e10087cacb8a6a11419653ba5295a89b",
+          "byteCount": 2512
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-continuation.json",
+          "digest": "sha256:966baa6ce1b0217a335678effc0ee59365db039042d9c348d42056d97b700262",
+          "byteCount": 202941
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-gate-candidate.json",
+          "digest": "sha256:b7430697ddf321173bcb4fe39ce95e6ae0d9d3a67d149d5f7fc810e22cbf2330",
+          "byteCount": 1404
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-gate-owner-approval.json",
+          "digest": "sha256:b5d8b5e76a7c97212e5d699e5f01fe708d5f650b98f820372021d1995ee6f50a",
+          "byteCount": 2006
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-gathering.invocation.json",
+          "digest": "sha256:22988d28b3a58e83ea73e7c8cfec68dcce2a2086f183cdf1e5f5324f5ba7ff2c",
+          "byteCount": 2827
+        },
+        {
+          "path": "dogfood/specialist-assignment/requirements-gathering.result.json",
+          "digest": "sha256:529f867e6d177ed3b93947ac1d784874f4f99b7e2fb57a317867dcdf4212bfa7",
+          "byteCount": 1256
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "system-verification",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/system-verification",
+      "classification": {
+        "status": "requirements-run-missing",
+        "progressionAllowed": false,
+        "finding": "No executable RequirementsGathering invocation/result pair is present for this module construction run."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": false,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": false,
+        "requirementsResult": false,
+        "initialAndResumeRuns": false,
+        "gateCandidate": false,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "dogfood/system-verification/goal.json",
+          "digest": "sha256:65d6441ccbc1b4675a00311e202976462e2699ee7d4f9b95ca5fcad1411f3f81",
+          "byteCount": 1407
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/work-breakdown",
+      "classification": {
+        "status": "interactive-evidence-incomplete",
+        "progressionAllowed": false,
+        "finding": "Some interaction evidence exists, but the request/response/continuation/resume/Gate chain is incomplete and cannot independently prove the user-facing workflow."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": true,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": false,
+        "gateCandidate": false,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "dogfood/work-breakdown/clarification-transcript.md",
+          "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4",
+          "byteCount": 8786
+        },
+        {
+          "path": "dogfood/work-breakdown/goal.json",
+          "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3",
+          "byteCount": 3488
+        },
+        {
+          "path": "dogfood/work-breakdown/requirements-gathering.invocation.json",
+          "digest": "sha256:460ebffe5199b959f646321ffff8ecd20ffe832c2e88fa5dd54390096f5b92b9",
+          "byteCount": 2275
+        },
+        {
+          "path": "dogfood/work-breakdown/requirements-gathering.result.json",
+          "digest": "sha256:090de63ab61194e8c857cf308fa8be0255b5db188de70e46cb2a84e4fd6f0cb4",
+          "byteCount": 2514
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "work-dependency-analysis",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/work-dependency-analysis",
+      "classification": {
+        "status": "awaiting-clarification",
+        "progressionAllowed": false,
+        "finding": "RequirementsGathering stopped at a resumable clarification checkpoint; no owner response or promotable candidate is proven."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": true,
+        "clarificationTranscript": true,
+        "clarificationResponse": false,
+        "continuation": true,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": true,
+        "gateCandidate": false,
+        "ownerApproval": false
+      },
+      "evidence": [
+        {
+          "path": "dogfood/work-dependency-analysis/clarification-request.json",
+          "digest": "sha256:04f7c69811477602b77dd1ac89aad030429f65cd18deb51ea255a09a060a9c3b",
+          "byteCount": 4740
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/clarification-transcript.md",
+          "digest": "sha256:c3267919556b971ce1f93794f10617efb489c6df9adbe82ea686320a5c5e0312",
+          "byteCount": 3395
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/goal.json",
+          "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c",
+          "byteCount": 2587
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/requirements-change.invocation.json",
+          "digest": "sha256:508269293fdbe2ea70be2a15b14cc003865819ef11e31464574995447ad6e5c9",
+          "byteCount": 3261
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/requirements-change.result.json",
+          "digest": "sha256:14b13226cba279431345b64d1e34bf3711c84e7795d43cd4cd6941540df69e0f",
+          "byteCount": 2643
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/requirements-continuation.json",
+          "digest": "sha256:664c2b40c6a1f77153f40ba31c748604fae7cffde8a995527aee6779a3454c9a",
+          "byteCount": 163610
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/requirements-gathering.invocation.json",
+          "digest": "sha256:cfa8a1653167a35811a517816b7fc5afb50e89736205a7c219a22d6512106b25",
+          "byteCount": 3257
+        },
+        {
+          "path": "dogfood/work-dependency-analysis/requirements-gathering.result.json",
+          "digest": "sha256:fbc9c89cc0d3dc2e30637c52eba0b35738f35a0a205e6bb0921a9a005a047bb9",
+          "byteCount": 1271
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "work-execution",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/work-execution",
+      "classification": {
+        "status": "closed-interactive",
+        "progressionAllowed": true,
+        "finding": "Machine-verifiable clarification request, human-readable transcript, owner response, resumable continuation, resumed execution, and exact Gate approval are present."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": true,
+        "clarificationTranscript": true,
+        "clarificationResponse": true,
+        "continuation": true,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": true,
+        "gateCandidate": true,
+        "ownerApproval": true
+      },
+      "evidence": [
+        {
+          "path": "dogfood/work-execution/clarification-request.json",
+          "digest": "sha256:82d6326792306c5ecc5ce7d5610340363a9ad66607a63ac3ec33c54d98a0508c",
+          "byteCount": 3359
+        },
+        {
+          "path": "dogfood/work-execution/clarification-response.json",
+          "digest": "sha256:cd4d122b68c8d18be90ea41fef45505282ea90da38316f4591c315c2a5a67753",
+          "byteCount": 999
+        },
+        {
+          "path": "dogfood/work-execution/clarification-transcript.md",
+          "digest": "sha256:8e93f7c60ab4b5d48fd784881d5f5da48a2f1bddaa7d8d81c2c025067aebafbb",
+          "byteCount": 1982
+        },
+        {
+          "path": "dogfood/work-execution/goal.json",
+          "digest": "sha256:16cae11f8a85c17d6db0c431c3b2a11d4fd359ad60b5937c5727af6ac2c73f6b",
+          "byteCount": 2197
+        },
+        {
+          "path": "dogfood/work-execution/requirements-change.invocation.json",
+          "digest": "sha256:ef89202af9df0b65c67697ddea313aaab1e940f1faa0b66218b3a83205060e71",
+          "byteCount": 4207
+        },
+        {
+          "path": "dogfood/work-execution/requirements-change.result.json",
+          "digest": "sha256:5df85649bf1d46d43916af3b1cf85bff60784df825d0a33a2ee4c1a8cbb962df",
+          "byteCount": 2442
+        },
+        {
+          "path": "dogfood/work-execution/requirements-continuation.json",
+          "digest": "sha256:2156520995e9236fae3bd610cb586040afbbc073dec07c3310451c7b32908493",
+          "byteCount": 202830
+        },
+        {
+          "path": "dogfood/work-execution/requirements-gate-candidate.json",
+          "digest": "sha256:24ea5803422080af664639862c527395b65963b574a198b99d89401a5a30a0be",
+          "byteCount": 1404
+        },
+        {
+          "path": "dogfood/work-execution/requirements-gate-owner-approval.json",
+          "digest": "sha256:793e06d273583704048112c21cb2387f59bd4ff5b391e49fb93de7dd7cb92038",
+          "byteCount": 2009
+        },
+        {
+          "path": "dogfood/work-execution/requirements-gathering.invocation.json",
+          "digest": "sha256:994c6474576aa1522fc4a183593e0ed5ef531f590b45d55cbdaf08558f29a1ab",
+          "byteCount": 2778
+        },
+        {
+          "path": "dogfood/work-execution/requirements-gathering.result.json",
+          "digest": "sha256:adf898df1ca8763f3e1a1995791ed0aba6bbfc8503c613441d8fa3171da4b41c",
+          "byteCount": 1221
+        }
+      ]
+    },
+    {
+      "module": {
+        "id": "work-item-verification",
+        "version": "0.1.0",
+        "releaseStatus": "released"
+      },
+      "requirementsEvidenceRoot": "dogfood/work-item-verification",
+      "classification": {
+        "status": "candidate-only-no-interview-evidence",
+        "progressionAllowed": false,
+        "finding": "A machine RequirementsGathering run exists, but no question transcript or explicit no-clarification decision proves that the user-facing requirements interview occurred."
+      },
+      "flags": {
+        "goal": true,
+        "clarificationRequest": false,
+        "clarificationTranscript": false,
+        "clarificationResponse": false,
+        "continuation": false,
+        "requirementsInvocation": true,
+        "requirementsResult": true,
+        "initialAndResumeRuns": false,
+        "gateCandidate": true,
+        "ownerApproval": true
+      },
+      "evidence": [
+        {
+          "path": "dogfood/work-item-verification/goal.json",
+          "digest": "sha256:dc929d4b90b828d769bd562653431317be58b5bb1096302de72cbf17af97c16e",
+          "byteCount": 2318
+        },
+        {
+          "path": "dogfood/work-item-verification/requirements-change.invocation.json",
+          "digest": "sha256:7f8d7b978aac0bc3babf05e7559749d315a92e766ef67de6480c17d4b9a246f0",
+          "byteCount": 2816
+        },
+        {
+          "path": "dogfood/work-item-verification/requirements-change.result.json",
+          "digest": "sha256:1248e468339e289dcd4399aad6776e86a539971b2405a0903dc1064f4c301063",
+          "byteCount": 2523
+        },
+        {
+          "path": "dogfood/work-item-verification/requirements-gate-candidate.json",
+          "digest": "sha256:58495561273982c09abaf07ff58c0a5cd787424283f3347ad1044824671ad77b",
+          "byteCount": 1207
+        },
+        {
+          "path": "dogfood/work-item-verification/requirements-gate-owner-approval.json",
+          "digest": "sha256:af94f31acd2b5a695e96a0ddcaeda576e84f28e37f8dfbac0f573e037195a4f9",
+          "byteCount": 1752
+        }
+      ]
+    }
+  ]
+}

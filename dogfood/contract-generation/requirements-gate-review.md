@@ -1,0 +1,31 @@
+# Requirements Gate candidate: ContractGeneration module
+
+Status: **awaiting owner approval**
+
+## Exact bindings
+
+- RequirementsBaseline: sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1
+- ProjectOverviewBaseline: sha256:eb4a5ea9db4c67cff641ffdc50168ee2c4d257ab307be909fe515759ee88239e
+- ClarificationRequest: sha256:07df4b227925956dde96ccf136acdf6c2fbccb13fa279e3b3c56a81603a2ef6e
+- ClarificationResponse: sha256:9c647b96a5d4351fb8e64d5719394b6b8c0a56ac19d6d7a702293c93afdf9b51
+- Continuation: sha256:3d486fd9fbad18f9622ed84bfe1985fbd2eddc305300df5e22f59fcdafba8325
+- RequirementsChangeSet: sha256:98c7cb7a87b2e13f258250992faffe4105697d334eff67bc7efe664c8f532c72
+- ProjectOverviewChangeSetDraft: sha256:c33c06b4111db2db07f90f86c62187558a3ee58cfca0783fcd7c65ea2fcb851f
+- Candidate ProjectOverview.md: sha256:2c23468dae2092bb133e78e45e725e647a7901fb90e400f149d929192446b6a3
+- NativeSourceBundle: sha256:a09f3932e3d27042c7ea1ae2d0f995c62f6f198446625d5eb2faa59bc59cf9c6
+- Terminal checkpoint: sha256:0940d530439e1088e6f43cbc88815156719ac5d17c9b4b0069a4e29a91424c77
+- Execution proof: sha256:fdf6c0a9b6029a2a93045197f711e45c7e72228e042310f265b65f32f40a20be
+
+## Gate findings
+
+- PASS: all four checkpoint-bound clarification questions have one exact approved response.
+- PASS: the candidate preserves all unchanged requirements byte-for-byte at the entity level and adds only ContractGeneration-specific requirements.
+- PASS: separate state-routed operations and ContractGate-owned ApprovedNotApplicable are explicit.
+- PASS: generators remain untrusted; Core owns pinned format validation and canonical diff; ContractGate owns semantic and promotion authority.
+- PASS: the live V1 path is JSON Schema 2020-12; OpenAPI, AsyncAPI, and Protobuf remain optional fixture-conformant bindings behind the same contract.
+- PASS: typed draft/change-set outputs and separate candidate/approved traceability projections are required.
+- PASS: ProjectOverview is a deterministic projection of the exact replacement requirements.
+
+## Approval boundary
+
+Approval must bind the exact paired change, candidate Markdown, native bundle, and terminal checkpoint. Any modification requires a new Requirements Gate candidate.

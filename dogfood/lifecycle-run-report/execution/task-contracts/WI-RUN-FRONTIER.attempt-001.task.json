@@ -1,0 +1,278 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-RUN-FRONTIER-001",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-FRONTIER-ATTEMPT-001",
+  "workItemId": "WI-RUN-FRONTIER",
+  "attempt": 1,
+  "status": "prepared",
+  "readyFrontier": {
+    "frontierId": "RUN-FRONTIER-003",
+    "completionFacts": [
+      {
+        "artifactId": "ICF-WI-RUN-CONTRACTS-003",
+        "digest": "sha256:dbcf9bb53baf8ac2da5d949b4f2f5cd1e5313de8a2a1de09172e19f2936b01af"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-CONTENT-POLICY-002",
+        "digest": "sha256:3dc759bc9eb3ff0e93c1807451e8868d259900cf138719dbff6e13e8636659a4"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-LEDGER-002",
+        "digest": "sha256:3d703966bb1a22b1a96f421d40c1df0e5eb511b3bf69314e6f88a1bbeddd0966"
+      },
+      {
+        "artifactId": "ICF-WI-RUN-OBSERVATIONS-001",
+        "digest": "sha256:331395f83640be6bec8fc6d9e39f16d901307d7c1f86fa9cc00222bf593cb526"
+      }
+    ]
+  },
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "requiredGrants": [
+      "GRANT-PROCESS-SPAWN",
+      "GRANT-REPOSITORY-WRITE"
+    ],
+    "requiredTools": [
+      "TOOL-NODE"
+    ],
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "workItemRef": "WI-RUN-FRONTIER"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/lifecycle-run-report-frontier.mjs",
+      "test/lifecycle-run-report-frontier.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not change src/index.mjs.",
+      "Do not modify the approved dependency DAG or accept adapter-proposed readiness.",
+      "Do not commit, integrate, mutate traceability, or claim verification or progression authority."
+    ]
+  },
+  "contextPaths": [
+    "ProjectOverview.md",
+    "project/requirements-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-baseline.json",
+    "dogfood/lifecycle-run-report/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/lifecycle-run-report/dependency-analysis/work-dependency-baseline.json",
+    "dogfood/lifecycle-run-report/assignment/specialist-assignment-baseline.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-CONTRACTS.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-LEDGER.json",
+    "contracts/lifecycle-run-report-artifacts.schema.json",
+    "src/lifecycle-run-report-artifact-validator.mjs",
+    "src/work-dependency-graph.mjs",
+    "test/work-dependency-graph.test.mjs"
+  ],
+  "verification": {
+    "acceptance": "Only exact integrated completion unlocks work and insertion order never changes the derived frontier.",
+    "commands": [
+      "node --test test/lifecycle-run-report-frontier.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "lifecycle-run-report/frontier-tests",
+        "description": "Only exact integrated completion unlocks work and insertion order never changes the derived frontier."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify only if approved artifacts leave a material readiness or authority decision unresolved.",
+    "Stop with fix if the focused suite fails or implementation cannot stay within allowedWritePaths.",
+    "Stop after the exact handoff; Core owns verification, integration, traceability, and progression."
+  ],
+  "hostRuntimeSupply": {
+    "dependencyResolver": {
+      "mode": "bare-package-resolution-only",
+      "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/.tmp-devrelay-dependency-loader.mjs",
+      "digest": "sha256:7806bde635ad93006403a185c925b09f3187bc9de582d6266910f9df9a31bcd5"
+    },
+    "dependencyTree": {
+      "authority": "host-read-supply",
+      "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/node_modules",
+      "repositoryWriteGrant": false
+    }
+  },
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-RUN-DOGFOOD-WI-RUN-FRONTIER-ATTEMPT-001",
+      "workItemId": "WI-RUN-FRONTIER",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "lifecycle-run-report/frontier-tests",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-RUN-FRONTIER",
+    "objective": "Record factual integrated completion and derive each next runnable frontier from the approved static dependency DAG.",
+    "bounded-scope": {
+      "included": [
+        "Accept only exact integrated completion facts.",
+        "Compute deterministic ready frontiers without mutating the WorkDependencyBaseline."
+      ],
+      "excluded": [
+        "Scheduling, assignment, execution, speculative completion, or dependency-DAG mutation."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-RUN-FRONTIER",
+        "description": "Integrated completion registry and deterministic ready-frontier resolver.",
+        "artifactKind": "RuntimeLibrary"
+      }
+    ],
+    "work-type": "code-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-RUN-DYNAMIC-001",
+      "AC-DEV-RUN-NON-AUTHORITY-001"
+    ],
+    "architecture-refs": [
+      "EL-RUN-COMPLETION-REGISTRY",
+      "EL-RUN-FRONTIER-RESOLVER"
+    ],
+    "contract-refs": [
+      "CT-IF-RUN-INTEGRATED-COMPLETION",
+      "CT-IF-RUN-READY-FRONTIER"
+    ],
+    "required-capabilities": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "dependency-hints": [
+      {
+        "work-item-ref": "WI-RUN-CONTRACTS",
+        "relation": "after",
+        "rationale": "Completion and frontier data must conform to exact contracts.",
+        "authority": "hint"
+      },
+      {
+        "work-item-ref": "WI-RUN-LEDGER",
+        "relation": "after",
+        "rationale": "Derived frontiers are recorded as facts in the ledger.",
+        "authority": "hint"
+      }
+    ],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-RUN-FRONTIER",
+          "method": "Exercise empty, serial, parallel, repeated-frontier, stale completion, missing predecessor, cycle-defense, and all-complete fixtures.",
+          "successCriteria": "Only exact integrated completion unlocks work and insertion order never changes the derived frontier."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "lifecycle-run-report/frontier-tests",
+        "description": "Only exact integrated completion unlocks work and insertion order never changes the derived frontier."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/37"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/40"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/23"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/24"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/23"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/25"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-RUN-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:3acdebe84741c1aee374a46bd3efb48a3904ab69617e71eaf6676c0d7f7170f7",
+          "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  }
+}

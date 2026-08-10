@@ -1,0 +1,31 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "WIVPR-WI-WIV-EVIDENCE-NORMALIZATION-002",
+  "executionId": "WE-WIV-FRONTIER-005-WI-WIV-EVIDENCE-NORMALIZATION-ATTEMPT-002",
+  "workItemId": "WI-WIV-EVIDENCE-NORMALIZATION",
+  "outcome": "pass",
+  "attemptHistory": [
+    {"attempt": 1, "agentOutcome": "pass", "parentOutcome": "redesign", "integrated": false},
+    {"attempt": 2, "agentOutcome": "pass", "parentOutcome": "pass", "integrated": true}
+  ],
+  "acceptanceReview": {
+    "oneToOneExplicitEvidenceBindings": true,
+    "nativeArtifactsProvenanceOnly": true,
+    "exactReplayAndContextLineage": true,
+    "suppliedClosedCollectionTime": true,
+    "canonicalOrdering": true,
+    "inconclusiveDoesNotInventEvidence": true,
+    "staleForgedCrossedDuplicateAndUnboundEvidenceRejected": true,
+    "policyGateAndGraphAuthorityExcluded": true
+  },
+  "parentVerification": [
+    {
+      "command": "node --test --test-concurrency=1 test/work-item-verification-evidence-normalizer.test.mjs test/work-item-verification-contracts.test.mjs test/work-item-verification-checkpoint.test.mjs test/work-item-verification-verifier-adapters.test.mjs test/work-item-verification-verifier-binding.test.mjs test/work-item-verification-input-guard.test.mjs",
+      "outcome": "pass",
+      "tests": 49
+    }
+  ],
+  "disposition": "provisional-host-integration-approved",
+  "authoritativeVerifiedCompletionFactCreated": false
+}

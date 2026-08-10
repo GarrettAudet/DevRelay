@@ -1,0 +1,66 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHostIntegrationReceipt",
+  "receiptId": "WIVHIR-WI-WIV-ATTEMPT-CHECKPOINT-002",
+  "executionId": "WE-WIV-FRONTIER-002-WI-WIV-ATTEMPT-CHECKPOINT",
+  "workItemId": "WI-WIV-ATTEMPT-CHECKPOINT",
+  "task": {
+    "threadId": "019fdb5b-4022-7f23-ac49-7511da02d906",
+    "worktree": "C:/Users/garre/.codex/worktrees/f4a8/DevRelay-v04-work-dependency-analysis",
+    "contract": {
+      "relativePath": "dogfood/work-item-verification/execution/task-contracts/WI-WIV-ATTEMPT-CHECKPOINT.attempt-001.task.json",
+      "bytes": 1823,
+      "digest": "sha256:00bccf0c34edb470f1eb896fcc04449f4ab4597e3b3c671eef38b47519e36b09"
+    }
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "outcome": "fix",
+      "integrated": false,
+      "handoff": {
+        "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-ATTEMPT-CHECKPOINT.attempt-001.handoff.raw.json",
+        "bytes": 2224,
+        "digest": "sha256:a1424657e14ab19cb702c658cbb05747512818f5b7f00fc94575e99fe1b27058"
+      }
+    },
+    {
+      "attempt": 2,
+      "outcome": "pass",
+      "integrated": true,
+      "handoff": {
+        "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-ATTEMPT-CHECKPOINT.attempt-002.handoff.raw.json",
+        "bytes": 2038,
+        "digest": "sha256:35351d0394854a96e24321e1334fc9c71576de705567f66bf7df2b4225475ba4"
+      }
+    }
+  ],
+  "parentReview": {
+    "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-ATTEMPT-CHECKPOINT.attempt-002.parent-review.json",
+    "bytes": 1243,
+    "digest": "sha256:01701345717c8f3e9ccf69adf16fc3ee49d8592d46070b09f112d4a5f8af3273"
+  },
+  "integratedFiles": [
+    {
+      "relativePath": "src/work-item-verification-checkpoint.mjs",
+      "bytes": 10622,
+      "digest": "sha256:f0f6831f600a1b4ebf9dc851ef54cc422017f3c551b4bd2352fb87ae91c389c5"
+    },
+    {
+      "relativePath": "test/work-item-verification-checkpoint.test.mjs",
+      "bytes": 5978,
+      "digest": "sha256:11c7bd64a63e2d4f748829815a04aa7ed6423965315c7b93068e246940550001"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --test test/work-item-verification-checkpoint.test.mjs test/work-item-verification-contracts.test.mjs",
+      "outcome": "pass",
+      "tests": 10
+    }
+  ],
+  "lifecycleDisposition": "provisional-host-integrated",
+  "nextRequiredStage": "WorkItemVerification-after-module-release",
+  "authoritativeVerifiedCompletionFactCreated": false,
+  "authoritativeIntegratedCompletionFactCreated": false
+}

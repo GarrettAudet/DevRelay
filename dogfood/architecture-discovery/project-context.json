@@ -1,0 +1,29 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay has a conditional ArchitectureDiscovery prerequisite contract and a CurrentArchitectureSnapshot schema, but no executable discovery module. The module is required to complete the approved V1 lifecycle.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "Architecture and repository maintainers",
+    "Workflow and IDE hosts",
+    "Analyzer and adapter authors",
+    "Security and compliance reviewers"
+  ],
+  "domainConstraints": [
+    "Generic Core cannot branch on product, repository language, analyzer, or adapter identity.",
+    "ArchitectureDesign already consumes CurrentArchitectureSnapshot for existing-discovered-unbaselined state.",
+    "External hosts enforce filesystem, process, network, and secret permissions.",
+    "Discovery findings are observational inputs, not approved architecture decisions.",
+    "Traceability contributors are trusted infrastructure; adapters declare canonical domain provenance only."
+  ],
+  "conventions": [
+    "Use SHA-256-bound artifacts and exact semantic versions at every boundary.",
+    "Represent observed, derived, inferred, unknown, and not-applicable dispositions explicitly.",
+    "Preserve native analyzer output as evidence; summaries are never the only truth.",
+    "Fail closed on repository drift, malformed output, unresolved source references, and checkpoint substitution.",
+    "Prove successful, clarification, unable-to-proceed, drift, substitution, and zero-call replay paths."
+  ],
+  "sourceRefs": []
+}

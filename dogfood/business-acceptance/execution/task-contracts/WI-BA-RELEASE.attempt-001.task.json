@@ -1,0 +1,115 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE.attempt-001",
+  "workItem": {
+    "id": "WI-BA-RELEASE",
+    "objective": "Document, export, package, and prove one exact accepted end-to-end V1 lifecycle run.",
+    "boundedScope": [
+      "docs/business-acceptance.md",
+      "README.md",
+      "RELEASE.md",
+      "CHANGELOG.md",
+      "src/index.mjs",
+      "package.json",
+      "package-lock.json",
+      "scripts/release-catalog.mjs",
+      "scripts/release-tools.mjs",
+      "release/",
+      "test/business-acceptance-documentation.test.mjs",
+      "test/business-acceptance-release.test.mjs",
+      "dogfood/business-acceptance/"
+    ],
+    "deliverables": [
+      "Human-readable Gate guide",
+      "Public Core Gate exports",
+      "DevRelay 0.8.0 catalog",
+      "Exact accepted lifecycle proof"
+    ],
+    "workType": "configuration-change",
+    "requiredCapabilities": [
+      "release-engineering",
+      "integration-testing",
+      "technical-writing"
+    ],
+    "dependencyHints": [
+      "WI-BA-GATE",
+      "WI-BA-TRACEABILITY"
+    ],
+    "verificationPlan": [
+      "Run focused BusinessAcceptance tests",
+      "Run canonical verify and release checks",
+      "Prove acceptance completes construction without deployment authority"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/release-gate"
+    ],
+    "sourceRefs": [
+      "goal-business-acceptance-gate-v1",
+      "D-BA-NO-DEPLOY-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-GATE",
+    "WI-BA-TRACEABILITY"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "release-engineering",
+      "integration-testing",
+      "technical-writing"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "docs/business-acceptance.md",
+      "README.md",
+      "RELEASE.md",
+      "CHANGELOG.md",
+      "src/index.mjs",
+      "package.json",
+      "package-lock.json",
+      "scripts/release-catalog.mjs",
+      "scripts/release-tools.mjs",
+      "release/",
+      "test/business-acceptance-documentation.test.mjs",
+      "test/business-acceptance-release.test.mjs",
+      "dogfood/business-acceptance/"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "graph operations outside trusted contributor",
+      "unbound owner approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:49c05e9b7b8a613a51282b0fd6a1f30216bcae82ce93c0d8b010d64f95f9e598"
+}

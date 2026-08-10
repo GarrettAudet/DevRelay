@@ -1,0 +1,40 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-CONTRACTS.attempt-001",
+  "workItemId": "WI-BA-CONTRACTS",
+  "outcome": "pass",
+  "changedFiles": [
+    "contracts/business-acceptance-artifacts.schema.json",
+    "src/business-acceptance-artifact-validator.mjs",
+    "test/business-acceptance-contracts.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/contract-tests",
+      "relativePath": "test/business-acceptance-contracts.test.mjs",
+      "digest": "sha256:70c8e3ed49bcab26ef7bb80cb5a5eead5d5cdd1e09cd8c5bf4f610b32b431ffa"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/business-acceptance-artifact-validator.mjs",
+      "exitCode": 0,
+      "summary": "Validator module syntax passed."
+    },
+    {
+      "command": "node --check test/business-acceptance-contracts.test.mjs",
+      "exitCode": 0,
+      "summary": "Contract test module syntax passed."
+    },
+    {
+      "command": "node --test test/business-acceptance-contracts.test.mjs (with the repository dependency loader)",
+      "exitCode": 0,
+      "summary": "All 10 focused contract tests passed; 0 failed, skipped, or cancelled."
+    }
+  ],
+  "residualRisks": [
+    "none"
+  ],
+  "notes": "Implemented only the closed BusinessAcceptance subject, policy, evidence, evaluation, candidate, owner-approval, and record contracts plus deterministic schema, digest, lineage, exhaustive-coverage, outcome, and authority validation. Parent-review corrections ensure evaluation and candidate artifacts express eligibility rather than acceptance, only eligible candidates can be owner-approved, only exact approved or rejected owner decisions over eligible candidates create accepted or rejected records, and output-free Gate outcomes create no record. The lineage audit correction requires the exact IntegratedSystemCandidate, binds SystemVerificationResult.subject and BusinessAcceptanceSubject.integratedSystemCandidate to it, and sources the requirements, project-overview, architecture, and contract refs from that candidate. BusinessAcceptance remains a Core Gate. No Core evaluation, Gate execution, traceability, documentation, export, release, deployment, or downstream effect was implemented."
+}

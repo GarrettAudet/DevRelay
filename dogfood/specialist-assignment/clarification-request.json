@@ -1,0 +1,92 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationRequestSet",
+  "requestSetId": "clarification-request-specialist-assignment-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-specialist-assignment-module-v1",
+        "digest": "sha256:214f0432c1d08d764d535de4f1f8c97ff3489385c3aa2d98ad1262b7ad628357"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-specialist-assignment-v1",
+        "digest": "sha256:1057b158a432e3b702bf52ba571b86e52f0a73ae0542d57909aa116365ea1448"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-contract-generation-001",
+        "digest": "sha256:cd07170d8ea48ba98a1c4f45d30ade2e83992e0fd4433cb049fbf0af7c34e8cb"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-contract-generation-001",
+        "digest": "sha256:c440350f162c530a0180661ad7f6812551d0a184298f256a52239e5b2e9de699"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-SA-ASSIGNMENT-SCOPE-001",
+      "prompt": "Should SpecialistAssignment assign every approved work item or only work in the current ready DAG frontier?",
+      "rationale": "Assignment intent is stable planning data, while readiness is dynamic runtime state derived by Core.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Assign every approved work item, not only the current ready frontier (recommended)",
+        "Assign only the current ready frontier"
+      ]
+    },
+    {
+      "id": "Q-SA-CARDINALITY-001",
+      "prompt": "How many specialist profiles may be assigned to one work item in V1?",
+      "rationale": "A fixed cardinality keeps the handoff deterministic and avoids introducing collaboration orchestration into assignment.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Exactly one provider-neutral specialist profile per work item (recommended)",
+        "One or more collaborating profiles per work item"
+      ]
+    },
+    {
+      "id": "Q-SA-SELECTION-AUTHORITY-001",
+      "prompt": "Which boundary owns profile eligibility and ranking?",
+      "rationale": "Replaceable ranking is useful, but an extension cannot bypass required capabilities, tools, grants, or policy.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Core enforces hard capability, tool, grant, and policy constraints; a replaceable ranker chooses only among eligible profiles (recommended)",
+        "The configured ranker owns both eligibility and ranking"
+      ]
+    },
+    {
+      "id": "Q-SA-FAILURE-POLICY-001",
+      "prompt": "What happens when one approved work item has no eligible specialist profile?",
+      "rationale": "Partial promotion could let an incomplete work plan reach execution.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Any unassignable work item blocks the complete candidate with needs-clarification; no partial baseline in V1 (recommended)",
+        "Promote assignments for eligible items and defer the rest"
+      ]
+    },
+    {
+      "id": "Q-SA-BOUNDARY-001",
+      "prompt": "Should SpecialistAssignment also schedule work, choose concrete AI models or humans, execute work, or modify the dependency DAG?",
+      "rationale": "Those effects belong to Core frontier control or WorkExecution rather than profile assignment.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Scheduling, availability, concrete runtime or model binding, execution, and DAG modification remain downstream (recommended)",
+        "Include runtime binding and scheduling in SpecialistAssignment"
+      ]
+    }
+  ]
+}

@@ -3,10 +3,13 @@
 ## Release identity
 
 This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
-`architecture-design@0.1.0`, `work-breakdown@0.1.0`, and
-`work-dependency-analysis@0.1.0` as one private source release, version
-`0.4.0`. The source package also advances the immutable TraceabilityGraph
-vocabulary to current `1.2.0` dependency-planning semantics while preserving
+`architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`,
+`work-breakdown@0.1.0`, `work-dependency-analysis@0.1.0`,
+`specialist-assignment@1.0.0`,
+`work-execution@0.1.0`, `work-item-verification@0.1.0`, and
+`change-integration@0.1.0`, and `system-verification@0.1.0` as one private
+source release, version `0.9.0`. The source package also advances the immutable TraceabilityGraph
+vocabulary to current `1.5.0` acceptance semantics while preserving
 exact `1.0.0` and `1.1.0` support.
 
 `package.json` intentionally retains `"private": true` and
@@ -25,6 +28,7 @@ release.
 - Typed requirements, deterministic ProjectOverview projection/rendering,
   atomic paired Requirements Gate validation, and ArchitectureDesign's explicit
   project-overview context contract through the public JavaScript API.
+- ArchitectureDiscovery deterministic state routing, offline tracked-or-declared native inventory, optional bounded analyzer port, observational normalization, Core-owned confidence and material-gap policy, exact checkpoint replay, trusted candidate-only traceability, and explicit source-transmission consent through the public API.
 - WorkBreakdown state routing, pre-adapter baseline drift detection, closed
   work-item and coverage contracts, typed change application, deterministic
   checkpoint-only Gate validation, raw-byte-bound baseline commit payloads,
@@ -38,10 +42,27 @@ release.
   Core-owned Graphology-DAG mechanics, exact OPA WASM policy evaluation,
   bounded advisory review, deterministic checkpoints, and a separate
   raw-byte-bound WorkDependency Gate through the public API.
+- ContractGeneration state routing, live JSON Schema generation, independent
+  format validation, canonical compatibility diffing, checkpoint replay, and a
+  separate raw-byte-bound Contract Gate through the public API.
+- SpecialistAssignment A2A profile discovery, Core-owned eligibility, deterministic
+  ranking, and separate assignment Gate authority.
+- WorkExecution exact readiness, assignment, policy, repository, retry, and
+  checkpoint boundaries with a proposer-only executor port.
+- WorkItemVerification obligation expansion, independent verifier binding,
+  normalized evidence, deterministic policy evaluation, approval Gate, and
+  verification traceability.
+- ChangeIntegration exact verified-subject binding, integration planning, target
+  compare-and-swap, bounded local Git effects, conflict and uncertain-effect
+  recovery, closed outcomes, and factual integration traceability.
+- SystemVerification immutable integrated-system binding, complete
+  acceptance-criterion and NFR obligations, typed test/review evidence,
+  deterministic policy outcomes, zero-call replay, and trusted forward-only
+  verification traceability without BusinessAcceptance authority.
 - Closed TraceabilityGraph snapshot, update, receipt, diagnostic-report, and
   ModuleExecutionRecord contracts through the public JavaScript API.
-- Trusted RequirementsGathering, ArchitectureDesign, WorkBreakdown, and
-  WorkDependencyAnalysis contributors; exact planning-edge authority;
+- Trusted RequirementsGathering, ArchitectureDesign, ContractGeneration,
+  WorkBreakdown, and WorkDependencyAnalysis contributors; exact planning-edge authority;
   legacy/current vocabulary
   compatibility; checkpoint-first idempotent application; optimistic disjoint
   rebase; forward/reverse traversal; and lifecycle coverage diagnostics.
@@ -54,19 +75,23 @@ release.
   included in V1.
 
 The bundled graph and traceability checkpoint stores are in-memory reference
-implementations. Production hosts must supply durable atomic stores. This
-release does not include approval-gate contributors, so draft graph facts
-remain candidates; it never infers approval from a successful module result.
+implementations. Production hosts must supply durable atomic stores. Gate
+contributors require explicit validated Gate context; successful module results
+never imply approval.
 
 Live OpenSpec, GitHub Spec Kit, Task Master, Structurizr, and MADR command
 adapters are not included. The manifests define bounded capabilities and the
 tests exercise contract adapters and fixtures. WorkDependencyAnalysis does
 ship its provider-neutral native structured proposer; OpenSpec and Task Master
 remain optional proposal contracts, and Spec Kit remains a bounded advisory
-review contract. Release notes and user-facing descriptions must preserve that
-distinction. `ArchitectureDiscovery` is a required prerequisite contract when
-an existing system lacks a validated current architecture snapshot; an
-executable discovery Module is not included.
+review contract. ContractGeneration ships its deterministic JSON Schema
+generator; OpenAPI, AsyncAPI, and Protobuf remain fixture-conformant contracts.
+ChangeIntegration ships a bounded local Git adapter. SystemVerification ships
+fixture-conformant test and review verifier bindings only; remote repository,
+pull-request, deployment, live external verification, and BusinessAcceptance
+integrations are not included.
+Release notes and user-facing descriptions must preserve that
+distinction. ArchitectureDiscovery ships its executable provider-neutral Core building blocks and deterministic native inventory binding. Optional analyzers remain contract-defined and are not claimed live-conformant.
 
 Source-checkout Architecture Gate evidence may invoke a pinned official
 Structurizr validator and JSON exporter to prove that a native workspace
@@ -98,7 +123,7 @@ working tree:
 5. verifies the mandatory final release digest catalog.
 6. builds an allowlisted package in a temporary directory.
 7. installs that tarball offline and smoke-tests the package root,
-   TraceabilityGraph surface, and all four module manifests from a disposable
+   TraceabilityGraph surface, and all eleven module manifests from a disposable
    consumer.
 
 Use `npm run verify` for the static checks and test suite without packaging.

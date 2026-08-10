@@ -1,0 +1,156 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001",
+  "workItem": {
+    "id": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "objective": "Restore deterministic canonical verification by separating mutable active dogfood candidates from immutable historical replay evidence and preserving TraceabilityGraph ownership invariants.",
+    "boundedScope": [
+      "dogfood/contract-generation/",
+      "dogfood/specialist-assignment/work-breakdown/",
+      "dogfood/work-breakdown/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-execution/assignment/",
+      "dogfood/work-item-verification/",
+      "project/history/traceability/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-work-breakdown-dogfood.test.mjs",
+      "test/work-breakdown-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-execution-specialist-assignment-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-documentation.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs"
+    ],
+    "deliverables": [
+      "Versioned immutable archives for every historical artifact currently read through a mutable active path",
+      "New replay generations for every collided replay-vN output; no overwrite or deletion of prior replay evidence",
+      "Ownership-consistent requirements observer inputs and TraceabilityGraph merges",
+      "Updated exact digests and tests derived only from regenerated artifacts",
+      "Passing canonical npm.cmd run verify evidence or a precise remaining failure handoff"
+    ],
+    "workType": "configuration-change",
+    "acceptanceCriterionRefs": [],
+    "architectureRefs": [],
+    "contractRefs": [],
+    "requiredCapabilities": [
+      "traceability-engineering",
+      "deterministic-replay",
+      "release-engineering",
+      "integration-testing"
+    ],
+    "dependencyHints": [
+      "WI-BA-RELEASE"
+    ],
+    "verificationPlan": [
+      "Reproduce and classify each of the 11 canonical failures before editing.",
+      "Preserve old replay directories and historical bytes; advance replay versions instead of overwriting them.",
+      "Resolve TG_ASSERTION_OWNERSHIP_CONFLICT through correct baseline/contributor lineage; do not weaken or bypass ownership validation.",
+      "Regenerate active candidates only after archiving any bytes that are used as historical evidence.",
+      "Run all affected focused tests, then npm.cmd run verify. Do not regenerate release/0.8.0.json or claim release readiness; parent owns final release integration."
+    ],
+    "requiredEvidence": [
+      "dogfood/history-preservation",
+      "traceability/ownership-invariant",
+      "dogfood/zero-collision-replay",
+      "verification/canonical-gate"
+    ],
+    "sourceRefs": [
+      "BA-PARENT-REVIEW-WI-BA-RELEASE-005",
+      "WI-BA-RELEASE.attempt-005.handoff"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-RELEASE.attempt-005"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "specialistProfileRef": "PROFILE-DEVRELAY-TRACEABILITY-RELEASE-ENGINEER",
+    "capabilityCoverage": [
+      "traceability-engineering",
+      "deterministic-replay",
+      "release-engineering",
+      "integration-testing"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test",
+      "npm"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The failure set is one coupled replay-lineage correction with shared artifact paths, so a single specialist owns it to avoid concurrent mutation of historical and active dogfood state.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevision": "working-tree:codex/v0.5-lifecycle-run-report",
+    "failureEvidence": {
+      "testCount": 694,
+      "passing": 683,
+      "failing": 11,
+      "classification": [
+        "active-versus-historical-artifact-aliasing",
+        "immutable-replay-version-collision",
+        "traceability-assertion-ownership-conflict",
+        "stale-exact-digest-binding",
+        "stale-documentation-expectation"
+      ]
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "dogfood/contract-generation/",
+      "dogfood/specialist-assignment/work-breakdown/",
+      "dogfood/work-breakdown/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-execution/assignment/",
+      "dogfood/work-item-verification/",
+      "project/history/traceability/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-work-breakdown-dogfood.test.mjs",
+      "test/work-breakdown-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-execution-specialist-assignment-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-documentation.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs"
+    ],
+    "forbidden": [
+      "weaken traceability ownership checks",
+      "overwrite or delete immutable history",
+      "fabricate passing evidence",
+      "change product requirements",
+      "seal release 0.8.0",
+      "start ArchitectureDiscovery"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 1,
+  "dependencyCompletion": [
+    {
+      "artifactId": "WI-BA-RELEASE.attempt-005.handoff",
+      "digest": "sha256:654ed971c85a37f1f1abf8ce6c1c91d55514b6d419bd24b307cab656ee574f74",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-005.handoff.raw.json",
+      "workItemId": "WI-BA-RELEASE"
+    }
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-005",
+      "digest": "sha256:05e81fa449a71c5d7366e51b0467f958c5538cd32eb9b41d1ed5ace5fa48f42c",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-005.parent-review.json"
+    }
+  },
+  "taskDigest": "sha256:42b72acd1f6e67f4ebf8bbf4ba2643330d77379532f0cdd1ce2d0fd3c54c06ff"
+}

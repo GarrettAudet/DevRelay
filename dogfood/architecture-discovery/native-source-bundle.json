@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/architecture-discovery/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-architecture-discovery-v1",
+        "digest": "sha256:2bcef52a56281934d73ad3f6c5530241f27a18f19609ca239a6da45ebfcdedee"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/architecture-discovery/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-architecture-discovery-v1",
+        "digest": "sha256:f17a0af379082ac9e3bf47cb8545ce65bdaae3f1286bbe8462a649d71b25cf51"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/architecture-discovery/native/openspec/specs/architecture-discovery/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-architecture-discovery-v1",
+        "digest": "sha256:a41e63395130a52a4cdf36213e712e07f17f5eae28fdb4c67c4d8c333783cd3a"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-architecture-discovery-v1",
+      "digest": "sha256:caf935d1e918e29ff9d6e27f417a75e1c952a3626761d3f933f7d9f51fbb2d83"
+    },
+    {
+      "artifactId": "project-overview-change-set-architecture-discovery-v1",
+      "digest": "sha256:4b2c3bf77a2ce71c6954e6b87bbcd6cb2176c014feaae7c793fcfc6a94e7014a"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

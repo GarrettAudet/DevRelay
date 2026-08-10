@@ -1,0 +1,26 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationResponseSet",
+  "request": {
+    "artifactId": "clarification-request-work-execution-v1",
+    "digest": "sha256:82d6326792306c5ecc5ce7d5610340363a9ad66607a63ac3ec33c54d98a0508c"
+  },
+  "responses": [
+    {
+      "questionId": "Q-WE-EXECUTION-UNIT-001",
+      "answer": "One runnable WorkItem per invocation; Core fans out the frontier (recommended)"
+    },
+    {
+      "questionId": "Q-WE-RUNTIME-BINDING-001",
+      "answer": "A version-pinned ExecutionBinding resolves the profile to a configured executor adapter; Core validates it (recommended)"
+    },
+    {
+      "questionId": "Q-WE-OUTPUT-BOUNDARY-001",
+      "answer": "Return ChangeSetDraft plus ExecutionEvidenceBundle only; no verified, complete, or integrated claim (recommended)"
+    },
+    {
+      "questionId": "Q-WE-RETRY-IDENTITY-001",
+      "answer": "Create a new immutable ExecutionAttempt linked to the prior attempt; never overwrite (recommended)"
+    }
+  ]
+}

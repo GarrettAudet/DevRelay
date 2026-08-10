@@ -1,0 +1,169 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE.attempt-005",
+  "workItem": {
+    "id": "WI-BA-RELEASE",
+    "objective": "Seal BusinessAcceptance and DevRelay 0.8.0 truthfully through the real module boundaries without prematurely accepting incomplete V1 scope.",
+    "boundedScope": [
+      "CHANGELOG.md",
+      "README.md",
+      "RELEASE.md",
+      "docs/business-acceptance.md",
+      "dogfood/business-acceptance/",
+      "package-lock.json",
+      "package.json",
+      "release/0.8.0.json",
+      "scripts/bootstrap-structurizr.mjs",
+      "scripts/release-catalog.mjs",
+      "scripts/release-tools.mjs",
+      "src/index.mjs",
+      "test/bootstrap-structurizr.test.mjs",
+      "test/business-acceptance-documentation.test.mjs",
+      "test/business-acceptance-release.test.mjs"
+    ],
+    "deliverables": [
+      "Executable BusinessAcceptance module release proof using real Core, Gate, checkpoint, contributor, and TraceabilityGraph APIs",
+      "Explicit pending full-V1 BusinessAcceptance disposition until ArchitectureDiscovery and LifecycleRunReport are complete",
+      "Corrected and regression-tested Structurizr bootstrap",
+      "DevRelay 0.8.0 canonical release and offline-consumer evidence"
+    ],
+    "workType": "configuration-change",
+    "requiredCapabilities": [
+      "release-engineering",
+      "integration-testing",
+      "technical-writing"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CORE",
+      "WI-BA-COVERAGE-TRACEABILITY"
+    ],
+    "verificationPlan": [
+      "Delete or retire the fabricated accepted-run artifacts; no hand-authored SystemVerificationResult, technical coverage, Gate record, or graph merge receipt may be accepted as execution evidence.",
+      "Exercise the real BusinessAcceptance Core, immutable checkpoint replay, owner Gate, trusted contributor, and atomic TraceabilityGraph merge in the release proof or executable tests.",
+      "Keep the full project BusinessAcceptance outcome pending until every approved V1 scope item has authoritative evidence; do not mark all 31 SCOPE-* identities satisfied now.",
+      "Fix the pinned Structurizr extraction argument boundary with regression coverage, then run focused tests, npm.cmd run verify, npm.cmd run release:check, immutable package inspection, and offline-consumer checks."
+    ],
+    "requiredEvidence": [
+      "business-acceptance/real-execution-conformance",
+      "business-acceptance/no-premature-project-acceptance",
+      "structurizr/bootstrap-regression",
+      "business-acceptance/release-gate"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-GATE",
+    "WI-BA-COVERAGE-TRACEABILITY"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "release-engineering",
+      "integration-testing",
+      "technical-writing"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "CHANGELOG.md",
+      "README.md",
+      "RELEASE.md",
+      "docs/business-acceptance.md",
+      "dogfood/business-acceptance/",
+      "package-lock.json",
+      "package.json",
+      "release/0.8.0.json",
+      "scripts/bootstrap-structurizr.mjs",
+      "scripts/release-catalog.mjs",
+      "scripts/release-tools.mjs",
+      "src/index.mjs",
+      "test/bootstrap-structurizr.test.mjs",
+      "test/business-acceptance-documentation.test.mjs",
+      "test/business-acceptance-release.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-005.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 5,
+  "dependencyCompletion": [
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-TRACEABILITY-004",
+      "digest": "sha256:712501d1b6ed7453ea3cbfc29a1cd65a89f56048c5f1a53c074173c40ce89576",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-TRACEABILITY.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-TRACEABILITY"
+    },
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-GATE-001",
+      "digest": "sha256:cd2f057433a18232486680ebd2e13bffa3e4d365ff3ab66ef173b3f194325187",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-GATE.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-GATE"
+    }
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-RELEASE.attempt-004",
+      "digest": "sha256:87417330dcd4de55421923bb9f813033ad1a56524059372fd8c83bc1be1d9226",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE.attempt-004.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-RELEASE.attempt-004.handoff",
+      "digest": "sha256:7372e6c2045c2af8535032972d111f7a67f66380ea9320add7967734fb76c59b",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-004.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-004",
+      "digest": "sha256:1faa483d2f722999ae5e8cd02c68291ef5a53b9bb4a5d5f753d505195ee1cfea",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-004.parent-review.json"
+    },
+    "planningRevision": {
+      "artifactId": "BA-WB-REVISION-003",
+      "digest": "sha256:2869d7c3c5b50f7636a58f5a9589d118fb0941450c0589e4a8275356f5dd8e35",
+      "relativePath": "dogfood/business-acceptance/planning/business-acceptance-release-revision-003.json"
+    }
+  },
+  "requiredCorrections": [
+    "Replace fabricated project acceptance with a real API-driven module release proof and an explicit pending full-V1 acceptance disposition.",
+    "Do not invent SystemVerification, ChangeIntegration, business evidence, owner approval, or TraceabilityGraph merge facts.",
+    "Fix and regression-test the Structurizr Expand-Archive argument boundary.",
+    "Regenerate release/0.8.0.json only after all final bytes and canonical gates pass."
+  ],
+  "taskDigest": "sha256:0a1b514205086d4c3296909b65b25d741ffb1cfa9d4036030e61bfa45a6c8b92"
+}

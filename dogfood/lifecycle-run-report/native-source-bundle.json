@@ -1,0 +1,64 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/lifecycle-run-report/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-lifecycle-run-report-v1",
+        "digest": "sha256:8b3d4ffbfc58e53726d26124bcd0daa4bf642d9d88719e11997eecddcc3b3d46"
+      }
+    },
+    {
+      "role": "capability-evidence",
+      "path": "dogfood/lifecycle-run-report/capability-evidence.md",
+      "artifact": {
+        "artifactId": "capability-evidence-lifecycle-run-report-v1",
+        "digest": "sha256:56b50d301bffed317cfc6390a7f7a938e21d42c7784e801ea26ead7d81e38160"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/lifecycle-run-report/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-lifecycle-run-report-v1",
+        "digest": "sha256:8b08ea7ef3f3a87879ccab57f7146aad7c13e537b98142b9b5b12f3f8a5513fd"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/lifecycle-run-report/native/openspec/specs/lifecycle-run-report/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-lifecycle-run-report-v1",
+        "digest": "sha256:2c277eb28d3661e75b5d2dce2cec24f13f89dd74518c6fb923ca5e766893521a"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-lifecycle-run-report-v1",
+      "digest": "sha256:e5b3e637d80093b0ed05497f1b71903993f7230a43b1fb6d83628c9fccbbb8e1"
+    },
+    {
+      "artifactId": "project-overview-change-set-lifecycle-run-report-v1",
+      "digest": "sha256:dce8060598f7e3139debd14b3090c9f7990253eb59b29c2295dc67531a7ff5b1"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec adapter binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

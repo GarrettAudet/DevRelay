@@ -1,0 +1,87 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-COVERAGE-CONTRACTS.attempt-001",
+  "workItem": {
+    "id": "WI-BA-COVERAGE-CONTRACTS",
+    "objective": "Revise the closed BusinessAcceptance contract family for business scope and exact upstream acceptance-criterion coverage.",
+    "boundedScope": [
+      "contracts/business-acceptance-artifacts.schema.json",
+      "src/business-acceptance-artifact-validator.mjs",
+      "test/business-acceptance-contracts.test.mjs"
+    ],
+    "deliverables": [
+      "BusinessAcceptanceTechnicalCoverage contract",
+      "Exhaustive business-scope and criterion-coverage lineage",
+      "Fail-closed contract tests"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "schema-design",
+      "cryptographic-lineage"
+    ],
+    "dependencyHints": [],
+    "verificationPlan": [
+      "Preserve Core/Gate authority separation",
+      "Reject missing, stale, duplicate, incomplete, or self-certified technical coverage"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/coverage-contract-tests"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [],
+  "assignment": {
+    "workItemRef": "WI-BA-COVERAGE-CONTRACTS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "schema-design",
+      "cryptographic-lineage"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "contracts/business-acceptance-artifacts.schema.json",
+      "src/business-acceptance-artifact-validator.mjs",
+      "test/business-acceptance-contracts.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CONTRACTS.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:384306bb46497d5c4d00581ddb8dd04ec3787e256266e22c31b3413a0020f86f"
+}

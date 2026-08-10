@@ -1,0 +1,96 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "HostTraceabilityReconciliationFailureDiagnostic",
+  "diagnosticId": "TGR-RUN-FAIL-001",
+  "executionId": "TGR-RUN-LIFECYCLE-RECONCILIATION-001",
+  "status": "failed-closed",
+  "scope": {
+    "run": "LifecycleRunReport-dogfood",
+    "throughCompletionFact": "ICF-WI-RUN-MARKDOWN-002",
+    "workItems": [
+      "WI-RUN-CONTRACTS",
+      "WI-RUN-CONTENT-POLICY",
+      "WI-RUN-LEDGER",
+      "WI-RUN-OBSERVATIONS",
+      "WI-RUN-FRONTIER",
+      "WI-RUN-SNAPSHOT",
+      "WI-RUN-MARKDOWN"
+    ],
+    "frontierDigest": "sha256:bf37e93b3ea375d83636a7db03073a13995d8829778f30a773d4fed7ba303617"
+  },
+  "baseGraph": {
+    "relativePath": "dogfood/lifecycle-run-report/assignment/traceability-graph-snapshot.json",
+    "digest": "sha256:b53dd8c73fbac999d25c37979ba3c0a9c12ff97c15f34429422fe05aebb2ded5",
+    "revision": 11,
+    "nodes": 814,
+    "edges": 5298
+  },
+  "validatedInputs": {
+    "requirements": "project/requirements-baseline.json",
+    "architecture": "project/architecture-baseline.json",
+    "contract": "project/contract-baseline.json",
+    "workBreakdown": "dogfood/lifecycle-run-report/work-breakdown/work-breakdown-baseline.json",
+    "workDependency": "dogfood/lifecycle-run-report/dependency-analysis/work-dependency-baseline.json",
+    "specialistAssignment": "dogfood/lifecycle-run-report/assignment/specialist-assignment-baseline.json",
+    "workExecution": "dogfood/lifecycle-run-report/execution/task-contracts",
+    "workItemVerification": "dogfood/lifecycle-run-report/execution/verification",
+    "changeIntegration": "dogfood/lifecycle-run-report/execution/host-integration",
+    "integratedCompletionFacts": "dogfood/lifecycle-run-report/execution/integrated-completion-facts"
+  },
+  "blockingDiagnostics": [
+    {
+      "code": "TG_MISSING_RELEASED_RECONCILIATION_CONTRIBUTOR",
+      "message": "No released trusted contributor can aggregate the seven completed WorkItemVerification and ChangeIntegration observations into one standardized TraceabilityUpdate without inventing a new authority or ownership scope."
+    },
+    {
+      "code": "TG_MISSING_CANONICAL_CHANGE_INTEGRATION_SOURCES",
+      "message": "Each completed run work item has a BootstrapWorkItemHostIntegrationReceipt and IntegratedCompletionFact, but not the exact canonical ChangeIntegration source closure required by devrelay.change-integration@1.0.0: ModuleResult, IntegratedChangeRecord, VerifiedWorkItemSubject, ChangeIntegrationTraceabilityInput, IntegrationInputBinding, post RepositorySnapshot, and their exact referenced WorkItem and ChangeSet artifacts."
+    },
+    {
+      "code": "TG_NO_WORK_EXECUTION_CONTRIBUTOR",
+      "message": "The released contributor registry contains no WorkExecution contributor capable of projecting execution-attempt or implementation evidence from BootstrapWorkExecutionTaskContract and BootstrapWorkItemHandoff artifacts."
+    }
+  ],
+  "baseGraphDiagnostics": {
+    "orphanRequirements": [
+      "US-DEV-SPECIFY-001",
+      "NFR-DEV-DETERMINISM-001"
+    ],
+    "orphanAcceptanceCriteria": [],
+    "unscopedRunWork": [],
+    "missingRunEvidence": [
+      "Canonical ChangeIntegration source closure for WI-RUN-CONTRACTS",
+      "Canonical ChangeIntegration source closure for WI-RUN-CONTENT-POLICY",
+      "Canonical ChangeIntegration source closure for WI-RUN-LEDGER",
+      "Canonical ChangeIntegration source closure for WI-RUN-OBSERVATIONS",
+      "Canonical ChangeIntegration source closure for WI-RUN-FRONTIER",
+      "Canonical ChangeIntegration source closure for WI-RUN-SNAPSHOT",
+      "Canonical ChangeIntegration source closure for WI-RUN-MARKDOWN"
+    ],
+    "invalidReferences": [],
+    "duplicateOrAlreadyPresentDispositions": []
+  },
+  "atomicity": {
+    "updatePrepared": false,
+    "checkpointPersisted": false,
+    "mergeAttempted": false,
+    "semanticMutations": 0,
+    "replayAttempted": false,
+    "reason": "Fail-closed occurred before update preparation; therefore there is no authorized update to replay."
+  },
+  "outputs": {
+    "updateSet": null,
+    "mergeProof": null,
+    "checkpoint": null,
+    "resultingGraph": null,
+    "moduleExecutionRecord": null,
+    "verificationTaskContract": null
+  },
+  "scopePreservation": {
+    "workDependencyDagChanged": false,
+    "workItemScopeBroadened": false,
+    "wiRunVerificationPerformed": false,
+    "candidateCodeIntegrated": false,
+    "commitCreated": false
+  }
+}

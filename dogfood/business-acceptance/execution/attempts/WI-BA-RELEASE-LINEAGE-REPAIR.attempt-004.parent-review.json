@@ -1,0 +1,43 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-004",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "task": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004",
+    "digest": "sha256:1c094e830c8d6d1116b00b48c6ca8807d3419483451538901e8074ac74445cea",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff",
+    "digest": "sha256:afbba238150a11a11e18a823c645b1adf8572f3b28f15110c52b1cec12c80c0a",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "acceptedEvidence": [
+    "Attempt 004 introduced a shared provider-neutral devrelay://repository URI mapper and routed affected dogfood materializers and promoters through pre-candidate normalization.",
+    "The strengthened fixed manifest reports zero file:/// occurrences in every listed candidate and replay artifact.",
+    "Changed immutable artifacts were placed in new ContractGeneration replay-v7, baseline WorkDependencyAnalysis replay-v6, WorkItemVerification ContractGeneration replay-v6, WorkItemVerification WorkBreakdown scenario-wiv-portable-v3, and WorkItemVerification WorkDependencyAnalysis replay-v6 namespaces.",
+    "The worker corrected its initial trust-boundary mistake: loaded values remain parses of their bound raw bytes, while proposal/source references are normalized only as explicit pre-candidate adapter-host transformations.",
+    "The handoff truthfully reports incomplete verification and does not claim release readiness or cross-root acceptance."
+  ],
+  "remainingFinding": {
+    "classification": "portable-identity-implementation-unverified",
+    "finding": "The final portable candidates and manifest were regenerated, but fixed digest assertions in affected dogfood tests remain stale. The required focused suite has not passed, neither post-correction canonical verifier run was executed, and no parent-root construction or raw-byte equality proof exists. Attempt 004 therefore cannot be integrated as accepted completion evidence."
+  },
+  "requiredCorrections": [
+    "Update only fixed assertions that are stale because of the final provider-neutral artifact bytes; expected digests must remain independently fixed and must not be derived from the candidate under test.",
+    "Strengthen legacy local-URI normalization so repository ownership is established against approved repository root aliases or an explicit repository boundary, not merely the first path segment named project, dogfood, test, or another common top-level name.",
+    "Prove that the WorkDependencyAnalysis dogfood test executes materialize.mjs before comparing the candidate and immutable replay digests.",
+    "Prove loaded value fidelity by asserting the value handed to runtime validation is the exact JSON parse of its bound raw bytes.",
+    "Pass the complete affected focused suite, then pass npm.cmd run verify twice consecutively without restoring state.",
+    "Return a complete raw handoff containing the exact fixed manifest artifact paths and digests for independent parent-root verification."
+  ],
+  "nextAction": {
+    "route": "fix",
+    "instruction": "Continue the same bounded work item as attempt 005. Preserve all attempt-004 generations. If any immutable bytes change, advance a new generation rather than replacing history. Finish the stale assertions and strict-boundary tests, obtain focused and two-run canonical proof, and hand the exact digest manifest to the parent for cross-root execution and compare-and-swap integration."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:941bc2d7071c367fdd095ce0d6eadecd94a54294dec2d44975ede59d703b30e7"
+}

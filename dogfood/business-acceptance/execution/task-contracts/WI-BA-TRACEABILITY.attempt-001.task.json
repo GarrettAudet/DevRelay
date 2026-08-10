@@ -1,0 +1,91 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-TRACEABILITY.attempt-001",
+  "workItem": {
+    "id": "WI-BA-TRACEABILITY",
+    "objective": "Extend TraceabilityGraph with backward-compatible acceptance semantics and a trusted Gate contributor.",
+    "boundedScope": [
+      "src/traceability-artifact-validator.mjs",
+      "src/business-acceptance-traceability-contributor.mjs",
+      "test/business-acceptance-traceability.test.mjs",
+      "test/traceability-vocabulary-migration.test.mjs"
+    ],
+    "deliverables": [
+      "Traceability vocabulary 1.5 profile",
+      "Trusted forward-only acceptance contributor",
+      "Atomic merge and migration tests"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "graph-modeling",
+      "traceability"
+    ],
+    "dependencyHints": [
+      "WI-BA-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Preserve versions 1.0 through 1.4",
+      "Reject inverse, candidate, rejected, missing-evidence, and orphan acceptance facts"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/traceability-tests"
+    ],
+    "sourceRefs": [
+      "goal-business-acceptance-gate-v1",
+      "D-BA-TRACE-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-TRACEABILITY",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "graph-modeling",
+      "traceability"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/traceability-artifact-validator.mjs",
+      "src/business-acceptance-traceability-contributor.mjs",
+      "test/business-acceptance-traceability.test.mjs",
+      "test/traceability-vocabulary-migration.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "graph operations outside trusted contributor",
+      "unbound owner approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-TRACEABILITY.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:d81875c528bbde20e475b1967baacaefc775af2c97b45db8a186c048538ca9e7"
+}

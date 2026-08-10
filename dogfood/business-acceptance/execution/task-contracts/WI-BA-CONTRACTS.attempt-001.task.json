@@ -1,0 +1,85 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-CONTRACTS.attempt-001",
+  "workItem": {
+    "id": "WI-BA-CONTRACTS",
+    "objective": "Define the closed BusinessAcceptance artifact family and deterministic semantic validator.",
+    "boundedScope": [
+      "contracts/business-acceptance-artifacts.schema.json",
+      "src/business-acceptance-artifact-validator.mjs",
+      "test/business-acceptance-contracts.test.mjs"
+    ],
+    "deliverables": [
+      "Closed acceptance subject, policy, evidence, evaluation, candidate, approval, and record contracts",
+      "Positive and fail-closed schema/lineage tests"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "schema-design",
+      "deterministic-contracts"
+    ],
+    "dependencyHints": [],
+    "verificationPlan": [
+      "Validate the full canonical family",
+      "Reject unknown fields, incomplete coverage, stale digests, downstream authority, and invalid outcomes"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/contract-tests"
+    ],
+    "sourceRefs": [
+      "goal-business-acceptance-gate-v1",
+      "D-BA-SUBJECT-001",
+      "D-BA-OUTCOMES-001"
+    ]
+  },
+  "dependencies": [],
+  "assignment": {
+    "workItemRef": "WI-BA-CONTRACTS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "schema-design",
+      "deterministic-contracts"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "contracts/business-acceptance-artifacts.schema.json",
+      "src/business-acceptance-artifact-validator.mjs",
+      "test/business-acceptance-contracts.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "graph operations outside trusted contributor",
+      "unbound owner approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-CONTRACTS.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:3de912ddd84e1329c94ebcd22ce8c9023da5ae45fc8e784f6646bd124b7b7539"
+}

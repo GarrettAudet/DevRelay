@@ -86,6 +86,7 @@ function requirementsContext({ change = false } = {}) {
 }
 
 function baselineObserverContext() {
+  const approvedRequirements = structuredClone(requirementsBaseline);
   const requirementsRef = {
     artifactId: "requirements-baseline-001",
     schema: "https://devrelay.dev/artifacts/requirements-baseline/v1",
@@ -112,7 +113,7 @@ function baselineObserverContext() {
     },
     moduleResult: structuredClone(architectureResult),
     loadedInputs: {
-      "requirements-baseline": [entry(requirementsRef, requirementsBaseline)],
+      "requirements-baseline": [entry(requirementsRef, approvedRequirements)],
       "project-overview-baseline": [entry(overviewRef, overviewBaseline)],
     },
     loadedOutputs: {},
@@ -150,9 +151,10 @@ test("Requirements contributor projects the complete typed candidate determinist
   assert.equal(first.edges.length, 36);
   assert.deepEqual(
     first.nodes,
-    [...first.nodes].sort((left, right) =>
-      canonicalJson(left).localeCompare(canonicalJson(right), "en"),
-    ),
+    [...first.nodes].sort((left, right) => {
+      const leftText = canonicalJson(left), rightText = canonicalJson(right);
+      return leftText < rightText ? -1 : leftText > rightText ? 1 : 0;
+    }),
   );
 
   const artifactNodes = first.nodes.filter(
@@ -289,6 +291,32 @@ test("Requirements baseline observer projects approved facts without architectur
     projected.nodes.some(({ kind }) => kind.startsWith("architecture-")),
     false,
   );
+  const scopes = projected.nodes.filter(({ kind }) => kind === "business-scope");
+  assert.deepEqual(new Set(scopes.map(({ stableId }) => stableId)), new Set(requirementsBaseline.requirements.scope.map(({ id }) => id)));
+  for (const scope of scopes) {
+    const position = requirementsBaseline.requirements.scope.findIndex(({ id }) => id === scope.stableId);
+    const approved = requirementsBaseline.requirements.scope[position];
+    assert.equal(scope.label, approved.statement);
+    assert.deepEqual(scope.attributes, { statement: approved.statement, sourceRefs: approved.sourceRefs });
+    assert.equal(scope.sourceLocators[0].jsonPointer, `/requirements/scope/${position}`);
+    assert.equal(scope.sourceLocators[0].entityDigest, canonicalJsonDigest(approved));
+  }
+  assert.equal(projected.edges.filter(({ kind, target }) => kind === "defines" && target.kind === "business-scope").length, 3);
+});
+
+test("Requirements baseline observer rejects malformed and duplicate authoritative business-scope records", async () => {
+  for (const scope of [
+    [{ id: "", statement: "statement", sourceRefs: [] }],
+    [{ id: "SCOPE-1", statement: "", sourceRefs: [] }],
+    [{ id: "SCOPE-1", statement: "one", sourceRefs: [] }, { id: "SCOPE-1", statement: "two", sourceRefs: [] }],
+  ]) {
+    const context = baselineObserverContext();
+    context.loadedInputs["requirements-baseline"][0].value.requirements.scope = scope;
+    await assert.rejects(
+      requirementsBaselineObserverContributor.project(context),
+      /non-empty string|repeats/,
+    );
+  }
 });
 
 test("Requirements control outcomes are explicit accounting-only projections", async () => {

@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
+import { repositoryArtifactUriFromUrl } from "../../_support/repository-artifact-uri.mjs";
 
 import {
   canonicalJson,
@@ -24,18 +25,23 @@ import { workDependencyBaselineTraceabilityContributor } from "../../../src/work
 
 const ROOT = new URL("../../../", import.meta.url);
 const OUTPUT = new URL("./", import.meta.url);
+const REPLAY = new URL("./replay-v6/", import.meta.url);
 const APPROVED = Object.freeze({
   candidate:
-    "sha256:f929a756793927c894aada19bbf544a228445dc085ecf78aa4fe8dbda7afa61a",
+    "sha256:5009bf9189b801f34f58582ecfb6a7444abbdefd2a31ec957c866672e8086807",
   gateReview:
-    "sha256:d5afcefa8140b81a6dfa6ec16d84ca6df8306739a7755727f627a247691bc0ce",
+    "sha256:c35b3be93fae40c70720d721222187faeef1613037d86b18f13c291d8768601f",
   gateCandidate:
-    "sha256:07290d240e0ec60ace267c68aa8d3a61e2ddb89c80bb714220d98fc3ccd0d6b3",
+    "sha256:74c22ef41298a1ced28bfe14f3d3ad5f0a23c3c4843bddaecb8a3129fd8acd91",
   checkpoint:
-    "sha256:771ccbd1a1f9a5d898bb79ac734808abdb10edc342fb92c229c3955ae0cb9a9e",
+    "sha256:bf07f72b90e740b21a35da041d5a82b6eb767c9bb74c3f3aca0a058082f17086",
   checkpointRaw:
-    "sha256:5174967b686a189eb18e0154065f399badaa23b22603749a40d3fb51e0d76c2d",
+    "sha256:5bd6ba7a202e4f214172657307ba4a63f8271d3a75023c7d052a05608ef0940e",
+  repositorySnapshot:
+    "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481",
   repositoryRevision: "9cb4f2b8d340142557027fc0477440722d4f8286",
+  repositoryTree:
+    "sha256:b6d7beba6da3151dc15f4de0dd2a78a9d0edef3097b2f1e22039a6fb21275c61",
 });
 
 const CONTRACTS = Object.freeze({
@@ -66,6 +72,10 @@ const CONTRACTS = Object.freeze({
   promotionProof: {
     schema: "https://devrelay.dev/evidence/work-dependency-gate-promotion/v1",
     mediaType: "application/json",
+  },
+  repositorySnapshot: {
+    schema: "https://devrelay.dev/artifacts/repository-snapshot/v1",
+    mediaType: "application/vnd.devrelay.repository-snapshot+json",
   },
 });
 
@@ -104,7 +114,7 @@ async function loadedJson(relativePath, contract, artifactId) {
       artifactId,
       bytes,
       contract,
-      uri: pathToFileURL(fileURLToPath(url)).href,
+      uri: repositoryArtifactUriFromUrl(ROOT, url),
     }),
   };
 }
@@ -138,16 +148,20 @@ function exactDocument(value, artifactId, contract, url) {
       artifactId,
       bytes,
       contract,
-      uri: pathToFileURL(fileURLToPath(url)).href,
+      uri: repositoryArtifactUriFromUrl(ROOT, url),
     }),
   };
 }
 
-const repositoryRevision = execFileSync("git", ["rev-parse", "HEAD"], {
-  cwd: fileURLToPath(ROOT),
-  encoding: "utf8",
-}).trim();
+const repositorySnapshot = await loadedJson(
+  "dogfood/work-dependency-analysis/repository-snapshot.json",
+  CONTRACTS.repositorySnapshot,
+  "repository-snapshot-devrelay-9cb4f2b",
+);
+assert.equal(repositorySnapshot.ref.digest, APPROVED.repositorySnapshot);
+const repositoryRevision = repositorySnapshot.value.revision;
 assert.equal(repositoryRevision, APPROVED.repositoryRevision);
+assert.equal(repositorySnapshot.value.treeDigest, APPROVED.repositoryTree);
 
 const candidate = await loadedJson(
   "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-candidate.json",
@@ -155,7 +169,7 @@ const candidate = await loadedJson(
     schema: "https://devrelay.dev/artifacts/work-dependency-candidate/v1",
     mediaType: "application/vnd.devrelay.work-dependency-candidate+json",
   },
-  "WDC-69B26B5DC133512D",
+  "WDC-94324FDFE6521CA0",
 );
 const gateReview = await loadedJson(
   "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-gate-review.json",
@@ -498,15 +512,14 @@ const promotionProof = exactDocument(
 );
 
 const writes = [
-  [new URL("work-dependency-gate-owner-approval.json", OUTPUT), approval.bytes],
-  [new URL("work-dependency-baseline.json", OUTPUT), baseline.bytes],
-  [projectBaselineUrl, baseline.bytes],
-  [new URL("traceability-update.json", OUTPUT), Buffer.from(canonicalJson(prepared.update), "utf8")],
-  [new URL("traceability-graph-snapshot.json", OUTPUT), Buffer.from(canonicalJson(mergeReceipt.snapshot), "utf8")],
-  [new URL("traceability-merge-receipt.json", OUTPUT), Buffer.from(canonicalJson(mergeReceipt.receipt), "utf8")],
-  [new URL("traceability-checkpoint.json", OUTPUT), Buffer.from(canonicalJson(traceCheckpoint), "utf8")],
-  [new URL("module-execution-record.json", OUTPUT), executionRecord.bytes],
-  [new URL("work-dependency-gate-promotion-proof.json", OUTPUT), promotionProof.bytes],
+  [new URL("work-dependency-gate-owner-approval.json", REPLAY), approval.bytes],
+  [new URL("work-dependency-baseline.json", REPLAY), baseline.bytes],
+  [new URL("traceability-update.json", REPLAY), Buffer.from(canonicalJson(prepared.update), "utf8")],
+  [new URL("traceability-graph-snapshot.json", REPLAY), Buffer.from(canonicalJson(mergeReceipt.snapshot), "utf8")],
+  [new URL("traceability-merge-receipt.json", REPLAY), Buffer.from(canonicalJson(mergeReceipt.receipt), "utf8")],
+  [new URL("traceability-checkpoint.json", REPLAY), Buffer.from(canonicalJson(traceCheckpoint), "utf8")],
+  [new URL("module-execution-record.json", REPLAY), executionRecord.bytes],
+  [new URL("work-dependency-gate-promotion-proof.json", REPLAY), promotionProof.bytes],
 ];
 for (const [url, bytes] of writes) await writeExact(url, bytes);
 

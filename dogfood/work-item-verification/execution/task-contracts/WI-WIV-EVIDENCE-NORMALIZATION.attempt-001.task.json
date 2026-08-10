@@ -1,0 +1,54 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-EVIDENCE-NORMALIZATION-001",
+  "executionId": "WE-WIV-FRONTIER-005-WI-WIV-EVIDENCE-NORMALIZATION",
+  "workItemId": "WI-WIV-EVIDENCE-NORMALIZATION",
+  "status": "redesign-required",
+  "attempts": 1,
+  "readinessProof": {
+    "workDependencyBaseline": {
+      "artifactId": "WDB-WIV-DOGFOOD",
+      "digest": "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8"
+    },
+    "completedWorkItemIds": [
+      "WI-WIV-ATTEMPT-CHECKPOINT",
+      "WI-WIV-CONTRACTS",
+      "WI-WIV-SUBJECT-OBLIGATIONS",
+      "WI-WIV-VERIFIER-ADAPTERS",
+      "WI-WIV-VERIFIER-BINDING"
+    ],
+    "incomingEdges": [
+      "DEP-9F80EB0D75D8D80D",
+      "DEP-0FF6F07C81B85E78",
+      "DEP-ECDFF94E05A47A79"
+    ],
+    "readyWorkItemIds": ["WI-WIV-EVIDENCE-NORMALIZATION"]
+  },
+  "assignment": {
+    "workItemRef": "WI-WIV-EVIDENCE-NORMALIZATION",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ]
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/work-item-verification-evidence-normalizer.mjs",
+      "test/work-item-verification-evidence-normalizer.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not execute another DAG item or infer evidence from prose, filenames, or incomplete results.",
+      "Do not evaluate policy, decide a Gate outcome, or create graph operations.",
+      "Do not modify schemas, baselines, or dogfood Gate evidence.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "task": {
+    "threadId": "019fdb8c-7c6b-7ef0-9f88-b72b049ff180",
+    "clientThreadId": "client-new-thread:7c5d6112-d903-43ec-a842-4ad4e3a649a2",
+    "worktree": "C:/Users/garre/.codex/worktrees/47f1/DevRelay-v04-work-dependency-analysis"
+  }
+}

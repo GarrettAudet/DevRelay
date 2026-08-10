@@ -1,0 +1,4580 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ArchitectureBaseline",
+  "baselineId": "architecture-baseline-devrelay-v1-lifecycle-run-report-001",
+  "approvedDraft": {
+    "artifactId": "architecture-change-set-lifecycle-run-report-v1",
+    "schema": "https://devrelay.dev/artifacts/architecture-change-set-draft/v1",
+    "mediaType": "application/vnd.devrelay.architecture-change-set-draft+json",
+    "digest": "sha256:9ee1936ae7aafd8484466024273b6fabbc342a3553687dbd903d8d82515593d6",
+    "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/architecture-change-set-draft.json"
+  },
+  "requirementsBaseline": {
+    "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
+    "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+    "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+    "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1",
+    "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+  },
+  "projectOverviewBaseline": {
+    "artifactId": "project-overview-baseline-devrelay-v1-lifecycle-001",
+    "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+    "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+    "digest": "sha256:eb4a5ea9db4c67cff641ffdc50168ee2c4d257ab307be909fe515759ee88239e",
+    "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+  },
+  "projectContext": {
+    "artifactId": "project-context-devrelay-lifecycle-run-report-v1",
+    "schema": "https://devrelay.dev/artifacts/project-context/v1",
+    "mediaType": "application/vnd.devrelay.project-context+json",
+    "digest": "sha256:b031933401e1904b50f664351919337976e14b193a266d0f77b4c44451f1142c",
+    "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/project-context.json"
+  },
+  "repositorySnapshot": {
+    "artifactId": "repository-snapshot-devrelay-4bda7fe",
+    "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+    "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+    "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+    "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/repository-snapshot.json"
+  },
+  "sections": {
+    "technicalDesign": {
+      "mode": "embedded",
+      "content": {
+        "technicalDesignId": "TD-RUN-001",
+        "objective": "Add deterministic human-readable lifecycle reporting and safe ready-frontier derivation without moving workflow authority out of Generic Core.",
+        "scope": {
+          "level": "change",
+          "boundary": "Cross-cutting RunLedger, LifecycleRunReport, and Core ready-frontier derivation over the approved V1 lifecycle.",
+          "in": [
+            "Standardized immutable module, Gate, adapter, checkpoint, approval, and progression records",
+            "Explicitly non-authoritative host observations with availability dispositions",
+            "Evidence-backed adapter maturity and run-comparability decisions",
+            "Read-only TraceabilityGraph snapshot joins and coverage diagnostics",
+            "Deterministic content policy and LifecycleRunReport.md projection",
+            "Core-derived ready frontiers from a static DAG and verified integrated-completion facts",
+            "JSON-schema contract intent for every structured reporting and frontier handoff"
+          ],
+          "out": [
+            "Workflow routing, adapter selection, Gate approval, evidence satisfaction, or artifact promotion by reporting",
+            "Module-specific business transformations",
+            "Specialist assignment, scheduling, concrete executor binding, or work execution",
+            "Deployment, production verification, monitoring, and operations lifecycle extensions",
+            "Fabricated timing, token, cost, success, or maturity values"
+          ]
+        },
+        "problemSummary": "DevRelay has exact module artifacts and traceability but no dynamic human-readable operational history, explicit metric availability model, comparable adapter evidence, or Core-owned repeating-frontier boundary.",
+        "solutionSummary": "Record trusted lifecycle facts and separately sourced observations in an append-only ledger, project one canonical snapshot with graph and maturity joins, apply deterministic comparability and content policy, render byte-stable Markdown, and derive ready frontiers from the static DAG plus verified integrated-completion facts.",
+        "requirementsDrivers": [
+          "A human can understand any configured circuit without reading raw JSON.",
+          "Every shown metric is sourced or explicitly unavailable.",
+          "Reporting remains read-only and non-authoritative.",
+          "Adapter maturity and performance claims are evidence-backed and comparable.",
+          "Secrets and sensitive raw content do not leak into the report.",
+          "Only verified integrated completion unlocks dependent work."
+        ],
+        "behaviorFlows": [
+          "Generic Core derives and appends immutable standardized records for each trusted lifecycle transition.",
+          "The host may append separately classified non-authoritative observations with exact provenance and availability.",
+          "Adapter maturity and run comparability evaluators emit bounded evidence-backed dispositions.",
+          "The snapshot projector loads one exact ledger lineage and TraceabilityGraph checkpoint and derives dynamic stages, paths, coverage diagnostics, metrics, and next action.",
+          "Content policy deterministically allows, omits, or redacts protected fields.",
+          "The Markdown renderer produces one byte-stable primary LifecycleRunReport.md plus a structured snapshot reference.",
+          "After each verified integration, Core records an IntegratedCompletionFact and derives the next ready frontier from the immutable dependency baseline."
+        ],
+        "dataResponsibilities": [
+          "RunRecord owns trusted module, Gate, adapter, checkpoint, approval, artifact, and progression facts.",
+          "RunObservation owns sourced optional measurements and explicit availability and sensitivity dispositions.",
+          "AdapterMaturityRecord owns exact binding identity, maturity status, and evidence.",
+          "RunComparabilityDecision owns comparison dimensions, disposition, and mismatch reasons.",
+          "LifecycleRunSnapshot owns the canonical dynamic report model and exact source lineage.",
+          "IntegratedCompletionFact owns verified work-item completion lineage.",
+          "ReadyFrontierResult owns current derived work dispositions and never mutates the DAG."
+        ],
+        "failureHandling": [
+          "Invalid record identity, lineage, authority, or divergent duplicate bytes fail before append.",
+          "Missing measurements render as explicit not-reported or not-applicable dispositions.",
+          "Graph or run-lineage mismatch stops projection without changing workflow state.",
+          "Unknown sensitivity defaults to omission and records a content-policy disposition.",
+          "Non-comparable runs never produce relative performance claims.",
+          "Stale DAGs or incomplete integration evidence prevent frontier release."
+        ],
+        "securityPrivacy": [
+          "The observation boundary excludes credentials, secrets, prompts, and raw tool logs by default.",
+          "Report projection uses content policy before rendering and preserves references rather than protected bytes.",
+          "Report access is read-only and cannot mutate ledger, graph, artifacts, Gates, or progression."
+        ],
+        "performanceReliabilityOperability": [
+          "Canonical sorting and content addressing make projection replayable across insertion orders.",
+          "Ledger append and projection are separable so rendering failure does not lose source records.",
+          "Metrics distinguish active execution, queueing, human approval wait, retry, and replay.",
+          "Static-DAG frontier derivation avoids persisted waves and stale scheduling state."
+        ],
+        "compatibilityMigrationRollout": [
+          "The projector discovers record kinds through registered contracts rather than module names.",
+          "New module and Gate record producers can be added without renderer branches.",
+          "Adapter maturity uses a closed versioned vocabulary and preserves historical evidence.",
+          "V1 starts with file-backed records and Markdown; IDE and API surfaces consume the same contracts later."
+        ],
+        "verificationIntent": [
+          "Test serial, conditional, skipped, failed, resumed, parallel, and repeating-frontier circuits.",
+          "Test byte identity across insertion orders, checkpoint replay, and renderer restarts.",
+          "Test missing metrics, comparability mismatches, invalid maturity claims, secret redaction, and report non-authority.",
+          "Test business-to-acceptance graph joins, orphan and missing-evidence diagnostics, and source-link resolution.",
+          "Test branching, joining, failed-item, retry, partial-frontier, and resumed readiness fixtures.",
+          "Use real generated JSON schemas in ContractGeneration before WorkBreakdown."
+        ],
+        "interfaceIntentIds": [
+          "IF-RUN-WORKFLOW-FACTS",
+          "IF-RUN-HOST-OBSERVATIONS",
+          "IF-RUN-LIFECYCLE-SNAPSHOT",
+          "IF-RUN-COMPARABILITY",
+          "IF-RUN-CONTENT-POLICY",
+          "IF-RUN-REPORT-ACCESS",
+          "IF-RUN-INTEGRATED-COMPLETION",
+          "IF-RUN-READY-FRONTIER"
+        ],
+        "constraintIds": [
+          "CON-RUN-NON-AUTHORITY",
+          "CON-RUN-APPEND-ONLY",
+          "CON-RUN-OBSERVATION-DISPOSITION",
+          "CON-RUN-DYNAMIC-PROJECTION",
+          "CON-RUN-BYTE-DETERMINISM",
+          "CON-RUN-COMPARABILITY",
+          "CON-RUN-CONTENT-POLICY",
+          "CON-RUN-MATURITY-VOCABULARY",
+          "CON-RUN-STATIC-DAG",
+          "CON-RUN-CROSS-CUTTING"
+        ],
+        "sourceRequirementIds": [
+          "US-DEV-INSPECT-RUN-001",
+          "US-DEV-GAUGE-PERFORMANCE-001",
+          "US-DEV-UNDERSTAND-ADAPTERS-001",
+          "US-DEV-RUN-FRONTIERS-001",
+          "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+          "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+          "NFR-DEV-RUN-REPORT-PRIVACY-001",
+          "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+          "US-DEV-EXTEND-001",
+          "US-DEV-ORCHESTRATE-001",
+          "US-DEV-VERIFY-001",
+          "NFR-DEV-DETERMINISM-001",
+          "NFR-DEV-PORTABILITY-001",
+          "NFR-DEV-TRACEABILITY-001",
+          "CON-DEV-ARTIFACT-CONTRACTS-001",
+          "CON-DEV-GATE-SEPARATION-001",
+          "CON-DEV-MODULE-INVENTORY-001",
+          "CON-DEV-PROVIDER-NEUTRAL-001"
+        ],
+        "sourceRefs": []
+      }
+    },
+    "architectureModel": {
+      "mode": "embedded",
+      "content": {
+        "modelId": "MODEL-DEVRELAY-LIFECYCLE-RUN-003",
+        "notation": {
+          "name": "C4",
+          "version": "1.0"
+        },
+        "elements": [
+          {
+            "id": "EL-DEVRELAY-SYSTEM",
+            "name": "DevRelay",
+            "type": "software-system",
+            "description": "Deterministic orchestration runtime for composable software-engineering modules.",
+            "responsibilities": [
+              "Progress exact approved artifacts through provider-neutral modules, gates, and trusted traceability."
+            ],
+            "tags": [
+              "System"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-DEVRELAY-CORE",
+            "name": "Generic Core",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Owns generic registration, state-derived routing, exact adapter resolution, checkpoints, replay, and progression.",
+            "technology": "Node.js",
+            "responsibilities": [
+              "Load exact state and artifact contracts.",
+              "Route without product-specific branches.",
+              "Checkpoint and replay bounded effects and control results."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-DEVRELAY-GRAPH",
+            "name": "TraceabilityGraph",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Core-owned sidecar for trusted lifecycle traceability contributions and atomic merge proofs.",
+            "technology": "Provider-neutral graph contract",
+            "responsibilities": [
+              "Replay approved upstream observer contributions.",
+              "Keep candidate and approved authority distinct.",
+              "Validate and atomically merge registered contributor updates."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-MODULE",
+            "name": "WorkBreakdown Module",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Converts exact approved scope into bounded, traceable, independently executable and verifiable work-item candidates.",
+            "technology": "JSON Schema and JavaScript",
+            "responsibilities": [
+              "Own establish-breakdown and decompose-change semantic contracts.",
+              "Normalize configured planning adapter output.",
+              "Return candidates without executing work."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-VALIDATORS",
+            "name": "Context-neutral Upstream Validators",
+            "type": "component",
+            "parentId": "EL-WB-MODULE",
+            "description": "Composes schema and semantic validators for requirements, project overview, architecture, contract, repository, and capability inputs without reusing ArchitectureDesign operation-specific runtime contracts.",
+            "technology": "JavaScript validation contracts",
+            "responsibilities": [
+              "Validate exact upstream artifacts in a WorkBreakdown-neutral context.",
+              "Enforce approved absence unions and cross-artifact lineage."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-ADAPTER-PORT",
+            "name": "Configured Planning Adapter Port",
+            "type": "component",
+            "parentId": "EL-WB-MODULE",
+            "description": "Provider-neutral port for one bounded work-decomposition capability selected by configuration.",
+            "technology": "Agent-command bridge",
+            "responsibilities": [
+              "Invoke Spec Kit tasks, OpenSpec tasks, or a compatible planner through the same canonical contract.",
+              "Allow read and planning-artifact output only."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-PREFLIGHT",
+            "name": "Registered WorkBreakdown Preflight",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Generic guard registered on the loaded ProjectWorkBreakdownState artifact contract with its own persisted producer identity.",
+            "technology": "Registered artifact-contract guard",
+            "responsibilities": [
+              "Detect exact baseline, disposition, revision, and tree drift before adapter entry.",
+              "Schema-validate baseline_drift results.",
+              "Checkpoint and replay the control result without adapter entry."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-GATE",
+            "name": "WorkBreakdown Gate",
+            "type": "component",
+            "parentId": "EL-WB-MODULE",
+            "description": "Derives the authoritative coverage universe, resolves evidence, owns no-work approval, and promotes approved planned work.",
+            "technology": "Deterministic gate policy",
+            "responsibilities": [
+              "Reject unscoped or uncovered work.",
+              "Approve or reject already-satisfied and no-work-required dispositions.",
+              "Atomically promote a baseline or apply an exact typed delta."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-CONTRIBUTOR",
+            "name": "WorkBreakdown Traceability Contributor",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-GRAPH",
+            "description": "Trusted projector of validated candidate work items into limited planning relationships.",
+            "technology": "Trusted versioned contributor",
+            "responsibilities": [
+              "Create only approved planning edge kinds.",
+              "Preserve candidate authority until gate activation.",
+              "Never create inverse or factual completion edges."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-OBSERVERS",
+            "name": "Approved Baseline Observers",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-GRAPH",
+            "description": "Replays approved RequirementsBaseline, ArchitectureBaseline, and applicable ContractBaseline graph contributions before WorkBreakdown candidate edges.",
+            "technology": "Trusted observer contracts",
+            "responsibilities": [
+              "Materialize approved upstream endpoints and authority.",
+              "Forbid contract endpoints and contract refs when ApprovedNotApplicable is selected."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WB-DOWNSTREAM",
+            "name": "Downstream Work Modules",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "WorkDependencyAnalysis, SpecialistAssignment, WorkExecution, and Verification own ordering, assignment, execution, and proof.",
+            "technology": "Future provider-neutral modules",
+            "responsibilities": [
+              "Validate the dependency DAG.",
+              "Assign specialists.",
+              "Perform work and collect completion evidence."
+            ],
+            "tags": [
+              "Container"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-MODULE",
+            "name": "WorkDependencyAnalysis",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Coordinates one complete static dependency-analysis candidate without assigning or executing work.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Normalize dependency proposals",
+              "Coordinate bounded reviewer and Core-owned verification capabilities"
+            ],
+            "tags": [
+              "Container",
+              "LifecycleModule",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "US-WDA-PARALLEL-001",
+              "US-WDA-PLUGINS-001",
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-WDA-NO-EXECUTION-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001",
+              "CON-WDA-TRACE-DIRECTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-SNAPSHOT",
+            "name": "Snapshot Builder",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Builds one immutable full WorkBreakdown snapshot and verifies declared context slices.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Bind the exact WorkBreakdownBaseline",
+              "Verify source and extracted-content digests"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-GRAPH-MECHANICS",
+            "name": "Graph Mechanics",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Owns canonical DAG mechanics while using pinned Graphology and Graphology-DAG internally.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Reject invalid endpoints, duplicates, self-dependencies, and cycles",
+              "Emit canonical diagnostics"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-OPA",
+            "name": "OPA Policy Evaluator",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Evaluates a pinned policy bundle over one canonical JSON input and normalizes the decision set.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Bind bundle, entrypoint, input, engine, and raw result evidence",
+              "Return policy decisions without promotion authority"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-GATE",
+            "name": "WorkDependency Gate",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Owns semantic completeness review, exact approval, and dependency-baseline promotion.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Reject unresolved missing dependencies and impossible ordering",
+              "Promote only the exact candidate"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "US-WDA-PARALLEL-001",
+              "CON-DEV-GATE-SEPARATION-001",
+              "US-DEV-VERIFY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-CONTRIBUTOR",
+            "name": "Traceability Contributor",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Derives forward candidate dependency relationships after candidate validation.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Emit only approved relationship vocabulary",
+              "Checkpoint updates before atomic graph merge"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-PARALLEL-001",
+              "CON-WDA-TRACE-DIRECTION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-PROPOSER-PORT",
+            "name": "Dependency Proposal Port",
+            "type": "component",
+            "parentId": "EL-WDA-MODULE",
+            "description": "Admits the native structured proposer or an optional configured proposal adapter through one contract.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Expose only DependencyProposal semantics",
+              "Prevent adapter authority leakage"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "US-WDA-PLUGINS-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-NATIVE-PROPOSER",
+            "name": "Native Structured Proposer",
+            "type": "component",
+            "parentId": "EL-WDA-MODULE",
+            "description": "Default provider-neutral proposer over the complete snapshot and declared context slices.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Propose dependency edges",
+              "Disposition every dependency hint"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "US-WDA-PLUGINS-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-OPTIONAL-PROPOSERS",
+            "name": "Optional Adapter Bridge",
+            "type": "component",
+            "parentId": "EL-WDA-MODULE",
+            "description": "Task Master and OpenSpec bindings that may propose only the canonical DependencyProposal.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Normalize native proposal output",
+              "Preserve subordinate native evidence"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001",
+              "US-DEV-EXTEND-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-WDA-SPECKIT-REVIEWER",
+            "name": "Spec Kit Consistency Reviewer",
+            "type": "component",
+            "parentId": "EL-WDA-MODULE",
+            "description": "Advisory consistency and coverage reviewer over the normalized proposal.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Report bounded findings",
+              "Never create authoritative edges or approve progression"
+            ],
+            "tags": [
+              "Component",
+              "WorkDependencyAnalysis"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "US-WDA-VERIFY-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-REPORTING",
+            "name": "Lifecycle Reporting",
+            "type": "container",
+            "parentId": "EL-DEVRELAY-SYSTEM",
+            "description": "Cross-cutting operational history and human-readable projection without workflow authority.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Persist exact standardized run records and observations",
+              "Project traceable lifecycle snapshots and human-readable reports",
+              "Expose sourced performance and adapter-maturity evidence"
+            ],
+            "tags": [
+              "Container",
+              "CoreInfrastructure",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "US-DEV-UNDERSTAND-ADAPTERS-001",
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-FACT-RECORDER",
+            "name": "Workflow Fact Recorder",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Derives standardized immutable run records from trusted Core transitions and Gate results.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Record exact module, Gate, adapter, checkpoint, approval, and progression facts",
+              "Bind every record to execution and artifact identities"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-COMPLETION-REGISTRY",
+            "name": "Integrated Completion Registry",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Stores separately approved verified integration facts without mutating the static dependency DAG.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Admit only exact verified ChangeIntegration completion facts",
+              "Preserve work-item, ChangeSet, verification, and integration lineage"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleControl"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "CON-DEV-GATE-SEPARATION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-FRONTIER-RESOLVER",
+            "name": "Ready Frontier Resolver",
+            "type": "component",
+            "parentId": "EL-DEVRELAY-CORE",
+            "description": "Derives the current runnable work frontier from the immutable WorkDependencyBaseline and integrated completion facts.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Reject readiness inferred from assignment, execution start, or unintegrated changes",
+              "Return deterministic ready, blocked, completed, and failed dependency dispositions"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleControl"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "US-DEV-ORCHESTRATE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-LEDGER",
+            "name": "Run Ledger Store",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Append-only content-addressed store for trusted workflow records and explicitly non-authoritative observations.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Preserve exact raw records and lineage",
+              "Reject record substitution, duplicates with divergent bytes, and invalid authority claims"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-OBSERVATION-INGRESS",
+            "name": "Host Observation Ingress",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Admits sourced timing, wait, call, token, cost, retry, and replay observations without workflow authority.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Require captured, not-reported, or not-applicable disposition",
+              "Bind measurements to exact run and execution identities"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-MATURITY-RESOLVER",
+            "name": "Adapter Maturity Resolver",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Resolves evidence-backed adapter binding maturity separately from Core-owned implementations.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Admit only contract-defined, fixture-conformant, live-conformant, or release-ready",
+              "Link every maturity claim to exact binding and evidence"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-UNDERSTAND-ADAPTERS-001",
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-EXTEND-001",
+              "CON-DEV-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-COMPARABILITY",
+            "name": "Run Comparability Evaluator",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Allows relative performance claims only for explicitly comparable executions.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Compare module, operation, input, policy, circuit, and host dimensions",
+              "Return non-comparable with exact reasons on any mismatch"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "name": "Lifecycle Snapshot Projector",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Purely projects the run ledger, graph checkpoint, maturity evidence, and policy results into one canonical snapshot.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Discover circuit components from records rather than product identifiers",
+              "Join business-to-acceptance paths and coverage diagnostics"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "US-DEV-UNDERSTAND-ADAPTERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-CONTENT-POLICY",
+            "name": "Report Content Policy",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Applies deterministic allow, omit, and redact dispositions before human-readable projection.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Exclude credentials, secrets, and unrestricted raw prompts or tool logs",
+              "Preserve audit links and explicit omission dispositions"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-MARKDOWN-RENDERER",
+            "name": "Lifecycle Markdown Renderer",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Renders byte-deterministic LifecycleRunReport.md from one validated canonical snapshot.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Lead with an executive summary and readable stage table",
+              "Render outcomes, Gates, rework, metrics, important artifacts, and next actions"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "NFR-DEV-RUN-REPORT-PRIVACY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "EL-RUN-REPORT-PORT",
+            "name": "Report Access Port",
+            "type": "component",
+            "parentId": "EL-RUN-REPORTING",
+            "description": "Exposes the exact structured snapshot, Markdown report, and linked evidence to IDE and host consumers.",
+            "technology": "Provider-neutral DevRelay contract",
+            "responsibilities": [
+              "Serve only validated content-addressed report artifacts",
+              "Expose no mutation, routing, approval, or evidence-satisfaction operation"
+            ],
+            "tags": [
+              "Component",
+              "LifecycleReporting"
+            ],
+            "properties": {},
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-PORTABILITY-001"
+            ],
+            "sourceRefs": []
+          }
+        ],
+        "relationships": [
+          {
+            "id": "REL-CORE-GRAPH",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-DEVRELAY-GRAPH",
+            "description": "Submits checkpointed updates from trusted contributors.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-PROVENANCE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-WB-ROUTE",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-WB-MODULE",
+            "description": "Derives establish-breakdown or decompose-change from loaded trusted project state.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-PREFLIGHT-ADAPTER",
+            "sourceElementId": "EL-WB-PREFLIGHT",
+            "targetElementId": "EL-WB-ADAPTER-PORT",
+            "description": "Allows adapter entry only when exact lineage and drift checks pass.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "NFR-WB-DETERMINISM-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-GATE-DOWNSTREAM",
+            "sourceElementId": "EL-WB-GATE",
+            "targetElementId": "EL-WB-DOWNSTREAM",
+            "description": "Releases only an approved WorkBreakdownBaseline or applied change set.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-DECOMPOSITION-001",
+              "CON-WB-DEPENDENCY-BOUNDARY-001",
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-CONTRIBUTOR",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-WB-CONTRIBUTOR",
+            "description": "Invokes the trusted contributor only for a validated canonical candidate.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-WDA",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-WDA-MODULE",
+            "description": "Executes the registered provider-neutral WorkDependencyAnalysis contract.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "NFR-WDA-DETERMINISM-001",
+              "US-DEV-ORCHESTRATE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-WB-WDA",
+            "sourceElementId": "EL-WB-MODULE",
+            "targetElementId": "EL-WDA-MODULE",
+            "description": "Supplies one exact approved WorkBreakdownBaseline for analysis.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "US-DEV-ORCHESTRATE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-WDA-GRAPH",
+            "sourceElementId": "EL-WDA-MODULE",
+            "targetElementId": "EL-DEVRELAY-GRAPH",
+            "description": "Submits only trusted checkpointed dependency traceability updates.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "CON-WDA-TRACE-DIRECTION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-WDA-DOWNSTREAM",
+            "sourceElementId": "EL-WDA-MODULE",
+            "targetElementId": "EL-WB-DOWNSTREAM",
+            "description": "Releases only an approved static dependency DAG to SpecialistAssignment.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-PARALLEL-001",
+              "CON-WDA-NO-EXECUTION-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-SNAPSHOT-PROPOSER",
+            "sourceElementId": "EL-WDA-SNAPSHOT",
+            "targetElementId": "EL-WDA-PROPOSER-PORT",
+            "description": "Provides the complete snapshot and only declared pinned context slices.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-PROPOSER-NATIVE",
+            "sourceElementId": "EL-WDA-PROPOSER-PORT",
+            "targetElementId": "EL-WDA-NATIVE-PROPOSER",
+            "description": "Dispatches to the default native structured proposer.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "US-WDA-PLUGINS-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-PROPOSER-OPTIONAL",
+            "sourceElementId": "EL-WDA-PROPOSER-PORT",
+            "targetElementId": "EL-WDA-OPTIONAL-PROPOSERS",
+            "description": "Dispatches to the configured optional adapter bridge when selected.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001",
+              "US-DEV-EXTEND-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-PROPOSER-MECHANICS",
+            "sourceElementId": "EL-WDA-PROPOSER-PORT",
+            "targetElementId": "EL-WDA-GRAPH-MECHANICS",
+            "description": "Submits a normalized proposal for Core-owned structural validation.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-MECHANICS-OPA",
+            "sourceElementId": "EL-WDA-GRAPH-MECHANICS",
+            "targetElementId": "EL-WDA-OPA",
+            "description": "Supplies the canonical graph and mechanical diagnostics for pinned policy evaluation.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-PROPOSER-REVIEWER",
+            "sourceElementId": "EL-WDA-PROPOSER-PORT",
+            "targetElementId": "EL-WDA-SPECKIT-REVIEWER",
+            "description": "Requests an advisory cross-artifact consistency review.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "US-WDA-VERIFY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-MECHANICS-GATE",
+            "sourceElementId": "EL-WDA-GRAPH-MECHANICS",
+            "targetElementId": "EL-WDA-GATE",
+            "description": "Supplies canonical graph mechanics and cycle evidence.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-OPA-GATE",
+            "sourceElementId": "EL-WDA-OPA",
+            "targetElementId": "EL-WDA-GATE",
+            "description": "Supplies normalized pinned policy decisions and raw-result evidence.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-REVIEWER-GATE",
+            "sourceElementId": "EL-WDA-SPECKIT-REVIEWER",
+            "targetElementId": "EL-WDA-GATE",
+            "description": "Supplies bounded advisory findings without approval authority.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "US-WDA-VERIFY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-GATE-CONTRIBUTOR",
+            "sourceElementId": "EL-WDA-GATE",
+            "targetElementId": "EL-WDA-CONTRIBUTOR",
+            "description": "Supplies a validated exact candidate for deterministic graph projection.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-WDA-PARALLEL-001",
+              "CON-WDA-TRACE-DIRECTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-WDA-CONTRIBUTOR-GRAPH",
+            "sourceElementId": "EL-WDA-CONTRIBUTOR",
+            "targetElementId": "EL-DEVRELAY-GRAPH",
+            "description": "Submits checkpointed forward candidate relationships for atomic merge.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "CON-WDA-TRACE-DIRECTION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-CORE-RUN-REPORTING",
+            "sourceElementId": "EL-DEVRELAY-CORE",
+            "targetElementId": "EL-RUN-REPORTING",
+            "description": "Supplies trusted standardized lifecycle facts without granting reporting progression authority.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "US-DEV-ORCHESTRATE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-GRAPH-RUN-REPORTING",
+            "sourceElementId": "EL-DEVRELAY-GRAPH",
+            "targetElementId": "EL-RUN-REPORTING",
+            "description": "Supplies one exact TraceabilityGraph checkpoint for read-only report projection.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-FACTS-LEDGER",
+            "sourceElementId": "EL-RUN-FACT-RECORDER",
+            "targetElementId": "EL-RUN-LEDGER",
+            "description": "Appends trusted content-addressed module, Gate, checkpoint, approval, and progression records.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-OBSERVATIONS-LEDGER",
+            "sourceElementId": "EL-RUN-OBSERVATION-INGRESS",
+            "targetElementId": "EL-RUN-LEDGER",
+            "description": "Appends sourced non-authoritative host observations with explicit availability dispositions.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-LEDGER-PROJECTOR",
+            "sourceElementId": "EL-RUN-LEDGER",
+            "targetElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "description": "Supplies one exact run lineage and observation set.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-GRAPH-PROJECTOR",
+            "sourceElementId": "EL-DEVRELAY-GRAPH",
+            "targetElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "description": "Supplies one exact graph snapshot and deterministic query results.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-MATURITY-PROJECTOR",
+            "sourceElementId": "EL-RUN-MATURITY-RESOLVER",
+            "targetElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "description": "Supplies evidence-backed adapter binding and Core implementation maturity.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-UNDERSTAND-ADAPTERS-001",
+              "US-DEV-INSPECT-RUN-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-COMPARABILITY-PROJECTOR",
+            "sourceElementId": "EL-RUN-COMPARABILITY",
+            "targetElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "description": "Supplies explicit comparable or non-comparable dispositions.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-PROJECTOR-POLICY",
+            "sourceElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "targetElementId": "EL-RUN-CONTENT-POLICY",
+            "description": "Submits the canonical report field set for deterministic content policy.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-POLICY-RENDERER",
+            "sourceElementId": "EL-RUN-CONTENT-POLICY",
+            "targetElementId": "EL-RUN-MARKDOWN-RENDERER",
+            "description": "Supplies an allowed or explicitly redacted canonical snapshot.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-RENDERER-PORT",
+            "sourceElementId": "EL-RUN-MARKDOWN-RENDERER",
+            "targetElementId": "EL-RUN-REPORT-PORT",
+            "description": "Publishes the exact Markdown report and structured snapshot references.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-PORTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-INTEGRATION-COMPLETION",
+            "sourceElementId": "EL-WB-DOWNSTREAM",
+            "targetElementId": "EL-RUN-COMPLETION-REGISTRY",
+            "description": "Submits only verified integrated-completion facts from ChangeIntegration.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "CON-DEV-GATE-SEPARATION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-COMPLETION-FRONTIER",
+            "sourceElementId": "EL-RUN-COMPLETION-REGISTRY",
+            "targetElementId": "EL-RUN-FRONTIER-RESOLVER",
+            "description": "Supplies the exact separately approved completion fact set.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-DAG-FRONTIER",
+            "sourceElementId": "EL-WDA-MODULE",
+            "targetElementId": "EL-RUN-FRONTIER-RESOLVER",
+            "description": "Supplies the immutable approved WorkDependencyBaseline DAG.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "REL-RUN-FRONTIER-DOWNSTREAM",
+            "sourceElementId": "EL-RUN-FRONTIER-RESOLVER",
+            "targetElementId": "EL-WB-DOWNSTREAM",
+            "description": "Releases only the currently derived dependency-ready work-item frontier.",
+            "interactionStyle": "synchronous",
+            "tags": [],
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "US-DEV-ORCHESTRATE-001"
+            ],
+            "sourceRefs": []
+          }
+        ],
+        "sourceRefs": []
+      }
+    },
+    "diagrams": {
+      "mode": "embedded",
+      "content": {
+        "diagramSetId": "DIAGRAMS-DEVRELAY-RUN-003",
+        "architectureModelId": "MODEL-DEVRELAY-LIFECYCLE-RUN-003",
+        "architectureModelDigest": "sha256:fa0561d7a8d8e3ecaab946668f620e59858b15f3368039e5b9cc7d912b16bc70",
+        "views": [
+          {
+            "viewKey": "VIEW-WDA-CONTAINERS",
+            "type": "container",
+            "title": "DevRelay top-level containers",
+            "purpose": "Show the lifecycle module, Generic Core, TraceabilityGraph, and downstream container boundaries.",
+            "audience": [
+              "engineering",
+              "architecture"
+            ],
+            "scopeElementId": "EL-DEVRELAY-SYSTEM",
+            "elementIds": [
+              "EL-DEVRELAY-CORE",
+              "EL-DEVRELAY-GRAPH",
+              "EL-WB-MODULE",
+              "EL-WB-DOWNSTREAM",
+              "EL-WDA-MODULE"
+            ],
+            "relationshipIds": [
+              "REL-CORE-GRAPH",
+              "REL-CORE-WB-ROUTE",
+              "REL-CORE-WDA",
+              "REL-WB-WDA",
+              "REL-WDA-GRAPH",
+              "REL-WDA-DOWNSTREAM"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          },
+          {
+            "viewKey": "VIEW-WDA-CORE-COMPONENTS",
+            "type": "component",
+            "title": "Generic Core components for WorkDependencyAnalysis",
+            "purpose": "Show snapshot construction, graph mechanics, OPA policy, Gate, and traceability ownership.",
+            "audience": [
+              "engineering",
+              "architecture",
+              "verification"
+            ],
+            "scopeElementId": "EL-DEVRELAY-CORE",
+            "elementIds": [
+              "EL-WB-PREFLIGHT",
+              "EL-WDA-SNAPSHOT",
+              "EL-WDA-GRAPH-MECHANICS",
+              "EL-WDA-OPA",
+              "EL-WDA-GATE",
+              "EL-WDA-CONTRIBUTOR"
+            ],
+            "relationshipIds": [
+              "REL-MECHANICS-OPA",
+              "REL-MECHANICS-GATE",
+              "REL-OPA-GATE",
+              "REL-GATE-CONTRIBUTOR"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          },
+          {
+            "viewKey": "VIEW-WDA-MODULE-COMPONENTS",
+            "type": "component",
+            "title": "WorkDependencyAnalysis module components",
+            "purpose": "Show the bounded proposal port, native proposer, optional adapter bridge, and advisory reviewer.",
+            "audience": [
+              "engineering",
+              "architecture",
+              "extension-authors"
+            ],
+            "scopeElementId": "EL-WDA-MODULE",
+            "elementIds": [
+              "EL-WDA-PROPOSER-PORT",
+              "EL-WDA-NATIVE-PROPOSER",
+              "EL-WDA-OPTIONAL-PROPOSERS",
+              "EL-WDA-SPECKIT-REVIEWER"
+            ],
+            "relationshipIds": [
+              "REL-PROPOSER-NATIVE",
+              "REL-PROPOSER-OPTIONAL",
+              "REL-PROPOSER-REVIEWER"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-work-dependency-analysis-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          },
+          {
+            "viewKey": "VIEW-RUN-CONTAINERS",
+            "type": "container",
+            "title": "DevRelay lifecycle and reporting containers",
+            "purpose": "Show Generic Core, lifecycle modules, TraceabilityGraph, and cross-cutting Lifecycle Reporting as separate top-level boundaries.",
+            "audience": [
+              "engineering",
+              "architecture",
+              "product"
+            ],
+            "scopeElementId": "EL-DEVRELAY-SYSTEM",
+            "elementIds": [
+              "EL-DEVRELAY-CORE",
+              "EL-DEVRELAY-GRAPH",
+              "EL-WB-MODULE",
+              "EL-WB-DOWNSTREAM",
+              "EL-WDA-MODULE",
+              "EL-RUN-REPORTING"
+            ],
+            "relationshipIds": [
+              "REL-CORE-GRAPH",
+              "REL-CORE-WB-ROUTE",
+              "REL-CORE-WDA",
+              "REL-WB-WDA",
+              "REL-WDA-GRAPH",
+              "REL-WDA-DOWNSTREAM",
+              "REL-CORE-RUN-REPORTING",
+              "REL-GRAPH-RUN-REPORTING"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-lifecycle-run-report-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:6e24c85cf9a6d180a062eb542b142a23689d0753fc2911b8633e19813e3b659a",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          },
+          {
+            "viewKey": "VIEW-RUN-CORE-COMPONENTS",
+            "type": "component",
+            "title": "Generic Core lifecycle facts and frontier derivation",
+            "purpose": "Show trusted workflow fact recording, integrated completion state, and deterministic ready-frontier derivation.",
+            "audience": [
+              "engineering",
+              "architecture",
+              "verification"
+            ],
+            "scopeElementId": "EL-DEVRELAY-CORE",
+            "elementIds": [
+              "EL-RUN-COMPLETION-REGISTRY",
+              "EL-RUN-FACT-RECORDER",
+              "EL-RUN-FRONTIER-RESOLVER"
+            ],
+            "relationshipIds": [
+              "REL-RUN-COMPLETION-FRONTIER"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-lifecycle-run-report-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:6e24c85cf9a6d180a062eb542b142a23689d0753fc2911b8633e19813e3b659a",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          },
+          {
+            "viewKey": "VIEW-RUN-REPORTING-COMPONENTS",
+            "type": "component",
+            "title": "Lifecycle Reporting components",
+            "purpose": "Show ledger, observations, maturity, comparability, projection, content policy, rendering, and read-only access.",
+            "audience": [
+              "engineering",
+              "architecture",
+              "workflow-authors"
+            ],
+            "scopeElementId": "EL-RUN-REPORTING",
+            "elementIds": [
+              "EL-RUN-LEDGER",
+              "EL-RUN-OBSERVATION-INGRESS",
+              "EL-RUN-MATURITY-RESOLVER",
+              "EL-RUN-COMPARABILITY",
+              "EL-RUN-SNAPSHOT-PROJECTOR",
+              "EL-RUN-CONTENT-POLICY",
+              "EL-RUN-MARKDOWN-RENDERER",
+              "EL-RUN-REPORT-PORT"
+            ],
+            "relationshipIds": [
+              "REL-RUN-OBSERVATIONS-LEDGER",
+              "REL-RUN-LEDGER-PROJECTOR",
+              "REL-RUN-MATURITY-PROJECTOR",
+              "REL-RUN-COMPARABILITY-PROJECTOR",
+              "REL-RUN-PROJECTOR-POLICY",
+              "REL-RUN-POLICY-RENDERER",
+              "REL-RUN-RENDERER-PORT"
+            ],
+            "renderings": [
+              {
+                "format": "structurizr",
+                "artifact": {
+                  "artifactId": "structurizr-workspace-lifecycle-run-report-v1",
+                  "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+                  "mediaType": "text/vnd.structurizr.dsl",
+                  "digest": "sha256:6e24c85cf9a6d180a062eb542b142a23689d0753fc2911b8633e19813e3b659a",
+                  "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/workspace.dsl"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "interfaceIntent": {
+      "mode": "embedded",
+      "content": {
+        "interfaceIntentSetId": "INTERFACES-DEVRELAY-RUN-001",
+        "interfaces": [
+          {
+            "id": "IF-WB-PLANNER",
+            "name": "Bounded planning adapter",
+            "purpose": "Bounded planning adapter",
+            "ownerBoundary": "EL-WB-ADAPTER-PORT",
+            "providerElementId": "EL-WB-ADAPTER-PORT",
+            "consumerElementIds": [
+              "EL-WB-MODULE"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact immutable canonical artifacts"
+            ],
+            "semanticOutputs": [
+              "Validated provider-neutral artifact or explicit failure"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable semantics across compatible adapters"
+            ],
+            "securityPrivacyIntent": [
+              "No graph or code-execution authority crosses this boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WB-DECOMPOSITION-001",
+              "US-WB-EXTENSIBILITY-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WB-GATE",
+            "name": "Coverage and promotion gate",
+            "purpose": "Coverage and promotion gate",
+            "ownerBoundary": "EL-WB-GATE",
+            "providerElementId": "EL-WB-GATE",
+            "consumerElementIds": [
+              "EL-WB-MODULE",
+              "EL-WB-DOWNSTREAM"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact immutable canonical artifacts"
+            ],
+            "semanticOutputs": [
+              "Validated provider-neutral artifact or explicit failure"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable semantics across compatible adapters"
+            ],
+            "securityPrivacyIntent": [
+              "No graph or code-execution authority crosses this boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WB-TRACEABILITY",
+            "name": "Trusted planning projection",
+            "purpose": "Trusted planning projection",
+            "ownerBoundary": "EL-WB-CONTRIBUTOR",
+            "providerElementId": "EL-WB-CONTRIBUTOR",
+            "consumerElementIds": [
+              "EL-DEVRELAY-GRAPH"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact immutable canonical artifacts"
+            ],
+            "semanticOutputs": [
+              "Validated provider-neutral artifact or explicit failure"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable semantics across compatible adapters"
+            ],
+            "securityPrivacyIntent": [
+              "No graph or code-execution authority crosses this boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "CON-WB-ADAPTER-TRUST-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WDA-PROPOSER",
+            "name": "Canonical dependency proposal",
+            "purpose": "Canonical dependency proposal",
+            "ownerBoundary": "EL-WDA-PROPOSER-PORT",
+            "providerElementId": "EL-WDA-PROPOSER-PORT",
+            "consumerElementIds": [
+              "EL-WDA-MODULE"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "WorkBreakdownAnalysisSnapshot",
+              "ContextSliceSet"
+            ],
+            "semanticOutputs": [
+              "DependencyProposal",
+              "NativeArtifactBundle"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible implementations"
+            ],
+            "securityPrivacyIntent": [
+              "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate and checkpoint before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "US-WDA-PLUGINS-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WDA-GRAPH-MECHANICS",
+            "name": "Canonical DAG mechanics",
+            "purpose": "Canonical DAG mechanics",
+            "ownerBoundary": "EL-WDA-GRAPH-MECHANICS",
+            "providerElementId": "EL-WDA-GRAPH-MECHANICS",
+            "consumerElementIds": [
+              "EL-WDA-MODULE"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Normalized DependencyProposal"
+            ],
+            "semanticOutputs": [
+              "Canonical graph digest",
+              "Mechanical diagnostics",
+              "Cycle witness"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible implementations"
+            ],
+            "securityPrivacyIntent": [
+              "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate and checkpoint before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WDA-POLICY",
+            "name": "Pinned dependency policy evaluation",
+            "purpose": "Pinned dependency policy evaluation",
+            "ownerBoundary": "EL-WDA-OPA",
+            "providerElementId": "EL-WDA-OPA",
+            "consumerElementIds": [
+              "EL-WDA-MODULE",
+              "EL-WDA-GATE"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Canonical policy input",
+              "Pinned bundle and entrypoint"
+            ],
+            "semanticOutputs": [
+              "Normalized policy decision set",
+              "Raw-result evidence"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible implementations"
+            ],
+            "securityPrivacyIntent": [
+              "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate and checkpoint before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WDA-CONSISTENCY",
+            "name": "Advisory consistency review",
+            "purpose": "Advisory consistency review",
+            "ownerBoundary": "EL-WDA-SPECKIT-REVIEWER",
+            "providerElementId": "EL-WDA-SPECKIT-REVIEWER",
+            "consumerElementIds": [
+              "EL-WDA-MODULE",
+              "EL-WDA-GATE"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Normalized candidate",
+              "Exact upstream artifacts"
+            ],
+            "semanticOutputs": [
+              "Bounded consistency findings"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible implementations"
+            ],
+            "securityPrivacyIntent": [
+              "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate and checkpoint before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "US-WDA-VERIFY-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WDA-GATE",
+            "name": "Dependency semantic gate and promotion",
+            "purpose": "Dependency semantic gate and promotion",
+            "ownerBoundary": "EL-WDA-GATE",
+            "providerElementId": "EL-WDA-GATE",
+            "consumerElementIds": [
+              "EL-WDA-MODULE",
+              "EL-WB-DOWNSTREAM"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact candidate and evidence package"
+            ],
+            "semanticOutputs": [
+              "Approved WorkDependencyBaseline or rejection"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible implementations"
+            ],
+            "securityPrivacyIntent": [
+              "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate and checkpoint before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "US-WDA-PARALLEL-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-WDA-TRACEABILITY",
+            "name": "Trusted dependency traceability projection",
+            "purpose": "Trusted dependency traceability projection",
+            "ownerBoundary": "EL-WDA-CONTRIBUTOR",
+            "providerElementId": "EL-WDA-CONTRIBUTOR",
+            "consumerElementIds": [
+              "EL-DEVRELAY-GRAPH"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Validated dependency candidate"
+            ],
+            "semanticOutputs": [
+              "Forward candidate dependency update set"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics"
+            ],
+            "failureBehavior": "Fail closed without partial progression.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible implementations"
+            ],
+            "securityPrivacyIntent": [
+              "No undeclared context, graph authority, approval authority, or execution authority crosses the boundary"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate and checkpoint before progression"
+            ],
+            "contractGeneration": {
+              "required": false,
+              "suggestedKinds": []
+            },
+            "sourceRequirementIds": [
+              "US-WDA-PARALLEL-001",
+              "CON-WDA-TRACE-DIRECTION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-WORKFLOW-FACTS",
+            "name": "Trusted workflow fact append",
+            "purpose": "Trusted workflow fact append",
+            "ownerBoundary": "EL-RUN-FACT-RECORDER",
+            "providerElementId": "EL-RUN-FACT-RECORDER",
+            "consumerElementIds": [
+              "EL-RUN-LEDGER"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact module, Gate, adapter, checkpoint, approval, and progression facts"
+            ],
+            "semanticOutputs": [
+              "Content-addressed RunRecord append receipt"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Reject invalid lineage, authority, duplicate identity with divergent bytes, or non-canonical ordering without changing the ledger.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Trusted facts contain references and bounded summaries rather than secret values or unrestricted logs"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-HOST-OBSERVATIONS",
+            "name": "Non-authoritative host observation append",
+            "purpose": "Non-authoritative host observation append",
+            "ownerBoundary": "EL-RUN-OBSERVATION-INGRESS",
+            "providerElementId": "EL-RUN-OBSERVATION-INGRESS",
+            "consumerElementIds": [
+              "EL-RUN-LEDGER"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Sourced duration, wait, adapter-call, retry, replay, token, and cost observations"
+            ],
+            "semanticOutputs": [
+              "Validated RunObservation or explicit rejection"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Reject missing provenance, invalid availability disposition, secret-bearing content, or attempted authority without changing lifecycle state.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Observation content follows least-content collection and explicit sensitivity classification",
+              "Credentials, secrets, prompts, and raw tool logs are excluded by default"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-LIFECYCLE-SNAPSHOT",
+            "name": "Canonical lifecycle run snapshot",
+            "purpose": "Canonical lifecycle run snapshot",
+            "ownerBoundary": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "providerElementId": "EL-RUN-SNAPSHOT-PROJECTOR",
+            "consumerElementIds": [
+              "EL-RUN-CONTENT-POLICY",
+              "EL-RUN-MARKDOWN-RENDERER"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact RunLedger lineage",
+              "Exact TraceabilityGraph checkpoint",
+              "Adapter maturity and comparability dispositions"
+            ],
+            "semanticOutputs": [
+              "LifecycleRunSnapshot with stages, artifacts, metrics, paths, diagnostics, and next action"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Fail closed on unresolvable lineage, graph mismatch, unknown record kind, or missing metric availability disposition.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Snapshot fields are classified before rendering and retain content-addressed source links"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "US-DEV-UNDERSTAND-ADAPTERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-COMPARABILITY",
+            "name": "Exact run comparability decision",
+            "purpose": "Exact run comparability decision",
+            "ownerBoundary": "EL-RUN-COMPARABILITY",
+            "providerElementId": "EL-RUN-COMPARABILITY",
+            "consumerElementIds": [
+              "EL-RUN-SNAPSHOT-PROJECTOR"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact module, operation, input, policy, circuit, and host comparison dimensions"
+            ],
+            "semanticOutputs": [
+              "Comparable or non-comparable disposition with reasons"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Return non-comparable for missing or mismatched dimensions; never infer relative performance.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Comparison uses digests and bounded host classifications rather than sensitive environment contents"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-CONTENT-POLICY",
+            "name": "Deterministic report content policy",
+            "purpose": "Deterministic report content policy",
+            "ownerBoundary": "EL-RUN-CONTENT-POLICY",
+            "providerElementId": "EL-RUN-CONTENT-POLICY",
+            "consumerElementIds": [
+              "EL-RUN-MARKDOWN-RENDERER"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Canonical LifecycleRunSnapshot field set"
+            ],
+            "semanticOutputs": [
+              "Allow, omit, or redact disposition for every protected field"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Unknown classification or policy failure omits protected content and records an explicit disposition.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Default-deny secret, credential, unrestricted prompt, and raw tool-log content",
+              "Redaction preserves audit references without protected bytes"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-REPORT-ACCESS",
+            "name": "Read-only lifecycle report access",
+            "purpose": "Read-only lifecycle report access",
+            "ownerBoundary": "EL-RUN-REPORT-PORT",
+            "providerElementId": "EL-RUN-REPORT-PORT",
+            "consumerElementIds": [
+              "EL-WB-DOWNSTREAM"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact run identity and optional validated report view selector"
+            ],
+            "semanticOutputs": [
+              "LifecycleRunReport.md",
+              "LifecycleRunSnapshot reference",
+              "Linked evidence references"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Unknown runs or invalid selectors fail without returning unrelated or unredacted data.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Access is read-only and returns only content-policy-approved report bytes"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "NFR-DEV-PORTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-INTEGRATED-COMPLETION",
+            "name": "Verified integrated-completion fact",
+            "purpose": "Verified integrated-completion fact",
+            "ownerBoundary": "EL-RUN-COMPLETION-REGISTRY",
+            "providerElementId": "EL-RUN-COMPLETION-REGISTRY",
+            "consumerElementIds": [
+              "EL-RUN-FRONTIER-RESOLVER"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Exact WorkItem, ChangeSet, passing verification, and integration evidence references"
+            ],
+            "semanticOutputs": [
+              "Immutable IntegratedCompletionFact"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Reject missing, stale, candidate-only, failing, or unrelated verification and integration evidence.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "Completion facts contain artifact references and bounded dispositions rather than code or credentials"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "CON-DEV-GATE-SEPARATION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "IF-RUN-READY-FRONTIER",
+            "name": "Deterministic ready-frontier derivation",
+            "purpose": "Deterministic ready-frontier derivation",
+            "ownerBoundary": "EL-RUN-FRONTIER-RESOLVER",
+            "providerElementId": "EL-RUN-FRONTIER-RESOLVER",
+            "consumerElementIds": [
+              "EL-WB-DOWNSTREAM"
+            ],
+            "interactionStyle": "synchronous",
+            "semanticInputs": [
+              "Immutable WorkDependencyBaseline",
+              "Approved IntegratedCompletionFact set"
+            ],
+            "semanticOutputs": [
+              "Ready WorkItem IDs",
+              "Blocked, completed, and failed dependency dispositions"
+            ],
+            "protocolConstraints": [
+              "Exact versions and SHA-256 digests",
+              "Canonical provider-neutral semantics",
+              "Explicit availability and authority dispositions"
+            ],
+            "failureBehavior": "Reject DAG drift, unknown work items, conflicting completion facts, or readiness inferred from assignment or unintegrated work.",
+            "compatibilityObligations": [
+              "Stable canonical behavior across compatible hosts and renderers",
+              "Unknown fields and unsupported maturity or availability values fail closed"
+            ],
+            "securityPrivacyIntent": [
+              "The resolver reads only approved dependency and completion facts and cannot execute work"
+            ],
+            "deliveryConsistencyIntent": [
+              "Validate canonical structured bytes before append or projection",
+              "Preserve exact source lineage and deterministic ordering"
+            ],
+            "contractGeneration": {
+              "required": true,
+              "suggestedKinds": [
+                "json-schema"
+              ]
+            },
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "US-DEV-ORCHESTRATE-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          }
+        ]
+      }
+    },
+    "architectureConstraints": {
+      "mode": "embedded",
+      "content": {
+        "constraintSetId": "CONSTRAINTS-DEVRELAY-RUN-001",
+        "constraints": [
+          {
+            "id": "CON-WB-PLANNING-ONLY",
+            "category": "operational",
+            "strength": "must",
+            "statement": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+            "rationale": "WorkBreakdown cannot assign, execute, build, schedule, or verify work.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-MODULE"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WB-PLANNER"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "CON-WB-DOWNSTREAM-BOUNDARY-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-PREFLIGHT",
+            "category": "availability",
+            "strength": "must",
+            "statement": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+            "rationale": "The ProjectWorkBreakdownState-registered guard has a persisted producer identity distinct from the configured plugin and replays schema-valid baseline_drift without adapter entry.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-PREFLIGHT"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-DETERMINISM-001",
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-UPSTREAM",
+            "category": "data",
+            "strength": "must",
+            "statement": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+            "rationale": "Approved upstream observers run before candidate WorkItem edges and ApprovedNotApplicable forbids contract refs.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-OBSERVERS"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WB-CONTRIBUTOR"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "NFR-WB-PROVENANCE-001",
+              "CON-WB-INPUT-IMMUTABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-DELTA",
+            "category": "data",
+            "strength": "must",
+            "statement": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+            "rationale": "Unique-target add/update/retire uses exact prior digest, replacement identity, deterministic order, and full-result binding.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-GATE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WB-GOVERNANCE-001",
+              "NFR-WB-ATOMICITY-001",
+              "NFR-WB-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-COVERAGE",
+            "category": "organizational",
+            "strength": "must",
+            "statement": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+            "rationale": "Core and Gate derive coverage, resolve already-satisfied evidence, and own no-work approval.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WB-GATE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WB-COVERAGE-001",
+              "US-WB-GOVERNANCE-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WB-TRACE-VERSION",
+            "category": "compatibility",
+            "strength": "must",
+            "statement": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+            "rationale": "New contributors emit traceability 1.1 without mutating exact legacy 1.0; a 1.1 child preserves 1.0 parent and update lineage.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-DEVRELAY-GRAPH"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WB-CONTRIBUTOR"
+              }
+            ],
+            "verificationIntent": "Dedicated positive and negative conformance fixtures.",
+            "sourceRequirementIds": [
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "NFR-WB-CORE-NEUTRALITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-IMMUTABLE-INPUT",
+            "category": "data",
+            "strength": "must",
+            "statement": "Core must build one complete immutable analysis snapshot and admit only verified declared context slices before proposer entry.",
+            "rationale": "Core must build one complete immutable analysis snapshot and admit only verified declared context slices before proposer entry.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-SNAPSHOT"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-CORE-AUTHORITY",
+            "category": "organizational",
+            "strength": "must",
+            "statement": "Core owns graph mechanics and policy normalization; WorkDependencyGate alone owns semantic approval and promotion.",
+            "rationale": "Core owns graph mechanics and policy normalization; WorkDependencyGate alone owns semantic approval and promotion.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-GRAPH-MECHANICS"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WDA-GATE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-PINNED-POLICY",
+            "category": "data",
+            "strength": "must",
+            "statement": "OPA evaluation must bind the policy bundle digest, entrypoint, canonical input digest, engine version, and raw result evidence.",
+            "rationale": "OPA evaluation must bind the policy bundle digest, entrypoint, canonical input digest, engine version, and raw result evidence.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-OPA"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WDA-POLICY"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-STATIC-DAG",
+            "category": "operational",
+            "strength": "must",
+            "statement": "The approved artifact stores a static DAG only; mutable readiness and runnable frontiers are derived downstream.",
+            "rationale": "The approved artifact stores a static DAG only; mutable readiness and runnable frontiers are derived downstream.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-GATE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WDA-PARALLEL-001",
+              "CON-WDA-NO-EXECUTION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-PLUGIN-TRUST",
+            "category": "security",
+            "strength": "must",
+            "statement": "Proposers and reviewers cannot route, mutate Core or TraceabilityGraph, evaluate promotion policy, approve candidates, or execute work.",
+            "rationale": "Proposers and reviewers cannot route, mutate Core or TraceabilityGraph, evaluate promotion policy, approve candidates, or execute work.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-PROPOSER-PORT"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WDA-SPECKIT-REVIEWER"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001",
+              "CON-DEV-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-ANALYSIS-ONLY",
+            "category": "operational",
+            "strength": "must",
+            "statement": "WorkDependencyAnalysis cannot assign, estimate, schedule, execute, modify code, or record completion.",
+            "rationale": "WorkDependencyAnalysis cannot assign, estimate, schedule, execute, modify code, or record completion.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-MODULE"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "CON-WDA-NO-EXECUTION-001",
+              "US-WDA-PARALLEL-001",
+              "CON-DEV-MODULE-INVENTORY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-WDA-FORWARD-TRACE",
+            "category": "data",
+            "strength": "must",
+            "statement": "Traceability stores forward candidate dependency assertions only and derives reverse traversal at query time.",
+            "rationale": "Traceability stores forward candidate dependency assertions only and derives reverse traversal at query time.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-CONTRIBUTOR"
+              },
+              {
+                "kind": "element",
+                "id": "EL-DEVRELAY-GRAPH"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, and replay conformance fixtures.",
+            "sourceRequirementIds": [
+              "CON-WDA-TRACE-DIRECTION-001",
+              "NFR-DEV-TRACEABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-NON-AUTHORITY",
+            "category": "organizational",
+            "strength": "must",
+            "statement": "RunLedger, host observations, snapshots, and reports cannot route modules, select adapters, mutate canonical artifacts or TraceabilityGraph, satisfy evidence, approve Gates, or alter progression.",
+            "rationale": "RunLedger, host observations, snapshots, and reports cannot route modules, select adapters, mutate canonical artifacts or TraceabilityGraph, satisfy evidence, approve Gates, or alter progression.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-REPORTING"
+              },
+              {
+                "kind": "element",
+                "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-APPEND-ONLY",
+            "category": "data",
+            "strength": "must",
+            "statement": "RunLedger records are append-only, content-addressed, execution-bound, and reject duplicate identities with divergent bytes.",
+            "rationale": "RunLedger records are append-only, content-addressed, execution-bound, and reject duplicate identities with divergent bytes.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-LEDGER"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-RUN-WORKFLOW-FACTS"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-OBSERVATION-DISPOSITION",
+            "category": "data",
+            "strength": "must",
+            "statement": "Every configured observation is captured with exact provenance or explicitly not-reported or not-applicable; absence is never interpreted as zero.",
+            "rationale": "Every configured observation is captured with exact provenance or explicitly not-reported or not-applicable; absence is never interpreted as zero.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-OBSERVATION-INGRESS"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-RUN-HOST-OBSERVATIONS"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-DYNAMIC-PROJECTION",
+            "category": "operational",
+            "strength": "must",
+            "statement": "Lifecycle projection discovers stages, Gates, adapters, branches, retries, resumes, and frontiers from standardized records without module or product identifier branches.",
+            "rationale": "Lifecycle projection discovers stages, Gates, adapters, branches, retries, resumes, and frontiers from standardized records without module or product identifier branches.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "US-DEV-EXTEND-001",
+              "CON-DEV-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-BYTE-DETERMINISM",
+            "category": "operational",
+            "strength": "must",
+            "statement": "Identical ledger, graph, maturity, policy, and renderer inputs produce byte-identical LifecycleRunSnapshot and LifecycleRunReport.md artifacts.",
+            "rationale": "Identical ledger, graph, maturity, policy, and renderer inputs produce byte-identical LifecycleRunSnapshot and LifecycleRunReport.md artifacts.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+              },
+              {
+                "kind": "element",
+                "id": "EL-RUN-MARKDOWN-RENDERER"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "US-DEV-INSPECT-RUN-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-COMPARABILITY",
+            "category": "operational",
+            "strength": "must",
+            "statement": "Relative performance claims require an explicit comparable disposition over module, operation, input, policy, circuit, and relevant host dimensions.",
+            "rationale": "Relative performance claims require an explicit comparable disposition over module, operation, input, policy, circuit, and relevant host dimensions.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-COMPARABILITY"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-RUN-COMPARABILITY"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-CONTENT-POLICY",
+            "category": "security",
+            "strength": "must",
+            "statement": "Reports exclude secrets, credentials, unrestricted prompts, and raw tool logs by default while preserving content-addressed audit links and explicit redaction or omission dispositions.",
+            "rationale": "Reports exclude secrets, credentials, unrestricted prompts, and raw tool logs by default while preserving content-addressed audit links and explicit redaction or omission dispositions.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-CONTENT-POLICY"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-RUN-CONTENT-POLICY"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "US-DEV-INSPECT-RUN-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-MATURITY-VOCABULARY",
+            "category": "data",
+            "strength": "must",
+            "statement": "Adapter binding maturity is exactly contract-defined, fixture-conformant, live-conformant, or release-ready and is never conflated with a Core-owned implementation.",
+            "rationale": "Adapter binding maturity is exactly contract-defined, fixture-conformant, live-conformant, or release-ready and is never conflated with a Core-owned implementation.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-MATURITY-RESOLVER"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-UNDERSTAND-ADAPTERS-001",
+              "US-DEV-EXTEND-001",
+              "CON-DEV-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-STATIC-DAG",
+            "category": "operational",
+            "strength": "must",
+            "statement": "The WorkDependencyBaseline remains immutable; Core derives readiness only from that DAG plus separately approved verified integrated-completion facts.",
+            "rationale": "The WorkDependencyBaseline remains immutable; Core derives readiness only from that DAG plus separately approved verified integrated-completion facts.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-COMPLETION-REGISTRY"
+              },
+              {
+                "kind": "element",
+                "id": "EL-RUN-FRONTIER-RESOLVER"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": []
+          },
+          {
+            "id": "CON-RUN-CROSS-CUTTING",
+            "category": "organizational",
+            "strength": "must",
+            "statement": "Lifecycle Reporting and TraceabilityGraph remain cross-cutting infrastructure and cannot appear as additional lifecycle stages.",
+            "rationale": "Lifecycle Reporting and TraceabilityGraph remain cross-cutting infrastructure and cannot appear as additional lifecycle stages.",
+            "appliesTo": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-REPORTING"
+              },
+              {
+                "kind": "element",
+                "id": "EL-DEVRELAY-GRAPH"
+              }
+            ],
+            "verificationIntent": "Dedicated positive, negative, drift, replay, redaction, and non-authority conformance fixtures.",
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "CON-DEV-MODULE-INVENTORY-001"
+            ],
+            "sourceRefs": []
+          }
+        ]
+      }
+    },
+    "decisionRecords": {
+      "mode": "embedded",
+      "content": {
+        "decisionRecordSetId": "DECISIONS-DEVRELAY-RUN-001",
+        "decisions": [
+          {
+            "id": "ADR-WB-001",
+            "title": "Keep WorkBreakdown planning-only and provider-neutral",
+            "status": "accepted",
+            "contextAndProblemStatement": "Keep WorkBreakdown planning-only and provider-neutral",
+            "decisionDrivers": [
+              "Determinism",
+              "Compatibility",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WB-MODULAR",
+                "title": "Adopt the bounded compatible design",
+                "pros": [
+                  "Preserves contracts and trust boundaries"
+                ],
+                "cons": [
+                  "Adds explicit migration tests"
+                ]
+              },
+              {
+                "id": "OPT-WB-COUPLED",
+                "title": "Mutate or couple existing behavior",
+                "pros": [
+                  "Less immediate contract work"
+                ],
+                "cons": [
+                  "Breaks immutability or modularity"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WB-MODULAR",
+              "justification": "The bounded compatible design preserves exact published contracts."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Deterministic modular behavior remains auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Additional conformance coverage is required."
+              }
+            ],
+            "confirmation": "Release gates and replay tests pass.",
+            "relatedDecisionIds": [],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-WB-MODULE"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WB-PLANNER"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WB-PLANNING-ONLY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-WB-EXTENSIBILITY-001",
+              "NFR-WB-CORE-NEUTRALITY-001",
+              "CON-WB-ADAPTER-TRUST-001",
+              "CON-WB-NO-EXECUTION-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-work-breakdown-boundaries-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:7302aae87e4412b76842f9b2cc17f07c1139c290d8e7a23c6e123a08ebeda31f",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/0001-work-breakdown-boundaries.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-WB-002",
+            "title": "Version traceability planning vocabulary as compatible 1.1.0",
+            "status": "accepted",
+            "contextAndProblemStatement": "Version traceability planning vocabulary as compatible 1.1.0",
+            "decisionDrivers": [
+              "Determinism",
+              "Compatibility",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WB-TRACE-11",
+                "title": "Adopt the bounded compatible design",
+                "pros": [
+                  "Preserves contracts and trust boundaries"
+                ],
+                "cons": [
+                  "Adds explicit migration tests"
+                ]
+              },
+              {
+                "id": "OPT-WB-MUTATE-10",
+                "title": "Mutate or couple existing behavior",
+                "pros": [
+                  "Less immediate contract work"
+                ],
+                "cons": [
+                  "Breaks immutability or modularity"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WB-TRACE-11",
+              "justification": "The bounded compatible design preserves exact published contracts."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Deterministic modular behavior remains auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Additional conformance coverage is required."
+              }
+            ],
+            "confirmation": "Release gates and replay tests pass.",
+            "relatedDecisionIds": [],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-DEVRELAY-GRAPH"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WB-CONTRIBUTOR"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WB-TRACE-VERSION"
+              }
+            ],
+            "sourceRequirementIds": [
+              "NFR-WB-PROVENANCE-001",
+              "NFR-WB-REPLAY-001",
+              "NFR-WB-CORE-NEUTRALITY-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-traceability-vocabulary-1-1-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:d436ecbb2a4b12679dd2eef6520f70caae3056aee594fc16b7733e46e059c398",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-breakdown/architecture-design/0002-traceability-vocabulary-1.1.md"
+            }
+          },
+          {
+            "id": "ADR-WDA-001",
+            "title": "Keep planning authority in Core and configured gates",
+            "status": "accepted",
+            "contextAndProblemStatement": "Keep planning authority in Core and configured gates",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WDA-CORE-AUTHORITY",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-WDA-PLUGIN-AUTHORITY",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WDA-CORE-AUTHORITY",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-WDA-002",
+              "ADR-WDA-003",
+              "ADR-WDA-004",
+              "ADR-WDA-005"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-MODULE"
+              },
+              {
+                "kind": "element",
+                "id": "EL-WDA-GATE"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WDA-CORE-AUTHORITY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-WDA-VERIFY-001",
+              "US-WDA-PLUGINS-001",
+              "CON-DEV-GATE-SEPARATION-001",
+              "CON-DEV-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-wda-001-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:f792899c83bd16eb8aba50d31f10c3b276a5b01ace505d742db8f1c9df91e081",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/0001-adr-wda-001.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-WDA-002",
+            "title": "Store forward lifecycle traceability and derive reverse traversal",
+            "status": "accepted",
+            "contextAndProblemStatement": "Store forward lifecycle traceability and derive reverse traversal",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WDA-FORWARD-TRACE",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-WDA-INVERSE-EDGES",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WDA-FORWARD-TRACE",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-WDA-001",
+              "ADR-WDA-003",
+              "ADR-WDA-004",
+              "ADR-WDA-005"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-CONTRIBUTOR"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WDA-FORWARD-TRACE"
+              }
+            ],
+            "sourceRequirementIds": [
+              "CON-WDA-TRACE-DIRECTION-001",
+              "NFR-DEV-TRACEABILITY-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-wda-002-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:d14b8056afb8d3b79e6695d6fc01dbe53a257d5565c2d410b900be9a8919559b",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/0002-adr-wda-002.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-WDA-003",
+            "title": "Analyze a full work-breakdown snapshot with pinned context slices",
+            "status": "accepted",
+            "contextAndProblemStatement": "Analyze a full work-breakdown snapshot with pinned context slices",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WDA-FULL-SNAPSHOT",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-WDA-ADAPTER-SELECTED-CONTEXT",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WDA-FULL-SNAPSHOT",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-WDA-001",
+              "ADR-WDA-002",
+              "ADR-WDA-004",
+              "ADR-WDA-005"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-SNAPSHOT"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WDA-IMMUTABLE-INPUT"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-WDA-ANALYZE-001",
+              "NFR-WDA-DETERMINISM-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-wda-003-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:c9a7f1602af0d5cb7a17cb22fa47bb668b86124c57381e2ac95195e42e8aa81a",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/0003-adr-wda-003.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-WDA-004",
+            "title": "Compose native proposal, OPA policy, DAG mechanics, and advisory review slots",
+            "status": "accepted",
+            "contextAndProblemStatement": "Compose native proposal, OPA policy, DAG mechanics, and advisory review slots",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WDA-COMPOSED-CAPABILITIES",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-WDA-MONOLITHIC-ANALYZER",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WDA-COMPOSED-CAPABILITIES",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-WDA-001",
+              "ADR-WDA-002",
+              "ADR-WDA-003",
+              "ADR-WDA-005"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "interface",
+                "id": "IF-WDA-PROPOSER"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WDA-POLICY"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-WDA-CONSISTENCY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-WDA-PLUGINS-001",
+              "US-WDA-VERIFY-001",
+              "CON-WDA-PROVIDER-NEUTRAL-001",
+              "US-DEV-EXTEND-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-wda-004-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:32ebab4f85775df444d0709cb32851a0fde4e5cc40f977968590310121bb2d2c",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/0004-adr-wda-004.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-WDA-005",
+            "title": "Persist a static authoritative DAG and derive runnable frontiers downstream",
+            "status": "accepted",
+            "contextAndProblemStatement": "Persist a static authoritative DAG and derive runnable frontiers downstream",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-WDA-STATIC-DAG",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-WDA-PERSISTED-WAVES",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-WDA-STATIC-DAG",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-WDA-001",
+              "ADR-WDA-002",
+              "ADR-WDA-003",
+              "ADR-WDA-004"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-WDA-GATE"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-WDA-STATIC-DAG"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-WDA-PARALLEL-001",
+              "CON-WDA-NO-EXECUTION-001",
+              "NFR-WDA-DETERMINISM-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-wda-005-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:dabef9eb9d9d024f0b953b11746d9e3c11edec95c5cca1b988bfac69f882947a",
+              "uri": "file:///C:/repos/DevRelay/dogfood/work-dependency-analysis/architecture-design/0005-adr-wda-005.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-001",
+            "title": "Separate structured run truth from human-readable projection",
+            "status": "accepted",
+            "contextAndProblemStatement": "Separate structured run truth from human-readable projection",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-LEDGER-AND-PROJECTION",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-MARKDOWN-AS-SOURCE",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-LEDGER-AND-PROJECTION",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-002",
+              "ADR-RUN-003",
+              "ADR-RUN-004",
+              "ADR-RUN-005",
+              "ADR-RUN-006",
+              "ADR-RUN-007"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-LEDGER"
+              },
+              {
+                "kind": "element",
+                "id": "EL-RUN-MARKDOWN-RENDERER"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-APPEND-ONLY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "CON-DEV-ARTIFACT-CONTRACTS-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-001-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:f53102849c3d28de70bb355e5ec7e7db8c2edd5a9e3f2700e06a53b39b7cea8a",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0001-adr-run-001.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-002",
+            "title": "Keep lifecycle reporting non-authoritative",
+            "status": "accepted",
+            "contextAndProblemStatement": "Keep lifecycle reporting non-authoritative",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-READ-ONLY-SIDECAR",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-REPORT-DRIVES-PROGRESSION",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-READ-ONLY-SIDECAR",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-001",
+              "ADR-RUN-003",
+              "ADR-RUN-004",
+              "ADR-RUN-005",
+              "ADR-RUN-006",
+              "ADR-RUN-007"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-REPORTING"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-NON-AUTHORITY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-GATE-SEPARATION-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-002-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:c30c6a37950c52e79c5efb0748bcb243b0dda6797a8a391ebb69e1b20d4abb63",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0002-adr-run-002.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-003",
+            "title": "Separate trusted lifecycle facts from host observations",
+            "status": "accepted",
+            "contextAndProblemStatement": "Separate trusted lifecycle facts from host observations",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-DUAL-AUTHORITY-STREAMS",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-UNIFIED-IMPLICIT-TELEMETRY",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-DUAL-AUTHORITY-STREAMS",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-001",
+              "ADR-RUN-002",
+              "ADR-RUN-004",
+              "ADR-RUN-005",
+              "ADR-RUN-006",
+              "ADR-RUN-007"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "interface",
+                "id": "IF-RUN-WORKFLOW-FACTS"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-RUN-HOST-OBSERVATIONS"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-OBSERVATION-DISPOSITION"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-003-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:21a8ef6c3905c46828b288cbaf0c48524298f57a88abac8eacf1df13ec2d7ec8",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0003-adr-run-003.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-004",
+            "title": "Project reports dynamically from registered record contracts",
+            "status": "accepted",
+            "contextAndProblemStatement": "Project reports dynamically from registered record contracts",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-RECORD-DRIVEN-PROJECTION",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-MODULE-SPECIFIC-RENDERER",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-RECORD-DRIVEN-PROJECTION",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-001",
+              "ADR-RUN-002",
+              "ADR-RUN-003",
+              "ADR-RUN-005",
+              "ADR-RUN-006",
+              "ADR-RUN-007"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-DYNAMIC-PROJECTION"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-DEV-INSPECT-RUN-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "US-DEV-EXTEND-001",
+              "CON-DEV-PROVIDER-NEUTRAL-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-004-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:408b9dcc034a0cb6c9d46c2f5799e23affe8f5659dac542207fb582dfb29ca79",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0004-adr-run-004.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-005",
+            "title": "Gate performance claims through explicit comparability",
+            "status": "accepted",
+            "contextAndProblemStatement": "Gate performance claims through explicit comparability",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-EXACT-COMPARABILITY",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-UNQUALIFIED-RANKING",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-EXACT-COMPARABILITY",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-001",
+              "ADR-RUN-002",
+              "ADR-RUN-003",
+              "ADR-RUN-004",
+              "ADR-RUN-006",
+              "ADR-RUN-007"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "interface",
+                "id": "IF-RUN-COMPARABILITY"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-COMPARABILITY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-DEV-GAUGE-PERFORMANCE-001",
+              "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-005-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:ad2192040a31a42a7294539ac3ed21bd773107432b43dd3e49dcf9ca7ed44cfc",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0005-adr-run-005.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-006",
+            "title": "Apply deterministic content policy before rendering",
+            "status": "accepted",
+            "contextAndProblemStatement": "Apply deterministic content policy before rendering",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-POLICY-BEFORE-RENDER",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-POST-HOC-REDACTION",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-POLICY-BEFORE-RENDER",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-001",
+              "ADR-RUN-002",
+              "ADR-RUN-003",
+              "ADR-RUN-004",
+              "ADR-RUN-005",
+              "ADR-RUN-007"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-CONTENT-POLICY"
+              },
+              {
+                "kind": "interface",
+                "id": "IF-RUN-CONTENT-POLICY"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-CONTENT-POLICY"
+              }
+            ],
+            "sourceRequirementIds": [
+              "NFR-DEV-RUN-REPORT-PRIVACY-001",
+              "US-DEV-INSPECT-RUN-001",
+              "CON-DEV-RUN-REPORT-NON-AUTHORITY-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-006-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:9c4bb3eafc2bde5d8dc6eb49d54a56e1aea1e72a7bbc301ac786efb3fb166ba4",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0006-adr-run-006.proposed.md"
+            }
+          },
+          {
+            "id": "ADR-RUN-007",
+            "title": "Derive ready frontiers from the static DAG and integrated facts",
+            "status": "accepted",
+            "contextAndProblemStatement": "Derive ready frontiers from the static DAG and integrated facts",
+            "decisionDrivers": [
+              "Determinism",
+              "Provider neutrality",
+              "Traceability"
+            ],
+            "consideredOptions": [
+              {
+                "id": "OPT-RUN-DERIVED-FRONTIER",
+                "title": "Adopt the bounded canonical design",
+                "pros": [
+                  "Preserves contracts and authority boundaries"
+                ],
+                "cons": [
+                  "Requires explicit conformance evidence"
+                ]
+              },
+              {
+                "id": "OPT-RUN-PERSISTED-WAVES",
+                "title": "Use the rejected coupled design",
+                "pros": [
+                  "Reduces immediate adapter work"
+                ],
+                "cons": [
+                  "Leaks implementation or mutable state into canonical semantics"
+                ]
+              }
+            ],
+            "outcome": {
+              "chosenOptionId": "OPT-RUN-DERIVED-FRONTIER",
+              "justification": "The bounded design preserves deterministic DevRelay ownership while keeping implementations replaceable."
+            },
+            "consequences": [
+              {
+                "polarity": "positive",
+                "statement": "Canonical semantics remain deterministic and auditable."
+              },
+              {
+                "polarity": "negative",
+                "statement": "Each implementation binding requires conformance and replay evidence."
+              }
+            ],
+            "confirmation": "Architecture, runtime, policy, graph, replay, and gate conformance tests pass.",
+            "relatedDecisionIds": [
+              "ADR-RUN-001",
+              "ADR-RUN-002",
+              "ADR-RUN-003",
+              "ADR-RUN-004",
+              "ADR-RUN-005",
+              "ADR-RUN-006"
+            ],
+            "supersedesDecisionIds": [],
+            "affectedTargets": [
+              {
+                "kind": "element",
+                "id": "EL-RUN-COMPLETION-REGISTRY"
+              },
+              {
+                "kind": "element",
+                "id": "EL-RUN-FRONTIER-RESOLVER"
+              },
+              {
+                "kind": "constraint",
+                "id": "CON-RUN-STATIC-DAG"
+              }
+            ],
+            "sourceRequirementIds": [
+              "US-DEV-RUN-FRONTIERS-001",
+              "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+              "US-DEV-ORCHESTRATE-001"
+            ],
+            "sourceRefs": [],
+            "format": {
+              "name": "MADR",
+              "version": "4.0"
+            },
+            "nativeArtifact": {
+              "artifactId": "madr-adr-run-007-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:6dc2d91828e33bd8eee1d194d7a50e84319f6dc3ca36d2feac404413f8021179",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0007-adr-run-007.proposed.md"
+            }
+          }
+        ]
+      }
+    },
+    "nativeArtifacts": {
+      "mode": "embedded",
+      "content": {
+        "nativeArtifactSetId": "NATIVE-DEVRELAY-RUN-001",
+        "entries": [
+          {
+            "id": "NA-RUN-OPENSPEC-DESIGN",
+            "artifact": {
+              "artifactId": "openspec-design-lifecycle-run-report-v1",
+              "schema": "https://devrelay.dev/native/openspec-design/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:6d1da121d5052a0838a5108080a0224f236dd05640e0d415d5d62181ac919e95",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/design.md"
+            },
+            "role": "technical-design-source",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/design.md",
+            "producedBy": {
+              "stage": "designer",
+              "adapterId": "openspec-design",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "OpenSpec",
+                "version": "1.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "technicalDesign",
+                "entityIds": [
+                  "TD-RUN-001"
+                ],
+                "jsonPointers": [
+                  "/sections/technicalDesign"
+                ]
+              },
+              {
+                "section": "interfaceIntent",
+                "entityIds": [
+                  "IF-RUN-WORKFLOW-FACTS",
+                  "IF-RUN-HOST-OBSERVATIONS",
+                  "IF-RUN-LIFECYCLE-SNAPSHOT",
+                  "IF-RUN-COMPARABILITY",
+                  "IF-RUN-CONTENT-POLICY",
+                  "IF-RUN-REPORT-ACCESS",
+                  "IF-RUN-INTEGRATED-COMPLETION",
+                  "IF-RUN-READY-FRONTIER"
+                ],
+                "jsonPointers": [
+                  "/sections/interfaceIntent"
+                ]
+              },
+              {
+                "section": "architectureConstraints",
+                "entityIds": [
+                  "CON-RUN-NON-AUTHORITY",
+                  "CON-RUN-APPEND-ONLY",
+                  "CON-RUN-OBSERVATION-DISPOSITION",
+                  "CON-RUN-DYNAMIC-PROJECTION",
+                  "CON-RUN-BYTE-DETERMINISM",
+                  "CON-RUN-COMPARABILITY",
+                  "CON-RUN-CONTENT-POLICY",
+                  "CON-RUN-MATURITY-VOCABULARY",
+                  "CON-RUN-STATIC-DAG",
+                  "CON-RUN-CROSS-CUTTING"
+                ],
+                "jsonPointers": [
+                  "/sections/architectureConstraints"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-STRUCTURIZR",
+            "artifact": {
+              "artifactId": "structurizr-workspace-lifecycle-run-report-v1",
+              "schema": "https://devrelay.dev/native/structurizr-workspace/v1",
+              "mediaType": "text/vnd.structurizr.dsl",
+              "digest": "sha256:6e24c85cf9a6d180a062eb542b142a23689d0753fc2911b8633e19813e3b659a",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/workspace.dsl"
+            },
+            "role": "structurizr-workspace",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/workspace.dsl",
+            "producedBy": {
+              "stage": "modeler",
+              "adapterId": "structurizr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "Structurizr DSL",
+                "version": "2026.06.28"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "architectureModel",
+                "entityIds": [
+                  "MODEL-DEVRELAY-LIFECYCLE-RUN-003"
+                ],
+                "jsonPointers": [
+                  "/sections/architectureModel"
+                ]
+              },
+              {
+                "section": "diagrams",
+                "entityIds": [
+                  "VIEW-WDA-CONTAINERS",
+                  "VIEW-WDA-CORE-COMPONENTS",
+                  "VIEW-WDA-MODULE-COMPONENTS",
+                  "VIEW-RUN-CONTAINERS",
+                  "VIEW-RUN-CORE-COMPONENTS",
+                  "VIEW-RUN-REPORTING-COMPONENTS"
+                ],
+                "jsonPointers": [
+                  "/sections/diagrams"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-001",
+            "artifact": {
+              "artifactId": "madr-adr-run-001-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:f53102849c3d28de70bb355e5ec7e7db8c2edd5a9e3f2700e06a53b39b7cea8a",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0001-adr-run-001.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0001-adr-run-001.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-001"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-002",
+            "artifact": {
+              "artifactId": "madr-adr-run-002-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:c30c6a37950c52e79c5efb0748bcb243b0dda6797a8a391ebb69e1b20d4abb63",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0002-adr-run-002.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0002-adr-run-002.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-002"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-003",
+            "artifact": {
+              "artifactId": "madr-adr-run-003-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:21a8ef6c3905c46828b288cbaf0c48524298f57a88abac8eacf1df13ec2d7ec8",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0003-adr-run-003.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0003-adr-run-003.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-003"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-004",
+            "artifact": {
+              "artifactId": "madr-adr-run-004-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:408b9dcc034a0cb6c9d46c2f5799e23affe8f5659dac542207fb582dfb29ca79",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0004-adr-run-004.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0004-adr-run-004.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-004"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-005",
+            "artifact": {
+              "artifactId": "madr-adr-run-005-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:ad2192040a31a42a7294539ac3ed21bd773107432b43dd3e49dcf9ca7ed44cfc",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0005-adr-run-005.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0005-adr-run-005.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-005"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-006",
+            "artifact": {
+              "artifactId": "madr-adr-run-006-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:9c4bb3eafc2bde5d8dc6eb49d54a56e1aea1e72a7bbc301ac786efb3fb166ba4",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0006-adr-run-006.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0006-adr-run-006.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-006"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          },
+          {
+            "id": "NA-RUN-MADR-007",
+            "artifact": {
+              "artifactId": "madr-adr-run-007-v1",
+              "schema": "https://devrelay.dev/native/madr/v1",
+              "mediaType": "text/markdown",
+              "digest": "sha256:6dc2d91828e33bd8eee1d194d7a50e84319f6dc3ca36d2feac404413f8021179",
+              "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/0007-adr-run-007.proposed.md"
+            },
+            "role": "madr-decision-record",
+            "logicalPath": "dogfood/lifecycle-run-report/architecture-design/0007-adr-run-007.proposed.md",
+            "producedBy": {
+              "stage": "decision-recorder",
+              "adapterId": "madr",
+              "adapterVersion": "0.1.0",
+              "tool": {
+                "name": "MADR",
+                "version": "4.0"
+              }
+            },
+            "disposition": "generated",
+            "canonicalMappings": [
+              {
+                "section": "decisionRecords",
+                "entityIds": [
+                  "ADR-RUN-007"
+                ],
+                "jsonPointers": [
+                  "/sections/decisionRecords"
+                ]
+              }
+            ],
+            "warnings": []
+          }
+        ]
+      }
+    }
+  },
+  "approvalPolicyVersion": "architecture-gate/0.1.0",
+  "approvalEvidence": [
+    {
+      "artifactId": "architecture-gate-review-lifecycle-run-report-v1",
+      "schema": "https://devrelay.dev/evidence/architecture-gate-review/v1",
+      "mediaType": "text/markdown",
+      "digest": "sha256:663a4b8aa6984b78b2924033108ad72abdd1a0e8a36407912ea1511128c5da38",
+      "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/architecture-gate-candidate.md"
+    },
+    {
+      "artifactId": "structurizr-conformance-proof-lifecycle-run-report-v1",
+      "schema": "https://devrelay.dev/evidence/structurizr-conformance-proof/v1",
+      "mediaType": "application/vnd.devrelay.structurizr-conformance-proof+json",
+      "digest": "sha256:55355080bb1b50366b10dec9b9ba82a9dadbe4fdeb2654e19feedfdefb53436c",
+      "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/structurizr-conformance-proof.json"
+    },
+    {
+      "artifactId": "architecture-dogfood-execution-proof-lifecycle-run-report-v1",
+      "schema": "https://devrelay.dev/evidence/architecture-dogfood-execution-proof/v1",
+      "mediaType": "application/vnd.devrelay.architecture-dogfood-execution-proof+json",
+      "digest": "sha256:bd00c36467defc655d84cc6f6f36328920dbc4cf298bb48d08c9a4b3ca7601d1",
+      "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/runtime-execution-proof.json"
+    },
+    {
+      "artifactId": "architecture-gate-owner-approval-lifecycle-run-report-v1",
+      "schema": "https://devrelay.dev/evidence/architecture-gate-owner-approval/v1",
+      "mediaType": "application/vnd.devrelay.architecture-gate-owner-approval+json",
+      "digest": "sha256:c5b902d0087a9133beac13b07c696c2651c89cbdcb661621193bd0d553d79430",
+      "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/architecture-design/architecture-gate-owner-approval.json"
+    }
+  ],
+  "sourceRefs": []
+}

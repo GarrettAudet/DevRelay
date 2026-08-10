@@ -1,0 +1,27 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-COVERAGE-CORE-002",
+  "taskId": "WI-BA-COVERAGE-CORE.attempt-002",
+  "workItemId": "WI-BA-COVERAGE-CORE",
+  "handoff": {
+    "artifactId": "WI-BA-COVERAGE-CORE.attempt-002.handoff",
+    "digest": "sha256:61749ac173dbe127de6296073928637c8a09be18aac2c30a1733aa821655c5b3",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-002.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "findings": [
+    "Use the exact approved canonical shape: RequirementsBaseline.requirements.scope is an array of typed {id, statement, sourceRefs} records. Do not read scope.inScope and do not invent BS hashes.",
+    "deriveBusinessScopeIdentities must preserve every authoritative scope.id exactly, validate non-empty unique id and statement values, retain code-unit deterministic ordering by id, and fail closed on malformed or duplicate records.",
+    "Add a production-fixture test against project/requirements-baseline.json proving every current scope record is exhaustively returned with the same SCOPE-* identity, exact statement, and no omissions. Preserve the attempt-002 raw-byte and graph-envelope corrections."
+  ],
+  "acceptedEvidence": [
+    {
+      "kind": "business-acceptance/coverage-core-tests",
+      "relativePath": "test/business-acceptance-core.test.mjs",
+      "digest": "sha256:4479645f04c6b6f379d0c55bb277e0236a12f7d118877ae9a8abbfe94ef42878"
+    }
+  ],
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:453de3b08fd8e156168b156db485b8b124421b58e56ed8fc491bc2846af00b5e"
+}

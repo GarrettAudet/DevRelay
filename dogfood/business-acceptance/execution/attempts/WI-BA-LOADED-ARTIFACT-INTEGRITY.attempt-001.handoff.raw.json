@@ -1,0 +1,99 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001",
+  "workItemId": "WI-BA-LOADED-ARTIFACT-INTEGRITY",
+  "status": "completed-with-environmental-canonical-verifier-failures",
+  "summary": "Implemented a shared strict loaded-JSON artifact boundary that verifies digest-bound raw bytes, decodes UTF-8 fatally, parses the exact bytes, rejects parsed-value substitution, and returns an owned deeply immutable value. ContractGeneration and WorkDependencyAnalysis now use only owned parsed JSON inputs, snapshot construction owns both direct and resolver-loaded JSON, and the application/wasm boundary remains a separate byte-only path.",
+  "changedPaths": [
+    "src/loaded-json-artifact-integrity.mjs",
+    "src/contract-generation-runtime.mjs",
+    "src/work-dependency-runtime.mjs",
+    "src/work-dependency-snapshot.mjs",
+    "test/contract-generation-runtime.test.mjs",
+    "test/work-dependency-runtime.test.mjs",
+    "test/work-dependency-failure-boundaries.test.mjs",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.handoff.raw.json"
+  ],
+  "preflight": {
+    "taskCanonicalDigest": "sha256:1d4e35b728ff318830cba49e372ddfbde4815bd65e4641f5f910e725c7e7ac45",
+    "taskRawDigest": "sha256:c8e98d8ce9510bcf9f5a8e673d74e176284da61f0c7e6615a1426d7da3bbd481",
+    "canonicalDigestMatched": true,
+    "rawDigestMatched": true,
+    "writeScopeRespected": true,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "implementationEvidence": {
+    "strictUtf8Json": true,
+    "exactRawDigestVerifiedBeforeParse": true,
+    "parsedValueDeepEqualityRequired": true,
+    "ownedImmutableParseReturned": true,
+    "contractGenerationOwnedInputs": [
+      "state",
+      "architecture",
+      "projectOverview",
+      "currentBaseline"
+    ],
+    "workDependencyOwnedInputs": [
+      "workBreakdown",
+      "projectOverview",
+      "contextSliceSet",
+      "policyBundle",
+      "contextSliceResolverResults"
+    ],
+    "applicationWasmRemainsBinary": true,
+    "publicErrorClassesPreserved": true
+  },
+  "verification": {
+    "focusedSuite": {
+      "command": "node --test --test-concurrency=1 test/contract-generation-runtime.test.mjs test/work-dependency-runtime.test.mjs test/work-dependency-failure-boundaries.test.mjs",
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "durationMs": 5189.7233
+    },
+    "canonicalVerify": {
+      "command": "npm.cmd run verify",
+      "runs": 1,
+      "staticJsonFiles": 1831,
+      "staticJavaScriptModules": 318,
+      "staticLfOnlyTextFiles": 2369,
+      "downstreamOperationsWithExplicitProjectOverview": 12,
+      "tests": 699,
+      "passed": 692,
+      "failed": 7,
+      "durationMs": 258613.1967,
+      "failureClassification": "environmental-network-denial",
+      "failureCause": "All seven failures attempted the same external Structurizr fetch and were denied by the sandbox with fetch EACCES. No scoped integrity test failed.",
+      "rerunPerformed": false
+    },
+    "syntaxChecksPassed": [
+      "src/loaded-json-artifact-integrity.mjs",
+      "src/contract-generation-runtime.mjs",
+      "src/work-dependency-runtime.mjs",
+      "src/work-dependency-snapshot.mjs"
+    ],
+    "diffCheckPassed": true
+  },
+  "negativeCoverage": {
+    "contractGenerationSubstitutionRejectedBeforeGenerator": true,
+    "workDependencyRuntimeSubstitutionRejectedBeforeProposer": true,
+    "workDependencySnapshotSubstitutionRejectedBeforeResolver": true,
+    "mutationDuringCheckpointAwaitIsolated": true
+  },
+  "forbiddenBoundary": {
+    "publicSchemasModified": false,
+    "moduleDefinitionsModified": false,
+    "routingModified": false,
+    "adaptersModified": false,
+    "gatesModified": false,
+    "traceabilityVocabularyModified": false,
+    "dogfoodReplayGenerationsModified": false,
+    "releaseCatalogsModified": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false,
+    "parentIntegrated": false
+  },
+  "handoff": "This worker proposes only the scoped changes and raw evidence. Parent retains independent verification, exact path and digest guards, integration, release:check, and release authority."
+}

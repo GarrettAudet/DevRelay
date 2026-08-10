@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/specialist-assignment/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-specialist-assignment-v1",
+        "digest": "sha256:f24d7a57d34e6810cba81be570e14bf4f14b2131ab7aef0deaccdf81e00f55cc"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/specialist-assignment/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-specialist-assignment-v1",
+        "digest": "sha256:ff95d7cdcf3a2707ccc2dd660732d21a5079ecf1465bccaeccfbb3a7695d0682"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/specialist-assignment/native/openspec/specs/specialist-assignment/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-specialist-assignment-v1",
+        "digest": "sha256:02edd10b3927c6d6d2833b45e70feff475516e7641e4d4d75847f95f11977704"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-specialist-assignment-v1",
+      "digest": "sha256:4700627a077896061e70027977de0efff90f072ba57910f04bfac69aa454d5dd"
+    },
+    {
+      "artifactId": "project-overview-change-set-specialist-assignment-v1",
+      "digest": "sha256:3b7ce8a5417eb74be3847ac0581bebdddf14b6a2f7e12b2aca9d7fc1baf10466"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

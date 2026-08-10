@@ -1,0 +1,281 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-AD-ANALYSIS-NORMALIZATION-001",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-ANALYSIS-NORMALIZATION-ATTEMPT-001",
+  "workItemId": "WI-AD-ANALYSIS-NORMALIZATION",
+  "attempt": 1,
+  "status": "prepared",
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "requiredGrants": [
+      "GRANT-PROCESS-SPAWN",
+      "GRANT-REPOSITORY-WRITE"
+    ],
+    "requiredTools": [
+      "TOOL-NODE"
+    ],
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "workItemRef": "WI-AD-ANALYSIS-NORMALIZATION"
+  },
+  "prerequisiteCompletion": {
+    "receiptId": "CIHIR-WI-AD-NATIVE-INVENTORY-001",
+    "digest": "sha256:108e1d3ed076dea3ddd6588add0317c25e05b004c1c4a2226717a7140e641dd8"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/architecture-discovery-observation-normalizer.mjs",
+      "src/architecture-discovery-analyzer-registry.mjs",
+      "test/architecture-discovery-normalization.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not implement gap policy, checkpointing, traceability, documentation, exports, or release behavior.",
+      "Do not trust analyzer prose, require an optional analyzer, mutate repositories, infer intended architecture, hide conflicts or limitations, or grant analyzers Gate, graph, progression, or design authority.",
+      "Do not commit, tag, merge, publish, promote, or integrate."
+    ]
+  },
+  "contextPaths": [
+    "README.md",
+    "ProjectOverview.md",
+    "project/requirements-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-baseline.json",
+    "project/contract-disposition.json",
+    "dogfood/architecture-discovery/architecture-design/architecture-change-set-draft.json",
+    "dogfood/architecture-discovery/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/architecture-discovery/dependency-analysis/work-dependency-baseline.json",
+    "dogfood/architecture-discovery/assignment/specialist-assignment-baseline.json",
+    "dogfood/architecture-discovery/execution/host-integration/WI-AD-NATIVE-INVENTORY.receipt.json",
+    "contracts/architecture-discovery-artifacts.schema.json",
+    "src/architecture-discovery-artifact-validator.mjs",
+    "examples/modules/architecture-discovery.module.json",
+    "src/operation-router.mjs",
+    "src/change-integration-input-guard.mjs",
+    "test/operation-router.test.mjs",
+    "src/architecture-discovery-routing.mjs",
+    "src/architecture-discovery-input-guard.mjs",
+    "test/architecture-discovery-routing.test.mjs",
+    "src/architecture-discovery-native-inventory.mjs",
+    "examples/plugins/native-architecture-discovery.plugin.json",
+    "test/architecture-discovery-native-inventory.test.mjs"
+  ],
+  "hostRuntimeSupply": {
+    "dependencyResolver": {
+      "mode": "bare-package-resolution-only",
+      "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/.tmp-devrelay-dependency-loader.mjs",
+      "digest": "sha256:7806bde635ad93006403a185c925b09f3187bc9de582d6266910f9df9a31bcd5"
+    },
+    "dependencyTree": {
+      "authority": "host-read-supply",
+      "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/node_modules",
+      "repositoryWriteGrant": false
+    }
+  },
+  "verification": {
+    "acceptance": "Canonical output is stable across analyzer order and preserves supported, conflicting, low-confidence, unavailable, provenance, and limitation observations explicitly.",
+    "commands": [
+      "node --test test/architecture-discovery-normalization.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "architecture-discovery/normalization-tests",
+        "description": "No-analyzer, swapped-analyzer, conflicting, malformed, partial, low-confidence, and provenance-loss fixtures prove canonical normalization."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify if approved artifacts leave a public normalization or conflict-semantics decision unresolved.",
+    "Stop with fix if the focused suite fails or the implementation requires a write outside allowedWritePaths.",
+    "Stop after the exact bounded handoff; Core owns verification, integration, traceability merge, and progression."
+  ],
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-AD-DOGFOOD-WI-AD-ANALYSIS-NORMALIZATION-ATTEMPT-001",
+      "workItemId": "WI-AD-ANALYSIS-NORMALIZATION",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "architecture-discovery/normalization-tests",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-AD-ANALYSIS-NORMALIZATION",
+    "objective": "Normalize native inventory and optional analyzer observations into one canonical current-architecture snapshot.",
+    "bounded-scope": {
+      "included": [
+        "Bind optional dependency-cruiser, SCIP-type, and future analyzers through one versioned port.",
+        "Normalize typed elements, relationships, interfaces, provenance, conflicts, confidence, and analyzer limitations without granting authority."
+      ],
+      "excluded": [
+        "Requiring an optional analyzer, trusting analyzer prose, changing intended architecture, or hiding contradictory observations."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-AD-NORMALIZER",
+        "description": "Observation normalizer and optional-analyzer conformance suite.",
+        "artifactKind": "RuntimeLibrary"
+      }
+    ],
+    "work-type": "code-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-AD-CONFIDENCE-001",
+      "AC-DEV-AD-OUTPUT-001",
+      "AC-DEV-AD-PROVENANCE-001"
+    ],
+    "architecture-refs": [
+      "EL-AD-ANALYZER-PORT",
+      "EL-AD-NORMALIZER"
+    ],
+    "contract-refs": [
+      "CT-IF-AD-ANALYZER",
+      "CT-IF-AD-NORMALIZATION"
+    ],
+    "required-capabilities": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "dependency-hints": [
+      {
+        "work-item-ref": "WI-AD-NATIVE-INVENTORY",
+        "relation": "after",
+        "rationale": "Normalization always includes the mandatory native inventory.",
+        "authority": "hint"
+      }
+    ],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-AD-ANALYSIS-NORMALIZATION",
+          "method": "Exercise no-analyzer, one-analyzer, swapped-analyzer, conflicting, malformed, partial, low-confidence, and provenance-loss fixtures.",
+          "successCriteria": "Canonical output is stable across adapter order and preserves every supported, conflicting, low-confidence, and unavailable observation explicitly."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "architecture-discovery/normalization-tests",
+        "description": "Canonical output is stable across adapter order and preserves every supported, conflicting, low-confidence, and unavailable observation explicitly."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/1"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/4"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/6"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/88"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/91"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/0"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/4"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-AD-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:27a455f35f18e838f8da3a367c2239a85fc14724eab240748d174129c6e7ce15",
+          "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  },
+  "contentDigest": "sha256:2d49ac4d9d9a956a487da2abd4fdb08dbe4c0c9097b77583bf722aa51bec5724"
+}

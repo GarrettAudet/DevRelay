@@ -9,6 +9,7 @@ import {
   validateDependencyProposal,
 } from "./work-dependency-native-proposer.mjs";
 import { evaluateWorkDependencyPolicy } from "./work-dependency-opa.mjs";
+import { loadOwnedJsonArtifact } from "./loaded-json-artifact-integrity.mjs";
 import { buildWorkBreakdownAnalysisSnapshot } from "./work-dependency-snapshot.mjs";
 
 const VERIFIED_RECEIPTS = new WeakSet();
@@ -72,19 +73,29 @@ function artifactRecord(value, uriBase = "memory://devrelay/work-dependency-anal
 }
 
 function validateLoaded(loaded, label) {
-  if (
-    loaded === null ||
-    typeof loaded !== "object" ||
-    loaded.ref === null ||
-    typeof loaded.ref !== "object" ||
-    loaded.value === undefined ||
-    (!Buffer.isBuffer(loaded.bytes) && !(loaded.bytes instanceof Uint8Array))
-  ) {
-    fail(`${label} must contain ref, parsed value, and exact raw bytes`);
+  try {
+    return {
+      ref: immutable(loaded.ref),
+      bytes: Buffer.from(loaded.bytes),
+      value: loadOwnedJsonArtifact(loaded, label),
+    };
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+function validateLoadedBinary(loaded, label) {
+  if (!loaded?.ref || (!Buffer.isBuffer(loaded.bytes) && !(loaded.bytes instanceof Uint8Array))) {
+    fail(`${label} must contain ref and exact raw bytes`);
   }
   if (sha256Digest(Buffer.from(loaded.bytes)) !== loaded.ref.digest) {
     fail(`${label} bytes do not match its ArtifactRef`);
   }
+  return {
+    ref: immutable(loaded.ref),
+    bytes: Buffer.from(loaded.bytes),
+    ...(loaded.value === undefined ? {} : { value: immutable(loaded.value) }),
+  };
 }
 
 function sameRef(left, right) {
@@ -340,14 +351,12 @@ export function createWorkDependencyAnalysisRuntime({
     if (typeof executionId !== "string" || executionId.length === 0) {
       fail("executionId is required");
     }
-    for (const [label, value] of Object.entries({
+    ({ workBreakdown, projectOverview, contextSliceSet, policyBundle } = Object.fromEntries(Object.entries({
       workBreakdown,
       projectOverview,
       contextSliceSet,
       policyBundle,
-    })) {
-      validateLoaded(value, label);
-    }
+    }).map(([label, value]) => [label, validateLoaded(value, label)])));
     const bindings = inputBindings(
       workBreakdown,
       projectOverview,
@@ -390,10 +399,10 @@ export function createWorkDependencyAnalysisRuntime({
     if (typeof resolveArtifact !== "function") {
       fail("fresh execution requires an exact artifact resolver");
     }
-    const policyWasm = await resolveArtifact(
-      structuredClone(policyBundle.value.wasm),
+    const policyWasm = validateLoadedBinary(
+      await resolveArtifact(structuredClone(policyBundle.value.wasm)),
+      "policyWasm",
     );
-    validateLoaded(policyWasm, "policyWasm");
     if (
       !sameRef(policyWasm.ref, policyBundle.value.wasm) ||
       policyWasm.ref.mediaType !== "application/wasm"

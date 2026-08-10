@@ -1,0 +1,55 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "status": "completed-canonical-gate-passed",
+  "summary": "Corrected the single omitted SpecialistAssignment ContractGeneration digest assertion using the exact regenerated candidate digest. The focused test and canonical verifier now pass. All accepted attempt-001 lineage repairs and prior immutable replay generations remain preserved.",
+  "changedPaths": [
+    "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff.raw.json"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:3069a09ec0065ee8f3b21677d88f797c6d719efa193bf6de9ffb2fccb591690c",
+    "priorHandoffDigest": "sha256:623a5b11c19fbb61569751d02698c5efcd04d308bc90173ce9fcf3c03380e70f",
+    "parentReviewDigest": "sha256:71d0d1da0a87461469aed4dcb64d4278bb415a2b364e5475c9e7417df604fcf6",
+    "writeScopeRespected": true,
+    "acceptedAttempt001ChangesPreserved": true,
+    "immutableHistoryModified": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "correction": {
+    "path": "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+    "line": 45,
+    "classification": "stale-exact-digest-binding",
+    "priorExpected": "sha256:dfb5a97f2436daeecd501e0c078b47fc4e4f8f5afdb8f4c201061abd99506bdf",
+    "regeneratedDigest": "sha256:ba6666e543b396be927066e56d2eee6d5a01ae777f9644302b5deda7394556b4",
+    "source": "regenerated SpecialistAssignment ContractGeneration candidate bytes"
+  },
+  "verification": {
+    "focused": {
+      "command": "node --test test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "canonicalVerify": {
+      "command": "npm.cmd run verify",
+      "status": "passed",
+      "tests": 694,
+      "passed": 694,
+      "failed": 0,
+      "durationMs": 332782.2193
+    }
+  },
+  "forbiddenBoundary": {
+    "traceabilityOwnershipChecksWeakened": false,
+    "immutableHistoryOverwrittenOrDeleted": false,
+    "evidenceFabricated": false,
+    "productRequirementsChanged": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "handoff": "Canonical verification is green. Parent retains review, integration, and any release decision; this attempt does not seal release 0.8.0 or begin ArchitectureDiscovery."
+}

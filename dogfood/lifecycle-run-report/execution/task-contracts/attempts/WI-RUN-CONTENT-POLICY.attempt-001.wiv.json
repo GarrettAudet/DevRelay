@@ -1,0 +1,45 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-WI-RUN-CONTENT-POLICY-ATTEMPT-001",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-CONTENT-POLICY-ATTEMPT-001",
+  "workItemId": "WI-RUN-CONTENT-POLICY",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-CONTENT-POLICY-001",
+    "digest": "sha256:4a655c0f30485de4fe534b2b7d273952d8ef88efc0b8e0cd911d60e22ac3e49c"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-CONTENT-POLICY.attempt-001.handoff.raw.json",
+    "digest": "sha256:678239651433c91ecda4705cde0985e46ed958408d6e6b5af3cfde908c4c0798"
+  },
+  "changedFiles": [
+    "src/lifecycle-run-report-content-policy.mjs",
+    "test/lifecycle-run-report-content-policy.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --test test/lifecycle-run-report-content-policy.test.mjs",
+    "hostSupply": "declared-node-loader",
+    "exitCode": 0,
+    "tests": 6
+  },
+  "outcome": "fix",
+  "findings": [
+    {
+      "code": "RUN_CONTENT_POLICY_SOURCE_PASSTHROUGH",
+      "requirementRefs": [
+        "AC-DEV-RUN-SECURITY-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-CONTENT-POLICY",
+        "IF-RUN-CONTENT-POLICY"
+      ],
+      "detail": "Policy evaluation copies field.source into safe renderer output without validating or classifying it, allowing arbitrary secret-bearing or undeclared bytes to bypass the value disposition."
+    }
+  ],
+  "outputDigests": {
+    "src/lifecycle-run-report-content-policy.mjs": "sha256:cd4b242c776077c9404071ac2879cae1565bec41201eecf1121a6e3b28830185",
+    "test/lifecycle-run-report-content-policy.test.mjs": "sha256:9b4593565e1e33253aab47780c538d99d1ca55406375c58afb715bf857f0e343"
+  },
+  "progressionAllowed": false,
+  "nextRoute": "fix"
+}

@@ -1,0 +1,29 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay has released planning and assignment modules, a provider-neutral WorkExecution contract slice, and a dogfood-ready WorkItemVerification slice. ChangeIntegration is the missing effect boundary that incorporates one exactly verified change before Core recalculates the ready frontier.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "Workflow and IDE hosts",
+    "Repository and integration maintainers",
+    "Execution and verification providers",
+    "System verification and business acceptance reviewers"
+  ],
+  "domainConstraints": [
+    "Only a Gate-approved WorkItemVerification result can enter ChangeIntegration.",
+    "V1 targets one configured local Git ref and expected commit per invocation.",
+    "Core serializes target updates through compare-and-swap; target drift cannot be silently rebased.",
+    "Integration conflicts are evidence, not permission to alter the verified change or target automatically.",
+    "Only integrated completion may unlock the next dependency frontier; system verification remains later."
+  ],
+  "conventions": [
+    "Use SHA-256-bound artifacts, raw bytes, exact semantic versions, and Git object identities at every boundary.",
+    "Separate verification approval, integration effect, system verification, and business acceptance.",
+    "Preserve every failed attempt, conflict set, target observation, effect receipt, and replay checkpoint.",
+    "Represent host permissions as explicit demands and require the host to enforce them.",
+    "Prove success, conflict, drift, invalid-subject, partial-effect recovery, retry, and zero-call replay paths."
+  ],
+  "sourceRefs": []
+}

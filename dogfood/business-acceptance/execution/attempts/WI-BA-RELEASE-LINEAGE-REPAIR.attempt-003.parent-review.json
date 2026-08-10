@@ -1,0 +1,52 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-003",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "task": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003",
+    "digest": "sha256:63c1de6f6c04632288dacaf410424e0d5cdedb8a2f2205031a8519d61e669de5",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff",
+    "digest": "sha256:9e73ac04b04ee48e3f0adfbe5943ed31f5f3c09022a782a16c4c829fb006fdee",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff.raw.json"
+  },
+  "integrationReceipt": {
+    "artifactId": "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-003",
+    "digest": "sha256:a5d264c133c27948811fe25ce9e2831caf2029f689f1820916a8c5400b6508c0",
+    "rawDigest": "sha256:23299ac6c8da8054fb627deb71a9c54d21e3567cbbf96df019d5a23dff5f07d4",
+    "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.receipt.json"
+  },
+  "outcome": "fix",
+  "acceptedEvidence": [
+    "Attempt 003 made the affected scenarios order-independent inside its worker checkout: 11 of 11 tests passed in canonical and reverse process order.",
+    "Two consecutive worker-checkout canonical verifier runs passed 694 of 694 without restoration.",
+    "The WIV context coherently binds CB-DEVRELAY-004, CD-DEVRELAY-004, and their exact promotion with raw-digest checks.",
+    "The exact 64-operation parent integration used create-only semantics for 51 immutable files and compare-and-swap semantics for 13 replacements."
+  ],
+  "integrationFinding": {
+    "classification": "workspace-root-dependent-canonical-artifact-uri",
+    "command": "npm.cmd run verify",
+    "tests": 694,
+    "passed": 687,
+    "failed": 7,
+    "testConcurrency": 1,
+    "finding": "The independently integrated main checkout produced semantically equivalent ArtifactRefs with different absolute file URIs. Worker candidates contain file:///C:/Users/garre/.codex/worktrees/4bba/... while main candidates contain file:///C:/tmp/DevRelay-v04-work-dependency-analysis/.... Those checkout-local bytes change candidate IDs and digests, invalidate exact assertions, and collide with immutable replay evidence."
+  },
+  "remainingFailures": [
+    "Baseline ContractGeneration candidate and promotion digests vary by checkout root.",
+    "SpecialistAssignment ContractGeneration candidate digest varies by checkout root.",
+    "Baseline WorkDependencyAnalysis immutable replay evidence collides after checkout-root relocation.",
+    "WorkItemVerification ContractGeneration candidate and promotion digests vary by checkout root.",
+    "WorkItemVerification planning dependency candidate and replay evidence vary by checkout root."
+  ],
+  "nextAction": {
+    "route": "fix",
+    "instruction": "Replace checkout-local absolute file URIs in dogfood-generated canonical ArtifactRefs with one stable provider-neutral repository URI contract, advance every affected immutable replay generation, add a regression that rejects current-root leakage, and prove exact candidate and replay raw-byte equality across two different checkout roots before release promotion."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:24ae748476f0a426d1a5866ad9069e5c6d0f4e2a900e296ff5949fc42c71aa5f"
+}

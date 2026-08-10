@@ -1,0 +1,20 @@
+{
+  "workItemId": "WI-WIV-CONTRACTS",
+  "outcome": "block",
+  "summary": "Attempt 5 contract revision is implemented and focused tests pass. VerificationPolicy is now closed, version-pinned, canonical, provider-neutral, and exactly bound through subject, evaluation, independence basis, and Gate candidate. Final readiness is blocked because the requested adjacent WIV suites are not present in this worktree.",
+  "changedFiles": ["contracts/work-item-verification-artifacts.schema.json","src/work-item-verification-artifact-validator.mjs","test/work-item-verification-contracts.test.mjs"],
+  "verification": [
+    {"command":"node --test test/work-item-verification-contracts.test.mjs","outcome":"pass","evidence":"19 focused contract tests passed, covering pinned policy identity, changed bytes/version, unsupported semantics, exact links, deterministic precedence, reason codes, independence modes, all five module outcomes, baseline-drift exclusion, and candidate substitution."},
+    {"command":"node --test test/work-item-verification-contracts.test.mjs test/module-contract.test.mjs test/schema-enforcement.test.mjs","outcome":"pass","evidence":"41 tests passed across the focused WIV contract, generic module-contract, and schema-enforcement suites."},
+    {"command":"node --check src/work-item-verification-artifact-validator.mjs","outcome":"pass","evidence":"The attempt 5 validator passed Node.js syntax checking."},
+    {"command":"git diff --check -- contracts/work-item-verification-artifacts.schema.json src/work-item-verification-artifact-validator.mjs test/work-item-verification-contracts.test.mjs examples/modules/work-item-verification.module.json","outcome":"pass","evidence":"No whitespace or patch-format errors were reported."},
+    {"command":"Test-Path for requested WIV input-guard, checkpoint, verifier-binding, verifier-adapters, and evidence-normalization suites","outcome":"fail","evidence":"All five requested adjacent test paths returned False, so those suites could not be executed without exceeding this work item's allowed write scope."}
+  ],
+  "deliverables": [
+    {"id":"DEL-WIV-SCHEMAS","paths":["contracts/work-item-verification-artifacts.schema.json","src/work-item-verification-artifact-validator.mjs","test/work-item-verification-contracts.test.mjs"]},
+    {"id":"DEL-WIV-MODULE","paths":["examples/modules/work-item-verification.module.json"]}
+  ],
+  "sourceRefs": ["AC-DEV-WIV-BOUNDARY-001","AC-DEV-WIV-INPUTS-001","AC-DEV-WIV-OUTCOMES-001","AC-DEV-WIV-EVIDENCE-001","AC-DEV-WIV-PLAN-001","EL-WIV-MODULE","EL-WIV-VERIFIER-PORT","CT-IF-WIV-INPUT-BINDING","CT-IF-WIV-OBLIGATION-SET","CT-IF-WIV-VERIFIER-BINDING","CT-IF-WIV-VERIFIER-INVOCATION","CT-IF-WIV-EVIDENCE-NORMALIZATION","CT-IF-WIV-POLICY-EVALUATION","CT-IF-WIV-GATE-CANDIDATE","CT-IF-WIV-CANDIDATE-TRACEABILITY","CT-IF-WIV-APPROVED-TRACEABILITY"],
+  "residualRisks": ["The requested adjacent WIV input-guard, checkpoint, binding, adapter, and normalizer suites remain unexecuted because their files were not host-delivered.","Attempt 5 remains only a parent-review proposal and is not integrated."],
+  "integrationNotes": ["VerificationPolicy supports only version 1.0.0 with devrelay.work-item-verification/v1 semantics and closed canonical rules.","VerificationPolicyEvaluation binds the exact policy, verifier binding, subject, obligation set, and normalized evidence artifacts.","Deterministic precedence is unable-to-proceed, failed, needs-evidence, then verified.","Reason codes are machine-readable, complete, non-contradictory, and obligation-bound where applicable.","Required independence must match the binding and blocks verification when unsatisfied; optional independence is supported without granting adapter authority.","Baseline drift remains a top-level pre-evaluation module outcome and is rejected by evaluation and candidate schemas.","Candidate validation preserves the exact evaluation, binding, subject, obligations, evidence, and outcome.","No module, runtime, adapter, normalizer, checkpoint, Gate, traceability, baseline, package, integration, or commit changes were made."]
+}

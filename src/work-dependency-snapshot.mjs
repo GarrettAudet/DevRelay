@@ -1,8 +1,6 @@
-import {
-  canonicalJsonDigest,
-  sha256Digest,
-} from "./content-digest.mjs";
+import { canonicalJsonDigest } from "./content-digest.mjs";
 import { validateWorkBreakdownArtifact } from "./work-breakdown-artifact-validator.mjs";
+import { loadOwnedJsonArtifact } from "./loaded-json-artifact-integrity.mjs";
 
 export class WorkDependencySnapshotError extends Error {
   constructor(message) {
@@ -40,18 +38,14 @@ function sameRef(left, right) {
 }
 
 function validateLoaded(loaded, label) {
-  if (
-    loaded === null ||
-    typeof loaded !== "object" ||
-    loaded.ref === null ||
-    typeof loaded.ref !== "object" ||
-    (!Buffer.isBuffer(loaded.bytes) && !(loaded.bytes instanceof Uint8Array)) ||
-    loaded.value === undefined
-  ) {
-    fail(`${label} must contain ref, exact bytes, and parsed value`);
-  }
-  if (sha256Digest(Buffer.from(loaded.bytes)) !== loaded.ref.digest) {
-    fail(`${label} bytes do not match the artifact digest`);
+  try {
+    return {
+      ref: immutable(loaded.ref),
+      bytes: Buffer.from(loaded.bytes),
+      value: loadOwnedJsonArtifact(loaded, label),
+    };
+  } catch (error) {
+    fail(error.message);
   }
 }
 
@@ -101,9 +95,9 @@ export async function buildWorkBreakdownAnalysisSnapshot({
   contextSliceSet,
   resolveArtifact,
 }) {
-  validateLoaded(workBreakdown, "workBreakdown");
-  validateLoaded(projectOverview, "projectOverview");
-  validateLoaded(contextSliceSet, "contextSliceSet");
+  workBreakdown = validateLoaded(workBreakdown, "workBreakdown");
+  projectOverview = validateLoaded(projectOverview, "projectOverview");
+  contextSliceSet = validateLoaded(contextSliceSet, "contextSliceSet");
   validateWorkBreakdownArtifact(workBreakdown.value, { ref: workBreakdown.ref });
   if (workBreakdown.value.kind !== "WorkBreakdownBaseline") {
     fail("workBreakdown must be a WorkBreakdownBaseline");
@@ -145,8 +139,10 @@ export async function buildWorkBreakdownAnalysisSnapshot({
     ) {
       fail(`context slice ${slice.id} has missing or unknown coveredRefs`);
     }
-    const source = await resolveArtifact(structuredClone(slice.sourceArtifact));
-    validateLoaded(source, `context slice ${slice.id} source`);
+    const source = validateLoaded(
+      await resolveArtifact(structuredClone(slice.sourceArtifact)),
+      `context slice ${slice.id} source`,
+    );
     if (!sameRef(source.ref, slice.sourceArtifact)) {
       fail(`context slice ${slice.id} resolved another source artifact`);
     }
@@ -200,7 +196,7 @@ export function createContextSlice({
   selector,
   coveredRefs,
 }) {
-  validateLoaded(source, `context slice ${id} source`);
+  source = validateLoaded(source, `context slice ${id} source`);
   const extracted = resolvePointer(source.value, selector);
   return immutable({
     id,

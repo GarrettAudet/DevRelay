@@ -143,9 +143,9 @@ function createTraceabilityCheckpointStore() {
   };
 }
 
-const requirementsBytes = read("project/requirements-baseline.json");
-const overviewBytes = read("project/project-overview-baseline.json");
-const architectureBytes = read("project/architecture-baseline.json");
+const requirementsBytes = read("project/history/1.1.0/requirements-baseline.json");
+const overviewBytes = read("project/history/1.1.0/project-overview-baseline.json");
+const architectureBytes = read("dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json");
 const repositoryBytes = read(
   "dogfood/work-dependency-analysis/repository-snapshot.json",
 );
@@ -1467,35 +1467,6 @@ const promotionProof = {
 const promotionProofBytes = writeJson(
   "work-breakdown-gate-promotion-proof.json",
   promotionProof,
-);
-
-const projectBaselinePath = path.join(root, "project", "work-breakdown-baseline.json");
-const projectStatePath = path.join(
-  root,
-  "project",
-  "project-work-breakdown-state.json",
-);
-const projectHistoryDir = path.join(
-  root,
-  "project",
-  "history",
-  "work-breakdown",
-  currentBaseline.version,
-);
-fs.mkdirSync(projectHistoryDir, { recursive: true });
-fs.writeFileSync(
-  path.join(projectHistoryDir, "work-breakdown-baseline.json"),
-  currentBaselineBytes,
-);
-fs.writeFileSync(projectBaselinePath, workBreakdownBaselineBytes);
-const promotedProjectState = {
-  ...projectState,
-  stateId: "PWBS-WDA-PROMOTED-001",
-  currentWorkBreakdownBaseline: workBreakdownBaselineRef,
-};
-fs.writeFileSync(
-  projectStatePath,
-  Buffer.from(`${JSON.stringify(promotedProjectState, null, 2)}\n`, "utf8"),
 );
 
 const dogfoodProof = {

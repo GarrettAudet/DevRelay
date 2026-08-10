@@ -1,0 +1,68 @@
+{
+  "workItemId": "WI-WIV-CONTRACTS",
+  "outcome": "pass",
+  "summary": "Attempt 4 integration fix completed. Native provenance is now compared against the exact multiset from RawVerifierResult after deterministic sorting by canonical JSON, allowing reordered raw provenance while requiring canonical normalized output.",
+  "changedFiles": [
+    "src/work-item-verification-artifact-validator.mjs",
+    "test/work-item-verification-contracts.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/work-item-verification-contracts.test.mjs",
+      "outcome": "pass",
+      "evidence": "14 tests passed. All 13 prior contract tests remain passing, plus attempt 4 coverage for reordered provenance and missing, extra, duplicate, substituted, and unsorted normalized provenance."
+    },
+    {
+      "command": "node --check src/work-item-verification-artifact-validator.mjs",
+      "outcome": "pass",
+      "evidence": "The revised validator passed Node.js syntax checking."
+    },
+    {
+      "command": "git diff --check -- src/work-item-verification-artifact-validator.mjs test/work-item-verification-contracts.test.mjs",
+      "outcome": "pass",
+      "evidence": "No whitespace or patch-format errors were reported."
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "DEL-WIV-SCHEMAS",
+      "paths": [
+        "contracts/work-item-verification-artifacts.schema.json",
+        "src/work-item-verification-artifact-validator.mjs",
+        "test/work-item-verification-contracts.test.mjs"
+      ]
+    },
+    {
+      "id": "DEL-WIV-MODULE",
+      "paths": ["examples/modules/work-item-verification.module.json"]
+    }
+  ],
+  "sourceRefs": [
+    "AC-DEV-WIV-BOUNDARY-001",
+    "AC-DEV-WIV-INPUTS-001",
+    "AC-DEV-WIV-OUTCOMES-001",
+    "AC-DEV-WIV-EVIDENCE-001",
+    "AC-DEV-WIV-PLAN-001",
+    "EL-WIV-MODULE",
+    "EL-WIV-VERIFIER-PORT",
+    "CT-IF-WIV-INPUT-BINDING",
+    "CT-IF-WIV-OBLIGATION-SET",
+    "CT-IF-WIV-VERIFIER-BINDING",
+    "CT-IF-WIV-VERIFIER-INVOCATION",
+    "CT-IF-WIV-EVIDENCE-NORMALIZATION",
+    "CT-IF-WIV-POLICY-EVALUATION",
+    "CT-IF-WIV-GATE-CANDIDATE",
+    "CT-IF-WIV-CANDIDATE-TRACEABILITY",
+    "CT-IF-WIV-APPROVED-TRACEABILITY"
+  ],
+  "residualRisks": [
+    "Attempt 4 remains a proposal requiring independent parent review.",
+    "No schema, module, adapter, normalizer, checkpoint, Gate, traceability, baseline, package, integration, or commit changes were made."
+  ],
+  "integrationNotes": [
+    "Raw native provenance is copied and sorted using canonical JSON comparison; the raw envelope is not mutated.",
+    "Normalized nativeArtifacts must equal the resulting canonical sequence exactly.",
+    "Array multiplicity is preserved, so missing, extra, duplicate, or substituted provenance fails closed.",
+    "Unsorted normalized provenance fails even when it contains the same references."
+  ]
+}

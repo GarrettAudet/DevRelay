@@ -1,0 +1,61 @@
+{
+    "apiVersion":  "devrelay.dev/v1alpha1",
+    "kind":  "BootstrapWorkItemHostIntegrationReceipt",
+    "receiptId":  "WIVHIR-WI-WIV-EVIDENCE-NORMALIZATION-REVISION-002",
+    "executionId":  "WE-WIV-FRONTIER-005-WI-WIV-EVIDENCE-NORMALIZATION-ATTEMPT-002",
+    "workItemId":  "WI-WIV-EVIDENCE-NORMALIZATION",
+    "task":  {
+                 "threadId":  "019fdb8c-7c6b-7ef0-9f88-b72b049ff180",
+                 "worktree":  "C:/Users/garre/.codex/worktrees/47f1/DevRelay-v04-work-dependency-analysis",
+                 "contract":  {
+                                  "relativePath":  "dogfood/work-item-verification/execution/task-contracts/WI-WIV-EVIDENCE-NORMALIZATION.attempt-002.task.json",
+                                  "bytes":  1127,
+                                  "digest":  "sha256:d82b3d46d6ed865d54bad45a3d1cf2ed8f54776fb04b8866899785f74d8bd517"
+                              }
+             },
+    "handoff":  {
+                    "relativePath":  "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-EVIDENCE-NORMALIZATION.attempt-002.handoff.raw.json",
+                    "bytes":  3217,
+                    "digest":  "sha256:611e2c81b5d4f91c90454cad2bec90b646f510c53adeff23fefb2bef247c98f0"
+                },
+    "parentReview":  {
+                         "relativePath":  "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-EVIDENCE-NORMALIZATION.attempt-002.parent-review.json",
+                         "bytes":  1462,
+                         "digest":  "sha256:5f35412595b88c7e3c7339acb3865f3b32dd0704b6ac986f402c5a5a975a02c0"
+                     },
+    "integratedFiles":  [
+                            {
+                                "relativePath":  "src/work-item-verification-evidence-normalizer.mjs",
+                                "bytes":  6091,
+                                "digest":  "sha256:3e1fd547a73a189579b95d1bb0794cf90cec59a8302c5414d260f48e657f60ed"
+                            },
+                            {
+                                "relativePath":  "test/work-item-verification-evidence-normalizer.test.mjs",
+                                "bytes":  8531,
+                                "digest":  "sha256:27b2f088b0f0f9d1046864f9b2e1050be23893796f4143920ec409bd8569daac"
+                            }
+                        ],
+    "contractContext":  [
+                            {
+                                "relativePath":  "contracts/work-item-verification-artifacts.schema.json",
+                                "bytes":  12069,
+                                "digest":  "sha256:e6eb6fb218a8f29da51cce8bac36f301ba8df299a023f0eedcdf1f1a557425c0"
+                            },
+                            {
+                                "relativePath":  "src/work-item-verification-artifact-validator.mjs",
+                                "bytes":  13440,
+                                "digest":  "sha256:d404111374e6a4a2cd62bf4308c23984220fd65fa97be48215c88031f5885baf"
+                            }
+                        ],
+    "verification":  [
+                         {
+                             "command":  "node --test --test-concurrency=1 focused WIV normalizer/contract/checkpoint/adapter/binding/input-guard suite",
+                             "outcome":  "pass",
+                             "tests":  49
+                         }
+                     ],
+    "lifecycleDisposition":  "provisional-host-integrated",
+    "nextRequiredStage":  "WI-WIV-POLICY-GATE",
+    "authoritativeVerifiedCompletionFactCreated":  false,
+    "authoritativeIntegratedCompletionFactCreated":  false
+}

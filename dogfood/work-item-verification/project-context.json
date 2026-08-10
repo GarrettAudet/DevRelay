@@ -1,0 +1,29 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay has approved baselines through SpecialistAssignment and a first WorkExecution task with exact handoff, parent review, and provisional host integration. WorkItemVerification is the missing authority boundary before ChangeIntegration can create integrated completion.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "Workflow and IDE hosts",
+    "Verifier and adapter authors",
+    "Execution providers",
+    "Security, quality, and integration reviewers"
+  ],
+  "domainConstraints": [
+    "Core derives readiness and binds one work item; WorkItemVerification does not choose work.",
+    "WorkExecution proposes changes and raw evidence but cannot claim correctness.",
+    "ChangeIntegration alone mutates the shared baseline and records integrated completion.",
+    "TraceabilityGraph updates are derived by trusted contributors after artifact validation.",
+    "The first dogfood subject is WI-WE-CONTRACTS attempt 003 and its digest-pinned provisional host receipt."
+  ],
+  "conventions": [
+    "Use SHA-256-bound artifacts and exact semantic versions at every boundary.",
+    "Separate evidence production, Core validation, Gate approval, integration, system verification, and business acceptance.",
+    "Store raw verifier outputs and immutable attempts; summaries are never the only evidence.",
+    "Represent missing or not-applicable evidence explicitly and fail closed.",
+    "Prove positive, negative, drift, substitution, retry, independence, permission, and zero-call replay paths."
+  ],
+  "sourceRefs": []
+}

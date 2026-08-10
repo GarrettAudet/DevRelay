@@ -1,0 +1,187 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkBreakdownBaseline",
+  "baselineId": "WB-BA-DOGFOOD-001",
+  "workItems": [
+    {
+      "id": "WI-BA-CONTRACTS",
+      "objective": "Define the closed BusinessAcceptance artifact family and deterministic semantic validator.",
+      "boundedScope": [
+        "contracts/business-acceptance-artifacts.schema.json",
+        "src/business-acceptance-artifact-validator.mjs",
+        "test/business-acceptance-contracts.test.mjs"
+      ],
+      "deliverables": [
+        "Closed acceptance subject, policy, evidence, evaluation, candidate, approval, and record contracts",
+        "Positive and fail-closed schema/lineage tests"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "schema-design",
+        "deterministic-contracts"
+      ],
+      "dependencyHints": [],
+      "verificationPlan": [
+        "Validate the full canonical family",
+        "Reject unknown fields, incomplete coverage, stale digests, downstream authority, and invalid outcomes"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/contract-tests"
+      ],
+      "sourceRefs": [
+        "goal-business-acceptance-gate-v1",
+        "D-BA-SUBJECT-001",
+        "D-BA-OUTCOMES-001"
+      ]
+    },
+    {
+      "id": "WI-BA-CORE",
+      "objective": "Implement exact subject binding, exhaustive business evidence evaluation, deterministic candidate assembly, and checkpoint replay.",
+      "boundedScope": [
+        "src/business-acceptance-core.mjs",
+        "src/business-acceptance-checkpoint.mjs",
+        "test/business-acceptance-core.test.mjs"
+      ],
+      "deliverables": [
+        "Core-owned evidence evaluation",
+        "Complete objective and metric dispositions",
+        "Zero-call exact replay and drift detection"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "runtime-engineering",
+        "business-policy"
+      ],
+      "dependencyHints": [
+        "WI-BA-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Exercise accepted-candidate, rejected, and needs-evidence paths",
+        "Reject all lineage substitutions before evaluation"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/core-tests"
+      ],
+      "sourceRefs": [
+        "goal-business-acceptance-gate-v1",
+        "D-BA-COVERAGE-001",
+        "D-BA-APPROVAL-001"
+      ]
+    },
+    {
+      "id": "WI-BA-GATE",
+      "objective": "Implement raw-byte-bound owner approval and authoritative BusinessAcceptanceRecord creation.",
+      "boundedScope": [
+        "src/business-acceptance-gate.mjs",
+        "test/business-acceptance-gate.test.mjs"
+      ],
+      "deliverables": [
+        "Exact approval verifier",
+        "Accepted/rejected record assembly",
+        "Idempotent Gate replay"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "approval-gates",
+        "cryptographic-lineage"
+      ],
+      "dependencyHints": [
+        "WI-BA-CONTRACTS",
+        "WI-BA-CORE"
+      ],
+      "verificationPlan": [
+        "Approve only exact eligible candidates",
+        "Reject cloned, stale, modified, ambiguous, or non-owner approvals"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/gate-tests"
+      ],
+      "sourceRefs": [
+        "goal-business-acceptance-gate-v1",
+        "D-BA-APPROVAL-001"
+      ]
+    },
+    {
+      "id": "WI-BA-TRACEABILITY",
+      "objective": "Extend TraceabilityGraph with backward-compatible acceptance semantics and a trusted Gate contributor.",
+      "boundedScope": [
+        "src/traceability-artifact-validator.mjs",
+        "src/business-acceptance-traceability-contributor.mjs",
+        "test/business-acceptance-traceability.test.mjs",
+        "test/traceability-vocabulary-migration.test.mjs"
+      ],
+      "deliverables": [
+        "Traceability vocabulary 1.5 profile",
+        "Trusted forward-only acceptance contributor",
+        "Atomic merge and migration tests"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "graph-modeling",
+        "traceability"
+      ],
+      "dependencyHints": [
+        "WI-BA-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Preserve versions 1.0 through 1.4",
+        "Reject inverse, candidate, rejected, missing-evidence, and orphan acceptance facts"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/traceability-tests"
+      ],
+      "sourceRefs": [
+        "goal-business-acceptance-gate-v1",
+        "D-BA-TRACE-001"
+      ]
+    },
+    {
+      "id": "WI-BA-RELEASE",
+      "objective": "Document, export, package, and prove one exact accepted end-to-end V1 lifecycle run.",
+      "boundedScope": [
+        "docs/business-acceptance.md",
+        "README.md",
+        "RELEASE.md",
+        "CHANGELOG.md",
+        "src/index.mjs",
+        "package.json",
+        "package-lock.json",
+        "scripts/release-catalog.mjs",
+        "scripts/release-tools.mjs",
+        "release/",
+        "test/business-acceptance-documentation.test.mjs",
+        "test/business-acceptance-release.test.mjs",
+        "dogfood/business-acceptance/"
+      ],
+      "deliverables": [
+        "Human-readable Gate guide",
+        "Public Core Gate exports",
+        "DevRelay 0.8.0 catalog",
+        "Exact accepted lifecycle proof"
+      ],
+      "workType": "configuration-change",
+      "requiredCapabilities": [
+        "release-engineering",
+        "integration-testing",
+        "technical-writing"
+      ],
+      "dependencyHints": [
+        "WI-BA-GATE",
+        "WI-BA-TRACEABILITY"
+      ],
+      "verificationPlan": [
+        "Run focused BusinessAcceptance tests",
+        "Run canonical verify and release checks",
+        "Prove acceptance completes construction without deployment authority"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/release-gate"
+      ],
+      "sourceRefs": [
+        "goal-business-acceptance-gate-v1",
+        "D-BA-NO-DEPLOY-001"
+      ]
+    }
+  ],
+  "contentDigest": "sha256:f0169528cfac249db75f99026dc95106a00a1c9d34f3b470c5c32139b34dcf4b"
+}

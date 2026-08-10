@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.9.0 - 2026-08-10
+
+- Added release-ready `architecture-discovery@0.1.0` with deterministic state routing, offline tracked-or-declared native inventory, optional bounded analyzer substitution, observational normalization, Core-owned material-gap clarification, exact checkpoint replay, and candidate-only traceability.
+- Added explicit source-transmission consent, opaque evidence byte preservation, real-repository end-to-end dogfood evidence, public package exports, and operator documentation for complete, uncertain, blocked, drifted, resumed, and analyzer-swapped runs.
+- Preserved immutable SpecialistAssignment replay generations by advancing WorkExecution to replay-v6 and WorkItemVerification to replay-v7. The remaining full-V1 acceptance gap is LifecycleRunReport.
+
+## 0.8.0 - 2026-08-09
+
+- Added the owner-controlled BusinessAcceptance Gate, exhaustive technical and
+  business-scope coverage, exact raw candidate/approval binding, and immutable
+  Gate replay.
+- Added trusted acceptance traceability and vocabulary 1.5 forward
+  `accepted-by` and `verified-by` facts with atomic merge diagnostics.
+- Added executable BusinessAcceptance Core, Gate, checkpoint, contributor, and
+  graph conformance while keeping full V1 project acceptance pending on
+  ArchitectureDiscovery and LifecycleRunReport evidence.
+
 All notable DevRelay source releases are recorded here. Module versions are
 immutable once released; a semantic contract change requires a new module
 version.
@@ -7,6 +24,89 @@ version.
 ## Unreleased
 
 No changes yet.
+
+## 0.7.0 - 2026-08-08
+
+### Added
+
+- `system-verification@0.1.0` with immutable integrated-system binding,
+  deterministic obligation expansion, typed test/review evidence, Core-owned
+  policy outcomes, exact checkpoint replay, and trusted forward-only
+  acceptance-criterion traceability.
+- Fixture-conformant `test-system-verifier@1.0.0` and
+  `review-system-verifier@1.0.0` proposer bindings. No external live verifier
+  integration is claimed.
+- Planning-chain and end-to-end release conformance tests covering verified,
+  failed, needs-evidence, baseline drift, verifier substitution, zero-call
+  replay, atomic graph merge, and absence of BusinessAcceptance facts.
+
+### Release scope
+
+- SystemVerification may hand a verified result to the separate
+  BusinessAcceptance Gate for consideration. This release does not implement
+  BusinessAcceptance, deployment, ArchitectureDiscovery, or external tools.
+
+## 0.6.0 - 2026-08-08
+
+### Added
+
+- `specialist-assignment@1.0.0` with A2A Agent Card capability discovery,
+  Core-owned eligibility, and a deterministic native ranker that assigns
+  provider-neutral specialist profiles without scheduling or execution.
+- `work-execution@0.1.0` with exact frontier, assignment, policy, repository,
+  retry, checkpoint, and proposer-only executor boundaries.
+- `work-item-verification@0.1.0` with explicit obligations, independent
+  verifier bindings, evidence normalization, deterministic policy evaluation,
+  a separate approval Gate, and forward-only verification traceability.
+- `change-integration@0.1.0` with exact verified-subject binding, deterministic
+  integration plans, target compare-and-swap, local Git fast-forward,
+  merge-commit and cherry-pick strategies, conflict reporting, uncertain-effect
+  recovery, closed results, and factual integration traceability.
+- A human-readable ChangeIntegration operator and adapter guide, plus one
+  visible WorkExecution task per construction work item and exact parent review,
+  verification, integration, and retry evidence.
+
+### Verification
+
+- The canonical package gate passes all 612 tests with zero failures after
+  isolating historical dogfood promotions from active project baselines.
+- The nine-item ChangeIntegration construction DAG is complete, and every item
+  has an approved WorkItemVerification result and host-integration fact.
+- The private source-package smoke test covers all nine released module
+  manifests and 21 bounded plug-in manifests.
+
+### Release scope
+
+- The shipped ChangeIntegration adapter is local Git only. Remote pull-request,
+  deployment, SystemVerification, and BusinessAcceptance capabilities remain
+  downstream or future extensions.
+- A2A, test/review verifier, and local Git bindings are bounded adapters; the
+  host remains responsible for runtime supply, durable state, grants, and
+  external effects.
+
+## 0.5.0 - 2026-08-05
+
+### Added
+
+- `contract-generation@0.1.0` with deterministic baseline/change routing and a
+  Gate-only not-applicable branch selected from exact project state.
+- A live deterministic JSON Schema draft 2020-12 generator plus bounded,
+  fixture-conformant OpenAPI, AsyncAPI, and Protobuf generator contracts behind
+  the same provider-neutral proposal port.
+- Core-owned format validation, canonical contract diffing, exact checkpoint
+  replay, compatibility policy, and a separate raw-byte-bound Contract Gate.
+- Candidate and approved contract traceability with forward-only
+  `InterfaceIntent -> contracted-by -> Contract` relationships and atomic merge
+  proof.
+- Human-readable lifecycle reporting contracts and architecture groundwork for
+  dynamically summarizing completed module runs.
+
+### Verification
+
+- Dogfood generated, independently validated, approved, and promoted 14 JSON
+  Schema contracts with zero-call replay and restart-safe promotion.
+- The 0.5.0 release gate covers all five module manifests and 16 bounded plug-in
+  manifests through an installed-package smoke test.
 
 ## 0.4.0 - 2026-08-04
 

@@ -1,0 +1,47 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-TRACEABILITY.attempt-002",
+  "workItemId": "WI-BA-TRACEABILITY",
+  "outcome": "pass",
+  "changedFiles": [
+    "contracts/traceability-graph-artifacts.schema.json",
+    "src/traceability-artifact-validator.mjs",
+    "src/business-acceptance-traceability-contributor.mjs",
+    "test/business-acceptance-traceability.test.mjs",
+    "test/traceability-vocabulary-migration.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/traceability-tests",
+      "relativePath": "test/business-acceptance-traceability.test.mjs",
+      "digest": "sha256:9a9b38fffd02dcee75fdb4285897959b648d88ab1d27260ffd8e3bbce121e267"
+    },
+    {
+      "kind": "traceability/vocabulary-migration-tests",
+      "relativePath": "test/traceability-vocabulary-migration.test.mjs",
+      "digest": "sha256:42c38dd8365420720b3f3093e4db62cf498d8d6d98aa4ec1b7f3f492eeec4f9b"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/business-acceptance-traceability-contributor.mjs; node --check test/business-acceptance-traceability.test.mjs; node --check src/traceability-artifact-validator.mjs; node --check test/traceability-vocabulary-migration.test.mjs",
+      "exitCode": 0,
+      "summary": "All four allowlisted JavaScript modules passed syntax validation."
+    },
+    {
+      "command": "node --test test/traceability-contract.test.mjs test/traceability-vocabulary-migration.test.mjs test/business-acceptance-traceability.test.mjs (with repository dependency resolution and the exact corrected parent BusinessAcceptance contract)",
+      "exitCode": 0,
+      "summary": "All 14 focused schema, vocabulary migration and horizon-compatibility, accepted projection, passing-evidence diagnostics, atomic merge, replay, and rejection tests passed; 0 failed, skipped, or cancelled."
+    },
+    {
+      "command": "git diff --check -- <five revised-scope implementation and test files>",
+      "exitCode": 0,
+      "summary": "Scoped changes contain no whitespace errors."
+    }
+  ],
+  "residualRisks": [
+    "none"
+  ],
+  "notes": "Attempt-002 replaces the rejected private schema fork with one atomic published-schema/runtime vocabulary 1.5 change. Versions 1.0 through 1.4 retain their exact identities, endpoint behavior, and pre-acceptance horizons; their snapshots and updates reject acceptance while 1.5 accepts it. Contributor ordering uses explicit code-unit comparison without locale or ICU behavior. The trusted Core-side contributor requires canonical raw bytes for the exact IntegratedSystemCandidate, verified SystemVerificationResult, BusinessAcceptance chain, owner approval, and accepted BusinessAcceptanceRecord before projecting forward-only objective/metric accepted-by-record and verified-by-evidence facts. Each projected evidence node carries the already validated pass status as top-level verificationStatus, so Core diagnostics find passing evidence and do not retain TG_MISSING_EVIDENCE for the accepted objective or metric. Candidate, rejected, missing-evidence, orphan, inverse, and adapter-authored facts fail closed. Core retains graph preparation/merge and BusinessAcceptanceGate retains acceptance authority. No evaluation, approval, diagnostics authorship, documentation, export, package, release, deployment, or other file was implemented."
+}

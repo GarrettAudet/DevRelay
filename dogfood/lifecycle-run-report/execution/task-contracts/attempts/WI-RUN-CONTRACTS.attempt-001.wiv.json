@@ -1,0 +1,61 @@
+{
+    "apiVersion":  "devrelay.dev/v1alpha1",
+    "kind":  "BootstrapWorkItemVerificationReview",
+    "reviewId":  "WIV-RUN-CONTRACTS-ATTEMPT-001",
+    "executionId":  "WE-RUN-DOGFOOD-WI-RUN-CONTRACTS-ATTEMPT-001",
+    "workItemId":  "WI-RUN-CONTRACTS",
+    "taskContract":  {
+                         "artifactId":  "WETC-WI-RUN-CONTRACTS-001",
+                         "digest":  "sha256:ba9516740ed8ff73a98ac8ad72f6081ea25d00f9c4625be3dd4a23140c36f0ee"
+                     },
+    "rawHandoff":  {
+                       "artifactId":  "WI-RUN-CONTRACTS.attempt-001.handoff.raw.json",
+                       "digest":  "sha256:e6d7edc24ed2d7cb4602ce201506a51a7591df685a3abe31731d58cc57c0f6b7"
+                   },
+    "changedFiles":  [
+                         "contracts/lifecycle-run-report-artifacts.schema.json",
+                         "src/lifecycle-run-report-artifact-validator.mjs",
+                         "src/index.mjs",
+                         "test/lifecycle-run-report-contracts.test.mjs"
+                     ],
+    "focusedVerification":  {
+                                "command":  "node --test test/lifecycle-run-report-contracts.test.mjs",
+                                "hostSupply":  "declared-node-loader",
+                                "exitCode":  0,
+                                "tests":  5
+                            },
+    "outcome":  "fix",
+    "findings":  [
+                     {
+                         "code":  "RUN_CONTRACT_OBSERVATION_DISPOSITION",
+                         "requirementRefs":  [
+                                                 "AC-DEV-RUN-METRICS-001"
+                                             ],
+                         "detail":  "Metric availability values do not implement the approved measured, estimated, unavailable, and not-applicable semantics."
+                     },
+                     {
+                         "code":  "RUN_CONTRACT_SNAPSHOT_INCOMPLETE",
+                         "requirementRefs":  [
+                                                 "AC-DEV-RUN-HUMAN-READABLE-001",
+                                                 "AC-DEV-RUN-TRACE-JOIN-001"
+                                             ],
+                         "detail":  "LifecycleRunSnapshot lacks important artifacts, traceability paths, diagnostics, adapter maturity/comparability, and stage operation/adapter/outcome/Gate/rework fields required by the primary human view."
+                     },
+                     {
+                         "code":  "RUN_CONTRACT_POLICY_BINDING_MISSING",
+                         "requirementRefs":  [
+                                                 "AC-DEV-RUN-SECURITY-001"
+                                             ],
+                         "detail":  "LifecycleRunReportAccess does not bind the exact content policy that approved the returned Markdown and evidence links."
+                     },
+                     {
+                         "code":  "RUN_FRONTIER_AUTHORITY_UNDERSTATED",
+                         "requirementRefs":  [
+                                                 "AC-DEV-RUN-DYNAMIC-001"
+                                             ],
+                         "detail":  "ReadyFrontier is Core-derived from the approved DAG and integrated completion facts; readiness-advisory is not the approved control boundary."
+                     }
+                 ],
+    "progressionAllowed":  false,
+    "nextRoute":  "fix"
+}

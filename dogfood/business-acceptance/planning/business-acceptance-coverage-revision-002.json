@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BusinessAcceptanceWorkBreakdownRevision",
+  "revisionId": "BA-WB-REVISION-002",
+  "predecessor": {
+    "artifactId": "BA-WB-REVISION-001",
+    "digest": "sha256:c267423227c651764d3dd88e36b3cebb24c693caf4316b4da3851a600c79ed3c",
+    "relativePath": "dogfood/business-acceptance/planning/business-acceptance-coverage-revision.json"
+  },
+  "reason": "Integrated verification exposed an uncovered Gate lineage and fixture work item after coverage Core and Traceability changed the closed artifact family.",
+  "addedWorkItem": {
+    "id": "WI-BA-COVERAGE-GATE",
+    "dependencies": [
+      "WI-BA-COVERAGE-CONTRACTS",
+      "WI-BA-COVERAGE-CORE"
+    ],
+    "outcome": "host-integrated"
+  },
+  "releaseDependencies": [
+    "WI-BA-COVERAGE-GATE",
+    "WI-BA-COVERAGE-TRACEABILITY"
+  ],
+  "completionReceipts": [
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-CORE-003",
+      "digest": "sha256:7edda6d2e77f34dd337a6fb318a9299cfc0a89d39505bfb36ebb22a8df65336f",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-CORE.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-CORE"
+    },
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-TRACEABILITY-004",
+      "digest": "sha256:712501d1b6ed7453ea3cbfc29a1cd65a89f56048c5f1a53c074173c40ce89576",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-TRACEABILITY.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-TRACEABILITY"
+    },
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-GATE-001",
+      "digest": "sha256:cd2f057433a18232486680ebd2e13bffa3e4d365ff3ab66ef173b3f194325187",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-GATE.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-GATE"
+    }
+  ],
+  "verification": {
+    "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/business-acceptance-contracts.test.mjs test/business-acceptance-core.test.mjs test/business-acceptance-gate.test.mjs test/requirements-traceability.test.mjs test/business-acceptance-traceability.test.mjs test/traceability-vocabulary-migration.test.mjs",
+    "exitCode": 0,
+    "tests": {
+      "total": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0
+    }
+  },
+  "authority": "parent-integration-owner",
+  "contentDigest": "sha256:d50d9755710f0ad962137d9473227053045fe369220d574c3ff5d6212d654c97"
+}

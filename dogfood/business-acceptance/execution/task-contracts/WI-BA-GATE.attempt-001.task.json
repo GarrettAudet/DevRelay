@@ -1,0 +1,89 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-GATE.attempt-001",
+  "workItem": {
+    "id": "WI-BA-GATE",
+    "objective": "Implement raw-byte-bound owner approval and authoritative BusinessAcceptanceRecord creation.",
+    "boundedScope": [
+      "src/business-acceptance-gate.mjs",
+      "test/business-acceptance-gate.test.mjs"
+    ],
+    "deliverables": [
+      "Exact approval verifier",
+      "Accepted/rejected record assembly",
+      "Idempotent Gate replay"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "approval-gates",
+      "cryptographic-lineage"
+    ],
+    "dependencyHints": [
+      "WI-BA-CONTRACTS",
+      "WI-BA-CORE"
+    ],
+    "verificationPlan": [
+      "Approve only exact eligible candidates",
+      "Reject cloned, stale, modified, ambiguous, or non-owner approvals"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/gate-tests"
+    ],
+    "sourceRefs": [
+      "goal-business-acceptance-gate-v1",
+      "D-BA-APPROVAL-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-CONTRACTS",
+    "WI-BA-CORE"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-GATE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "approval-gates",
+      "cryptographic-lineage"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/business-acceptance-gate.mjs",
+      "test/business-acceptance-gate.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "graph operations outside trusted contributor",
+      "unbound owner approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-GATE.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:2dedc2410530e1cdafc6b6ddb8b9377935a1711f74187b8e9bca18eebf5a89a7"
+}

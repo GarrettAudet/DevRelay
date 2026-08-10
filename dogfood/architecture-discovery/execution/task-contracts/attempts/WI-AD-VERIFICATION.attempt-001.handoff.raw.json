@@ -1,0 +1,52 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-VERIFICATION-ATTEMPT-001",
+  "workItemId": "WI-AD-VERIFICATION",
+  "outcome": "fix",
+  "changedFiles": [
+    "test/architecture-discovery-release.test.mjs",
+    "dogfood/architecture-discovery/release/release-gate-evidence.json",
+    "test/project-baseline.test.mjs",
+    "dogfood/work-execution/assignment/promote.mjs",
+    "test/work-execution-specialist-assignment-dogfood.test.mjs",
+    "dogfood/work-execution/assignment/replay-v6/candidate-traceability-update.json",
+    "dogfood/work-execution/assignment/replay-v6/candidate-traceability-merge-receipt.json",
+    "dogfood/work-execution/assignment/replay-v6/approved-traceability-update.json",
+    "dogfood/work-execution/assignment/replay-v6/approved-traceability-merge-receipt.json",
+    "dogfood/work-execution/assignment/replay-v6/traceability-graph-snapshot.json",
+    "dogfood/work-execution/assignment/replay-v6/specialist-assignment-promotion-proof.json",
+    "dogfood/work-item-verification/assignment/promote.mjs",
+    "test/work-item-verification-planning-dogfood.test.mjs",
+    "dogfood/work-item-verification/assignment/replay-v7/candidate-traceability-update.json",
+    "dogfood/work-item-verification/assignment/replay-v7/candidate-traceability-merge-receipt.json",
+    "dogfood/work-item-verification/assignment/replay-v7/approved-traceability-update.json",
+    "dogfood/work-item-verification/assignment/replay-v7/approved-traceability-merge-receipt.json",
+    "dogfood/work-item-verification/assignment/replay-v7/traceability-graph-snapshot.json",
+    "dogfood/work-item-verification/assignment/replay-v7/specialist-assignment-promotion-proof.json"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/architecture-discovery-release.test.mjs test/project-baseline.test.mjs test/work-execution-specialist-assignment-dogfood.test.mjs test/work-item-verification-planning-dogfood.test.mjs",
+      "exitCode": 1,
+      "summary": "6 of 7 tests passed. All three diagnosed preflight drifts are repaired; the assembled release test fails at the native-inventory-to-traceability boundary because normalized observation references and octet-stream source evidence cannot be resolved by the graph service."
+    },
+    {
+      "command": "npm.cmd run verify",
+      "exitCode": 1,
+      "summary": "Static verification passed. The package test runner failed on the ArchitectureDiscovery release defect and existing Structurizr-dependent dogfood tests whose network fetches were denied by the execution environment."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "architecture-discovery/release-gate",
+      "relativePath": "dogfood/architecture-discovery/release/release-gate-evidence.json",
+      "digest": "sha256:d31614fec6a76c33f0fcfa23392383c4f7babc2cb90329d8f574cebe42f43917"
+    }
+  ],
+  "notes": "Preserved immutable replay-v5 and replay-v6 history and advanced their producers to replay-v6 and replay-v7. The release proof found an implementation defect outside allowedWritePaths: CurrentArchitectureSnapshot observation references use canonical body digests rather than complete serialized-byte digests expected by TraceabilityGraph, and native repository-file evidence is application/octet-stream while the graph resolver unconditionally requires UTF-8 JSON.",
+  "residualRisks": [
+    "ArchitectureDiscovery cannot complete a real native-inventory traceability merge until the artifact-reference and resolver contract is repaired within implementation authority.",
+    "The full package gate also requires an environment with the already-configured Structurizr network dependency available or an approved offline supply."
+  ]
+}

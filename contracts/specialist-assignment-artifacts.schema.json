@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/specialist-assignment-artifacts.schema.json",
+  "title": "DevRelay SpecialistAssignment artifacts",
+  "oneOf": [
+    { "$ref": "#/$defs/eligibility" },
+    { "$ref": "#/$defs/selections" },
+    { "$ref": "#/$defs/draft" },
+    { "$ref": "#/$defs/baseline" }
+  ],
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workItemId", "requiredCapabilityIds", "requiredToolIds", "requiredGrantIds", "eligibleProfileIds", "profileEvaluations"],
+      "properties": {
+        "workItemId": { "type": "string", "minLength": 1 },
+        "requiredCapabilityIds": { "$ref": "#/$defs/stringArray" },
+        "requiredToolIds": { "$ref": "#/$defs/stringArray" },
+        "requiredGrantIds": { "$ref": "#/$defs/stringArray" },
+        "eligibleProfileIds": { "$ref": "#/$defs/stringArray" },
+        "profileEvaluations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["profileId", "eligible", "exclusionReasons"],
+            "properties": {
+              "profileId": { "type": "string", "minLength": 1 },
+              "eligible": { "type": "boolean" },
+              "exclusionReasons": { "$ref": "#/$defs/stringArray" }
+            }
+          }
+        }
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "workItemsDigest", "capabilityCatalogDigest", "specialistCatalogDigest", "assignmentPolicyDigest", "evaluations", "evaluationDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "EligibilityEvaluationSet" },
+        "workItemsDigest": { "$ref": "#/$defs/digest" },
+        "capabilityCatalogDigest": { "$ref": "#/$defs/digest" },
+        "specialistCatalogDigest": { "$ref": "#/$defs/digest" },
+        "assignmentPolicyDigest": { "$ref": "#/$defs/digest" },
+        "evaluations": { "type": "array", "items": { "$ref": "#/$defs/evaluation" } },
+        "evaluationDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workItemId", "profileId", "rationale"],
+      "properties": {
+        "workItemId": { "type": "string", "minLength": 1 },
+        "profileId": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "selections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "ranker", "eligibilityDigest", "selections"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RankerSelectionSet" },
+        "ranker": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 }
+          }
+        },
+        "eligibilityDigest": { "$ref": "#/$defs/digest" },
+        "selections": { "type": "array", "items": { "$ref": "#/$defs/selection" } }
+      }
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workItemRef", "specialistProfileRef", "capabilityCoverage", "requiredTools", "requiredGrants", "assignmentRationale"],
+      "properties": {
+        "workItemRef": { "type": "string", "minLength": 1 },
+        "specialistProfileRef": { "type": "string", "minLength": 1 },
+        "capabilityCoverage": { "$ref": "#/$defs/stringArray" },
+        "requiredTools": { "$ref": "#/$defs/stringArray" },
+        "requiredGrants": { "$ref": "#/$defs/stringArray" },
+        "assignmentRationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "draft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "draftId", "inputBindings", "eligibilityDigest", "assignments", "assignmentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "SpecialistAssignmentDraft" },
+        "draftId": { "type": "string", "minLength": 1 },
+        "inputBindings": { "type": "array", "items": { "type": "object" } },
+        "eligibilityDigest": { "$ref": "#/$defs/digest" },
+        "assignments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/assignment" } },
+        "assignmentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "baselineId", "version", "approvedDraft", "assignments", "assignmentDigest", "approvalEvidence"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "SpecialistAssignmentBaseline" },
+        "baselineId": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "approvedDraft": { "type": "object" },
+        "assignments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/assignment" } },
+        "assignmentDigest": { "$ref": "#/$defs/digest" },
+        "approvalEvidence": { "type": "array", "minItems": 1, "items": { "type": "object" } }
+      }
+    }
+  }
+}

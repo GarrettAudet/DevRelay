@@ -45,8 +45,16 @@ test("the canonical project baseline contains the exact approved V1 lifecycle", 
       lifecycle.conditional,
     );
   }
-  assert.equal(requirementsBaseline.version, "1.1.0");
-  assert.equal(overviewBaseline.version, "1.1.0");
+  assert.equal(requirementsBaseline.version, "1.7.0");
+  assert.equal(overviewBaseline.version, "1.7.0");
+  assert.equal(
+    sha256Digest(await readFile(new URL("project/requirements-baseline.json", root))),
+    "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+  );
+  assert.equal(
+    sha256Digest(await readFile(new URL("project/project-overview-baseline.json", root))),
+    "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985",
+  );
 
   assert.deepEqual(
     overviewBaseline.overview,
@@ -79,8 +87,8 @@ test("the approved WorkDependencyAnalysis change supersedes the exact historical
   ] =
     await Promise.all([
       json("dogfood/work-dependency-analysis/requirements-change.invocation.json"),
-      json("project/requirements-baseline.json"),
-      json("project/project-overview-baseline.json"),
+      json("project/history/1.1.0/requirements-baseline.json"),
+      json("project/history/1.1.0/project-overview-baseline.json"),
       readFile(new URL("project/history/1.0.0/requirements-baseline.json", root)),
       readFile(
         new URL("project/history/1.0.0/project-overview-baseline.json", root),

@@ -1,0 +1,90 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-CORE.attempt-001",
+  "workItem": {
+    "id": "WI-BA-CORE",
+    "objective": "Implement exact subject binding, exhaustive business evidence evaluation, deterministic candidate assembly, and checkpoint replay.",
+    "boundedScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "deliverables": [
+      "Core-owned evidence evaluation",
+      "Complete objective and metric dispositions",
+      "Zero-call exact replay and drift detection"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "runtime-engineering",
+      "business-policy"
+    ],
+    "dependencyHints": [
+      "WI-BA-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Exercise accepted-candidate, rejected, and needs-evidence paths",
+      "Reject all lineage substitutions before evaluation"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/core-tests"
+    ],
+    "sourceRefs": [
+      "goal-business-acceptance-gate-v1",
+      "D-BA-COVERAGE-001",
+      "D-BA-APPROVAL-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-CORE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "runtime-engineering",
+      "business-policy"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The provider-neutral DevRelay engineering profile covers this bounded Gate work item; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "graph operations outside trusted contributor",
+      "unbound owner approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-CORE.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:435ba37cb4e14f7f35779a0e1ef2254b70e9341c2b876494bfca61704f639ebb"
+}

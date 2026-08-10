@@ -1,0 +1,354 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-RUN-CONTRACTS-003",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-CONTRACTS-ATTEMPT-003",
+  "workItemId": "WI-RUN-CONTRACTS",
+  "attempt": 3,
+  "status": "prepared",
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING"
+    ],
+    "requiredGrants": [
+      "GRANT-REPOSITORY-WRITE"
+    ],
+    "requiredTools": [
+      "TOOL-NODE"
+    ],
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "workItemRef": "WI-RUN-CONTRACTS"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "contracts/lifecycle-run-report-artifacts.schema.json",
+      "src/lifecycle-run-report-artifact-validator.mjs",
+      "src/index.mjs",
+      "test/lifecycle-run-report-contracts.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not alter approved requirements, architecture, contracts, work breakdown, dependency, assignment, graph, evidence, release, or project baseline artifacts.",
+      "Do not create a lifecycle module or plug-in manifest; LifecycleRunReport is read-only Core infrastructure, not a workflow stage.",
+      "Do not implement ledger storage, host observations, frontier resolution, snapshot projection, content policy, Markdown rendering, documentation, or release behavior owned by later work items.",
+      "Do not commit, tag, merge, publish, promote, or claim integration authority."
+    ]
+  },
+  "contextPaths": [
+    "README.md",
+    "ProjectOverview.md",
+    "project/requirements-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-baseline.json",
+    "project/contract-disposition.json",
+    "dogfood/lifecycle-run-report/architecture-design/architecture-change-set-draft.json",
+    "dogfood/lifecycle-run-report/work-breakdown/tasks.md",
+    "dogfood/lifecycle-run-report/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/lifecycle-run-report/dependency-analysis/work-dependency-baseline.json",
+    "dogfood/lifecycle-run-report/assignment/specialist-assignment-baseline.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-workflow-facts.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-host-observations.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-lifecycle-snapshot.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-comparability.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-content-policy.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-report-access.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-integrated-completion.schema.json",
+    "dogfood/architecture-discovery/contract-generation/native/ct-if-run-ready-frontier.schema.json",
+    "contracts/architecture-discovery-artifacts.schema.json",
+    "src/architecture-discovery-artifact-validator.mjs",
+    "contracts/system-verification-artifacts.schema.json",
+    "src/system-verification-artifact-validator.mjs",
+    "dogfood/lifecycle-run-report/execution/task-contracts/attempts/WI-RUN-CONTRACTS.attempt-001.handoff.raw.json",
+    "dogfood/lifecycle-run-report/execution/task-contracts/attempts/WI-RUN-CONTRACTS.attempt-001.wiv.json",
+    "dogfood/lifecycle-run-report/execution/task-contracts/attempts/WI-RUN-CONTRACTS.attempt-002.handoff.raw.json",
+    "dogfood/lifecycle-run-report/execution/task-contracts/attempts/WI-RUN-CONTRACTS.attempt-002.wiv.json"
+  ],
+  "verification": {
+    "acceptance": "Only closed, versioned, provider-neutral reporting artifacts validate; LifecycleRunReport remains read-only Core infrastructure and cannot route, approve, execute, verify, integrate, or mutate TraceabilityGraph.",
+    "commands": [
+      "node --test test/lifecycle-run-report-contracts.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "lifecycle-run-report/contract-tests",
+        "description": "Positive, negative, unknown-field, digest-drift, and forbidden-authority fixtures prove all eight interfaces and the non-stage Core boundary."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify if the approved artifacts leave a public contract or authority decision unresolved.",
+    "Stop with fix if the focused contract suite fails or authority cannot remain inside allowedWritePaths.",
+    "Stop after the exact bounded handoff; Core owns verification, integration, traceability merge, and progression."
+  ],
+  "hostRuntimeSupply": {
+    "dependencyResolver": {
+      "mode": "bare-package-resolution-only",
+      "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/.tmp-devrelay-dependency-loader.mjs",
+      "digest": "sha256:7806bde635ad93006403a185c925b09f3187bc9de582d6266910f9df9a31bcd5"
+    },
+    "dependencyTree": {
+      "authority": "host-read-supply",
+      "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/node_modules",
+      "repositoryWriteGrant": false
+    }
+  },
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-RUN-DOGFOOD-WI-RUN-CONTRACTS-ATTEMPT-003",
+      "workItemId": "WI-RUN-CONTRACTS",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "lifecycle-run-report/contract-tests",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-RUN-CONTRACTS",
+    "objective": "Define the closed LifecycleRunReport artifacts, Core-owned service surface, and read-only report access port.",
+    "bounded-scope": {
+      "included": [
+        "Implement validators and exports for workflow facts, observations, snapshots, policy, completion, frontier, comparability, and report access.",
+        "Keep report contracts provider-neutral and authority-free."
+      ],
+      "excluded": [
+        "Routing modules, approving Gates, mutating canonical artifacts, or satisfying verification evidence."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-RUN-CONTRACTS",
+        "description": "Closed LifecycleRunReport artifact validators and public Core surface.",
+        "artifactKind": "RuntimeContractSet"
+      }
+    ],
+    "work-type": "code-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-RUN-DYNAMIC-001",
+      "AC-DEV-RUN-NON-AUTHORITY-001"
+    ],
+    "architecture-refs": [
+      "EL-RUN-REPORT-PORT",
+      "EL-RUN-REPORTING"
+    ],
+    "contract-refs": [
+      "CT-IF-RUN-COMPARABILITY",
+      "CT-IF-RUN-CONTENT-POLICY",
+      "CT-IF-RUN-HOST-OBSERVATIONS",
+      "CT-IF-RUN-INTEGRATED-COMPLETION",
+      "CT-IF-RUN-LIFECYCLE-SNAPSHOT",
+      "CT-IF-RUN-READY-FRONTIER",
+      "CT-IF-RUN-REPORT-ACCESS",
+      "CT-IF-RUN-WORKFLOW-FACTS"
+    ],
+    "required-capabilities": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING"
+    ],
+    "dependency-hints": [],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-RUN-CONTRACTS",
+          "method": "Compile and exercise every report contract with positive, negative, substitution, unknown-field, and forbidden-authority fixtures.",
+          "successCriteria": "Only closed, versioned, provider-neutral reporting artifacts validate and none can claim workflow authority."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "lifecycle-run-report/contract-tests",
+        "description": "Only closed, versioned, provider-neutral reporting artifacts validate and none can claim workflow authority."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/37"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/40"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/21"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/32"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/20"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/21"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/22"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/23"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/24"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/25"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/26"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/27"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-RUN-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:3acdebe84741c1aee374a46bd3efb48a3904ab69617e71eaf6676c0d7f7170f7",
+          "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  },
+  "requiredCorrections": [
+    "Preserve every revision-2 correction and all eight closed provider-neutral interfaces.",
+    "Replace adapter maturity values with exactly contract-defined, fixture-conformant, live-conformant, and release-ready; reject every unsupported value.",
+    "Do not represent Core-owned implementation status as adapter maturity.",
+    "Add positive and negative fixtures proving the exact approved vocabulary and rejection behavior."
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "sourceFinding": "Independent WorkItemVerification passed nine mechanics tests but found one approved architecture vocabulary defect; no revision-2 bytes were integrated.",
+    "predecessorTaskContract": {
+      "artifactId": "WETC-WI-RUN-CONTRACTS-002",
+      "digest": "sha256:3cb56e62a7779ddf8cb263084aa2df5f26e38dc05f9dd89fbe98c55bebfe3488"
+    },
+    "predecessorHandoff": {
+      "artifactId": "WI-RUN-CONTRACTS.attempt-002.handoff.raw.json",
+      "digest": "sha256:d440ef137240af479d6e8603e964c20270931672bc2c26c8bdeae9c0062a15ca"
+    },
+    "verificationReview": {
+      "artifactId": "WI-RUN-CONTRACTS.attempt-002.wiv.json",
+      "digest": "sha256:e6c8cecba62e9dd1ff988e2eec41fcf476e40c62816242581104def37a8b6572"
+    }
+  }
+}

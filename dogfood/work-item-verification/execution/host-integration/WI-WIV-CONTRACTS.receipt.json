@@ -1,0 +1,63 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHostIntegrationReceipt",
+  "receiptId": "WIVHIR-WI-WIV-CONTRACTS-001",
+  "executionId": "WE-WIV-FRONTIER-001-WI-WIV-CONTRACTS-ATTEMPT-001",
+  "workItemId": "WI-WIV-CONTRACTS",
+  "task": {
+    "threadId": "019fdb4e-405b-7010-8ae5-47962fac15d2",
+    "worktree": "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis",
+    "contract": {
+      "relativePath": "dogfood/work-item-verification/execution/task-contracts/WI-WIV-CONTRACTS.attempt-001.task.json",
+      "bytes": 1763,
+      "digest": "sha256:ab3514cd52ef07a917198ee4a84295ff1e6cc5698a1af3516d73df2db234b65e"
+    }
+  },
+  "handoff": {
+    "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-001.handoff.raw.json",
+    "bytes": 3422,
+    "digest": "sha256:1318e2e1deb54c457efc23493e4ccce334c3b4514ceda5266a73c1eba5f4a513"
+  },
+  "parentReview": {
+    "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-001.parent-review.json",
+    "bytes": 1975,
+    "digest": "sha256:9dd22d75019da10c993acb4488ed375d57b1029acf1ff75c154ac40dec609ceb"
+  },
+  "integratedFiles": [
+    {
+      "relativePath": "contracts/work-item-verification-artifacts.schema.json",
+      "bytes": 10511,
+      "digest": "sha256:9e392d4ce7a9e76a0bbd9a23167421ff09295d8fc63e3470c029274b4ca23f1b"
+    },
+    {
+      "relativePath": "examples/modules/work-item-verification.module.json",
+      "bytes": 6433,
+      "digest": "sha256:1be5ef95f438f3131c9206e76700ea3b5e816093c2219528e6d0803a7af17069"
+    },
+    {
+      "relativePath": "src/work-item-verification-artifact-validator.mjs",
+      "bytes": 2992,
+      "digest": "sha256:c5ebc4f640e3600c77eec1a190570bf13c71d1e12ac6069389f8af2a9fda310f"
+    },
+    {
+      "relativePath": "test/work-item-verification-contracts.test.mjs",
+      "bytes": 7280,
+      "digest": "sha256:564c0525621e4ccfa8beaf08f879b0e6a6de84b6814b32660a00411bbe147248"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/work-item-verification-artifact-validator.mjs",
+      "outcome": "pass"
+    },
+    {
+      "command": "node --test test/work-item-verification-contracts.test.mjs test/module-contract.test.mjs test/schema-enforcement.test.mjs test/work-execution-artifact-validator.test.mjs",
+      "outcome": "pass",
+      "tests": 34
+    }
+  ],
+  "lifecycleDisposition": "provisional-host-integrated",
+  "nextRequiredStage": "WorkItemVerification-after-module-release",
+  "authoritativeVerifiedCompletionFactCreated": false,
+  "authoritativeIntegratedCompletionFactCreated": false
+}

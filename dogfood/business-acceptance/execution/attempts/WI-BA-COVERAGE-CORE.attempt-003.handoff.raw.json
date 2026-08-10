@@ -1,0 +1,50 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-COVERAGE-CORE.attempt-003",
+  "workItemId": "WI-BA-COVERAGE-CORE",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/business-acceptance-core.mjs",
+    "src/business-acceptance-checkpoint.mjs",
+    "test/business-acceptance-core.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/coverage-core-tests",
+      "relativePath": "test/business-acceptance-core.test.mjs",
+      "digest": "sha256:9c66759918b37a3cd680753a2ea79646d90d55030ee0b9ac930ccaf308dd71ff"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/business-acceptance-core.mjs",
+      "exitCode": 0,
+      "summary": "BusinessAcceptance Core syntax passed."
+    },
+    {
+      "command": "node --check src/business-acceptance-checkpoint.mjs",
+      "exitCode": 0,
+      "summary": "BusinessAcceptance checkpoint syntax passed."
+    },
+    {
+      "command": "node --check test/business-acceptance-core.test.mjs",
+      "exitCode": 0,
+      "summary": "Focused Core test syntax passed."
+    },
+    {
+      "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/business-acceptance-core.test.mjs",
+      "exitCode": 0,
+      "summary": "All 8 focused Core tests passed, including exact production RequirementsBaseline scope coverage; 0 failed, skipped, or cancelled."
+    },
+    {
+      "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/business-acceptance-contracts.test.mjs test/business-acceptance-core.test.mjs test/requirements-traceability.test.mjs",
+      "exitCode": 0,
+      "summary": "All 27 contract, Core, production-fixture, and requirements-traceability tests passed; 0 failed, skipped, or cancelled."
+    }
+  ],
+  "residualRisks": [
+    "The worktree has no local node_modules installation; executable tests use the repository-established shared dependency loader for Ajv resolution."
+  ],
+  "notes": "Attempt 003 replaces the rejected synthetic requirements.scope.inScope and BS-hash model with the exact approved RequirementsBaseline.requirements.scope array. Core preserves every authoritative scope.id, statement, and sourceRefs value, rejects malformed records, empty provenance, duplicate identities, and duplicate statements, and returns records in explicit code-unit ID order. The production fixture proves all 31 current project scope records are returned without omissions or identity/provenance loss. Attempt 002's accepted sha256(raw bytes), fatal UTF-8 JSON decode, parsed-value equality, exact graph bytes/ref/checkpoint, graph-envelope validation, coverage substitution checks, and zero-call checkpoint replay remain intact. No Gate approval, integration, release, deployment, requirements mutation, or adapter authority was performed. Attempts 001 and 002 remain byte-identical at sha256:74100bdbaca9cc9a08159f3893034c5e1d7c646eb5a89b2fc9a2d1d7d766ab2c and sha256:61749ac173dbe127de6296073928637c8a09be18aac2c30a1733aa821655c5b3."
+}

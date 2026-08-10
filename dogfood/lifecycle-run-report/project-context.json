@@ -1,0 +1,36 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay V0.4 has approved Requirements, ProjectOverview, Architecture, WorkBreakdown, and WorkDependency baselines plus released RequirementsGathering, ArchitectureDesign, WorkBreakdown, WorkDependencyAnalysis, and TraceabilityGraph capabilities. V0.5 freezes the full V1 lifecycle and adds dynamic human-readable run reporting before the remaining modules are built one by one.",
+  "stakeholders": [
+    "DevRelay maintainers",
+    "Workflow authors",
+    "Module and adapter authors",
+    "IDE and orchestration hosts",
+    "Specialist-profile and runtime-executor providers",
+    "Reviewers and business approvers"
+  ],
+  "domainConstraints": [
+    "Generic Core owns exact artifact loading, deterministic routing, adapter resolution, checkpointing, validation, Gate progression, and ready-frontier derivation.",
+    "Modules own provider-neutral contracts while adapters own bounded native-tool capabilities.",
+    "Candidate and approved authority remain distinct and Gate promotion is exact and explicit.",
+    "Effectful model output is checkpointed and replayed rather than assumed bit-reproducible.",
+    "Adapters never receive or mutate TraceabilityGraph and cannot author graph operations.",
+    "Operational reporting observes workflow facts but cannot become routing, evidence, or approval authority.",
+    "SpecialistAssignment cannot select readiness, schedule work, execute, modify the DAG, or bind a concrete provider, model, human, or process.",
+    "Optimization follows a complete measured end-to-end run."
+  ],
+  "conventions": [
+    "Use exact immutable module and adapter versions.",
+    "Use SHA-256-bound artifacts and raw-byte verification at runtime boundaries.",
+    "Use JSON Schema draft 2020-12 and Ajv validation.",
+    "Use lowercase kebab-case ports, operations, relationships, and machine outcomes.",
+    "Store forward graph relationships only and derive reverse traversal at query time.",
+    "Label adapter bindings contract-defined, fixture-conformant, live-conformant, or release-ready.",
+    "Represent missing observations with explicit captured, not-reported, or not-applicable dispositions.",
+    "Prove generic behavior through positive, negative, replay, drift, non-authority, and Core special-case tests."
+  ],
+  "sourceRefs": []
+}

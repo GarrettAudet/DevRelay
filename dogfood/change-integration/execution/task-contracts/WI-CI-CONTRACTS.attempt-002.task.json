@@ -1,0 +1,41 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-CI-CONTRACTS-002",
+  "executionId": "WE-CI-DOGFOOD-WI-CI-CONTRACTS-ATTEMPT-002",
+  "workItemId": "WI-CI-CONTRACTS",
+  "status": "ready",
+  "attempt": 2,
+  "revisionLineage": {
+    "predecessorTaskContract": {"artifactId":"WETC-WI-CI-CONTRACTS-001"},
+    "parentReview": {"artifactId":"CIPR-WI-CI-CONTRACTS-001"},
+    "route": "fix"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "contracts/change-integration-artifacts.schema.json",
+      "src/change-integration-artifact-validator.mjs",
+      "test/change-integration-contracts.test.mjs",
+      "examples/modules/change-integration.module.json"
+    ],
+    "forbiddenActions": [
+      "Do not implement repository mutation, target CAS behavior, local Git adapter behavior, checkpoint persistence, result normalization, traceability, SystemVerification, or BusinessAcceptance.",
+      "Do not change package metadata, exports, baselines, dogfood gate artifacts, unrelated modules, or generic Core behavior.",
+      "Do not create approval, verification, integration, graph, or progression facts.",
+      "Do not create commits, tags, pull requests, or merge any branch."
+    ]
+  },
+  "requiredCorrections": [
+    "Use exactly integrated, integration-conflict, baseline-drift, unable-to-proceed, and execution-failed as module outcomes; remove conflict and target-drift.",
+    "Add the Core-owned checkpoint/recovery step before result validation in the module orchestration plan.",
+    "Use only filesystem.read, filesystem.write, network.connect, process.spawn, and secrets.read permission-demand kinds with bounded scopes; do not invent repository permission kinds.",
+    "Use immutable native integration effect and post-state evidence for runtime integrated outcomes; keep change-integration/contract-tests only as work-item verification evidence, not module runtime evidence.",
+    "Make IntegrationPlan explicitly bind exact verified change bytes/digest, pre-state, adapter version/configuration, bounded permission demands, target transition, policy, and idempotency identity.",
+    "Allow RawIntegrationEffectResult and IntegrationCheckpoint to faithfully represent operation details, interruption, uncertain effects, prepared/effect-recorded/reconciled states, and recovery without claiming non-success mutation is already resolved.",
+    "Add negative tests for every corrected boundary and retain unknown-field, substitution, downstream-authority, and exact-digest rejection."
+  ],
+  "handoffContract": {
+    "format": "Return one exact JSON object with fields workItemId, outcome, summary, changedFiles, verification, deliverables, sourceRefs, residualRisks, and integrationNotes.",
+    "allowedOutcomes": ["pass", "fix", "diagnose", "clarify", "block"]
+  }
+}

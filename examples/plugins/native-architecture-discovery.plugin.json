@@ -1,0 +1,19 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "native-architecture-discovery",
+    "version": "0.1.0",
+    "description": "Deterministic offline inventory of the exact repository files admitted by the ArchitectureDiscovery privacy guard."
+  },
+  "implements": [{
+    "module": { "id": "architecture-discovery", "version": "0.1.0" },
+    "operations": [{
+      "id": "discover",
+      "role": "proposer",
+      "execution": "effect",
+      "configSchema": { "type": "object", "additionalProperties": false },
+      "capabilities": []
+    }]
+  }]
+}

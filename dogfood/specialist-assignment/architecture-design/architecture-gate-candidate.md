@@ -1,0 +1,49 @@
+# Architecture Gate candidate: SpecialistAssignment 0.1.0
+
+Status: **awaiting owner approval**
+
+## Exact bindings
+
+- RequirementsBaseline: sha256:999f98d84439bc3115512e43a8b4ab33f39ff38353d9ed24f11cdd7205708435
+- ProjectOverviewBaseline: sha256:0dd0524534586957b595d6a92b6e410002f2a88f95ee37ae13301b5dfacbe762
+- ProjectContext: sha256:1057b158a432e3b702bf52ba571b86e52f0a73ae0542d57909aa116365ea1448
+- RepositorySnapshot: sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73
+- ArchitectureBaseline: sha256:62a637f33635671295f730ff7e49bd69442d7721968e0bd5ad7be1c6801b9231
+- ProjectArchitectureState: sha256:aed4d3ad138a2d7e2bb05850cbe52f95a51bff7ace96200135ddf76642ada2d8
+- ModuleRouteDecision: sha256:8b1bf14a58fcb0579f285890588054218275d30ca103f7dd2e7db10d157388b7
+- DesignerWorkingArtifact: sha256:18b65be2ca55d266c03ad28a79f0fae65f7beb62da06cc5d5aa608c9f078d679
+- ModelerWorkingArtifact: sha256:332e367907db58d710105d6fd79a5815e7f70691dda4e9c88bb89dd94fc05266
+- ArchitectureChangeSetDraft: sha256:167b12cb3fdd758e73f84c78b5b6e597d056a691cf247263c995771f237bbf69
+- Native OpenSpec design: sha256:aab0b7e1c6aa804da0f18bcf39376a1f7a463f433484a977250872ce97e3699c
+- Native Structurizr workspace: sha256:f66154e7cbc3b45a621dc2e5fce03b6fb424be538b1b4ce66806b3321a2676c8
+- StructurizrConformanceProof: sha256:d23e8c9eb392fddd43e38752e95034e1c7943595102c2e621731af9b5b20507f
+- Native ADR-SA-001: sha256:765527af8cb21cbcb9f44875c70ee1e6b98cff1540d7c4c6abd6b743ef231322
+- Native ADR-SA-002: sha256:e307af57192ccc6dd595a3265d1f80f2725a0d5a3d1501e008a56c045fd2a9f4
+- Native ADR-SA-003: sha256:1348273aae23c8182040f69e6ade43453c3909bd9687b6499ddc6f80d1f4b84f
+- Native ADR-SA-004: sha256:ef98d293d76f6de4323932c40713186783fea9ff39ebeea51dde07755ad37686
+- Native ADR-SA-005: sha256:c2fb08c014363027eaf495b61844d9c07fd2e6fd52492bb6e32d26274905dfba
+- ModuleInvocation: sha256:474f965734edec582f0e9baa6f5b44fb81429829bb1cb591990188ced6dfd324
+- ModuleResult: sha256:6cea9850404d0681bd11b160492bd760d88c911100a093b72698fcdeb73e4915
+- RuntimeExecutionProof: sha256:0d60f25bde91ff38f00e0fc0fb870af0522353f56d3943f1712a33b21c1fbc5a
+
+## Deterministic route and chain
+
+- Project state is `baselined`; Core selected `design-change` with `BASELINE_REQUIRES_CHANGE_DESIGN`.
+- Configured chain executed as OpenSpec design -> Structurizr -> MADR with three checkpoints and zero adapter calls on replay.
+- OpenSpec and MADR effects remain bounded deterministic adapter fixtures; the official Structurizr 2026.06.28 binary separately parsed and exported the workspace for canonical comparison.
+
+## Gate findings
+
+- PASS: official Structurizr validation accepted the software-system -> container -> component hierarchy; JSON export normalized exactly to 53 elements, 55 relationships, the hierarchy, and 14 declared views.
+- PASS: Core invokes one full-snapshot assign-specialists operation over the exact approved work plan; neither a model nor ranker selects scope or readiness.
+- PASS: the configured ranker chooses only among Core-computed eligible profiles and cannot approve policy, promote assignments, mutate TraceabilityGraph, bind executors, schedule, or execute work.
+- PASS: Core independently enforces capability, tool, grant, and policy eligibility and assembles a deterministic complete candidate with optional prior-baseline comparison.
+- PASS: the module returns exactly one complete SpecialistAssignmentDraft or needs-clarification; partial candidates are not promotable.
+- PASS: six new provider-neutral interface intents are marked for JSON Schema contract generation before downstream work decomposition.
+- PASS: the deterministic native structured ranker is the default binding; optional future rankers use the same eligible-set contract and begin fixture-conformant.
+- PASS: exhaustive typed changes and reciprocal traceability cover all approved normative requirements.
+- PASS: candidate and approved assignment traceability use separate trusted contributors and authority scopes; adapters submit no graph operations.
+
+## Approval boundary
+
+Approval must bind this exact ArchitectureChangeSetDraft and all exact input and native-artifact digests above. Any modification requires a new Architecture Gate candidate.

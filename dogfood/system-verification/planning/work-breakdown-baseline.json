@@ -1,0 +1,221 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkBreakdownBaseline",
+  "baselineId": "WB-SV-DOGFOOD-001",
+  "workItems": [
+    {
+      "id": "WI-SV-CONTRACTS",
+      "objective": "Define the closed SystemVerification artifact schemas and semantic ModuleDefinition.",
+      "boundedScope": [
+        "contracts/system-verification-artifacts.schema.json",
+        "examples/modules/system-verification.module.json",
+        "src/system-verification-artifact-validator.mjs",
+        "test/system-verification-contracts.test.mjs"
+      ],
+      "deliverables": [
+        "Closed canonical artifact family",
+        "One-operation provider-neutral module manifest",
+        "Schema validator and positive/negative tests"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "schema-design",
+        "deterministic-contracts"
+      ],
+      "dependencyHints": [],
+      "verificationPlan": [
+        "Run focused contract tests",
+        "Reject unknown fields, stale digests, forbidden authority, and invalid outcomes"
+      ],
+      "requiredEvidence": [
+        "system-verification/contract-tests"
+      ],
+      "sourceRefs": [
+        "goal-system-verification-module-v1",
+        "D-SV-SUBJECT-001",
+        "D-SV-OUTCOMES-001"
+      ]
+    },
+    {
+      "id": "WI-SV-CORE",
+      "objective": "Implement Core-owned subject binding, obligation expansion, evidence normalization, policy evaluation, and replay-safe result assembly.",
+      "boundedScope": [
+        "src/system-verification-core.mjs",
+        "src/system-verification-checkpoint.mjs",
+        "test/system-verification-core.test.mjs"
+      ],
+      "deliverables": [
+        "Deterministic verification pipeline",
+        "Immutable checkpoint replay",
+        "Fail-closed drift and substitution behavior"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "runtime-engineering",
+        "verification-policy"
+      ],
+      "dependencyHints": [
+        "WI-SV-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Exercise every outcome",
+        "Prove exact replay invokes zero verifier calls",
+        "Exercise stale baselines, subject, evidence, and policy"
+      ],
+      "requiredEvidence": [
+        "system-verification/core-tests"
+      ],
+      "sourceRefs": [
+        "goal-system-verification-module-v1",
+        "D-SV-OBLIGATIONS-001",
+        "D-SV-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "WI-SV-ADAPTERS",
+      "objective": "Provide bounded test and review verifier adapter bindings for system-level evidence collection.",
+      "boundedScope": [
+        "src/system-verification-test-adapter.mjs",
+        "src/system-verification-review-adapter.mjs",
+        "examples/plugins/test-system-verifier.plugin.json",
+        "examples/plugins/review-system-verifier.plugin.json",
+        "test/system-verification-adapters.test.mjs"
+      ],
+      "deliverables": [
+        "Two interchangeable proposer-only adapters",
+        "Canonical raw observation mapping",
+        "Adapter conformance tests"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "adapter-engineering",
+        "test-automation"
+      ],
+      "dependencyHints": [
+        "WI-SV-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Run both bindings through the same contract",
+        "Reject adapter-owned decisions and graph operations"
+      ],
+      "requiredEvidence": [
+        "system-verification/adapter-tests"
+      ],
+      "sourceRefs": [
+        "goal-system-verification-module-v1",
+        "D-SV-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "WI-SV-TRACEABILITY",
+      "objective": "Add the trusted SystemVerification traceability contributor and forward-only evidence facts.",
+      "boundedScope": [
+        "src/system-verification-traceability-contributor.mjs",
+        "test/system-verification-traceability.test.mjs"
+      ],
+      "deliverables": [
+        "Trusted deterministic contributor",
+        "Atomic graph-update tests",
+        "Orphan and missing-evidence diagnostics"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "graph-modeling",
+        "traceability"
+      ],
+      "dependencyHints": [
+        "WI-SV-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Project verified facts only",
+        "Reject inverse, candidate, failed, missing-evidence, and adapter-authored facts"
+      ],
+      "requiredEvidence": [
+        "system-verification/traceability-tests"
+      ],
+      "sourceRefs": [
+        "goal-system-verification-module-v1",
+        "D-SV-BOUNDARY-001"
+      ]
+    },
+    {
+      "id": "WI-SV-DOCUMENTATION",
+      "objective": "Document SystemVerification inputs, trust boundary, outcomes, plug-in contract, replay, and BusinessAcceptance handoff.",
+      "boundedScope": [
+        "docs/system-verification.md",
+        "README.md",
+        "examples/README.md",
+        "test/system-verification-documentation.test.mjs"
+      ],
+      "deliverables": [
+        "Human-readable operator guide",
+        "README links",
+        "Documentation conformance test"
+      ],
+      "workType": "documentation-change",
+      "requiredCapabilities": [
+        "technical-writing",
+        "verification-domain"
+      ],
+      "dependencyHints": [
+        "WI-SV-CONTRACTS",
+        "WI-SV-CORE",
+        "WI-SV-ADAPTERS",
+        "WI-SV-TRACEABILITY"
+      ],
+      "verificationPlan": [
+        "Assert lifecycle and authority boundaries",
+        "Assert exact inputs and outcomes"
+      ],
+      "requiredEvidence": [
+        "system-verification/documentation-tests"
+      ],
+      "sourceRefs": [
+        "goal-system-verification-module-v1",
+        "D-SV-ENVIRONMENT-001",
+        "D-SV-OUTCOMES-001"
+      ]
+    },
+    {
+      "id": "WI-SV-RELEASE",
+      "objective": "Expose and package the complete SystemVerification slice and prove one end-to-end deterministic run.",
+      "boundedScope": [
+        "src/index.mjs",
+        "package.json",
+        "package-lock.json",
+        "release/",
+        "test/system-verification-release.test.mjs",
+        "dogfood/system-verification/"
+      ],
+      "deliverables": [
+        "Public exports and package inventory",
+        "End-to-end proof",
+        "Release manifest and gate evidence"
+      ],
+      "workType": "configuration-change",
+      "requiredCapabilities": [
+        "release-engineering",
+        "integration-testing"
+      ],
+      "dependencyHints": [
+        "WI-SV-CORE",
+        "WI-SV-ADAPTERS",
+        "WI-SV-TRACEABILITY",
+        "WI-SV-DOCUMENTATION"
+      ],
+      "verificationPlan": [
+        "Run focused SystemVerification suite",
+        "Run npm verify and release check",
+        "Prove no BusinessAcceptance fact exists"
+      ],
+      "requiredEvidence": [
+        "system-verification/release-gate"
+      ],
+      "sourceRefs": [
+        "goal-system-verification-module-v1",
+        "D-SV-BOUNDARY-001"
+      ]
+    }
+  ],
+  "contentDigest": "sha256:d09ea0356d83bf52213afc8bf7ca74b1ea7c453c09cb50791d359629532d5e11"
+}

@@ -1,0 +1,46 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-WI-RUN-SNAPSHOT-ATTEMPT-003",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-SNAPSHOT-ATTEMPT-003",
+  "workItemId": "WI-RUN-SNAPSHOT",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-SNAPSHOT-003",
+    "digest": "sha256:909c63cd48fb3d1f0aa257999f5762bcd88b67354a6ccbdfdacedf3fa78cd1c9"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-SNAPSHOT.attempt-003.handoff.raw.json",
+    "digest": "sha256:be7a72491b0f59a96e242e1f2810613c735e8d5e5f5653cece1a06a6d22418c6"
+  },
+  "changedFiles": [
+    "src/lifecycle-run-report-snapshot.mjs",
+    "test/lifecycle-run-report-snapshot.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --experimental-loader=file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-snapshot-dependency-loader.mjs --test test/lifecycle-run-report-snapshot.test.mjs",
+    "hostSupply": "ajv-8.20.0-read-only-fallback",
+    "exitCode": 0,
+    "tests": 5
+  },
+  "outcome": "fix",
+  "findings": [
+    {
+      "code": "RUN_SNAPSHOT_GRAPH_DIAGNOSTICS_NOT_JOINED",
+      "requirementRefs": [
+        "AC-DEV-RUN-TRACE-JOIN-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-SNAPSHOT-PROJECTOR",
+        "CON-RUN-DYNAMIC-PROJECTION",
+        "IF-RUN-LIFECYCLE-SNAPSHOT"
+      ],
+      "detail": "The projector validates and traverses the exact graph but does not invoke the released diagnoseTraceabilityGraph capability. Its output therefore omits the required TG_ORPHAN_REQUIREMENT, TG_UNSCOPED_WORK, and TG_MISSING_EVIDENCE diagnostics. Revision 3 also removed the prior trace-gap/path fixture, so the focused suite no longer proves the acceptance criterion."
+    }
+  ],
+  "outputDigests": {
+    "src/lifecycle-run-report-snapshot.mjs": "sha256:c551d3676f123402a883a219a7025d3f7100135393315169b909cb4d7f5a55aa",
+    "test/lifecycle-run-report-snapshot.test.mjs": "sha256:846fa470da63e6a7a279bfcde17d5360940ff96448c632ba3ca66007e3141762"
+  },
+  "progressionAllowed": false,
+  "nextRoute": "fix"
+}

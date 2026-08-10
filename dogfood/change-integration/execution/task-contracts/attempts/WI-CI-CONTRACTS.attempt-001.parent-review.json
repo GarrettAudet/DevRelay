@@ -1,0 +1,27 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "CIPR-WI-CI-CONTRACTS-001",
+  "executionId": "WE-CI-DOGFOOD-WI-CI-CONTRACTS-ATTEMPT-001",
+  "workItemId": "WI-CI-CONTRACTS",
+  "outcome": "fix",
+  "acceptanceReview": {
+    "allowlistPreserved": true,
+    "providerNeutral": true,
+    "approvedOutcomeVocabularyPreserved": false,
+    "checkpointBoundaryPreserved": false,
+    "canonicalPermissionKindsPreserved": false,
+    "runtimeEvidenceSemanticsPreserved": false
+  },
+  "blockingFindings": [
+    {"code":"CI_CONTRACT_OUTCOMES","finding":"The module declares conflict and target-drift, but AC-DEV-CI-OUTCOMES-001 permits exactly integrated, integration-conflict, baseline-drift, unable-to-proceed, and execution-failed."},
+    {"code":"CI_CONTRACT_CHECKPOINT","finding":"The orchestration plan omits the Core-owned checkpoint/recovery step required before result validation."},
+    {"code":"CI_CONTRACT_PERMISSIONS","finding":"IntegrationAdapterInvocation invents repository.read and repository.compare-and-swap grants rather than the canonical host permission-demand kinds."},
+    {"code":"CI_CONTRACT_EVIDENCE","finding":"The module uses change-integration/contract-tests as runtime integration evidence; successful integration requires immutable native-effect and post-state evidence."},
+    {"code":"CI_CONTRACT_RAW_EFFECT","finding":"RawIntegrationEffectResult cannot represent interruption, uncertain effect, or operation details required for crash-after-effect recovery."},
+    {"code":"CI_CONTRACT_PLAN","finding":"IntegrationPlan does not explicitly bind pre-state observation, adapter, permission demands, idempotency identity, and exact verified change bytes as required by IF-CI-INTEGRATION-PLAN."}
+  ],
+  "disposition": "revision-required",
+  "authoritativeVerifiedCompletionFactCreated": false,
+  "integrationAuthorized": false
+}

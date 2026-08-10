@@ -1,0 +1,108 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-SV-RELEASE.attempt-002",
+  "workItem": {
+    "id": "WI-SV-RELEASE",
+    "objective": "Expose and package the complete SystemVerification slice and prove one end-to-end deterministic run.",
+    "boundedScope": [
+      "src/index.mjs",
+      "package.json",
+      "package-lock.json",
+      "scripts/release-catalog.mjs",
+      "release/0.7.0.json",
+      "README.md",
+      "CHANGELOG.md",
+      "RELEASE.md",
+      "test/system-verification-release.test.mjs",
+      "test/system-verification-planning-dogfood.test.mjs",
+      "dogfood/system-verification/"
+    ],
+    "deliverables": [
+      "Public exports and exact ten-module package inventory",
+      "End-to-end verified, failed, needs-evidence, drift, and zero-call replay proof",
+      "Dogfood planning conformance proof for requirements, architecture, contracts, work, dependency, assignment, execution, and verification boundaries",
+      "DevRelay 0.7.0 release manifest and canonical gate evidence"
+    ],
+    "workType": "configuration-change",
+    "requiredCapabilities": [
+      "release-engineering",
+      "integration-testing"
+    ],
+    "dependencyHints": [
+      "WI-SV-CORE",
+      "WI-SV-ADAPTERS",
+      "WI-SV-TRACEABILITY",
+      "WI-SV-DOCUMENTATION"
+    ],
+    "verificationPlan": [
+      "Run focused SystemVerification suite",
+      "Run npm verify and release check",
+      "Prove no BusinessAcceptance fact exists"
+    ],
+    "requiredEvidence": [
+      "system-verification/release-gate"
+    ],
+    "sourceRefs": [
+      "goal-system-verification-module-v1",
+      "D-SV-BOUNDARY-001"
+    ]
+  },
+  "dependencies": [
+    "WI-SV-CORE",
+    "WI-SV-ADAPTERS",
+    "WI-SV-TRACEABILITY",
+    "WI-SV-DOCUMENTATION"
+  ],
+  "assignment": {
+    "workItemRef": "WI-SV-RELEASE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "release-engineering",
+      "integration-testing"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevisionRequired": true
+  },
+  "authority": {
+    "writeScope": [
+      "src/index.mjs",
+      "package.json",
+      "package-lock.json",
+      "release/",
+      "test/system-verification-release.test.mjs",
+      "dogfood/system-verification/"
+    ],
+    "forbidden": [
+      "BusinessAcceptance",
+      "deployment",
+      "scope mutation",
+      "graph operations",
+      "downstream approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/system-verification/execution/attempts/WI-SV-RELEASE.attempt-002.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:59af2598d4ff00813be74dc33db50d782dd5601d1b4aae4b061c91db8699a38f",
+  "predecessor": {
+    "taskId": "WI-SV-RELEASE.attempt-001",
+    "disposition": "revision-before-execution",
+    "rationale": "The original release item omitted canonical catalog, release-note, and dogfood conformance paths required to package a new module honestly."
+  }
+}

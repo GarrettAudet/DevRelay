@@ -20,6 +20,7 @@ The executable contract slices are:
   project-overview, architecture, contract-disposition, repository, and
   capability inputs into `establish-breakdown` or `decompose-change`, producing
   one bounded planning candidate without executing work;
+- `contract-generation@0.1.0`, which state-routes approved required interface intent through bounded kind-selected generators, Core-owned format validation and canonical diff, exact checkpoint replay, and a separate ContractGate promotion boundary;
 - `TraceabilityGraph`, a Core-owned sidecar that projects validated results
   from all three Modules into one living lifecycle graph and returns a standardized
   update plus merge proof in `ModuleExecutionRecord`. It is not a Module,
@@ -115,6 +116,8 @@ distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
   overview sections are unchanged.
 - A `RequirementsChangeSet` is an optimistic full-body replacement bound to the
   exact prior requirements digest and exhaustive changed-section list.
+- ContractGeneration generators propose native bytes only. Core owns kind-selected pinned format validation and canonical diff; ContractGate alone owns semantic compatibility policy, approval, ContractBaseline or ApprovedNotApplicable promotion, and progression to WorkBreakdown.
+- Candidate and approved contract graph facts use separate trusted scopes; adapters never submit graph operations or activate approved contract facts.
 - Detailed interface contracts belong to ContractGeneration. Architecture
   enforcement belongs to Verification.
 - Cross-module artifact IDs have one schema owner.

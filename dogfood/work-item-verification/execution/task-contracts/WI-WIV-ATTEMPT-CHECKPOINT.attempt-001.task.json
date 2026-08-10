@@ -1,0 +1,46 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-ATTEMPT-CHECKPOINT-001",
+  "executionId": "WE-WIV-FRONTIER-002-WI-WIV-ATTEMPT-CHECKPOINT",
+  "workItemId": "WI-WIV-ATTEMPT-CHECKPOINT",
+  "status": "executed-after-fix",
+  "attempts": 2,
+  "readinessProof": {
+    "workDependencyBaseline": {
+      "artifactId": "WDB-WIV-DOGFOOD",
+      "digest": "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8"
+    },
+    "completedWorkItemIds": ["WI-WIV-CONTRACTS"],
+    "incomingEdges": ["DEP-96A53AD6BF9DB9D5"],
+    "readyWorkItemIds": [
+      "WI-WIV-ATTEMPT-CHECKPOINT",
+      "WI-WIV-SUBJECT-OBLIGATIONS"
+    ]
+  },
+  "assignment": {
+    "workItemRef": "WI-WIV-ATTEMPT-CHECKPOINT",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": ["CAP-NODEJS-ENGINEERING", "CAP-TEST-ENGINEERING"]
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/work-item-verification-checkpoint.mjs",
+      "test/work-item-verification-checkpoint.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not execute another DAG item.",
+      "Do not modify schemas, project baselines, or dogfood Gate evidence.",
+      "Do not verify, approve, integrate, or create graph operations.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "verification": {
+    "requiredEvidenceKind": "work-item-verification/checkpoint-lifecycle-tests",
+    "acceptance": "Returned and thrown terminal states are immutably checkpointed; exact replay is byte-identical and makes zero verifier calls; changed identity or predecessor lineage fails closed."
+  },
+  "task": {
+    "threadId": "019fdb5b-4022-7f23-ac49-7511da02d906",
+    "worktree": "C:/Users/garre/.codex/worktrees/f4a8/DevRelay-v04-work-dependency-analysis"
+  }
+}

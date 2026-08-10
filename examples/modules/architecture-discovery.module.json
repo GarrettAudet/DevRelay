@@ -1,0 +1,28 @@
+{
+  "apiVersion":"devrelay.dev/v1alpha1","kind":"ModuleDefinition","metadata":{"id":"architecture-discovery","version":"0.1.0","description":"Discover implemented current architecture for one existing-undiscovered repository without intended-design, Gate, progression, or graph authority."},
+  "operations":[{"id":"discover","description":"Run one mandatory deterministic native inventory, accept zero or more bounded optional analyzer contributions, and assemble one observational current-state candidate.","adapterExecution":"effect",
+    "inputs":[
+      {"name":"project-overview-baseline","schema":"https://devrelay.dev/artifacts/project-overview-baseline/v1","mediaTypes":["application/vnd.devrelay.project-overview-baseline+json"],"cardinality":"one","required":true},
+      {"name":"project-architecture-state","schema":"https://devrelay.dev/artifacts/project-architecture-state/v1","mediaTypes":["application/vnd.devrelay.project-architecture-state+json"],"cardinality":"one","required":true},
+      {"name":"repository-snapshot","schema":"https://devrelay.dev/artifacts/repository-snapshot/v1","mediaTypes":["application/vnd.devrelay.repository-snapshot+json"],"cardinality":"one","required":true}
+    ],
+    "outputs":[
+      {"name":"current-architecture-snapshot","schema":"https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/snapshot","mediaTypes":["application/vnd.devrelay.current-architecture-snapshot+json"],"cardinality":"one","required":false},
+      {"name":"discovery-gap","schema":"https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/gap","mediaTypes":["application/vnd.devrelay.architecture-discovery-gap+json"],"cardinality":"many","required":false}
+    ],
+    "inputRules":[],"outcomes":["discovered","needs_clarification","unable_to_proceed","execution_failed","baseline_drift"],
+    "resultContracts":{
+      "discovered":{"status":"completed","requiredInputs":["project-overview-baseline","project-architecture-state","repository-snapshot"],"forbiddenInputs":[],"requiredOutputs":["current-architecture-snapshot"],"allowedOutputs":["current-architecture-snapshot","discovery-gap"],"requiredEvidence":[{"kind":"architecture-discovery/native-inventory","statuses":["pass"]}],"diagnosticsRequired":false},
+      "needs_clarification":{"status":"completed","requiredInputs":[],"forbiddenInputs":[],"requiredOutputs":["discovery-gap"],"allowedOutputs":["discovery-gap"],"requiredEvidence":[],"diagnosticsRequired":true},
+      "unable_to_proceed":{"status":"completed","requiredInputs":[],"forbiddenInputs":[],"requiredOutputs":[],"allowedOutputs":[],"requiredEvidence":[],"diagnosticsRequired":true},
+      "execution_failed":{"status":"failed","requiredInputs":[],"forbiddenInputs":[],"requiredOutputs":[],"allowedOutputs":[],"requiredEvidence":[],"diagnosticsRequired":true},
+      "baseline_drift":{"status":"completed","requiredInputs":[],"forbiddenInputs":[],"requiredOutputs":[],"allowedOutputs":[],"requiredEvidence":[],"diagnosticsRequired":true}
+    },
+    "evidence":["architecture-discovery/native-inventory","architecture-discovery/analyzer-observation"],"optionsSchema":{"type":"object","additionalProperties":false},
+    "extensionPorts":[
+      {"id":"inventory","role":"proposer","inputSchema":"https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/inventoryInvocation","outputSchema":"https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/nativeInventory","required":true},
+      {"id":"analyzer","role":"proposer","inputSchema":"https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/analyzerInvocation","outputSchema":"https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/analyzerResult","required":false}
+    ],
+    "orchestrationPlan":[{"id":"route","kind":"core","handler":"architecture-discovery/route-guard"},{"id":"input-guard","kind":"core","handler":"architecture-discovery/input-guard"},{"id":"inventory","kind":"extension-port","handler":"inventory"},{"id":"inventory-checkpoint","kind":"core","handler":"architecture-discovery/checkpoint"},{"id":"analyzer","kind":"extension-port","handler":"analyzer"},{"id":"analyzer-checkpoint","kind":"core","handler":"architecture-discovery/checkpoint"},{"id":"normalize","kind":"core","handler":"architecture-discovery/normalizer"},{"id":"gap-policy","kind":"core","handler":"architecture-discovery/gap-policy"},{"id":"result","kind":"core","handler":"architecture-discovery/result-assembler"}]
+  }]
+}

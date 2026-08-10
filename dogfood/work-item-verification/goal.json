@@ -1,0 +1,31 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-work-item-verification-module-v1",
+  "statement": "Define DevRelay's WorkItemVerification module so one exact WorkExecution result is independently evaluated against its approved verification plan and required evidence before ChangeIntegration.",
+  "objectives": [
+    "Bind verification to one approved WorkItem, immutable ExecutionAttempt, exact ChangeSetDraft, and candidate workspace.",
+    "Collect and validate complete subject-bound evidence through replaceable verifier adapters without allowing self-approval.",
+    "Evaluate every verification-plan and required-evidence obligation deterministically.",
+    "Preserve immutable verification attempts, failures, evidence continuations, and checkpoint replay.",
+    "Authorize ChangeIntegration consideration only after a separate exact WorkItemVerificationGate approval."
+  ],
+  "constraints": [
+    "WorkItemVerification cannot execute implementation work, mutate approved scope or the dependency DAG, integrate changes, or create completion facts.",
+    "Verifier adapters produce evidence only; Core and WorkItemVerificationGate own validation and approval.",
+    "Evidence must identify exact subject bytes, producer identity and version, invocation, and raw output.",
+    "Every verification retry or continuation is immutable and linked.",
+    "External hosts enforce verifier permissions and isolation."
+  ],
+  "acceptanceCriteria": [
+    "One invocation binds one exact work item, execution attempt, proposed change, evidence bundle, verification policy, repository base, and candidate workspace.",
+    "All work-item verification-plan checks and required-evidence obligations receive explicit validated dispositions.",
+    "Configured verifier adapters are selected deterministically from approved policy and evidence kinds.",
+    "Checkpoint replay makes zero additional verifier calls.",
+    "Only a Gate-approved verified result may advance to ChangeIntegration, without claiming integration."
+  ],
+  "assumptions": [
+    "The approved V1 lifecycle and WorkExecution verification barrier already settle the module boundary.",
+    "The OpenSpec adapter is used only for bounded requirements proposal and normalization; no live upstream CLI claim is made."
+  ]
+}

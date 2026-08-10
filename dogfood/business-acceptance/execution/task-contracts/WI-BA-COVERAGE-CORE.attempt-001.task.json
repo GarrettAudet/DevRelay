@@ -1,0 +1,93 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-COVERAGE-CORE.attempt-001",
+  "workItem": {
+    "id": "WI-BA-COVERAGE-CORE",
+    "objective": "Derive exact criterion coverage from the verified result and graph, then evaluate objectives, metrics, and business scope without rerunning tests.",
+    "boundedScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "deliverables": [
+      "Trusted technical-coverage derivation",
+      "Business-scope dispositions",
+      "Zero-call replay with coverage drift rejection"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "runtime-engineering",
+      "graph-analysis",
+      "business-policy"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Require every approved criterion to reach passing evidence",
+      "Reject graph, result, baseline, scope, and coverage substitutions before owner Gate"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/coverage-core-tests"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-COVERAGE-CORE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "runtime-engineering",
+      "graph-analysis",
+      "business-policy"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:208db5496bead57168d61547d85ad8b520828024abdee378765ca21a7fcfc3b3"
+}

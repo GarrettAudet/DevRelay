@@ -1,0 +1,247 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-AD-DOCUMENTATION-001",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-DOCUMENTATION-ATTEMPT-001",
+  "workItemId": "WI-AD-DOCUMENTATION",
+  "attempt": 1,
+  "status": "prepared",
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-TECHNICAL-WRITING"
+    ],
+    "requiredGrants": [],
+    "requiredTools": [],
+    "specialistProfileRef": "A2A-90823C4A9CAE7D32",
+    "workItemRef": "WI-AD-DOCUMENTATION"
+  },
+  "prerequisiteCompletion": {
+    "receiptId": "CIHIR-WI-AD-VERIFICATION-002",
+    "digest": "sha256:048e8653106c09e4e1f3b6360bbe98722e4b1d1d14c55a2636f3a1439d8c7118"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "docs/architecture-discovery.md",
+      "README.md",
+      "src/index.mjs",
+      "test/architecture-discovery-documentation.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change ArchitectureDiscovery behavior, contracts, schemas, fixtures, dogfood evidence, package version, release catalog, ProjectOverview, or module sequence.",
+      "Do not describe optional analyzers as mandatory or live-conformant, discovered current state as approved intended architecture, or adapters as owners of routing, Gate, graph merge, progression, or source-transmission consent.",
+      "Do not expose any API beyond the already verified ArchitectureDiscovery functions and constants.",
+      "Do not commit, tag, merge, publish, promote, or integrate."
+    ]
+  },
+  "contextPaths": [
+    "README.md",
+    "ProjectOverview.md",
+    "src/index.mjs",
+    "examples/modules/architecture-discovery.module.json",
+    "project/requirements-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-disposition.json",
+    "dogfood/architecture-discovery/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/architecture-discovery/execution/host-integration/WI-AD-VERIFICATION.receipt.json",
+    "dogfood/architecture-discovery/release/release-gate-evidence.json",
+    "contracts/architecture-discovery-artifacts.schema.json",
+    "src/architecture-discovery-artifact-validator.mjs",
+    "src/architecture-discovery-routing.mjs",
+    "src/architecture-discovery-input-guard.mjs",
+    "src/architecture-discovery-native-inventory.mjs",
+    "src/architecture-discovery-analyzer-registry.mjs",
+    "src/architecture-discovery-observation-normalizer.mjs",
+    "src/architecture-discovery-gap-policy.mjs",
+    "src/architecture-discovery-checkpoint.mjs",
+    "src/architecture-discovery-traceability-contributor.mjs",
+    "test/architecture-discovery-release.test.mjs"
+  ],
+  "verification": {
+    "acceptance": "Operators can run, resume, swap optional analyzers, audit evidence and confidence, and distinguish observed current architecture from approved intended architecture using the public package surface.",
+    "commands": [
+      "node --test test/architecture-discovery-documentation.test.mjs",
+      "node --test test/architecture-discovery-*.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "architecture-discovery/documentation-review",
+        "description": "Documentation and public-export assertions match the approved requirements, verified behavior, privacy boundary, adapter maturity, and ArchitectureDesign handoff."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify if approved artifacts conflict on an operator-visible behavior or maturity claim.",
+    "Stop with fix if documentation tests fail or the required public surface cannot be exposed inside allowedWritePaths.",
+    "Stop after the exact bounded handoff; Core owns verification, integration, module promotion, and progression."
+  ],
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-AD-DOGFOOD-WI-AD-DOCUMENTATION-ATTEMPT-001",
+      "workItemId": "WI-AD-DOCUMENTATION",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "architecture-discovery/documentation-review",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-AD-DOCUMENTATION",
+    "objective": "Document ArchitectureDiscovery routing, offline inventory, optional analyzers, confidence, clarification, replay, traceability, and ArchitectureDesign handoff.",
+    "bounded-scope": {
+      "included": [
+        "Explain mandatory native inventory, explicit source-transmission consent, optional analyzer bindings, low-confidence handling, and material-gap clarification.",
+        "Provide operator examples for complete, uncertain, blocked, drifted, resumed, and analyzer-swapped runs."
+      ],
+      "excluded": [
+        "Presenting optional analyzers as mandatory, discovered state as approved intent, or fixture adapters as live upstream conformance."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-AD-DOCUMENTATION",
+        "description": "ArchitectureDiscovery operator, adapter, and IDE documentation.",
+        "artifactKind": "DocumentationSet"
+      }
+    ],
+    "work-type": "documentation-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-AD-BOUNDARY-001",
+      "AC-DEV-AD-OUTPUT-001",
+      "AC-DEV-AD-PRIVACY-001",
+      "AC-DEV-AD-ROUTING-001"
+    ],
+    "architecture-refs": [
+      "EL-AD-ANALYZER-PORT",
+      "EL-AD-MODULE"
+    ],
+    "contract-refs": [],
+    "required-capabilities": [
+      "CAP-TECHNICAL-WRITING"
+    ],
+    "dependency-hints": [
+      {
+        "work-item-ref": "WI-AD-VERIFICATION",
+        "relation": "after",
+        "rationale": "Documentation must cite final verified behavior and exact dogfood evidence.",
+        "authority": "hint"
+      }
+    ],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-AD-DOCUMENTATION",
+          "method": "Review documentation against approved requirements, architecture, contracts, release evidence, and actual module handoffs.",
+          "successCriteria": "Operators can run and audit ArchitectureDiscovery without confusing observed current state with approved intended architecture."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "architecture-discovery/documentation-review",
+        "description": "Operators can run and audit ArchitectureDiscovery without confusing observed current state with approved intended architecture."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/0"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/4"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/5"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/8"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/85"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/88"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-AD-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:27a455f35f18e838f8da3a367c2239a85fc14724eab240748d174129c6e7ce15",
+          "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  },
+  "contentDigest": "sha256:fb02e8bf34d5d7b1a2c61d8760e58c268028dfaba8e6661144c9634eb09e8667"
+}

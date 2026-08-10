@@ -1,0 +1,70 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-SV-RELEASE.attempt-002",
+  "workItemId": "WI-SV-RELEASE",
+  "status": "completed-with-parent-release-evidence",
+  "summary": "DevRelay 0.7.0 exposes and packages the ten-module SystemVerification slice with its two bounded verifier plug-ins and release conformance coverage.",
+  "changedPaths": [
+    "CHANGELOG.md",
+    "README.md",
+    "RELEASE.md",
+    "dogfood/system-verification/execution/attempts/WI-SV-RELEASE.attempt-002.handoff.raw.json",
+    "package-lock.json",
+    "package.json",
+    "release/0.7.0.json",
+    "scripts/release-catalog.mjs",
+    "scripts/release-tools.mjs",
+    "src/index.mjs",
+    "test/system-verification-planning-dogfood.test.mjs",
+    "test/system-verification-release.test.mjs"
+  ],
+  "verification": {
+    "focusedSystemVerification": {
+      "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/system-verification-*.test.mjs",
+      "tests": 34,
+      "passed": 34,
+      "failed": 0
+    },
+    "npmVerify": {
+      "status": "passed",
+      "staticVerification": "1570 JSON files, 303 JavaScript modules, 2084 LF-only text files, 12 ProjectOverview operations",
+      "tests": 651,
+      "passed": 651,
+      "failed": 0
+    },
+    "npmReleaseCheck": {
+      "status": "pending-final-parent-replay",
+      "note": "The final parent gate repeats repository verification, catalog verification, packing, offline install, and root import after this handoff is sealed."
+    },
+    "focusedPackageCheckContinuation": {
+      "command": "node .tmp-run-devrelay-package-check.mjs",
+      "status": "passed",
+      "packagedFiles": 247,
+      "installedRootImportSmoke": "passed",
+      "moduleManifestsResolved": 10,
+      "systemVerificationPluginsResolved": 2,
+      "traceabilityVocabulary": "1.4.0"
+    }
+  },
+  "proof": {
+    "outcomes": [
+      "verified",
+      "failed",
+      "needs-evidence",
+      "baseline-drift"
+    ],
+    "substitutionFailsClosed": true,
+    "exactReplayVerifierCalls": 0,
+    "typedEvidenceAdapters": [
+      "test-system-verifier@1.0.0",
+      "review-system-verifier@1.0.0"
+    ],
+    "trustedContributor": "devrelay.system-verification@1.0.0",
+    "businessAcceptanceFactCreated": false
+  },
+  "residualRisks": [
+    "The bundled SystemVerification verifier bindings are fixture-conformant, not live-provider conformant."
+  ],
+  "handoff": "Parent regenerates release/0.7.0.json after sealing this handoff, then runs npm.cmd run release:check as the final immutable promotion gate."
+}

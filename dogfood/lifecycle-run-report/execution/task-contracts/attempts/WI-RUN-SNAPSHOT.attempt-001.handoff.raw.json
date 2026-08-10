@@ -1,0 +1,39 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-SNAPSHOT-ATTEMPT-001",
+  "workItemId": "WI-RUN-SNAPSHOT",
+  "outcome": "fix",
+  "changedFiles": [
+    "src/lifecycle-run-report-snapshot.mjs",
+    "test/lifecycle-run-report-snapshot.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/lifecycle-run-report-snapshot.test.mjs",
+      "exitCode": 1,
+      "summary": "Focused suite could not start because the contract-supplied dependency tree does not contain ajv/dist/2020.js."
+    },
+    {
+      "command": "node --check src/lifecycle-run-report-snapshot.mjs",
+      "exitCode": 0,
+      "summary": "Implementation module passed Node.js syntax validation."
+    },
+    {
+      "command": "node --check test/lifecycle-run-report-snapshot.test.mjs",
+      "exitCode": 0,
+      "summary": "Focused test module passed Node.js syntax validation."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "lifecycle-run-report/snapshot-tests",
+      "relativePath": "test/lifecycle-run-report-snapshot.test.mjs",
+      "digest": "sha256:a63fea3dcf105ad2282ff703a4885680049592bb6ce08f8fc4745a85c5ae87a9"
+    }
+  ],
+  "notes": "Implemented the bounded dynamic lifecycle snapshot projector and focused deterministic, arbitrary-component, rework, frontier, trace-path, and visible-gap tests in only the two allowed files.",
+  "residualRisks": [
+    "Focused behavioral verification remains incomplete because Ajv is absent from both the worktree and the contract-supplied host dependency tree."
+  ]
+}

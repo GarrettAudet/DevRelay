@@ -6,7 +6,10 @@ import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content
 import { promoteWorkDependencyBaseline } from "../src/work-dependency-gate.mjs";
 import { createNativeDependencyProposal } from "../src/work-dependency-native-proposer.mjs";
 import { createWorkDependencyAnalysisRuntime } from "../src/work-dependency-runtime.mjs";
-import { createContextSlice } from "../src/work-dependency-snapshot.mjs";
+import {
+  buildWorkBreakdownAnalysisSnapshot,
+  createContextSlice,
+} from "../src/work-dependency-snapshot.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 
@@ -59,22 +62,22 @@ function store() {
 
 async function inputs() {
   const workBreakdown = await file(
-    "project/work-breakdown-baseline.json",
+    "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-baseline.json",
     "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
     "application/vnd.devrelay.work-breakdown-baseline+json",
   );
   const projectOverview = await file(
-    "project/project-overview-baseline.json",
+    "project/history/1.1.0/project-overview-baseline.json",
     "https://devrelay.dev/artifacts/project-overview-baseline/v1",
     "application/vnd.devrelay.project-overview-baseline+json",
   );
   const requirements = await file(
-    "project/requirements-baseline.json",
+    "project/history/1.1.0/requirements-baseline.json",
     "https://devrelay.dev/artifacts/requirements-baseline/v1",
     "application/vnd.devrelay.requirements-baseline+json",
   );
   const architecture = await file(
-    "project/architecture-baseline.json",
+    "dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json",
     "https://devrelay.dev/artifacts/architecture-baseline/v1",
     "application/vnd.devrelay.architecture-baseline+json",
   );
@@ -149,6 +152,25 @@ async function inputs() {
     resolveArtifact: async (ref) => byDigest.get(ref.digest),
   };
 }
+
+test("snapshot rejects digest-valid bytes paired with a substituted parsed value before resolution", async () => {
+  const exact = await inputs();
+  exact.contextSliceSet.value = {
+    ...exact.contextSliceSet.value,
+    sliceSetId: "CTXS-WDA-SUBSTITUTED",
+  };
+  let resolverCalls = 0;
+  await assert.rejects(
+    buildWorkBreakdownAnalysisSnapshot({
+      ...exact,
+      resolveArtifact: async () => {
+        resolverCalls += 1;
+      },
+    }),
+    /parsed value does not match its exact raw bytes/,
+  );
+  assert.equal(resolverCalls, 0);
+});
 
 test("version-pinned context drift fails before an untrusted proposer is called", async () => {
   const exact = await inputs();

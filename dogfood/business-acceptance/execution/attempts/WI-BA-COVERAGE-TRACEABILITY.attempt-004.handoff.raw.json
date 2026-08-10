@@ -1,0 +1,45 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-COVERAGE-TRACEABILITY.attempt-004",
+  "workItemId": "WI-BA-COVERAGE-TRACEABILITY",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/requirements-traceability-contributor.mjs",
+    "test/requirements-traceability.test.mjs",
+    "test/business-acceptance-traceability.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/coverage-traceability-tests",
+      "relativePath": "test/business-acceptance-traceability.test.mjs",
+      "digest": "sha256:e6896836a52e0f080d0e970fa852e94171893fdb2cd95397a267b511003096c9"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-ba-core-overlay-loader.mjs --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/requirements-traceability.test.mjs test/business-acceptance-traceability.test.mjs test/traceability-vocabulary-migration.test.mjs",
+      "exitCode": 0,
+      "summary": "All 14 declared focused and production-baseline composition tests passed; 0 failed, skipped, cancelled, or todo. The exact read-only Core overlay and real contributors proved all 31 authoritative scopeId, statement, and sourceRefs records, resolved forward accepted-by and verified-by endpoints, and zero blocking scope diagnostics."
+    },
+    {
+      "command": "node --check src/traceability-artifact-validator.mjs; node --check src/requirements-traceability-contributor.mjs; node --check src/business-acceptance-traceability-contributor.mjs; node --check test/requirements-traceability.test.mjs; node --check test/business-acceptance-traceability.test.mjs; node --check test/traceability-vocabulary-migration.test.mjs",
+      "exitCode": 0,
+      "summary": "All allowlisted implementation and focused test modules passed syntax validation."
+    },
+    {
+      "command": "rg -n localeCompare|scope.inScope src/requirements-traceability-contributor.mjs src/business-acceptance-traceability-contributor.mjs src/traceability-artifact-validator.mjs test/requirements-traceability.test.mjs test/business-acceptance-traceability.test.mjs test/traceability-vocabulary-migration.test.mjs contracts/traceability-graph-artifacts.schema.json",
+      "exitCode": 1,
+      "summary": "No locale-dependent ordering or rejected scope.inScope shape exists in the allowlisted traceability slice."
+    },
+    {
+      "command": "git diff --check -- contracts/traceability-graph-artifacts.schema.json src/traceability-artifact-validator.mjs src/requirements-traceability-contributor.mjs src/business-acceptance-traceability-contributor.mjs test/requirements-traceability.test.mjs test/business-acceptance-traceability.test.mjs test/traceability-vocabulary-migration.test.mjs",
+      "exitCode": 0,
+      "summary": "The allowlisted traceability changes contain no whitespace errors."
+    }
+  ],
+  "residualRisks": [
+    "none"
+  ],
+  "notes": "Verified immutable attempt 004 and parent review 003, the restored durable attempt-003 block at sha256:e6ee74276e8352e2af527e2382a2fb657f5c4efa850a3f497efff98c68eb17dc, and the exact passing Core attempt-003 dependency handoff at sha256:daf96f8d7caa968ff87754dfe19731879fa2637e9e352e37f16f31935a4f7b41 before verification. The host's read-only Core overlay was used without editing Core-owned files. The trusted observer preserves every authoritative requirements.scope[].id, statement, sourceRefs value, exact scope-record locator, and forward project defines business-scope fact. BusinessAcceptance contributes only approved forward accepted-by and verified-by facts backed by passing evidence. Vocabulary 1.0 through 1.4 identities and all authority boundaries remain exact. Attempts 001 through 003 remain byte-identical. No Gate approval, integration, release, deployment, technical test rerun by BusinessAcceptance, or requirements mutation was performed."
+}

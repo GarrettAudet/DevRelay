@@ -1,0 +1,80 @@
+{
+  "workItemId": "WI-WIV-CONTRACTS",
+  "outcome": "block",
+  "summary": "Attempt 6 minimal correction is complete. VerificationPolicyEvaluation and WorkItemVerificationGateCandidate now support only verified, failed, and needs-evidence. Baseline-drift and unable-to-proceed remain output-free pre-evaluation module outcomes. Focused and generic contract tests pass; readiness remains blocked only by absent adjacent WIV suites.",
+  "changedFiles": [
+    "contracts/work-item-verification-artifacts.schema.json",
+    "src/work-item-verification-artifact-validator.mjs",
+    "test/work-item-verification-contracts.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/work-item-verification-contracts.test.mjs test/module-contract.test.mjs test/schema-enforcement.test.mjs",
+      "outcome": "pass",
+      "evidence": "41 tests passed, including all attempt-5 policy, evidence, independence, reason, precedence, and candidate-substitution coverage plus attempt-6 pre-evaluation outcome assertions."
+    },
+    {
+      "command": "node --check src/work-item-verification-artifact-validator.mjs",
+      "outcome": "pass",
+      "evidence": "The attempt-6 validator passed Node.js syntax checking."
+    },
+    {
+      "command": "git diff --check -- contracts/work-item-verification-artifacts.schema.json src/work-item-verification-artifact-validator.mjs test/work-item-verification-contracts.test.mjs examples/modules/work-item-verification.module.json",
+      "outcome": "pass",
+      "evidence": "No whitespace or patch-format errors were reported."
+    },
+    {
+      "command": "Test-Path for requested WIV input-guard, checkpoint, verifier-binding, verifier-adapters, and evidence-normalization suites",
+      "outcome": "fail",
+      "evidence": "All five adjacent suite paths remain absent from this worktree. Parent review must run them after their owning changes are available."
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "DEL-WIV-SCHEMAS",
+      "paths": [
+        "contracts/work-item-verification-artifacts.schema.json",
+        "src/work-item-verification-artifact-validator.mjs",
+        "test/work-item-verification-contracts.test.mjs"
+      ]
+    },
+    {
+      "id": "DEL-WIV-MODULE",
+      "paths": [
+        "examples/modules/work-item-verification.module.json"
+      ]
+    }
+  ],
+  "sourceRefs": [
+    "AC-DEV-WIV-BOUNDARY-001",
+    "AC-DEV-WIV-INPUTS-001",
+    "AC-DEV-WIV-OUTCOMES-001",
+    "AC-DEV-WIV-EVIDENCE-001",
+    "AC-DEV-WIV-PLAN-001",
+    "EL-WIV-MODULE",
+    "EL-WIV-VERIFIER-PORT",
+    "CT-IF-WIV-INPUT-BINDING",
+    "CT-IF-WIV-OBLIGATION-SET",
+    "CT-IF-WIV-VERIFIER-BINDING",
+    "CT-IF-WIV-VERIFIER-INVOCATION",
+    "CT-IF-WIV-EVIDENCE-NORMALIZATION",
+    "CT-IF-WIV-POLICY-EVALUATION",
+    "CT-IF-WIV-GATE-CANDIDATE",
+    "CT-IF-WIV-CANDIDATE-TRACEABILITY",
+    "CT-IF-WIV-APPROVED-TRACEABILITY",
+    "WIV-POLICY-CONDITION-001"
+  ],
+  "residualRisks": [
+    "The requested adjacent WIV suites remain unexecuted because their files were not host-delivered.",
+    "Attempt 6 is only a parent-review proposal and is not integrated."
+  ],
+  "integrationNotes": [
+    "evaluationCondition and unable-to-proceed policy reason semantics were removed.",
+    "Closed policy precedence is exactly failed, needs-evidence, verified.",
+    "Evaluation and Gate-candidate schemas reject both baseline-drift and unable-to-proceed.",
+    "The module retains baseline-drift and unable-to-proceed with empty requiredOutputs and allowedOutputs.",
+    "Unsupported policy versions, semantics, stale policy references, and invalid contexts fail closed before evaluation.",
+    "Attempt-5 exact policy, subject, binding, obligation, evidence, independence, deterministic derivation, reason-code, and candidate-link behavior remains intact.",
+    "No module, runtime, adapter, normalizer, binding, checkpoint, Gate, traceability, baseline, package, integration, or commit changes were made."
+  ]
+}

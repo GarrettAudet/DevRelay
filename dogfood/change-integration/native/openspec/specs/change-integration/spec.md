@@ -1,0 +1,8 @@
+# ChangeIntegration requirements
+
+- V1 integrates exactly one verified work-item change per invocation into one configured local Git ref; remote pull-request and merge systems are future replaceable adapters.
+- Core requires the target ref to equal the version-pinned expected target commit immediately before mutation; concurrent verified changes serialize and drift requires reconciliation plus re-verification.
+- V1 never automatically resolves integration conflicts; it returns an immutable IntegrationConflictSet, leaves the target unchanged, and routes authorized reconciliation through WorkExecution and WorkItemVerification.
+- Successful integration returns an IntegratedChangeRecord, updated RepositorySnapshot, and TraceabilityGraph merge proof; SystemVerification remains downstream.
+
+One invocation integrates one Gate-approved verified change. Target drift and conflicts leave the target unchanged; only validated post-state evidence creates an IntegratedChangeRecord and permits progression to SystemVerification.

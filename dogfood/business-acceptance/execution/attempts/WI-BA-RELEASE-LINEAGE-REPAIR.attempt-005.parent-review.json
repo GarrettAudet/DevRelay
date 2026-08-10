@@ -1,0 +1,41 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-005",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "task": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005",
+    "digest": "sha256:81d58d243e841d1fa01412a0194f02e379c5411b79c9f1fa45386f82fd9859af",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff",
+    "digest": "sha256:595ffa44d026a409800e917a0ce4f5a245d0709fb0759ba8d686822543ccd736",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "acceptedEvidence": [
+    "The complete focused suite passed 13 of 13 and proves real WorkDependencyAnalysis materializer execution, strict legacy-root rejection, fixed literal digests, and zero file:/// occurrences in the portable manifest.",
+    "Two consecutive worker canonical verifier runs passed 696 of 696 without restoration in 438059.5446 ms and 437424.6659 ms.",
+    "Attempt-004 immutable generations remained byte-identical and no immutable artifact was overwritten or deleted.",
+    "The raw attempt-005 handoff digest independently matches sha256:595ffa44d026a409800e917a0ce4f5a245d0709fb0759ba8d686822543ccd736."
+  ],
+  "remainingFinding": {
+    "classification": "incomplete-cumulative-integration-handoff",
+    "finding": "The handoff changedPaths array contains only 10 attempt-005 paths. The completed work item also depends on the unintegrated attempt-004 portability implementation, generated active artifacts, promoters, fixed manifest, and preserved immutable generations. An independent comparison of the cumulative authority scope found 179 worker-versus-parent file differences, before adding the attempt-005 raw handoff. Integrating from the 10-path list would omit required bytes and would not reproduce the green worker state."
+  },
+  "requiredCorrections": [
+    "Do not modify any implementation, test, generated artifact, or attempt-004 immutable generation.",
+    "Create one immutable cumulative integration manifest covering every worker-versus-parent difference in the cumulative attempt-004 authority scope plus the attempt-005 raw handoff.",
+    "For each sorted repository-relative path record create or replace mode, exact worker raw SHA-256, and exact parent pre-integration SHA-256 or an explicit not-present disposition.",
+    "Reject rooted paths, dot segments, traversal, duplicate paths, source-byte drift, and parent pre-state drift while constructing and validating the manifest.",
+    "Return a raw attempt-006 handoff that binds the manifest digest, operation count, attempt-005 verification evidence, and zero implementation changes."
+  ],
+  "nextAction": {
+    "route": "fix",
+    "instruction": "Produce only the complete digest-bound cumulative integration manifest and attempt-006 raw handoff. Parent will independently recompute the manifest, integrate with create-only and compare-and-swap semantics, execute the focused suite in C:/tmp, compare all portable manifest digests across roots, and run the canonical gate."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:1a588bebe8b6b2c27e11f8bf82cdc08b2dc904e6610d357d44f11c4d9f7ff58d"
+}

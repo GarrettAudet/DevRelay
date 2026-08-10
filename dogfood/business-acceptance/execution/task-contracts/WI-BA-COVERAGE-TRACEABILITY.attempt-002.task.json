@@ -1,0 +1,123 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-COVERAGE-TRACEABILITY.attempt-002",
+  "workItem": {
+    "id": "WI-BA-COVERAGE-TRACEABILITY",
+    "objective": "Project deterministic business-scope and passing-coverage facts through trusted vocabulary 1.5 contributors.",
+    "boundedScope": [
+      "contracts/traceability-graph-artifacts.schema.json",
+      "src/traceability-artifact-validator.mjs",
+      "src/requirements-traceability-contributor.mjs",
+      "src/business-acceptance-traceability-contributor.mjs",
+      "test/requirements-traceability.test.mjs",
+      "test/business-acceptance-traceability.test.mjs",
+      "test/traceability-vocabulary-migration.test.mjs"
+    ],
+    "deliverables": [
+      "Business-scope traceability nodes",
+      "Forward accepted-by and verified-by facts",
+      "Zero-blocking-diagnostic accepted graph"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "traceability",
+      "graph-modeling"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Keep vocabulary 1.0 through 1.4 identities exact",
+      "Reject orphan, inverse, candidate, missing-evidence, and adapter-authored acceptance facts"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/coverage-traceability-tests"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-COVERAGE-TRACEABILITY",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "traceability",
+      "graph-modeling"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "contracts/traceability-graph-artifacts.schema.json",
+      "src/traceability-artifact-validator.mjs",
+      "src/requirements-traceability-contributor.mjs",
+      "src/business-acceptance-traceability-contributor.mjs",
+      "test/requirements-traceability.test.mjs",
+      "test/business-acceptance-traceability.test.mjs",
+      "test/traceability-vocabulary-migration.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-TRACEABILITY.attempt-002.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 2,
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-COVERAGE-TRACEABILITY.attempt-001",
+      "digest": "sha256:5890a63a437f4f1efc229a2d1421791037965fdd3690d776671ee76ef07d2a4c",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-COVERAGE-TRACEABILITY.attempt-001.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-COVERAGE-TRACEABILITY.attempt-001.handoff",
+      "digest": "sha256:d14c61dad1660da1a479d98f9af2c7816f7dae97e59ffca6ea618ba1876231cf",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-TRACEABILITY.attempt-001.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-COVERAGE-TRACEABILITY-001",
+      "digest": "sha256:64d4bdc950c46dacf7056d54dd37d87c4c96e104dd785b2d98aaa0f5861a4348",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-TRACEABILITY.attempt-001.parent-review.json"
+    }
+  },
+  "requiredCorrections": [
+    "Make the trusted RequirementsBaseline observer use the exact same business-scope stable identity as BusinessAcceptance Core. The current full sha256 stableId and Core's BS-<24 uppercase hex> identity disagree and would create dangling accepted-by/verified-by endpoints in a real graph.",
+    "Add an end-to-end conformance test using the real requirements contributor projection and BusinessAcceptance contributor projection; prove every derived business-scope endpoint resolves and diagnoseTraceabilityGraph returns no blocking orphan or missing-evidence diagnostic for that scope.",
+    "Keep vocabulary 1.0 through 1.4 digests exact, retain forward-only approved facts, and use code-unit ordering without localeCompare."
+  ],
+  "taskDigest": "sha256:77022aaf0be0077c747e9eadca1f98c05ce4bdadfaec6c305dcb5c28cd91378e"
+}

@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-work-execution-module-v1",
+  "statement": "Define DevRelay's WorkExecution module so each runnable approved work item is performed through an exact provider-neutral execution contract without integrating or claiming verification.",
+  "objectives": [
+    "Execute only work items Core derives as runnable from the approved dependency DAG.",
+    "Bind an approved specialist profile to an exact executor without making provider identity part of lifecycle semantics.",
+    "Isolate each execution attempt, its mutations, and its evidence.",
+    "Return a proposed change set and raw execution evidence without claiming verification or integration.",
+    "Make interruption, retry, and executor substitution deterministic and auditable."
+  ],
+  "constraints": [
+    "WorkExecution cannot modify the approved WorkBreakdown, dependency DAG, or assignment baseline.",
+    "Core owns ready-frontier selection; an executor cannot select its own work.",
+    "Only declared tools, grants, repository scope, and network scope may be supplied to an executor.",
+    "WorkItemVerification owns completion claims and ChangeIntegration owns incorporation into the shared baseline.",
+    "Every execution attempt is immutable and content-addressed."
+  ],
+  "acceptanceCriteria": [
+    "An invocation is bound to exact work-item, dependency, assignment, repository, project-overview, and execution-policy artifacts.",
+    "The executor can mutate only its isolated workspace and declared scope.",
+    "A successful attempt returns one ChangeSetDraft and one ExecutionEvidenceBundle for the exact work item.",
+    "Interrupted or failed attempts remain durable evidence and retry creates a new linked attempt.",
+    "Checkpoint replay never reinvokes an effectful executor.",
+    "Provider substitution changes only the configured binding while canonical outcomes remain identical."
+  ],
+  "assumptions": [
+    "Execution granularity, runtime binding, retry identity, and output authority require owner confirmation.",
+    "The OpenSpec chat bridge records this clarification run but does not claim OpenSpec CLI execution."
+  ]
+}

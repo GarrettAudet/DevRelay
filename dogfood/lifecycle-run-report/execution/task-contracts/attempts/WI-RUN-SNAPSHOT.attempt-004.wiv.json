@@ -1,0 +1,46 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-WI-RUN-SNAPSHOT-ATTEMPT-004",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-SNAPSHOT-ATTEMPT-004",
+  "workItemId": "WI-RUN-SNAPSHOT",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-SNAPSHOT-004",
+    "digest": "sha256:d84f40b10c63919d9fb4530790b9bd4caa84abb2e75471a4033c444faf82b220"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-SNAPSHOT.attempt-004.handoff.raw.json",
+    "digest": "sha256:dec86912ca4011f2dff3197df014a0caffc748ee48b8cffffcf02463938fe09c"
+  },
+  "changedFiles": [
+    "src/lifecycle-run-report-snapshot.mjs",
+    "test/lifecycle-run-report-snapshot.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --experimental-loader=file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-snapshot-dependency-loader.mjs --test test/lifecycle-run-report-snapshot.test.mjs",
+    "hostSupply": "ajv-8.20.0-read-only-fallback",
+    "exitCode": 0,
+    "tests": 6
+  },
+  "outcome": "fix",
+  "findings": [
+    {
+      "code": "RUN_SNAPSHOT_TRACE_ENTITY_IDENTITY_COLLAPSED",
+      "requirementRefs": [
+        "AC-DEV-RUN-TRACE-JOIN-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-SNAPSHOT-PROJECTOR",
+        "CON-RUN-DYNAMIC-PROJECTION",
+        "IF-RUN-LIFECYCLE-SNAPSHOT"
+      ],
+      "detail": "Revision 4 used shared source-artifact refs for TraceabilityPath endpoints, collapsing distinct baseline entities."
+    }
+  ],
+  "outputDigests": {
+    "src/lifecycle-run-report-snapshot.mjs": "sha256:ac1aaf7f807c9dbea058026dc7924b1e9f83a6351b3035d29301571ea70cbae4",
+    "test/lifecycle-run-report-snapshot.test.mjs": "sha256:c3335f514fb505c8965ca8bf2b53598284504fb87346cd00711288188c5981e1"
+  },
+  "progressionAllowed": false,
+  "nextRoute": "fix"
+}

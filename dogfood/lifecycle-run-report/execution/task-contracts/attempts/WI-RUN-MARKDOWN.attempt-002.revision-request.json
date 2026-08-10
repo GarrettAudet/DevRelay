@@ -1,0 +1,73 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemRevisionRequest",
+  "requestId": "WIRR-WI-RUN-MARKDOWN-002",
+  "workItemId": "WI-RUN-MARKDOWN",
+  "predecessorExecutionId": "WE-RUN-DOGFOOD-WI-RUN-MARKDOWN-ATTEMPT-001",
+  "requestedExecutionId": "WE-RUN-DOGFOOD-WI-RUN-MARKDOWN-ATTEMPT-002",
+  "route": "fix",
+  "attempt": 2,
+  "bindings": {
+    "taskContract": {
+      "artifactId": "WETC-WI-RUN-MARKDOWN-001",
+      "digest": "sha256:821ef6a2150fc6c4cbd8610ed9bb7b4c2699687440e88b481dae247bb6dd5c7a"
+    },
+    "rawHandoff": {
+      "artifactId": "WI-RUN-MARKDOWN.attempt-001.handoff.raw.json",
+      "digest": "sha256:25857c13bfdd758e107d74b5b917700c22033fb3199a860864b9ab5f72e86c71"
+    },
+    "candidate": {
+      "artifactId": "WIVC-WI-RUN-MARKDOWN-001",
+      "digest": "sha256:0b80cea391a637783e0cd98fd38d4b53c15661138b2ba00b1ededc1b7623079b",
+      "semanticDigest": "sha256:7a989dfb26f79fbae943ce6e474c551a5ed84e212d4465e5416a67590144ae88"
+    },
+    "evidence": {
+      "artifactId": "NVE-WI-RUN-MARKDOWN-001",
+      "digest": "sha256:1dad235a1aa6bd0f53664d52655687f8ac6ed8860842dffe3fd92be73afb8f72",
+      "semanticDigest": "sha256:6ce6de249f60c23114db7d930cd748bc90b6d085939fd1b1f84797830a12ad5e"
+    },
+    "gateRejection": {
+      "artifactId": "WIVGR-WI-RUN-MARKDOWN-001",
+      "digest": "sha256:083f30e291ba40409bf80104a43028a4e1ff6d8bf2de8b59cc83b99357f1e075",
+      "semanticDigest": "sha256:01add6c029047a288e3a62fe40a890bae9314e3d0f6315d402cd2d0e8525b5d6"
+    },
+    "checkpoint": {
+      "artifactId": "WIVCP-WI-RUN-MARKDOWN-001",
+      "digest": "sha256:55e2e7a9fef2ae92b2a6e60302ff09155af74b5ddcd11edab1029ec04f409053",
+      "semanticDigest": "sha256:ab0b5a352fa54b6531784decf2ee8df69bc3f5572859cd5f0d226058e9c23400"
+    },
+    "externalVerificationContext": {
+      "artifactId": "WI-RUN-MARKDOWN.attempt-001.adversarial-verifier.test.mjs",
+      "digest": "sha256:a0192e7313be5975b328d026943858a8cc9ac9f2798372e86f01ab804ccd61cc"
+    }
+  },
+  "fixConditions": [
+    "Render byte-identical UTF-8/NFC/LF Markdown for semantically equivalent snapshots whose reorder-insensitive collections are supplied in different orders, while retaining exact digest-bound report access.",
+    "Render an exact digest-bound artifact link for every policy-allowed stage sourceFacts reference; omitted or redacted source facts must not leak identifiers or digests.",
+    "Apply the exact bound LifecycleRunContentPolicy to every top-level and source link, including /ledger, /traceabilityGraph, snapshot and evidence links, before any identifier, digest, or link bytes enter Markdown."
+  ],
+  "workerAuthority": {
+    "allowedWritePaths": [
+      "src/lifecycle-run-report-markdown.mjs",
+      "test/lifecycle-run-report-markdown.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not change src/index.mjs.",
+      "Do not integrate candidate bytes, mutate TraceabilityGraph or lifecycle state, control progression, or claim verification, Gate, or ChangeIntegration authority.",
+      "Do not modify the approved WorkBreakdownBaseline, WorkDependencyBaseline, SpecialistAssignmentBaseline, dependency DAG, or IntegratedCompletionFacts.",
+      "Do not hard-code a fixed lifecycle module count or render policy-denied content.",
+      "Do not commit, merge, tag, push, or create a pull request."
+    ]
+  },
+  "externalVerification": {
+    "required": true,
+    "workerWritable": false,
+    "artifact": {
+      "artifactId": "WI-RUN-MARKDOWN.attempt-001.adversarial-verifier.test.mjs",
+      "digest": "sha256:a0192e7313be5975b328d026943858a8cc9ac9f2798372e86f01ab804ccd61cc"
+    }
+  },
+  "progressionAllowed": false,
+  "authority": "trusted-core-host"
+}

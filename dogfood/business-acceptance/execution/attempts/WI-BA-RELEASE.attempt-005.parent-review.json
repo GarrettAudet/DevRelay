@@ -1,0 +1,30 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-005",
+  "taskId": "WI-BA-RELEASE.attempt-005",
+  "workItemId": "WI-BA-RELEASE",
+  "task": {
+    "artifactId": "WI-BA-RELEASE.attempt-005",
+    "digest": "sha256:0a1b514205086d4c3296909b65b25d741ffb1cfa9d4036030e61bfa45a6c8b92",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE.attempt-005.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE.attempt-005.handoff",
+    "digest": "sha256:654ed971c85a37f1f1abf8ce6c1c91d55514b6d419bd24b307cab656ee574f74",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-005.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "findings": [
+    "The BusinessAcceptance implementation, real API-driven conformance, pending full-V1 disposition, Structurizr bootstrap, and package-consumer proof are acceptable.",
+    "The canonical repository gate remains red with 11 failures caused by active dogfood artifacts being reused as historical inputs, immutable replay directory collisions, a traceability ownership conflict, and one stale documentation expectation.",
+    "Release 0.8.0 cannot be sealed until historical evidence is preserved in versioned locations, active candidates are regenerated deterministically, and npm.cmd run verify plus npm.cmd run release:check pass from the integrated repository."
+  ],
+  "nextAction": {
+    "route": "fix",
+    "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "instruction": "Repair dogfood replay lineage and exact digest bindings without weakening graph ownership checks or modifying immutable historical evidence, then rerun the canonical release gates."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:05e81fa449a71c5d7366e51b0467f958c5538cd32eb9b41d1ed5ace5fa48f42c"
+}

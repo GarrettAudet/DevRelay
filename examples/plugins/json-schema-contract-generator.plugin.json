@@ -1,0 +1,16 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "json-schema-contract-generator",
+    "version": "0.1.0",
+    "description": "Live-conformant deterministic JSON Schema draft 2020-12 generator; Core independently validates every emitted schema."
+  },
+  "implements": [{
+    "module": { "id": "contract-generation", "version": "0.1.0" },
+    "operations": [
+      { "id": "establish-contracts", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false, "properties": { "contractKind": { "const": "json-schema" } } }, "capabilities": [] },
+      { "id": "generate-contract-change", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false, "properties": { "contractKind": { "const": "json-schema" } } }, "capabilities": [] }
+    ]
+  }]
+}

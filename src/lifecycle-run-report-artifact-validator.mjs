@@ -1,0 +1,20 @@
+import { readFileSync } from "node:fs";
+import { canonicalJsonDigest } from "./content-digest.mjs";
+import { compileArtifactSchema, validationDetail } from "./schema-validation.mjs";
+
+const schema = JSON.parse(readFileSync(new URL("../contracts/lifecycle-run-report-artifacts.schema.json", import.meta.url), "utf8"));
+const validator = compileArtifactSchema(schema);
+export const LIFECYCLE_RUN_REPORT_ARTIFACT_KINDS = Object.freeze(["RunWorkflowFact", "RunHostObservation", "LifecycleRunSnapshot", "RunComparabilityDecision", "LifecycleRunContentPolicy", "LifecycleRunReportAccess", "IntegratedCompletionFact", "ReadyFrontier"]);
+export class LifecycleRunReportArtifactValidationError extends Error { constructor(message) { super(`lifecycle run report artifact is invalid: ${message}`); this.name = "LifecycleRunReportArtifactValidationError"; this.code = "DR4400"; } }
+const digestFields = Object.freeze({RunWorkflowFact:"factDigest",RunHostObservation:"observationDigest",LifecycleRunSnapshot:"snapshotDigest",RunComparabilityDecision:"decisionDigest",LifecycleRunContentPolicy:"policyDigest",LifecycleRunReportAccess:"responseDigest",IntegratedCompletionFact:"completionDigest",ReadyFrontier:"frontierDigest"});
+const forbiddenAuthority = new Set(["adapterSelection","approval","evidenceSatisfaction","gateDecision","graphMutation","graphOperations","nextOperation","progression","routeDecision","workflowMutation"]);
+const fail = message => { throw new LifecycleRunReportArtifactValidationError(message); };
+const bodyDigest = (value, field) => canonicalJsonDigest(Object.fromEntries(Object.entries(value).filter(([key]) => !["apiVersion","kind",field].includes(key))));
+function rejectAuthority(value) { if (!value || typeof value !== "object") return; for (const [key, child] of Object.entries(value)) { if (forbiddenAuthority.has(key)) fail(`${key} is forbidden workflow authority`); rejectAuthority(child); } }
+function unique(values, label) { if (new Set(values).size !== values.length) fail(`duplicate ${label}`); }
+function validateSemantics(value) {
+  if (value.kind === "RunComparabilityDecision") { unique(value.dimensions.map(x=>x.name), "comparison dimension"); const comparable=value.dimensions.every(x=>x.matches&&x.leftDigest===x.rightDigest); if((value.disposition==="comparable")!==comparable) fail("comparability disposition contradicts exact dimensions"); if(!comparable&&value.reasons.length===0) fail("non-comparable decision requires reasons"); }
+  if (value.kind === "LifecycleRunContentPolicy") { unique(value.rules.map(x=>x.classification), "content classification"); for(const classification of ["secret","credential","prompt","raw-tool-log","unknown"]){const rule=value.rules.find(x=>x.classification===classification);if(!rule||rule.disposition==="allow")fail(`${classification} content must be omitted or redacted`);} }
+  if (value.kind === "ReadyFrontier") { unique(value.dispositions.map(x=>x.workItemId), "work-item disposition"); const derived=value.dispositions.filter(x=>x.status==="ready").map(x=>x.workItemId).sort(); const claimed=[...value.readyWorkItemIds].sort(); if(JSON.stringify(derived)!==JSON.stringify(claimed))fail("ready work items contradict dispositions"); const inputDigest=canonicalJsonDigest({workDependencyBaseline:value.workDependencyBaseline,completionFacts:value.completionFacts});if(value.derivation.inputDigest!==inputDigest)fail("frontier derivation does not bind the exact approved DAG and completion facts"); }
+}
+export function validateLifecycleRunReportArtifact(value) { if(!validator(value))fail(validationDetail(validator));if(!LIFECYCLE_RUN_REPORT_ARTIFACT_KINDS.includes(value.kind))fail(`unsupported kind ${value?.kind}`);rejectAuthority(value);const field=digestFields[value.kind];if(value[field]!==bodyDigest(value,field))fail(`${field} does not bind canonical material`);validateSemantics(value);return value; }

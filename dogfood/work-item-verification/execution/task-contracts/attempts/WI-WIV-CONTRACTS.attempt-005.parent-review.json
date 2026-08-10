@@ -1,0 +1,24 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "WIVPR-WI-WIV-CONTRACTS-005",
+  "executionId": "WE-WIV-REWORK-002-WI-WIV-CONTRACTS-ATTEMPT-005",
+  "workItemId": "WI-WIV-CONTRACTS",
+  "outcome": "clarify",
+  "acceptedCandidateProperties": {
+    "closedVersionPinnedPolicy": true,
+    "exactPolicyEvaluationBinding": true,
+    "exactVerifierBindingBasis": true,
+    "providerNeutralDataRules": true,
+    "baselineDriftExcludedFromEvaluationAndCandidate": true,
+    "machineReadableReasons": true
+  },
+  "blockingFinding": {
+    "id": "WIV-POLICY-CONDITION-001",
+    "finding": "evaluationCondition required-capability-unavailable is accepted without an authoritative capability-failure artifact and can override otherwise complete normalized evidence.",
+    "impact": "Core could self-assert unable-to-proceed after evidence collection without a deterministic source fact.",
+    "recommendedResolution": "Treat unable-to-proceed as a pre-evaluation module outcome, like baseline-drift, and produce neither VerificationPolicyEvaluation nor WorkItemVerificationGateCandidate. Restrict policy evaluation and candidates to verified, failed, and needs-evidence."
+  },
+  "integrationDisposition": "not-integrated-design-clarification-required",
+  "authoritativeVerifiedCompletionFactCreated": false
+}

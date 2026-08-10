@@ -1,0 +1,190 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004",
+  "workItem": {
+    "id": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "objective": "Make dogfood artifact identity and immutable replay evidence independent of the physical checkout root, then prove byte-identical deterministic results across the worker and parent checkouts.",
+    "boundedScope": [
+      "dogfood/_support/",
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs",
+      "test/dogfood-portable-artifact-identity.test.mjs"
+    ],
+    "deliverables": [
+      "One shared provider-neutral helper or equivalent bounded mechanism that maps repository-relative paths to stable canonical ArtifactRef URIs without embedding the physical checkout root",
+      "Affected dogfood materializers and promoters using the stable URI contract for every generated digest-bound ArtifactRef",
+      "New immutable replay generations: baseline ContractGeneration replay-v6, baseline WorkDependencyAnalysis replay-v5, WorkItemVerification ContractGeneration replay-v5, and WorkItemVerification WorkDependencyAnalysis replay-v5",
+      "A new WorkItemVerification WorkBreakdown scenario namespace if portable URI bytes change its immutable candidate outputs",
+      "A regression that rejects absolute current-checkout paths and local file URIs in affected canonical candidates and replay evidence",
+      "A cross-root comparison manifest listing exact candidate and replay files with matching raw SHA-256 digests from the worker and independent parent roots",
+      "Two consecutive passing canonical verifier runs from the worker checkout"
+    ],
+    "workType": "configuration-change",
+    "acceptanceCriterionRefs": [],
+    "architectureRefs": [],
+    "contractRefs": [],
+    "requiredCapabilities": [
+      "deterministic-artifact-identity",
+      "portable-uri-design",
+      "immutable-replay-management",
+      "traceability-engineering",
+      "cross-workspace-integration-testing",
+      "release-engineering"
+    ],
+    "dependencyHints": [
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003"
+    ],
+    "verificationPlan": [
+      "Inventory every affected generated ArtifactRef whose URI is included in candidate or replay raw bytes and prove which values currently depend on repositoryRoot or import.meta.url.",
+      "Define one stable URI mapping such as devrelay://repository/<repository-relative-path>; normalize separators and reject absolute paths, dot segments, traversal, fragments, and values outside the repository contract.",
+      "Do not change artifact contentDigest semantics, weaken ArtifactRef validation, or teach Core to ignore URI differences after the fact.",
+      "Regenerate mutable candidates using portable URIs and advance, never overwrite or delete, every immutable replay whose bytes change.",
+      "Run the six affected tests plus the portability regression in the worker checkout.",
+      "Run npm.cmd run verify twice consecutively from the worker checkout without restoring files; both runs must pass all tests without immutable collisions.",
+      "Record exact raw SHA-256 digests for the affected canonical candidates and new immutable replay artifacts. Parent will independently integrate with compare-and-swap semantics, run the same scenarios in a different physical root, and require every recorded digest to match before accepting the handoff.",
+      "Do not regenerate release/0.8.0.json or claim release readiness; parent owns independent integration and release decisions."
+    ],
+    "requiredEvidence": [
+      "artifact-uri-contract/provider-neutral",
+      "verification/no-checkout-root-leakage",
+      "verification/cross-root-byte-equality",
+      "dogfood/immutable-history-preservation",
+      "verification/consecutive-canonical-gates"
+    ],
+    "sourceRefs": [
+      "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-003",
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff",
+      "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-003"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "specialistProfileRef": "PROFILE-DEVRELAY-DETERMINISTIC-REPLAY-ENGINEER",
+    "capabilityCoverage": [
+      "deterministic-artifact-identity",
+      "portable-uri-design",
+      "immutable-replay-management",
+      "traceability-engineering",
+      "cross-workspace-integration-testing",
+      "release-engineering"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test",
+      "npm",
+      "sha256"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The defect spans the same isolated dogfood scenarios repaired in attempt 003, but its root cause is the host-to-contract boundary for ArtifactRef identity. The same specialist retains replay lineage while the parent remains the independent second-root verifier and integration owner.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevision": "working-tree:codex/v0.5-lifecycle-run-report",
+    "failureEvidence": {
+      "command": "npm.cmd run verify",
+      "testCount": 694,
+      "passing": 687,
+      "failing": 7,
+      "testConcurrency": 1,
+      "classification": [
+        "workspace-root-dependent-canonical-artifact-uri",
+        "cross-checkout-raw-byte-nondeterminism",
+        "checkout-local-candidate-identity",
+        "immutable-replay-relocation-collision"
+      ]
+    },
+    "stableUriContract": {
+      "recommendedScheme": "devrelay",
+      "recommendedAuthority": "repository",
+      "example": "devrelay://repository/project/project-contract-state.json",
+      "identityRule": "The same repository-relative artifact must have identical canonical URI bytes in every physical checkout."
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "dogfood/_support/",
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs",
+      "test/dogfood-portable-artifact-identity.test.mjs"
+    ],
+    "forbidden": [
+      "bind assertions or replay identity to the worker or parent absolute checkout path",
+      "make expected digests self-derived from the actual candidate under test",
+      "weaken ArtifactRef, contentDigest, traceability ownership, checkpoint, or immutable replay validation",
+      "ignore or strip URI differences after canonical candidate creation",
+      "overwrite or delete immutable history",
+      "depend on test execution order or one checkout root",
+      "fabricate passing or cross-root evidence",
+      "change product requirements",
+      "seal release 0.8.0",
+      "start ArchitectureDiscovery"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-004.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 4,
+  "dependencyCompletion": [
+    {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff",
+      "digest": "sha256:9e73ac04b04ee48e3f0adfbe5943ed31f5f3c09022a782a16c4c829fb006fdee",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff.raw.json",
+      "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR"
+    }
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003",
+      "digest": "sha256:63c1de6f6c04632288dacaf410424e0d5cdedb8a2f2205031a8519d61e669de5",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff",
+      "digest": "sha256:9e73ac04b04ee48e3f0adfbe5943ed31f5f3c09022a782a16c4c829fb006fdee",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-003",
+      "digest": "sha256:24ae748476f0a426d1a5866ad9069e5c6d0f4e2a900e296ff5949fc42c71aa5f",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.parent-review.json"
+    }
+  },
+  "taskDigest": "sha256:1c094e830c8d6d1116b00b48c6ca8807d3419483451538901e8074ac74445cea",
+  "requiredCorrections": [
+    "Remove physical checkout roots from every affected canonical ArtifactRef URI and replace them with one validated provider-neutral repository URI mapping.",
+    "Advance affected immutable replay generations and preserve all prior bytes.",
+    "Prove exact raw-byte digest equality for the same candidate and replay artifacts across the worker and parent roots, in addition to two green worker verifier runs."
+  ]
+}

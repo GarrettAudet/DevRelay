@@ -1,0 +1,31 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-change-integration-module-v1",
+  "statement": "Define DevRelay's ChangeIntegration module so one exactly verified work-item change is incorporated into one configured local Git target with compare-and-swap safety, immutable evidence, and no system-acceptance authority.",
+  "objectives": [
+    "Integrate exactly one Gate-approved WorkItemVerification result per invocation.",
+    "Bind integration to an exact target ref and expected target commit before any mutation.",
+    "Leave the configured target unchanged on drift, conflict, invalid input, or failed integration.",
+    "Return an immutable integrated-change record, updated repository snapshot, and traceability merge proof on success.",
+    "Route conflicts back through authorized WorkExecution and WorkItemVerification without automatic resolution."
+  ],
+  "constraints": [
+    "V1 integrates into a configured local Git ref; remote pull-request and merge systems remain replaceable future adapters.",
+    "Core owns compare-and-swap, validation, checkpoint replay, and lifecycle progression; adapters cannot self-approve integration.",
+    "Concurrent verified changes serialize at the target-ref compare-and-swap boundary.",
+    "No V1 adapter may automatically resolve a semantic or textual conflict.",
+    "SystemVerification and BusinessAcceptance remain downstream."
+  ],
+  "acceptanceCriteria": [
+    "One invocation binds one approved work item, exact verification approval, verified change bytes, target repository snapshot, target ref, expected target commit, and integration policy.",
+    "Target drift is detected before mutation and yields baseline_drift.",
+    "A conflict yields an IntegrationConflictSet and leaves the target ref unchanged.",
+    "Successful integration atomically advances the configured target ref and returns exact post-state evidence.",
+    "Checkpoint replay performs zero additional integration effects and cannot duplicate the change."
+  ],
+  "assumptions": [
+    "The user's four approved ChangeIntegration boundary decisions are the authoritative requirements basis.",
+    "The OpenSpec adapter is used only for bounded requirements proposal and normalization; no live upstream CLI claim is made."
+  ]
+}

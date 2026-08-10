@@ -1,0 +1,30 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-ROUTING-GUARD-ATTEMPT-001",
+  "workItemId": "WI-AD-ROUTING-GUARD",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/architecture-discovery-routing.mjs",
+    "src/architecture-discovery-input-guard.mjs",
+    "test/architecture-discovery-routing.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/architecture-discovery-routing.test.mjs",
+      "exitCode": 0,
+      "summary": "5 tests passed; 0 failed."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "architecture-discovery/routing-privacy-tests",
+      "relativePath": "test/architecture-discovery-routing.test.mjs",
+      "digest": "sha256:2c370372562bfe0a37fe8e97fe9506eb41078f9250d0ea7b36af2372d91bc35c"
+    }
+  ],
+  "notes": "Implemented Core-owned deterministic ArchitectureDiscovery routing and exact offline privacy/input guards. Verification used the declared digest-verified read-only host dependency resolver.",
+  "residualRisks": [
+    "none"
+  ]
+}

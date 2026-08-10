@@ -1,0 +1,40 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-COVERAGE-CONTRACTS.attempt-001",
+  "workItemId": "WI-BA-COVERAGE-CONTRACTS",
+  "outcome": "pass",
+  "changedFiles": [
+    "contracts/business-acceptance-artifacts.schema.json",
+    "src/business-acceptance-artifact-validator.mjs",
+    "test/business-acceptance-contracts.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/coverage-contract-tests",
+      "relativePath": "test/business-acceptance-contracts.test.mjs",
+      "digest": "sha256:bc387a6f30e70422c6cb372e6ba391ff096c170bc2df06cdbd6bb9dba33ab4f8"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/business-acceptance-artifact-validator.mjs",
+      "exitCode": 0,
+      "summary": "Validator module syntax passed."
+    },
+    {
+      "command": "node --check test/business-acceptance-contracts.test.mjs",
+      "exitCode": 0,
+      "summary": "Contract test module syntax passed."
+    },
+    {
+      "command": "node --test test/business-acceptance-contracts.test.mjs (with an ESM loader resolving Ajv from the shared repository dependency installation)",
+      "exitCode": 0,
+      "summary": "All 14 focused contract tests passed; 0 failed, skipped, or cancelled."
+    }
+  ],
+  "residualRisks": [
+    "Core must verify graph node and edge existence, direction, endpoint continuity, approved authority, and passing evidence against the pinned TraceabilityGraph checkpoint; the contract intentionally validates only closed graph-native identity shape and internal path identity consistency."
+  ],
+  "notes": "Added the closed BusinessAcceptanceTechnicalCoverage artifact and exact RequirementsBaseline, SystemVerificationResult, TraceabilityGraph checkpoint, approved acceptance-criterion, passing evidence, and graph-path identity bindings. Subject, evaluation, and owner-approved context pin the exact coverage reference. Policy and evaluation now require exhaustive objective, metric, business-scope, and upstream technical coverage while business evidence remains limited to objective, metric, and business-scope claims. Candidate-versus-owner authority and output-free failure boundaries remain unchanged."
+}

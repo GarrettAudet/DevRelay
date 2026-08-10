@@ -1,5 +1,13 @@
 # Examples
 
+See the [ChangeIntegration 0.1.0 operator and adapter guide](../docs/change-integration.md)
+for the exact local Git adapter boundary, target compare-and-swap, recovery,
+and extension contract.
+
+See the [SystemVerification 0.1.0 operator and adapter guide](../docs/system-verification.md)
+for the exact integrated-system subject, obligation/evidence policy, replay,
+traceability, verifier extension contract, and BusinessAcceptanceGate handoff.
+
 These files demonstrate DevRelay contract shapes and deterministic bindings.
 
 Most historical `ArtifactRef` values use visibly repeated, synthetic SHA-256
@@ -19,6 +27,10 @@ change creates a new pair even when the projected overview has an `unchanged`
 disposition. Architecture examples pass the approved
 `project-overview-baseline` explicitly. Core does not inject it from global or
 conversational state.
+
+ContractGeneration examples cover exact state routing, Core-owned validation and
+canonical diffing, 14 generated JSON Schema contracts, checkpoint replay,
+ContractGate promotion, and separate candidate/approved traceability.
 
 WorkBreakdown examples include both deterministic routes, exact state and
 change-package bindings, bounded Spec Kit/OpenSpec native task artifacts, one
@@ -45,6 +57,9 @@ Executable proof lives in:
 - `test/work-breakdown-dogfood.test.mjs` for the full released runtime,
   checkpoint replay, Gate commit payload, TraceabilityGraph merge, forward
   planning edges, exhaustive coverage, and zero-adapter-call drift proof.
+- `test/contract-generation-dogfood.test.mjs` and
+  `test/contract-generation-promotion-dogfood.test.mjs` for live generation,
+  independent validation, replay, exact Gate promotion, and approved graph facts.
 
 The plug-in examples are bounded manifests and conformance fixtures. They are
-not live OpenSpec, GitHub Spec Kit, Structurizr, or MADR command adapters.
+not live OpenSpec, GitHub Spec Kit, Structurizr, or MADR command adapters. The JSON Schema contract generator is live; OpenAPI, AsyncAPI, and Protobuf remain fixture-conformant bindings.

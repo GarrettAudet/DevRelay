@@ -1,0 +1,105 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-specialist-assignment-openspec-resume-v1",
+  "runId": "dogfood-specialist-assignment-v1-resume",
+  "nodeId": "requirements-gathering",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-specialist-assignment-module-v1",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:214f0432c1d08d764d535de4f1f8c97ff3489385c3aa2d98ad1262b7ad628357",
+        "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/goal.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-specialist-assignment-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:1057b158a432e3b702bf52ba571b86e52f0a73ae0542d57909aa116365ea1448",
+        "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/project-context.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1-contract-generation-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:cd07170d8ea48ba98a1c4f45d30ade2e83992e0fd4433cb049fbf0af7c34e8cb",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1-contract-generation-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:c440350f162c530a0180661ad7f6812551d0a184298f256a52239e5b2e9de699",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ],
+    "clarification-request": [
+      {
+        "artifactId": "clarification-request-specialist-assignment-v1",
+        "schema": "https://devrelay.dev/artifacts/clarification-request-set/v1",
+        "mediaType": "application/vnd.devrelay.clarification-request-set+json",
+        "digest": "sha256:29368f1a9b30e131d924fc89351e3c4c252fbd386fb5248127a1861509827ef0",
+        "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/clarification-request.json"
+      }
+    ],
+    "continuation": [
+      {
+        "artifactId": "requirements-continuation-specialist-assignment-v1",
+        "schema": "https://devrelay.dev/artifacts/requirements-gathering-continuation/v1",
+        "mediaType": "application/vnd.devrelay.requirements-gathering-continuation+json",
+        "digest": "sha256:966baa6ce1b0217a335678effc0ee59365db039042d9c348d42056d97b700262",
+        "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/requirements-continuation.json"
+      }
+    ],
+    "clarification-responses": [
+      {
+        "artifactId": "clarification-response-specialist-assignment-v1",
+        "schema": "https://devrelay.dev/artifacts/clarification-response-set/v1",
+        "mediaType": "application/vnd.devrelay.clarification-response-set+json",
+        "digest": "sha256:f40bfafe90eb4b3ed70bbd2f4bcb5ff80212419d31be3d8879e0e15a4d1097ac",
+        "uri": "file:///C:/repos/DevRelay/dogfood/specialist-assignment/clarification-response.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "C:/repos/DevRelay",
+    "toolName": "OpenSpec",
+    "toolVersion": "conversation-contract-v1",
+    "nativeOperation": "requirements.gather",
+    "changeName": "specialist-assignment-module-v1",
+    "schema": "devrelay-requirements",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "C:/repos/DevRelay"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "C:/repos/DevRelay/openspec/changes"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

@@ -23,6 +23,7 @@ async function artifact(name) {
 }
 
 test("dogfood candidate binds the full 11-item snapshot to one policy-allowed static DAG", async () => {
+  execFileSync(process.execPath, [fileURLToPath(new URL("materialize.mjs", ROOT))]);
   const [candidate, snapshot, proposal, mechanics, policy, review, proof] =
     await Promise.all(
       [
@@ -37,7 +38,7 @@ test("dogfood candidate binds the full 11-item snapshot to one policy-allowed st
     );
   assert.equal(
     candidate.digest,
-    "sha256:f929a756793927c894aada19bbf544a228445dc085ecf78aa4fe8dbda7afa61a",
+    "sha256:5009bf9189b801f34f58582ecfb6a7444abbdefd2a31ec957c866672e8086807",
   );
   assert.doesNotThrow(() => validateWorkDependencyArtifact(candidate.value));
   assert.equal(snapshot.value.workItemIds.length, 11);
@@ -71,11 +72,11 @@ test("Gate candidate remains the exact replay-bound input to promotion", async (
   );
   assert.equal(
     gateReview.digest,
-    "sha256:d5afcefa8140b81a6dfa6ec16d84ca6df8306739a7755727f627a247691bc0ce",
+    "sha256:c35b3be93fae40c70720d721222187faeef1613037d86b18f13c291d8768601f",
   );
   assert.equal(
     gateCandidate.digest,
-    "sha256:07290d240e0ec60ace267c68aa8d3a61e2ddb89c80bb714220d98fc3ccd0d6b3",
+    "sha256:74c22ef41298a1ced28bfe14f3d3ad5f0a23c3c4843bddaecb8a3129fd8acd91",
   );
   assert.equal(gateCandidate.value.candidate.digest, candidate.digest);
   assert.equal(gateCandidate.value.gateReview.digest, gateReview.digest);
@@ -91,6 +92,26 @@ test("Gate candidate remains the exact replay-bound input to promotion", async (
 
 
 test("owner-approved promotion is exact, idempotent, and forward-only", async () => {
+  const promotionSource = await readFile(new URL("promote.mjs", ROOT), "utf8");
+  const repositorySnapshotBytes = await readFile(
+    new URL("../repository-snapshot.json", ROOT),
+  );
+  const repositorySnapshot = JSON.parse(repositorySnapshotBytes);
+  assert.doesNotMatch(promotionSource, /rev-parse|execFileSync\("git"/);
+  assert.equal(
+    sha256Digest(repositorySnapshotBytes),
+    "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481",
+  );
+  assert.equal(
+    repositorySnapshot.revision,
+    "9cb4f2b8d340142557027fc0477440722d4f8286",
+  );
+  assert.equal(
+    repositorySnapshot.treeDigest,
+    "sha256:b6d7beba6da3151dc15f4de0dd2a78a9d0edef3097b2f1e22039a6fb21275c61",
+  );
+  const projectBaselineUrl = new URL("../../../project/work-dependency-baseline.json", ROOT);
+  const projectBaselineBefore = await readFile(projectBaselineUrl);
   const replay = JSON.parse(
     execFileSync(
       process.execPath,
@@ -110,43 +131,42 @@ test("owner-approved promotion is exact, idempotent, and forward-only", async ()
     gateReview,
   ] = await Promise.all(
     [
-      "work-dependency-gate-owner-approval.json",
-      "work-dependency-baseline.json",
-      "work-dependency-gate-promotion-proof.json",
-      "traceability-update.json",
-      "traceability-graph-snapshot.json",
-      "module-execution-record.json",
+      "replay-v6/work-dependency-gate-owner-approval.json",
+      "replay-v6/work-dependency-baseline.json",
+      "replay-v6/work-dependency-gate-promotion-proof.json",
+      "replay-v6/traceability-update.json",
+      "replay-v6/traceability-graph-snapshot.json",
+      "replay-v6/module-execution-record.json",
       "execution-checkpoint.json",
       "gate-candidate.json",
       "work-dependency-gate-review.json",
     ].map(artifact),
   );
-  const projectBaselineBytes = await readFile(
-    new URL("../../../project/work-dependency-baseline.json", ROOT),
-  );
+  const projectBaselineBytes = await readFile(projectBaselineUrl);
 
   assert.equal(replay.status, "WORK_DEPENDENCY_BASELINE_PROMOTED");
   assert.equal(
     approval.digest,
-    "sha256:74f10b74bde9c2c3cbb4c86975fb9ca5e5795f97c1dd5052fbbe4ac4f8df1d12",
+    "sha256:7d2bd56226dc0c68c4f2813389388dd0c49921bf86766f107e65d48d4c3d3d8f",
   );
   assert.equal(
     baseline.digest,
-    "sha256:f11d0a1031781a8645da3db637462af4775c4861afc355054ad52df4d19ab52c",
+    "sha256:0c25a5870f716921bb8761c5c31a4f5c45c5410aa62b7401412dbd06d7511498",
   );
   assert.equal(
     update.digest,
-    "sha256:04e17bb9558cdb8a6bebfa450abdbe76875061106680cc3883bb08d3de2ad932",
+    "sha256:274394a947b9374da4c1af1e7779117b050c001cf64110988e4e118d4dae85d0",
   );
   assert.equal(
     graph.digest,
-    "sha256:53d3f7872cd5cb3d23ab47d641833f5a72a4fb2ee2bf3a1ea3f8ffc2c349d738",
+    "sha256:a5b4c9c0ef4c1434abec36b53a57e0f20fcec50182d743c9e20be056ef685caa",
   );
   assert.equal(
     record.digest,
-    "sha256:c1f11b136c167d1fbaf2fc5eb9d1f14e9ed48fc60893875d694fc0b8b8339c79",
+    "sha256:8bc6e112d862336c10f7458330e030b1065123cdfe53506c6afe6321b57e6bb6",
   );
-  assert.deepEqual(projectBaselineBytes, baseline.bytes);
+  assert.deepEqual(projectBaselineBytes, projectBaselineBefore);
+  assert.notDeepEqual(projectBaselineBytes, baseline.bytes);
   assert.doesNotThrow(() => validateWorkDependencyArtifact(baseline.value));
   assert.doesNotThrow(() => validateTraceabilityUpdate(update.value));
   assert.doesNotThrow(() => validateTraceabilityGraphSnapshot(graph.value));
@@ -172,7 +192,7 @@ test("owner-approved promotion is exact, idempotent, and forward-only", async ()
     record.value.moduleResult.outputs["work-dependency-baseline"][0].digest,
     baseline.digest,
   );
-  assert.equal(graph.value.vocabulary.version, "1.2.0");
+  assert.equal(graph.value.vocabulary.version, "1.5.0");
   assert.equal(graph.value.revision, 3);
   assert.equal(
     graph.value.edges.filter(

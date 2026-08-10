@@ -1,0 +1,39 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "WIVPR-WI-WIV-EVIDENCE-NORMALIZATION-001",
+  "executionId": "WE-WIV-FRONTIER-005-WI-WIV-EVIDENCE-NORMALIZATION",
+  "workItemId": "WI-WIV-EVIDENCE-NORMALIZATION",
+  "outcome": "redesign",
+  "attemptHistory": [
+    {"attempt": 1, "agentOutcome": "pass", "parentOutcome": "redesign", "integrated": false}
+  ],
+  "blockingFindings": [
+    {
+      "id": "WIV-NORM-001",
+      "requirementRef": "AC-DEV-WIV-PLAN-001",
+      "finding": "RawVerifierResult exposes global evidence and native-artifact lists without a closed observation-to-artifact binding. The proposal cross-products all artifacts across all assigned obligations, allowing unrelated evidence to be claimed for an obligation.",
+      "requiredChange": "Make obligation/evidence-kind/artifact attribution explicit in the verifier result contract and reject unbound or extra evidence."
+    },
+    {
+      "id": "WIV-NORM-002",
+      "requirementRef": "AC-DEV-WIV-EVIDENCE-001",
+      "finding": "NormalizedVerificationEvidence cannot explicitly bind each accepted item to the exact invocation or command, checkpoint/native bytes, observed result, and collection time or time-not-applicable disposition.",
+      "requiredChange": "Strengthen the normalized evidence contract with closed invocation, checkpoint, observation, provenance, and time bindings."
+    },
+    {
+      "id": "WIV-NORM-003",
+      "requirementRef": "AC-DEV-WIV-EVIDENCE-001",
+      "finding": "Native artifacts are treated as proving evidence for every obligation rather than preserved separately as provenance for the raw verifier result.",
+      "requiredChange": "Separate raw/native provenance attachments from obligation-specific proving evidence."
+    }
+  ],
+  "verifiedPositiveProperties": {
+    "exactCheckpointReplayValidated": true,
+    "subjectAndObligationBindingsValidated": true,
+    "canonicalOrderingImplemented": true,
+    "missingDuplicateAndContradictoryDispositionsRejected": true
+  },
+  "disposition": "not-integrated-contract-redesign-required",
+  "authoritativeVerifiedCompletionFactCreated": false
+}

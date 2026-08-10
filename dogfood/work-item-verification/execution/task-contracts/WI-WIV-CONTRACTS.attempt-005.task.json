@@ -1,0 +1,41 @@
+{
+    "apiVersion":  "devrelay.dev/v1alpha1",
+    "kind":  "BootstrapWorkExecutionTaskContract",
+    "contractId":  "WETC-WI-WIV-CONTRACTS-005",
+    "executionId":  "WE-WIV-REWORK-002-WI-WIV-CONTRACTS-ATTEMPT-005",
+    "workItemId":  "WI-WIV-CONTRACTS",
+    "status":  "parent-revision-requested",
+    "attempt":  5,
+    "revisionLineage":  {
+                            "predecessorTaskContract":  {
+                                                            "artifactId":  "WETC-WI-WIV-CONTRACTS-004"
+                                                        },
+                            "route":  "clarify",
+                            "triggeringWorkItem":  "WI-WIV-POLICY-GATE",
+                            "reason":  "Close the missing VerificationPolicy input and exact evaluation-policy/binding lineage."
+                        },
+    "approvedDecision":  {
+                             "verificationPolicyArtifactRequired":  true,
+                             "evaluationMustBindExactPolicy":  true,
+                             "baselineDriftIsPreEvaluationModuleOutcome":  true,
+                             "baselineDriftProducesEvaluation":  false,
+                             "baselineDriftProducesGateCandidate":  false
+                         },
+    "authority":  {
+                      "allowedWritePaths":  [
+                                                "contracts/work-item-verification-artifacts.schema.json",
+                                                "src/work-item-verification-artifact-validator.mjs",
+                                                "test/work-item-verification-contracts.test.mjs",
+                                                "examples/modules/work-item-verification.module.json"
+                                            ],
+                      "forbiddenActions":  [
+                                               "Do not change policy or Gate runtime, adapters, normalizer, binding runtime, checkpoint, baselines, dogfood artifacts, or package files.",
+                                               "Do not approve a Gate candidate, integrate, mutate TraceabilityGraph, or progress the workflow.",
+                                               "Do not create commits, tags, or pull requests."
+                                           ]
+                  },
+    "task":  {
+                 "threadId":  "019fdb4e-405b-7010-8ae5-47962fac15d2",
+                 "worktree":  "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis"
+             }
+}

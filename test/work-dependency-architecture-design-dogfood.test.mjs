@@ -42,7 +42,7 @@ test("WorkDependencyAnalysis ArchitectureDesign dogfood produces one replayable,
     gate,
     conformance,
   ] = await Promise.all([
-    readJson("project/requirements-baseline.json"),
+    readJson("project/history/1.1.0/requirements-baseline.json"),
     readJson("dogfood/work-breakdown/architecture-design/architecture-baseline.json"),
     readJson("dogfood/work-dependency-analysis/architecture-design/project-architecture-state.json"),
     readJson("dogfood/work-dependency-analysis/architecture-design/module-route-decision.json"),

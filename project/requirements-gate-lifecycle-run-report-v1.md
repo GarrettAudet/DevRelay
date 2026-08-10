@@ -1,0 +1,15 @@
+# DevRelay V1 lifecycle and run-report Requirements Gate approval
+
+Status: **pass**
+
+The project owner approved atomic requirements/ProjectOverview promotion and ArchitectureDesign progression only for the exact digest-bound candidate recorded in requirements-gate-owner-approval.json.
+
+- Approval artifact: sha256:0051aeca68c72069b7030b518a8b43021f0adb4f7288809532b3891fba593afe
+- RequirementsChangeSet: sha256:e5b3e637d80093b0ed05497f1b71903993f7230a43b1fb6d83628c9fccbbb8e1
+- ProjectOverviewChangeSetDraft: sha256:dce8060598f7e3139debd14b3090c9f7990253eb59b29c2295dc67531a7ff5b1
+- Candidate ProjectOverview.md: sha256:a592c999205b8ffba0eb13327cc0f680e091910e9638b82bb6bb5ffd6ccdd930
+- NativeSourceBundle: sha256:d53ea72274ccf9a67ba10f15378230a2e166c8123622aa4ba32202153753b16c
+- Terminal checkpoint: sha256:49fad8f1cbfeb584d2404eb437da68ab028bcf7e60605c766cf041e489b8f606
+- RepositorySnapshot: sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73
+- Repository revision: 4bda7fe707ba102bd22fe0001c83aa13ec03b0c5
+- Repository tree: sha256:6d27786016084029b7148e33d7200656366120cd986f046d32b9e406c12b33dd

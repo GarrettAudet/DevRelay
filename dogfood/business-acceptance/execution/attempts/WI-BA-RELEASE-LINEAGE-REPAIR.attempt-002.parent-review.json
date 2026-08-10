@@ -1,0 +1,51 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-002",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "task": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002",
+    "digest": "sha256:3069a09ec0065ee8f3b21677d88f797c6d719efa193bf6de9ffb2fccb591690c",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff",
+    "digest": "sha256:24920e6ce584985aae24a55b1936b528bf7b58016ec7c61d576b2ec9db150b13",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-002.handoff.raw.json"
+  },
+  "integrationReceipt": {
+    "artifactId": "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-001",
+    "digest": "sha256:4100943262ff6430f7cd16479d50a35531fad00b838c6bc3065a69f02a11f9d2",
+    "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-RELEASE-LINEAGE-REPAIR.receipt.json"
+  },
+  "outcome": "fix",
+  "acceptedEvidence": [
+    "The attempt-002 focused SpecialistAssignment ContractGeneration test passed 1 of 1.",
+    "The specialist checkout reported 694 of 694 canonical tests passing.",
+    "The exact 126-operation host integration used create-only semantics for 46 immutable files and compare-and-swap semantics for 80 replacements.",
+    "The accepted attempt-001 replay-lineage repairs and TraceabilityGraph ownership enforcement remain intact."
+  ],
+  "integrationFinding": {
+    "classification": "shared-mutable-dogfood-output-aliasing-and-serial-order-dependence",
+    "command": "npm.cmd run verify",
+    "tests": 694,
+    "passed": 687,
+    "failed": 7,
+    "testConcurrency": 1,
+    "finding": "An independent canonical run in the integrated checkout mutates shared active dogfood paths in earlier scenarios, causing later scenario-specific digest assertions and an immutable replay generation to observe different bytes. Serial execution does not isolate scenario state."
+  },
+  "remainingFailures": [
+    "ContractGeneration baseline candidate and promotion assertions observe a candidate produced by another scenario.",
+    "SpecialistAssignment ContractGeneration observes the baseline scenario candidate digest.",
+    "WorkItemVerification ContractGeneration candidate and promotion assertions observe another scenario's candidate.",
+    "WorkDependencyAnalysis reuses replay-v3 with different immutable owner-approval bytes.",
+    "WorkItemVerification planning observes a WorkDependencyAnalysis candidate produced by another scenario."
+  ],
+  "nextAction": {
+    "route": "fix",
+    "instruction": "Isolate every dogfood scenario's mutable outputs and replay namespace, preserve immutable history, update assertions from scenario-local bytes, and prove order independence with affected tests in multiple orders plus two consecutive canonical verifier runs from the same checkout."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:4ad86223c9540de704a959924bbfe730b170630a5c1f99998a68d35efea6fc4e"
+}

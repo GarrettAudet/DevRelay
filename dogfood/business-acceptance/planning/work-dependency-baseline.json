@@ -1,0 +1,39 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkDependencyBaseline",
+  "baselineId": "WD-BA-DOGFOOD-001",
+  "nodes": [
+    "WI-BA-CONTRACTS",
+    "WI-BA-CORE",
+    "WI-BA-GATE",
+    "WI-BA-TRACEABILITY",
+    "WI-BA-RELEASE"
+  ],
+  "edges": [
+    {
+      "prerequisite": "WI-BA-CONTRACTS",
+      "dependent": "WI-BA-CORE"
+    },
+    {
+      "prerequisite": "WI-BA-CONTRACTS",
+      "dependent": "WI-BA-GATE"
+    },
+    {
+      "prerequisite": "WI-BA-CORE",
+      "dependent": "WI-BA-GATE"
+    },
+    {
+      "prerequisite": "WI-BA-CONTRACTS",
+      "dependent": "WI-BA-TRACEABILITY"
+    },
+    {
+      "prerequisite": "WI-BA-GATE",
+      "dependent": "WI-BA-RELEASE"
+    },
+    {
+      "prerequisite": "WI-BA-TRACEABILITY",
+      "dependent": "WI-BA-RELEASE"
+    }
+  ],
+  "contentDigest": "sha256:fa5191b0bb858cf31d0ccd11551813fbea786879bbaa103ee6c2df3db7ef4917"
+}

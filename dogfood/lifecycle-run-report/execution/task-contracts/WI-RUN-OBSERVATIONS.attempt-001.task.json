@@ -1,0 +1,281 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-RUN-OBSERVATIONS-001",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-OBSERVATIONS-ATTEMPT-001",
+  "workItemId": "WI-RUN-OBSERVATIONS",
+  "attempt": 1,
+  "status": "prepared",
+  "readyFrontier": {
+    "frontierId": "RUN-FRONTIER-002",
+    "prerequisiteCompletion": {
+      "artifactId": "ICF-WI-RUN-CONTRACTS-003",
+      "digest": "sha256:dbcf9bb53baf8ac2da5d949b4f2f5cd1e5313de8a2a1de09172e19f2936b01af"
+    }
+  },
+  "assignment": {
+    "assignmentRationale": "Highest explicit policy priority, then lexical profile ID.",
+    "capabilityCoverage": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "requiredGrants": [
+      "GRANT-PROCESS-SPAWN",
+      "GRANT-REPOSITORY-WRITE"
+    ],
+    "requiredTools": [
+      "TOOL-NODE"
+    ],
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "workItemRef": "WI-RUN-OBSERVATIONS"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/lifecycle-run-report-observations.mjs",
+      "test/lifecycle-run-report-observations.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change any file outside allowedWritePaths.",
+      "Do not change src/index.mjs; public-surface fan-in is owned by a downstream integration work item.",
+      "Do not alter approved baselines, contracts, dependency DAG, assignments, graph, evidence, release, or project artifacts.",
+      "Do not commit, merge, promote, integrate, or claim verification or progression authority."
+    ]
+  },
+  "contextPaths": [
+    "ProjectOverview.md",
+    "project/requirements-baseline.json",
+    "project/architecture-baseline.json",
+    "project/contract-baseline.json",
+    "project/contract-disposition.json",
+    "dogfood/lifecycle-run-report/work-breakdown/work-breakdown-baseline.json",
+    "dogfood/lifecycle-run-report/dependency-analysis/work-dependency-baseline.json",
+    "dogfood/lifecycle-run-report/assignment/specialist-assignment-baseline.json",
+    "dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-CONTRACTS.json",
+    "contracts/lifecycle-run-report-artifacts.schema.json",
+    "src/lifecycle-run-report-artifact-validator.mjs",
+    "test/lifecycle-run-report-contracts.test.mjs"
+  ],
+  "verification": {
+    "acceptance": "Every surfaced metric and maturity statement retains exact provenance and an explicit availability or comparability disposition.",
+    "commands": [
+      "node --test test/lifecycle-run-report-observations.test.mjs"
+    ],
+    "requiredEvidence": [
+      {
+        "kind": "lifecycle-run-report/observation-tests",
+        "description": "Every surfaced metric and maturity statement retains exact provenance and an explicit availability or comparability disposition."
+      }
+    ]
+  },
+  "stopConditions": [
+    "Stop with clarify only if the approved artifacts leave a material product or authority decision unresolved.",
+    "Stop with fix if the focused suite fails or implementation cannot stay within allowedWritePaths.",
+    "Stop after the exact bounded handoff; Core owns WorkItemVerification, ChangeIntegration, traceability, and frontier progression."
+  ],
+  "hostRuntimeSupply": {
+    "dependencyResolver": {
+      "mode": "bare-package-resolution-only",
+      "path": "C:/Users/garre/OneDrive/Documents/Portable Best Practices/.tmp-devrelay-dependency-loader.mjs",
+      "digest": "sha256:7806bde635ad93006403a185c925b09f3187bc9de582d6266910f9df9a31bcd5"
+    },
+    "dependencyTree": {
+      "authority": "host-read-supply",
+      "path": "C:/tmp/DevRelay-v04-work-dependency-analysis/node_modules",
+      "repositoryWriteGrant": false
+    }
+  },
+  "handoff": {
+    "integrationAuthority": false,
+    "requiredShape": {
+      "apiVersion": "devrelay.dev/v1alpha1",
+      "kind": "BootstrapWorkItemHandoff",
+      "executionId": "WE-RUN-DOGFOOD-WI-RUN-OBSERVATIONS-ATTEMPT-001",
+      "workItemId": "WI-RUN-OBSERVATIONS",
+      "outcome": "pass | fix | diagnose | clarify | block",
+      "changedFiles": [
+        "relative/path"
+      ],
+      "verification": [
+        {
+          "command": "exact command",
+          "exitCode": 0,
+          "summary": "bounded result"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "lifecycle-run-report/observation-tests",
+          "relativePath": "relative/path",
+          "digest": "sha256:<64 lowercase hex>"
+        }
+      ],
+      "notes": "concise implementation handoff",
+      "residualRisks": [
+        "none or bounded risk"
+      ]
+    }
+  },
+  "workItem": {
+    "id": "WI-RUN-OBSERVATIONS",
+    "objective": "Ingest non-authoritative host observations and derive explicit maturity and comparability dispositions.",
+    "bounded-scope": {
+      "included": [
+        "Represent duration, calls, tokens, cost, wait, retry, and checkpoint measurements as measured, estimated, unavailable, or not-applicable.",
+        "Resolve adapter maturity and snapshot comparability from exact declared evidence."
+      ],
+      "excluded": [
+        "Treating unavailable metrics as zero, inferring live conformance, or using observations to approve work."
+      ]
+    },
+    "deliverables": [
+      {
+        "id": "DEL-RUN-OBSERVATIONS",
+        "description": "Host observation ingress, maturity resolver, and comparability evaluator.",
+        "artifactKind": "RuntimeLibrary"
+      }
+    ],
+    "work-type": "code-change",
+    "acceptance-criterion-refs": [
+      "AC-DEV-RUN-METRICS-001",
+      "AC-DEV-RUN-NON-AUTHORITY-001",
+      "AC-DEV-RUN-SECURITY-001"
+    ],
+    "architecture-refs": [
+      "EL-RUN-COMPARABILITY",
+      "EL-RUN-MATURITY-RESOLVER",
+      "EL-RUN-OBSERVATION-INGRESS"
+    ],
+    "contract-refs": [
+      "CT-IF-RUN-COMPARABILITY",
+      "CT-IF-RUN-HOST-OBSERVATIONS"
+    ],
+    "required-capabilities": [
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ],
+    "dependency-hints": [
+      {
+        "work-item-ref": "WI-RUN-CONTRACTS",
+        "relation": "after",
+        "rationale": "Observations and dispositions must conform to the canonical report contracts.",
+        "authority": "hint"
+      }
+    ],
+    "verification-plan": {
+      "checks": [
+        {
+          "id": "VC-RUN-OBSERVATIONS",
+          "method": "Exercise complete, partial, estimated, unavailable, not-applicable, maturity-substitution, incomparable, and reordered observation sets.",
+          "successCriteria": "Every surfaced metric and maturity statement retains exact provenance and an explicit availability or comparability disposition."
+        }
+      ]
+    },
+    "required-evidence": [
+      {
+        "kind": "lifecycle-run-report/observation-tests",
+        "description": "Every surfaced metric and maturity statement retains exact provenance and an explicit availability or comparability disposition."
+      }
+    ],
+    "source-refs": [
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/39"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/40"
+      },
+      {
+        "role": "requirements-baseline",
+        "artifact": {
+          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+          "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+        },
+        "jsonPointer": "/requirements/acceptanceCriteria/41"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/28"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/27"
+      },
+      {
+        "role": "architecture-baseline",
+        "artifact": {
+          "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+          "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+          "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+        },
+        "jsonPointer": "/sections/architectureModel/content/elements/26"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/20"
+      },
+      {
+        "role": "contract-disposition",
+        "artifact": {
+          "artifactId": "CD-DEVRELAY-006",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaType": "application/vnd.devrelay.contract-disposition+json",
+          "digest": "sha256:81bcbd4f20cefc5067762b6cf81aecb7965b5b9a92a093cebc2040901799126d",
+          "uri": "file:///C:/repos/DevRelay/project/contract-disposition.json"
+        },
+        "jsonPointer": "/contractTargets/22"
+      },
+      {
+        "role": "approved-change-package",
+        "artifact": {
+          "artifactId": "ACP-RUN-001",
+          "schema": "https://devrelay.dev/artifacts/approved-change-package/v1",
+          "mediaType": "application/vnd.devrelay.approved-change-package+json",
+          "digest": "sha256:3acdebe84741c1aee374a46bd3efb48a3904ab69617e71eaf6676c0d7f7170f7",
+          "uri": "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/work-breakdown/approved-change-package.json"
+        },
+        "jsonPointer": "/authorizedScope"
+      }
+    ]
+  }
+}

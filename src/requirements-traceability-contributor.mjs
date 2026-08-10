@@ -22,6 +22,7 @@ const CONTROL_OUTCOMES = new Set([
 const REQUIREMENTS_NODE_KINDS = Object.freeze([
   "acceptance-criterion",
   "business-objective",
+  "business-scope",
   "capability",
   "non-functional-requirement",
   "project",
@@ -206,6 +207,10 @@ function assertionKey(value) {
   return canonicalJson(value);
 }
 
+function compareText(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
 function edgeIdentity(edge) {
   return canonicalJson({
     kind: edge.kind,
@@ -232,7 +237,7 @@ function addEdge(edges, edge) {
     ]),
   );
   existing.sourceLocators = [...locators.values()].sort((left, right) =>
-    assertionKey(left).localeCompare(assertionKey(right), "en"),
+    compareText(assertionKey(left), assertionKey(right)),
   );
 }
 
@@ -364,7 +369,7 @@ function addContainedEntity(
   );
 }
 
-async function projectSelected(context, selected) {
+async function projectSelected(context, selected, { includeBusinessScope = false } = {}) {
   if (typeof context.projectId !== "string" || context.projectId.length === 0) {
     fail("context.projectId must be a non-empty string");
   }
@@ -452,6 +457,47 @@ async function projectSelected(context, selected) {
     indexes.set(field, index);
   }
 
+  if (includeBusinessScope) {
+    if (!Array.isArray(body.scope)) fail("scope must be an array");
+    const seenIds = new Set();
+    for (const [position, scope] of body.scope.entries()) {
+      if (scope === null || typeof scope !== "object" || Array.isArray(scope)) {
+        fail(`scope/${position} must be a typed scope record`);
+      }
+      if (typeof scope.id !== "string" || scope.id.length === 0) {
+        fail(`scope/${position}.id must be a non-empty string`);
+      }
+      if (typeof scope.statement !== "string" || scope.statement.length === 0) {
+        fail(`scope/${position}.statement must be a non-empty string`);
+      }
+      if (!Array.isArray(scope.sourceRefs)) {
+        fail(`scope/${position}.sourceRefs must be an array`);
+      }
+      if (seenIds.has(scope.id)) fail(`scope repeats ${scope.id}`);
+      seenIds.add(scope.id);
+      const jsonPointer = pointer(bodyPointer, "scope", position);
+      nodes.push(semanticNode(
+        "business-scope",
+        scope.id,
+        scope.statement,
+        requirements,
+        jsonPointer,
+        scope,
+        { statement: scope.statement, sourceRefs: structuredClone(scope.sourceRefs) },
+      ));
+      relate(
+        edges,
+        "defines",
+        semanticEndpoint("project", context.projectId),
+        semanticEndpoint("business-scope", scope.id),
+        "The approved project defines this exact in-scope business commitment.",
+        requirements,
+        jsonPointer,
+        scope,
+      );
+    }
+  }
+
   const known = (field, id) => {
     const found = indexes.get(field)?.get(id);
     if (!found) fail(`${field} does not contain referenced ID ${id}`);
@@ -534,8 +580,8 @@ async function projectSelected(context, selected) {
 
   return {
     horizon: "requirements",
-    nodes: nodes.sort((left, right) => assertionKey(left).localeCompare(assertionKey(right), "en")),
-    edges: [...edges.values()].sort((left, right) => assertionKey(left).localeCompare(assertionKey(right), "en")),
+    nodes: nodes.sort((left, right) => compareText(assertionKey(left), assertionKey(right))),
+    edges: [...edges.values()].sort((left, right) => compareText(assertionKey(left), assertionKey(right))),
   };
 }
 
@@ -550,7 +596,7 @@ async function projectApprovedBaseline(context) {
   if (!observesApprovedRequirements(context)) {
     fail("baseline observer called for a nonmatching execution");
   }
-  return projectSelected(context, selectApprovedInputs(context));
+  return projectSelected(context, selectApprovedInputs(context), { includeBusinessScope: true });
 }
 
 async function projectControl(context) {

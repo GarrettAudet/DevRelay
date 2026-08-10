@@ -1,0 +1,81 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-WI-RUN-SNAPSHOT-ATTEMPT-002",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-SNAPSHOT-ATTEMPT-002",
+  "workItemId": "WI-RUN-SNAPSHOT",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-SNAPSHOT-002",
+    "digest": "sha256:151dcaa12adc74c754c7e6a97628beeb8cd9da979b3fef1f9d329238d672b518"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-SNAPSHOT.attempt-002.handoff.raw.json",
+    "digest": "sha256:010bf102c6b4a3e788edb7cbaff8c59af793df7a0e45996de7d1fcfdf27de70f"
+  },
+  "changedFiles": [
+    "src/lifecycle-run-report-snapshot.mjs",
+    "test/lifecycle-run-report-snapshot.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --experimental-loader=file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-snapshot-dependency-loader.mjs --test test/lifecycle-run-report-snapshot.test.mjs",
+    "hostSupply": "ajv-8.20.0-read-only-fallback",
+    "exitCode": 0,
+    "tests": 4
+  },
+  "outcome": "fix",
+  "findings": [
+    {
+      "code": "RUN_SNAPSHOT_GRAPH_REF_NOT_BOUND",
+      "requirementRefs": [
+        "AC-DEV-RUN-TRACE-JOIN-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-SNAPSHOT-PROJECTOR",
+        "IF-RUN-LIFECYCLE-SNAPSHOT"
+      ],
+      "detail": "The projector checks only the graph reference shape; it never validates the TraceabilityGraphSnapshot contract or proves that canonicalJsonDigest(snapshot) equals ref.digest, so substituted graph content can be presented as an exact snapshot."
+    },
+    {
+      "code": "RUN_SNAPSHOT_STAGE_DETAIL_PROVENANCE_MISSING",
+      "requirementRefs": [
+        "AC-DEV-RUN-DYNAMIC-001",
+        "AC-DEV-RUN-METRICS-001",
+        "AC-DEV-RUN-TRACE-JOIN-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-SNAPSHOT-PROJECTOR",
+        "CON-RUN-DYNAMIC-PROJECTION"
+      ],
+      "detail": "operation, adapter bindings, outcome, Gate result, important artifacts, and next action can be supplied through stageDetails without any digest-bound source. The code also filters observations by a componentId field that the approved RunHostObservation contract forbids, leaving legitimate stage performance empty. Require stageDetails sourceFacts and accept explicit contract-valid detail.performance instead."
+    },
+    {
+      "code": "RUN_SNAPSHOT_CROSS_RUN_OBSERVATIONS_ACCEPTED",
+      "requirementRefs": [
+        "AC-DEV-RUN-METRICS-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-SNAPSHOT-PROJECTOR",
+        "CON-RUN-OBSERVATION-DISPOSITION"
+      ],
+      "detail": "A contract-valid RunHostObservation from another runId is accepted into the snapshot metrics, permitting cross-run metric substitution."
+    },
+    {
+      "code": "RUN_SNAPSHOT_TOTAL_ORDER_INCOMPLETE",
+      "requirementRefs": [
+        "AC-DEV-RUN-DYNAMIC-001",
+        "AC-DEV-RUN-METRICS-001"
+      ],
+      "architectureRefs": [
+        "EL-RUN-SNAPSHOT-PROJECTOR",
+        "CON-RUN-BYTE-DETERMINISM"
+      ],
+      "detail": "Adapter assessments and global metrics use partial sort keys. Distinct values sharing those keys retain caller insertion order, so equivalent unordered input sets can produce different snapshot bytes."
+    }
+  ],
+  "outputDigests": {
+    "src/lifecycle-run-report-snapshot.mjs": "sha256:5b0933dc70912f948773350ca64763a3d5b0bff0f4141d563c564146fda7ae3d",
+    "test/lifecycle-run-report-snapshot.test.mjs": "sha256:a63fea3dcf105ad2282ff703a4885680049592bb6ce08f8fc4745a85c5ae87a9"
+  },
+  "progressionAllowed": false,
+  "nextRoute": "fix"
+}

@@ -1,0 +1,88 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-SV-ADAPTERS.attempt-001",
+  "workItem": {
+    "id": "WI-SV-ADAPTERS",
+    "objective": "Provide bounded test and review verifier adapter bindings for system-level evidence collection.",
+    "boundedScope": [
+      "src/system-verification-test-adapter.mjs",
+      "src/system-verification-review-adapter.mjs",
+      "examples/plugins/test-system-verifier.plugin.json",
+      "examples/plugins/review-system-verifier.plugin.json",
+      "test/system-verification-adapters.test.mjs"
+    ],
+    "deliverables": [
+      "Two interchangeable proposer-only adapters",
+      "Canonical raw observation mapping",
+      "Adapter conformance tests"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "adapter-engineering",
+      "test-automation"
+    ],
+    "dependencyHints": [
+      "WI-SV-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Run both bindings through the same contract",
+      "Reject adapter-owned decisions and graph operations"
+    ],
+    "requiredEvidence": [
+      "system-verification/adapter-tests"
+    ],
+    "sourceRefs": [
+      "goal-system-verification-module-v1",
+      "D-SV-EVIDENCE-001"
+    ]
+  },
+  "dependencies": [
+    "WI-SV-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-SV-ADAPTERS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "adapter-engineering",
+      "test-automation"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevisionRequired": true
+  },
+  "authority": {
+    "writeScope": [
+      "src/system-verification-test-adapter.mjs",
+      "src/system-verification-review-adapter.mjs",
+      "examples/plugins/test-system-verifier.plugin.json",
+      "examples/plugins/review-system-verifier.plugin.json",
+      "test/system-verification-adapters.test.mjs"
+    ],
+    "forbidden": [
+      "BusinessAcceptance",
+      "deployment",
+      "scope mutation",
+      "graph operations",
+      "downstream approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/system-verification/execution/attempts/WI-SV-ADAPTERS.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:401152d61f164a3a0c32e9dfc482575805221de9ebb2689e27b32605e6e525c7"
+}

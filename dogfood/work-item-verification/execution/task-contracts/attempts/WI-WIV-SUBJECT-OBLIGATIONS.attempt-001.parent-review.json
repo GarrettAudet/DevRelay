@@ -1,0 +1,35 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "WIVPR-WI-WIV-SUBJECT-OBLIGATIONS-001",
+  "executionId": "WE-WIV-FRONTIER-002-WI-WIV-SUBJECT-OBLIGATIONS-ATTEMPT-001",
+  "workItemId": "WI-WIV-SUBJECT-OBLIGATIONS",
+  "outcome": "pass",
+  "scopeReview": {
+    "allowedPathsOnly": true,
+    "unexpectedAuthorityExpansion": false,
+    "providerNeutral": true,
+    "gateAuthorityRetainedByCore": true
+  },
+  "acceptanceReview": {
+    "exactInputSetEnforced": true,
+    "staleAndCrossAttemptInputsRejected": true,
+    "approvedWorkItemIdentityEnforced": true,
+    "stableCompleteObligationExpansion": true,
+    "duplicateReorderedAndUnauthorizedProposalsRejected": true
+  },
+  "parentVerification": [
+    {
+      "command": "node --test test/work-item-verification-input-guard.test.mjs test/work-item-verification-contracts.test.mjs",
+      "outcome": "pass",
+      "tests": 8
+    }
+  ],
+  "reviewNotes": [
+    "The task returned only a proposal and did not claim Gate, graph, verification, or integration authority.",
+    "Two CRLF line endings in the task test file were normalized to LF during host integration; implementation semantics were unchanged.",
+    "Policy duty sourcing remains an explicit downstream Core orchestration responsibility."
+  ],
+  "disposition": "provisional-host-integration-approved",
+  "authoritativeVerifiedCompletionFactCreated": false
+}

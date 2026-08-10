@@ -1,0 +1,27 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-COVERAGE-TRACEABILITY-002",
+  "taskId": "WI-BA-COVERAGE-TRACEABILITY.attempt-002",
+  "workItemId": "WI-BA-COVERAGE-TRACEABILITY",
+  "handoff": {
+    "artifactId": "WI-BA-COVERAGE-TRACEABILITY.attempt-002.handoff",
+    "digest": "sha256:f89efc6654316b0c580b5948e7b3d4c7ac3bc548d6e7649403d864818e803f20",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-TRACEABILITY.attempt-002.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "findings": [
+    "Use the exact approved canonical shape: RequirementsBaseline.requirements.scope is an array of typed {id, statement, sourceRefs} records. Do not read scope.inScope and do not invent full-digest or BS-hash identities.",
+    "The trusted approved-baseline observer must project one business-scope node per exact scope record with stableId=scope.id, label=scope.statement, the exact scope-record JSON pointer and source provenance, plus the forward project defines business-scope edge.",
+    "Add a production-fixture composition test using project/requirements-baseline.json and project/project-overview-baseline.json plus the real BusinessAcceptance Core identity function. Prove exhaustive identical scope IDs, resolved accepted-by/verified-by endpoints, and zero blocking scope diagnostics. Preserve vocabulary 1.0-1.4 identities and all attempt-002 authority boundaries."
+  ],
+  "acceptedEvidence": [
+    {
+      "kind": "business-acceptance/coverage-traceability-tests",
+      "relativePath": "test/business-acceptance-traceability.test.mjs",
+      "digest": "sha256:aa4919c7ed3ad2484d175a65107b0bfa2cbb2f22d64877ed9115ef3c564e216c"
+    }
+  ],
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:3b1edd043d14606abaabcb5fb34f1619fd1b39acadb946e88d536d9291041708"
+}

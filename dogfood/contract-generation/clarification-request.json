@@ -1,0 +1,83 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationRequestSet",
+  "requestSetId": "clarification-request-contract-generation-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-contract-generation-module-v1",
+        "digest": "sha256:74bcdc11b8b1b4e7ab37a5a805c25ef1de0320f501dcb6c9395c17dcf963311f"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-contract-generation-v1",
+        "digest": "sha256:574fbd2a9a41598854b4328a23e3f4e5628469d3bd8a294da2017ffd9b0eaa0e"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
+        "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-lifecycle-001",
+        "digest": "sha256:eb4a5ea9db4c67cff641ffdc50168ee2c4d257ab307be909fe515759ee88239e"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-CG-OPERATION-LIFECYCLE-001",
+      "prompt": "Should ContractGeneration use separate establish-contracts and generate-contract-change operations selected from project state, while ContractGate owns ApprovedNotApplicable when no contracts are required?",
+      "rationale": "This keeps establishment, compatibility-aware evolution, and the conditional not-applicable branch deterministic without asking a model to choose the path.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Separate state-routed operations; ContractGate owns ApprovedNotApplicable (recommended)",
+        "One full-snapshot generate-contracts operation for both establishment and change"
+      ]
+    },
+    {
+      "id": "Q-CG-TRUST-BOUNDARY-001",
+      "prompt": "Which boundary should own generation, format validation, compatibility analysis, semantic completeness, and promotion?",
+      "rationale": "A generator can propose useful native contracts but cannot safely certify its own completeness, compatibility, or authority.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Adapters generate; Core runs pinned format validators and canonical diff; ContractGate verifies semantics and promotes (recommended)",
+        "Separate generator and validator adapters jointly produce the authoritative candidate",
+        "The configured generator owns validation and compatibility evidence"
+      ]
+    },
+    {
+      "id": "Q-CG-V1-BINDINGS-001",
+      "prompt": "How broad should the first executable ContractGeneration binding be?",
+      "rationale": "The current approved architecture requires JSON Schema only, while the provider-neutral contract should remain extensible to OpenAPI, AsyncAPI, Protobuf, and future formats.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Live JSON Schema 2020-12 path first; define fixture-conformant optional format adapters behind the same contract (recommended)",
+        "Implement live JSON Schema, OpenAPI, AsyncAPI, and Protobuf paths together",
+        "Define contracts only and defer every executable format binding"
+      ]
+    },
+    {
+      "id": "Q-CG-OUTPUT-TRACEABILITY-001",
+      "prompt": "Should the module return ContractDraftSet or ContractChangeSetDraft with one typed entry per interface, while trusted contributors project candidate and approved forward traceability separately?",
+      "rationale": "This preserves exact interface coverage, compatibility change semantics, and candidate-versus-approved authority without letting adapters author graph operations.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Typed draft/change-set outputs with separate candidate and approved traceability projections (recommended)",
+        "Return only a native artifact bundle and derive contract identity at the Gate"
+      ]
+    }
+  ]
+}

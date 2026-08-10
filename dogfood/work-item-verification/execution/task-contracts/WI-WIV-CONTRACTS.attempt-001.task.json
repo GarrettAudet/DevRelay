@@ -1,0 +1,47 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-CONTRACTS-001",
+  "executionId": "WE-WIV-FRONTIER-001-WI-WIV-CONTRACTS-ATTEMPT-001",
+  "workItemId": "WI-WIV-CONTRACTS",
+  "status": "executed",
+  "readinessProof": {
+    "workDependencyBaseline": {
+      "artifactId": "WDB-WIV-DOGFOOD",
+      "digest": "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8"
+    },
+    "completedWorkItemIds": [],
+    "incomingEdges": [],
+    "readyWorkItemIds": ["WI-WIV-CONTRACTS"]
+  },
+  "assignment": {
+    "workItemRef": "WI-WIV-CONTRACTS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING"
+    ]
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "contracts/work-item-verification-artifacts.schema.json",
+      "examples/modules/work-item-verification.module.json",
+      "src/work-item-verification-artifact-validator.mjs",
+      "test/work-item-verification-contracts.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not execute another DAG item.",
+      "Do not modify project baselines or dogfood Gate and promotion evidence.",
+      "Do not verify, approve, integrate, or create graph operations.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "verification": {
+    "requiredEvidenceKind": "work-item-verification/contract-tests",
+    "acceptance": "Only closed provider-neutral WorkItemVerification artifacts validate and the verifier port exposes no downstream authority."
+  },
+  "task": {
+    "threadId": "019fdb4e-405b-7010-8ae5-47962fac15d2",
+    "worktree": "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/contract-generation/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-contract-generation-v1",
+        "digest": "sha256:3fb191d3d46b816ef7b1864ffd76d4a991b99db4c820b8d19769997fc08eb469"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/contract-generation/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-contract-generation-v1",
+        "digest": "sha256:2611cd3c6b05150bf85324cc800c7b6db24f910d41445d3b6b696910e36c8072"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/contract-generation/native/openspec/specs/contract-generation/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-contract-generation-v1",
+        "digest": "sha256:d1776942be85a0eeb450a302395af45ec1efb2c689755d1b46ba076732a3224e"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-contract-generation-v1",
+      "digest": "sha256:98c7cb7a87b2e13f258250992faffe4105697d334eff67bc7efe664c8f532c72"
+    },
+    {
+      "artifactId": "project-overview-change-set-contract-generation-v1",
+      "digest": "sha256:c33c06b4111db2db07f90f86c62187558a3ee58cfca0783fcd7c65ea2fcb851f"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

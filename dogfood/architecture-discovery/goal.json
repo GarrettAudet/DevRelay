@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-architecture-discovery-module-v1",
+  "statement": "Define DevRelay's conditional ArchitectureDiscovery module so an existing repository without an approved architecture baseline can produce a source-bound observational CurrentArchitectureSnapshot before ArchitectureDesign.",
+  "objectives": [
+    "Discover the implemented system from an exact version-pinned repository snapshot without treating intended design as observed fact.",
+    "Produce the canonical current-architecture context required by ArchitectureDesign establish-baseline.",
+    "Separate direct observations, deterministic derivations, analyzer inferences, unknowns, and blocking gaps.",
+    "Keep discovery capabilities replaceable while Core retains routing, validation, checkpointing, and progression authority.",
+    "Prevent incomplete or stale discovery from silently becoming an architecture baseline."
+  ],
+  "constraints": [
+    "ArchitectureDiscovery runs only for an existing repository with neither an approved ArchitectureBaseline nor a valid CurrentArchitectureSnapshot.",
+    "The module describes current implementation; ArchitectureDesign owns proposed architecture and ArchitectureGate owns baseline promotion.",
+    "Every observation must resolve to exact repository, artifact, or analyzer provenance.",
+    "Adapters cannot mutate TraceabilityGraph, approve results, or choose lifecycle progression.",
+    "Repository access, external transmission, and analyzer execution must be explicit and policy-bound."
+  ],
+  "acceptanceCriteria": [
+    "Deterministic project state selects discover or bypass without model or adapter discretion.",
+    "The invocation pins the repository revision, tree/content digest, ProjectOverviewBaseline, project context, adapter versions, options, and grants.",
+    "A successful run returns exactly one schema-valid CurrentArchitectureSnapshot with provenance, confidence, gaps, and native artifacts.",
+    "Blocking discovery gaps produce needs_clarification and cannot progress to ArchitectureDesign.",
+    "Checkpoint replay reuses the exact validated output without reinvoking analyzers.",
+    "Provider substitution changes only configured capability bindings while canonical output semantics remain stable."
+  ],
+  "assumptions": [
+    "The default inventory strategy, uncertainty policy, and repository privacy boundary require owner confirmation.",
+    "The bounded OpenSpec chat bridge records this clarification run but does not claim OpenSpec CLI execution."
+  ]
+}

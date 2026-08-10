@@ -1,0 +1,93 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-SV-DOCUMENTATION.attempt-001",
+  "workItem": {
+    "id": "WI-SV-DOCUMENTATION",
+    "objective": "Document SystemVerification inputs, trust boundary, outcomes, plug-in contract, replay, and BusinessAcceptance handoff.",
+    "boundedScope": [
+      "docs/system-verification.md",
+      "README.md",
+      "examples/README.md",
+      "test/system-verification-documentation.test.mjs"
+    ],
+    "deliverables": [
+      "Human-readable operator guide",
+      "README links",
+      "Documentation conformance test"
+    ],
+    "workType": "documentation-change",
+    "requiredCapabilities": [
+      "technical-writing",
+      "verification-domain"
+    ],
+    "dependencyHints": [
+      "WI-SV-CONTRACTS",
+      "WI-SV-CORE",
+      "WI-SV-ADAPTERS",
+      "WI-SV-TRACEABILITY"
+    ],
+    "verificationPlan": [
+      "Assert lifecycle and authority boundaries",
+      "Assert exact inputs and outcomes"
+    ],
+    "requiredEvidence": [
+      "system-verification/documentation-tests"
+    ],
+    "sourceRefs": [
+      "goal-system-verification-module-v1",
+      "D-SV-ENVIRONMENT-001",
+      "D-SV-OUTCOMES-001"
+    ]
+  },
+  "dependencies": [
+    "WI-SV-CONTRACTS",
+    "WI-SV-CORE",
+    "WI-SV-ADAPTERS",
+    "WI-SV-TRACEABILITY"
+  ],
+  "assignment": {
+    "workItemRef": "WI-SV-DOCUMENTATION",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "technical-writing",
+      "verification-domain"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevisionRequired": true
+  },
+  "authority": {
+    "writeScope": [
+      "docs/system-verification.md",
+      "README.md",
+      "examples/README.md",
+      "test/system-verification-documentation.test.mjs"
+    ],
+    "forbidden": [
+      "BusinessAcceptance",
+      "deployment",
+      "scope mutation",
+      "graph operations",
+      "downstream approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/system-verification/execution/attempts/WI-SV-DOCUMENTATION.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:350e51aca3584bb3862df9cd61a31b8cdb36092b4b9e819cc433d6095a3c11e6"
+}

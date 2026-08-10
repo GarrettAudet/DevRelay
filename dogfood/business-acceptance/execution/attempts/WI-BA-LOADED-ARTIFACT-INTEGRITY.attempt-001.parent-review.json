@@ -1,0 +1,42 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-LOADED-ARTIFACT-INTEGRITY-001",
+  "taskId": "WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001",
+  "workItemId": "WI-BA-LOADED-ARTIFACT-INTEGRITY",
+  "task": {
+    "artifactId": "WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001",
+    "digest": "sha256:1d4e35b728ff318830cba49e372ddfbde4815bd65e4641f5f910e725c7e7ac45",
+    "rawDigest": "sha256:c8e98d8ce9510bcf9f5a8e673d74e176284da61f0c7e6615a1426d7da3bbd481",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.handoff",
+    "digest": "sha256:06ee1839383ba159e63da806b0245fbc8e7a763da47ce16eeb62f1595a4364e4",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.handoff.raw.json"
+  },
+  "integrationReceipt": {
+    "artifactId": "BA-HOST-INTEGRATION-WI-BA-LOADED-ARTIFACT-INTEGRITY-001",
+    "digest": "sha256:16ea52b4245d81e95532b913606709ce981e5a27de36e22635ab3e9593c40797",
+    "rawDigest": "sha256:226fb9728145d88caa9e4aaf193e731395c287cc86bcd43d35586377b192cb23",
+    "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.receipt.json"
+  },
+  "outcome": "pass",
+  "acceptedEvidence": [
+    "The task contract matched both its canonical and raw-byte digests before execution.",
+    "The worker and parent independently passed the exact 13-test focused suite covering all three public JSON substitution boundaries and mutation isolation.",
+    "The exact worker candidate passed 699 of 699 with the pinned offline Structurizr and Java toolchain after its initial sandbox-only network denial was removed.",
+    "Eight authorized operations applied under two create-only and six compare-and-swap guards with zero drift, deletion, or post-copy mismatch.",
+    "The integrated parent passed 699 of 699, including deterministic recursive dogfood replays and all existing lifecycle boundaries."
+  ],
+  "residualRisks": [
+    "ArchitectureDiscovery and LifecycleRunReport remain required before full V1 project BusinessAcceptance.",
+    "The V1 completion circuit must restore visible interactive RequirementsGathering decisions for every remaining semantic module rather than relying only on artifact-level replay."
+  ],
+  "nextAction": {
+    "route": "pass",
+    "instruction": "Record the ArchitectureDiscovery RequirementsGathering clarification answers, run release:check for the hardened 0.8.0 candidate, then restart the complete released circuit to build ArchitectureDiscovery."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:8186eb289d3fbd962a16051d05c9d46fdba44dd9ecf560acb3b33c470332ddad"
+}

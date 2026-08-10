@@ -1,0 +1,91 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "status": "lineage-repaired-canonical-gate-blocked-by-out-of-scope-digest",
+  "summary": "Repaired all ten reproducible in-scope failures by advancing collided replay generations, binding mutable active candidates to newly generated exact digests, restoring historical update locators, and replaying the Requirements observer through its historically owned node kinds. Prior replay generations and immutable traceability history were preserved. Canonical verification improved from 683/694 to 693/694; its sole remaining failure is a stale digest expectation in a test outside this task's write scope.",
+  "changedPaths": [
+    "dogfood/contract-generation/contract-generation/promote.mjs",
+    "dogfood/contract-generation/contract-generation/replay-v4/",
+    "dogfood/work-dependency-analysis/dependency-analysis/promote.mjs",
+    "dogfood/work-dependency-analysis/dependency-analysis/replay-v3/",
+    "dogfood/work-execution/assignment/promote.mjs",
+    "dogfood/work-execution/assignment/replay-v5/",
+    "dogfood/work-item-verification/assignment/promote.mjs",
+    "dogfood/work-item-verification/assignment/replay-v6/",
+    "dogfood/work-item-verification/contract-generation/promote.mjs",
+    "dogfood/work-item-verification/contract-generation/replay-v3/",
+    "dogfood/work-item-verification/dependency-analysis/promote.mjs",
+    "dogfood/work-item-verification/dependency-analysis/replay-v3/",
+    "dogfood/work-item-verification/work-breakdown/materialize.mjs",
+    "dogfood/work-item-verification/work-breakdown/promote.mjs",
+    "test/contract-generation-dogfood.test.mjs",
+    "test/contract-generation-promotion-dogfood.test.mjs",
+    "test/work-dependency-analysis-dogfood.test.mjs",
+    "test/work-execution-specialist-assignment-dogfood.test.mjs",
+    "test/work-item-verification-contract-generation-dogfood.test.mjs",
+    "test/work-item-verification-documentation.test.mjs",
+    "test/work-item-verification-planning-dogfood.test.mjs",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001.handoff.raw.json"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:42b72acd1f6e67f4ebf8bbf4ba2643330d77379532f0cdd1ce2d0fd3c54c06ff",
+    "dependencyHandoffDigest": "sha256:654ed971c85a37f1f1abf8ce6c1c91d55514b6d419bd24b307cab656ee574f74",
+    "parentReviewDigest": "sha256:05e81fa449a71c5d7366e51b0467f958c5538cd32eb9b41d1ed5ace5fa48f42c",
+    "writeScopeRespected": true,
+    "immutableHistoryModified": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "failureClassification": {
+    "reportedCanonicalFailures": 11,
+    "reproducedInFocusedScope": 10,
+    "classes": [
+      "active-versus-historical-artifact-aliasing",
+      "immutable-replay-version-collision",
+      "traceability-assertion-ownership-conflict",
+      "stale-exact-digest-binding",
+      "stale-documentation-expectation"
+    ],
+    "note": "The eleventh failure was reproduced by canonical verification in test/specialist-assignment-contract-generation-dogfood.test.mjs, which is outside authority.writeScope."
+  },
+  "lineageRepair": {
+    "advancedReplayGenerations": [
+      "contract-generation/replay-v4",
+      "work-dependency-analysis/dependency-analysis/replay-v3",
+      "work-execution/assignment/replay-v5",
+      "work-item-verification/contract-generation/replay-v3",
+      "work-item-verification/dependency-analysis/replay-v3",
+      "work-item-verification/assignment/replay-v6"
+    ],
+    "priorReplayGenerationsOverwritten": 0,
+    "ownershipValidationChanged": false,
+    "ownershipResolution": "The replay-only Requirements observer retains the historical contributor identity and projects only the node kinds owned by that contributor; business-scope nodes and edges remain excluded and owned by their original trusted observer.",
+    "fabricatedEvidence": false
+  },
+  "verification": {
+    "focused": {
+      "command": "node --test --test-concurrency=1 test/contract-generation-dogfood.test.mjs test/contract-generation-promotion-dogfood.test.mjs test/specialist-assignment-work-breakdown-dogfood.test.mjs test/work-breakdown-dogfood.test.mjs test/work-dependency-analysis-dogfood.test.mjs test/work-execution-specialist-assignment-dogfood.test.mjs test/work-item-verification-contract-generation-dogfood.test.mjs test/work-item-verification-documentation.test.mjs test/work-item-verification-planning-dogfood.test.mjs",
+      "tests": 18,
+      "passed": 18,
+      "failed": 0
+    },
+    "canonicalVerify": {
+      "command": "npm.cmd run verify",
+      "status": "failed-outside-write-scope",
+      "tests": 694,
+      "passed": 693,
+      "failed": 1,
+      "remainingFailure": {
+        "path": "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+        "line": 45,
+        "expected": "sha256:dfb5a97f2436daeecd501e0c078b47fc4e4f8f5afdb8f4c201061abd99506bdf",
+        "actual": "sha256:ba6666e543b396be927066e56d2eee6d5a01ae777f9644302b5deda7394556b4",
+        "classification": "stale-exact-digest-binding",
+        "authority": "outside-task-write-scope"
+      }
+    }
+  },
+  "handoff": "Parent should review the scoped replay-lineage changes, update or otherwise reconcile the single out-of-scope SpecialistAssignment ContractGeneration digest expectation, and rerun npm.cmd run verify before any release integration. Do not seal release 0.8.0 or begin ArchitectureDiscovery from this handoff."
+}

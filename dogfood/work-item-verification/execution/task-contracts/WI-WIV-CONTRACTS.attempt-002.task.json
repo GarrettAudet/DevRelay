@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-CONTRACTS-002",
+  "executionId": "WE-WIV-REWORK-001-WI-WIV-CONTRACTS-ATTEMPT-002",
+  "workItemId": "WI-WIV-CONTRACTS",
+  "status": "in-progress",
+  "attempt": 2,
+  "revisionLineage": {
+    "predecessorTaskContract": {
+      "artifactId": "WETC-WI-WIV-CONTRACTS-001",
+      "digest": "sha256:ab3514cd52ef07a917198ee4a84295ff1e6cc5698a1af3516d73df2db234b65e"
+    },
+    "downstreamReview": {
+      "relativePath": "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-EVIDENCE-NORMALIZATION.attempt-001.parent-review.json",
+      "bytes": 2151,
+      "digest": "sha256:aa6caae01c49597e61589367c94d48413efdd2b01fea503c206c61a3c4dc8717",
+      "outcome": "redesign"
+    },
+    "ownerDecision": "approved-contract-redesign"
+  },
+  "readinessProof": {
+    "workDependencyBaseline": {
+      "artifactId": "WDB-WIV-DOGFOOD",
+      "digest": "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8"
+    },
+    "route": "redesign-return-to-upstream-work-item",
+    "blockedDownstreamWorkItemId": "WI-WIV-EVIDENCE-NORMALIZATION"
+  },
+  "assignment": {
+    "workItemRef": "WI-WIV-CONTRACTS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING"
+    ]
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "contracts/work-item-verification-artifacts.schema.json",
+      "examples/modules/work-item-verification.module.json",
+      "src/work-item-verification-artifact-validator.mjs",
+      "test/work-item-verification-contracts.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not change adapters or the rejected normalizer proposal.",
+      "Do not evaluate policy, decide a Gate outcome, or create graph operations.",
+      "Do not modify baselines, dogfood Gate evidence, or package files.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "task": {
+    "threadId": "019fdb4e-405b-7010-8ae5-47962fac15d2",
+    "worktree": "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis"
+  }
+}

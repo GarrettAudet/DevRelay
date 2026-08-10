@@ -1,0 +1,30 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-GAP-CHECKPOINT-ATTEMPT-001",
+  "workItemId": "WI-AD-GAP-CHECKPOINT",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/architecture-discovery-gap-policy.mjs",
+    "src/architecture-discovery-checkpoint.mjs",
+    "test/architecture-discovery-gap-checkpoint.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/architecture-discovery-gap-checkpoint.test.mjs",
+      "exitCode": 0,
+      "summary": "7 tests passed: blocking material gaps clarify; non-blocking low-confidence evidence proceeds explicitly; deterministic projection, changed-input isolation, stale/substituted checkpoint rejection, and zero-call exact replay are proven."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "architecture-discovery/gap-checkpoint-tests",
+      "relativePath": "test/architecture-discovery-gap-checkpoint.test.mjs",
+      "digest": "sha256:b4a28562bf30f5d74889adc1c4629022062917680943643293c8931b87c96d56"
+    }
+  ],
+  "notes": "Implemented Core-owned materiality and gap evaluation plus immutable inventory/analyzer result checkpoint replay. Adapters provide observations only and cannot classify materiality or control progression. No commit or integration performed.",
+  "residualRisks": [
+    "none"
+  ]
+}

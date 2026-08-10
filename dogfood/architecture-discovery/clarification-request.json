@@ -1,0 +1,70 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationRequestSet",
+  "requestSetId": "clarification-request-architecture-discovery-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-architecture-discovery-module-v1",
+        "digest": "sha256:a5f1c2f26363ca705ac3059ba4f3ee26b2d3eed0b1cac316eb273bf8f2a4363b"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-architecture-discovery-v1",
+        "digest": "sha256:98553600fd8344af9db86eddfdc832dc6ab1997034fbe730e06c9ea787037478"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-change-integration-001",
+        "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-change-integration-001",
+        "digest": "sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-AD-DISCOVERY-CAPABILITIES-001",
+      "prompt": "Should every discovery run begin with a mandatory deterministic local repository inventory, with dependency-cruiser, SCIP, or similar analyzers contributing only optional bounded observations?",
+      "rationale": "A stable minimum inventory prevents analyzer availability from changing the module contract while keeping specialized analysis replaceable.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Require a version-pinned native inventory adapter; treat specialized analyzers as optional contributors (recommended)",
+        "Require each selected external analyzer to provide the entire discovery result"
+      ]
+    },
+    {
+      "id": "Q-AD-CONFIDENCE-GATE-001",
+      "prompt": "How should incomplete or low-confidence discovery affect progression to ArchitectureDesign?",
+      "rationale": "Treating uncertainty as certainty can create an incorrect baseline, while blocking on every minor unknown can make discovery unusable.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Block only on declared material gaps; preserve non-blocking low-confidence findings and require explicit Gate disposition (recommended)",
+        "Block ArchitectureDesign whenever any discovery finding is low-confidence or unknown"
+      ]
+    },
+    {
+      "id": "Q-AD-REPOSITORY-BOUNDARY-001",
+      "prompt": "What repository-access and privacy boundary should ArchitectureDiscovery use by default?",
+      "rationale": "Discovery may inspect proprietary source, generated output, ignored files, secrets, and dependency metadata, so its default boundary must be explicit.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Analyze tracked or explicitly declared files offline, respect ignore and secret rules, and require opt-in before source content leaves the host (recommended)",
+        "Allow configured analyzers to inspect or transmit any repository content allowed by their host credentials"
+      ]
+    }
+  ]
+}

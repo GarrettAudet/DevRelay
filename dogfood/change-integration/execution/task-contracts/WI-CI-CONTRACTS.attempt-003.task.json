@@ -1,0 +1,48 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-CI-CONTRACTS-003",
+  "executionId": "WE-CI-DOGFOOD-WI-CI-CONTRACTS-ATTEMPT-003",
+  "workItemId": "WI-CI-CONTRACTS",
+  "status": "ready",
+  "attempt": 3,
+  "revisionLineage": {
+    "predecessorTaskContract": {
+      "artifactId": "WETC-WI-CI-CONTRACTS-002"
+    },
+    "parentReview": {
+      "artifactId": "CIPR-WI-CI-CONTRACTS-002"
+    },
+    "route": "fix"
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "contracts/change-integration-artifacts.schema.json",
+      "src/change-integration-artifact-validator.mjs",
+      "test/change-integration-contracts.test.mjs",
+      "examples/modules/change-integration.module.json"
+    ],
+    "forbiddenActions": [
+      "Do not change the existing RepositorySnapshot schema owner.",
+      "Do not implement runtime, adapter, checkpoint persistence, traceability, verification, approval, integration, exports, or progression.",
+      "Do not change non-allowlisted files or create commits, tags, pull requests, or merges."
+    ]
+  },
+  "requiredCorrections": [
+    "Remove PostIntegrationRepositorySnapshot from the ChangeIntegration schema and validator kinds. Reuse https://devrelay.dev/artifacts/repository-snapshot/v1 and application/vnd.devrelay.repository-snapshot+json as the successful module output named repository-snapshot.",
+    "Change ChangeIntegrationTraceabilityInput to reference the reused RepositorySnapshot artifact without defining a replacement snapshot kind.",
+    "Make IntegrationInputBinding explicitly bind the exact required project baseline refs and canonical host permission demands in addition to subject, target, policy, adapter, and idempotency identity.",
+    "Require IntegrationPlan permissionDemands and every bound baseline identity to equal the exact IntegrationInputBinding values; reject omissions, additions, reorder-based ambiguity, and substitutions deterministically.",
+    "Update positive and negative tests, expected artifact kinds, output names, and evidence bindings while preserving all attempt-002 corrections."
+  ],
+  "handoffContract": {
+    "format": "Return one exact JSON object with fields workItemId, outcome, summary, changedFiles, verification, deliverables, sourceRefs, residualRisks, and integrationNotes.",
+    "allowedOutcomes": [
+      "pass",
+      "fix",
+      "diagnose",
+      "clarify",
+      "block"
+    ]
+  }
+}

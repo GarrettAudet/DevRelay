@@ -36,8 +36,8 @@ const artifactRef = (artifactId, schema, mediaType, digest, uri) => ({
 const fileRef = (artifactId, schema, mediaType, name, bytes) =>
   artifactRef(artifactId, schema, mediaType, sha256(bytes), `${logicalRoot}/${name}`);
 
-const requirements = load("project/requirements-baseline.json");
-const projectOverview = load("project/project-overview-baseline.json");
+const requirements = load("project/history/1.1.0/requirements-baseline.json");
+const projectOverview = load("project/history/1.1.0/project-overview-baseline.json");
 const projectContext = load("dogfood/work-dependency-analysis/project-context.json");
 const repositorySnapshot = load("dogfood/work-dependency-analysis/repository-snapshot.json");
 const architectureBaseline = load(
@@ -48,14 +48,14 @@ const requirementsRef = artifactRef(
   requirements.baselineId,
   "https://devrelay.dev/artifacts/requirements-baseline/v1",
   "application/vnd.devrelay.requirements-baseline+json",
-  sha256(read("project/requirements-baseline.json")),
+  sha256(read("project/history/1.1.0/requirements-baseline.json")),
   "file:///C:/repos/DevRelay/project/requirements-baseline.json",
 );
 const projectOverviewRef = artifactRef(
   projectOverview.baselineId,
   "https://devrelay.dev/artifacts/project-overview-baseline/v1",
   "application/vnd.devrelay.project-overview-baseline+json",
-  sha256(read("project/project-overview-baseline.json")),
+  sha256(read("project/history/1.1.0/project-overview-baseline.json")),
   "file:///C:/repos/DevRelay/project/project-overview-baseline.json",
 );
 const projectContextRef = artifactRef(
@@ -1072,9 +1072,9 @@ const bytesById = new Map();
 const register = (ref, bytes) => bytesById.set(ref.artifactId, Buffer.from(bytes));
 register(stateRef, stateBytes);
 register(routeRef, routeBytes);
-register(requirementsRef, read("project/requirements-baseline.json"));
-register(projectOverviewRef, read("project/project-overview-baseline.json"));
-register(projectOverview.renderedDocument.artifact, read("ProjectOverview.md"));
+register(requirementsRef, read("project/history/1.1.0/requirements-baseline.json"));
+register(projectOverviewRef, read("project/history/1.1.0/project-overview-baseline.json"));
+register(projectOverview.renderedDocument.artifact, read("project/history/1.1.0/ProjectOverview.md"));
 register(projectContextRef, read("dogfood/work-dependency-analysis/project-context.json"));
 register(repositorySnapshotRef, read("dogfood/work-dependency-analysis/repository-snapshot.json"));
 register(architectureBaselineRef, read("dogfood/work-breakdown/architecture-design/architecture-baseline.json"));
@@ -1367,45 +1367,10 @@ const pendingPromotion = {
   candidate: pointer(changeSetRef),
   approval: pointer(ownerApprovalRef),
 };
-const projectDir = path.join(root, "project");
-const architectureHistoryDir = path.join(
-  projectDir,
-  "history",
-  "architecture",
-  architectureBaselineRef.artifactId,
-);
-fs.mkdirSync(architectureHistoryDir, { recursive: true });
-fs.writeFileSync(
-  path.join(projectDir, "architecture-promotion.pending.json"),
-  jsonArtifactBytes(pendingPromotion),
-);
-fs.writeFileSync(
-  path.join(architectureHistoryDir, "architecture-baseline.json"),
-  read("dogfood/work-breakdown/architecture-design/architecture-baseline.json"),
-);
 fs.writeFileSync(
   path.join(dir, "architecture-baseline.json"),
   promotedBaselineBytes,
 );
-fs.writeFileSync(
-  path.join(projectDir, "architecture-baseline.json"),
-  Buffer.from(
-    gatePromotion.commitPayload.baseline.bytesBase64,
-    "base64",
-  ),
-);
-fs.writeFileSync(
-  path.join(projectDir, "project-architecture-state.json"),
-  promotedProjectStateBytes,
-);
-fs.writeFileSync(
-  path.join(
-    projectDir,
-    "architecture-gate-owner-approval-work-dependency-analysis-v1.json",
-  ),
-  ownerApprovalBytes,
-);
-
 const promotionProof = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "ArchitectureGatePromotionProof",
@@ -1439,20 +1404,6 @@ const promotionProofRef = fileRef(
   "architecture-gate-promotion-proof.json",
   promotionProofBytes,
 );
-const committedPromotion = {
-  ...pendingPromotion,
-  state: "committed",
-  proof: pointer(promotionProofRef),
-};
-fs.writeFileSync(
-  path.join(projectDir, "architecture-promotion.commit.json"),
-  jsonArtifactBytes(committedPromotion),
-);
-fs.writeFileSync(
-  path.join(projectDir, "architecture-promotion.pending.json"),
-  jsonArtifactBytes(committedPromotion),
-);
-
 console.log(JSON.stringify({
   status: "ARCHITECTURE_GATE_PROMOTED",
   operation: "design-change",

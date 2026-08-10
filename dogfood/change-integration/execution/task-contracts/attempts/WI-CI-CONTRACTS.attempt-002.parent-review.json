@@ -1,0 +1,26 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "CIPR-WI-CI-CONTRACTS-002",
+  "executionId": "WE-CI-DOGFOOD-WI-CI-CONTRACTS-ATTEMPT-002",
+  "workItemId": "WI-CI-CONTRACTS",
+  "outcome": "fix",
+  "acceptanceReview": {
+    "attemptOneFindingsResolved": true,
+    "crossModuleSchemaOwnershipPreserved": false,
+    "exactInputBindingComplete": false
+  },
+  "blockingFindings": [
+    {
+      "code": "CI_REPOSITORY_SCHEMA_OWNER",
+      "finding": "PostIntegrationRepositorySnapshot duplicates the upstream RepositorySnapshot schema owner. ChangeIntegration must return the existing canonical RepositorySnapshot artifact and must not define a replacement kind."
+    },
+    {
+      "code": "CI_INPUT_BINDING_INCOMPLETE",
+      "finding": "IntegrationInputBinding does not bind the required project baselines or host-enforced permission demands, so the plan can introduce permission demands not authorized by the exact invocation inputs."
+    }
+  ],
+  "disposition": "revision-required",
+  "authoritativeVerifiedCompletionFactCreated": false,
+  "integrationAuthorized": false
+}

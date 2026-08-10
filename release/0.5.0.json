@@ -1,0 +1,4515 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ReleaseCatalog",
+  "metadata": {
+    "name": "devrelay",
+    "version": "0.5.0",
+    "releaseType": "private-source"
+  },
+  "scope": {
+    "root": ".",
+    "inclusion": "all-regular-files-recursive",
+    "excludedDirectories": [
+      ".devrelay",
+      ".git",
+      "coverage",
+      "dist",
+      "node_modules"
+    ],
+    "selfExclusion": {
+      "path": "release/0.5.0.json",
+      "reason": "A release catalog cannot contain its own stable raw-byte digest.",
+      "npmPackaged": true
+    }
+  },
+  "digestAlgorithm": "sha256-raw-bytes",
+  "modules": [
+    {
+      "id": "requirements-gathering",
+      "version": "0.1.0",
+      "definition": "examples/modules/requirements-gathering.module.json",
+      "operations": [
+        {
+          "id": "gather",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "github-spec-kit",
+        "openspec"
+      ]
+    },
+    {
+      "id": "architecture-design",
+      "version": "0.1.0",
+      "definition": "examples/modules/architecture-design.module.json",
+      "operations": [
+        {
+          "id": "design-change",
+          "steps": [
+            "designer",
+            "modeler",
+            "decision-recorder"
+          ]
+        },
+        {
+          "id": "establish-baseline",
+          "steps": [
+            "designer",
+            "modeler",
+            "decision-recorder"
+          ]
+        }
+      ],
+      "plugins": [
+        "madr",
+        "openspec-design",
+        "spec-kit-plan",
+        "structurizr"
+      ]
+    },
+    {
+      "id": "contract-generation",
+      "version": "0.1.0",
+      "definition": "examples/modules/contract-generation.module.json",
+      "operations": [
+        {
+          "id": "establish-contracts",
+          "steps": []
+        },
+        {
+          "id": "generate-contract-change",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "asyncapi-contract-generator",
+        "json-schema-contract-generator",
+        "openapi-contract-generator",
+        "protobuf-contract-generator"
+      ]
+    },
+    {
+      "id": "work-breakdown",
+      "version": "0.1.0",
+      "definition": "examples/modules/work-breakdown.module.json",
+      "operations": [
+        {
+          "id": "decompose-change",
+          "steps": []
+        },
+        {
+          "id": "establish-breakdown",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "openspec-tasks",
+        "spec-kit-tasks"
+      ]
+    },
+    {
+      "id": "work-dependency-analysis",
+      "version": "0.1.0",
+      "definition": "examples/modules/work-dependency-analysis.module.json",
+      "operations": [
+        {
+          "id": "analyze-dependencies",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "native-structured-dependency-proposer",
+        "openspec-dependency-proposer",
+        "spec-kit-dependency-reviewer",
+        "task-master-dependency-proposer"
+      ]
+    }
+  ],
+  "plugins": [
+    {
+      "id": "asyncapi-contract-generator",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/asyncapi-contract-generator.plugin.json",
+      "module": {
+        "id": "contract-generation",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "establish-contracts",
+          "step": null,
+          "role": "proposer"
+        },
+        {
+          "operation": "generate-contract-change",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
+    {
+      "id": "github-spec-kit",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/github-spec-kit.plugin.json",
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "gather",
+          "step": null
+        }
+      ]
+    },
+    {
+      "id": "json-schema-contract-generator",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/json-schema-contract-generator.plugin.json",
+      "module": {
+        "id": "contract-generation",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "establish-contracts",
+          "step": null,
+          "role": "proposer"
+        },
+        {
+          "operation": "generate-contract-change",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
+    {
+      "id": "madr",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/madr.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "design-change",
+          "step": "decision-recorder"
+        },
+        {
+          "operation": "establish-baseline",
+          "step": "decision-recorder"
+        }
+      ]
+    },
+    {
+      "id": "openapi-contract-generator",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openapi-contract-generator.plugin.json",
+      "module": {
+        "id": "contract-generation",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "establish-contracts",
+          "step": null,
+          "role": "proposer"
+        },
+        {
+          "operation": "generate-contract-change",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
+    {
+      "id": "openspec",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openspec.plugin.json",
+      "module": {
+        "id": "requirements-gathering",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "gather",
+          "step": null
+        }
+      ]
+    },
+    {
+      "id": "openspec-design",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openspec-design.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "design-change",
+          "step": "designer"
+        }
+      ]
+    },
+    {
+      "id": "openspec-tasks",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openspec-tasks.plugin.json",
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "decompose-change",
+          "step": null
+        },
+        {
+          "operation": "establish-breakdown",
+          "step": null
+        }
+      ]
+    },
+    {
+      "id": "protobuf-contract-generator",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/protobuf-contract-generator.plugin.json",
+      "module": {
+        "id": "contract-generation",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "establish-contracts",
+          "step": null,
+          "role": "proposer"
+        },
+        {
+          "operation": "generate-contract-change",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
+    {
+      "id": "spec-kit-plan",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/spec-kit-plan.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "establish-baseline",
+          "step": "designer"
+        }
+      ]
+    },
+    {
+      "id": "spec-kit-tasks",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/spec-kit-tasks.plugin.json",
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "decompose-change",
+          "step": null
+        },
+        {
+          "operation": "establish-breakdown",
+          "step": null
+        }
+      ]
+    },
+    {
+      "id": "structurizr",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/structurizr.plugin.json",
+      "module": {
+        "id": "architecture-design",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "design-change",
+          "step": "modeler"
+        },
+        {
+          "operation": "establish-baseline",
+          "step": "modeler"
+        }
+      ]
+    },
+    {
+      "id": "native-structured-dependency-proposer",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/native-structured-dependency-proposer.plugin.json",
+      "module": {
+        "id": "work-dependency-analysis",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "analyze-dependencies",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
+    {
+      "id": "openspec-dependency-proposer",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/openspec-dependency-proposer.plugin.json",
+      "module": {
+        "id": "work-dependency-analysis",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "analyze-dependencies",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
+    {
+      "id": "spec-kit-dependency-reviewer",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+      "module": {
+        "id": "work-dependency-analysis",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "analyze-dependencies",
+          "step": null,
+          "role": "reviewer"
+        }
+      ]
+    },
+    {
+      "id": "task-master-dependency-proposer",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/task-master-dependency-proposer.plugin.json",
+      "module": {
+        "id": "work-dependency-analysis",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "analyze-dependencies",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": ".git",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:04dfdac5a1d25a28640b035fc702c0e5aa1166fbb7087f1042b621a9eab89227"
+    },
+    {
+      "path": ".gitattributes",
+      "role": "repository-policy",
+      "packaged": false,
+      "digest": "sha256:0ce74711661feb829da8d1a01b15b2a742667f2f0d1d6b8fd8f5ab3cf81591aa"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "role": "continuous-integration",
+      "packaged": false,
+      "digest": "sha256:749ba3eff7d1c0a91fb1052bf83b32cfb1f14ce183e2af53f2c090b7e7d3aaaf"
+    },
+    {
+      "path": ".gitignore",
+      "role": "repository-policy",
+      "packaged": false,
+      "digest": "sha256:4f5981d7ea3c0d82d9390f25cbe06df6eb2842c78d45013404b0a3adcee7322d"
+    },
+    {
+      "path": "AGENTS.md",
+      "role": "agent-guidance",
+      "packaged": false,
+      "digest": "sha256:8069b889d5e6bf4e68dee3ba983c6b08d273ca140ca25b5fce1bd8a9b17b068a"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:8fba5eae4ca0ae9d3fc40e8152840d86e10c917d32a53a35cbdb12a6348ca219"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:86670e5807d8a1ccc147a02593c1df0d9aafd707c020600c9ab558ec269b04f5"
+    },
+    {
+      "path": "LICENSE",
+      "role": "license",
+      "packaged": true,
+      "digest": "sha256:a5c61659dc0acc8fc81dadc14fb9ca54db1a21e73a8dc62deebe46a9b7cccc31"
+    },
+    {
+      "path": "ProjectOverview.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:2c23468dae2092bb133e78e45e725e647a7901fb90e400f149d929192446b6a3"
+    },
+    {
+      "path": "README.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:337b5a0e0d37291bfd86c50274a89b2d7d69b62c9fdc999a6a802708cf53d906"
+    },
+    {
+      "path": "RELEASE.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:6573eb7cea61fe6282b31ab073a5ef1336280508d2e110cd429683aa4aae9e77"
+    },
+    {
+      "path": "SECURITY.md",
+      "role": "release-documentation",
+      "packaged": true,
+      "digest": "sha256:24efa03cc76db08f203d4b240edb33f162189764e723ed34b2f60ea07a00e8a8"
+    },
+    {
+      "path": "contracts/architecture-design-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:c8bf78edf4d1e15a2494b9fd7604549d3ab765f7d5a2cb15b04c9f51948335c1"
+    },
+    {
+      "path": "contracts/contract-generation-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:fed5a1f9ff9b028e187b51e533c59b6dfe7ffbcbb2725cc2354b040184cb0970"
+    },
+    {
+      "path": "contracts/module-definition.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:97c3411e8e7ab76bcd80a002c65a0bf58ec6c1850e6d06adeda946bd12a9a6ff"
+    },
+    {
+      "path": "contracts/module-execution-record.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:6da18e241455ed3aba20ca97551370536e767bca81e6ceda867af8eb344342fc"
+    },
+    {
+      "path": "contracts/module-invocation.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:7d22b28eb192c253cbf432304196a824e3c54dcadbf210642c2c9f75edfd7b3b"
+    },
+    {
+      "path": "contracts/module-plugin.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:a3ffdb4d26322e33ef3717fd44edfb318f2219115943a7cc0c6941e6e4962491"
+    },
+    {
+      "path": "contracts/module-result.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:fe00aec2e7952d0b6fb53b0a125d8540cfee8cce9e44a88ca7cd1d19102a437c"
+    },
+    {
+      "path": "contracts/module-route-decision.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:98c3a137fcfe8baccd95863ec0bce01e230daed194345839a985da9d2c1e16fa"
+    },
+    {
+      "path": "contracts/module-step-invocation.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:4d041b1d4745ba45ed48daaafc5d8e18da755d092a4937670d05ba7a730bc6f5"
+    },
+    {
+      "path": "contracts/module-step-result.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:2beb01b0f6701c95ac3887bf2f523cd00a1f13f7be473d1d361a07c37fa6b071"
+    },
+    {
+      "path": "contracts/project-overview-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:ff94a62f53d25077d0e7f9c8f7a8608228f88c72583c610499867d28806edb9b"
+    },
+    {
+      "path": "contracts/requirements-gathering-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:88e9c2b702af56d9176b6bef03b5242922797d5098dd6382e58cbc2453101ad0"
+    },
+    {
+      "path": "contracts/shared-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:0cb65f222541b24cb058e19fbf68d5a5c9710642f33917227c14338f18632e51"
+    },
+    {
+      "path": "contracts/traceability-graph-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:28df54d358000868c9efb9e177d5abe4dde1743f2fe2151e1e1631f2a2b33422"
+    },
+    {
+      "path": "contracts/work-breakdown-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:397e7e5b568e74baabfd33c78d77719e7d2eef36db4bf1b04eaab7b9aeb75e07"
+    },
+    {
+      "path": "contracts/work-dependency-analysis-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:94ae19f1e4762d7a59bba8da7d055df90d59d2e26e1a78a15988994e37c21cfe"
+    },
+    {
+      "path": "docs/architecture-design.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:1cbf199dbbd38b2933bce5c1d2882bbc5418f6df6beb22cadac674da7b095987"
+    },
+    {
+      "path": "docs/contract-generation.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:6955abdb8ffbcd11e9e4fe5247889ea17d09d7e3cfa78172ddf9acf905244088"
+    },
+    {
+      "path": "docs/module-contract.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:97d3a53bb92d942ecd65031817f9aca4708cc1149de5662558e7360c6c400214"
+    },
+    {
+      "path": "docs/requirements-gathering.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:592df96cba4de8316b5478f58fdce81746c68805992b52c97a23141fbcde0a57"
+    },
+    {
+      "path": "docs/traceability-graph.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:1abdbee76ba996ec749108a1460cbad23260c41b97b46ced32906aed8d5b9036"
+    },
+    {
+      "path": "docs/work-breakdown.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:49f2a451612469e23d35e712e672fd09b1544f8eb04b235e089a3419ec3c1bc7"
+    },
+    {
+      "path": "docs/work-dependency-analysis.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:f26c281ca89459eecf34f4d40180d7bd1e9b3a6d720de82339590c3a5badaa87"
+    },
+    {
+      "path": "dogfood/architecture-design/ProjectOverview.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fa6e6f96669bed0e6567b979cbf0c4c51d23ab51c1aca662bce07472b3756bad"
+    },
+    {
+      "path": "dogfood/architecture-design/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:605991530ea75e825557328cf4f0ba0832f6a71fa7c817307c3e375f7a82d03f"
+    },
+    {
+      "path": "dogfood/architecture-design/clarification-transcript.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:50bdc155bea2a91f43461f940bf4d84b340fdac3f0693bf52607ec00fdd32342"
+    },
+    {
+      "path": "dogfood/architecture-design/goal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:77ae95d54de6ebb843295b3aaae86f4c822331b5d9d2137697819131beee7f62"
+    },
+    {
+      "path": "dogfood/architecture-design/native-source-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:50b6066bf105e3f62565fc0890e8d3d66bc937f9bc51498807436101baf1fda9"
+    },
+    {
+      "path": "dogfood/architecture-design/project-context.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d0bf91885152eca7ced393f1c01ab84823bec6618c7b33e712536f624930eee1"
+    },
+    {
+      "path": "dogfood/architecture-design/project-overview-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:12d7f6d244184753a3915f0cf99e11e7a51a4387624ab2832af4d0e4bd107b1b"
+    },
+    {
+      "path": "dogfood/architecture-design/project-overview-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bdfe3a44f8794312db365042560f49bcd9709f8c7c9fb962b03865c33404b01a"
+    },
+    {
+      "path": "dogfood/architecture-design/repository-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:73354e52d2011ee88b4afaa1023a87a9b4aa1225f35206a650671503762c5640"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:62bb8760efd5a7b9877dfb9f828b2a9cbad2f6625d51d1275ea588b530a306bc"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e8ab02df1b197b5b439b752e6688af66166cc3d8b87949bf8d97c7e67734943f"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-gate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:37e25cf6d8976710d4847110d9958a731db48cee3f03f3e898e227fc33ff6b2f"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-gathering.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9b602830932bdf54fc1ba88ec8720f7aefc75e03b5b82c90d1aea0dc1b0a196a"
+    },
+    {
+      "path": "dogfood/architecture-design/requirements-gathering.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2cfecc1fd81b9ce00988bebebee52954aaec9a2876155f4a52e1d536f262758b"
+    },
+    {
+      "path": "dogfood/contract-generation/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5206e95a0598c488a0e89e734f67c1221206ab322e7ffb62fff97d3b9abe0778"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/0001-adr-cg-001.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:04e33b9ac250e9469a43f589d7348c4c0adfef3d73155a5723f173490cd28ffd"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/0002-adr-cg-002.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ce7c235360f0d2def4eeacedd9e40d35da429d6738827bff77d535d21c4bfca8"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/0003-adr-cg-003.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b2e3382265cc9e5c8db97331cbd8faa62116166c8c0f521668a82998bdb3b54f"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/0004-adr-cg-004.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4e9f3414aefabd76b9b68585e3e1ae38dc825e16c5e61552ac28d670977e6ea2"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/0005-adr-cg-005.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c6fee6b3763afb4229304b71a990aaae11cac920333b1b9114957688668d14a4"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:62a637f33635671295f730ff7e49bd69442d7721968e0bd5ad7be1c6801b9231"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c410dd4888d660a9467d964dc447b588aac4d21290dc8045bd7b74c2f79c683c"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-design.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:127ff6081121f79028bee0e533e6db3390e3176c2b45a442f798f64e1b6e52f9"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-design.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1e62e8ebb62394ea936f3ae13010d2859f4b87212729af720e00de67c03b9b5a"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-designer-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:95295443b8ac624c2275703fa20c2e34a360cf8651452c144015cd070b942b78"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bc88f90a98207cb8a8b1d305a19480d963b4780737b2c763b097410b26836602"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-gate-candidate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:05cb58bf31b3e8884456d8f13c2416bce50c8577654bbaaf6e73990520eed3e4"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:83004b9f9dc2cc84fd77753cb8618a44bd756a870fc62566969e1e1ecd1453f0"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9839d22182ad97e4240745b62dde029af35f5576fb22c35a8f87ce192bead02b"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/architecture-modeler-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3415290cec1853a24a3d6a1ba1415257d4f9b3145579371ac09cb0941476f9aa"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/contract-generation-architecture-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cf5610cb0c7674886aefc266c4c4d9278e7d88a9c6a0fed44ff93359b53f6cbf"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/design.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d91ed90b743c0ce2fd5241b277e9a8acb5f1d2364bb44e97f48361a6c16e167b"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:69b06f48970ff053ebfa8546f51389478154e77b53e0b2d0db8fc381cdb4f691"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:74885ec58d42ee4982c9392c1c5e407e8ced5de3c87c47040e254ad72457f431"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/project-architecture-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6c02a91b3f1259bff0f4eeb4fad84f5f08b072323e99405a392488088e0b9937"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/promote.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8e6a4b7f1650a43a51f18484c5181d270b86859d7a2ba430d1fd658f28e1181d"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:618f2b66fcc29cd57ecc4230d1facfaa58a5b3522393a01daadfcd4c49db289d"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/structurizr-conformance-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e50aaab16f6a807916acddd641e5c9983db6b20138abf15852682678d0f29e29"
+    },
+    {
+      "path": "dogfood/contract-generation/architecture-design/workspace.dsl",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:81398bbb2d585d869024868f0f126ad0a2c604cdf6f7ba08e0896a5131a161a5"
+    },
+    {
+      "path": "dogfood/contract-generation/candidate/ProjectOverview.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2c23468dae2092bb133e78e45e725e647a7901fb90e400f149d929192446b6a3"
+    },
+    {
+      "path": "dogfood/contract-generation/clarification-request.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:07df4b227925956dde96ccf136acdf6c2fbccb13fa279e3b3c56a81603a2ef6e"
+    },
+    {
+      "path": "dogfood/contract-generation/clarification-response.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9c647b96a5d4351fb8e64d5719394b6b8c0a56ac19d6d7a702293c93afdf9b51"
+    },
+    {
+      "path": "dogfood/contract-generation/clarification-transcript.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f2408b34be685085153973d538c9d4e4299523cdd341a2eddf3b970373d15513"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation-approved-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:31b54786b8e2923e9ebad84b5086ebff66b8c477cf07feb48a4c1320a62add37"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation-clarification-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:48af2b3e6270987266b8fa41a8c602c2f5e600b6b9c798d4a6da9765afe1cd62"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2035d3eebc1838859cca3a7ee3e8c4d392dfb4d333a199f931b12be0d528a21f"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/approved-traceability-graph-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e8e4a189205e21879a7b4caf5b0edc763e8a455226d3014704ecf3d2b7639859"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/approved-traceability-merge-receipt.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e057fb59abb8bc0259e36b0b6ff1d222a3566d5e2fdcb3dcada582f2780b1bbb"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/approved-traceability-update.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:67887f72102e1f92c9e7dc506c5f118455db218206fa01223ab2942cd55e1e51"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dcbf2323a0886f35ccd19e882b20ec610a4b05694c3d663d37cf01fb4a16e658"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-canonical-diff.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8a02d731260ae50f643e013e50ecb8cb851abd6b38a8192fae144fb6429e620b"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-disposition.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:58f5c1babe466ab881c82a9700efc00e6e7aa8e1beee7a05b12da9a0b7762b46"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-draft-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:372b1e4f86f094314c2595cae383a174cfea7dc7ce5a754fb333ae97568f64a4"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-format-validation-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cb2ca8ce0e02338d538ae3eebc249f3b83563f82ae0d0fcb15ba0754d2374bc5"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3bac6002acd9309c3ec143fc57d38b35972add430648795262ef02a94983afc4"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f8787a9909eb65660526245262bbdfb0d2fbef31988247a37d97ceb110489b11"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-gate-promotion.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:541aee50a7ed293263c86ef754a2291f863a39c0714b2aa3d1882b96d2589d64"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-gate-review.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a224d5dd6e3baaad77d87257c9e207fdcf7eed4773d8235e909d9e574bd4ad63"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-generation.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a44ada500e451bd364146007d809524603eeb4f8918a46333d2ad1d2fee11d49"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/contract-generation.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:24b3c9b187cf1a009e180adeddc2196e2a7576adbb5c83082045fb1d2be2f4d8"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/execution-checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:eb4849a2728050d38eb1f8b59f2b996bc4f0bc65fa8f6238be7b1abb2a360f92"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/generated-contract-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1b0154bb2526d367016204e6df7915831e68ad4b41fd4fa4140eb7d211046033"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cc215b1de8457379e17f249e1abc4ffe8f25721f9c312aa6557fc551c0847889"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/module-execution-record.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e32d6fccc165044d71965e9fcc9ab0b2c648a6dde6d3237799681fce72fead57"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:87cf8158cf11b5b15140a4e553ddd8cdaf4cf3c4e0842f135da349d20d17e5e8"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-cg-approved-traceability.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e661986d7717d2db03b641737cb9a934f71ba833d64d3571d2c9aa2ac969d9ec"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-cg-candidate-traceability.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6e0e49322e0695fbcf619e8507566394f47180855e3bdc1ce4665c6561136c30"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-cg-canonical-diff.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:629d6202070dba415bea92d1868d4437f1129fd34e7b608de5cdcd98eb5fde70"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-cg-format-validation.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4112b2bfd136d787eb799929e50ca2cb276c12ef6792d0cfac2c92dcb6c147a8"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-cg-gate-candidate.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d71920b54c06feaf67b43872d322aa5dde28d6797a2ddb03ef60a1af70affed4"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-cg-generator-invocation.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2aa97f5d63d14fafd82f04abf2cc518cf771e4cd03db7c85601adb42a71b34ee"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-comparability.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8013c87e03a40b4a9cbc973d3ac85ed166e512a0e34477b33248239ab716da57"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-content-policy.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:69d0e4963b7d7bc9b4f9fb5091201f95690e2e530697615936154ed158bdb61f"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-host-observations.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1046647cc0145e6972f3219b1c08e050c6f71d9121c199f3e9255bafd2753461"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-integrated-completion.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cc8b5eeec1d4880ea9987a2220f9e0b29822b4d012a7fb75f488e1d7a80c29ce"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-lifecycle-snapshot.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a01fc6c85943c625f735653abd0bd104a83cdf83c74f40fe6df5eef02a5d92bf"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-ready-frontier.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f861070fe4f34bd842990c8172c110a55dcd15c058018ab9e91e814c0a5ceae5"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-report-access.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:55e2f072f9a5daf39baf0bf5033d5c3b9ab818548301dc45445240cfbffd4437"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/native/ct-if-run-workflow-facts.schema.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d7e8e7b29d7adf9badf68582ec8efaa2d72333f4d7f96c76bc7ba2a5e1df122e"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/project-contract-state-baselined.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:89c7fd72ef596262bc8937932c37c673d39d3d3bbe3176792ebdaed42f798567"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/project-contract-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7959a80af63b68629771c70a8b2f12cc34a670b5ddba19fd63efb6803044dae9"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/promote.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8922a9dc0648bf99422b2af6a9b191e50b9a8c15df817242894f049ba2571892"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:edc0fedf629405034fe86c7dbbd6cbdae85d5152a6c585b4d0562fe61abe647d"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/traceability-graph-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:67735bfa0804507584b0bba36f597e4a227864dfaca819608f72e81a19b404b2"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/traceability-merge-receipt.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4e0a723c40c681369df867369f4d49c3f2c6d76a4dd33f13d9c498ebbc214b1a"
+    },
+    {
+      "path": "dogfood/contract-generation/contract-generation/traceability-update.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:51be2a207a6ad644c168ede122a1fc7d22286fb3a3f630fe3a76364fdba7b129"
+    },
+    {
+      "path": "dogfood/contract-generation/goal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:74bcdc11b8b1b4e7ab37a5a805c25ef1de0320f501dcb6c9395c17dcf963311f"
+    },
+    {
+      "path": "dogfood/contract-generation/materialize-clarification.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f3883041884bb63810ea6904a1cca2caac7747001c5a7cffc3585e042e79f810"
+    },
+    {
+      "path": "dogfood/contract-generation/materialize-requirements-change.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7c5a3fae610cdef28dd85910aeca44d19e27349b2a08ee01e4991f14c0a47804"
+    },
+    {
+      "path": "dogfood/contract-generation/materialize-requirements-promotion.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1282f2beb118b54d8b41b31c8033e1a28e2214295a339e83086dad731ff86fef"
+    },
+    {
+      "path": "dogfood/contract-generation/native-source-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a09f3932e3d27042c7ea1ae2d0f995c62f6f198446625d5eb2faa59bc59cf9c6"
+    },
+    {
+      "path": "dogfood/contract-generation/native/openspec/proposal.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2611cd3c6b05150bf85324cc800c7b6db24f910d41445d3b6b696910e36c8072"
+    },
+    {
+      "path": "dogfood/contract-generation/native/openspec/specs/contract-generation/spec.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d1776942be85a0eeb450a302395af45ec1efb2c689755d1b46ba076732a3224e"
+    },
+    {
+      "path": "dogfood/contract-generation/owner-decisions.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3fb191d3d46b816ef7b1864ffd76d4a991b99db4c820b8d19769997fc08eb469"
+    },
+    {
+      "path": "dogfood/contract-generation/project-context.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:574fbd2a9a41598854b4328a23e3f4e5628469d3bd8a294da2017ffd9b0eaa0e"
+    },
+    {
+      "path": "dogfood/contract-generation/project-overview-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c33c06b4111db2db07f90f86c62187558a3ee58cfca0783fcd7c65ea2fcb851f"
+    },
+    {
+      "path": "dogfood/contract-generation/repository-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-change-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:98c7cb7a87b2e13f258250992faffe4105697d334eff67bc7efe664c8f532c72"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-change.checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0940d530439e1088e6f43cbc88815156719ac5d17c9b4b0069a4e29a91424c77"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-change.execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fdf6c0a9b6029a2a93045197f711e45c7e72228e042310f265b65f32f40a20be"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-change.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f211b97a7fe47c6491305c52509c56e32348b50575a3ac48d1363d30898cc4fd"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-change.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d2699951e774b8cd789b8d7b55d9fc6df6f1bbbd8e5e44f1368a4d8ab26c9319"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-continuation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3d486fd9fbad18f9622ed84bfe1985fbd2eddc305300df5e22f59fcdafba8325"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bcf7015a4b54e54544dd3e0a69f88e5562956c70f3929dbc0701c0f1c6e7181f"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:161d4171f7a921ac5e0e757830ed8106bfb563a122f07f0b2146befc190afcc6"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5f5da723c9e621a1b065c0d7bae82d6fdea3ad769bbb6208d119565556b18fba"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gate-review.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0ce4bdadd63740934c85978c01c5594abad5f9e74d974fab3b1a19f2283423a4"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gathering.checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:36b609c5d7a8209b0f473ec01d4033be1cd069918ef8be229a9ab560f3caede1"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gathering.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:09fd0f18a20aaa456c72e5c597f7ca0c663611c77e152ddf3e8d248358d43792"
+    },
+    {
+      "path": "dogfood/contract-generation/requirements-gathering.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a94ceec9e7f4120508f5e90b3f2b0c3504043a1c69a7a2fdc9944323a1b03edb"
+    },
+    {
+      "path": "dogfood/contract-generation/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:356fbfc0c3cd2f5a8589e9e0354e00b2d110ce4b437a11ad44e79dc667e4f9b5"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2d65c148991ec9ced692adfa54486a4d86e51af62a26f597ff1f8a0d32c05d4e"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0001-adr-run-001.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f53102849c3d28de70bb355e5ec7e7db8c2edd5a9e3f2700e06a53b39b7cea8a"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0002-adr-run-002.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c30c6a37950c52e79c5efb0748bcb243b0dda6797a8a391ebb69e1b20d4abb63"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0003-adr-run-003.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:21a8ef6c3905c46828b288cbaf0c48524298f57a88abac8eacf1df13ec2d7ec8"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0004-adr-run-004.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:408b9dcc034a0cb6c9d46c2f5799e23affe8f5659dac542207fb582dfb29ca79"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0005-adr-run-005.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ad2192040a31a42a7294539ac3ed21bd773107432b43dd3e49dcf9ca7ed44cfc"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0006-adr-run-006.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9c4bb3eafc2bde5d8dc6eb49d54a56e1aea1e72a7bbc301ac786efb3fb166ba4"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/0007-adr-run-007.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6dc2d91828e33bd8eee1d194d7a50e84319f6dc3ca36d2feac404413f8021179"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a2bc5b38377337dbc6e86eb45821b9fab4eca4be044693944442c6c45153fa29"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9ee1936ae7aafd8484466024273b6fabbc342a3553687dbd903d8d82515593d6"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-design.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e1b5d9f6d017a40a2e45e1a39afbb796842c931e68f66c447bb6551eb22a7e90"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-design.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5f9e65fc510e2ed19881faa0d11f6f4b0cc4f609025ed471d33f7aedf33fe1c7"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-designer-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:153b3f534ae789b1adab1f5020b5389e0a71af91d9b4e1d14a86e574fe73d261"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b06e97de309ba2b3b3a4aca2726988be32d40073b16e2ff0f7b2b8612d78c41d"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-gate-candidate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:663a4b8aa6984b78b2924033108ad72abdd1a0e8a36407912ea1511128c5da38"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-gate-owner-approval-source.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3058fc6f312b8fa045d906c011c3b4b9557209a221d50b86c5a8e4c53f652b68"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c5b902d0087a9133beac13b07c696c2651c89cbdcb661621193bd0d553d79430"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4b71e760cf1e8fe00e2969b69b82714f38047e87fa5ada1fd6d7d49a31789597"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/architecture-modeler-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:14c15ff5dc9e821676ffa21cf4240f744fa14759d2e8fe35d8bf24e7b00a579c"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/design.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6d1da121d5052a0838a5108080a0224f236dd05640e0d415d5d62181ac919e95"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/lifecycle-run-report-architecture-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fb116c2ea1a7607d5d7a0c3d97283edd35123f8d5b73dcc60479d410656dc4ea"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f3a9bb62ab2ece45d32283638ab354bdd9b700ff4d9fb019217e2120e8fa6129"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:41ec0382e2e0873f46771036e5c3ddc802c0ccc6bfc1a541f6bbe0f6fd198a0e"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/project-architecture-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:49b586797d8416b6a874ea13a2c3272eb6837d4f7faceab84309c32d5c1e966c"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/promote.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a3fc655823ddc13f8c13ebca963374565c8e13d07e5e979ee4ebd51f5f7abde6"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bd00c36467defc655d84cc6f6f36328920dbc4cf298bb48d08c9a4b3ca7601d1"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/structurizr-conformance-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:55355080bb1b50366b10dec9b9ba82a9dadbe4fdeb2654e19feedfdefb53436c"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/verify-promotion-history.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0ee5d4867603cf3b5acef4756ffbd45194a4fbd4716c64e98117f0029be32b1b"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/architecture-design/workspace.dsl",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6e24c85cf9a6d180a062eb542b142a23689d0753fc2911b8633e19813e3b659a"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/candidate/ProjectOverview.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a592c999205b8ffba0eb13327cc0f680e091910e9638b82bb6bb5ffd6ccdd930"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/capability-evidence.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:56b50d301bffed317cfc6390a7f7a938e21d42c7784e801ea26ead7d81e38160"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/goal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a1cf4d6563810dc5a88e792bb47acd4e245626b7132ba8ef91876e2deef615ec"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/lifecycle-run-report-requirements-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b3a9fe291d882ece535b4379cebc833d6aca1668ac3659ed25d837595bbbeeb2"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/materialize-requirements-change.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a5c3236cbaad28b95bba8bbcd4e1b588caf2cd3040d2d34ab4d116ddf2096146"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/materialize-requirements-promotion.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:10fbb53ed68e2a0547076897445885984c606518c675f9d16a5fce6a189114d2"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/native-source-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d53ea72274ccf9a67ba10f15378230a2e166c8123622aa4ba32202153753b16c"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/native/openspec/proposal.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8b08ea7ef3f3a87879ccab57f7146aad7c13e537b98142b9b5b12f3f8a5513fd"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/native/openspec/specs/lifecycle-run-report/spec.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2c277eb28d3661e75b5d2dce2cec24f13f89dd74518c6fb923ca5e766893521a"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/owner-decisions.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8b3d4ffbfc58e53726d26124bcd0daa4bf642d9d88719e11997eecddcc3b3d46"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/project-context.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b031933401e1904b50f664351919337976e14b193a266d0f77b4c44451f1142c"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/project-overview-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dce8060598f7e3139debd14b3090c9f7990253eb59b29c2295dc67531a7ff5b1"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/repository-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-change-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e5b3e637d80093b0ed05497f1b71903993f7230a43b1fb6d83628c9fccbbb8e1"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-change.checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:49fad8f1cbfeb584d2404eb437da68ab028bcf7e60605c766cf041e489b8f606"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-change.execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6b7865cf86392fbc077f0806018ef6958a93794b73c1cae4a81c12caac997f01"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-change.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dd007c740670e7532e33d42b702528d05a33d909850e1ade31f16356bd3fd609"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-change.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8ee7e1115c2a450232a5cafb5360dc504b9ec0fe6877d405da86c51faa65c3ed"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0051aeca68c72069b7030b518a8b43021f0adb4f7288809532b3891fba593afe"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f2207df210ac48f17aca2077aa82e437003bc1f07f89df91af13140290829242"
+    },
+    {
+      "path": "dogfood/lifecycle-run-report/requirements-gate-review.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:17c7494232e0f381dc08dfe521e365345e88451a518be6607388508d9602aa94"
+    },
+    {
+      "path": "dogfood/v1-module-sequence.working.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ac32f329b9e89a18c082297378c18c9d21b00e4b35001ce07a1deefe6f064516"
+    },
+    {
+      "path": "dogfood/work-breakdown/ProjectOverview.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f2240c49db270864df42e48725199e3424fd350615173210e8c59495b30ee4ba"
+    },
+    {
+      "path": "dogfood/work-breakdown/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1ae271b6b698ed3aa63b902c502bd48c88b065221237fd2453519cb260699798"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/0000-current-core-boundary.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:254e639dcabc033f5f6bbefbbe6253ed3bebcfc4b5d73b543848352eea81fd78"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/0001-work-breakdown-boundaries.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7302aae87e4412b76842f9b2cc17f07c1139c290d8e7a23c6e123a08ebeda31f"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/0002-traceability-vocabulary-1.1.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d436ecbb2a4b12679dd2eef6520f70caae3056aee594fc16b7733e46e059c398"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a814a655a3690e37fc42b9c334bd71243e8f5635c80ccea22d5fdd8a0df7aa7c"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-design.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9242a0027f395b1bfddf416ec4588c5405526480a767569795e46842b969c915"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-design.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bc17d30732c3ca58896b0067066329c186141f7f7ab2b37c1d4c7857a6bcb235"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-design.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3061024b20efca6a36434618df45b7ebadcc3655481a80e9fa98314e0c2e05aa"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-designer-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7e8547cf798588d6576c1bdafb75dba30b5ff1e422dffd5f2988e204823ae7a5"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-discovery-report.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:abe3aa20bf1b9797524056647be18eb91e8128d237b2b320feda8edf55117b9a"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1dd09d5e87f22078ea699c49acb25740a9a78e42c22298e0a55cc57fe66ed076"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-gate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:638a5d4bcaad5af40891bb6e00058cece4ebcecdb04512f7f24f38116e16c654"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/architecture-modeler-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b81818216b4cb01edbdf30bd9bc2d80ef9bda26b0b0ea2641c1e853cf84fe42b"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/current-architecture-model.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0fef33f086572efccb47b13c7b5b7b2c80664977ea5395fb88ac134bfb98e69b"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/current-architecture-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:afa6141ebf4574cda26d281728e9cf0360a85fd6c629246c0a2280cb343a5817"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/current-architecture.dsl",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dbf84de41a15d35ec42e0e70b8b91baa546ca26f21f512ad1161ca6da1240557"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7bf5299ff4f6a5e55e1dbc8ef83c52a2316d041ee367b40c122c3dc8ba2801ab"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:78f856d07161223533bfc396a609038706161233c96e536acbd7f377ada20408"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/project-architecture-state-existing-undiscovered.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b9cf4a8799dadb2470250a3b39dd2576506e87a10188c4318e57991b3a258871"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/project-architecture-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d29fdd4640eca1c6555b823e1f5e5be2885910660f785e2257ef963fbdf2caab"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3ceeb24023202a419a0839ccd44354ea8f328f4812f0d85e94f9894bb4565876"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/target-architecture-model.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:41cddbf699344752c633bc9a4eff9ec29220b0ae6d08d25a5d7abdc3eefa84aa"
+    },
+    {
+      "path": "dogfood/work-breakdown/architecture-design/workspace.dsl",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:050a676a1ff556e8cc9b211b54f8c8518cabd4d53acb195070464728d515d7db"
+    },
+    {
+      "path": "dogfood/work-breakdown/clarification-transcript.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6a8b20f3b798f1180186f2bf0e17f89ba03b52eba906cb3b7b7f1ce32ad19ab4"
+    },
+    {
+      "path": "dogfood/work-breakdown/goal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9c7be83a649c2d27627b5f5b767e43007962775a3c59aa2c74bfa4b0147040b3"
+    },
+    {
+      "path": "dogfood/work-breakdown/native-source-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9193f4a2c2c92286efde2e56b28fc7d9a15949ba21baf0d4191ce8e556db8712"
+    },
+    {
+      "path": "dogfood/work-breakdown/project-context.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c4154acbf3158e2d3d6e3f6db5bbc794e23c68c0ef09ed714457201f65a977a4"
+    },
+    {
+      "path": "dogfood/work-breakdown/project-overview-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:005fcec20ca10d27d06dc84bf35c2e4c24144099a7ba28cb516759036afa703e"
+    },
+    {
+      "path": "dogfood/work-breakdown/project-overview-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:62884e909f576170ca14b20725bdf710e02907dc4c87b0be4c10a9426368ba15"
+    },
+    {
+      "path": "dogfood/work-breakdown/repository-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f5da6e8acf059fd26c1c218165f6eb55b2a4748ecd9291c92fc4a30c2e6ac2ba"
+    },
+    {
+      "path": "dogfood/work-breakdown/requirements-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:af5aa3ea3bea8ce1645bee526f1a64a16a58aad7a305dccaa90dd26e6096e311"
+    },
+    {
+      "path": "dogfood/work-breakdown/requirements-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0adc23305d536207a488b18a0ce798da0a73d62d721a333d1cd176c640681a04"
+    },
+    {
+      "path": "dogfood/work-breakdown/requirements-gate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:af421c6fb34e03313fab9a7e289fe5cf024c46835c7ffb3ca8d012967450d107"
+    },
+    {
+      "path": "dogfood/work-breakdown/requirements-gathering.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:460ebffe5199b959f646321ffff8ecd20ffe832c2e88fa5dd54390096f5b92b9"
+    },
+    {
+      "path": "dogfood/work-breakdown/requirements-gathering.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:090de63ab61194e8c857cf308fa8be0255b5db188de70e46cb2a84e4fd6f0cb4"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f4826d15b3c284f4ab1bc02f9f7c402458c4faf33b21dd5a902fa72135c9c19a"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/approved-not-applicable.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:61977cf17e15ece214c2e1daf7ca842e738df2962c2acd76c839c21c79a5bf56"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/baseline-drift-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:611d00e8c8ab98b6648c5b284dd0dc248f736dd02c41b9d4f74c5420e13eb15b"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/baseline-drift.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ffc5da32b446410391a9cb8fc6a1350bd93cff02d8379c707eaaca18dd2b943b"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/baseline-drift.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8c1399a8b29b03cc2402e9bb953ad48bf3667fc865a963a1fa3387d4ba0baabf"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/capability-catalog.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9a334bebf4042240847e095496dbf86d7cb354a2f7cad82a9cbeed8530078c63"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/contract-disposition.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9106e8688a0820ea3a2a8da1a58ee5da89fe472f3b8fe348c74179bdd38ab9f1"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/contract-not-applicable-approval.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:51675603e350667696bd4f5ffa8a6456027779866369e818d78bb320f80b021d"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:da5e88b26ed27ecd426613f2517c7e8b404fc84d7c467790a829a28494680042"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/module-execution-record.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:95f143391503a693f471f7657c5773d8a91f22b35b5dc74911e7c9ff6dfcbcf1"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/module-route-decision-drift.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b69cb4e95297f71b6b13c4a2a302155fc0c697666d8958a636bb005fc13b02c9"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7e5d156648ec09eab687164bbc8b6e7c04fd05f5bc0e97b2cb978b0dea5d9ad6"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/project-work-breakdown-state-drift.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:519f3aa85813aa4f16ec7719f48b8e84fe8936e36c7626dda36b9969794df3af"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/project-work-breakdown-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5b6016e6e9485fd3dc8681d376bb74976c16bc02e818b8667dcf70c084825c1b"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:91dbf90f3ef973f1401509368e93b2783434f0e9a9733176b7c7c61746f106d0"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/tasks.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c3d92e29c150f2e10fcd00b7d97368f5394a0dbe15e695afeae8f6def47548e0"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/traceability-graph-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:82abeff0da8bf975727ab9e781d7a8c66f6c23d5c3f332f61c35d4a93b4d5dcc"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/traceability-update.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8c4cd97f4e94ef7a9a51bafb3910457cc5b0cc7c848f26b38226c903f14f6775"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b21b321849b8777c6a3fa09daacbe5b61a2fc9042a5862c4a45b176f9d0b8ea5"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown-dogfood-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bb66dc5f892f2a80f06ece84e9628d9152e9b7d4ca412738edfff59b11771f59"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8bbe28c832bb40ae62ebee6f6dadc57af100dc4c0b769d143762597f02e9e621"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:86bc1d50eb635702f4d7cce4e38b34374581a25f75602f347edeb72cc68d9e07"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown-gate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6d8a0cf6156c8df2c3d1516e347b89ca7e13e132bf383966d259f0a1637bd48b"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6755560e08ccaa2ab79ee74de7f05e2be8bf304b498894a7a0321b72afa60c1b"
+    },
+    {
+      "path": "dogfood/work-breakdown/work-breakdown/work-breakdown.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4b4283beb5e7b302f495f1d39b625c3354312f4c82736bd3974d67c187fc4294"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b8ffece8ad38a337126b8b6f0135d14422d4ba42cabd0c1dad0c6257b4a1a5c2"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/0001-adr-wda-001.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f792899c83bd16eb8aba50d31f10c3b276a5b01ace505d742db8f1c9df91e081"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/0002-adr-wda-002.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d14b8056afb8d3b79e6695d6fc01dbe53a257d5565c2d410b900be9a8919559b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/0003-adr-wda-003.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c9a7f1602af0d5cb7a17cb22fa47bb668b86124c57381e2ac95195e42e8aa81a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/0004-adr-wda-004.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:32ebab4f85775df444d0709cb32851a0fde4e5cc40f977968590310121bb2d2c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/0005-adr-wda-005.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dabef9eb9d9d024f0b953b11746d9e3c11edec95c5cca1b988bfac69f882947a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:aa75ec1e76a862f31edb5b39a820ebb76da5cb6a8e8a868730e129f5e58be2ab"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:962026b876a429bf06ca82d93a1410e8203804e89009999ff727fe5741e71691"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-design.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:56f3f2e724f122e6a4363c66b7befa7b699fd2914524830985ac97abd44cd9a3"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-design.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:eb7d6bdf9fa3c23f54e8f1a559418b3f64d10d004a0defaf1d160b6a2c18fbf3"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-designer-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3ab49b68c61718230ccfa705a589d7af97f675eadeb4141b59609012ec1abf33"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ae61debbabd3093255918e1f66c7c66fa9818653f556f7096e1642f6927775cd"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-gate-candidate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:528ea7bb04a878fc4e5867211fd0884ff9f0c322422909bf511c7cccd553481f"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:102439efcb9d8244151b583ac7c89710685a1cf9f2b81ab9c76bd27543ad939e"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6d39bae62578640ec9c29f15fb2d27633dd4f9b42b5ca8731517e995d757e4f1"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/architecture-modeler-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ef94a35ee6c7755fd2233a52ded447ecf5d050e056abbcc57ae9f62783bdf950"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/design.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e1523cd5a34acdbfbfb21d6b504be5c32661ed84fc3cef5b41bb4dc3ed22938d"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3c401783212dbb8ca13ee40106367a769752d0058d52c614c623d4002c29300a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fdda1f77f552cc7d82ddc4bd678b8113c85b1bdd6fb98ea101f6411a710736df"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/project-architecture-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3cc676aa1e988b166d21c5cc63f16def169c67f19bb48d7b07946bb5cdb37052"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/0001-adr-wda-001.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f792899c83bd16eb8aba50d31f10c3b276a5b01ace505d742db8f1c9df91e081"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/0002-adr-wda-002.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d14b8056afb8d3b79e6695d6fc01dbe53a257d5565c2d410b900be9a8919559b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/0003-adr-wda-003.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c9a7f1602af0d5cb7a17cb22fa47bb668b86124c57381e2ac95195e42e8aa81a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/0004-adr-wda-004.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:32ebab4f85775df444d0709cb32851a0fde4e5cc40f977968590310121bb2d2c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/0005-adr-wda-005.proposed.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dabef9eb9d9d024f0b953b11746d9e3c11edec95c5cca1b988bfac69f882947a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-design.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:618fd95672ff9dfae342ef932b38ff5ff5aa95c20b3ac0407ac51b7e9de73473"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-design.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:81ee59b49294c3f5db7dcfe33b62267cc4fb77bd2f3fd0065e7ec2a412cf976a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-designer-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a987170be2a5535bcfd80b4c2fe9d45725809e5d40d2552e50e8afa1f21e1db2"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ae45941d82e546604214106c8721a561937f6157a1517ff38bf43b40277932a6"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-gate-candidate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2bf817c98a14e10ba1ad985695e9cccd0dc8859a431b546c7fc0724cc228bf21"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/architecture-modeler-working.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1e6fa92b8b84e10af479ebf56e6a6e873cb72bb8e2dce7de83d617678facc504"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/design.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e1523cd5a34acdbfbfb21d6b504be5c32661ed84fc3cef5b41bb4dc3ed22938d"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3ffb0b35cb56c92367b6b0fb7c5a5ebbd363a616cf907d0cb65b788753e245e9"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fdda1f77f552cc7d82ddc4bd678b8113c85b1bdd6fb98ea101f6411a710736df"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/project-architecture-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3cc676aa1e988b166d21c5cc63f16def169c67f19bb48d7b07946bb5cdb37052"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/rejection.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8f1ff85440fe40634badafa2a578ef4fc6e8aacda872c9b5c4805617615aa26d"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:de6f9e22f402da692fd9fc221cdff0d83b37cbfb6927a77a74b958c8990d89a9"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/rejected/sha256-0d7f5d57048090506f91eccc60a4c53539fcf417a276fd304dd89f5bd9b16974/workspace.dsl",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ac9a2476be7f00a4d8c9d175059ef877935b2d56eba1a88a39936fbbcfd097f7"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f7bb24a6bf3ad0f9bbed68e4dfbf28b0129ea2fd7178be82b83f5cb7ca76d0fe"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/structurizr-conformance-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0486cc283999a93795c2506502bb2d2c080d0647c9df904e896dbe37cd83fab7"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/architecture-design/workspace.dsl",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:33f7ae4b7271a6f889b4089cf1adb73de669d1d4f997ce22781ed756cb522127"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/candidate/ProjectOverview.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4b9385d583f5b9d51782dd9a3a6e0b7a7daa08416e36b671153f7349e440c86a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/capability-evidence.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/clarification-request.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:04f7c69811477602b77dd1ac89aad030429f65cd18deb51ea255a09a060a9c3b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/clarification-transcript.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c3267919556b971ce1f93794f10617efb489c6df9adbe82ea686320a5c5e0312"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/context-slice-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8352443ca41bcb15a5abac678cfe20bc1ee2458295c07f17bfd7119e13372553"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/dependency-proposal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cad4deabfab0cbdc6b4aac58bd4a6d0243b7c7590fa1e996210acb7742cfe570"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/execution-checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5174967b686a189eb18e0154065f399badaa23b22603749a40d3fb51e0d76c2d"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/gate-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:07290d240e0ec60ace267c68aa8d3a61e2ddb89c80bb714220d98fc3ccd0d6b3"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/graph-mechanics-result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:025c851712c42e4f47f0abc0f52641bb8ca835cc8d8a19cc524bdb7dbac6cb57"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fafd8bdc28e6a8606e06e947951593f7be9ddfbfc918be591a1d522ca77eefd2"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/module-execution-record.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:c1f11b136c167d1fbaf2fc5eb9d1f14e9ed48fc60893875d694fc0b8b8339c79"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/opa-policy-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:81c87c6e1caf779b65cffc0541acdf393abc26af3bd3aba781d5ff16af6ac50b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/opa-policy-decision-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:690b2bbdeb5a52f3446cff99b75b8a90443370849444cb172742d1e092798ecb"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/opa-raw-result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5a03a7371acca58678a9ae995a3cf9339e3b545abf5668d8cbe6512f635a6dcf"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/promote.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:545a7ed172ca9800ea442ed36eb9b54e86cac7f59e31bf09d3cd14a12cb20e1c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0e14ce10502be524aaf29ad86353d2e90a5ef44ad43ff35894cfc8143ced4cb7"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/spec-kit-consistency-review.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1aab8d189e92ada6837f1913df783182f45860adda25c48addec1260ee3b19ed"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/traceability-checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ccd87390056aa1c3ebaf7b331aad8d0bec01ff0d385886ad1046c5bd08fe605b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/traceability-graph-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:53d3f7872cd5cb3d23ab47d641833f5a72a4fb2ee2bf3a1ea3f8ffc2c349d738"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/traceability-merge-receipt.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:33f269a416f569fcbcaa5f359fdce4074137fe936ed9932940d28b085c0219c0"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/traceability-update.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:04e17bb9558cdb8a6bebfa450abdbe76875061106680cc3883bb08d3de2ad932"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/work-breakdown-analysis-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:85c915665ff9f02f384493b011243c792d372b2bb2df6216140c88c1398689f0"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f11d0a1031781a8645da3db637462af4775c4861afc355054ad52df4d19ab52c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-candidate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f929a756793927c894aada19bbf544a228445dc085ecf78aa4fe8dbda7afa61a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-gate-owner-approval.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:74f10b74bde9c2c3cbb4c86975fb9ca5e5795f97c1dd5052fbbe4ac4f8df1d12"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:087879f9e9f64eeb1e36a57ff38f341ef2819346c84d664af167380514d59edf"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-gate-review.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d5afcefa8140b81a6dfa6ec16d84ca6df8306739a7755727f627a247691bc0ce"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/goal.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/materialize-clarification.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2179aa32db28cc05d577e27384c17a98bdb6da4d8b4872a4e5fe6d963cb292ae"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/materialize-requirements-change.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:31bc334c15de73a3b2d6b28002a215543a2438ed1f70e66cebe68b6aced62a20"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/materialize-requirements-promotion.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:6c54ac15c9e256de483c695fbea1fbe0040eef8b127a83d0dfa42880f78cfa19"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/native-source-bundle.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:981b43ca88e4955abf883b421891dd45dbe31396d89510bf6b15a4e385b50c0d"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/native/openspec/proposal.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7083aeb635ff9ced9a6ec0012e95a760b9aba6e2d4e146f9ae2c71e3eef1ea34"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/native/openspec/specs/work-dependency-analysis/spec.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5ee9332d43409b6810897d2605c0ff6cff4497dfd9f8cdf83ba52339c3eef913"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/owner-decisions.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/project-context.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/project-overview-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:635f89d6ff927ebe369db66a7ae71480d826d2853617ec44b7153f76634768b4"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/repository-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-change-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fd63abe4b76235b72c78624f380e3f0aacccbabdcd75f25de54523a63b583a5b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-change.checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2ef7ded2d4efd9efe0e900277fd87db5cd1b7135a5be63b61ccbb89c3e20b3ef"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-change.execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d33b4356a5cb17e9ad4e34c4ab3ea3a67800c607c798f88c8ef1fb8e6f8c02f7"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-change.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:508269293fdbe2ea70be2a15b14cc003865819ef11e31464574995447ad6e5c9"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-change.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:14b13226cba279431345b64d1e34bf3711c84e7795d43cd4cd6941540df69e0f"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-continuation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:664c2b40c6a1f77153f40ba31c748604fae7cffde8a995527aee6779a3454c9a"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f28e89cdf30fd76db0d82872cda68b5bff5a953157d5c618207848d0f6412898"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-gate-review.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8d1d3a1f3dbd6e715ba8cd60183371f5908cf51ba1222da81bdece6122dae1d3"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-gathering.checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4f6f64b4eb14e45639bca6cf9dc449c0815ceb3733159ca075f405259a270002"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-gathering.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cfa8a1653167a35811a517816b7fc5afb50e89736205a7c219a22d6512106b25"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/requirements-gathering.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:fbc9c89cc0d3dc2e30637c52eba0b35738f35a0a205e6bb0921a9a005a047bb9"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:75650bd0be434c8815defccb804b757b11c3b9d4ea24d68e76e51e99872dadd8"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/supersession-record.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:50171f06e908736a485cafa269e4f2805bb18e19910be5b0803434285c905a87"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/approved-change-package-review.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:82c2150c203d5589c414c40bfd3594f2a52dddf92a7d631daa84a5eaf9df01d6"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/approved-change-package.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e5daeecbdaebbe4ee82306fa193469973ec5725791c72cc39fea5ee6d9d0cb95"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/approved-not-applicable.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:5c06a9aa35ae86f0ac1224f4c4b64b57da2a2d19db4583db72261fc884ed5e62"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/contract-disposition.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b63ee051c24daa4c70fad0acb8e77c86656a9ae5e622709bfaa85e7c57bee466"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/materialize.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:29c4ea3072d154eb1af403922ebc7d28c4237fb8fab923f32a67c82f36f7cfeb"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/module-execution-record.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:66b3f5bafa09d0e61a8a6d470f8cbd0429c885720b974180c6078dbe48e8c5f1"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/module-route-decision.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cf1eb4ed25490c631f54abef11c596722b9732ff7f9d0b3c7781d8832dcf464b"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/project-work-breakdown-state.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0721446836abb9d357dabfc21a5c83d66b27c40e88de8c49cb5ccff8df55ec4c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/runtime-execution-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2e8e8c29be11be46f0ccd55ac67130330d6378424fafaea0fca0dc499ce908eb"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/tasks.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:bddc0bf94a19730a1b5cfcffa1a4454a8f832db810ced9d03279f1934d34f0aa"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/traceability-graph-snapshot.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ff674b562bd2a16815e9ac5ea328b0d89c1cf89a82defa109bd208ac91694519"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/traceability-update.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:8f610f2db2997e7d0a7ea616fb56a1ff0a9eb703a2918d5e79f11da95aa45d14"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:29434fd8ba756887920193c252a6ff2719efe6c0ff2d0eb652fce6cb42cdbe8c"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dfa1b54600b20f659a962a5c503632d9eba1df5488c6e3e7f2c80e8c1ea07a9e"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-dogfood-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2c18330dcecbc7165a91890bfd801d75d05e95ea44989d2dc1ed2316a1904fc8"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-gate-promotion-proof.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a55c786259f09af319e6972f84b8a0f43a1cba9f31f4c351106603defa44a377"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown-gate.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:35f8e1df26ed0190cc025f80730d5bacdd3f20f20d7f11a3da3568183f20bcd4"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown.invocation.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:194d563ec3e3eb7299eae556f270399b24413ccd042156f719717b52fd3f2d1f"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-breakdown/work-breakdown.result.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a834548b79a8c7b6d14a9d2568900e789e04a964fdc6812384070c37086da3d6"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-dependency-approved-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:9408bea50b7385a50dc307d94a3398eed63d87417396a3a7538e66219ee9bd8f"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-dependency-clarification-data.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:238c7edc3311afbe4b4f1b10c404f79bc7cbb89cb5ef8919da658afd953adcbe"
+    },
+    {
+      "path": "dogfood/work-dependency-analysis/work-dependency-clarification-data.raw.mjs",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:75a4bdf90f42609e1c1d0db76d40d3158507036df3ffeb03ebe35b34f421c3f0"
+    },
+    {
+      "path": "examples/README.md",
+      "role": "example-documentation",
+      "packaged": true,
+      "digest": "sha256:182d64a186fe128718ab9b4cc9e45449a2a2084485e2ab959ad7899a96381632"
+    },
+    {
+      "path": "examples/artifacts/ProjectOverview.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:beffbef3c02b9e6b3f109a1d38962bfead8f58c1446b9433a1db9c2be5e9da46"
+    },
+    {
+      "path": "examples/artifacts/approved-change-package-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:e764c18027e16394b161c28107240a89ca54134e55e77ac8358bd840b658dc2b"
+    },
+    {
+      "path": "examples/artifacts/architecture-baseline-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:f375b78ea65e93db9164a2f9495701010328437abbbc51ab0cf0d72ffe1eb489"
+    },
+    {
+      "path": "examples/artifacts/architecture-change-set-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d134be76412798d39d0196397a7b33fabd85336951fc36db421a8432d021a886"
+    },
+    {
+      "path": "examples/artifacts/architecture-clarification-request-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:385a8f53d1029d50c99bb41a1ef1a3991624d095679ad5a6bb5d41a75fb404f0"
+    },
+    {
+      "path": "examples/artifacts/architecture-clarification-response-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:0c7acd9241545be2d13cf6c8eca0a1c5a02b0e9d0c7539273a3af0ced991ba7a"
+    },
+    {
+      "path": "examples/artifacts/architecture-continuation-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:39a9beeeebaf0a8a0a66f6a3c2b7766ee1a5aa9054f49ff27af16f5593b8536b"
+    },
+    {
+      "path": "examples/artifacts/architecture-designer-working-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:961377f17296ea98863ae7b53792fdfa09a3a39b315979fb83e7046000ccdb25"
+    },
+    {
+      "path": "examples/artifacts/architecture-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:ebc6fa68048dba6d0b041cb9591fcab16af8903dfd3bdc27cd11916cb4dab254"
+    },
+    {
+      "path": "examples/artifacts/architecture-gate-review-001.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:c2192e28802e23aebcbfa9aff8f0316122fe23018bcf9c2f76c7446ae874fa87"
+    },
+    {
+      "path": "examples/artifacts/architecture-modeler-working-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:1d6262b1bd4dff5a8a7df67c4f43bceee5c0692ecace3425241b98cc123b7734"
+    },
+    {
+      "path": "examples/artifacts/capability-catalog-work-breakdown-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d459c8167b1bdb8db2cc68c13d65538c3775dcd4b57221037be121194bbb1bb4"
+    },
+    {
+      "path": "examples/artifacts/clarification-request-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:4ebc0b6dc7cf8cb5b09de33ad5bc7eec3f000431fadb5d65356b62e3748ce0aa"
+    },
+    {
+      "path": "examples/artifacts/clarification-response-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:0fd8d8d836951c92d058bc3b39657f4365821d4e9bfc7471067fa132415e6c3a"
+    },
+    {
+      "path": "examples/artifacts/contract-disposition-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b4639e958bc15e9bf7836202039b067b5e669fadedc9f9bfd0660aab23e822e3"
+    },
+    {
+      "path": "examples/artifacts/current-architecture-snapshot-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:229bdb3e99feafb253c1ce09b3236062135e6105c26104075e63c7f553586cc2"
+    },
+    {
+      "path": "examples/artifacts/goal-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+    },
+    {
+      "path": "examples/artifacts/goal-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:164e87fb9586743ea169354c184f9df98c386df4255349740616e8a15afda609"
+    },
+    {
+      "path": "examples/artifacts/module-route-decision-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:768cdc1741550dcb608c187b05cd732b30d91d19234ea40bd5afa18a24203a44"
+    },
+    {
+      "path": "examples/artifacts/module-route-decision-establish-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:8479b21c3dc20819c7874618a097eece786eab2e953de484b8705dfefc0e9238"
+    },
+    {
+      "path": "examples/artifacts/module-route-decision-work-breakdown-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:e154bc59d17f3f97a80982f53c0abbc94f706885b4630d5d4309add5be33020a"
+    },
+    {
+      "path": "examples/artifacts/module-route-decision-work-breakdown-establish-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:f3e1db1466a13747300d5d72e2214ce729bcfc8d290963d7caf94508ca79f2ae"
+    },
+    {
+      "path": "examples/artifacts/native-source-bundle-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:55c9cad3b27808ae365c5819e46ca0ddf9631528e1bf86469b30866e4d58d2fd"
+    },
+    {
+      "path": "examples/artifacts/native-source-bundle-change-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b26ef3532f831805fc4aab2ca24816b3fade8f4880b05c91b73d76f5171d230a"
+    },
+    {
+      "path": "examples/artifacts/native-source-bundle-spec-kit-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b1d4e5222f377394f23171a93ea6d61e642afe6f0659e9c157217be7b77ec18d"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-baselined-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:1247efe37f0db9c2e93240d87767ba2990f6747f59df870db8920ef95bba9ca4"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-existing-discovered-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:c3cebad52dbc009c67261b1dd6903a26aad5fb74a51db6d5b1fe0337aa78dd1c"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-existing-undiscovered-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:54e1df0d2ba5adfc2e110a7c723ca5d57a390df6c033773f7465d42bc1de3a10"
+    },
+    {
+      "path": "examples/artifacts/project-architecture-state-greenfield-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:e697aba27f15c86f0e37a9982b17a3d57ff6e7bf0c7638997fc9096234befa6f"
+    },
+    {
+      "path": "examples/artifacts/project-context-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+    },
+    {
+      "path": "examples/artifacts/project-overview-baseline-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d9b03d8908eeed7430317d0eafbe545641a50c2d5b5b1a099e1bf74858f236fc"
+    },
+    {
+      "path": "examples/artifacts/project-overview-baseline-002.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:0830fa74fafed5f0044ab1cdc795d7983ee69841597b96e3656b404cefbd8aa6"
+    },
+    {
+      "path": "examples/artifacts/project-overview-change-set-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:50f8473aa7823f1b1c543d3faae2c9a391082e3578f3888eb6db91fe9559949b"
+    },
+    {
+      "path": "examples/artifacts/project-overview-change/ProjectOverview.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:be48954eab587371a42530589a63a88b75723538f66dbdba3ea5af0de9250f64"
+    },
+    {
+      "path": "examples/artifacts/project-overview-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d4698df12af404a722a25d58a58c3297b1c69d098c37ffd3e62b79304fb2e380"
+    },
+    {
+      "path": "examples/artifacts/project-work-breakdown-state-baselined-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d721593aefbef9cb5991281b57ebc4e699a1ab0af6ab78ca8b36410ffa0e91b8"
+    },
+    {
+      "path": "examples/artifacts/project-work-breakdown-state-unbaselined-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:8d7bc78a65357a839db71545bef0ff0e33ca8296cf21c0c218e56123a403d353"
+    },
+    {
+      "path": "examples/artifacts/repository-snapshot-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:d94425c40bc1d9d1e0587df4369b54989c3f7942ca4e1568c40a27f0fa754613"
+    },
+    {
+      "path": "examples/artifacts/repository-snapshot-advanced-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:aaac5ef1c710c446dc19204a090833d8e4f0c4147afb850321b4a1d842b45ef1"
+    },
+    {
+      "path": "examples/artifacts/requirements-approval-001.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:772840902cc6d8a7b1a046d9e07fea2761810016bfd68630391cfefb09b10626"
+    },
+    {
+      "path": "examples/artifacts/requirements-baseline-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab"
+    },
+    {
+      "path": "examples/artifacts/requirements-baseline-002.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:1746eb1304e73a835449af70f9bdaf9371f19732cea4beca213b1cc084543c64"
+    },
+    {
+      "path": "examples/artifacts/requirements-change-approval-001.md",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:e40ec09962bbbfaa6ec849869431aa93af414fc1561ddc1c92d1f5c5a199943d"
+    },
+    {
+      "path": "examples/artifacts/requirements-change-set-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:7524523eefe0e090d3c9bd9001a49dcc3a3c74c6052da7fcfba9c4e8e2729a52"
+    },
+    {
+      "path": "examples/artifacts/requirements-continuation-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:b0edc88bed88369a0075ef7410ec3533b8051b5ff9401036990f9c30c7614b59"
+    },
+    {
+      "path": "examples/artifacts/requirements-draft-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:ac4cf345c0ee0015573084163348f05115f9d174127fb508c653774d82870104"
+    },
+    {
+      "path": "examples/artifacts/traceability-graph-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:345f1f05113e4e9121f1b65eab756dbf9cb7aaf5f7b4a3083bb940366da25e54"
+    },
+    {
+      "path": "examples/artifacts/work-breakdown-baseline-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:5cf025c4c5768f1721695b43ded8972f5c041ae04609d2f58d3e058e849f85c9"
+    },
+    {
+      "path": "examples/artifacts/work-breakdown-change-set-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:3a7d66685cc48f694654ce9d4cb7a2afc62ffbe8c6baaf1e72f8377023518e15"
+    },
+    {
+      "path": "examples/artifacts/work-breakdown-clarification-request-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:9ff3519563cc1c2d1f91b6ad9eefe194d5a9b6bd80b081ededfada7e39b2960b"
+    },
+    {
+      "path": "examples/artifacts/work-breakdown-clarification-response-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:c8b53f1a985e2f7cb05d20a5ca26c3afa447d9253771040b1d9d8be295cec574"
+    },
+    {
+      "path": "examples/artifacts/work-breakdown-continuation-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:a443444f976518e70e0aa38bc8c44d3142cf921c902467f5998f57d53ebbce4f"
+    },
+    {
+      "path": "examples/artifacts/work-breakdown-draft-auth-001.json",
+      "role": "artifact-fixture",
+      "packaged": true,
+      "digest": "sha256:efdb4500491c4c3728bb59c6f4251e7c1fb43ec2fe881db7f1686c24afc29f1b"
+    },
+    {
+      "path": "examples/invocations/architecture-design-change.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:83159916ad20a83225489c2453edfb07a75f3072e855ae098c70d6fd372fd8ee"
+    },
+    {
+      "path": "examples/invocations/architecture-establish-baseline.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:08525dbc3f2d264f8e5fd6ede1118f2a7723290e32e0e412bf44708cce487b29"
+    },
+    {
+      "path": "examples/invocations/architecture-establish-resume.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:3fc0739c42987827e85a8d356258fe685923a38c04d2c8c1c924748648737c9b"
+    },
+    {
+      "path": "examples/invocations/requirements-clarification-resume-openspec.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:236124f5adbc5794a9b22f51d339d24d455bf74ff59a1ffd2cc98ce02636830f"
+    },
+    {
+      "path": "examples/invocations/requirements-openspec-change-set.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:e15480318aacf7f3c1f1ce337eb90d07818439cbcbfe9a4a89685f2e6f70a639"
+    },
+    {
+      "path": "examples/invocations/requirements-openspec.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:801c66544e90927e705038d65de4c210891c2724074a59b22ca27fbed296eec3"
+    },
+    {
+      "path": "examples/invocations/requirements-spec-kit-clarification.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:39da229e4037d42d035fdea432ca6953c21805b90d69153bff0cff3bb12598ef"
+    },
+    {
+      "path": "examples/invocations/requirements-spec-kit.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:bef8353b42b7e1a3e0d735a78b187da57f0292c8f696b6149efb8bdf85a7477e"
+    },
+    {
+      "path": "examples/invocations/work-breakdown-decompose-change-001.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:5bf711e8d29ba18d752f30acbbc75a139a49198af19b6009ad7d2a0178f17037"
+    },
+    {
+      "path": "examples/invocations/work-breakdown-decompose-drift-001.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:14578ebae11409190ec788c64dedc25e58f553f9da5fc200eacbbf4fa9587d5a"
+    },
+    {
+      "path": "examples/invocations/work-breakdown-establish-001.invocation.json",
+      "role": "invocation-fixture",
+      "packaged": true,
+      "digest": "sha256:62261bdbf6254dceb11e9aecd6077515c043bf7979468ece1ebf22768a466da2"
+    },
+    {
+      "path": "examples/modules/architecture-design.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:fe39148d27b1364291d7a55ec24041a6aa0fce98ea2b2458bbe08e543e4dc7ae"
+    },
+    {
+      "path": "examples/modules/command.module.json",
+      "role": "module-definition",
+      "packaged": false,
+      "digest": "sha256:5af829b4c1faabf3a51ddc25333275b996d4c444e8b839d27f1a26850c4dfb77"
+    },
+    {
+      "path": "examples/modules/contract-generation.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:8d868d3e2d2ee9f1f06baf4d1b7e5b93540ca16bc745437b4454eaf8b8acb29a"
+    },
+    {
+      "path": "examples/modules/requirements-gathering.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:489b8689e437ad3740f8c67da428ba40be5b78e4f7befb4d21f795bcdb34b6d6"
+    },
+    {
+      "path": "examples/modules/work-breakdown.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:89414b0ed0efa84584db86fc97b319feaf43b7c438ad81b0f68788a4a7167b75"
+    },
+    {
+      "path": "examples/modules/work-dependency-analysis.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:7cea4b60fd4b74fa1fb24835668e25cffffe09cbdcbc06f371c2d7794dc64a60"
+    },
+    {
+      "path": "examples/native/architecture/0001-centralize-authentication.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:617e5c32df97318e9d046ce8bd2120f7b0ee41b1509f37cfd3b3a3fe7adb117b"
+    },
+    {
+      "path": "examples/native/architecture/discovery-report.json",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:9970fd8fd0047c28dd8456c39fd32136a6ab8e136875d054841fd8c2ac812804"
+    },
+    {
+      "path": "examples/native/architecture/openspec-design.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:5f9f49eb11e3b0b7aca2d658a6ebfbdecda72a95cce40dbfe77e43ca0f24c319"
+    },
+    {
+      "path": "examples/native/architecture/spec-kit-plan.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:3ff005c8839311a2526c5f0f5be6cf7e15fb748797502a2ca6d6a6d7bcd6852a"
+    },
+    {
+      "path": "examples/native/architecture/workspace.dsl",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:2e318b6c3209de2dc6f3b32cbc7e5a5f9310f737db331760fe91a670fee93f54"
+    },
+    {
+      "path": "examples/native/github-spec-kit/spec.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:46c4f7390ea78565d8af15bbbbe33fce32c8ec0f031254a203f66602cc342453"
+    },
+    {
+      "path": "examples/native/openspec/change-proposal.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:5ac62ad439f03cfa31534c2f25f11caaf4606581d28c63709dbc1282411b41d6"
+    },
+    {
+      "path": "examples/native/openspec/proposal.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:04985e0e68cfda7dca96af2fc48e4c8bff41a9daf112d8821ab424077241d0b6"
+    },
+    {
+      "path": "examples/native/work-breakdown/openspec-tasks-change.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:2184ee70b617bfcb421b15d0134a0a8d97eab068dc3d0dae56768572432a489c"
+    },
+    {
+      "path": "examples/native/work-breakdown/spec-kit-tasks.md",
+      "role": "native-source-fixture",
+      "packaged": true,
+      "digest": "sha256:cce679c3aed6f3eeb780e8ca7a2cca6e63c9be1e5cab19c1bba39bb2df6e9999"
+    },
+    {
+      "path": "examples/plugins/asyncapi-contract-generator.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:d0c64eed5eaad240271306ea876a9345e72cb4487a8cef80e73a6c4c9d2c675f"
+    },
+    {
+      "path": "examples/plugins/github-spec-kit.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:43d34d0d875c515080220a7539a9aada2e66fced074d0872af109eaada37f09f"
+    },
+    {
+      "path": "examples/plugins/json-schema-contract-generator.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:dcaa9730a44742b386831f2d36c465406fef239b1d2db74486312641981fefa9"
+    },
+    {
+      "path": "examples/plugins/local-command.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": false,
+      "digest": "sha256:d44c1d250feab0d656d10c46585c63fe5cbeb2d132a53e98c024e4486256c2fb"
+    },
+    {
+      "path": "examples/plugins/madr.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:9b6a6a5ea573e11429ecdbe8a9c30baed8bda5edef15410e7ffbd0dc8f7420ad"
+    },
+    {
+      "path": "examples/plugins/native-structured-dependency-proposer.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:e767a88d6ec518dc4892fac600d9d192b608cd9ef606ec5e42bb03571091690f"
+    },
+    {
+      "path": "examples/plugins/openapi-contract-generator.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:732691fe0f82d5de10281034ffb7f46af9b64fc24956a98bce6bc1f249daed77"
+    },
+    {
+      "path": "examples/plugins/openspec-dependency-proposer.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:2a553900f8f3d29ac82e903ed81e3f44bc6d2c303965a576df3f7f0580b3883d"
+    },
+    {
+      "path": "examples/plugins/openspec-design.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:b872310e8698a8ea9770989a2232e9417263c9da4b198e0feafcb3288400f349"
+    },
+    {
+      "path": "examples/plugins/openspec-tasks.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:b3f4c2052e1951b66783a3989cf83e59654f723e795191264fba2ac9f0029c53"
+    },
+    {
+      "path": "examples/plugins/openspec.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:ef35cbc0248e0b6b2af972df518cf46f5b9a01157cd45419c6ac18f4a27be12a"
+    },
+    {
+      "path": "examples/plugins/protobuf-contract-generator.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:59248dea336e3d049d17b9701aba98c2ce85d8f02a98f0e0c2743df057622a8c"
+    },
+    {
+      "path": "examples/plugins/spec-kit-dependency-reviewer.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:8f2e39042155dd3fe5e0cd7aec27e6df96aec5855141920f5654da49418d5ee3"
+    },
+    {
+      "path": "examples/plugins/spec-kit-plan.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:e89f1280bd2423906d2c5ba529e845409aa3ae4ccfe14ff13e4c269ee0f54e4e"
+    },
+    {
+      "path": "examples/plugins/spec-kit-tasks.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:fb0bf1980160e8441bffaf1652a54a37edebc16e673043320ef822d6ba12e87f"
+    },
+    {
+      "path": "examples/plugins/structurizr.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:feaafc337fe004f7c107d72b343b2228dc6bd58d67a122605243c6bf1dcdfafd"
+    },
+    {
+      "path": "examples/plugins/task-master-dependency-proposer.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:2a9c9cb35e37bda31b4b7d8ff7c01d23aa27eaad9828f951a0bec347cc93ec70"
+    },
+    {
+      "path": "examples/results/architecture-design-change.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:e5645de6068c2a43ab00c6e94ed2fb38c9eeb75973d5a562f18c63e1db220d59"
+    },
+    {
+      "path": "examples/results/architecture-establish-baseline.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:71bd38e5e7c769ac8830f9bd38a0c72d5041d1042added44a1463c3164795083"
+    },
+    {
+      "path": "examples/results/architecture-establish-clarification.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:cbdad478d0f323d2b5707701947486d0045ece6d77db265a4a9df6a1cfd2d7ab"
+    },
+    {
+      "path": "examples/results/requirements-openspec-change-set.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:ca836ac057331fe1d2cb61774ca240afe01b96847410abb772722f49591c978f"
+    },
+    {
+      "path": "examples/results/requirements-openspec.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:6433d0259c639f71d80beb9625868196951371c23504afd25dff38eb5f754ebf"
+    },
+    {
+      "path": "examples/results/requirements-spec-kit-clarification.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:21489fbb44b1fb814f18f87db4d444076c4508e73ff1811a7106e39b26a45d72"
+    },
+    {
+      "path": "examples/results/requirements-spec-kit.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:dfb9083880f31d5c993bd0300830d82388082766630c496ba5d2d04766da466e"
+    },
+    {
+      "path": "examples/results/work-breakdown-baseline-drift-001.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:009508583ad897e0e9e900ff121ef1c2f9ee3da7a996fc27ab8df61071090d11"
+    },
+    {
+      "path": "examples/results/work-breakdown-clarification-001.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:4c5109df60afa651c7ecf9551f29e6e249bea62410217fb03fce157d93206b62"
+    },
+    {
+      "path": "examples/results/work-breakdown-decompose-change-001.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:6246476e79f451c0c315f7a902e7ef82138dab630554a6872edaffdd7c04a9a1"
+    },
+    {
+      "path": "examples/results/work-breakdown-establish-001.result.json",
+      "role": "result-fixture",
+      "packaged": true,
+      "digest": "sha256:5b11d321cd2f4c4ec62c8cf0c282b0c9f2aafe906a5a6aaf12a29d37881db747"
+    },
+    {
+      "path": "openspec/schemas/devrelay-architecture/schema.yaml",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:182c9f8f8f8b923f527e8eb455d285f9249b8ededc49e0ae39dd32a20dd84079"
+    },
+    {
+      "path": "openspec/schemas/devrelay-architecture/templates/design.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:a04fdda75c79930d487fc90db3456176acee5b2ef01daff483d49e0f62ebd898"
+    },
+    {
+      "path": "openspec/schemas/devrelay-requirements/schema.yaml",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:8ec94076520a9b468cc38498e53e9d904da07f93006e3537db3febe94e68ddc4"
+    },
+    {
+      "path": "openspec/schemas/devrelay-requirements/templates/proposal.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:0d60037c928cde4c45ce8eb35c1e7630c599bdde2c1524726508e26d265507ec"
+    },
+    {
+      "path": "openspec/schemas/devrelay-requirements/templates/spec.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:e92a6513e6fdac01502af8061b97ae02e6d754a233244dc74ee10c8701c4561d"
+    },
+    {
+      "path": "openspec/schemas/devrelay-work-breakdown/schema.yaml",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:b04483a573b7ef08cd136b788d39f19f04bfa1d7a63d582b3d41f5ce83d2f26a"
+    },
+    {
+      "path": "openspec/schemas/devrelay-work-breakdown/templates/tasks.md",
+      "role": "bounded-adapter-schema",
+      "packaged": true,
+      "digest": "sha256:2ecbe0695a6884001714d0d48c4b4aec848ea1b9f23ac729f995cfd6f1bf397d"
+    },
+    {
+      "path": "package-lock.json",
+      "role": "dependency-lock",
+      "packaged": false,
+      "digest": "sha256:9744a2a0cbeaab84458a7ba0ceef1c0580b818c9a43631e85a2105501e9ae2fd"
+    },
+    {
+      "path": "package.json",
+      "role": "package-metadata",
+      "packaged": true,
+      "digest": "sha256:638758e61d7fbbe0ce78dd3f638fda13474f29a0e4aba0e72a7450932e12c0c9"
+    },
+    {
+      "path": "policies/work-dependency-analysis/dependency.rego",
+      "role": "policy-artifact",
+      "packaged": true,
+      "digest": "sha256:d9ce6d48e9b634b5248d3bba8a87246960c49ed3fa59641683b2df4adaae07b4"
+    },
+    {
+      "path": "policies/work-dependency-analysis/policy.wasm",
+      "role": "policy-artifact",
+      "packaged": true,
+      "digest": "sha256:d15e94c5062e97bc736b8b5481cf6aca13351795fa262e2919eb6cc6fded7734"
+    },
+    {
+      "path": "project/README.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:0b6759caf094249e0ea927acfbab5444ec5572d4e9e69374cc59f596eeec84e1"
+    },
+    {
+      "path": "project/architecture-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:62a637f33635671295f730ff7e49bd69442d7721968e0bd5ad7be1c6801b9231"
+    },
+    {
+      "path": "project/architecture-gate-owner-approval-contract-generation-v1.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:83004b9f9dc2cc84fd77753cb8618a44bd756a870fc62566969e1e1ecd1453f0"
+    },
+    {
+      "path": "project/architecture-gate-owner-approval-lifecycle-run-report-v1.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:c5b902d0087a9133beac13b07c696c2651c89cbdcb661621193bd0d553d79430"
+    },
+    {
+      "path": "project/architecture-gate-owner-approval-work-dependency-analysis-v1.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:102439efcb9d8244151b583ac7c89710685a1cf9f2b81ab9c76bd27543ad939e"
+    },
+    {
+      "path": "project/architecture-promotion.commit.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:df3508bfc1cd1929cca02103a4149857b58a3e3482f560bd27eaf7af79a0c869"
+    },
+    {
+      "path": "project/architecture-promotion.pending.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:df3508bfc1cd1929cca02103a4149857b58a3e3482f560bd27eaf7af79a0c869"
+    },
+    {
+      "path": "project/contract-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:dcbf2323a0886f35ccd19e882b20ec610a4b05694c3d663d37cf01fb4a16e658"
+    },
+    {
+      "path": "project/contract-disposition.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:58f5c1babe466ab881c82a9700efc00e6e7aa8e1beee7a05b12da9a0b7762b46"
+    },
+    {
+      "path": "project/contract-gate-owner-approval.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:f8787a9909eb65660526245262bbdfb0d2fbef31988247a37d97ceb110489b11"
+    },
+    {
+      "path": "project/contract-promotion.commit.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:541aee50a7ed293263c86ef754a2291f863a39c0714b2aa3d1882b96d2589d64"
+    },
+    {
+      "path": "project/goal.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:6609987eaa8d7f23ac8c38797588250ba8bc34dab0a64ee6e9df90b7271218ef"
+    },
+    {
+      "path": "project/history/1.0.0/ProjectOverview.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:480a5882b6eb8cd5816eecacec043415a0bd883f6fc149a867248011433fcb95"
+    },
+    {
+      "path": "project/history/1.0.0/project-overview-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+    },
+    {
+      "path": "project/history/1.0.0/requirements-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+    },
+    {
+      "path": "project/history/1.1.0/ProjectOverview.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:4b9385d583f5b9d51782dd9a3a6e0b7a7daa08416e36b671153f7349e440c86a"
+    },
+    {
+      "path": "project/history/1.1.0/project-overview-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:b915cba9e0af8480229611aff735f265d38bd8c1c4d5fabf19b64432549c16bf"
+    },
+    {
+      "path": "project/history/1.1.0/requirements-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+    },
+    {
+      "path": "project/history/1.2.0/ProjectOverview.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:a592c999205b8ffba0eb13327cc0f680e091910e9638b82bb6bb5ffd6ccdd930"
+    },
+    {
+      "path": "project/history/1.2.0/project-overview-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:eb4a5ea9db4c67cff641ffdc50168ee2c4d257ab307be909fe515759ee88239e"
+    },
+    {
+      "path": "project/history/1.2.0/requirements-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/architecture-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:a2bc5b38377337dbc6e86eb45821b9fab4eca4be044693944442c6c45153fa29"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/architecture-promotion.commit.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:9004fb197b26fd0f23b2cc91262150291d3243abb61eb465b0615bb84d01414d"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/architecture-promotion.pending.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:9004fb197b26fd0f23b2cc91262150291d3243abb61eb465b0615bb84d01414d"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-lifecycle-run-report-001/project-architecture-state.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:47abc7f377462f0ae19bb0cdc49e37ab8a0ef0fd8a03756bbedc8627dea5212b"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-wda-001/architecture-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:aa75ec1e76a862f31edb5b39a820ebb76da5cb6a8e8a868730e129f5e58be2ab"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-wda-001/architecture-promotion.commit.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:8bd6ff157a7ce52ef6886e7a6aace091b29956dd50d3bd5d6928e1c9fe7037de"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-wda-001/architecture-promotion.pending.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:8bd6ff157a7ce52ef6886e7a6aace091b29956dd50d3bd5d6928e1c9fe7037de"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-devrelay-v1-wda-001/project-architecture-state.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:526c69cd3cb5b0cbfad7343b439474a7dda8a2a042db597b98ea55fb8ce14f6a"
+    },
+    {
+      "path": "project/history/architecture/architecture-baseline-work-breakdown-v1/architecture-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:6d3d36bb72754bf057aa504ee86a0f9296a2e1e0cb1637fb5748570f52062d58"
+    },
+    {
+      "path": "project/history/work-breakdown/1.0.0/work-breakdown-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:b21b321849b8777c6a3fa09daacbe5b61a2fc9042a5862c4a45b176f9d0b8ea5"
+    },
+    {
+      "path": "project/materialize.mjs",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:0e0931028c130af84d202d5d54e6e6f32fa99fa107da8ee76fdd10b214d6eb13"
+    },
+    {
+      "path": "project/native-source-bundle.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:a580444facd9ff7d602c457622d2f2981ca4ca99409b6ffd205714d4174d9462"
+    },
+    {
+      "path": "project/native/openspec/proposal.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:86189f21a5c3850f6bfcb15be101fde9806c61af662d1cf213bdde0500691b3e"
+    },
+    {
+      "path": "project/native/openspec/specs/devrelay-v1/spec.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:a165475c6a4cc599bb3bff7589b9cef957d7aa2aae8ec74d87cd530d4c7afe38"
+    },
+    {
+      "path": "project/owner-v1-lifecycle-approval.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:ce529a6578396825fc870a2348a17e8ee71817b3d4c9bbf3b0f54c7b610782bf"
+    },
+    {
+      "path": "project/project-architecture-state.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:57f27033c81ac477fec372b857b2ce0d54dbcfcbdb0997e7c2f299b66d427398"
+    },
+    {
+      "path": "project/project-baseline-data.mjs",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:f612f35baed9eeac7f9e44d379bc15f85ebd28d84a88fa35bdfe4f51705e7c8d"
+    },
+    {
+      "path": "project/project-context.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:92c80d7ffecfc1b8aece4c498c986851033f855e7482bad05128d22425c6fb1b"
+    },
+    {
+      "path": "project/project-contract-state.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:89c7fd72ef596262bc8937932c37c673d39d3d3bbe3176792ebdaed42f798567"
+    },
+    {
+      "path": "project/project-overview-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:c440350f162c530a0180661ad7f6812551d0a184298f256a52239e5b2e9de699"
+    },
+    {
+      "path": "project/project-overview-draft.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:cb0078625b4f1f913512beb630319cd145c25a522fb246010df1e8bc402ad9ef"
+    },
+    {
+      "path": "project/project-work-breakdown-state.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:0918dd539e544f243ae9c2068f4da443c0c4a659b66cc7268d0294d13c50af16"
+    },
+    {
+      "path": "project/repository-snapshot.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:5bcc0fc1dc0be4e271f14fa65699c6fcae4ebab96b48d73b901b9d0909c62df4"
+    },
+    {
+      "path": "project/requirements-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:cd07170d8ea48ba98a1c4f45d30ade2e83992e0fd4433cb049fbf0af7c34e8cb"
+    },
+    {
+      "path": "project/requirements-draft.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:018050f16d01c8adfbffe5a9d07c510edfcccc78753ad357009377025cf4d7b4"
+    },
+    {
+      "path": "project/requirements-gate-contract-generation-v1.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:952ec8619780b73bf206f77467b94b2ee73f2afdfe4daf83654c50349ca67ca3"
+    },
+    {
+      "path": "project/requirements-gate-lifecycle-run-report-v1.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:20f78cd267488ec7422e726ec556bcd80a1761194ed60444aba7e5e1f098b4c3"
+    },
+    {
+      "path": "project/requirements-gate-work-dependency-analysis-v1.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:b1bbbbe0a3dcf177d99e663528b6cdff4c58f7b6b12a47f9f6cb90d7dd795fcf"
+    },
+    {
+      "path": "project/requirements-gate.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:9179abca8b1f43b275dd42a98f5fd8e61f2b52c475dcf53f34340616dcb93187"
+    },
+    {
+      "path": "project/requirements-gathering.checkpoint.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:78f5b525d68b204ec0b93619661b66175c946ffe753dee20117286d0eaaa4389"
+    },
+    {
+      "path": "project/requirements-gathering.invocation.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:8813e2a6e9a2443f21ec46799ae2d4c49b9d4c7c448b1c994a52f938656f25c4"
+    },
+    {
+      "path": "project/requirements-gathering.result.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:6255c7d8305af943aa516a38f5b297e0305813f637365d1daf8ea5136f1107c3"
+    },
+    {
+      "path": "project/requirements-promotion.commit.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:e484e5c96ef84ada38f970b6ad7005bd6518c4eac59f07f83c7e7e8f514e2576"
+    },
+    {
+      "path": "project/requirements-promotion.pending.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:e484e5c96ef84ada38f970b6ad7005bd6518c4eac59f07f83c7e7e8f514e2576"
+    },
+    {
+      "path": "project/runtime-execution-proof.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:fe05f85bdef39cb920f9d5840f5554790c25ecc9fc762f554e5f8a4955ce64db"
+    },
+    {
+      "path": "project/work-breakdown-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:29434fd8ba756887920193c252a6ff2719efe6c0ff2d0eb652fce6cb42cdbe8c"
+    },
+    {
+      "path": "project/work-dependency-baseline.json",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:f11d0a1031781a8645da3db637462af4775c4861afc355054ad52df4d19ab52c"
+    },
+    {
+      "path": "release/0.1.0.json",
+      "role": "release-artifact",
+      "packaged": true,
+      "digest": "sha256:34d0a9884422222f84f5b8f86de38879ce7d909d50c29040c5a42e3a104be85e"
+    },
+    {
+      "path": "release/0.2.0.json",
+      "role": "release-artifact",
+      "packaged": true,
+      "digest": "sha256:8521621fe7a47289d05a3dd1de6df7d2dee4910b03ac94b333dfef03ffab8f00"
+    },
+    {
+      "path": "release/0.3.0.json",
+      "role": "release-artifact",
+      "packaged": true,
+      "digest": "sha256:3ee5e689e1279cb0847c0e01f0b20a4a841fb48f98dd12ebbfab602b38b03815"
+    },
+    {
+      "path": "release/0.4.0.json",
+      "role": "release-artifact",
+      "packaged": true,
+      "digest": "sha256:d716d6b7d983d75327887f346a4516223614c9f56ff009d097c2bf6c42e7570a"
+    },
+    {
+      "path": "scripts/bootstrap-structurizr.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:e02bc7b0d2af57518388c5605582c6dd8b2920d54350aea76f292cf5547e70a2"
+    },
+    {
+      "path": "scripts/check-release-manifest.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:bc1178fdda436ceeca4cd3191f72ebd227def3c583fab3aa7def4c10852c7474"
+    },
+    {
+      "path": "scripts/generate-release-manifest.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:73989f369188addd49cf0846b4d837e13d04c0320686de867713bd44af465c55"
+    },
+    {
+      "path": "scripts/release-catalog.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:b0c2dc43599f6d2f2a0d9771d30484cc52444d6805c25e3c3e6a17071284af6d"
+    },
+    {
+      "path": "scripts/release-check.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:6ba9ee84b5d10beeb958998b7850562cd7a46bcee66ed585604b04e7bc8c0f25"
+    },
+    {
+      "path": "scripts/release-tools.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:032110e80c041c5c4b12dec1b1ec5810a77b9cc2b86ae84c6e32e7a8b789d304"
+    },
+    {
+      "path": "scripts/structurizr-toolchain-lock.json",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:d68f0d139840a64434b64f8047a6811772cac00bad0958fc8a47edc09ab06c1a"
+    },
+    {
+      "path": "scripts/verify-structurizr-conformance.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:4ebbccb426d5866bdc8b3d3264c1eb7b3efac4ed3b8c8d4e8ff55cb56e3a8f84"
+    },
+    {
+      "path": "scripts/verify.mjs",
+      "role": "release-tooling",
+      "packaged": false,
+      "digest": "sha256:c1ab60aa320bacf1deb63fc41db8560f6f16a1cf27ffcf5caefcaddeb599ec78"
+    },
+    {
+      "path": "src/architecture-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:021d96044eda4c67f4d835d1caa23d6944a0eb5e3a7c94baadfa5902442b3088"
+    },
+    {
+      "path": "src/architecture-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:a9b5667dd3e41eceff22be791a982c5a70f73493f115cd2520a6d838705375d6"
+    },
+    {
+      "path": "src/architecture-handoff-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:782d25f63acb67d7c13f2054feecc7836aa42f0122caf29db8176def3a9dfa68"
+    },
+    {
+      "path": "src/architecture-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:61ac56d0eaa744c67d2b6fa7f62219ea0570d00cfb67bb5ef9272bb7e6137ce3"
+    },
+    {
+      "path": "src/architecture-traceability-contributor.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:11ed748e889fbae277856e6d60db212fdef0f0d25978e047385015144c27b82a"
+    },
+    {
+      "path": "src/artifact-runtime.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:2ef1df78b85e42a0d73608988b38b6326b67cf344963ef42572e2d3f287d6eba"
+    },
+    {
+      "path": "src/content-digest.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:1f159a01eaf4ad9bace5d60e6965d1e06f9d252a792df6d537f6e66d02149201"
+    },
+    {
+      "path": "src/contract-canonical-diff.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:bff8b34de728a3158b8522fd1d42c28cd7fc760157f169ca2d97088069ac2280"
+    },
+    {
+      "path": "src/contract-format-registry.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4beafd7a126413e6a79e1517ea5f742fcc7fa238c2b193aafe89d3df39334375"
+    },
+    {
+      "path": "src/contract-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:a467215ed32a14d8519616daf09c7d7f83203d7dc458a386ef039f1f90bbecbc"
+    },
+    {
+      "path": "src/contract-generation-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:efcec59185d0d7e3c5705e22141b42e5be75aa9c5fa79f16839a7cb1caf46871"
+    },
+    {
+      "path": "src/contract-generation-runtime.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:5c9367b563ce91c119d5ed691fab40971f385c9870c04be105c55bf0d4efcb32"
+    },
+    {
+      "path": "src/contract-traceability-contributor.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:cee246851e02d85b45215386e2713fe2e2fae6d418b897de63bb8b6d0db54973"
+    },
+    {
+      "path": "src/index.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4b75d4c7fbd70c107cdbda663e7ebf736415c5932383259a9e610b53c4bd9ac0"
+    },
+    {
+      "path": "src/module-execution-record-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4c44a77942c5c77e45da64225be932ce94c8244300d875e2e10b4e2f7dd511e5"
+    },
+    {
+      "path": "src/module-registry.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:63781bf4ec0bec27f055cf06af6d85ea1854c8ec5ed09a16a8b16e495ba58cc8"
+    },
+    {
+      "path": "src/operation-router.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:055118a253ddc6e4541120823d9bb11ada8a1b057e7b5c15f3ca52165e78cba7"
+    },
+    {
+      "path": "src/project-overview-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:abc4fd50e9ff7aef99a6a18a9d8564dcc2c90ce9c12468bb8cdfba2321ed22c5"
+    },
+    {
+      "path": "src/project-overview-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:f017f0f107dc7270a8f7ad3bab731cf2735597242f9fcc5ea657a75c8ee2c74f"
+    },
+    {
+      "path": "src/project-overview.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:9f90214d84db7eb5d8d9ac03e952ddfa271836bb67752e5283543af08430b623"
+    },
+    {
+      "path": "src/requirements-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:cbea8865f1da6cc80ae3600e1f3a20f74f4fa8f49751e703b5c45e9ee2d4b141"
+    },
+    {
+      "path": "src/requirements-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:379ece341cbc367340abd54076d08fb60c115e80269716b16267e470eb309e45"
+    },
+    {
+      "path": "src/requirements-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:f7dca56f797459b834cc38ac451532bb0b42410416302c76b5b47523f5419234"
+    },
+    {
+      "path": "src/requirements-traceability-contributor.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:d80ff7f5dccbf214107996114956bee3278ab758d1e157c00028674459476536"
+    },
+    {
+      "path": "src/schema-validation.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4ade921b312a6d3ecbd02d965aea409f238e2f1125936e114944e3f9cedb0740"
+    },
+    {
+      "path": "src/shared-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:b100b1794522386b9052a91c639e34afae5495cb9b3f2cf0659cd3f9d5ba2b45"
+    },
+    {
+      "path": "src/traceability-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4b2af7895b6d41a4cc197ebf995581bcabf61c67848d6052913c6b103e5a2855"
+    },
+    {
+      "path": "src/traceability-checkpoint-store.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:f196f77f12e82dc2438b5dfbad6e45898a257e645b3170e2af1cffbccb4f0d22"
+    },
+    {
+      "path": "src/traceability-graph.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:ade0ed9e8c0fffc5014635cc4399a3c2ad61dd866d4c8f52e348c9f9b8ec3c54"
+    },
+    {
+      "path": "src/traceability-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:1c0e8f9f68d68c58ee46f63e305f0787d5aebd5ffa718545533111e790ff0383"
+    },
+    {
+      "path": "src/work-breakdown-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:246ff8abb9b96ad0018dbecf759d9076d813d962c60e4614afc3563dbd295bcf"
+    },
+    {
+      "path": "src/work-breakdown-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:da24cbd611afc43d6fc0bddabd1faa20eac08488792eedd942f732c7093f34bd"
+    },
+    {
+      "path": "src/work-breakdown-runtime-contracts.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:eb9aefe7bf56611e016a7b2045da6ba8ca20a617891c57845d7897b691a23ee0"
+    },
+    {
+      "path": "src/work-breakdown-traceability-contributor.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:ae43268dedc3f54bfb0c3d143740af6f79c9f90183a3aa3e6ed5481de17b9f34"
+    },
+    {
+      "path": "src/work-dependency-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:2e4c53d46d20eeea37654a8e63fdb349e61f26f6dd340710171e930f24b141da"
+    },
+    {
+      "path": "src/work-dependency-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:bda691e515b6059f0c142f1c08c5e114de74c7a011933b7a46c17bcf94d4f980"
+    },
+    {
+      "path": "src/work-dependency-graph.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:0cfed843f54161d76f84dbbc529a7572adb6f116a32f2d04bce5dc2a4f763e4f"
+    },
+    {
+      "path": "src/work-dependency-native-proposer.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:4221a02d52c351d24fd48ce8e25820911bfd364b75bc2dfc8ffc9a078e4f0e40"
+    },
+    {
+      "path": "src/work-dependency-opa.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:de3e87bbf8d207fe06f5b38dc12b63e473fbd51bf3a934f90c9f26a2bda9a24b"
+    },
+    {
+      "path": "src/work-dependency-runtime.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:63c7ff21a4685a5d83b48b6a00fbb1d2462dfc6db076222f580cef9fb955cd8c"
+    },
+    {
+      "path": "src/work-dependency-snapshot.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:74367bbc81d69653094788e9297d6a94fd943b81909915874d11b97d1590bb12"
+    },
+    {
+      "path": "src/work-dependency-traceability-contributor.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:b359154ee2d4a8460623066710f51fb43fe6e547442c5e5a57569d6a62defffe"
+    },
+    {
+      "path": "test/adapter-chain.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:0f98d03c52f0f16e0045920c3723dd39618ef35478492f57ce47096052bf273c"
+    },
+    {
+      "path": "test/architecture-artifact-hardening.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:0de9d1398b70459b1c036e54ef25641ad360cb68aa459d4a43ab966f780c918c"
+    },
+    {
+      "path": "test/architecture-change-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:6d555cf160a5a2bd1324e22bc572d86994bb9d47d7d4aa157e60610a961ca149"
+    },
+    {
+      "path": "test/architecture-design-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bf5ca0abcee60b8d73e20f7da95d45a86668fc1d0c32abc53bba1fcdf6a5b3d9"
+    },
+    {
+      "path": "test/architecture-design.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9a0dc8f7715cc5cde027a3a66661b6f25a33b7a011554609d89405998670e1e9"
+    },
+    {
+      "path": "test/architecture-handoff.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:89fd5573520f45abd42dee735552a36d544f1e861a3ce862f594c1aa4870115e"
+    },
+    {
+      "path": "test/architecture-module-surface.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:4a3d35c97a13e640b11352f8198a236531e6abb1cb29a7aa65e9a72d11ba4f9c"
+    },
+    {
+      "path": "test/architecture-project-overview-fixtures.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bd4db31b65036b777ded1b8c4d8ca861a8de2d980dea9083433837ebc4fb8dc0"
+    },
+    {
+      "path": "test/architecture-runtime-lineage-regression.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:b1d14202f242bbbd293f8d69ed3df8263795787ff07c7fdd1454c8ae11528e00"
+    },
+    {
+      "path": "test/architecture-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:0404649299084fc7e3b5b9f0131b994de2b3ced2a96e383f6d019ac143cd0f68"
+    },
+    {
+      "path": "test/architecture-traceability.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:406307ded4e3a21321cb399be97c9525af22d860ab8a95303dabb6378f269f59"
+    },
+    {
+      "path": "test/artifact-runtime-boundary.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:7391bf90586c79bc655d5dd3be96f4bea8a04dca3bb48dd6ca98080e97c1bd1d"
+    },
+    {
+      "path": "test/clarification-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9715db1e29b48bb63dc53646d1327cf0419fafee83efada0c0dce73dc144da22"
+    },
+    {
+      "path": "test/content-digest.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:217f85bc143858359eb5e21c1ee59a529c4e3b053fcea65f6a1da099eb86d985"
+    },
+    {
+      "path": "test/contract-generation-architecture-design-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:3f757e9a8263ce26d44afa64ea8b5ecef824bf18aa54b01b8cd12eba2c24f400"
+    },
+    {
+      "path": "test/contract-generation-architecture-promotion-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:b0892d413efecc0c94f8be61c7c48801f222c2f9722a4ab920b45c61a0fd063d"
+    },
+    {
+      "path": "test/contract-generation-change-and-not-applicable.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:163f71cae338ba169db8c326a86d3ac6d267100c541de685761ed1377d89f318"
+    },
+    {
+      "path": "test/contract-generation-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:cc803e465de4a53d1edb87adc3fb5005fcc0b6240fbe2f1745714f467bc5754e"
+    },
+    {
+      "path": "test/contract-generation-module-surface.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:c507d98ec15687d9a65258a44cdadead9d52e98f83f6f70c838e43a0b39f00fe"
+    },
+    {
+      "path": "test/contract-generation-promotion-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:e312e6fe2ccf3ab276d93315be9a00a5cede21c7e83a9fbd6df30995c235c105"
+    },
+    {
+      "path": "test/contract-generation-requirements-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:c705dd2bf9abcf09c827708835c6caca5379fb7de36c0bea2f08555f0ca83440"
+    },
+    {
+      "path": "test/contract-generation-requirements-promotion-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:35e629acb5223e88f861d4d2410f36aa8faeab5b2c9fcd2daf76206a0ef9af5c"
+    },
+    {
+      "path": "test/contract-generation-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:64a9b9c067f3e2074bb5872236b9c3f2f8f6cade2461dccdcf986902d81516a0"
+    },
+    {
+      "path": "test/contract-generation-traceability.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1b3d453c682796cc0d21f2e01cfc5779eed50942b639617ee572df4cbc8badfa"
+    },
+    {
+      "path": "test/contract-hardening.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1b2a55c74738b312a870b070ea4a902bcdcc41aceb229b29c17344147ffbfc0f"
+    },
+    {
+      "path": "test/input-guard.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:5662b0183ac360b1381a45f81fa02a523443356abe8f15083436aa5256f13455"
+    },
+    {
+      "path": "test/lifecycle-run-report-architecture-design-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:211b26c18dc1874de4556879ae3438d06abe73b5d5af11f7dda636fbda6c0c26"
+    },
+    {
+      "path": "test/lifecycle-run-report-architecture-promotion-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:8c460d4185a922916bb5997f94af5e796bd6c8932534d693b9df3f905111e728"
+    },
+    {
+      "path": "test/lifecycle-run-report-requirements-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:4e691b82427d4970901cb88d8101ec319507ce741f24087599553364988f149b"
+    },
+    {
+      "path": "test/module-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:99e631a51067bdf78e0157856ff13d41f64b7cd8be2788157d2c7acc2c46c5a8"
+    },
+    {
+      "path": "test/module-execution-record-validator.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a17bb980a119a2b8eabf8cb1143e998e64a93c51340102ec1e82687100c8fd47"
+    },
+    {
+      "path": "test/native-architecture-fixtures.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:f2686f06d540bef73b58a6edc45ada3190ffb567314e55d4d4d1bce87dd47537"
+    },
+    {
+      "path": "test/openspec-bounded-schemas.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:949a3f6e31be5b99e5a0cb60fb5d0844ac841c30c36bdf791f268aa33daac9b7"
+    },
+    {
+      "path": "test/openspec-work-breakdown-schema.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:74d8e3be39c2a5cc08312aa3ba60ed46b8b859b982a8c32029fca7fc8b8d4a7b"
+    },
+    {
+      "path": "test/operation-router.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:391f1f7b041235b4adb54c6f1508182ef6d5b3fc772c337b1619c99686c8b5fb"
+    },
+    {
+      "path": "test/project-baseline.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:37939d8c017dc72403ddcaf923aae28357782b5010fe6697c8cc51ab61ff0a50"
+    },
+    {
+      "path": "test/project-overview-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:96ec92ed2b72d0db2b7e014b36bdfb8dc67b24b146312d57de682f30de66f588"
+    },
+    {
+      "path": "test/project-overview.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a0bdca30200d0532f1a9b6e849bb09fb37072914c6e22b1d045ef42199768eb3"
+    },
+    {
+      "path": "test/provenance-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9e066e105839cd85d6d528403c9d87f79a2f396d7808d50213a41fdbfce7df9e"
+    },
+    {
+      "path": "test/registry-edge-cases.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:9710a7c6f94699d5d542e8f4e0a1d340ce15a6fa83cd494ccd678057247d5fd9"
+    },
+    {
+      "path": "test/requirements-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:84610366ddf99c86b3ff1f37391c15fb4a9949c6de6c63b8fc574c2e7eb45753"
+    },
+    {
+      "path": "test/requirements-gate.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:6414e34a1166555885106ceb216ca413eb9b0646d0a951ea1379716ddd29cd5c"
+    },
+    {
+      "path": "test/requirements-identity-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:f22622cb3138c5a2d5e352b2d4f52357602c8a4f803283fd3ae2adbdc507b426"
+    },
+    {
+      "path": "test/requirements-runtime-lineage.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1bf55365ca562b054bfafee5e81670488ee325a9285fa8d84c1523d3aad59242"
+    },
+    {
+      "path": "test/requirements-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:466c6b95005ee92b5ae570c74c07059f6874bdb4b1dd71d1538dbd2392ede551"
+    },
+    {
+      "path": "test/requirements-traceability.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:fb7f6f3219c0f845a8467ee8d59ff4bd1e2d2e71bd86934333b88d4f6aaa0524"
+    },
+    {
+      "path": "test/requirements-typed-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:dd15dbff841ea99620bff8e07d50624a1142b0553da6584622d1a4c87319b1b5"
+    },
+    {
+      "path": "test/schema-enforcement.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:3dabb1bbcbd98543146642fa8c1005a5f6d5e30965132b2ebe1bc09f862dcd81"
+    },
+    {
+      "path": "test/shared-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:16e226966e30544df71c06f707f26fe9349e9de22d2af7d0f8b118e623eda79f"
+    },
+    {
+      "path": "test/traceability-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:ff573fc058fccb079964797c1f8cdb1d51384499cf613b26783375a1a7a4a6e6"
+    },
+    {
+      "path": "test/traceability-diagnostics.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:5a068e9fd721785af060c0d9ed46b4c2f16da83d08c6bfa02302ab60ec9e3092"
+    },
+    {
+      "path": "test/traceability-lineage-contract.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1f4efa131875baa027cc5ead319bb90a123fff29064160046567020cbcb928d2"
+    },
+    {
+      "path": "test/traceability-merge.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:60ba63f818c3ca8cf3deb52a0898b9ab800052646cec30a268f853679478fd2d"
+    },
+    {
+      "path": "test/traceability-runtime-integration.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:c79c84d4bcc3e05f590067357513ca55764586b574e06ff0d683c5a985ed80a6"
+    },
+    {
+      "path": "test/traceability-update-closure.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bc8b38382ef1b987fc15317050395dd590e30de99a2f9c9ce54125eef93c288b"
+    },
+    {
+      "path": "test/traceability-vocabulary-migration.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:e1c37ee02500d202ece9c60681d20c134245b5154a3d0e40193863c6ea93e98b"
+    },
+    {
+      "path": "test/work-breakdown-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:32f898a24a847e0b7949b0dd434501bdf6ac6c85e3f64c134f0110e98d50529b"
+    },
+    {
+      "path": "test/work-breakdown-contract-hardening.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:d50a67ab1e0fdbd985657f7b87dd443cbbccd2008e6333d733172480690df1c3"
+    },
+    {
+      "path": "test/work-breakdown-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a70f34b6b941081faad49790e76967e0b7858aa5fe108d684112854c4fcb132a"
+    },
+    {
+      "path": "test/work-breakdown-examples.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:590b3700fc404f7cae5eb4139b1b8f48a5c9bef5ddbc5d789163f0e20ca7b435"
+    },
+    {
+      "path": "test/work-breakdown-gate.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bf3a6aec7eb3205f9d1a3fa46542dc6f43d24c683ddb9aa83fd247bcea7aabbd"
+    },
+    {
+      "path": "test/work-breakdown-module-surface.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:4dcab2ba7a69c3a9a38a710385d16a4204bd63a35f98c1c9debd8a7c6c93e52c"
+    },
+    {
+      "path": "test/work-breakdown-plugins.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:76022a301455305aaaed5bd886e2d5b959e1fb30ccca6d002dcea48e2c1c259b"
+    },
+    {
+      "path": "test/work-breakdown-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:d5155f2eb79d04edaf6eecc62c4c5263de2b75ac2e8e6a7e20a44fd7fc761c55"
+    },
+    {
+      "path": "test/work-breakdown-traceability.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:3b22ed73a46c78dd8b4b493b252c123f81ba0ce15208eab96ac45981ee0c74bf"
+    },
+    {
+      "path": "test/work-dependency-analysis-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:2191949236eeb7924249917e726f82dd94df7723d07bcefaf34ccccae3dd5a18"
+    },
+    {
+      "path": "test/work-dependency-architecture-design-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:49d28cffced2d7761ac18efb73684a6f4e40339ace25581e7d9be224c5f9dbe9"
+    },
+    {
+      "path": "test/work-dependency-clarification-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:bad5d46924acb94511963abef8038aec048d9f2fd31fb20498365b18f428ab5d"
+    },
+    {
+      "path": "test/work-dependency-failure-boundaries.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a64044510fa031a38ba83c18ac203116d5a7b00f217b214c18052c5cdf3de669"
+    },
+    {
+      "path": "test/work-dependency-graph.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:1e0c447366b59e1f76b512189eddb37ccdb4d84551a15ae6d2ca2351a3ea59b8"
+    },
+    {
+      "path": "test/work-dependency-module-surface.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:fd28b6416807172aedcc55db53d5f3f9c0c61fc86211b6b8f0c5f038ec3208e7"
+    },
+    {
+      "path": "test/work-dependency-opa.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:97765ead84b210d432b5f23bff4409243208ac363cf2fe392cffbead9eb61813"
+    },
+    {
+      "path": "test/work-dependency-requirements-change-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a2de2e6a04b9ddd37bc96212ec76e84b9c2b6ab3b2d127d601db431f3aa3b6dc"
+    },
+    {
+      "path": "test/work-dependency-runtime.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:b7453901aef95f3499f9eb0473df9527767e69d54d64cd7a95add3d37263abff"
+    },
+    {
+      "path": "test/work-dependency-traceability.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a1885337a7a6b892d79b6b8e66cdef517d2cc5267d490532d65854fb73d4a76d"
+    },
+    {
+      "path": "test/work-dependency-work-breakdown-dogfood.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:8280c20db0bceafcf802c04f2332dcf68834bc3a3e65d02e73766ce9f4f42469"
+    }
+  ]
+}

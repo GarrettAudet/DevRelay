@@ -1,0 +1,81 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ClarificationRequestSet",
+  "requestSetId": "clarification-request-work-execution-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-work-execution-module-v1",
+        "digest": "sha256:16cae11f8a85c17d6db0c431c3b2a11d4fd359ad60b5937c5727af6ac2c73f6b"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-work-execution-v1",
+        "digest": "sha256:69f8cf96a407d2255cf4156651169218f65ed4b5ab5e925bb00ca55f2a104faa"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-contract-generation-001",
+        "digest": "sha256:cd07170d8ea48ba98a1c4f45d30ade2e83992e0fd4433cb049fbf0af7c34e8cb"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-contract-generation-001",
+        "digest": "sha256:c440350f162c530a0180661ad7f6812551d0a184298f256a52239e5b2e9de699"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q-WE-EXECUTION-UNIT-001",
+      "prompt": "Should one WorkExecution invocation execute exactly one runnable WorkItem in an isolated workspace, while Core fans out the current ready DAG frontier?",
+      "rationale": "Per-item attempts isolate retries, evidence, permissions, and failures while retaining dependency-safe parallelism.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "One runnable WorkItem per invocation; Core fans out the frontier (recommended)",
+        "One invocation executes the entire ready frontier"
+      ]
+    },
+    {
+      "id": "Q-WE-RUNTIME-BINDING-001",
+      "prompt": "How should an assigned provider-neutral SpecialistProfile become a concrete executor?",
+      "rationale": "The binding must be replaceable without giving the executor authority over eligibility, readiness, or policy.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "A version-pinned ExecutionBinding resolves the profile to a configured executor adapter; Core validates it (recommended)",
+        "The SpecialistProfile directly names and controls its executor"
+      ]
+    },
+    {
+      "id": "Q-WE-OUTPUT-BOUNDARY-001",
+      "prompt": "What may a successful WorkExecution attempt claim?",
+      "rationale": "Execution can prove that an attempt produced bytes and observations, but downstream modules own correctness and integration.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Return ChangeSetDraft plus ExecutionEvidenceBundle only; no verified, complete, or integrated claim (recommended)",
+        "Return a completed and verified WorkItem"
+      ]
+    },
+    {
+      "id": "Q-WE-RETRY-IDENTITY-001",
+      "prompt": "How should retries be represented after failure or interruption?",
+      "rationale": "Overwriting an attempt would destroy auditability and make replay ambiguous.",
+      "blocking": true,
+      "responseType": "single-choice",
+      "options": [
+        "Create a new immutable ExecutionAttempt linked to the prior attempt; never overwrite (recommended)",
+        "Reuse and update the original attempt record"
+      ]
+    }
+  ]
+}

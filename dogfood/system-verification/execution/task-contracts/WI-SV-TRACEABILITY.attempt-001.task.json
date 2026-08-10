@@ -1,0 +1,82 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-SV-TRACEABILITY.attempt-001",
+  "workItem": {
+    "id": "WI-SV-TRACEABILITY",
+    "objective": "Add the trusted SystemVerification traceability contributor and forward-only evidence facts.",
+    "boundedScope": [
+      "src/system-verification-traceability-contributor.mjs",
+      "test/system-verification-traceability.test.mjs"
+    ],
+    "deliverables": [
+      "Trusted deterministic contributor",
+      "Atomic graph-update tests",
+      "Orphan and missing-evidence diagnostics"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "graph-modeling",
+      "traceability"
+    ],
+    "dependencyHints": [
+      "WI-SV-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Project verified facts only",
+      "Reject inverse, candidate, failed, missing-evidence, and adapter-authored facts"
+    ],
+    "requiredEvidence": [
+      "system-verification/traceability-tests"
+    ],
+    "sourceRefs": [
+      "goal-system-verification-module-v1",
+      "D-SV-BOUNDARY-001"
+    ]
+  },
+  "dependencies": [
+    "WI-SV-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-SV-TRACEABILITY",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "graph-modeling",
+      "traceability"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "One provider-neutral DevRelay engineering profile satisfies the bounded V1 work item; runtime binding is a visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevisionRequired": true
+  },
+  "authority": {
+    "writeScope": [
+      "src/system-verification-traceability-contributor.mjs",
+      "test/system-verification-traceability.test.mjs"
+    ],
+    "forbidden": [
+      "BusinessAcceptance",
+      "deployment",
+      "scope mutation",
+      "graph operations",
+      "downstream approval"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/system-verification/execution/attempts/WI-SV-TRACEABILITY.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "taskDigest": "sha256:eae6e1b45d26e0f6c4371eca828527ef5b269945429bdf9ea3dca3ee27544698"
+}

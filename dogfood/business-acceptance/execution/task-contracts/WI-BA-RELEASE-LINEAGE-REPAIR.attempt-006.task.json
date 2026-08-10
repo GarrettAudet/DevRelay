@@ -1,0 +1,162 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006",
+  "workItem": {
+    "id": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "objective": "Close the integration trust boundary by publishing a complete immutable digest manifest for the already verified cumulative attempt-004 and attempt-005 worker state.",
+    "boundedScope": [
+      "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest.json",
+      "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.handoff.raw.json"
+    ],
+    "deliverables": [
+      "One sorted immutable integration manifest covering every difference between worker and parent in the cumulative attempt-004 authority scope, plus the exact attempt-005 raw handoff",
+      "Each manifest operation declares repository-relative path, create or replace mode, exact worker SHA-256, and exact expected parent SHA-256 or explicit absence",
+      "One raw attempt-006 BootstrapWorkItemHandoff binding the manifest raw digest and operation count while reusing the unchanged attempt-005 verification evidence"
+    ],
+    "workType": "documentation-change",
+    "acceptanceCriterionRefs": [],
+    "architectureRefs": [],
+    "contractRefs": [],
+    "requiredCapabilities": [
+      "deterministic-artifact-identity",
+      "immutable-replay-management",
+      "cross-workspace-integration-testing",
+      "release-engineering"
+    ],
+    "dependencyHints": [
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005"
+    ],
+    "verificationPlan": [
+      "Validate the exact attempt-005 task, raw handoff, and parent-review digests before manifest construction.",
+      "Enumerate files only from the cumulative attempt-004 authority directories and exact test paths; add the attempt-005 raw handoff explicitly.",
+      "For every worker file whose raw SHA-256 differs from the parent file or whose parent file is absent, emit exactly one sorted operation with its worker digest and pinned parent pre-state.",
+      "Require exactly 180 operations unless independent re-enumeration proves the parent state changed; any changed count or digest is baseline drift and must fail closed rather than being accepted silently.",
+      "Verify all relative paths are unique, non-rooted, slash-normalized, and contain no empty, dot, or traversal segment.",
+      "Re-hash every source and target after writing the manifest and validate that every entry still matches.",
+      "Do not rerun or restate new implementation verification: bind the exact unchanged 13/13 and two 696/696 attempt-005 evidence as inherited proof.",
+      "Parent will independently rebuild the same operation set before integration; the worker manifest is a proposal, not integration authority."
+    ],
+    "requiredEvidence": [
+      "handoff/cumulative-change-coverage",
+      "integration/create-or-compare-and-swap-plan",
+      "verification/source-and-target-digest-pins",
+      "dogfood/immutable-history-preservation"
+    ],
+    "sourceRefs": [
+      "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-005",
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff",
+      "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE-LINEAGE-REPAIR",
+    "specialistProfileRef": "PROFILE-DEVRELAY-DETERMINISTIC-REPLAY-ENGINEER",
+    "capabilityCoverage": [
+      "deterministic-artifact-identity",
+      "immutable-replay-management",
+      "cross-workspace-integration-testing",
+      "release-engineering"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "sha256"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write"
+    ],
+    "assignmentRationale": "The implementation is already verified. The same specialist has the exact worker state and must only close the raw handoff coverage gap; parent retains all integration authority.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevision": "working-tree:codex/v0.5-lifecycle-run-report",
+    "workerVerification": {
+      "focused": "13/13",
+      "canonicalRun1": "696/696",
+      "canonicalRun2": "696/696",
+      "implementationFrozen": true
+    },
+    "comparison": {
+      "workerLabel": "visible-work-execution-checkout",
+      "parentLabel": "independent-parent-integration-checkout",
+      "expectedCumulativeDifferences": 180
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest.json",
+      "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.handoff.raw.json"
+    ],
+    "readScope": [
+      "dogfood/_support/",
+      "dogfood/contract-generation/contract-generation/",
+      "dogfood/specialist-assignment/contract-generation/",
+      "dogfood/work-dependency-analysis/dependency-analysis/",
+      "dogfood/work-item-verification/contract-generation/",
+      "dogfood/work-item-verification/work-breakdown/",
+      "dogfood/work-item-verification/dependency-analysis/",
+      "test/contract-generation-dogfood.test.mjs",
+      "test/contract-generation-promotion-dogfood.test.mjs",
+      "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+      "test/work-dependency-analysis-dogfood.test.mjs",
+      "test/work-item-verification-contract-generation-dogfood.test.mjs",
+      "test/work-item-verification-planning-dogfood.test.mjs",
+      "test/dogfood-portable-artifact-identity.test.mjs",
+      "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff.raw.json"
+    ],
+    "forbidden": [
+      "modify implementation, tests, generated artifacts, or prior immutable generations",
+      "integrate into the parent checkout",
+      "omit a differing file from the cumulative integration manifest",
+      "include any file outside cumulative authority",
+      "derive parent acceptance from the worker manifest",
+      "fabricate or rerun altered verification evidence",
+      "seal release 0.8.0",
+      "start ArchitectureDiscovery"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 6,
+  "dependencyCompletion": [
+    {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff",
+      "digest": "sha256:595ffa44d026a409800e917a0ce4f5a245d0709fb0759ba8d686822543ccd736",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff.raw.json",
+      "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+      "outcome": "fix"
+    }
+  ],
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005",
+      "digest": "sha256:81d58d243e841d1fa01412a0194f02e379c5411b79c9f1fa45386f82fd9859af",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff",
+      "digest": "sha256:595ffa44d026a409800e917a0ce4f5a245d0709fb0759ba8d686822543ccd736",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-005",
+      "digest": "sha256:1a588bebe8b6b2c27e11f8bf82cdc08b2dc904e6610d357d44f11c4d9f7ff58d",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.parent-review.json"
+    }
+  },
+  "taskDigest": "sha256:2ece21d915786028aff933c488c5d86f8d7ec4db6aa51aaeef030160cd4e1146",
+  "requiredCorrections": [
+    "Publish the complete cumulative digest-bound integration operation set.",
+    "Make no implementation or evidence changes.",
+    "Leave parent integration and cross-root verification entirely to the parent."
+  ]
+}

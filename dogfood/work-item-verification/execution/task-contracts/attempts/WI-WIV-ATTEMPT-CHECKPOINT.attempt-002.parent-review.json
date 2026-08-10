@@ -1,0 +1,34 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemParentReview",
+  "reviewId": "WIVPR-WI-WIV-ATTEMPT-CHECKPOINT-002",
+  "executionId": "WE-WIV-FRONTIER-002-WI-WIV-ATTEMPT-CHECKPOINT",
+  "workItemId": "WI-WIV-ATTEMPT-CHECKPOINT",
+  "outcome": "pass",
+  "attemptHistory": [
+    {"attempt": 1, "outcome": "fix", "integrated": false},
+    {"attempt": 2, "outcome": "pass", "integrated": true}
+  ],
+  "scopeReview": {
+    "allowedPathsOnly": true,
+    "providerNeutral": true,
+    "gateAuthorityRetainedByCore": true
+  },
+  "acceptanceReview": {
+    "returnedTerminalBytesPreserved": true,
+    "thrownTerminalLifecyclePersistedBeforeSurfacing": true,
+    "zeroCallExactReplay": true,
+    "immutableRetryPredecessorLineage": true,
+    "changedAndCorruptInputsRejected": true
+  },
+  "parentVerification": [
+    {
+      "command": "node --test test/work-item-verification-checkpoint.test.mjs test/work-item-verification-contracts.test.mjs",
+      "outcome": "pass",
+      "tests": 10
+    }
+  ],
+  "residualRisk": "The controller requires a host-provided store whose put operation enforces immutable atomic writes.",
+  "disposition": "provisional-host-integration-approved",
+  "authoritativeVerifiedCompletionFactCreated": false
+}

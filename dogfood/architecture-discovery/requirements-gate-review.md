@@ -1,0 +1,32 @@
+# Requirements Gate candidate: ArchitectureDiscovery module
+
+Status: **awaiting owner approval**
+
+## Exact bindings
+
+- RequirementsBaseline: sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098
+- ProjectOverviewBaseline: sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73
+- ClarificationRequest: sha256:6aa1fe1016271cf1667689acce942944f1b6ec4d97d759967b8176f92289cc0e
+- ClarificationResponse: sha256:b632416e9cd0101c9d62e8e20a480930ef4fa19acfdd5b8511a6baa13ef57f47
+- Continuation: sha256:40a2bc4f14c46934f76bea6179a93f9835d7f304b6877d3c4545e8478a5946dc
+- RequirementsChangeSet: sha256:caf935d1e918e29ff9d6e27f417a75e1c952a3626761d3f933f7d9f51fbb2d83
+- ProjectOverviewChangeSetDraft: sha256:4b2c3bf77a2ce71c6954e6b87bbcd6cb2176c014feaae7c793fcfc6a94e7014a
+- Candidate ProjectOverview.md: sha256:7f7140222639141d33d036a1f5a2189ef307f6e9c65ac1d1a213890376168515
+- NativeSourceBundle: sha256:4f9db370b60eb2fba1728ad21bca0dc09c17f873b3272a8ef2e56109d1c71819
+- Terminal checkpoint: sha256:1dc5c56c9383f11ab4d6783956754d1c99e8a1721dce6f6c2065c6fa2d1aed31
+- Execution proof: sha256:496358bb794eddff9e480acbf3a4ecfbee1d4b05c0b87757ab6efdfa72020732
+
+## Gate findings
+
+- PASS: all three checkpoint-bound clarification questions have one exact approved response.
+- PASS: the candidate preserves unchanged requirement entities and adds ArchitectureDiscovery-specific scope only.
+- PASS: ProjectArchitectureState deterministically selects discovery only for existing-undiscovered state.
+- PASS: the native inventory is mandatory and version-pinned; specialized analyzers remain optional bounded contributors.
+- PASS: material gaps block progression while lower-confidence non-material findings remain explicit for Gate disposition.
+- PASS: default analysis is offline over tracked or declared files with ignore and secret rules; external source transmission requires exact opt-in policy.
+- PASS: CurrentArchitectureSnapshot remains observational; ArchitectureDesign and ArchitectureGate retain intended-design and baseline authority.
+- PASS: ProjectOverview is a deterministic projection of the exact replacement requirements.
+
+## Approval boundary
+
+Approval must bind the exact paired change, candidate Markdown, native bundle, and terminal checkpoint. Any modification requires a new Requirements Gate candidate.

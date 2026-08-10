@@ -48,12 +48,28 @@ export const V1_LIFECYCLE = Object.freeze([
       "ContractGeneration conditionally produces and validates API, schema, event, protocol, and other machine-readable interface contracts when the approved design requires them.",
   }),
   Object.freeze({
+    id: "SCOPE-DEV-V1-065-CONTRACT-GATE",
+    name: "ContractGate",
+    kind: "gate",
+    conditional: false,
+    statement:
+      "ContractGate validates exact generated contracts or authorizes an explicit ApprovedNotApplicable disposition before work planning.",
+  }),
+  Object.freeze({
     id: "SCOPE-DEV-V1-070-WORK-BREAKDOWN",
     name: "WorkBreakdown",
     kind: "module",
     conditional: false,
     statement:
       "WorkBreakdown converts approved scope into a complete set of bounded, traceable, independently executable and verifiable work items without executing them.",
+  }),
+  Object.freeze({
+    id: "SCOPE-DEV-V1-075-WORK-BREAKDOWN-GATE",
+    name: "WorkBreakdownGate",
+    kind: "gate",
+    conditional: false,
+    statement:
+      "WorkBreakdownGate validates complete approved-scope coverage and promotes the exact WorkBreakdownBaseline without deciding dependency order.",
   }),
   Object.freeze({
     id: "SCOPE-DEV-V1-080-WORK-DEPENDENCY-ANALYSIS",
@@ -64,12 +80,28 @@ export const V1_LIFECYCLE = Object.freeze([
       "WorkDependencyAnalysis validates authoritative ordering and dependencies between approved work items before assignment or execution.",
   }),
   Object.freeze({
+    id: "SCOPE-DEV-V1-085-WORK-DEPENDENCY-GATE",
+    name: "WorkDependencyGate",
+    kind: "gate",
+    conditional: false,
+    statement:
+      "WorkDependencyGate validates graph mechanics, policy, consistency evidence, semantic completeness, and exact approval before promoting the static WorkDependencyBaseline.",
+  }),
+  Object.freeze({
     id: "SCOPE-DEV-V1-090-SPECIALIST-ASSIGNMENT",
     name: "SpecialistAssignment",
     kind: "module",
     conditional: false,
     statement:
-      "SpecialistAssignment selects a compatible human or implementation engine for each ready work item from explicit capability requirements and policy.",
+      "SpecialistAssignment matches every approved work item to a provider-neutral specialist profile satisfying required capabilities without selecting readiness, scheduling, or binding a concrete executor.",
+  }),
+  Object.freeze({
+    id: "SCOPE-DEV-V1-095-SPECIALIST-ASSIGNMENT-GATE",
+    name: "SpecialistAssignmentGate",
+    kind: "gate",
+    conditional: false,
+    statement:
+      "SpecialistAssignmentGate validates complete work-item assignment coverage, capability satisfaction, policy, grants, rationale, and approval before runtime executor binding.",
   }),
   Object.freeze({
     id: "SCOPE-DEV-V1-100-WORK-EXECUTION",
@@ -77,7 +109,7 @@ export const V1_LIFECYCLE = Object.freeze([
     kind: "module",
     conditional: false,
     statement:
-      "WorkExecution performs one authorized work item against exact inputs and returns bounded deliverables, changes, diagnostics, and evidence without owning acceptance.",
+      "WorkExecution binds an authorized ready work item and approved specialist profile to an exact runtime executor, performs only that bounded work, and returns a candidate ChangeSet without owning verification or integration.",
   }),
   Object.freeze({
     id: "SCOPE-DEV-V1-110-WORK-ITEM-VERIFICATION",
@@ -105,11 +137,11 @@ export const V1_LIFECYCLE = Object.freeze([
   }),
   Object.freeze({
     id: "SCOPE-DEV-V1-140-BUSINESS-ACCEPTANCE",
-    name: "BusinessAcceptance",
-    kind: "module",
+    name: "BusinessAcceptanceGate",
+    kind: "gate",
     conditional: false,
     statement:
-      "BusinessAcceptance evaluates the verified system against approved business objectives, success metrics, scope, and acceptance criteria and records the final disposition.",
+      "BusinessAcceptanceGate evaluates the exact SystemVerification result against approved business objectives, success metrics, scope, acceptance criteria, and required evidence and records the final disposition.",
   }),
 ]);
 
@@ -135,7 +167,7 @@ export const goal = Object.freeze({
     "TraceabilityGraph remains a cross-cutting Core service rather than a lifecycle stage.",
   ],
   acceptanceCriteria: [
-    "The project overview lists exactly the fourteen owner-approved V1 lifecycle components in their approved order.",
+    "The project overview lists exactly the eighteen owner-approved V1 lifecycle components in their approved order.",
     "ArchitectureDiscovery and ContractGeneration are explicitly marked conditional with deterministic invocation conditions.",
     "The project overview is derived from a validated requirements candidate and promoted as an atomic RequirementsBaseline and ProjectOverviewBaseline pair.",
     "Every future downstream module invocation can receive the exact global ProjectOverviewBaseline through a declared input.",
@@ -143,7 +175,7 @@ export const goal = Object.freeze({
   ],
   assumptions: [
     "The owner-approved V1 lifecycle inventory is complete for V1.",
-    "Module-specific approval gates may remain attached progression controls without expanding the owner-approved module inventory.",
+    "RequirementsGate, ArchitectureGate, ContractGate, WorkBreakdownGate, WorkDependencyGate, SpecialistAssignmentGate, and BusinessAcceptanceGate are explicit owner-approved lifecycle components.",
   ],
 });
 

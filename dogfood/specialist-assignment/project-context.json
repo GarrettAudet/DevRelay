@@ -1,0 +1,29 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay has approved requirements, architecture, contract, work-breakdown, and work-dependency baselines. Core has selected SpecialistAssignment as the next lifecycle module; WorkExecution remains blocked until its Gate promotes a complete assignment baseline.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "Module, profile, and ranker authors",
+    "Workflow and IDE hosts",
+    "WorkExecution hosts and human executors",
+    "Security and policy reviewers"
+  ],
+  "domainConstraints": [
+    "Generic Core owns exact loading, deterministic eligibility, routing, adapter resolution, checkpoints, traceability merge, and progression.",
+    "WorkBreakdown defines required capabilities; SpecialistAssignment cannot change work scope.",
+    "WorkDependencyAnalysis owns the static dependency DAG; SpecialistAssignment cannot change readiness or ordering.",
+    "Candidate and approved assignment authority remain distinct and SpecialistAssignmentGate promotion is explicit.",
+    "Extensions receive declared immutable inputs only and never receive TraceabilityGraph or approval authority."
+  ],
+  "conventions": [
+    "Use SHA-256-bound artifacts and exact semantic versions at runtime boundaries.",
+    "Use provider-neutral specialist profiles and lowercase kebab-case operations, ports, relationships, and outcomes.",
+    "Store forward lifecycle relationships and derive inverse traversal at query time.",
+    "Distinguish contract-defined, fixture-conformant, live-conformant, and release-ready bindings.",
+    "Prove positive, negative, replay, drift, substitution, malicious-ranker, and Gate behavior."
+  ],
+  "sourceRefs": []
+}

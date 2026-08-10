@@ -1,0 +1,154 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001",
+  "workItem": {
+    "id": "WI-BA-LOADED-ARTIFACT-INTEGRITY",
+    "objective": "Make every custom public JSON loaded-artifact boundary use an owned exact parse of its digest-bound raw bytes, rejecting parsed-value substitution and mutation after validation.",
+    "boundedScope": [
+      "src/loaded-json-artifact-integrity.mjs",
+      "src/contract-generation-runtime.mjs",
+      "src/work-dependency-runtime.mjs",
+      "src/work-dependency-snapshot.mjs",
+      "test/contract-generation-runtime.test.mjs",
+      "test/work-dependency-runtime.test.mjs",
+      "test/work-dependency-failure-boundaries.test.mjs",
+      "dogfood/business-acceptance/execution/attempts/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.handoff.raw.json"
+    ],
+    "deliverables": [
+      "One internal shared strict UTF-8 JSON loaded-artifact helper that verifies raw bytes against the ArtifactRef digest, parses those exact bytes, rejects any supplied value not deeply equal to the parse, and returns an owned immutable copy",
+      "ContractGeneration runtime using only the owned parsed state, architecture, project overview, and optional current baseline values after validation",
+      "WorkDependencyAnalysis runtime using only owned parsed JSON inputs while preserving the separate binary WASM validation path",
+      "WorkDependency snapshot construction using owned parsed inputs and owned parsed resolver results before any selector, version, or digest logic",
+      "Negative regression coverage for digest-valid bytes paired with a different schema-valid parsed value at all three public boundaries",
+      "Mutation-isolation coverage proving caller changes after validation cannot alter fingerprints, snapshots, proposals, or candidate output",
+      "Focused tests and one complete canonical verifier run"
+    ],
+    "workType": "code-change",
+    "acceptanceCriterionRefs": [
+      "AC-WDA-CONTEXT-SLICES-001",
+      "AC-WDA-INPUT-COHERENCE-001"
+    ],
+    "architectureRefs": [],
+    "contractRefs": [],
+    "requiredCapabilities": [
+      "artifact-integrity",
+      "strict-json-decoding",
+      "immutable-runtime-inputs",
+      "negative-security-testing",
+      "release-engineering"
+    ],
+    "dependencyHints": [
+      "WI-BA-RELEASE-LINEAGE-REPAIR"
+    ],
+    "verificationPlan": [
+      "Inventory every custom validateLoaded boundary in the declared source scope and confirm why generic artifact-runtime loading is already safe.",
+      "Decode JSON with fatal UTF-8 semantics; reject malformed bytes, trailing invalid data, non-JSON values where an object contract is required downstream, and a supplied parsed value that is not deeply equal to JSON.parse of the exact bytes.",
+      "Return and use a newly owned immutable parsed value rather than continuing with the caller-owned loaded.value reference.",
+      "Do not apply JSON parsing to the OPA application/wasm artifact; keep its raw binary digest and exact-ref checks separate.",
+      "Preserve each module's existing public error class and error code by mapping helper failures at the boundary.",
+      "Add one digest-valid/value-substituted negative fixture for ContractGeneration runtime, WorkDependency runtime, and WorkDependency snapshot construction; each must fail before generator, proposer, reviewer, OPA, or resolver-dependent progression.",
+      "Add mutation-isolation coverage with a delayed checkpoint or resolver boundary where practical, proving a caller cannot change validated semantics during an await.",
+      "Run node --test --test-concurrency=1 over the three scoped test files.",
+      "Run npm.cmd run verify once from the isolated worker checkout and record exact counts and duration.",
+      "Parent will review, integrate with exact path/digest guards, rerun focused tests and npm.cmd run verify, then own release:check."
+    ],
+    "requiredEvidence": [
+      "artifact-integrity/value-derived-from-bound-bytes",
+      "artifact-integrity/owned-immutable-parse",
+      "verification/substitution-rejected-before-effects",
+      "verification/binary-wasm-boundary-preserved",
+      "verification/canonical-gate"
+    ],
+    "sourceRefs": [
+      "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-006",
+      "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-006",
+      "AC-WDA-INPUT-COHERENCE-001"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-RELEASE-LINEAGE-REPAIR"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-LOADED-ARTIFACT-INTEGRITY",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ARTIFACT-INTEGRITY-ENGINEER",
+    "capabilityCoverage": [
+      "artifact-integrity",
+      "strict-json-decoding",
+      "immutable-runtime-inputs",
+      "negative-security-testing",
+      "release-engineering"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test",
+      "npm",
+      "sha256"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The work is a narrow integrity correction spanning three related public runtime boundaries and their focused tests. A single specialist owns implementation; the parent remains independent reviewer and integrator.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "repositoryRevision": "working-tree:codex/v0.5-lifecycle-run-report",
+    "diagnosis": {
+      "classification": "digest-bound-bytes-with-unbound-parsed-value",
+      "affectedBoundaries": [
+        "contract-generation-runtime.validateLoaded",
+        "work-dependency-runtime.validateLoaded for JSON inputs",
+        "work-dependency-snapshot.validateLoaded"
+      ],
+      "unaffectedBoundary": "artifact-runtime.loadArtifactContent parses the verified bytes itself",
+      "securityProperty": "Runtime semantics must be derived only from the exact raw bytes named by the ArtifactRef digest."
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/loaded-json-artifact-integrity.mjs",
+      "src/contract-generation-runtime.mjs",
+      "src/work-dependency-runtime.mjs",
+      "src/work-dependency-snapshot.mjs",
+      "test/contract-generation-runtime.test.mjs",
+      "test/work-dependency-runtime.test.mjs",
+      "test/work-dependency-failure-boundaries.test.mjs",
+      "dogfood/business-acceptance/execution/attempts/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.handoff.raw.json"
+    ],
+    "forbidden": [
+      "change public schemas, module definitions, routing, adapters, gates, traceability vocabulary, or release catalogs",
+      "treat canonical JSON equivalence as proof that loaded.value is the exact parse when deep parse equality is required",
+      "continue using a caller-owned loaded.value after validation",
+      "parse or canonicalize application/wasm bytes as JSON",
+      "weaken digest, ArtifactRef, checkpoint, or semantic validation",
+      "modify dogfood replay generations or generated canonical artifacts",
+      "seal release 0.8.0",
+      "start ArchitectureDiscovery"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-LOADED-ARTIFACT-INTEGRITY.attempt-001.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 1,
+  "dependencyCompletion": [
+    {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-006",
+      "digest": "sha256:94c69c214c87411e62af80f789b9c368ba2590adf7eb63fb49b563dd6d43e5f1",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.parent-review.json",
+      "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+      "outcome": "pass"
+    },
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-RELEASE-LINEAGE-REPAIR-006",
+      "digest": "sha256:2c3f1a7a67cfc57e24d64685f761ba2e2728aec5282a9187ba220f2a5635288c",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.receipt.json",
+      "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR"
+    }
+  ],
+  "taskDigest": "sha256:1d4e35b728ff318830cba49e372ddfbde4815bd65e4641f5f910e725c7e7ac45"
+}

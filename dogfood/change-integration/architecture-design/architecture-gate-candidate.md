@@ -1,0 +1,50 @@
+# Architecture Gate candidate: ChangeIntegration 0.1.0
+
+Status: **awaiting owner approval**
+
+## Exact bindings
+
+- RequirementsBaseline: sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098
+- ProjectOverviewBaseline: sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73
+- ProjectContext: sha256:830803473dde70321f02946e5aeef9ff725c149f48d685c5f052526ace0b1e42
+- RepositorySnapshot: sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73
+- ArchitectureBaseline: sha256:feef97631279c48f1770fd8b181a7815177e81a28f7cee2436fb6226f41c5935
+- ProjectArchitectureState: sha256:3694d8b2e526c51f7dac91a5455632bc1af04da8c99876c799c94d75e141003c
+- ModuleRouteDecision: sha256:bc80b1d9f8240b1244d02089d71dc144da8a24e96de84b245e9ee3c76ca1dbf4
+- DesignerWorkingArtifact: sha256:2ad0527f1f446681c50ac4b7ef68a4c2f9929d4a7bf776311c07c076be5e4de5
+- ModelerWorkingArtifact: sha256:1168340df78541905dee7386fa71de74858795a94e88b3cafa84cb98db1a6418
+- ArchitectureChangeSetDraft: sha256:a8c6f2920cfab15c8a872a8c5850fad458b1fbe6f1483385466127363727490b
+- Native OpenSpec design: sha256:b4c4dcba8c212eace9a27406434be5edce1c947fc4ed1f87955e7d9fbead9f7f
+- Native Structurizr workspace: sha256:a0f1d8b3754d18630d490d03a040b8629d01082e45c1037d7a5a3b6765a91da0
+- StructurizrConformanceProof: sha256:4e8c6523685ebfbdb08026163e1451b1e51ef0df103492a9ef4988d789aacf68
+- Native ADR-CI-001: sha256:ad2702d1ac2550a60304f0d521bc5134f92cf588109f7f613d982709f9805785
+- Native ADR-CI-002: sha256:c6b3640223b4a107be20a66517a6b64a2a69fc69213ff7bd218846decc46b33a
+- Native ADR-CI-003: sha256:4ed6f6c3b724176f2c09cd80892b323d537cbb917597feec47270779ef1321d9
+- Native ADR-CI-004: sha256:b34c05bad83043d0df42c8d221d53eec5c8e755085d25959a08837343da52cf3
+- Native ADR-CI-005: sha256:ae77c2c81a7b6014b13332322225322c724131b4dda90064c97a049a0da6c935
+- ModuleInvocation: sha256:0a3b08a51d498aff407b76601f1e89a12fc223759b380467e818bfef271fbe3f
+- ModuleResult: sha256:98a9046304a6870773efb56105c87e2f9228f7f9d57addeb59ee3f95c4742614
+- RuntimeExecutionProof: sha256:d2680ec97c202e62be90e56111487e8a52d43651ddea7dd0700c55ec4ec816a0
+
+## Deterministic route and chain
+
+- Project state is `baselined`; Core selected `design-change` with `BASELINE_REQUIRES_CHANGE_DESIGN`.
+- Configured chain executed as OpenSpec design -> Structurizr -> MADR with three checkpoints and zero adapter calls on replay.
+- OpenSpec and MADR effects remain bounded deterministic adapter fixtures; the official Structurizr 2026.06.28 binary separately parsed and exported the workspace for canonical comparison.
+
+## Gate findings
+
+- PASS: official Structurizr validation accepted the software-system -> container -> component hierarchy; JSON export normalized exactly to 85 elements, 81 relationships, the hierarchy, and 26 declared views.
+- PASS: Core binds one exact WorkItemVerificationGate approval, verified change, target repository snapshot, local ref, expected commit, integration policy, adapter, and grant set.
+- PASS: Core owns immutable planning, target-ref compare-and-swap, checkpoint recovery, closed result validation, lifecycle progression, and traceability projection.
+- PASS: the provider-neutral adapter port binds a local Git implementation for V1 without placing repository-vendor behavior in Core.
+- PASS: the host effect must atomically update the exact ref from its expected commit or leave it unchanged; concurrent changes serialize at this boundary.
+- PASS: conflicts are immutable no-mutation outcomes and require newly authorized WorkExecution and WorkItemVerification evidence; no component auto-resolves them.
+- PASS: seven provider-neutral interface intents are marked for JSON Schema contract generation before implementation.
+- PASS: exact replay uses durable checkpoints with zero adapter calls, while uncertain effects require repository observation and reconciliation before retry.
+- PASS: exhaustive typed changes and reciprocal traceability cover all approved normative requirements.
+- PASS: the trusted contributor projects factual integrated-change edges only after validated success and creates no SystemVerification or BusinessAcceptance fact.
+
+## Approval boundary
+
+Approval must bind this exact ArchitectureChangeSetDraft and all exact input and native-artifact digests above. Any modification requires a new Architecture Gate candidate.

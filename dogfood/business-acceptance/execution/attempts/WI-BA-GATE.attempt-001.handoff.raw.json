@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-GATE.attempt-001",
+  "workItemId": "WI-BA-GATE",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/business-acceptance-gate.mjs",
+    "test/business-acceptance-gate.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/gate-tests",
+      "relativePath": "test/business-acceptance-gate.test.mjs",
+      "digest": "sha256:33a23deb8821dbb806d53f724fb49c22e75840ffac43f6238e00f4c76cf6dc51"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/business-acceptance-gate.mjs && node --check test/business-acceptance-gate.test.mjs",
+      "exitCode": 0,
+      "summary": "Gate implementation and focused test module syntax passed."
+    },
+    {
+      "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/business-acceptance-contracts.test.mjs test/business-acceptance-core.test.mjs test/business-acceptance-gate.test.mjs",
+      "exitCode": 0,
+      "summary": "All 26 focused BusinessAcceptance contract, Core, checkpoint, and Gate tests passed; 0 failed, skipped, or cancelled."
+    }
+  ],
+  "residualRisks": [],
+  "notes": "Implemented only the raw-byte-bound BusinessAcceptance owner Gate, accepted/rejected BusinessAcceptanceRecord assembly, output-free ineligible/drift/malformed/unable paths, and immutable deterministic checkpoint replay proving zero additional owner Gate calls. Both candidate and owner approval inputs require fatal UTF-8-decoded canonical raw JSON bytes; their SHA-256 digests are checkpoint-bound and revalidated on replay, parsed approval objects are never authoritative, and the complete subject/evaluation/candidate lineage is revalidated. No TraceabilityGraph mutation, release/deployment effect, adapters, contracts, Core, or exports were changed."
+}

@@ -1,0 +1,50 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-RUN-CONTRACTS-ATTEMPT-003",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-CONTRACTS-ATTEMPT-003",
+  "workItemId": "WI-RUN-CONTRACTS",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-CONTRACTS-003",
+    "digest": "sha256:9906e17b8de104e87feb6ead8abb83990b3cb5d78012ecf1fbeda6133be61ca8"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-CONTRACTS.attempt-003.handoff.raw.json",
+    "digest": "sha256:febcfd32bd20fc2e4286aeb07cd9df29d57b9f726015d752309b6cb1ec1defc6"
+  },
+  "changedFiles": [
+    "contracts/lifecycle-run-report-artifacts.schema.json",
+    "src/lifecycle-run-report-artifact-validator.mjs",
+    "src/index.mjs",
+    "test/lifecycle-run-report-contracts.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --test test/lifecycle-run-report-contracts.test.mjs",
+    "hostSupply": "declared-node-loader",
+    "exitCode": 0,
+    "tests": 10
+  },
+  "semanticVerification": {
+    "closedInterfaceCount": 8,
+    "approvedMaturityVocabulary": [
+      "contract-defined",
+      "fixture-conformant",
+      "live-conformant",
+      "release-ready"
+    ],
+    "legacyAndCoreStatusValuesRejected": true,
+    "revision2CorrectionsPreserved": true,
+    "providerProductIdentifiersFound": 0,
+    "authorityBoundaryPreserved": true
+  },
+  "outputDigests": {
+    "contracts/lifecycle-run-report-artifacts.schema.json": "sha256:b8271cc327cba4563c3aada96a525846b765ddfaa4349133493e75eccf735b02",
+    "src/lifecycle-run-report-artifact-validator.mjs": "sha256:f5489683728ec91712934742458e550290f0a5e69d7094ec88384a5b8fcb15be",
+    "src/index.mjs": "sha256:9edab6ef5ff7d28de6f4c0326968cf195355f5325565170825deae450578fd0e",
+    "test/lifecycle-run-report-contracts.test.mjs": "sha256:ee76ed76e1063fea7233ecac3f369fa6209289ab897615b1c42df0509367538c"
+  },
+  "findings": [],
+  "outcome": "pass",
+  "progressionAllowed": true,
+  "nextRoute": "change-integration"
+}

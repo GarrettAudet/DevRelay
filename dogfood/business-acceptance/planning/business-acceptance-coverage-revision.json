@@ -1,0 +1,318 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BusinessAcceptanceWorkBreakdownRevision",
+  "revisionId": "BA-WB-REVISION-001",
+  "current": {
+    "clarification": {
+      "artifactId": "BA-CLR-AC-BOUNDARY-001",
+      "digest": "sha256:25395360a7afe7ef505fc3b0b06f28463dea9ba116915d6f0c0ec09f856146d4",
+      "relativePath": "dogfood/business-acceptance/clarifications/BA-CLR-AC-BOUNDARY-001.json"
+    },
+    "response": {
+      "artifactId": "BA-CLR-AC-BOUNDARY-001-RESPONSE-001",
+      "digest": "sha256:76e7cb4c74be92496cc4102d2d36d92e0e7371a549f4ad9046675f6a824c9e17",
+      "relativePath": "dogfood/business-acceptance/clarifications/BA-CLR-AC-BOUNDARY-001.response.json"
+    },
+    "requirementsBaseline": {
+      "artifactId": "RequirementsBaseline",
+      "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098",
+      "relativePath": "project/requirements-baseline.json"
+    },
+    "projectOverviewBaseline": {
+      "artifactId": "ProjectOverviewBaseline",
+      "digest": "sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73",
+      "relativePath": "project/project-overview-baseline.json"
+    },
+    "release": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "decisions": [
+    {
+      "id": "D-BA-TECHNICAL-AUTHORITY-002",
+      "statement": "SystemVerification remains the sole technical acceptance-criterion authority; BusinessAcceptance validates exact exhaustive upstream coverage and never reruns tests."
+    },
+    {
+      "id": "D-BA-BUSINESS-SCOPE-002",
+      "statement": "BusinessAcceptance directly and exhaustively disposes every current in-scope business commitment alongside objectives and success metrics."
+    },
+    {
+      "id": "D-BA-COVERAGE-ARTIFACT-002",
+      "statement": "A digest-bound BusinessAcceptanceTechnicalCoverage artifact binds RequirementsBaseline, SystemVerificationResult, TraceabilityGraph checkpoint, every approved criterion, and its passing evidence path."
+    },
+    {
+      "id": "D-BA-TRACEABILITY-SCOPE-002",
+      "statement": "Traceability vocabulary 1.5 includes business-scope nodes; trusted requirements and acceptance contributors project only forward approved facts."
+    }
+  ],
+  "workItems": [
+    {
+      "id": "WI-BA-COVERAGE-CONTRACTS",
+      "objective": "Revise the closed BusinessAcceptance contract family for business scope and exact upstream acceptance-criterion coverage.",
+      "boundedScope": [
+        "contracts/business-acceptance-artifacts.schema.json",
+        "src/business-acceptance-artifact-validator.mjs",
+        "test/business-acceptance-contracts.test.mjs"
+      ],
+      "deliverables": [
+        "BusinessAcceptanceTechnicalCoverage contract",
+        "Exhaustive business-scope and criterion-coverage lineage",
+        "Fail-closed contract tests"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "schema-design",
+        "cryptographic-lineage"
+      ],
+      "dependencyHints": [],
+      "verificationPlan": [
+        "Preserve Core/Gate authority separation",
+        "Reject missing, stale, duplicate, incomplete, or self-certified technical coverage"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/coverage-contract-tests"
+      ],
+      "sourceRefs": [
+        "D-BA-TECHNICAL-AUTHORITY-002",
+        "D-BA-BUSINESS-SCOPE-002",
+        "D-BA-COVERAGE-ARTIFACT-002",
+        "D-BA-TRACEABILITY-SCOPE-002"
+      ]
+    },
+    {
+      "id": "WI-BA-COVERAGE-CORE",
+      "objective": "Derive exact criterion coverage from the verified result and graph, then evaluate objectives, metrics, and business scope without rerunning tests.",
+      "boundedScope": [
+        "src/business-acceptance-core.mjs",
+        "src/business-acceptance-checkpoint.mjs",
+        "test/business-acceptance-core.test.mjs"
+      ],
+      "deliverables": [
+        "Trusted technical-coverage derivation",
+        "Business-scope dispositions",
+        "Zero-call replay with coverage drift rejection"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "runtime-engineering",
+        "graph-analysis",
+        "business-policy"
+      ],
+      "dependencyHints": [
+        "WI-BA-COVERAGE-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Require every approved criterion to reach passing evidence",
+        "Reject graph, result, baseline, scope, and coverage substitutions before owner Gate"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/coverage-core-tests"
+      ],
+      "sourceRefs": [
+        "D-BA-TECHNICAL-AUTHORITY-002",
+        "D-BA-BUSINESS-SCOPE-002",
+        "D-BA-COVERAGE-ARTIFACT-002",
+        "D-BA-TRACEABILITY-SCOPE-002"
+      ]
+    },
+    {
+      "id": "WI-BA-COVERAGE-TRACEABILITY",
+      "objective": "Project deterministic business-scope and passing-coverage facts through trusted vocabulary 1.5 contributors.",
+      "boundedScope": [
+        "contracts/traceability-graph-artifacts.schema.json",
+        "src/traceability-artifact-validator.mjs",
+        "src/requirements-traceability-contributor.mjs",
+        "src/business-acceptance-traceability-contributor.mjs",
+        "test/requirements-traceability.test.mjs",
+        "test/business-acceptance-traceability.test.mjs",
+        "test/traceability-vocabulary-migration.test.mjs"
+      ],
+      "deliverables": [
+        "Business-scope traceability nodes",
+        "Forward accepted-by and verified-by facts",
+        "Zero-blocking-diagnostic accepted graph"
+      ],
+      "workType": "code-change",
+      "requiredCapabilities": [
+        "traceability",
+        "graph-modeling"
+      ],
+      "dependencyHints": [
+        "WI-BA-COVERAGE-CONTRACTS"
+      ],
+      "verificationPlan": [
+        "Keep vocabulary 1.0 through 1.4 identities exact",
+        "Reject orphan, inverse, candidate, missing-evidence, and adapter-authored acceptance facts"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/coverage-traceability-tests"
+      ],
+      "sourceRefs": [
+        "D-BA-TECHNICAL-AUTHORITY-002",
+        "D-BA-BUSINESS-SCOPE-002",
+        "D-BA-COVERAGE-ARTIFACT-002",
+        "D-BA-TRACEABILITY-SCOPE-002"
+      ]
+    },
+    {
+      "id": "WI-BA-RELEASE",
+      "objective": "Seal DevRelay 0.8.0 with the corrected exact accepted run and zero blocking diagnostics.",
+      "boundedScope": [
+        "docs/business-acceptance.md",
+        "README.md",
+        "RELEASE.md",
+        "CHANGELOG.md",
+        "src/index.mjs",
+        "package.json",
+        "package-lock.json",
+        "scripts/release-catalog.mjs",
+        "scripts/release-tools.mjs",
+        "release/",
+        "test/business-acceptance-documentation.test.mjs",
+        "test/business-acceptance-release.test.mjs",
+        "dogfood/business-acceptance/"
+      ],
+      "deliverables": [
+        "Corrected accepted lifecycle proof",
+        "DevRelay 0.8.0 immutable catalog",
+        "Release and offline-consumer evidence"
+      ],
+      "workType": "configuration-change",
+      "requiredCapabilities": [
+        "release-engineering",
+        "integration-testing",
+        "technical-writing"
+      ],
+      "dependencyHints": [
+        "WI-BA-COVERAGE-CORE",
+        "WI-BA-COVERAGE-TRACEABILITY"
+      ],
+      "verificationPlan": [
+        "Require zero blocking traceability diagnostics",
+        "Run focused, canonical verify, immutable package, and offline-consumer checks"
+      ],
+      "requiredEvidence": [
+        "business-acceptance/release-gate"
+      ],
+      "sourceRefs": [
+        "D-BA-TECHNICAL-AUTHORITY-002",
+        "D-BA-BUSINESS-SCOPE-002",
+        "D-BA-COVERAGE-ARTIFACT-002",
+        "D-BA-TRACEABILITY-SCOPE-002"
+      ]
+    }
+  ],
+  "dependencyAnalysis": {
+    "nodes": [
+      "WI-BA-COVERAGE-CONTRACTS",
+      "WI-BA-COVERAGE-CORE",
+      "WI-BA-COVERAGE-TRACEABILITY",
+      "WI-BA-RELEASE"
+    ],
+    "edges": [
+      {
+        "prerequisite": "WI-BA-COVERAGE-CONTRACTS",
+        "dependent": "WI-BA-COVERAGE-CORE"
+      },
+      {
+        "prerequisite": "WI-BA-COVERAGE-CONTRACTS",
+        "dependent": "WI-BA-COVERAGE-TRACEABILITY"
+      },
+      {
+        "prerequisite": "WI-BA-COVERAGE-CORE",
+        "dependent": "WI-BA-RELEASE"
+      },
+      {
+        "prerequisite": "WI-BA-COVERAGE-TRACEABILITY",
+        "dependent": "WI-BA-RELEASE"
+      }
+    ],
+    "cycleCount": 0,
+    "initialFrontier": [
+      "WI-BA-COVERAGE-CONTRACTS"
+    ]
+  },
+  "specialistAssignments": [
+    {
+      "workItemRef": "WI-BA-COVERAGE-CONTRACTS",
+      "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+      "capabilityCoverage": [
+        "schema-design",
+        "cryptographic-lineage"
+      ],
+      "requiredTools": [
+        "filesystem",
+        "node-test"
+      ],
+      "requiredGrants": [
+        "filesystem.read",
+        "filesystem.write",
+        "process.spawn"
+      ],
+      "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+      "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+    },
+    {
+      "workItemRef": "WI-BA-COVERAGE-CORE",
+      "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+      "capabilityCoverage": [
+        "runtime-engineering",
+        "graph-analysis",
+        "business-policy"
+      ],
+      "requiredTools": [
+        "filesystem",
+        "node-test"
+      ],
+      "requiredGrants": [
+        "filesystem.read",
+        "filesystem.write",
+        "process.spawn"
+      ],
+      "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+      "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+    },
+    {
+      "workItemRef": "WI-BA-COVERAGE-TRACEABILITY",
+      "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+      "capabilityCoverage": [
+        "traceability",
+        "graph-modeling"
+      ],
+      "requiredTools": [
+        "filesystem",
+        "node-test"
+      ],
+      "requiredGrants": [
+        "filesystem.read",
+        "filesystem.write",
+        "process.spawn"
+      ],
+      "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+      "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+    },
+    {
+      "workItemRef": "WI-BA-RELEASE",
+      "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+      "capabilityCoverage": [
+        "release-engineering",
+        "integration-testing",
+        "technical-writing"
+      ],
+      "requiredTools": [
+        "filesystem",
+        "node-test"
+      ],
+      "requiredGrants": [
+        "filesystem.read",
+        "filesystem.write",
+        "process.spawn"
+      ],
+      "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+      "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+    }
+  ],
+  "contentDigest": "sha256:c267423227c651764d3dd88e36b3cebb24c693caf4316b4da3851a600c79ed3c"
+}

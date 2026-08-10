@@ -1,0 +1,82 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "status": "completed-cumulative-integration-manifest-published",
+  "summary": "Published the complete sorted create/CAS proposal for the cumulative verified attempt-004 and attempt-005 worker state. The manifest contains the 179 scoped worker-versus-parent differences plus the explicitly required attempt-005 raw handoff CAS binding, for exactly 180 operations. No implementation, tests, generated outputs, or immutable generations were modified.",
+  "changedPaths": [
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest.json",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.handoff.raw.json"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:2ece21d915786028aff933c488c5d86f8d7ec4db6aa51aaeef030160cd4e1146",
+    "priorHandoffRawDigest": "sha256:595ffa44d026a409800e917a0ce4f5a245d0709fb0759ba8d686822543ccd736",
+    "parentReviewDigest": "sha256:1a588bebe8b6b2c27e11f8bf82cdc08b2dc904e6610d357d44f11c4d9f7ff58d",
+    "comparisonTarget": "C:/tmp/DevRelay-v04-work-dependency-analysis",
+    "writeScopeRespected": true,
+    "implementationFrozen": true,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "integrationManifest": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-006.integration-manifest.json",
+    "rawDigest": "sha256:a1517ae6df2b8d4968d7740016b3b24a84c77cea8392a079c9b9e68ab76ef41c",
+    "operationCount": 180,
+    "createCount": 97,
+    "replaceCount": 83,
+    "scopedDifferences": 179,
+    "explicitAttempt005HandoffCasBindings": 1,
+    "sorted": "ordinal-repository-relative-path",
+    "uniquePaths": true,
+    "sourceDigestsRevalidated": true,
+    "parentPreStateDigestsRevalidated": true
+  },
+  "inheritedVerification": {
+    "sourceHandoff": {
+      "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff",
+      "rawDigest": "sha256:595ffa44d026a409800e917a0ce4f5a245d0709fb0759ba8d686822543ccd736"
+    },
+    "focusedSuite": {
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "durationMs": 135785.0546
+    },
+    "canonicalVerifyRun1": {
+      "tests": 696,
+      "passed": 696,
+      "failed": 0,
+      "durationMs": 438059.5446
+    },
+    "canonicalVerifyRun2": {
+      "tests": 696,
+      "passed": 696,
+      "failed": 0,
+      "durationMs": 437424.6659,
+      "checkoutRestoredBetweenRuns": false
+    },
+    "evidenceRerunForAttempt006": false
+  },
+  "manifestValidation": {
+    "expectedOperationCount": 180,
+    "actualOperationCount": 180,
+    "rootedPaths": 0,
+    "backslashPaths": 0,
+    "emptyDotOrTraversalSegments": 0,
+    "duplicatePaths": 0,
+    "sourceDigestDrift": 0,
+    "parentPreStateDrift": 0
+  },
+  "forbiddenBoundary": {
+    "implementationTestsOrGeneratedOutputsModified": false,
+    "priorImmutableGenerationsModified": false,
+    "parentIntegrated": false,
+    "parentAcceptanceDerivedFromWorkerManifest": false,
+    "verificationEvidenceAlteredOrFabricated": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "handoff": "This manifest is a digest-bound integration proposal only. Parent owns independent enumeration, create-only and compare-and-swap integration, cross-root verification, review, and release decisions."
+}

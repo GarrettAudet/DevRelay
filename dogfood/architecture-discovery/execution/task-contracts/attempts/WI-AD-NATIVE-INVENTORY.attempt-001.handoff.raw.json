@@ -1,0 +1,30 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "executionId": "WE-AD-DOGFOOD-WI-AD-NATIVE-INVENTORY-ATTEMPT-001",
+  "workItemId": "WI-AD-NATIVE-INVENTORY",
+  "outcome": "pass",
+  "changedFiles": [
+    "examples/plugins/native-architecture-discovery.plugin.json",
+    "src/architecture-discovery-native-inventory.mjs",
+    "test/architecture-discovery-native-inventory.test.mjs"
+  ],
+  "verification": [
+    {
+      "command": "node --test test/architecture-discovery-native-inventory.test.mjs",
+      "exitCode": 0,
+      "summary": "6 tests passed using the declared read-only dependency supply; TypeScript, Python, Java, .NET, polyglot, empty, privacy-exclusion, provenance, drift, determinism, offline, and authority-boundary behavior passed."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "architecture-discovery/native-inventory-conformance",
+      "relativePath": "test/architecture-discovery-native-inventory.test.mjs",
+      "digest": "sha256:b07254920568a5e735219835efefb2ef04fb11d6a70d25f1b9c180f2cd5f4c25"
+    }
+  ],
+  "notes": "Implemented the deterministic offline native inventory adapter and exact ArchitectureDiscovery plug-in binding. The initial focused invocation did not reach the suite because Node required the supplied Windows loader path as a file URL; rerunning the same focused command with that corrected host-supply address passed. No commit or integration was performed.",
+  "residualRisks": [
+    "none"
+  ]
+}

@@ -1,0 +1,3088 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectOverviewBaseline",
+  "baselineId": "project-overview-baseline-devrelay-v1-wda-001",
+  "version": "1.1.0",
+  "approvedOverviewCandidate": {
+    "artifactId": "project-overview-change-set-work-dependency-analysis-v1",
+    "digest": "sha256:635f89d6ff927ebe369db66a7ae71480d826d2853617ec44b7153f76634768b4"
+  },
+  "supersedes": {
+    "artifactId": "project-overview-baseline-devrelay-v1",
+    "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+  },
+  "requirementsBaseline": {
+    "artifactId": "requirements-baseline-devrelay-v1-wda-001",
+    "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+  },
+  "projection": {
+    "id": "devrelay.requirements-to-project-overview",
+    "version": "1.0.0",
+    "contractDigest": "sha256:037623b387a0da23932efad2243e1064a1ec28f8984bbb32d4b37b5523ca99db"
+  },
+  "overview": {
+    "purpose": {
+      "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
+      "sourceRefs": [
+        {
+          "role": "project-overview-baseline",
+          "artifact": {
+            "artifactId": "project-overview-baseline-devrelay-v1",
+            "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+          }
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-devrelay-v1",
+            "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+          }
+        }
+      ]
+    },
+    "businessObjectives": [
+      {
+        "id": "BO-DEV-DETERMINISM-001",
+        "statement": "Make software-engineering progression reproducible and fail closed when required inputs, evidence, or approvals are invalid.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-MODULARITY-001",
+        "statement": "Allow best-in-class engineering capabilities to be replaced without changing canonical workflow semantics or generic Core.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-QUALITY-001",
+        "statement": "Require scoped verification and evidence before work, changes, systems, or business outcomes advance.",
+        "stakeholderIds": [
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-TRACEABILITY-001",
+        "statement": "Trace every approved business objective through requirements, design, planned work, implementation, verification, integration, and acceptance.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-WDA-CORRECTNESS-001",
+        "statement": "Prevent invalid, cyclic, incomplete, or impossible dependency plans from reaching assignment and execution.",
+        "stakeholderIds": [
+          "STK-WDA-MAINTAINER-001",
+          "STK-WDA-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-WDA-MODULARITY-001",
+        "statement": "Replace dependency-analysis capabilities without changing canonical semantics or generic Core.",
+        "stakeholderIds": [
+          "STK-WDA-ADAPTER-AUTHOR-001",
+          "STK-WDA-MAINTAINER-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-WDA-PARALLEL-SAFETY-001",
+        "statement": "Provide authoritative ordering sufficient for downstream systems to identify safely runnable work.",
+        "stakeholderIds": [
+          "STK-WDA-EXECUTION-HOST-001",
+          "STK-WDA-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "users": [
+      {
+        "id": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "name": "Engineering workflow author",
+        "description": "A maintainer or engineering lead who configures and operates DevRelay from a goal through business acceptance.",
+        "stakeholderIds": [
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "needs": [
+          "Inspect exact artifacts, decisions, evidence, and progression state.",
+          "Run a complete engineering lifecycle without relying on model memory.",
+          "Swap compatible adapters without redesigning the workflow."
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "USR-WDA-WORKFLOW-AUTHOR-001",
+        "name": "Dependency-planning workflow author",
+        "description": "A maintainer or host operator who runs and reviews dependency analysis before assignment.",
+        "stakeholderIds": [
+          "STK-WDA-WORKFLOW-AUTHOR-001"
+        ],
+        "needs": [
+          "Approve only a valid and reviewed DAG.",
+          "Obtain an evidence-backed dependency proposal.",
+          "Resolve blocking dependency findings."
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "keyCapabilities": [
+      {
+        "id": "CAP-DEV-EXTENSIBILITY-001",
+        "name": "Replaceable engineering capabilities",
+        "description": "Bind interchangeable bounded adapters to stable provider-neutral module operations.",
+        "businessObjectiveIds": [
+          "BO-DEV-MODULARITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-LIFECYCLE-001",
+        "name": "Deterministic lifecycle orchestration",
+        "description": "Route exact state through the approved V1 lifecycle and stop invalid work before it propagates.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-QUALITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-SPECIFICATION-001",
+        "name": "Structured engineering contracts",
+        "description": "Represent requirements, architecture, contracts, work, changes, evidence, and acceptance as versioned artifacts.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-VERIFICATION-001",
+        "name": "Evidence-based verification and acceptance",
+        "description": "Require scoped evidence at work-item, integrated-system, and business-acceptance boundaries.",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001",
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-WDA-ANALYZE-001",
+        "name": "Work dependency analysis",
+        "description": "Analyze an approved work breakdown and propose directed dependencies and dispositions.",
+        "businessObjectiveIds": [
+          "BO-WDA-CORRECTNESS-001",
+          "BO-WDA-MODULARITY-001",
+          "BO-WDA-PARALLEL-SAFETY-001"
+        ],
+        "userIds": [
+          "USR-WDA-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "internal",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-WDA-GATE-001",
+        "name": "Dependency Gate verification",
+        "description": "Validate graph mechanics and semantic policy before authoritative promotion.",
+        "businessObjectiveIds": [
+          "BO-WDA-CORRECTNESS-001",
+          "BO-WDA-PARALLEL-SAFETY-001"
+        ],
+        "userIds": [
+          "USR-WDA-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "internal",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "successMetrics": [
+      {
+        "id": "SM-DEV-DETERMINISM-001",
+        "name": "Deterministic progression",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001"
+        ],
+        "measure": "Repeated Core-owned routing, validation, replay, and gate decisions for identical content-addressed inputs.",
+        "target": "100 percent identical outcomes and digests.",
+        "measurementMethod": "Run positive, negative, drift, checkpoint, replay, and gate conformance suites.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MODULARITY-001",
+        "name": "Adapter-independent semantics",
+        "businessObjectiveIds": [
+          "BO-DEV-MODULARITY-001"
+        ],
+        "measure": "Compatible adapter replacements requiring a product-specific behavioral branch in generic Core.",
+        "target": "Zero branches.",
+        "measurementMethod": "Execute adapter replacement fixtures and scan generic Core for product identifiers.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-QUALITY-001",
+        "name": "Verified progression",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001"
+        ],
+        "measure": "Lifecycle transitions occurring without the configured passing evidence and approval record.",
+        "target": "Zero transitions.",
+        "measurementMethod": "Audit module execution records, gate decisions, verification evidence, and acceptance receipts.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-TRACEABILITY-001",
+        "name": "Lifecycle trace coverage",
+        "businessObjectiveIds": [
+          "BO-DEV-TRACEABILITY-001"
+        ],
+        "measure": "Approved business objectives with a complete trace to implementation and passing verification evidence by BusinessAcceptance.",
+        "target": "100 percent or an explicit approved disposition.",
+        "measurementMethod": "Run TraceabilityGraph coverage and orphan diagnostics at each lifecycle horizon.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-WDA-CORE-SPECIAL-CASES-001",
+        "name": "Generic Core product branches",
+        "businessObjectiveIds": [
+          "BO-WDA-MODULARITY-001"
+        ],
+        "measure": "WorkDependencyAnalysis, Spec Kit, or OpenSpec identifier branches in generic Core.",
+        "target": "Zero branches.",
+        "measurementMethod": "Run static special-case scans and adapter-replacement conformance tests.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-WDA-FRONTIER-SAFETY-001",
+        "name": "Unsafe runnable frontier",
+        "businessObjectiveIds": [
+          "BO-WDA-PARALLEL-SAFETY-001"
+        ],
+        "measure": "Work items exposed as runnable while an authoritative predecessor remains incomplete.",
+        "target": "Zero items across graph fixtures.",
+        "measurementMethod": "Derive runnable frontiers from approved DAG fixtures and predecessor completion state.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-WDA-INVALID-PROGRESSION-001",
+        "name": "Invalid dependency progression",
+        "businessObjectiveIds": [
+          "BO-WDA-CORRECTNESS-001"
+        ],
+        "measure": "Invalid endpoint, duplicate or self edge, cycle, unresolved missing dependency, or impossible ordering cases reaching an approved baseline.",
+        "target": "Zero cases.",
+        "measurementMethod": "Run positive and negative WorkDependency Gate fixtures and inspect exact promotion receipts.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "SCOPE-DEV-V1-010-REQUIREMENTS-GATHERING",
+        "statement": "RequirementsGathering [module]: RequirementsGathering converts an explicit goal and project context into a canonical requirements candidate and deterministic ProjectOverview candidate.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-020-REQUIREMENTS-GATE",
+        "statement": "RequirementsGate [gate]: RequirementsGate validates and approves one exact RequirementsBaseline and ProjectOverviewBaseline pair before architecture progression.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-030-ARCHITECTURE-DISCOVERY",
+        "statement": "ArchitectureDiscovery [module; conditional]: ArchitectureDiscovery conditionally establishes a validated current-architecture snapshot for an existing repository that has no architecture baseline.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-040-ARCHITECTURE-DESIGN",
+        "statement": "ArchitectureDesign [module]: ArchitectureDesign converts approved requirements into a new architecture candidate or a proposed architecture change.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-050-ARCHITECTURE-GATE",
+        "statement": "ArchitectureGate [gate]: ArchitectureGate validates architectural fitness, evidence, and approval before establishing or updating the ArchitectureBaseline.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-060-CONTRACT-GENERATION",
+        "statement": "ContractGeneration [module; conditional]: ContractGeneration conditionally produces and validates API, schema, event, protocol, and other machine-readable interface contracts when the approved design requires them.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-070-WORK-BREAKDOWN",
+        "statement": "WorkBreakdown [module]: WorkBreakdown converts approved scope into a complete set of bounded, traceable, independently executable and verifiable work items without executing them.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-080-WORK-DEPENDENCY-ANALYSIS",
+        "statement": "WorkDependencyAnalysis [module]: WorkDependencyAnalysis validates authoritative ordering and dependencies between approved work items before assignment or execution.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-090-SPECIALIST-ASSIGNMENT",
+        "statement": "SpecialistAssignment [module]: SpecialistAssignment selects a compatible human or implementation engine for each ready work item from explicit capability requirements and policy.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-100-WORK-EXECUTION",
+        "statement": "WorkExecution [module]: WorkExecution performs one authorized work item against exact inputs and returns bounded deliverables, changes, diagnostics, and evidence without owning acceptance.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-110-WORK-ITEM-VERIFICATION",
+        "statement": "WorkItemVerification [module]: WorkItemVerification checks each executed work item against its verification plan and required evidence before it can enter integration.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-120-CHANGE-INTEGRATION",
+        "statement": "ChangeIntegration [module]: ChangeIntegration combines individually verified changes in dependency-safe order and records the exact integrated state.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-130-SYSTEM-VERIFICATION",
+        "statement": "SystemVerification [module]: SystemVerification validates the integrated system across functional, security, performance, operational, documentation, and other configured quality policies.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-V1-140-BUSINESS-ACCEPTANCE",
+        "statement": "BusinessAcceptance [module]: BusinessAcceptance evaluates the verified system against approved business objectives, success metrics, scope, and acceptance criteria and records the final disposition.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-ADAPTERS-001",
+        "statement": "Bounded replaceable analysis manifests and conformance fixtures.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-ANALYSIS-001",
+        "statement": "Provider-neutral dependency analysis bound to exact WorkBreakdown and upstream context.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-ARTIFACTS-001",
+        "statement": "Dependency state, policy, hint-disposition, edge, finding, candidate, baseline, clarification, diagnostic, and Gate evidence artifacts.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-CONTEXT-SLICES-001",
+        "statement": "Version-pinned relevant context slicing and pre-proposer coherence validation.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-GATE-001",
+        "statement": "A separate Gate for graph mechanics, semantic policy, approval, and exact promotion.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-OPA-001",
+        "statement": "Pinned OPA policy bundle evaluation and normalized decision evidence.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-REVIEW-001",
+        "statement": "A bounded post-proposal consistency-review slot with Spec Kit as the V1 binding.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-WDA-TRACEABILITY-001",
+        "statement": "A trusted contributor and candidate-to-approved authority transition.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "nonGoals": [
+      {
+        "id": "NG-DEV-AI-WRAPPER-001",
+        "statement": "Build another monolithic coding agent or AI-provider wrapper.",
+        "rationale": "DevRelay standardizes deterministic engineering workflow rather than code generation.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-IMPLICIT-AUTHORITY-001",
+        "statement": "Treat model confidence, adapter output, chat history, or successful execution as implicit approval.",
+        "rationale": "Only explicit validated gates and evidence authorize progression.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-UPSTREAM-REIMPLEMENTATION-001",
+        "statement": "Reimplement full upstream tools such as OpenSpec, Spec Kit, Structurizr, or MADR inside Core.",
+        "rationale": "DevRelay invokes only bounded replaceable capabilities.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-V1-SCOPE-EXPANSION-001",
+        "statement": "Add lifecycle modules outside the approved V1 inventory without a new requirements change and overview baseline.",
+        "rationale": "V1 scope must remain deliberate and auditable.",
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WDA-ASSIGNMENT-001",
+        "statement": "Choose a specialist, model, agent, or human.",
+        "rationale": "SpecialistAssignment owns executor selection.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WDA-CONTROL-PLANE-001",
+        "statement": "Introduce a distributed scheduler, agent framework, provider wrapper, or general control plane.",
+        "rationale": "This release is an incremental module slice.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WDA-EXECUTION-001",
+        "statement": "Execute, implement, test, or verify a work item.",
+        "rationale": "Those effects belong downstream.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-WDA-SCHEDULING-001",
+        "statement": "Persist schedules, estimates, capacity, or runtime execution waves.",
+        "rationale": "Scheduling depends on changing runtime state.",
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CON-DEV-ARTIFACT-CONTRACTS-001",
+        "category": "technical",
+        "statement": "Every stage must exchange canonical structured artifacts and cannot rely on conversational memory as authority.",
+        "rationale": "Explicit artifacts make lifecycle state reproducible and verifiable.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-ARTIFACT-HANDOFF-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-GATE-SEPARATION-001",
+        "category": "business",
+        "statement": "Producing modules cannot approve or promote their own candidates; configured gates own progression decisions.",
+        "rationale": "Separate authority prevents production from becoming self-approval.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-GATE-PROGRESSION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MODULE-INVENTORY-001",
+        "category": "business",
+        "statement": "V1 lifecycle scope is limited to the fourteen owner-approved components recorded in the project overview.",
+        "rationale": "A closed inventory prevents silent V1 scope expansion.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-CONDITIONAL-ROUTING-001",
+          "AC-DEV-FULL-V1-SCOPE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-PROVIDER-NEUTRAL-001",
+        "category": "technical",
+        "statement": "Canonical Core and module contracts cannot depend on one AI model, provider, IDE, or external engineering product.",
+        "rationale": "The workflow owns engineering semantics; tools only perform bounded capabilities.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-ADAPTER-BOUNDARY-001",
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WDA-NO-EXECUTION-001",
+        "category": "technical",
+        "statement": "WorkDependencyAnalysis is analysis and approval, not assignment, scheduling, or execution.",
+        "rationale": "Separate lifecycle authority prevents planned ordering from becoming an execution claim.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WDA-ANALYZE-001",
+            "CAP-WDA-GATE-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-WDA-NO-EXECUTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WDA-PROVIDER-NEUTRAL-001",
+        "category": "technical",
+        "statement": "Canonical contracts and Core cannot depend on a model, Spec Kit, OpenSpec, or another analyzer product.",
+        "rationale": "Analysis tools must remain replaceable.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WDA-ANALYZE-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-WDA-PLUGIN-BOUNDARY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-WDA-TRACE-DIRECTION-001",
+        "category": "technical",
+        "statement": "Traceability stores forward dependency assertions only and derives reverse traversal at query time.",
+        "rationale": "One direction avoids duplicated inconsistent facts.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WDA-ANALYZE-001",
+            "CAP-WDA-GATE-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-WDA-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "nonFunctionalRequirements": [
+      {
+        "id": "NFR-DEV-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Core-owned routing, validation, checkpoint replay, traceability projection, and gate preparation must be deterministic for exact inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Canonical route, result, diagnostic, update, and receipt digest equality.",
+        "target": "100 percent equality for deterministic Core-owned behavior.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-RESUME-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-PORTABILITY-001",
+        "category": "compatibility",
+        "statement": "Canonical lifecycle contracts must remain independent of IDE, AI provider, model, operating host, and bounded external tool.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Compatible host and adapter substitutions requiring canonical contract changes.",
+        "target": "Zero substitutions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-MODEL-INDEPENDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-TRACEABILITY-001",
+        "category": "observability",
+        "statement": "Every accepted lifecycle assertion must retain exact artifact, contributor, execution, authority, and graph-version provenance.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Accepted graph assertions lacking complete resolvable provenance.",
+        "target": "Zero assertions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-TRACEABILITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-WDA-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Routing, mechanical validation, canonical ordering, replay, and Gate commit preparation must be deterministic for exact inputs.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-WDA-ANALYZE-001",
+            "CAP-WDA-GATE-001"
+          ]
+        },
+        "measure": "Canonical output, diagnostic, route, and replay digest equality.",
+        "target": "100 percent equality for deterministic Core-owned behavior.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-WDA-DETERMINISM-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "terminology": [
+      {
+        "id": "TERM-DEV-CONDITIONAL-MODULE-001",
+        "term": "Conditional module",
+        "definition": "A lifecycle module invoked only when exact Core-owned state and approved policy satisfy its declared condition.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-ENGINEERING-GATE-001",
+        "term": "Engineering gate",
+        "definition": "A separate validation and approval boundary that decides whether an exact candidate may become an approved baseline or progress downstream.",
+        "aliases": [
+          "Gate"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-MODULE-001",
+        "term": "Module",
+        "definition": "A provider-neutral lifecycle contract defining exact inputs, action, outputs, outcomes, evidence, and progression boundary.",
+        "aliases": [
+          "Engineering module"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-PROJECT-OVERVIEW-001",
+        "term": "ProjectOverviewBaseline",
+        "definition": "The compact approved project-wide context deterministically projected from the paired RequirementsBaseline and explicitly supplied to downstream modules.",
+        "aliases": [
+          "Project overview"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-TRACEABILITY-GRAPH-001",
+        "term": "TraceabilityGraph",
+        "definition": "A Core-owned cross-cutting lifecycle index that records validated artifact relationships beside the module sequence without becoming a workflow stage.",
+        "aliases": [
+          "Traceability graph"
+        ],
+        "sourceRefs": [
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WDA-ANALYSIS-SNAPSHOT-001",
+        "term": "WorkBreakdown analysis snapshot",
+        "definition": "The complete immutable projection of one exact approved WorkBreakdownBaseline used as the work-item universe for a single full dependency analysis.",
+        "aliases": [
+          "Candidate work-breakdown snapshot"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WDA-CONTEXT-SLICE-001",
+        "term": "Context slice",
+        "definition": "A deterministic, relevance-declared extraction from one immutable version-pinned source artifact, supplied as explicit analyzer input with its own content digest.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WDA-DEPENDENCY-DAG-001",
+        "term": "Work dependency DAG",
+        "definition": "A directed acyclic graph where each forward edge says one predecessor must complete before one successor may start.",
+        "aliases": [
+          "Dependency graph"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WDA-HINT-DISPOSITION-001",
+        "term": "Dependency hint disposition",
+        "definition": "The evidence-backed treatment of one non-authoritative WorkBreakdown dependency hint.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WDA-IMPOSSIBLE-ORDERING-001",
+        "term": "Impossible ordering",
+        "definition": "A dependency forbidden by exact domain, architecture, contract, repository, or policy evidence even when acyclic.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-WDA-RUNNABLE-FRONTIER-001",
+        "term": "Runnable frontier",
+        "definition": "Work items whose authoritative predecessors are complete under current runtime state.",
+        "aliases": [
+          "Ready set"
+        ],
+        "sourceRefs": [
+          {
+            "role": "capability-evidence",
+            "artifact": {
+              "artifactId": "capability-evidence-work-dependency-analysis-v1",
+              "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+            },
+            "location": "Primary capability documentation retrieved 2026-08-03"
+          },
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-work-dependency-analysis-module-v1",
+              "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-work-dependency-analysis-v1",
+              "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+            },
+            "location": "Approved decisions 1-5 and superseding-invocation authority"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+              "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1",
+              "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+              "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1",
+              "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      }
+    ],
+    "currentStatus": {
+      "lifecycle": "existing",
+      "phase": "planning",
+      "summary": "The five WorkDependencyAnalysis boundary decisions are confirmed. The requirements change candidate is ready for Requirements Gate review before ArchitectureDesign.",
+      "sourceRefs": [
+        {
+          "role": "capability-evidence",
+          "artifact": {
+            "artifactId": "capability-evidence-work-dependency-analysis-v1",
+            "digest": "sha256:d84dd3c2adcd305dee46b3a3f4c38a61bfa451334a75f8d7e33a83f2f84ac83c"
+          },
+          "location": "Primary capability documentation retrieved 2026-08-03"
+        },
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-work-dependency-analysis-module-v1",
+            "digest": "sha256:f3c73dd9845557f240ce1c854138637f348a432f6cf56d258a1896facfd81c1c"
+          }
+        },
+        {
+          "role": "owner-decision",
+          "artifact": {
+            "artifactId": "owner-decisions-work-dependency-analysis-v1",
+            "digest": "sha256:64169c1a0028a0084c879aee7936de781ea571b4ffb4e4879484b8599c404b5b"
+          },
+          "location": "Approved decisions 1-5 and superseding-invocation authority"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-work-dependency-analysis-v1",
+            "digest": "sha256:9dc8364cee5a24660c757d5c9b8dd3684e15c57a9eee8f0aa09b07489588d35c"
+          }
+        },
+        {
+          "role": "project-overview-baseline",
+          "artifact": {
+            "artifactId": "project-overview-baseline-devrelay-v1",
+            "digest": "sha256:1bcfc9d77a52cfb476915308da81c058fdf93dfb265b7e7e80906a6aa034272d"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-9cb4f2b",
+            "digest": "sha256:1092f90bf5ebed8096dd12879a2511645b53116eb0d0b82483460053eee88481"
+          }
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-devrelay-v1",
+            "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+          }
+        }
+      ]
+    }
+  },
+  "renderedDocument": {
+    "path": "ProjectOverview.md",
+    "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
+    "mediaType": "text/markdown; charset=utf-8",
+    "artifact": {
+      "artifactId": "project-overview-markdown-work-dependency-analysis-v1",
+      "digest": "sha256:4b9385d583f5b9d51782dd9a3a6e0b7a7daa08416e36b671153f7349e440c86a"
+    },
+    "renderer": {
+      "id": "devrelay.project-overview.markdown",
+      "version": "1.0.0",
+      "contractDigest": "sha256:b50fd7a486ff860acf569bb1cab8f5cecb8db19b6cf3cb7a6bcba494bb8806eb"
+    }
+  },
+  "approvalEvidence": [
+    {
+      "artifactId": "requirements-gate-approval-work-dependency-analysis-v1",
+      "digest": "sha256:b1bbbbe0a3dcf177d99e663528b6cdff4c58f7b6b12a47f9f6cb90d7dd795fcf"
+    }
+  ]
+}

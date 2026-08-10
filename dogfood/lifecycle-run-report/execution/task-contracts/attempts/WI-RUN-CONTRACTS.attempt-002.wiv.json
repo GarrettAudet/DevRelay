@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-RUN-CONTRACTS-ATTEMPT-002",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-CONTRACTS-ATTEMPT-002",
+  "workItemId": "WI-RUN-CONTRACTS",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-CONTRACTS-002",
+    "digest": "sha256:3cb56e62a7779ddf8cb263084aa2df5f26e38dc05f9dd89fbe98c55bebfe3488"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-CONTRACTS.attempt-002.handoff.raw.json",
+    "digest": "sha256:d440ef137240af479d6e8603e964c20270931672bc2c26c8bdeae9c0062a15ca"
+  },
+  "changedFiles": [
+    "contracts/lifecycle-run-report-artifacts.schema.json",
+    "src/lifecycle-run-report-artifact-validator.mjs",
+    "src/index.mjs",
+    "test/lifecycle-run-report-contracts.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --test test/lifecycle-run-report-contracts.test.mjs",
+    "hostSupply": "declared-node-loader",
+    "exitCode": 0,
+    "tests": 9
+  },
+  "outcome": "fix",
+  "findings": [
+    {
+      "code": "RUN_CONTRACT_MATURITY_VOCABULARY",
+      "requirementRefs": [
+        "US-DEV-UNDERSTAND-ADAPTERS-001",
+        "US-DEV-EXTEND-001",
+        "CON-DEV-PROVIDER-NEUTRAL-001"
+      ],
+      "architectureRefs": [
+        "CON-RUN-MATURITY-VOCABULARY",
+        "EL-RUN-MATURITY-RESOLVER",
+        "IF-RUN-LIFECYCLE-SNAPSHOT"
+      ],
+      "detail": "LifecycleRunSnapshot accepts unknown, experimental, conformant, and proven, but the approved maturity vocabulary is exactly contract-defined, fixture-conformant, live-conformant, and release-ready; unsupported maturity values must fail closed and Core-owned implementations must not be represented as adapter maturity."
+    }
+  ],
+  "mechanicalEvidence": {
+    "authorizedPathsOnly": true,
+    "providerProductIdentifiersFound": 0,
+    "outputDigests": {
+      "contracts/lifecycle-run-report-artifacts.schema.json": "sha256:a2661ab6653b663f193d983d70b50c20ae1b5c0d00c64b9c877d118ed0760c76",
+      "src/lifecycle-run-report-artifact-validator.mjs": "sha256:f5489683728ec91712934742458e550290f0a5e69d7094ec88384a5b8fcb15be",
+      "src/index.mjs": "sha256:9edab6ef5ff7d28de6f4c0326968cf195355f5325565170825deae450578fd0e",
+      "test/lifecycle-run-report-contracts.test.mjs": "sha256:6a9720a93116119b80a74d9020ae21cd0d7589c371e89d65718d2c8140951ddc"
+    }
+  },
+  "progressionAllowed": false,
+  "nextRoute": "fix"
+}

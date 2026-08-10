@@ -1,0 +1,49 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BusinessAcceptanceClarificationRequest",
+  "requestId": "BA-CLR-AC-BOUNDARY-001",
+  "status": "open",
+  "blockingStage": "BusinessAcceptanceGate-release",
+  "question": "Should BusinessAcceptance directly re-evaluate each acceptance criterion, or require exhaustive criterion coverage from the exact SystemVerification result and TraceabilityGraph while evaluating business objectives, success metrics, and business scope itself?",
+  "recommendation": "Treat SystemVerification as the technical acceptance-criterion authority; require BusinessAcceptance to fail closed unless the exact verified result and graph prove exhaustive passing criterion coverage. Do not rerun technical tests in BusinessAcceptance.",
+  "rationale": [
+    "ProjectOverview requires BusinessAcceptance to evaluate objectives, metrics, scope, acceptance criteria, and required evidence.",
+    "The current BusinessAcceptance contract directly disposes only business objectives and success metrics.",
+    "Re-running technical criterion verification would duplicate WorkItemVerification/SystemVerification authority and create divergent outcomes."
+  ],
+  "choices": [
+    {
+      "id": "direct-re-evaluation",
+      "consequence": "BusinessAcceptance owns a second technical evidence evaluation for every acceptance criterion."
+    },
+    {
+      "id": "exhaustive-upstream-proof",
+      "recommended": true,
+      "consequence": "SystemVerification remains technical authority; BusinessAcceptance verifies exact exhaustive coverage and evaluates business outcomes and scope."
+    }
+  ],
+  "continuation": {
+    "taskId": "WI-BA-RELEASE.attempt-002",
+    "taskDigest": "sha256:54c5100e44bec00d0465e8063b115ace01627b7fc946e4c22dc7d5b22868218a",
+    "outcome": "clarify",
+    "prohibitedUntilResolved": [
+      "release promotion",
+      "immutable 0.8.0 sealing"
+    ]
+  },
+  "evidence": {
+    "projectOverview": {
+      "relativePath": "ProjectOverview.md",
+      "digest": "sha256:68aae534df2040f2f5ae6ea090917ece9e631eafa022e1cdc4b162206d3f2069"
+    },
+    "acceptanceContract": {
+      "relativePath": "contracts/business-acceptance-artifacts.schema.json",
+      "digest": "sha256:fd9f1708ff71c252548ca4b0d5a1a066074246b32e5ad277701d384a12e1e42d"
+    },
+    "acceptanceCore": {
+      "relativePath": "src/business-acceptance-core.mjs",
+      "digest": "sha256:d2c07d6b3f6276064dfa2ec23553f2e6b703e80af3e8e0c6c4012d7b3c8610f0"
+    }
+  },
+  "requestDigest": "sha256:25395360a7afe7ef505fc3b0b06f28463dea9ba116915d6f0c0ec09f856146d4"
+}

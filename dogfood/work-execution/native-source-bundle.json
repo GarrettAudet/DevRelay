@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/work-execution/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-work-execution-v1",
+        "digest": "sha256:469c766344d8380e678d4929a880b89e47f984554ed89da8fd0854d7be98ca0d"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/work-execution/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-work-execution-v1",
+        "digest": "sha256:0056f6c4f4b642a52939435cd37ff3c4bfe2625f0b2277affe48cb4660ceebf7"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/work-execution/native/openspec/specs/work-execution/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-work-execution-v1",
+        "digest": "sha256:578ded25e1fb0a8e087ccb0c798ec24750f982464b8bdf005a62a68ebbec5929"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-work-execution-v1",
+      "digest": "sha256:1dc4995b9585c0cfe651a0bbf92de42c2f664b0b728e7a76a32a2c1448b06ec2"
+    },
+    {
+      "artifactId": "project-overview-change-set-work-execution-v1",
+      "digest": "sha256:11ee927c0f08608e27a79eb92410bf16ccdca33397cbb94acf4476fdb0b4857d"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

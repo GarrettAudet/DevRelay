@@ -1,0 +1,49 @@
+{
+    "apiVersion":  "devrelay.dev/v1alpha1",
+    "kind":  "BootstrapWorkItemHostIntegrationReceipt",
+    "receiptId":  "WIVHIR-WI-WIV-CONTRACTS-REVISION-004",
+    "executionId":  "WE-WIV-REWORK-001-WI-WIV-CONTRACTS-ATTEMPT-004",
+    "workItemId":  "WI-WIV-CONTRACTS",
+    "task":  {
+                 "threadId":  "019fdb4e-405b-7010-8ae5-47962fac15d2",
+                 "worktree":  "C:/Users/garre/.codex/worktrees/fcea/DevRelay-v04-work-dependency-analysis",
+                 "contract":  {
+                                  "relativePath":  "dogfood/work-item-verification/execution/task-contracts/WI-WIV-CONTRACTS.attempt-004.task.json",
+                                  "bytes":  1084,
+                                  "digest":  "sha256:a073bdd7910b87a940f46e8d3c5ea0dcb5ea8ad0fbbf175924e41cb8896360d1"
+                              }
+             },
+    "handoff":  {
+                    "relativePath":  "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-004.handoff.raw.json",
+                    "bytes":  2848,
+                    "digest":  "sha256:5e04d6cba34c3c38700b830e3ab6148393f88295d7714339eeacd00c1dda9a4f"
+                },
+    "parentReview":  {
+                         "relativePath":  "dogfood/work-item-verification/execution/task-contracts/attempts/WI-WIV-CONTRACTS.attempt-004.parent-review.json",
+                         "bytes":  951,
+                         "digest":  "sha256:cab1034071b00dc618a5564bfd5d05a279b95f54c29c87a75c5b6c4de06bebc5"
+                     },
+    "integratedFiles":  [
+                            {
+                                "relativePath":  "src/work-item-verification-artifact-validator.mjs",
+                                "bytes":  13440,
+                                "digest":  "sha256:d404111374e6a4a2cd62bf4308c23984220fd65fa97be48215c88031f5885baf"
+                            },
+                            {
+                                "relativePath":  "test/work-item-verification-contracts.test.mjs",
+                                "bytes":  15928,
+                                "digest":  "sha256:2e651eba756b9cf4047cfd62c968abab7c20694f186fd6724f5e0fe0214fad8a"
+                            }
+                        ],
+    "verification":  [
+                         {
+                             "command":  "node --test --test-concurrency=1 focused WIV contract/checkpoint/adapter/binding suite",
+                             "outcome":  "pass",
+                             "tests":  39
+                         }
+                     ],
+    "lifecycleDisposition":  "provisional-host-integrated",
+    "nextRequiredStage":  "evidence-normalizer-parent-verification",
+    "authoritativeVerifiedCompletionFactCreated":  false,
+    "authoritativeIntegratedCompletionFactCreated":  false
+}

@@ -1,0 +1,51 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTaskContract",
+  "contractId": "WETC-WI-WIV-VERIFIER-ADAPTERS-001",
+  "executionId": "WE-WIV-FRONTIER-004-WI-WIV-VERIFIER-ADAPTERS",
+  "workItemId": "WI-WIV-VERIFIER-ADAPTERS",
+  "status": "executed-after-revision",
+  "attempts": 2,
+  "readinessProof": {
+    "workDependencyBaseline": {
+      "artifactId": "WDB-WIV-DOGFOOD",
+      "digest": "sha256:6b5dd263c737a780fa4f9a09abfd550b911d890913af45b6ad14d7f5ee0d76d8"
+    },
+    "completedWorkItemIds": [
+      "WI-WIV-ATTEMPT-CHECKPOINT",
+      "WI-WIV-CONTRACTS",
+      "WI-WIV-SUBJECT-OBLIGATIONS",
+      "WI-WIV-VERIFIER-BINDING"
+    ],
+    "incomingEdges": ["DEP-4549E09F330C92A6", "DEP-94A4AEC2D9821098"],
+    "readyWorkItemIds": ["WI-WIV-VERIFIER-ADAPTERS"]
+  },
+  "assignment": {
+    "workItemRef": "WI-WIV-VERIFIER-ADAPTERS",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "CAP-CONTRACT-AUTHORING",
+      "CAP-NODEJS-ENGINEERING",
+      "CAP-TEST-ENGINEERING"
+    ]
+  },
+  "authority": {
+    "allowedWritePaths": [
+      "src/work-item-verification-test-verifier-adapter.mjs",
+      "src/work-item-verification-review-verifier-adapter.mjs",
+      "examples/plugins/test-verifier.plugin.json",
+      "examples/plugins/review-verifier.plugin.json",
+      "test/work-item-verification-verifier-adapters.test.mjs"
+    ],
+    "forbiddenActions": [
+      "Do not execute another DAG item or modify Core-owned obligations, policy, Gate, or traceability.",
+      "Do not select scope, create graph operations, integrate, or progress the workflow.",
+      "Do not modify project baselines or dogfood Gate evidence.",
+      "Do not create commits, tags, or pull requests."
+    ]
+  },
+  "task": {
+    "threadId": "019fdb7e-31f6-7b51-a96f-b45c3128a3a3",
+    "worktree": "C:/Users/garre/.codex/worktrees/70c8/DevRelay-v04-work-dependency-analysis"
+  }
+}

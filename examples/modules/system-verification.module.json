@@ -1,0 +1,188 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "system-verification",
+    "version": "0.1.0",
+    "description": "Verify one immutable integrated system against approved system-level obligations without business-acceptance authority."
+  },
+  "operations": [
+    {
+      "id": "verify-system",
+      "description": "Bind the integrated system, expand obligations, collect raw observations, normalize evidence, evaluate policy, and return one closed result.",
+      "adapterExecution": "effect",
+      "inputs": [
+        {
+          "name": "integrated-system-candidate",
+          "schema": "https://devrelay.dev/contracts/system-verification-artifacts.schema.json#/$defs/subject",
+          "mediaTypes": [
+            "application/vnd.devrelay.integrated-system-candidate+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "system-verification-policy",
+          "schema": "https://devrelay.dev/contracts/system-verification-artifacts.schema.json#/$defs/policy",
+          "mediaTypes": [
+            "application/vnd.devrelay.system-verification-policy+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "system-verification-result",
+          "schema": "https://devrelay.dev/contracts/system-verification-artifacts.schema.json#/$defs/result",
+          "mediaTypes": [
+            "application/vnd.devrelay.system-verification-result+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "inputRules": [],
+      "outcomes": [
+        "verified",
+        "failed",
+        "needs-evidence",
+        "baseline-drift",
+        "unable-to-proceed"
+      ],
+      "resultContracts": {
+        "verified": {
+          "status": "completed",
+          "requiredInputs": [
+            "integrated-system-candidate",
+            "system-verification-policy",
+            "project-overview-baseline"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "system-verification-result"
+          ],
+          "allowedOutputs": [
+            "system-verification-result"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "system-verification/contract-tests",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "system-verification-result"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "failed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "system-verification-result"
+          ],
+          "allowedOutputs": [
+            "system-verification-result"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "needs-evidence": {
+          "status": "waiting",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "system-verification-result"
+          ],
+          "allowedOutputs": [
+            "system-verification-result"
+          ],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "baseline-drift": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "unable-to-proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "system-verification/contract-tests"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "extensionPorts": [
+        {
+          "id": "system-verifier",
+          "role": "proposer",
+        "inputSchema": "https://devrelay.dev/contracts/system-verification-artifacts.schema.json#/$defs/invocation",
+          "outputSchema": "https://devrelay.dev/contracts/system-verification-artifacts.schema.json#/$defs/rawObservation",
+          "required": true
+        }
+      ],
+      "orchestrationPlan": [
+        {
+          "id": "subject-guard",
+          "kind": "core",
+          "handler": "system-verification/subject-guard"
+        },
+        {
+          "id": "obligation-expander",
+          "kind": "core",
+          "handler": "system-verification/obligation-expander"
+        },
+        {
+          "id": "system-verifier",
+          "kind": "extension-port",
+          "handler": "system-verifier"
+        },
+        {
+          "id": "evidence-normalizer",
+          "kind": "core",
+          "handler": "system-verification/evidence-normalizer"
+        },
+        {
+          "id": "policy-evaluator",
+          "kind": "core",
+          "handler": "system-verification/policy-evaluator"
+        },
+        {
+          "id": "result-assembler",
+          "kind": "core",
+          "handler": "system-verification/result-assembler"
+        },
+        {
+          "id": "checkpoint",
+          "kind": "core",
+          "handler": "system-verification/checkpoint"
+        }
+      ]
+    }
+  ]
+}

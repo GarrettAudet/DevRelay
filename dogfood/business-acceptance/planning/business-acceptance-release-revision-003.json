@@ -1,0 +1,36 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BusinessAcceptanceWorkBreakdownRevision",
+  "revisionId": "BA-WB-REVISION-003",
+  "predecessor": {
+    "artifactId": "BA-WB-REVISION-002",
+    "digest": "sha256:d50d9755710f0ad962137d9473227053045fe369220d574c3ff5d6212d654c97",
+    "relativePath": "dogfood/business-acceptance/planning/business-acceptance-coverage-revision-002.json"
+  },
+  "reason": "Parent WorkItemVerification rejected a fabricated full-project acceptance proof and found a release-blocking Structurizr bootstrap defect.",
+  "route": "fix",
+  "workItem": "WI-BA-RELEASE",
+  "priorHandoff": {
+    "artifactId": "WI-BA-RELEASE.attempt-004.handoff",
+    "digest": "sha256:7372e6c2045c2af8535032972d111f7a67f66380ea9320add7967734fb76c59b",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-004.handoff.raw.json"
+  },
+  "parentReview": {
+    "artifactId": "BA-PARENT-REVIEW-WI-BA-RELEASE-004",
+    "digest": "sha256:1faa483d2f722999ae5e8cd02c68291ef5a53b9bb4a5d5f753d505195ee1cfea",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-004.parent-review.json"
+  },
+  "corrections": [
+    "The release materializer manually constructs a verified SystemVerificationResult, 72 passing technical-coverage entries, an eligible candidate, owner approval, accepted record, and traceability merge receipt. It does not execute executeSystemVerification, executeBusinessAcceptance, executeBusinessAcceptanceGate, the trusted contributors, or TraceabilityGraph, so the claimed accepted run is not execution evidence.",
+    "The candidate declares every one of the 31 approved V1 scope identities satisfied even though ArchitectureDiscovery and the dynamic LifecycleRunReport remain incomplete. BusinessAcceptance must fail closed; the full V1 project cannot truthfully be accepted before those deliverables and their evidence exist.",
+    "The IntegratedSystemCandidate uses invented integrated-change and completion-fact references backed by the 0.7.0 release digest instead of exact authoritative ChangeIntegration artifacts.",
+    "Canonical verify and release:check did not pass because scripts/bootstrap-structurizr.mjs does not bind the pinned archive and extraction destination correctly to Expand-Archive. The 0.8.0 release catalog cannot be authoritative until that defect is fixed and the canonical gates pass."
+  ],
+  "releaseBoundary": {
+    "moduleReleaseMayProceed": true,
+    "fullV1BusinessAcceptanceMayProceed": false,
+    "rationale": "BusinessAcceptance may become release-ready from executable conformance and canonical package evidence, but project acceptance remains pending until all approved V1 scope, including ArchitectureDiscovery and LifecycleRunReport, has real evidence."
+  },
+  "authority": "parent-integration-owner",
+  "contentDigest": "sha256:2869d7c3c5b50f7636a58f5a9589d118fb0941450c0589e4a8275356f5dd8e35"
+}

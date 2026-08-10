@@ -1,0 +1,117 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-COVERAGE-CORE.attempt-002",
+  "workItem": {
+    "id": "WI-BA-COVERAGE-CORE",
+    "objective": "Derive exact criterion coverage from the verified result and graph, then evaluate objectives, metrics, and business scope without rerunning tests.",
+    "boundedScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "deliverables": [
+      "Trusted technical-coverage derivation",
+      "Business-scope dispositions",
+      "Zero-call replay with coverage drift rejection"
+    ],
+    "workType": "code-change",
+    "requiredCapabilities": [
+      "runtime-engineering",
+      "graph-analysis",
+      "business-policy"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CONTRACTS"
+    ],
+    "verificationPlan": [
+      "Require every approved criterion to reach passing evidence",
+      "Reject graph, result, baseline, scope, and coverage substitutions before owner Gate"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/coverage-core-tests"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-CONTRACTS"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-COVERAGE-CORE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "runtime-engineering",
+      "graph-analysis",
+      "business-policy"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "src/business-acceptance-core.mjs",
+      "src/business-acceptance-checkpoint.mjs",
+      "test/business-acceptance-core.test.mjs"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-002.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 2,
+  "revisionLineage": {
+    "route": "fix",
+    "predecessorTask": {
+      "artifactId": "WI-BA-COVERAGE-CORE.attempt-001",
+      "digest": "sha256:208db5496bead57168d61547d85ad8b520828024abdee378765ca21a7fcfc3b3",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-COVERAGE-CORE.attempt-001.task.json"
+    },
+    "priorHandoff": {
+      "artifactId": "WI-BA-COVERAGE-CORE.attempt-001.handoff",
+      "digest": "sha256:74100bdbaca9cc9a08159f3893034c5e1d7c646eb5a89b2fc9a2d1d7d766ab2c",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-001.handoff.raw.json"
+    },
+    "parentReview": {
+      "artifactId": "BA-PARENT-REVIEW-WI-BA-COVERAGE-CORE-001",
+      "digest": "sha256:41800b2d7485a426d0574aa31daba7014621a9f2050e67a3188c9a528b8895b2",
+      "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-COVERAGE-CORE.attempt-001.parent-review.json"
+    }
+  },
+  "requiredCorrections": [
+    "Accept the repository's real raw-byte RequirementsBaseline digest contract. When an input supplies value/ref/bytes, verify sha256(bytes) equals ref.digest and that parsing bytes reproduces value before deriving coverage. Do not compare a pretty-printed raw digest to canonicalJsonDigest(value). Preserve closed semantic-digest validation for direct digest-bound artifacts.",
+    "Use exactly the same business-scope identity algorithm as the trusted RequirementsBaseline traceability contributor. Add a cross-slice test that projects the same approved scope statement through requirements traceability and proves Core's derived scopeId equals the graph node stableId.",
+    "Reject a graph snapshot unless its exact loaded bytes/ref/checkpoint and graph envelope are valid; preserve zero-call replay and all prior substitution failures."
+  ],
+  "taskDigest": "sha256:41128ed11399f3624257b6707cff11f3b74f325266dc7068876a58d4dc6b3341"
+}

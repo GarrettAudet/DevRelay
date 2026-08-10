@@ -1,0 +1,77 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE.attempt-005",
+  "workItemId": "WI-BA-RELEASE",
+  "status": "corrected-release-boundary-canonical-gate-blocked-by-out-of-scope-drift",
+  "summary": "Corrected the 0.8.0 BusinessAcceptance release boundary to rely on executable Core, Gate, checkpoint, trusted-contributor, and TraceabilityGraph conformance only. Full V1 project acceptance remains pending with no SCOPE-* identities claimed satisfied. The Structurizr extraction boundary is fixed and its pinned toolchain validates. Canonical repository gates remain blocked by pre-existing divergent immutable dogfood replay artifacts outside attempt-005 authority.",
+  "changedPaths": [
+    "CHANGELOG.md",
+    "docs/business-acceptance.md",
+    "dogfood/business-acceptance/accepted-run/REJECTED.md",
+    "dogfood/business-acceptance/project-acceptance-pending.json",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-005.handoff.raw.json",
+    "release/0.8.0.json",
+    "scripts/bootstrap-structurizr.mjs",
+    "src/index.mjs",
+    "test/bootstrap-structurizr.test.mjs",
+    "test/business-acceptance-release.test.mjs"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:0a1b514205086d4c3296909b65b25d741ffb1cfa9d4036030e61bfa45a6c8b92",
+    "parentReviewDigest": "sha256:1faa483d2f722999ae5e8cd02c68291ef5a53b9bb4a5d5f753d505195ee1cfea",
+    "planningRevisionDigest": "sha256:2869d7c3c5b50f7636a58f5a9589d118fb0941450c0589e4a8275356f5dd8e35",
+    "writeScopeRespected": true,
+    "priorAttemptsModified": false
+  },
+  "truthfulReleaseBoundary": {
+    "moduleReleaseEvidence": "executable-conformance",
+    "fullV1ProjectAcceptance": "pending",
+    "blockingScope": [
+      "ArchitectureDiscovery",
+      "LifecycleRunReport"
+    ],
+    "satisfiedScopeIdsClaimed": 0,
+    "attempt004AcceptedRunAuthority": "rejected-history-only",
+    "handAuthoredAcceptanceArtifactsUsed": false
+  },
+  "verification": {
+    "focused": {
+      "command": "node --test test/bootstrap-structurizr.test.mjs test/business-acceptance-contracts.test.mjs test/business-acceptance-core.test.mjs test/business-acceptance-gate.test.mjs test/business-acceptance-traceability.test.mjs test/business-acceptance-documentation.test.mjs test/business-acceptance-release.test.mjs test/requirements-traceability.test.mjs test/traceability-vocabulary-migration.test.mjs",
+      "tests": 52,
+      "passed": 52,
+      "failed": 0
+    },
+    "structurizrBootstrap": {
+      "status": "passed",
+      "javaVersion": "21.0.12+8",
+      "structurizrVersion": "2026.06.28",
+      "argumentBoundary": "environment-bound exact paths"
+    },
+    "canonicalVerify": {
+      "status": "failed-outside-write-scope",
+      "structurizrFailures": 0,
+      "blockingExamples": [
+        "dogfood/work-item-verification/assignment/replay-v5/candidate-traceability-update.json already differs from its immutable recomputation",
+        "pre-existing WorkItemVerification dependency and assignment replay digests differ",
+        "pre-existing cross-lifecycle traceability ownership conflicts"
+      ]
+    },
+    "releaseCheck": {
+      "status": "failed-at-canonical-verify",
+      "catalogAndPackageStagesReached": false
+    },
+    "releaseCatalogCandidate": {
+      "generated": true,
+      "rawByteDigests": 2174,
+      "authoritative": false,
+      "reason": "The canonical verify and release:check gates did not pass."
+    },
+    "immutablePackageAndOfflineConsumer": {
+      "status": "passed",
+      "packageFiles": 255,
+      "rootImport": "passed"
+    }
+  },
+  "handoff": "Parent must resolve or restore the out-of-scope immutable dogfood replay artifacts, rerun canonical verify and release:check in the integrated tree, and regenerate release/0.8.0.json after those gates pass. Do not treat the current catalog candidate or full V1 project as accepted."
+}

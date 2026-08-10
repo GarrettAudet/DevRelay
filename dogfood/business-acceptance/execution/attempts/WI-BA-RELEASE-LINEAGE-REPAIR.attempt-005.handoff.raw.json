@@ -1,0 +1,106 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "status": "completed-focused-and-consecutive-canonical-gates-passed",
+  "summary": "Completed the provider-neutral artifact-identity repair with an explicit legacy-root ownership boundary, exact loaded-value/raw-byte fidelity checks, real WDA materializer execution before assertions, independently fixed digest literals, zero local file URIs in the fixed manifest, and two consecutive green canonical verifier runs without restoration.",
+  "changedPaths": [
+    "dogfood/_support/repository-artifact-uri.mjs",
+    "dogfood/contract-generation/contract-generation/materialize.mjs",
+    "dogfood/specialist-assignment/contract-generation/materialize.mjs",
+    "dogfood/work-dependency-analysis/dependency-analysis/materialize.mjs",
+    "dogfood/work-item-verification/contract-generation/materialize.mjs",
+    "dogfood/work-item-verification/work-breakdown/materialize.mjs",
+    "dogfood/work-item-verification/dependency-analysis/materialize.mjs",
+    "test/work-dependency-analysis-dogfood.test.mjs",
+    "test/dogfood-portable-artifact-identity.test.mjs",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-005.handoff.raw.json"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:81d58d243e841d1fa01412a0194f02e379c5411b79c9f1fa45386f82fd9859af",
+    "priorHandoffRawDigest": "sha256:afbba238150a11a11e18a823c645b1adf8572f3b28f15110c52b1cec12c80c0a",
+    "parentReviewDigest": "sha256:941bc2d7071c367fdd095ce0d6eadecd94a54294dec2d44975ede59d703b30e7",
+    "writeScopeRespected": true,
+    "attempt004GenerationsModified": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "uriBoundary": {
+    "canonicalPrefix": "devrelay://repository/",
+    "approvedLegacyRoots": [
+      "C:/repos/DevRelay",
+      "C:/tmp/DevRelay-v04-work-dependency-analysis"
+    ],
+    "negativeCoverage": [
+      "file:///C:/unrelated/project/contract-baseline.json",
+      "file:///D:/scratch/dogfood/result.json",
+      "file:///C:/users/example/test/output.json"
+    ],
+    "loadedValueFidelity": "Every affected JSON loader asserts loaded.value equals JSON.parse of its exact digest-bound loaded.bytes before runtime use; URI normalization applies only to cloned ArtifactRef envelopes."
+  },
+  "immutableHistory": {
+    "preservedAttempt004Generations": [
+      "dogfood/contract-generation/contract-generation/replay-v7/",
+      "dogfood/work-dependency-analysis/dependency-analysis/replay-v6/",
+      "dogfood/work-item-verification/contract-generation/replay-v6/",
+      "dogfood/work-item-verification/work-breakdown/scenario-wiv-portable-v3/",
+      "dogfood/work-item-verification/dependency-analysis/replay-v6/"
+    ],
+    "newAttempt005Generations": [],
+    "overwrittenOrDeleted": 0
+  },
+  "portableArtifactManifest": {
+    "path": "dogfood/_support/portable-artifact-digest-manifest.json",
+    "entries": [
+      { "path": "dogfood/contract-generation/contract-generation/contract-draft-set.json", "digest": "sha256:5ee40f770704ef83ccdde89cfce1a584e2e3d5f9af6bc738db073dfef94255b6" },
+      { "path": "dogfood/contract-generation/contract-generation/replay-v7/contract-baseline.json", "digest": "sha256:933b54373e9ab7323a847456eac606d516c830005c5f7c0d8f7f35a5217d6f5c" },
+      { "path": "dogfood/specialist-assignment/contract-generation/contract-change-set-draft.json", "digest": "sha256:10079ce3eba78ac2aaa184e7f0dc3f1f6477ffe5a47b2341d802ab9777dbfb5b" },
+      { "path": "dogfood/work-dependency-analysis/dependency-analysis/work-dependency-candidate.json", "digest": "sha256:5009bf9189b801f34f58582ecfb6a7444abbdefd2a31ec957c866672e8086807" },
+      { "path": "dogfood/work-dependency-analysis/dependency-analysis/replay-v6/work-dependency-baseline.json", "digest": "sha256:0c25a5870f716921bb8761c5c31a4f5c45c5410aa62b7401412dbd06d7511498" },
+      { "path": "dogfood/work-item-verification/contract-generation/contract-change-set-draft.json", "digest": "sha256:861c9a3b24a9d0d03e6aa68d7afc7e25bc8724a47f76109b3b2fc30952152014" },
+      { "path": "dogfood/work-item-verification/contract-generation/replay-v6/contract-baseline.json", "digest": "sha256:621c1a83696cbbb6c2a9f8a623946dbbba0db2301e53db344c9c80537c777499" },
+      { "path": "dogfood/work-item-verification/work-breakdown/scenario-wiv-portable-v3/work-breakdown-change-set-draft.json", "digest": "sha256:881ea471a2af9580aa43a2a2b82762a47e70263dcfafefb0512415b9cbb2b246" },
+      { "path": "dogfood/work-item-verification/work-breakdown/scenario-wiv-portable-v3/work-breakdown-baseline.json", "digest": "sha256:c1fe6b0bb131a1e8315b75b72a1a08ea4ef0e49c6fffa50cc75f114917300627" },
+      { "path": "dogfood/work-item-verification/dependency-analysis/work-dependency-candidate.json", "digest": "sha256:70c7d352d6e796f0cc0e05a8d95fefefcda735fe9ec155aefd7f403e1ff5183f" },
+      { "path": "dogfood/work-item-verification/dependency-analysis/replay-v6/work-dependency-baseline.json", "digest": "sha256:995f9d91adfa7ad2b6189b95c812c36d6e75c6794078d85475adb5a5b682e28d" }
+    ],
+    "fileUriOccurrences": 0
+  },
+  "verification": {
+    "focusedSuite": {
+      "command": "node --test --test-concurrency=1 test/contract-generation-dogfood.test.mjs test/contract-generation-promotion-dogfood.test.mjs test/specialist-assignment-contract-generation-dogfood.test.mjs test/work-dependency-analysis-dogfood.test.mjs test/work-item-verification-contract-generation-dogfood.test.mjs test/work-item-verification-planning-dogfood.test.mjs test/dogfood-portable-artifact-identity.test.mjs",
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "durationMs": 135785.0546,
+      "wdaMaterializerExecutedBeforeAssertions": true
+    },
+    "canonicalVerifyRun1": {
+      "command": "npm.cmd run verify",
+      "tests": 696,
+      "passed": 696,
+      "failed": 0,
+      "durationMs": 438059.5446
+    },
+    "canonicalVerifyRun2": {
+      "command": "npm.cmd run verify",
+      "tests": 696,
+      "passed": 696,
+      "failed": 0,
+      "durationMs": 437424.6659,
+      "checkoutRestoredBetweenRuns": false
+    }
+  },
+  "forbiddenBoundary": {
+    "arbitraryLocalPathNormalization": false,
+    "traceabilityOwnershipOrDigestValidationWeakened": false,
+    "loadedValueRawByteMismatchAllowed": false,
+    "immutableHistoryOverwrittenOrDeleted": false,
+    "selfDerivedExpectedDigests": false,
+    "evidenceFabricated": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "handoff": "Parent owns independent C:/tmp reconstruction, raw-byte comparison, compare-and-swap integration, review, and release decisions. This attempt does not seal release 0.8.0 or begin ArchitectureDiscovery."
+}

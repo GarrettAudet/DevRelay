@@ -1,0 +1,37 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ParentWorkItemReview",
+  "reviewId": "BA-PARENT-REVIEW-WI-BA-RELEASE-LINEAGE-REPAIR-001",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "task": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001",
+    "digest": "sha256:42b72acd1f6e67f4ebf8bbf4ba2643330d77379532f0cdd1ce2d0fd3c54c06ff",
+    "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001.task.json"
+  },
+  "handoff": {
+    "artifactId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001.handoff",
+    "digest": "sha256:623a5b11c19fbb61569751d02698c5efcd04d308bc90173ce9fcf3c03380e70f",
+    "relativePath": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-001.handoff.raw.json"
+  },
+  "outcome": "fix",
+  "acceptedEvidence": [
+    "18 of 18 focused tests pass.",
+    "Canonical verification improved from 683 of 694 to 693 of 694.",
+    "Six collided replay generations were advanced without overwriting prior history.",
+    "TraceabilityGraph ownership enforcement remains unchanged."
+  ],
+  "remainingFinding": {
+    "path": "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+    "line": 45,
+    "classification": "stale-exact-digest-binding",
+    "expected": "sha256:dfb5a97f2436daeecd501e0c078b47fc4e4f8f5afdb8f4c201061abd99506bdf",
+    "actual": "sha256:ba6666e543b396be927066e56d2eee6d5a01ae777f9644302b5deda7394556b4"
+  },
+  "nextAction": {
+    "route": "fix",
+    "instruction": "Expand authority only to the omitted exact test, bind its assertion to regenerated candidate bytes, and rerun focused plus canonical verification."
+  },
+  "authority": "parent-integration-owner",
+  "reviewDigest": "sha256:71d0d1da0a87461469aed4dcb64d4278bb415a2b364e5475c9e7417df604fcf6"
+}

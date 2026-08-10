@@ -1,0 +1,47 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemVerificationReview",
+  "reviewId": "WIV-WI-RUN-LEDGER-ATTEMPT-001",
+  "executionId": "WE-RUN-DOGFOOD-WI-RUN-LEDGER-ATTEMPT-001",
+  "workItemId": "WI-RUN-LEDGER",
+  "taskContract": {
+    "artifactId": "WETC-WI-RUN-LEDGER-001",
+    "digest": "sha256:b147cf350127fd026954c604206080a3927574fb12a2599aa6e5c963b267f7f0"
+  },
+  "rawHandoff": {
+    "artifactId": "WI-RUN-LEDGER.attempt-001.handoff.raw.json",
+    "digest": "sha256:124f7bc000ce67ca7892f3308ca0495dcf4c350436e4041eb64a709e3975eda9"
+  },
+  "changedFiles": [
+    "src/lifecycle-run-report-ledger.mjs",
+    "test/lifecycle-run-report-ledger.test.mjs"
+  ],
+  "focusedVerification": {
+    "command": "node --test test/lifecycle-run-report-ledger.test.mjs",
+    "hostSupply": "declared-node-loader",
+    "exitCode": 0,
+    "tests": 5
+  },
+  "outcome": "fix",
+  "findings": [
+    {
+      "code": "RUN_LEDGER_APPEND_LINEAGE_MISSING",
+      "requirementRefs": [
+        "AC-DEV-RUN-DYNAMIC-001",
+        "AC-DEV-RUN-TRACE-JOIN-001"
+      ],
+      "architectureRefs": [
+        "CON-RUN-LEDGER-IMMUTABILITY",
+        "EL-RUN-LEDGER",
+        "IF-RUN-WORKFLOW-FACTS"
+      ],
+      "detail": "Each checkpoint is built from an unconstrained fact set with no predecessor or cumulative-lineage enforcement, so a later append can omit earlier facts and still validate despite the approved append-only exact RunLedger lineage."
+    }
+  ],
+  "outputDigests": {
+    "src/lifecycle-run-report-ledger.mjs": "sha256:eb4482e71fcb2f76c3dc234a6fbc5261e543264f33dfad00928b496a8807f722",
+    "test/lifecycle-run-report-ledger.test.mjs": "sha256:cd8d71688a9f973455405206a1026ade7be6f422ae6da82d8c4d84212d2644fe"
+  },
+  "progressionAllowed": false,
+  "nextRoute": "fix"
+}

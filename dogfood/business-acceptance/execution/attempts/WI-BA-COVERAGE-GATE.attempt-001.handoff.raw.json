@@ -1,0 +1,39 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-COVERAGE-GATE.attempt-001",
+  "workItemId": "WI-BA-COVERAGE-GATE",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/business-acceptance-gate.mjs",
+    "test/business-acceptance-gate.test.mjs"
+  ],
+  "evidence": [
+    {
+      "kind": "business-acceptance/coverage-gate-tests",
+      "relativePath": "test/business-acceptance-gate.test.mjs",
+      "digest": "sha256:c5f4dcf601f3a6e10228aee79a826e39868a0c67822147353a729dd9230c2ddf"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/business-acceptance-gate.mjs; node --check test/business-acceptance-gate.test.mjs",
+      "exitCode": 0,
+      "summary": "Gate implementation and focused fixtures passed syntax validation."
+    },
+    {
+      "command": "node --experimental-loader file:///C:/Users/garre/OneDrive/Documents/Portable%20Best%20Practices/.tmp-devrelay-dependency-loader.mjs --test test/business-acceptance-gate.test.mjs test/business-acceptance-contracts.test.mjs test/business-acceptance-core.test.mjs test/business-acceptance-traceability.test.mjs",
+      "exitCode": 0,
+      "summary": "All 35 focused Gate, adjacent contract/Core, and traceability tests passed; 0 failed, skipped, cancelled, or todo."
+    },
+    {
+      "command": "git diff --check -- src/business-acceptance-gate.mjs test/business-acceptance-gate.test.mjs",
+      "exitCode": 0,
+      "summary": "The authorized Gate slice contains no whitespace errors."
+    }
+  ],
+  "residualRisks": [
+    "The worktree has no local node_modules installation; executable tests use the repository-established shared dependency loader for Ajv resolution."
+  ],
+  "notes": "Verified the canonical task digest and both exact dependency handoff raw-byte digests before editing. The Gate now validates BusinessAcceptanceTechnicalCoverage before any owner call; binds the exact coverage through subject, evaluation, owner approvedContext, immutable Gate checkpoint, replay, and final record subject lineage; and rejects missing, stale, malformed, self-certified, owner-substituted, or checkpoint-substituted coverage output-free. Replay makes zero additional owner calls and the Gate exposes no technical-test execution path. Fixtures now cover the complete business-objective, success-metric, and business-scope family. No technical tests were rerun by BusinessAcceptance, and no integration, release, deployment, requirements mutation, adapter authority, or non-allowlisted implementation edit was performed."
+}

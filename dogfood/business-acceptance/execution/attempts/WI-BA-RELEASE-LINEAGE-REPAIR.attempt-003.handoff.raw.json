@@ -1,0 +1,149 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "taskId": "WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003",
+  "workItemId": "WI-BA-RELEASE-LINEAGE-REPAIR",
+  "status": "completed-order-independent-consecutive-canonical-gates-passed",
+  "summary": "Eliminated the affected cross-scenario mutable aliases with scenario-pinned contract context, isolated WIV WorkBreakdown output, and new immutable replay generations. The WIV pre-WorkBreakdown context is the coherent CB-DEVRELAY-004/CD-DEVRELAY-004 promotion set and is raw-digest checked before execution. The six affected tests pass in canonical and reverse process order, and two consecutive canonical verifier runs pass 694 of 694 without restoring files.",
+  "changedPaths": [
+    "dogfood/contract-generation/contract-generation/promote.mjs",
+    "dogfood/contract-generation/contract-generation/replay-v5/",
+    "dogfood/specialist-assignment/contract-generation/materialize.mjs",
+    "dogfood/work-dependency-analysis/dependency-analysis/promote.mjs",
+    "dogfood/work-dependency-analysis/dependency-analysis/replay-v4/",
+    "dogfood/work-item-verification/contract-generation/promote.mjs",
+    "dogfood/work-item-verification/contract-generation/replay-v4/",
+    "dogfood/work-item-verification/work-breakdown/context/",
+    "dogfood/work-item-verification/work-breakdown/materialize.mjs",
+    "dogfood/work-item-verification/work-breakdown/promote.mjs",
+    "dogfood/work-item-verification/work-breakdown/scenario-wiv-v1/",
+    "dogfood/work-item-verification/dependency-analysis/materialize.mjs",
+    "dogfood/work-item-verification/dependency-analysis/promote.mjs",
+    "dogfood/work-item-verification/dependency-analysis/replay-v4/",
+    "test/contract-generation-promotion-dogfood.test.mjs",
+    "test/specialist-assignment-contract-generation-dogfood.test.mjs",
+    "test/work-dependency-analysis-dogfood.test.mjs",
+    "test/work-item-verification-contract-generation-dogfood.test.mjs",
+    "test/work-item-verification-planning-dogfood.test.mjs",
+    "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE-LINEAGE-REPAIR.attempt-003.handoff.raw.json"
+  ],
+  "preflight": {
+    "taskDigest": "sha256:63c1de6f6c04632288dacaf410424e0d5cdedb8a2f2205031a8519d61e669de5",
+    "priorHandoffDigest": "sha256:24920e6ce584985aae24a55b1936b528bf7b58016ec7c61d576b2ec9db150b13",
+    "parentReviewDigest": "sha256:4ad86223c9540de704a959924bbfe730b170630a5c1f99998a68d35efea6fc4e",
+    "writeScopeRespected": true,
+    "priorReplayBytesModified": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "scenarioIsolationMap": [
+    {
+      "scenario": "baseline-contract-generation",
+      "versionPinnedInputs": [
+        "project/history/architecture/architecture-baseline-devrelay-v1-contract-generation-001/",
+        "project/history/1.3.0/"
+      ],
+      "mutableOutput": "dogfood/contract-generation/contract-generation/",
+      "immutableReplay": "dogfood/contract-generation/contract-generation/replay-v5/"
+    },
+    {
+      "scenario": "specialist-assignment-contract-generation",
+      "versionPinnedInputs": [
+        "dogfood/contract-generation/contract-generation/replay-v5/contract-baseline.json",
+        "dogfood/contract-generation/contract-generation/replay-v5/project-contract-state-baselined.json"
+      ],
+      "mutableOutput": "dogfood/specialist-assignment/contract-generation/"
+    },
+    {
+      "scenario": "baseline-work-dependency-analysis",
+      "versionPinnedInputs": [
+        "project/history/1.1.0/",
+        "dogfood/work-dependency-analysis/work-breakdown/"
+      ],
+      "mutableOutput": "dogfood/work-dependency-analysis/dependency-analysis/",
+      "immutableReplay": "dogfood/work-dependency-analysis/dependency-analysis/replay-v4/"
+    },
+    {
+      "scenario": "work-item-verification-contract-generation",
+      "versionPinnedInputs": [
+        "project/history/1.5.0/",
+        "project/history/contracts/CB-DEVRELAY-003/"
+      ],
+      "mutableOutput": "dogfood/work-item-verification/contract-generation/",
+      "immutableReplay": "dogfood/work-item-verification/contract-generation/replay-v4/"
+    },
+    {
+      "scenario": "work-item-verification-planning",
+      "versionPinnedInputs": [
+        "dogfood/work-item-verification/work-breakdown/context/contract-baseline.json",
+        "dogfood/work-item-verification/work-breakdown/context/contract-disposition.json",
+        "dogfood/work-item-verification/work-breakdown/context/contract-gate-promotion.json"
+      ],
+      "mutableOutput": "dogfood/work-item-verification/work-breakdown/scenario-wiv-v1/",
+      "immutableReplay": "dogfood/work-item-verification/dependency-analysis/replay-v4/"
+    }
+  ],
+  "wivContextCoherence": {
+    "baselineId": "CB-DEVRELAY-004",
+    "baselineDigest": "sha256:bddf1e092d8e4664eef5798a413c765b5405c4505322d13aedf63b0d72c2ce62",
+    "dispositionId": "CD-DEVRELAY-004",
+    "dispositionDigest": "sha256:ee224dd1cbf292dd51eb61bc2d1199f01ab61382cd27dc810a9bad229a3a48ab",
+    "promotionId": "CGP-WORK-ITEM-VERIFICATION-CONTRACT-CHANGE-001",
+    "runtimeEnforcement": "Materialization checks baseline and disposition identities and raw-byte SHA-256 digests against the exact promotion references before execution."
+  },
+  "immutableHistory": {
+    "newGenerations": [
+      "contract-generation/replay-v5",
+      "work-dependency-analysis/replay-v4",
+      "work-item-verification/contract-generation/replay-v4",
+      "work-item-verification/dependency-analysis/replay-v4"
+    ],
+    "priorGenerationsOverwrittenOrDeleted": 0
+  },
+  "verification": {
+    "affectedCanonicalOrder": {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "affectedReverseProcessOrder": {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "order": [
+        "work-item-verification-planning",
+        "work-item-verification-contract-generation",
+        "work-dependency-analysis",
+        "specialist-assignment-contract-generation",
+        "contract-generation-promotion",
+        "contract-generation"
+      ]
+    },
+    "canonicalVerifyRun1": {
+      "command": "npm.cmd run verify",
+      "tests": 694,
+      "passed": 694,
+      "failed": 0,
+      "durationMs": 278610.9606
+    },
+    "canonicalVerifyRun2": {
+      "command": "npm.cmd run verify",
+      "tests": 694,
+      "passed": 694,
+      "failed": 0,
+      "durationMs": 286003.3037,
+      "checkoutRestoredBetweenRuns": false
+    }
+  },
+  "forbiddenBoundary": {
+    "testOrderDependencyIntroduced": false,
+    "traceabilityOwnershipOrDigestValidationWeakened": false,
+    "immutableHistoryOverwrittenOrDeleted": false,
+    "selfDerivedTautologicalAssertionsIntroduced": false,
+    "evidenceFabricated": false,
+    "productRequirementsChanged": false,
+    "release080Sealed": false,
+    "architectureDiscoveryStarted": false
+  },
+  "handoff": "Parent owns independent integrated-checkout verification, review, and release decisions. This attempt does not seal release 0.8.0 or begin ArchitectureDiscovery."
+}

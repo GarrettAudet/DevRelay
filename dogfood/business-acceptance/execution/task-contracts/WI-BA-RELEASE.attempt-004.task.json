@@ -1,0 +1,149 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkExecutionTask",
+  "taskId": "WI-BA-RELEASE.attempt-004",
+  "workItem": {
+    "id": "WI-BA-RELEASE",
+    "objective": "Seal DevRelay 0.8.0 with the corrected exact accepted run and zero blocking diagnostics.",
+    "boundedScope": [
+      "docs/business-acceptance.md",
+      "README.md",
+      "RELEASE.md",
+      "CHANGELOG.md",
+      "src/index.mjs",
+      "package.json",
+      "package-lock.json",
+      "scripts/release-catalog.mjs",
+      "scripts/release-tools.mjs",
+      "release/",
+      "test/business-acceptance-documentation.test.mjs",
+      "test/business-acceptance-release.test.mjs",
+      "dogfood/business-acceptance/"
+    ],
+    "deliverables": [
+      "Corrected accepted lifecycle proof",
+      "DevRelay 0.8.0 immutable catalog",
+      "Release and offline-consumer evidence"
+    ],
+    "workType": "configuration-change",
+    "requiredCapabilities": [
+      "release-engineering",
+      "integration-testing",
+      "technical-writing"
+    ],
+    "dependencyHints": [
+      "WI-BA-COVERAGE-CORE",
+      "WI-BA-COVERAGE-TRACEABILITY"
+    ],
+    "verificationPlan": [
+      "Require zero blocking traceability diagnostics",
+      "Run focused, canonical verify, immutable package, and offline-consumer checks"
+    ],
+    "requiredEvidence": [
+      "business-acceptance/release-gate"
+    ],
+    "sourceRefs": [
+      "D-BA-TECHNICAL-AUTHORITY-002",
+      "D-BA-BUSINESS-SCOPE-002",
+      "D-BA-COVERAGE-ARTIFACT-002",
+      "D-BA-TRACEABILITY-SCOPE-002"
+    ]
+  },
+  "dependencies": [
+    "WI-BA-COVERAGE-GATE",
+    "WI-BA-COVERAGE-TRACEABILITY"
+  ],
+  "assignment": {
+    "workItemRef": "WI-BA-RELEASE",
+    "specialistProfileRef": "PROFILE-DEVRELAY-ENGINEERING",
+    "capabilityCoverage": [
+      "release-engineering",
+      "integration-testing",
+      "technical-writing"
+    ],
+    "requiredTools": [
+      "filesystem",
+      "node-test"
+    ],
+    "requiredGrants": [
+      "filesystem.read",
+      "filesystem.write",
+      "process.spawn"
+    ],
+    "assignmentRationale": "The deterministic capability catalog selects the provider-neutral DevRelay engineering profile; the host binds it to one visible Codex task.",
+    "executionPolicyRef": "POLICY-DEVRELAY-V1-DOGFOOD"
+  },
+  "projectContext": {
+    "projectOverviewPath": "ProjectOverview.md",
+    "projectOverviewRequired": true,
+    "releaseSnapshot": {
+      "artifactId": "ReleaseCatalog-0.7.0",
+      "digest": "sha256:64af78747b37a1ae7ec12755f3746e67f2502f99d3883ca02627f35306156ac7",
+      "relativePath": "release/0.7.0.json"
+    }
+  },
+  "authority": {
+    "writeScope": [
+      "docs/business-acceptance.md",
+      "README.md",
+      "RELEASE.md",
+      "CHANGELOG.md",
+      "src/index.mjs",
+      "package.json",
+      "package-lock.json",
+      "scripts/release-catalog.mjs",
+      "scripts/release-tools.mjs",
+      "release/",
+      "test/business-acceptance-documentation.test.mjs",
+      "test/business-acceptance-release.test.mjs",
+      "dogfood/business-acceptance/"
+    ],
+    "forbidden": [
+      "deployment",
+      "release effect",
+      "requirements mutation",
+      "adapter authority",
+      "unbound owner approval",
+      "technical test re-execution by BusinessAcceptance"
+    ]
+  },
+  "handoff": {
+    "path": "dogfood/business-acceptance/execution/attempts/WI-BA-RELEASE.attempt-004.handoff.raw.json",
+    "requiredShape": "BootstrapWorkItemHandoff"
+  },
+  "attempt": 4,
+  "dependencyCompletion": [
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-TRACEABILITY-004",
+      "digest": "sha256:712501d1b6ed7453ea3cbfc29a1cd65a89f56048c5f1a53c074173c40ce89576",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-TRACEABILITY.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-TRACEABILITY"
+    },
+    {
+      "artifactId": "BA-HOST-INTEGRATION-WI-BA-COVERAGE-GATE-001",
+      "digest": "sha256:cd2f057433a18232486680ebd2e13bffa3e4d365ff3ab66ef173b3f194325187",
+      "relativePath": "dogfood/business-acceptance/execution/host-integration/WI-BA-COVERAGE-GATE.receipt.json",
+      "workItemId": "WI-BA-COVERAGE-GATE"
+    }
+  ],
+  "revisionLineage": {
+    "route": "work-breakdown-revised",
+    "predecessorTask": {
+      "artifactId": "WI-BA-RELEASE.attempt-003",
+      "digest": "sha256:00e8f32f993ac2f8912ae82c197affa795ff6c4a04c5ad8a1ad3a6bed1ff38c2",
+      "relativePath": "dogfood/business-acceptance/execution/task-contracts/WI-BA-RELEASE.attempt-003.task.json"
+    },
+    "planningRevision": {
+      "artifactId": "BA-WB-REVISION-002",
+      "digest": "sha256:d50d9755710f0ad962137d9473227053045fe369220d574c3ff5d6212d654c97",
+      "relativePath": "dogfood/business-acceptance/planning/business-acceptance-coverage-revision-002.json"
+    }
+  },
+  "requiredCorrections": [
+    "Materialize one exact accepted run from the real RequirementsBaseline, ProjectOverviewBaseline, verified SystemVerificationResult, and vocabulary-1.5 TraceabilityGraph using the integrated coverage Core and Gate.",
+    "Require exhaustive passing technical criterion paths plus direct business objective, success metric, and all 31 current SCOPE-* dispositions; do not rerun technical tests.",
+    "Merge trusted acceptance traceability atomically and require zero blocking diagnostics before sealing DevRelay 0.8.0.",
+    "Run focused tests, npm.cmd run verify, npm.cmd run release:check, immutable package inspection, and offline-consumer checks."
+  ],
+  "taskDigest": "sha256:87417330dcd4de55421923bb9f813033ad1a56524059372fd8c83bc1be1d9226"
+}

@@ -1,0 +1,9 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": { "id": "asyncapi-contract-generator", "version": "0.1.0", "description": "Fixture-conformant optional AsyncAPI generator binding behind the same bounded ContractGeneration proposer port." },
+  "implements": [{ "module": { "id": "contract-generation", "version": "0.1.0" }, "operations": [
+    { "id": "establish-contracts", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false, "properties": { "contractKind": { "const": "asyncapi" } } }, "capabilities": [] },
+    { "id": "generate-contract-change", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false, "properties": { "contractKind": { "const": "asyncapi" } } }, "capabilities": [] }
+  ] }]
+}

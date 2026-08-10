@@ -1,0 +1,31 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay has approved requirements and architecture baselines for the eighteen-component V1 lifecycle. ArchitectureDiscovery is skipped because a baseline exists. The approved architecture requires eight JSON Schema contracts, so Core has selected ContractGeneration and blocks WorkBreakdown until ContractGate completes.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "Module and adapter authors",
+    "API and schema authors",
+    "Workflow and IDE hosts",
+    "WorkBreakdown and verification consumers",
+    "Security and compatibility reviewers"
+  ],
+  "domainConstraints": [
+    "Generic Core owns exact loading, deterministic routing, adapter resolution, checkpoints, canonical validation, traceability merge, and progression.",
+    "Architecture interface intent determines whether ContractGeneration runs and which contract kinds are required.",
+    "Candidate and approved contract authority remain distinct and ContractGate promotion is explicit.",
+    "Adapters receive declared immutable inputs only and never receive TraceabilityGraph.",
+    "Native contract files remain subordinate to canonical DevRelay contract artifacts and exact byte references."
+  ],
+  "conventions": [
+    "Use SHA-256-bound artifacts and exact semantic versions at runtime boundaries.",
+    "Use JSON Schema draft 2020-12 for DevRelay's portable artifact contracts.",
+    "Use lowercase kebab-case operations, ports, relationships, and outcomes.",
+    "Store forward lifecycle relationships and derive inverse traversal at query time.",
+    "Distinguish contract-defined, fixture-conformant, live-conformant, and release-ready bindings.",
+    "Prove positive, negative, replay, drift, substitution, compatibility, and Gate behavior."
+  ],
+  "sourceRefs": []
+}

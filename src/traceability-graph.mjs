@@ -201,6 +201,24 @@ export function createInMemoryTraceabilityStore() {
   }
 
   const store = {
+    restore(graphId, entries, headRef) {
+      if (heads.has(graphId)) {
+        fail("TG_GRAPH_ALREADY_INITIALIZED", `traceability graph ${graphId} is already initialized`);
+      }
+      if (!Array.isArray(entries) || entries.length === 0) {
+        fail("TG_INVALID_ARGUMENT", "restored graph history requires at least one artifact");
+      }
+      for (const entry of entries) {
+        putArtifact(entry);
+      }
+      const head = artifacts.get(artifactKey(headRef));
+      if (!head || !sameRef(head.ref, headRef)) {
+        fail("TG_ARTIFACT_NOT_FOUND", "restored graph head is absent from its artifact closure");
+      }
+      heads.set(graphId, immutableJson(headRef));
+      return copyLoaded(head);
+    },
+
     initialize(graphId, entry) {
       const current = heads.get(graphId);
       if (current) {
@@ -460,6 +478,23 @@ function decodeLoaded(entry, expectedRef) {
   const bytes = Buffer.from(entry.bytes ?? []);
   if (sha256Digest(bytes) !== expectedRef.digest) {
     fail("TG_SOURCE_DIGEST_MISMATCH", `resolved ${expectedRef.artifactId} bytes do not match its digest`);
+  }
+  const mediaType = expectedRef.mediaType?.toLowerCase();
+  const isJson = mediaType === "application/json" || mediaType?.endsWith("+json");
+  if (!isJson) {
+    if (entry.value !== undefined) {
+      fail(
+        "TG_OPAQUE_VALUE_FORBIDDEN",
+        `resolved opaque artifact ${expectedRef.artifactId} cannot supply a decoded value`,
+      );
+    }
+    const value = {
+      artifactId: expectedRef.artifactId,
+      digest: expectedRef.digest,
+      mediaType: expectedRef.mediaType,
+      opaque: true,
+    };
+    return Object.freeze({ ref: immutableJson(ref), bytes, value: immutableJson(value) });
   }
   let decoded;
   try {
@@ -1753,6 +1788,7 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
       loadedAttachments,
       resolvedArtifacts,
       resolveArtifact,
+      gate,
     } = request;
     requireRecord(invocation, "invocation");
     requireRecord(moduleResult, "moduleResult");
@@ -1775,6 +1811,7 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
       invocation: immutableJson(invocation),
       invocationFingerprint,
       moduleResult: immutableJson(moduleResult),
+      ...(gate === undefined ? {} : { gate: immutableJson(gate) }),
       loadedInputs,
       loadedOutputs,
       loadedAttachments,
