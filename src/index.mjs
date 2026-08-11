@@ -504,6 +504,16 @@ export {
   validateLifecycleRunReportArtifact,
 } from "./lifecycle-run-report-artifact-validator.mjs";
 export {
+  CHATGPT_DESKTOP_RUNTIME_APPROVED_CONTRACTS,
+  CHATGPT_DESKTOP_RUNTIME_CONTRACT_BASELINE_VERSION,
+  CHATGPT_DESKTOP_RUNTIME_INTERFACE_INTENT_IDS,
+  ChatGptDesktopRuntimeArtifactValidationError,
+  canonicalChatGptDesktopRuntimeArtifact,
+  canonicalChatGptDesktopRuntimeArtifactDigest,
+  chatGptDesktopRuntimeArtifactEvidence,
+  validateChatGptDesktopRuntimeArtifact,
+} from "./chatgpt-desktop-runtime-artifact-validator.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
