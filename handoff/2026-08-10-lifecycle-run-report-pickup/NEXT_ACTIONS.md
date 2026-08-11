@@ -1,80 +1,80 @@
 # Next actions
 
-## Immediate DG-1 boundary
+## Resume order
 
-1. Snapshot branch, HEAD, tree, divergence, index, and every pre-existing dirty
-   path with byte length and SHA-256. Preserve unrelated bytes.
-2. Make `dogfood/bootstrap-contract-generation-host-executor/materialize-dg1.mjs`
-   consume a repository-relative, content-addressed immutable continuation
-   bundle. Do not record or require a developer-machine path.
-3. Update the exact invocation/evidence contract and focused fixtures needed for
-   that portability correction. Do not alter approved baselines or Gate records.
-4. Verify the immutable source manifest, superseding manifest, all 20 manifest
-   entries, 48-intent selection, one-call/one-checkpoint/zero-replay-call
-   behavior, and terminal digest equality.
-5. Perform the portable, exact checkpoint-bound ContractGeneration replay.
-6. Stop and present the ContractGate candidate and evidence for a separate
-   ContractGate decision. Do not infer or perform promotion.
+1. Inspect GitHub Actions run `31457082371` for commit
+   `c957db0865ef990b27eb86d6671ed0df2e35aa9e`. Confirm whether the six local-Git fixture
+   failures are gone. Do not infer closure from the source patch alone.
+2. Repair the LifecycleRunReport independent adversarial verifier's repository
+   root calculation using a cross-platform file-URL/path conversion. Preserve
+   every existing assertion and evidence binding.
+3. Resolve the historical bootstrap source-closure policy without fabricating
+   evidence:
+   - preserve the immutable original `6ddd` manifest as unavailable historical
+     evidence;
+   - use committed superseding evidence/checkpoints where the runtime permits
+     checkpoint-only verification; or
+   - require an explicitly supplied trusted source bundle whose bytes match the
+     recorded digest.
+   Do not repoint the bootstrap verifiers at semantically different current
+   files merely to make CI green.
+4. Isolate the exact host-dependent field in the Structurizr conformance proof
+   / ArchitectureGate review bytes. Make that evidence host-independent while
+   preserving semantic architecture output, then prove Windows and Linux
+   generate the same bound digests.
+5. Re-run focused portability tests, then the complete supported checkout.
+6. Close remaining PB-005 provenance and PB-006 catalog/documentation
+   inconsistencies from one source of truth.
+7. Only after all upstream bytes are stable, perform the single transactional
+   PB-002 superseding-lineage regeneration and prove an immediate no-change
+   rerun.
+8. Resume DG-1 at the exact ContractGeneration/ContractGate boundary. Present
+   the candidate for a separate ContractGate decision. Do not infer promotion.
+9. Continue LifecycleRunReport DG-2 through DG-6 only after the supported
+   prefix is clean.
 
-## Rest of DG-1 after ContractGate
+## Current blocker-order status
 
-Continue only after exact owner approval and ContractGate promotion of the
-byte-bound candidate. Then complete the remaining released planning prefix in
-this order:
+| Blocker | Status at pause |
+| --- | --- |
+| PB-001 | Open. Historical/bootstrap source closure remains; one LRR path-only defect remains. |
+| PB-003 | Partially closed. Java 21 CI setup is fixed; host-independent Structurizr/ArchitectureGate proof evidence remains. |
+| PB-004 | Source repair committed at `c957db0865ef990b27eb86d6671ed0df2e35aa9e`; CI verification is in progress. |
+| PB-005 | Partially improved by full-history checkout; end-to-end provenance closure remains open. |
+| PB-006 | Open pending stable portable source/evidence bytes. |
+| PB-002 | Intentionally not started; must remain last. |
 
-1. Run `WorkBreakdown@decompose-change` with the full candidate work-breakdown
-   snapshot and the relevant version-pinned RequirementsBaseline,
-   ProjectOverviewBaseline, ArchitectureBaseline, ContractDisposition,
-   repository context, and current WorkBreakdownBaseline.
-2. Present the exact WorkBreakdown candidate to `WorkBreakdownGate` and proceed
-   only from its independently authorized promotion.
-3. Run `WorkDependencyAnalysis` with its configured native structured proposer,
-   OPA policy evaluation, Graphology DAG mechanics, and advisory Spec Kit
-   reviewer; then present the candidate to `WorkDependencyGate`.
-4. After exact dependency promotion, run `SpecialistAssignment` with A2A
-   capability discovery and the native deterministic ranker; then present the
-   complete assignment candidate to `SpecialistAssignmentGate`.
-5. Before declaring DG-1 complete, freeze the exact candidate work-breakdown
-   snapshot, approved dependency DAG, complete assignments, every version-pinned
-   context slice, traceability inputs/updates/receipts, adapter call counts,
-   checkpoints, and byte-identical replay evidence.
+Do not create or renumber PB authority as part of this handoff.
 
-Each Module must use its configured production-like bounded binding and its
-normal visible user-facing interaction. Ask the owner only clarifications that
-block a product, design, security, or acceptance decision; do not ask for
-non-blocking implementation preferences and do not infer approval from silence,
-successful execution, fixtures, or chat history.
+## Hard stop conditions
 
-## Remaining increment path
+Stop without authority mutation if any of these occurs:
 
-- `DG-2`: implement the bounded LifecycleRunReport candidate only after DG-1
-  freezes the exact upstream candidate work-breakdown snapshot and context.
-- `DG-3`: independently verify the DG-2 candidate, including authority,
-  determinism, redaction, provenance, and arbitrary/repeating-frontier cases.
-- Close `PB-001`, `PB-003`, `PB-004`, `PB-005`, and `PB-006` in that exact order;
-  then perform the single transactional `PB-002` regeneration.
-- `DG-4`: replay the expanded prefix end to end, including repeating
-  WorkExecution, WorkItemVerification, and ChangeIntegration frontiers.
-- `DG-5`: prove deterministic no-change replay and a clean supported matrix
-  twice. Environment-limited results are not supported-matrix green.
-- `DG-6`: atomically promote only the exact eligible candidate, then update the
-  accepted prefix, maturity records, findings, risks, and next frontier.
-
-## Stop conditions
-
-Stop without mutation and preserve evidence if any of these occurs:
-
-- source, manifest, checkpoint, baseline, candidate, or verifier digest drift;
-- a referenced path is missing or resolves outside the repository;
-- a proposed portability change needs hidden context or a machine-specific path;
-- shared dirty-file deltas overlap or cannot be proven disjoint;
-- the required-intent count differs from 48 or any of the nine false-disposition
-  interfaces is selected;
-- replay invokes the generator again, changes the terminal digest, or loses the
-  exact checkpoint;
-- a tool or adapter attempts Gate, graph, completion, routing, or promotion
+- source, checkpoint, baseline, candidate, verifier, or proof digest drift that
+  cannot be explained by an explicitly non-semantic portable field;
+- a historical referenced source is unavailable and the proposed fix would
+  reconstruct, substitute, or silently re-author its bytes;
+- a portability change depends on hidden context or a machine-specific path;
+- the required ContractGeneration intent count differs from 48 or any of the
+  nine false-disposition interfaces is selected;
+- replay invokes the generator again when checkpoint-only replay is required,
+  changes the terminal candidate, or loses exact checkpoint lineage;
+- a tool or adapter attempts Gate, graph, completion, PB, routing, or promotion
   authority;
-- supported dependencies or external validation are unavailable and the next
-  claim would require supported-matrix or live-conformance evidence;
-- ContractGate approval, baseline promotion, staging, commit, push, or a broader
-  lifecycle action would be required without explicit authority.
+- an expected digest is proposed for update before the cause of cross-host byte
+  drift is isolated;
+- ContractGate approval, baseline promotion, accepted-prefix advancement, or
+  LifecycleRunReport DG-2 work would be required while the supported checkout
+  remains red.
+
+## Release proof required after repairs
+
+Before calling the active increment release-ready:
+
+1. focused portability/evidence tests green;
+2. full `npm run release:check` green;
+3. supported Node/OS GitHub Actions matrix green;
+4. exact content-addressed superseding lineage regenerated transactionally;
+5. immediate deterministic no-change replay green;
+6. later DG-5 supported-matrix proof satisfied as required by the lifecycle;
+7. exact DG-6 promotion performed only from eligible evidence.

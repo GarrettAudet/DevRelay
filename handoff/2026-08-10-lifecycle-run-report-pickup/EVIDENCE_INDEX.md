@@ -3,6 +3,8 @@
 Paths are repository-relative. SHA-256 values bind raw bytes unless stated
 otherwise.
 
+## Controlling lifecycle evidence
+
 | Evidence | Path | Digest |
 | --- | --- | --- |
 | Route B human analysis | `analysis/dg1-contract-generation-48-vs-57-authority-analysis.md` | `sha256:981ab4dd7472108506e20d2d65d7236a015c2c57816b3a1e07f2c95f6c0a75a2` |
@@ -17,16 +19,31 @@ otherwise.
 | Immutable paused lineage | `dogfood/bootstrap-contract-generation-host-executor/verification/change-integration-receipt-paused-2026-08-10.json` | `sha256:7aed334ea818445a85519fe98980590b82b982a89749394c6a818263622c15ef` |
 | Architecture host-binding integration | `dogfood/bootstrap-architecture-host-executor-adapters/verification/change-integration-receipt-superseding-export-repair.json` | `sha256:86a907932a4c897a5ea5523038c6c0987ab27abc32d49fa68cb124b66244d489` |
 
+## Repository/CI checkpoint evidence
+
+- Last fully green release proof:
+  `31d79faed9a1b926188dc0eea34b0d443fda3a35`.
+- CI history/Java repair:
+  `2c4b6e3b67045544555983d408dec112eeab238f`.
+- Local-Git fixture portability repair:
+  `c957db0865ef990b27eb86d6671ed0df2e35aa9e`.
+- Completed post-toolchain workflow run:
+  `31454853164`. Representative Ubuntu/Node 20 result:
+  811 pass, 16 fail, 1 skip from 828 tests.
+- Active post-local-Git workflow run:
+  `31457082371`. Status at package checkpoint: in progress.
+
 Additional controlling sources:
 
 - `AGENTS.md` — repository scope and invariants.
 - `CURRENT_STATUS.md` — current human-readable projection.
 - `ProjectOverview.md` and `project/project-overview-baseline.json` — canonical
-  project context pair; do not edit as part of pickup work.
+  project context pair; do not edit as part of portability closure.
 - `dogfood/v1-module-sequence.working.md` — recursive working ledger.
 - `dogfood/lifecycle-run-report/` — active candidate evidence.
 
 The original manifest with digest
 `sha256:6dddece4148cee24389595e2d971993f859f62df2fb0fd4da9fc1f00416bd311`
-is immutable superseded evidence. It is intentionally not copied into this
-handoff and must not be reconstructed or overwritten.
+is immutable superseded evidence. It is intentionally absent from the
+repository/handoff and must not be reconstructed, overwritten, or replaced by
+different current bytes merely to satisfy a historical replay.

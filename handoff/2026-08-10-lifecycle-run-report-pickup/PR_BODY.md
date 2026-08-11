@@ -1,82 +1,62 @@
 # What changed
 
-- Added a self-contained LifecycleRunReport pickup package for active increment
-  `DGI-LIFECYCLE-RUN-REPORT-2026-08-10`.
-- Captured the controlling authority order, recursive dogfood rule, fixed design
-  invariants, adapter maturity truth, PB closure order, evidence index,
-  verification state, stop conditions, and a ready-to-paste owner prompt.
-- Recorded the exact DG-1 pickup point: make the ContractGeneration continuation
-  repository-relative and content-addressed, replay the 48-intent Route B
-  candidate, and stop for a separate ContractGate review.
-- Documented the remaining DG-1 planning prefix after exact ContractGate owner
-  approval: WorkBreakdown, WorkDependencyAnalysis, SpecialistAssignment, their
-  separate Gates, and the evidence that must be frozen before DG-1 completes.
-- Linked the pickup from the root README and current status publication section.
+This paused branch contains two bounded portability repairs plus an updated
+LifecycleRunReport handoff package.
+
+- `2c4b6e3b67045544555983d408dec112eeab238f` makes GitHub Actions preserve full Git
+  history, install Temurin Java 21, and bind the Linux DevRelay Java executable.
+- `c957db0865ef990b27eb86d6671ed0df2e35aa9e` makes local-Git adapter test fixtures use
+  OS-native absolute temporary paths instead of Windows-only mocked paths.
+  Product adapter semantics are unchanged.
+- The handoff now identifies `codex/lifecycle-run-report-completion` as the active resume
+  branch, preserves `31d79faed9a1b926188dc0eea34b0d443fda3a35` as the last fully green release
+  proof, and records the current red/in-progress verification state honestly.
 
 # Why
 
-The cumulative branch contains substantial accepted-working lifecycle and
-host-binding evidence, but chat history is not authority and cannot be the only
-way a new engineer understands the safe resume boundary. This package makes the
-current state reviewable and portable while keeping baselines, Gate decisions,
-TraceabilityGraph state, implementation, and test artifacts untouched.
-
-# Impact / pickup point
-
-The controlling ContractGeneration candidate is `CCS-DC7A978C15992619` with
-raw digest
-`sha256:361173cb70a33c2631daef341512cd5115f806b25cd9a48b759cc612968e2d2b`.
-Exactly 48 of 57 approved interface intents require generation. Nine internal
-WorkBreakdown/WorkDependencyAnalysis interfaces remain excluded because their
-nested `contractGeneration.required` disposition is `false`.
-
-The next implementation owner must first remove the external-directory
-dependency from
-`dogfood/bootstrap-contract-generation-host-executor/materialize-dg1.mjs` by
-making its immutable input repository-relative and content-addressed. After
-exact ContractGeneration replay, work stops at ContractGate. Promotion requires
-a separate owner decision.
+The active increment is blocked by portability and evidence reproducibility, not
+by missing broad lifecycle implementation. The old handoff conflated a
+historical green publication checkout with the current portability branch and
+still pointed the next owner at the older branch. This update creates a clean,
+content-bound pause point.
 
 # Verification
 
-- Verified all referenced evidence paths and 11 controlling raw SHA-256 values.
-- Verified the handoff text as UTF-8, NFC, LF-only, with trailing LF.
-- Verified no developer-machine absolute path is present.
-- Verified `git diff --check` for the bounded documentation scope.
-- Preserved the historical integration receipt exactly at 821 tests: 810
-  passed, 10 environment-only dependency failures, and 1 skipped.
-- Installed exact lockfile dependencies with `npm.cmd ci`: 15 packages added,
-  16 audited, 0 vulnerabilities.
-- `npm.cmd run verify` exited 0 with 2655 JSON files, 421 JavaScript modules,
-  3336 LF-only text files, 13 downstream ProjectOverview operations, and the
-  complete serial tests green.
-- `npm.cmd run release:check` exited 0 with the same static gate plus release
-  catalog, package, offline-install, and smoke verification.
+Completed workflow run `31454853164` after the CI/toolchain repair:
 
-# Known limitations
+- all four jobs passed checkout, Node setup, Java 21 setup, and dependency
+  installation;
+- representative Ubuntu/Node 20 static verification passed;
+- 828 tests: 811 passed, 16 failed, 1 skipped;
+- failure count improved from 18 to 16.
 
-- The ContractGeneration materializer still needs the documented portability
-  correction before repository-only replay.
-- The historical integration receipt's Graphology/OPA dependency limitation is
-  closed for this exact publication checkout; its original 821/810/10/1 record
-  remains immutable historical context.
-- External Structurizr validation was unavailable; fixture or bounded-host
-  evidence does not prove general live interoperability.
-- DG-5 still requires cross-platform supported-matrix proof twice; one green
-  publication checkout does not satisfy that future criterion.
-- All 18 V1 lifecycle components have construction coverage, but they are not
-  all release-ready.
+Those 16 failures were classified into four historical/machine-path source
+failures, six local-Git fixture portability failures, and six architecture
+proof/review digest or promotion failures.
 
-# Next steps
+Workflow run `31457082371` was started from
+`c957db0865ef990b27eb86d6671ed0df2e35aa9e` after the local-Git fixture repair. It is still in
+progress at the handoff checkpoint, so the six local-Git failures are not
+claimed closed yet.
 
-1. Apply and independently verify the bounded ContractGeneration portability
-   correction.
-2. Replay the exact 48-intent candidate and present it for separate ContractGate
-   review.
-3. After exact owner approval/promotion, complete the visible, configured
-   production-like WorkBreakdown, WorkDependencyAnalysis, and
-   SpecialistAssignment paths and their separate Gates.
-4. Freeze the exact work-breakdown snapshot, DAG, assignments, pinned context,
-   traceability, call counts, checkpoints, and replay evidence before closing
-   DG-1.
-5. Continue DG-2 through DG-6 and close PB items only in the recorded order.
+# Known limitations / blockers
+
+- Historical bootstrap verifiers reference original source bytes that are not
+  committed. Do not reconstruct or silently substitute those bytes.
+- One LifecycleRunReport adversarial verifier still has a cross-platform
+  repository-root defect.
+- Java 21 now exposes host-dependent Structurizr/ArchitectureGate evidence
+  digests on Linux. Semantic architecture change digests remain stable, but
+  exact-byte promotion correctly fails. Isolate the unstable proof field
+  instead of refreshing expected hashes.
+- PB-005 and PB-006 remain open.
+- PB-002 remains intentionally unstarted and must execute transactionally last.
+- LifecycleRunReport DG-2 through DG-6 remain pending.
+
+# Release position
+
+The last green baseline remains `31d79faed9a1b926188dc0eea34b0d443fda3a35`. The active branch
+is close in implementation coverage but is not a release candidate while the
+supported checkout is red. Finish portability/evidence closure, PB-005/PB-006,
+the single PB-002 lineage transaction, and clean verification before resuming
+the remaining LifecycleRunReport lifecycle.

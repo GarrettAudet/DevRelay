@@ -3,65 +3,88 @@
 ## Repository and increment
 
 - Repository: `https://github.com/GarrettAudet/DevRelay.git`
-- Branch: `codex/v0.5-lifecycle-run-report`
+- Active resume branch: `codex/lifecycle-run-report-completion`
+- Source-work checkpoint: `c957db0865ef990b27eb86d6671ed0df2e35aa9e`
+- CI/toolchain repair commit: `2c4b6e3b67045544555983d408dec112eeab238f`
+- Last fully green release proof: `31d79faed9a1b926188dc0eea34b0d443fda3a35`
+- Immutable execution anchor: `6ddd8d78f009ccb7d07d298bd214f520244e4496`
 - Active increment: `DGI-LIFECYCLE-RUN-REPORT-2026-08-10`
-- Current Gate/work boundary: `DG-1`
-- Pre-pickup integration base HEAD: `3b39efb32acb7b7bedfc121b4586947595b08f7c`
-- Pre-pickup integration base tree: `287e77b7d1cac52728f65973bbf39d7ac3544935`
+- Current Gate/work boundary: `DG-1`, paused for portability closure
+- LifecycleRunReport DG-2: not started
 
-The `3b39...` identity is historical pre-pickup integration context, not the
-identity of this published handoff. The exact pickup identity is the commit at
-the head of the published `codex/v0.5-lifecycle-run-report` branch together with
-its draft pull request. Use that commit and PR diff when checking out, reviewing,
-or resuming the pickup. Preserve unrelated dirty bytes in any continuing local
-workspace. The historical integration receipt records that its bounded action
-made no Gate, baseline, graph, completion, accepted-prefix, PB, index, commit, or
-push mutation.
+The exact package commit is the branch head containing this handoff. The
+`31d79fa` identity is the last fully green release proof, not the
+current branch head. Preserve the immutable `6ddd` historical
+lineage and all unrelated bytes.
+
+## What was completed before pausing
+
+Two bounded portability changes are committed:
+
+1. `2c4b6e3b67045544555983d408dec112eeab238f` makes CI use full Git history and Java 21, with
+   the Linux DevRelay Java executable explicitly bound.
+2. `c957db0865ef990b27eb86d6671ed0df2e35aa9e` makes the local-Git adapter test fixtures use
+   OS-native absolute temporary paths. Product adapter behavior is unchanged.
+
+The first post-toolchain matrix run `31454853164` completed all four
+Node/OS jobs but failed `release:check`. Its representative Ubuntu/Node 20 job
+ran 828 tests: 811 passed, 16 failed, and 1 skipped. Static verification itself
+passed.
+
+The follow-up four-way run `31457082371` started from
+`c957db0865ef990b27eb86d6671ed0df2e35aa9e` and is still in progress at this handoff checkpoint.
+Its purpose is to verify that the six local-Git portability fixture failures are
+actually removed.
 
 ## Exact lifecycle position
 
-DG-1 has replayed or state-routed RequirementsGathering through
-ArchitectureGate. The reusable ContractGeneration host binding and corrected
-Route B lineage are integrated. The exact next boundary is:
+The integrated ContractGeneration Route B lineage remains the controlling
+semantic candidate:
 
-```text
-make continuation portable -> exact ContractGeneration replay
--> stop for separate ContractGate review
-```
+- artifact: `CCS-DC7A978C15992619`
+- raw digest:
+  `sha256:361173cb70a33c2631daef341512cd5115f806b25cd9a48b759cc612968e2d2b`
+- required interface intents: 48 of 57
+- explicitly excluded intents: 9 with
+  `interface.contractGeneration.required == false`
 
-The terminal candidate is `CCS-DC7A978C15992619`, raw digest
-`sha256:361173cb70a33c2631daef341512cd5115f806b25cd9a48b759cc612968e2d2b`.
-It covers exactly 48 required interface intents. Nine WorkBreakdown and
-WorkDependencyAnalysis interfaces are excluded because their approved
-`interface.contractGeneration.required` disposition is `false`; they remain
-valid internal interfaces and are not missing contracts.
+ContractGeneration dogfood still reaches a deterministic candidate and stops at
+ContractGate. The exact historical `6ddd` continuation itself is not portable
+because its original source bundle is not committed; the CI test correctly
+skips that replay when a trusted source bundle is absent.
 
-## Portability blocker
+Do not reconstruct or fabricate the old source manifest. A forward repair must
+use committed superseding evidence/checkpoints or an explicitly supplied,
+digest-verified trusted source bundle.
 
-`dogfood/bootstrap-contract-generation-host-executor/materialize-dg1.mjs`
-still accepts an external continuation directory. Before portable replay, make
-that input repository-relative and content-addressed without changing the
-approved source meaning. Do not substitute a developer-machine path, hide the
-input in environment state, overwrite the immutable source evidence, or bypass
-digest verification.
+## Remaining portability/evidence closure
+
+The current failures fall into a few root-cause clusters:
+
+1. **Historical bootstrap source closure.** Two bootstrap verifiers and one
+   DG-1 materializer refer to source locations that existed only in the
+   originating environment. Their original bytes are not committed, so a
+   repository-path rewrite would silently substitute evidence.
+2. **LifecycleRunReport verifier root portability.** One independent adversarial
+   verifier computes the repository root in a Windows-shaped way and fails on
+   Linux. This is a focused path-only repair.
+3. **Structurizr/ArchitectureGate proof portability.** Java 21 now runs in CI,
+   exposing host-dependent proof/review digests for several architecture
+   dogfoods. Semantic architecture change digests remain stable, but exact-byte
+   promotion correctly fails. Isolate and remove the host-dependent field;
+   never update golden digests merely to match Linux.
+4. **PB-005/PB-006.** Finish provenance and catalog/documentation closure once
+   the source bytes are portable.
+5. **PB-002.** Regenerate superseding content-addressed lineage once, last,
+   after upstream bytes are stable.
 
 ## Product maturity
 
-All 18 owner-approved V1 lifecycle components have construction coverage. This
-means the accepted working prefix can recursively construct and verify later
-slices. It does not mean every component or adapter is release-ready. Notable
-debt remains in SpecialistAssignmentGate, WorkExecution, BusinessAcceptance,
-portable bootstrap/tooling, cross-platform supported-matrix proof, and live
-adapter conformance.
+All 18 owner-approved V1 lifecycle components retain construction coverage.
+That is strong implementation coverage, not release authority. Specialist
+AssignmentGate, WorkExecution, BusinessAcceptance, portable bootstrap/tooling,
+supported-matrix proof, and live/portable adapter evidence still carry debt.
 
-The immutable integration receipt historically records 821 tests total, 810
-passed, 10 environment-only dependency failures, and 1 skipped. Do not rewrite
-that evidence. In the current publication checkout, exact lockfile installation
-completed with 15 packages added, 16 audited, and 0 vulnerabilities;
-`npm.cmd run verify` and `npm.cmd run release:check` both exited 0. The current
-static counts are 2655 JSON files, 421 JavaScript modules, 3336 LF-only text
-files, and 13 downstream ProjectOverview operations, with the complete serial
-tests and release catalog/package/offline-install/smoke flow green.
-
-Cross-platform supported-matrix proof twice under DG-5 and live Structurizr
-conformance remain pending.
+No Gate promotion, baseline mutation, TraceabilityGraph authority change,
+accepted-prefix mutation, PB authority mutation, or LifecycleRunReport DG-2
+implementation was performed in this pause cycle.
