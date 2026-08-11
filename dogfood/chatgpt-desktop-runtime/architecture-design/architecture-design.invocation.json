@@ -1,0 +1,180 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "architecture-design-change-chatgpt-desktop-runtime-v1",
+  "runId": "chatgpt-desktop-runtime-architecture-run-v1",
+  "nodeId": "architecture-design",
+  "module": {
+    "id": "architecture-design",
+    "version": "0.1.0",
+    "operation": "design-change"
+  },
+  "adapters": [
+    {
+      "step": "designer",
+      "plugin": {
+        "id": "openspec-design",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "1.0",
+        "changeName": "chatgpt-desktop-runtime",
+        "schema": "devrelay-architecture",
+        "artifact": "design.md",
+        "bridge": "agent-command",
+        "toolName": "OpenSpec"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/openspec/changes"
+        },
+        {
+          "kind": "network.connect",
+          "scope": "host:implementation-engine"
+        }
+      ]
+    },
+    {
+      "step": "modeler",
+      "plugin": {
+        "id": "structurizr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "2026.06.28",
+        "workspacePath": "dogfood/chatgpt-desktop-runtime/architecture-design/workspace.dsl",
+        "exportFormat": "static",
+        "toolName": "Structurizr DSL"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/architecture"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "structurizr-export"
+        }
+      ]
+    },
+    {
+      "step": "decision-recorder",
+      "plugin": {
+        "id": "madr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "templateVersion": "4.0",
+        "decisionsPath": "C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design",
+        "toolName": "MADR",
+        "toolVersion": "4.0"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "project-architecture-state": [
+      {
+        "artifactId": "project-architecture-state-chatgpt-desktop-runtime-v1",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:35e07e37df5f5049c67145d0b8ba6747fcfa168f2d95182b0ff6d6c63d28e1fc",
+        "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/project-architecture-state.json"
+      }
+    ],
+    "routing-decision": [
+      {
+        "artifactId": "module-route-decision-chatgpt-desktop-runtime-architecture-v1",
+        "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+        "mediaType": "application/vnd.devrelay.module-route-decision+json",
+        "digest": "sha256:89c7e1b1d2a298c5c225ac881cebee8d6100e73032ab51f6445cd51b14bf481d",
+        "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/module-route-decision.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:30889842e88d079a91e9e33e5c288db9a0fa9c7a5d6d9c251f1ac22d669f20df",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0",
+        "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-6e65cc0",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:c0dd3271f26a397d533ff30c6a50abe5a1debcc37af7e7ab206c9cf4daca1e0f",
+        "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/repository-snapshot.json"
+      }
+    ],
+    "architecture-baseline": [
+      {
+        "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+        "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+      }
+    ],
+    "architecture-baseline-project-context": [
+      {
+        "artifactId": "project-context-devrelay-architecture-discovery-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:98553600fd8344af9db86eddfdc832dc6ab1997034fbe730e06c9ea787037478",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/project-context.json"
+      }
+    ],
+    "architecture-baseline-repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-4bda7fe",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
+        "uri": "file:///C:/repos/DevRelay/dogfood/architecture-discovery/repository-snapshot.json"
+      }
+    ]
+  },
+  "options": {}
+}

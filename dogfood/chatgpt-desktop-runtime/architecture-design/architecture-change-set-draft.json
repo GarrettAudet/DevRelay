@@ -1,27 +1,29 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
-  "kind": "ArchitectureBaseline",
-  "baselineId": "architecture-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-  "approvedDraft": {
-    "artifactId": "architecture-change-set-chatgpt-desktop-runtime-v1",
-    "schema": "https://devrelay.dev/artifacts/architecture-change-set-draft/v1",
-    "mediaType": "application/vnd.devrelay.architecture-change-set-draft+json",
-    "digest": "sha256:6e91fc3fbcca077c3d774c34560143cc95b4ef023880a88ac73a5731683f1f96",
-    "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/architecture-change-set-draft.json"
+  "kind": "ArchitectureChangeSetDraft",
+  "changeSetId": "architecture-change-set-chatgpt-desktop-runtime-v1",
+  "operation": "design-change",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-chatgpt-desktop-runtime-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:35e07e37df5f5049c67145d0b8ba6747fcfa168f2d95182b0ff6d6c63d28e1fc",
+    "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/project-architecture-state.json"
   },
-  "requirementsBaseline": {
+  "baseArchitectureBaseline": {
+    "artifactId": "architecture-baseline-devrelay-v1-architecture-discovery-001",
+    "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+    "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+    "digest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+    "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+  },
+  "baseArchitectureDigest": "sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc",
+  "targetRequirementsBaseline": {
     "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
     "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
     "mediaType": "application/vnd.devrelay.requirements-baseline+json",
     "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6",
     "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
-  },
-  "projectOverviewBaseline": {
-    "artifactId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-    "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
-    "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
-    "digest": "sha256:30889842e88d079a91e9e33e5c288db9a0fa9c7a5d6d9c251f1ac22d669f20df",
-    "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
   },
   "projectContext": {
     "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
@@ -36,6 +38,27 @@
     "mediaType": "application/vnd.devrelay.repository-snapshot+json",
     "digest": "sha256:c0dd3271f26a397d533ff30c6a50abe5a1debcc37af7e7ab206c9cf4daca1e0f",
     "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/repository-snapshot.json"
+  },
+  "changeDisposition": "architecture-change",
+  "scope": {
+    "level": "change",
+    "boundary": "ChatGPT Desktop on Windows release host over the approved deterministic DevRelay lifecycle.",
+    "in": [
+      "Repository-backed local marketplace plugin and workflow skill",
+      "Typed local STDIO MCP bridge over Core-owned operations",
+      "Codex app-server task supervision with one task per ready work item",
+      "Durable content-addressed run, checkpoint, task, and handoff state",
+      "Evidence-backed capability and adapter maturity resolution",
+      "Windows installation, upgrade, rollback, uninstall, and clean-install proof",
+      "JSON-schema contract intent for every new structured host boundary"
+    ],
+    "out": [
+      "Public plugin-directory publication or public npm publication",
+      "A hosted DevRelay backend or WSL dependency",
+      "Making every optional external adapter live-conformant",
+      "Allowing the Desktop plugin, MCP caller, model, or task to select routes, approve Gates, mutate TraceabilityGraph, or integrate its own work",
+      "Deployment, production monitoring, and operational lifecycle extensions"
+    ]
   },
   "sections": {
     "technicalDesign": {
@@ -13660,7 +13683,7 @@
           {
             "id": "ADR-DESKTOP-001",
             "title": "Distribute V1 through a repository local marketplace plugin",
-            "status": "accepted",
+            "status": "proposed",
             "contextAndProblemStatement": "Distribute V1 through a repository local marketplace plugin",
             "decisionDrivers": [
               "Determinism",
@@ -13746,7 +13769,7 @@
           {
             "id": "ADR-DESKTOP-002",
             "title": "Expose Core through a typed local STDIO MCP bridge",
-            "status": "accepted",
+            "status": "proposed",
             "contextAndProblemStatement": "Expose Core through a typed local STDIO MCP bridge",
             "decisionDrivers": [
               "Determinism",
@@ -13832,7 +13855,7 @@
           {
             "id": "ADR-DESKTOP-003",
             "title": "Create one Codex app-server task per ready work item",
-            "status": "accepted",
+            "status": "proposed",
             "contextAndProblemStatement": "Create one Codex app-server task per ready work item",
             "decisionDrivers": [
               "Determinism",
@@ -13918,7 +13941,7 @@
           {
             "id": "ADR-DESKTOP-004",
             "title": "Persist local content-addressed Desktop run state",
-            "status": "accepted",
+            "status": "proposed",
             "contextAndProblemStatement": "Persist local content-addressed Desktop run state",
             "decisionDrivers": [
               "Determinism",
@@ -14004,7 +14027,7 @@
           {
             "id": "ADR-DESKTOP-005",
             "title": "Release one complete live path and maturity-label alternatives",
-            "status": "accepted",
+            "status": "proposed",
             "contextAndProblemStatement": "Release one complete live path and maturity-label alternatives",
             "decisionDrivers": [
               "Determinism",
@@ -14412,36 +14435,5423 @@
       }
     }
   },
-  "approvalPolicyVersion": "architecture-gate/0.1.0",
-  "approvalEvidence": [
+  "changes": {
+    "elementChanges": [
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-APP-SERVER-CLIENT",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-APP-SERVER-CLIENT",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:dbb43ef829b57d6a0e206ec18c3c7e8384536731c755759fe1aa9da552408573"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-CAPABILITY-RESOLVER",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-CAPABILITY-RESOLVER",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001",
+          "US-DEV-EXTEND-001",
+          "CON-DEV-PROVIDER-NEUTRAL-001"
+        ],
+        "targetDigest": "sha256:4a121895d93556b0322c887abfb543d0ce8b43ae20a987f6bdc24934674194d4"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-HOST",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ],
+        "targetDigest": "sha256:84e39b86bd1a3f5e364f1e1171e3e8bf5fbe411af08978aa12705657d9249714"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-INSTALL-CONTROLLER",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-INSTALL-CONTROLLER",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ],
+        "targetDigest": "sha256:9d3b141e14f58abd48be73e9ca032e4b79345f0c68559b3a3c83764aa1557252"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-MCP-BRIDGE",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-MCP-BRIDGE",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001"
+        ],
+        "targetDigest": "sha256:cb1999edbcb7225b1cf1c094d5803d890fd2ace6a20909ba55bddea02a87fdbc"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-PLUGIN",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-PLUGIN",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ],
+        "targetDigest": "sha256:cf03fbe3f57618b53a2f158ca849891f851d8cb1763558d77def5c1406f9f21f"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-RUN-STORE",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-RUN-STORE",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:cfca149c4a5dc9a1d8547c4329e478ab7773f998e3fae2e84dfcf430a5a71892"
+      },
+      {
+        "changeId": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-TASK-SUPERVISOR",
+        "entityKind": "element",
+        "entityId": "EL-DESKTOP-TASK-SUPERVISOR",
+        "operation": "add",
+        "rationale": "Add the element required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001"
+        ],
+        "targetDigest": "sha256:784a35401ab41e9dc3cfba66a16c4e31ac6f18bd94ea6f41845dada05bba1c5a"
+      }
+    ],
+    "relationshipChanges": [
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CAPABILITY-CORE",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-CAPABILITY-CORE",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "CON-DEV-DESKTOP-RELEASE-PATH-001",
+          "CON-DEV-PROVIDER-NEUTRAL-001"
+        ],
+        "targetDigest": "sha256:dcd66087e8ba9aeae8948c466ec8ef9ede59ee59acc308c2d422ee8df4de6b04"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CORE-SUPERVISOR",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-CORE-SUPERVISOR",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001"
+        ],
+        "targetDigest": "sha256:7871e8b08dae91a6cdfcdc5746f63a6cc6a41b997022f513544ea820c4e4689e"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-INSTALL-PLUGIN",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-INSTALL-PLUGIN",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ],
+        "targetDigest": "sha256:6a26b0f143b0f7d5b325b8eba9d893871f29404bfa276da996b792be3f2bd69d"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-CORE",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-MCP-CORE",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001"
+        ],
+        "targetDigest": "sha256:1112b5329c6efcb28670e1eef74220b516082d829c5050782469b66169851b32"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-STORE",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-MCP-STORE",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001"
+        ],
+        "targetDigest": "sha256:491a0db606f2e55d4f15a3ab3c1b52e1c5b1662f35c84e7cd8323df68defc9ba"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-PLUGIN-MCP",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-PLUGIN-MCP",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001"
+        ],
+        "targetDigest": "sha256:b67d25252c1b4c709dcd0bdb32f77e57250db536e9ed6e7b66bbc5ac07a71b87"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-PLUGIN-REPORT",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-PLUGIN-REPORT",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-TRACEABILITY-001"
+        ],
+        "targetDigest": "sha256:95fa535db2563ef45a11effa680737081cf4428a2a1be32d988eb4dcc665d559"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-APP-SERVER",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-SUPERVISOR-APP-SERVER",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:08c0903ad763851653beff30ebb98891acb5efc6b643c86a98970b14aabb4f15"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-STORE",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-SUPERVISOR-STORE",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001"
+        ],
+        "targetDigest": "sha256:3d2c030ed99280d3351690e0aa61a052f406a06c42b62bf9540b54dad3ed5d3e"
+      },
+      {
+        "changeId": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-WE",
+        "entityKind": "relationship",
+        "entityId": "REL-DESKTOP-SUPERVISOR-WE",
+        "operation": "add",
+        "rationale": "Add the relationship required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001"
+        ],
+        "targetDigest": "sha256:7ead16ef621b99c9d332cb9dacfe70d90f243ea96857660f40db41f6968a01fe"
+      }
+    ],
+    "viewChanges": [
+      {
+        "changeId": "CHG-DESKTOP-VIEW-VIEW-DESKTOP-CONTAINERS",
+        "entityKind": "view",
+        "entityId": "VIEW-DESKTOP-CONTAINERS",
+        "operation": "add",
+        "rationale": "Add the view required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001"
+        ],
+        "targetDigest": "sha256:eac611e864b5c707df40ed91e012073387b41dd7f84dab36852e9aeec50c8714"
+      },
+      {
+        "changeId": "CHG-DESKTOP-VIEW-VIEW-DESKTOP-HOST-COMPONENTS",
+        "entityKind": "view",
+        "entityId": "VIEW-DESKTOP-HOST-COMPONENTS",
+        "operation": "add",
+        "rationale": "Add the view required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001"
+        ],
+        "targetDigest": "sha256:d47c4858f119d9ce9cd4d8896aca4df0f028ff993ac205777e5d840a316d406e"
+      }
+    ],
+    "interfaceChanges": [
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-CAPABILITY-RESOLUTION",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-CAPABILITY-RESOLUTION",
+        "operation": "add",
+        "rationale": "Add the interface required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001",
+          "US-DEV-EXTEND-001",
+          "CON-DEV-PROVIDER-NEUTRAL-001"
+        ],
+        "targetDigest": "sha256:667b8a5314499513e3fe44b78461e6c06c1c827fe2dc6c7f795cd32e94868c3d"
+      },
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-INSTALLATION",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-INSTALLATION",
+        "operation": "add",
+        "rationale": "Add the interface required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ],
+        "targetDigest": "sha256:51d40f2d62d8ea12680218502a053210f5d35e22b80568d7f1552869f7693daa"
+      },
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-MCP-COMMANDS",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-MCP-COMMANDS",
+        "operation": "add",
+        "rationale": "Add the interface required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001"
+        ],
+        "targetDigest": "sha256:851453257c307e6e3dc1b0a2a08897c6e20c3f7e78a5988baa7de91ac578f1d8"
+      },
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-STATE",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-RUN-STATE",
+        "operation": "add",
+        "rationale": "Add the interface required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:ccf738ad55dd075cfca18fa1c874995eb628e2c04e944d1efa211c60d337b4f6"
+      },
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-VIEW",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-RUN-VIEW",
+        "operation": "add",
+        "rationale": "Add the interface required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-TRACEABILITY-001"
+        ],
+        "targetDigest": "sha256:e08b4385a8cccaf620de0bec90f859edde19ee74e321f9c9e0815f0dd90b041e"
+      },
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-TASK-LIFECYCLE",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-TASK-LIFECYCLE",
+        "operation": "add",
+        "rationale": "Add the interface required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:916de2f473c2b253e9c9aa06080386fdc45b38afc747e530d17939565be63f19"
+      }
+    ],
+    "constraintChanges": [
+      {
+        "changeId": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-CORE-AUTHORITY",
+        "entityKind": "constraint",
+        "entityId": "CON-DESKTOP-CORE-AUTHORITY",
+        "operation": "add",
+        "rationale": "Add the constraint required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "CON-DEV-GATE-SEPARATION-001"
+        ],
+        "targetDigest": "sha256:70f8a48dede675469f2a7e45fa619d3a1816d190f852e6e11cf3bf901a50fff9"
+      },
+      {
+        "changeId": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-DETERMINISTIC-RESUME",
+        "entityKind": "constraint",
+        "entityId": "CON-DESKTOP-DETERMINISTIC-RESUME",
+        "operation": "add",
+        "rationale": "Add the constraint required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:66653dfc4c6e2d9c67d2832def203fc26e7d1784ed15afb1ab5262cd83da1c5e"
+      },
+      {
+        "changeId": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LIVE-PATH",
+        "entityKind": "constraint",
+        "entityId": "CON-DESKTOP-LIVE-PATH",
+        "operation": "add",
+        "rationale": "Add the constraint required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001",
+          "US-DEV-EXTEND-001",
+          "CON-DEV-PROVIDER-NEUTRAL-001"
+        ],
+        "targetDigest": "sha256:5fe5ec7bed2cc2a84c52f257a0e34d45bb08ec1d1f580a7cc0e23b5f369c0aa7"
+      },
+      {
+        "changeId": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LOCAL-PRIVACY",
+        "entityKind": "constraint",
+        "entityId": "CON-DESKTOP-LOCAL-PRIVACY",
+        "operation": "add",
+        "rationale": "Add the constraint required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ],
+        "targetDigest": "sha256:66a0a0ab53cce4da71072de56a3e810f1fe4794daedf0f779edc399165703ac0"
+      },
+      {
+        "changeId": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-TASK-ISOLATION",
+        "entityKind": "constraint",
+        "entityId": "CON-DESKTOP-TASK-ISOLATION",
+        "operation": "add",
+        "rationale": "Add the constraint required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001"
+        ],
+        "targetDigest": "sha256:652a47769112091686606673951629becd891955ca3b6570780ea40bc0a8d638"
+      },
+      {
+        "changeId": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-WINDOWS-RELEASE",
+        "entityKind": "constraint",
+        "entityId": "CON-DESKTOP-WINDOWS-RELEASE",
+        "operation": "add",
+        "rationale": "Add the constraint required by the ChatGPT Desktop Windows runtime.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ],
+        "targetDigest": "sha256:d2172784570235cc4f111d2fc9d9dfeeb4cf8beb1cedea1fdf642361a3bb666b"
+      }
+    ],
+    "decisionChanges": [
+      {
+        "changeId": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-001",
+        "decisionId": "ADR-DESKTOP-001",
+        "operation": "add",
+        "rationale": "Record the ChatGPT Desktop Windows architecture choice as a proposed MADR.",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001"
+        ]
+      },
+      {
+        "changeId": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-002",
+        "decisionId": "ADR-DESKTOP-002",
+        "operation": "add",
+        "rationale": "Record the ChatGPT Desktop Windows architecture choice as a proposed MADR.",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001"
+        ]
+      },
+      {
+        "changeId": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-003",
+        "decisionId": "ADR-DESKTOP-003",
+        "operation": "add",
+        "rationale": "Record the ChatGPT Desktop Windows architecture choice as a proposed MADR.",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "NFR-DEV-DESKTOP-ISOLATION-001",
+          "CON-DEV-DESKTOP-CORE-AUTHORITY-001"
+        ]
+      },
+      {
+        "changeId": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-004",
+        "decisionId": "ADR-DESKTOP-004",
+        "operation": "add",
+        "rationale": "Record the ChatGPT Desktop Windows architecture choice as a proposed MADR.",
+        "sourceRequirementIds": [
+          "NFR-DEV-DESKTOP-DETERMINISM-001",
+          "CON-DEV-DESKTOP-LOCAL-FIRST-001",
+          "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001"
+        ]
+      },
+      {
+        "changeId": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-005",
+        "decisionId": "ADR-DESKTOP-005",
+        "operation": "add",
+        "rationale": "Record the ChatGPT Desktop Windows architecture choice as a proposed MADR.",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-RUNTIME-001",
+          "CON-DEV-DESKTOP-RELEASE-PATH-001",
+          "US-DEV-EXTEND-001",
+          "CON-DEV-PROVIDER-NEUTRAL-001"
+        ]
+      }
+    ]
+  },
+  "traceability": [
     {
-      "artifactId": "architecture-gate-review-chatgpt-desktop-runtime-v1",
-      "schema": "https://devrelay.dev/evidence/architecture-gate-review/v1",
-      "mediaType": "text/markdown",
-      "digest": "sha256:b049d5455e0f9ff9328d8a70c13775b92c674e074f880af73b037e417eb6f88d",
-      "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/architecture-gate-candidate.md"
+      "requirementId": "US-DEV-ARCHITECTURE-DISCOVERY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-AD-MANDATORY-NATIVE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AD-OBSERVATIONAL-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AD-OPTIONAL-ANALYZERS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AD-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AD-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AD-002"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-ANALYZER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-INVENTORY-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-NATIVE-INVENTORY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-ANALYZER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-INVENTORY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-ANALYZER-CHECKPOINT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-GUARD-ANALYZER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-GUARD-INVENTORY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-INVENTORY-CHECKPOINT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-INVENTORY-NATIVE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-NORMALIZER-GAP"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
     },
     {
-      "artifactId": "structurizr-conformance-proof-chatgpt-desktop-runtime-v1",
-      "schema": "https://devrelay.dev/evidence/structurizr-conformance-proof/v1",
-      "mediaType": "application/vnd.devrelay.structurizr-conformance-proof+json",
-      "digest": "sha256:73e5e2551d3f59414baa64bf3dd17fcd4838137166278dd8347d46561bc8d7b5",
-      "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/structurizr-conformance-proof.json"
+      "requirementId": "US-DEV-CHANGE-INTEGRATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CLOSED-OUTCOMES"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-ONE-SUBJECT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-INTEGRATION-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-LOCAL-GIT-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-PLAN-BUILDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-RESULT-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-ADAPTER-INVOCATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-INPUT-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-INTEGRATION-PLAN"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-RESULT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-GUARD-PLAN"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PORT-GIT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-VALIDATOR-TRACE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
     },
     {
-      "artifactId": "architecture-dogfood-execution-proof-chatgpt-desktop-runtime-v1",
-      "schema": "https://devrelay.dev/evidence/architecture-dogfood-execution-proof/v1",
-      "mediaType": "application/vnd.devrelay.architecture-dogfood-execution-proof+json",
-      "digest": "sha256:176c7bcfd3e87b381207be6c4ec8e02d02d25d7f7e66073911e2742342571874",
-      "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/runtime-execution-proof.json"
+      "requirementId": "US-DEV-CONTRACT-GENERATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CG-ADAPTER-NON-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-CANONICAL-DIFF"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-FORMAT-PORTABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-INDEPENDENT-VALIDATION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-STATE-ROUTING"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-WORK-BARRIER"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-APPROVED-OBSERVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-CANDIDATE-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-CANONICAL-DIFFER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GENERATOR-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-JSON-SCHEMA-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-OPTIONAL-ADAPTERS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-ROUTE-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-VALIDATOR-REGISTRY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-CANONICAL-DIFF"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-FORMAT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GATE-CANDIDATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GENERATOR-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-DIFFER-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-WORK-BREAKDOWN"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-JSON-SCHEMA-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-OPTIONAL-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-PORT-VALIDATOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-ROUTE-INVOKE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-VALIDATOR-DIFFER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-VALIDATOR-GATE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
     },
     {
-      "artifactId": "architecture-gate-owner-approval-chatgpt-desktop-runtime-v1",
-      "schema": "https://devrelay.dev/evidence/architecture-gate-owner-approval/v1",
-      "mediaType": "application/vnd.devrelay.architecture-gate-owner-approval+json",
-      "digest": "sha256:6859fee800629d8fff2dd6d2632728ff2e1eef4a906f78a02c09eb2216becc6c",
-      "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/architecture-design/architecture-gate-owner-approval.json"
+      "requirementId": "US-DEV-DESKTOP-RUNTIME-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-CORE-AUTHORITY"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-TASK-ISOLATION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-WINDOWS-RELEASE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-001"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-002"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-003"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-005"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-APP-SERVER-CLIENT"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-INSTALL-CONTROLLER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-PLUGIN"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-INSTALLATION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-VIEW"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CORE-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-CORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-PLUGIN-MCP"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-PLUGIN-REPORT"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-APP-SERVER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-WE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-VIEW-VIEW-DESKTOP-CONTAINERS"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-VIEW-VIEW-DESKTOP-HOST-COMPONENTS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-TASK-ISOLATION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-WINDOWS-RELEASE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-APP-SERVER-CLIENT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-INSTALL-CONTROLLER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-PLUGIN"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-INSTALLATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-RUN-VIEW"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-CORE-SUPERVISOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-MCP-CORE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-PLUGIN-MCP"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-PLUGIN-REPORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-APP-SERVER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-WE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-EXTEND-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-005"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-DYNAMIC-PROJECTION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-MATURITY-VOCABULARY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-005"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MATURITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-OPTIONAL-PROPOSERS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-OPTIONAL"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-GAUGE-PERFORMANCE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-OBSERVATION-DISPOSITION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MARKDOWN-RENDERER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-OBSERVATION-INGRESS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-HOST-OBSERVATIONS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-REPORT-ACCESS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-COMPARABILITY-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-LEDGER-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-OBSERVATIONS-LEDGER"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-INSPECT-RUN-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-APPEND-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-BYTE-DETERMINISM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-CROSS-CUTTING"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-DYNAMIC-PROJECTION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-NON-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-006"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FACT-RECORDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-LEDGER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MARKDOWN-RENDERER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MATURITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORT-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-REPORT-ACCESS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-WORKFLOW-FACTS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-RUN-REPORTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GRAPH-RUN-REPORTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-FACTS-LEDGER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-GRAPH-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-LEDGER-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-MATURITY-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-POLICY-RENDERER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-PROJECTOR-POLICY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-RENDERER-PORT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-ORCHESTRATE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-007"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FRONTIER-RESOLVER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-READY-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-RUN-REPORTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WDA"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-FRONTIER-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-WDA"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-RUN-FRONTIERS-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-STATIC-DAG"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-007"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-COMPLETION-REGISTRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FRONTIER-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-INTEGRATED-COMPLETION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-READY-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-COMPLETION-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-DAG-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-FRONTIER-DOWNSTREAM"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-INTEGRATION-COMPLETION"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-SPECIFY-001",
+      "disposition": "already-designed",
+      "targets": [
+        {
+          "kind": "element",
+          "id": "EL-WB-MODULE"
+        }
+      ],
+      "rationale": "The approved baseline already satisfies this requirement through the unchanged referenced entity; no citation rewrite is required."
+    },
+    {
+      "requirementId": "US-DEV-UNDERSTAND-ADAPTERS-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-MATURITY-VOCABULARY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MATURITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-MATURITY-PROJECTOR"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-VERIFY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "element",
+          "id": "EL-WDA-GATE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-WORK-EXECUTION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-BINDING-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-CORE-READINESS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-ONE-ITEM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-OUTPUT-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-A2A-EXECUTOR-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-CODEX-TASK-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-EXECUTOR-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-FRONTIER-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-RESULT-ASSEMBLER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-TRACEABILITY-CONTRIBUTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTION-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTOR-INVOCATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-READINESS-PROOF"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-RESULT-ASSEMBLY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-ASSEMBLER-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-BINDING-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-FRONTIER-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-GUARD-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-PORT-A2A"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-PORT-CODEX"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-DEV-WORK-ITEM-VERIFICATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-ADAPTER-EVIDENCE-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CLOSED-OUTCOMES"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CORE-OBLIGATIONS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-ONE-SUBJECT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-EVIDENCE-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-OBLIGATION-EXPANDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-POLICY-EVALUATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-REVIEW-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-TEST-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-VERIFIER-PORT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-EVIDENCE-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-INPUT-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-OBLIGATION-SET"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-POLICY-EVALUATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-VERIFIER-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-GUARD-OBLIGATIONS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-NORMALIZER-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-PORT-REVIEW"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-PORT-TEST"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-WDA-ANALYZE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-IMMUTABLE-INPUT"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-NATIVE-PROPOSER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-PROPOSER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-PROPOSER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WDA"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-NATIVE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-SNAPSHOT-PROPOSER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WB-WDA"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-WDA-PARALLEL-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-ANALYSIS-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-STATIC-DAG"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-GATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-CONTRIBUTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-DOWNSTREAM"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-WDA-PLUGINS-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-PLUGIN-TRUST"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-NATIVE-PROPOSER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-OPTIONAL-PROPOSERS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-PROPOSER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-SPECKIT-REVIEWER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-CONSISTENCY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-PROPOSER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-NATIVE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-OPTIONAL"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-REVIEWER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-REVIEWER-GATE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "US-WDA-VERIFY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-PINNED-POLICY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-GRAPH-MECHANICS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-OPA"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-SPECKIT-REVIEWER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-CONSISTENCY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-GATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-GRAPH-MECHANICS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-POLICY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-MECHANICS-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-MECHANICS-OPA"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-OPA-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-MECHANICS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-REVIEWER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-REVIEWER-GATE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-AD-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "element",
+          "id": "EL-AD-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-NATIVE-INVENTORY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-CHECKPOINT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-ANALYZER-CHECKPOINT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-CHECKPOINT-NORMALIZER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-INVENTORY-CHECKPOINT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-AD-PRIVACY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "element",
+          "id": "EL-AD-MODULE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-CI-ATOMICITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-ATOMIC-CAS"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-CAS-COORDINATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-LOCAL-GIT-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-RESULT-VALIDATOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-ADAPTER-INVOCATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-CHECKPOINT-RECOVERY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-RESULT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-TARGET-CAS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-CAS-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-CHECKPOINT-VALIDATOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PLAN-CAS"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-CI-AUDITABILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-PLAN-BUILDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-RESULT-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-CHECKPOINT-RECOVERY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-INTEGRATION-PLAN"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-RESULT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-CHECKPOINT-VALIDATOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-GUARD-PLAN"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PORT-CHECKPOINT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-VALIDATOR-TRACE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-CI-IDEMPOTENCY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-PLAN-BUILDER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-CHECKPOINT-RECOVERY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-INTEGRATION-PLAN"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-CHECKPOINT-VALIDATOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PLAN-CAS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PORT-CHECKPOINT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-CONTRACT-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CG-CANONICAL-DIFF"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-INDEPENDENT-VALIDATION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-STATE-ROUTING"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-APPROVED-OBSERVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-CANDIDATE-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-CANONICAL-DIFFER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-JSON-SCHEMA-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-ROUTE-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-VALIDATOR-REGISTRY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-CANONICAL-DIFF"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-FORMAT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GATE-CANDIDATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GENERATOR-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-DIFFER-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-JSON-SCHEMA-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-PORT-VALIDATOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-ROUTE-INVOKE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-VALIDATOR-DIFFER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-VALIDATOR-GATE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-DESKTOP-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-DETERMINISTIC-RESUME"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-004"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-RUN-STORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-STATE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CORE-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-CORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-STORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-STORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-VIEW-VIEW-DESKTOP-CONTAINERS"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-VIEW-VIEW-DESKTOP-HOST-COMPONENTS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-DETERMINISTIC-RESUME"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-RUN-STORE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-RUN-STATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-CORE-SUPERVISOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-MCP-CORE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-MCP-STORE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-STORE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-DESKTOP-ISOLATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-TASK-ISOLATION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-003"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-APP-SERVER-CLIENT"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-APP-SERVER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-STORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-WE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-TASK-ISOLATION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-APP-SERVER-CLIENT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-APP-SERVER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-STORE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-WE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-DETERMINISTIC-RESUME"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-WINDOWS-RELEASE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-001"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-004"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-APP-SERVER-CLIENT"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-INSTALL-CONTROLLER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-PLUGIN"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-RUN-STORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-INSTALLATION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-STATE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-INSTALL-PLUGIN"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-APP-SERVER"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-DETERMINISTIC-RESUME"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-WINDOWS-RELEASE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-APP-SERVER-CLIENT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-INSTALL-CONTROLLER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-PLUGIN"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-RUN-STORE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-INSTALLATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-RUN-STATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-INSTALL-PLUGIN"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-APP-SERVER"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-PORTABILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORT-PORT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-REPORT-ACCESS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-RENDERER-PORT"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-RUN-REPORT-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-APPEND-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-BYTE-DETERMINISM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-DYNAMIC-PROJECTION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-STATIC-DAG"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-005"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-007"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FACT-RECORDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FRONTIER-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-LEDGER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MARKDOWN-RENDERER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-READY-FRONTIER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-REPORT-ACCESS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-WORKFLOW-FACTS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-COMPLETION-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-DAG-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-FACTS-LEDGER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-LEDGER-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-POLICY-RENDERER"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-RUN-REPORT-OBSERVABILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-APPEND-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-OBSERVATION-DISPOSITION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-LEDGER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-OBSERVATION-INGRESS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-COMPARABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-HOST-OBSERVATIONS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-COMPARABILITY-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-OBSERVATIONS-LEDGER"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-RUN-REPORT-PRIVACY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-006"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MARKDOWN-RENDERER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-HOST-OBSERVATIONS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-REPORT-ACCESS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-POLICY-RENDERER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-PROJECTOR-POLICY"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-TRACEABILITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-VIEW"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-PLUGIN-REPORT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-FORWARD-TRACE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-002"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-COMPLETION-REGISTRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-CONTRIBUTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-RUN-VIEW"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-INTEGRATED-COMPLETION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-PLUGIN-REPORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GRAPH-RUN-REPORTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-GRAPH-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-INTEGRATION-COMPLETION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-GRAPH"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-WE-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-IMMUTABLE-RETRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-RESULT-ASSEMBLER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-RESULT-ASSEMBLY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-CHECKPOINT-ASSEMBLER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-PORT-CHECKPOINT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-WE-ISOLATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-HOST-BOUNDARY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTION-BINDING"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-WIV-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CLOSED-OUTCOMES"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-IMMUTABLE-RETRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-EVIDENCE-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-OBLIGATION-EXPANDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-POLICY-EVALUATOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-EVIDENCE-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-OBLIGATION-SET"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-POLICY-EVALUATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-CHECKPOINT-NORMALIZER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-OBLIGATIONS-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-PORT-CHECKPOINT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-WIV-EVIDENCE-CLOSURE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CORE-OBLIGATIONS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-EVIDENCE-CLOSURE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-GATE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-002"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-APPROVED-TRACE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-EVIDENCE-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-OBLIGATION-EXPANDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-POLICY-EVALUATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-TEST-ADAPTER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-EVIDENCE-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-GATE-CANDIDATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-OBLIGATION-SET"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-POLICY-EVALUATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-CHECKPOINT-NORMALIZER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-NORMALIZER-POLICY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-OBLIGATIONS-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-PORT-TEST"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-DEV-WIV-ISOLATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-HOST-BOUNDARY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-INDEPENDENCE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-REVIEW-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-VERIFIER-PORT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-VERIFIER-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-VERIFIER-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-BINDING-PORT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "NFR-WDA-DETERMINISM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-IMMUTABLE-INPUT"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-PINNED-POLICY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-GRAPH-MECHANICS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-NATIVE-PROPOSER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-OPA"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-GRAPH-MECHANICS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-POLICY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-WDA"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-MECHANICS-OPA"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-MECHANICS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-SNAPSHOT-PROPOSER"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-AD-AUTHORITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-AD-CONDITIONAL-ROUTE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-ROUTER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-ROUTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-ROUTER-GUARD"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-AD-LOCAL-FIRST-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-AD-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AD-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-ANALYZER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-INVENTORY-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-NATIVE-INVENTORY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-ANALYZER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-INVENTORY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-GUARD-ANALYZER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-GUARD-INVENTORY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-ROUTER-GUARD"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-AD-OBSERVATIONAL-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-AD-MATERIAL-GAPS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AD-OBSERVATIONAL-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AD-OPTIONAL-ANALYZERS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-AD-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AD-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AD-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-AD-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-ANALYZER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-GAP-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-ROUTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-AD-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-ANALYZER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-GAP-POLICY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-ROUTING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-AD-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-GAP-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-AD-NORMALIZER-GAP"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-ARTIFACT-CONTRACTS-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-APPEND-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-IMMUTABLE-INPUT"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FACT-RECORDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-LEDGER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-WORKFLOW-FACTS"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CI-CAS-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-ATOMIC-CAS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CORE-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-CAS-COORDINATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-LOCAL-GIT-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-INPUT-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-TARGET-CAS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-CAS-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PLAN-CAS"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CI-HOST-ENFORCEMENT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-HOST-BOUNDARY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-002"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-INTEGRATION-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-ADAPTER-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-CAS-PORT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CI-LOCAL-GIT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-HOST-BOUNDARY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-ONE-SUBJECT"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-002"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-CAS-COORDINATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-INTEGRATION-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-LOCAL-GIT-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-ADAPTER-INVOCATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-TARGET-CAS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-PORT-GIT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CI-NO-AUTO-RESOLVE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-NO-AUTO-CONFLICT"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-LOCAL-GIT-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-RESULT-VALIDATOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-ADAPTER-INVOCATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-RESULT-VALIDATION"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CI-NO-SYSTEM-ACCEPTANCE-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CLOSED-OUTCOMES"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-NO-DOWNSTREAM-CLAIM"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CI-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CI-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-RESULT-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CI-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-INPUT-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-RESULT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CI-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CI-VALIDATOR-TRACE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CONTRACT-AUTHORITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CG-ADAPTER-NON-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-CANONICAL-DIFF"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-FORMAT-PORTABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-INDEPENDENT-VALIDATION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-STATE-ROUTING"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-WORK-BARRIER"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-APPROVED-OBSERVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-CANDIDATE-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-CANONICAL-DIFFER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GENERATOR-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-OPTIONAL-ADAPTERS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-ROUTE-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-VALIDATOR-REGISTRY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-CANONICAL-DIFF"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-FORMAT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GATE-CANDIDATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GENERATOR-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-DIFFER-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-WORK-BREAKDOWN"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-OPTIONAL-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-PORT-VALIDATOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-ROUTE-INVOKE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-VALIDATOR-DIFFER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-VALIDATOR-GATE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CONTRACT-FORMAT-EXTENSION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CG-ADAPTER-NON-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-FORMAT-PORTABILITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-CG-INDEPENDENT-VALIDATION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GENERATOR-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-JSON-SCHEMA-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-OPTIONAL-ADAPTERS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-VALIDATOR-REGISTRY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-FORMAT-VALIDATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GENERATOR-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-JSON-SCHEMA-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-OPTIONAL-PORT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-CG-WORK-BARRIER"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-CG-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-APPROVED-OBSERVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-CG-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-CG-GATE-CANDIDATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-DIFFER-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CG-GATE-WORK-BREAKDOWN"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-CORE-AUTHORITY"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-TASK-ISOLATION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-002"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-003"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CORE-SUPERVISOR"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-CORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-PLUGIN-MCP"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-SUPERVISOR-WE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-TASK-ISOLATION"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-TASK-SUPERVISOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-TASK-LIFECYCLE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-CORE-SUPERVISOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-MCP-CORE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-PLUGIN-MCP"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-SUPERVISOR-WE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-DESKTOP-LOCAL-FIRST-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-002"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-004"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-RUN-STORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-RUN-STATE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-MCP-STORE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LOCAL-PRIVACY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-MCP-BRIDGE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-RUN-STORE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-RUN-STATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-MCP-STORE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-DESKTOP-RELEASE-PATH-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-WINDOWS-RELEASE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-001"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-005"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-INSTALL-CONTROLLER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-PLUGIN"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-INSTALLATION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CAPABILITY-CORE"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-INSTALL-PLUGIN"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-WINDOWS-RELEASE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-001"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-HOST"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-INSTALL-CONTROLLER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-PLUGIN"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-INSTALLATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-CAPABILITY-CORE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-INSTALL-PLUGIN"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-GATE-SEPARATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-CORE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-NON-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-STATIC-DAG"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-CORE-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-COMPLETION-REGISTRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FACT-RECORDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-GATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-INTEGRATED-COMPLETION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-READY-FRONTIER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-MECHANICS-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-OPA-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-INTEGRATION-COMPLETION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-DOWNSTREAM"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-MODULE-INVENTORY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-CROSS-CUTTING"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-ANALYSIS-ONLY"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-PROVIDER-NEUTRAL-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-CONSTRAINT-CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-005"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-ELEMENT-EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-RELATIONSHIP-REL-DESKTOP-CAPABILITY-CORE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-DESKTOP-LIVE-PATH"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-DYNAMIC-PROJECTION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-MATURITY-VOCABULARY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-PLUGIN-TRUST"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-005"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-DESKTOP-CAPABILITY-RESOLVER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-MATURITY-RESOLVER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-CAPABILITY-RESOLUTION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-DESKTOP-CAPABILITY-CORE"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-RUN-REPORT-NON-AUTHORITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-CROSS-CUTTING"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-RUN-NON-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-003"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-RUN-006"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-FACT-RECORDER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-LEDGER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-OBSERVATION-INGRESS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORT-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-REPORTING"
+        },
+        {
+          "kind": "element",
+          "id": "EL-RUN-SNAPSHOT-PROJECTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-CONTENT-POLICY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-HOST-OBSERVATIONS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-LIFECYCLE-SNAPSHOT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-REPORT-ACCESS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-RUN-WORKFLOW-FACTS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-CORE-RUN-REPORTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GRAPH-RUN-REPORTING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-FACTS-LEDGER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-GRAPH-PROJECTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-OBSERVATIONS-LEDGER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-PROJECTOR-POLICY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-RUN-RENDERER-PORT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WE-AUTHORITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-BINDING-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-CORE-READINESS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-A2A-EXECUTOR-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-EXECUTOR-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-FRONTIER-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-TRACEABILITY-CONTRIBUTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTION-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-READINESS-PROOF"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-ASSEMBLER-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-BINDING-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-FRONTIER-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-GUARD-FRONTIER"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WE-HOST-ENFORCEMENT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-BINDING-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-HOST-BOUNDARY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-A2A-EXECUTOR-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-EXECUTOR-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTION-BINDING"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTOR-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-BINDING-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-PORT-A2A"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WE-IMMUTABLE-ATTEMPT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-IMMUTABLE-RETRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-CODEX-TASK-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTOR-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-PORT-CHECKPOINT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WE-ONE-ITEM-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-ONE-ITEM"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-CODEX-TASK-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-FRONTIER-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-EXECUTOR-INVOCATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-READINESS-PROOF"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-GUARD-FRONTIER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-PORT-CODEX"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WE-VERIFICATION-BARRIER-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WE-OUTPUT-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WE-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WE-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-RESULT-ASSEMBLER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WE-TRACEABILITY-CONTRIBUTOR"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WE-RESULT-ASSEMBLY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WE-CHECKPOINT-ASSEMBLER"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WIV-AUTHORITY-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-ADAPTER-EVIDENCE-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CORE-OBLIGATIONS"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-GATE-AUTHORITY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-INDEPENDENCE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-NO-INTEGRATION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-002"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-004"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-APPROVED-TRACE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-POLICY-EVALUATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-REVIEW-ADAPTER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-VERIFIER-PORT"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-GATE-CANDIDATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-POLICY-EVALUATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-VERIFIER-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-BINDING-PORT"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-NORMALIZER-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-POLICY-GATE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-PORT-REVIEW"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WIV-EXACT-SUBJECT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-EVIDENCE-CLOSURE"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-ONE-SUBJECT"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-001"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-EVIDENCE-NORMALIZER"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-EVIDENCE-NORMALIZATION"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-INPUT-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-GUARD-OBLIGATIONS"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-NORMALIZER-POLICY"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WIV-HOST-ENFORCEMENT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-HOST-BOUNDARY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-003"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-BINDING-VALIDATOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-TEST-ADAPTER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-VERIFIER-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-BINDING-PORT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WIV-IMMUTABLE-ATTEMPT-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-CHECKPOINT-REPLAY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-IMMUTABLE-RETRY"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-CHECKPOINT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-VERIFIER-INVOCATION"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-PORT-CHECKPOINT"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-DEV-WIV-NO-INTEGRATION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-ADAPTER-EVIDENCE-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-NO-INTEGRATION"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WIV-TRACEABILITY-AUTHORITY"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WIV-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-APPROVED-TRACE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-CANDIDATE-TRACE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-GATE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-INPUT-GUARD"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WIV-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-APPROVED-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-CANDIDATE-TRACEABILITY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-GATE-CANDIDATE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WIV-INPUT-BINDING"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-GATE-APPROVED-TRACE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WIV-POLICY-GATE"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-WDA-NO-EXECUTION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-ANALYSIS-ONLY"
+        },
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-STATIC-DAG"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-005"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-DOWNSTREAM"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-WDA-PROVIDER-NEUTRAL-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-PLUGIN-TRUST"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-004"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-GRAPH-MECHANICS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-OPA"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-OPTIONAL-PROPOSERS"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-PROPOSER-PORT"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-SPECKIT-REVIEWER"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-CONSISTENCY"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-GRAPH-MECHANICS"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-PROPOSER"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-PROPOSER-OPTIONAL"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
+    },
+    {
+      "requirementId": "CON-WDA-TRACE-DIRECTION-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "constraint",
+          "id": "CON-WDA-FORWARD-TRACE"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-WDA-002"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-CONTRIBUTOR"
+        },
+        {
+          "kind": "element",
+          "id": "EL-WDA-MODULE"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-WDA-TRACEABILITY"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-GATE-CONTRIBUTOR"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-CONTRIBUTOR-GRAPH"
+        },
+        {
+          "kind": "relationship",
+          "id": "REL-WDA-GRAPH"
+        }
+      ],
+      "rationale": "The listed target entities and exhaustive typed changes reciprocally cite this approved requirement."
     }
   ],
-  "sourceRefs": []
+  "assumptions": [
+    {
+      "id": "ASM-DESKTOP-HOST-CURRENT",
+      "statement": "The supported release host is the current ChatGPT Desktop for Windows with local STDIO MCP and Codex app-server capabilities documented by OpenAI.",
+      "status": "confirmed",
+      "blocking": false
+    },
+    {
+      "id": "ASM-DESKTOP-CONTROLLED-DISTRIBUTION",
+      "statement": "A repository-backed local marketplace installation is sufficient for V1 release readiness; public directory publication is not required.",
+      "status": "confirmed",
+      "blocking": false
+    },
+    {
+      "id": "ASM-DESKTOP-LIVE-PATH",
+      "statement": "Release readiness requires one live executable binding per mandatory capability and one clean-install real-feature run; optional alternatives may remain maturity-labelled.",
+      "status": "confirmed",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-DESKTOP-AUTHORITY-LEAK",
+      "statement": "Desktop commands or work-item tasks could accidentally acquire routing, Gate, graph, verification, or integration authority.",
+      "impact": "The host would become an improvisational coding-agent wrapper and invalidate deterministic workflow guarantees.",
+      "mitigation": "Use narrow typed ports, Core-owned decisions, immutable attempt contracts, negative authority tests, and separate verification and integration."
+    },
+    {
+      "id": "RISK-DESKTOP-PROTOCOL-DRIFT",
+      "statement": "ChatGPT Desktop, Codex CLI, plugin, MCP, or app-server protocol versions may drift.",
+      "impact": "Installation or task execution could fail or silently change behavior on Windows.",
+      "mitigation": "Pin supported versions, negotiate protocols, fail closed on incompatibility, and run clean-install conformance in release verification."
+    },
+    {
+      "id": "RISK-DESKTOP-UNCERTAIN-EFFECT",
+      "statement": "A Desktop, MCP, or app-server interruption may occur after an effect but before its acknowledgement.",
+      "impact": "Blind retry could duplicate tasks, approvals, or integration effects.",
+      "mitigation": "Persist prepared checkpoints, task identities, and trusted observations; reconcile uncertain effects before retry."
+    },
+    {
+      "id": "RISK-DESKTOP-SOURCE-EXPOSURE",
+      "statement": "Host or adapter behavior could transmit repository content or secrets outside the approved boundary.",
+      "impact": "Proprietary code or credentials could be disclosed.",
+      "mitigation": "Default to local STDIO and local state, require explicit grants and transmission opt-in, and exercise path, network, and secret-denial tests."
+    },
+    {
+      "id": "RISK-DESKTOP-FALSE-MATURITY",
+      "statement": "Fixture-conformant optional adapters could be presented as live release-ready integrations.",
+      "impact": "Users could select nonfunctional bindings and mistake test fixtures for interoperability proof.",
+      "mitigation": "Resolve mandatory capabilities through evidence-backed maturity and fail release inventory when the live path is incomplete."
+    }
+  ],
+  "requiredEvidence": [
+    "architecture/design-change-chain",
+    "architecture/exhaustive-semantic-diff",
+    "architecture/requirements-traceability",
+    "architecture/adapter-authority-boundaries",
+    "architecture/structurizr-native-conformance",
+    "architecture/gate-review"
+  ],
+  "sourceRefs": [],
+  "targetProjectOverviewBaseline": {
+    "artifactId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+    "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+    "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+    "digest": "sha256:30889842e88d079a91e9e33e5c288db9a0fa9c7a5d6d9c251f1ac22d669f20df",
+    "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+  }
 }
