@@ -1,0 +1,12 @@
+# ChatGPT Desktop runtime Requirements Gate approval
+
+Status: **pass**
+
+The project owner approved atomic requirements/ProjectOverview promotion and ArchitectureDesign progression for the exact digest-bound candidate recorded in requirements-gate-owner-approval.json.
+
+- RequirementsGateCandidate: sha256:97ad544a70d1a79fe5ccfbe1beba47fa6ceb942a1cf774208c98f992b602e266
+- RequirementsChangeSet: sha256:549d197809b5cee859b475f8375d6a099ae5b46676c3c550ed8b5c596f66a64a
+- ProjectOverviewChangeSetDraft: sha256:d4273625d1b6669ed53aed1c39a092edd31dc9c922e48ebcc29c544cbbf55079
+- Candidate ProjectOverview.md: sha256:0d87632277c2290671a1e1500805475128bf9b951e3cad2a449a81a7360c9988
+- Terminal checkpoint: sha256:7435492f803a13ffdd00a6bf9a001a4a89eb1edc692a1446dd52e774f60f36bb
+- Approval artifact: sha256:3c333ca4e8959f1b4c0b5ff3eb0499d2091015194960898d95380742500356ba

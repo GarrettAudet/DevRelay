@@ -1,0 +1,64 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/chatgpt-desktop-runtime/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
+      }
+    },
+    {
+      "role": "capability-evidence",
+      "path": "dogfood/chatgpt-desktop-runtime/official-host-capability-evidence.md",
+      "artifact": {
+        "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/chatgpt-desktop-runtime/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:67a54bfe58bb39d06d32e1b84f8a3dcf977b3959720c743ef2c6f79fa8f685e7"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/chatgpt-desktop-runtime/native/openspec/specs/chatgpt-desktop-runtime/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:9d65295b545c52d24552da4af0bc5126c675540a9af5a79e3cca038a22fc5b23"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-chatgpt-desktop-runtime-v1",
+      "digest": "sha256:549d197809b5cee859b475f8375d6a099ae5b46676c3c550ed8b5c596f66a64a"
+    },
+    {
+      "artifactId": "project-overview-change-set-chatgpt-desktop-runtime-v1",
+      "digest": "sha256:d4273625d1b6669ed53aed1c39a092edd31dc9c922e48ebcc29c544cbbf55079"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

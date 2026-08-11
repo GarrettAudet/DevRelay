@@ -1,0 +1,29 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay 0.9.0 is a private, source-verification-green deterministic library with eleven executable module manifests and twenty-four adapter manifests, but it is not yet an installable ChatGPT Desktop product and many optional external bindings are only contract- or fixture-conformant.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "Windows ChatGPT Desktop software builders",
+    "Workflow and plugin maintainers",
+    "Adapter authors",
+    "Security and release reviewers"
+  ],
+  "domainConstraints": [
+    "Generic Core cannot branch on a Desktop, model, module, operation, plugin, or product identifier.",
+    "ChatGPT Desktop is the supported user surface; DevRelay Core remains the workflow authority.",
+    "Codex app-server is an execution-host integration and cannot select readiness, verify itself, approve Gates, or integrate its own work.",
+    "External hosts enforce filesystem, process, network, and secret permissions.",
+    "Traceability contributors are trusted Core infrastructure; plugin and task outputs may declare domain references only."
+  ],
+  "conventions": [
+    "Use SHA-256-bound immutable artifacts, exact versions, checkpoints, raw task handoffs, and merge proofs at every authority boundary.",
+    "Run the released lifecycle cumulatively and append every completed module or Gate before using it to build the next capability.",
+    "Expose current stage, outcome, evidence, Gate state, runnable frontier, and performance in a human-readable run report.",
+    "Fail closed on baseline or repository drift, missing live bindings, malformed handoffs, incomplete evidence, permission violations, and traceability gaps.",
+    "Keep optional alternatives replaceable and state their exact maturity and availability."
+  ],
+  "sourceRefs": []
+}

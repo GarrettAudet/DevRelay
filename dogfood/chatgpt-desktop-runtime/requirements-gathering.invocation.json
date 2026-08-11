@@ -1,0 +1,78 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-chatgpt-desktop-runtime-openspec-clarify-v1",
+  "runId": "dogfood-chatgpt-desktop-runtime-v1",
+  "nodeId": "requirements-gathering",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-chatgpt-desktop-runtime-v1",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07",
+        "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/goal.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0",
+        "uri": "file:///C:/repos/DevRelay/dogfood/chatgpt-desktop-runtime/project-context.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "C:/repos/DevRelay",
+    "toolName": "OpenSpec",
+    "toolVersion": "conversation-contract-v1",
+    "nativeOperation": "requirements.gather",
+    "changeName": "chatgpt-desktop-runtime-v1",
+    "schema": "devrelay-requirements",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "C:/repos/DevRelay"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "C:/repos/DevRelay/openspec/changes"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

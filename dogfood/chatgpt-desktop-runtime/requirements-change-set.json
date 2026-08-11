@@ -1,17 +1,43 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
-  "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-  "version": "1.8.0",
-  "approvedCandidate": {
-    "artifactId": "requirements-change-set-chatgpt-desktop-runtime-v1",
-    "digest": "sha256:549d197809b5cee859b475f8375d6a099ae5b46676c3c550ed8b5c596f66a64a"
-  },
-  "supersedes": {
+  "kind": "RequirementsChangeSet",
+  "changeSetId": "requirements-change-set-chatgpt-desktop-runtime-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+        "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+        "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+      }
+    }
+  ],
+  "baseline": {
     "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
     "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
   },
-  "requirements": {
+  "expectedRequirementsDigest": "sha256:888a9c1006d31d3fb6ef3bc253d2cde46347b06d5bf82d663133d72492cde71c",
+  "replacement": {
     "purpose": {
       "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
       "sourceRefs": [
@@ -15444,10 +15470,93 @@
       }
     ]
   },
-  "approvalEvidence": [
+  "changedSections": [
+    "acceptanceCriteria",
+    "assumptions",
+    "capabilities",
+    "constraints",
+    "currentStatus",
+    "deliverables",
+    "dependencies",
+    "nonFunctionalRequirements",
+    "nonGoals",
+    "requiredEvidence",
+    "risks",
+    "scope",
+    "sourceRefs",
+    "successMetrics",
+    "terminology",
+    "userJourneys",
+    "userStories"
+  ],
+  "reason": "Extend the controlled DevRelay library into the approved repository-backed ChatGPT Desktop for Windows product with a typed local MCP bridge, one app-server task per runnable work item, a release-ready mandatory lifecycle path, and clean-install real-feature acceptance proof.",
+  "compatibilityImpact": "backward-compatible",
+  "risks": [
+    "A Desktop skill could be mistaken for workflow authority unless state changes are mediated by typed Core operations.",
+    "App-server interruptions could orphan tasks or repeat effects unless attempt, checkpoint, handoff, and integration identities are durable.",
+    "A fixture-only binding could be mistaken for a live release path unless maturity is enforced at selection and reporting.",
+    "Node, Codex CLI, plugin, or Desktop host drift could make a green library unusable on the supported Windows surface.",
+    "A reference run could overstate readiness unless it changes real repository bytes and completes verification, integration, system verification, traceability, and business acceptance."
+  ],
+  "requiredEvidence": [
+    "requirements/owner-decision",
+    "requirements/source-provenance",
+    "requirements/gate-promotion",
+    "desktop/plugin-package-validation",
+    "desktop/local-marketplace-install",
+    "desktop/mcp-tool-conformance",
+    "desktop/app-server-task-lifecycle",
+    "desktop/work-item-handoff-verification",
+    "desktop/checkpoint-resume",
+    "desktop/permission-isolation",
+    "desktop/live-binding-coverage",
+    "desktop/clean-install-end-to-end-run",
+    "desktop/business-acceptance"
+  ],
+  "sourceRefs": [
     {
-      "artifactId": "requirements-gate-approval-chatgpt-desktop-runtime-v1",
-      "digest": "sha256:3c333ca4e8959f1b4c0b5ff3eb0499d2091015194960898d95380742500356ba"
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
+      }
+    },
+    {
+      "role": "owner-decision",
+      "artifact": {
+        "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
+      },
+      "location": "All three checkpoint-bound recommended decisions approved in chat"
+    },
+    {
+      "role": "capability-evidence",
+      "artifact": {
+        "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
+      },
+      "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
+        "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+        "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+        "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+      }
     }
   ]
 }

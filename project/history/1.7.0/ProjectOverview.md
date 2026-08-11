@@ -49,11 +49,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Audience: user-facing
   - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-TRACEABILITY-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
-- **ChatGPT Desktop lifecycle runtime** (`CAP-DEV-DESKTOP-RUNTIME-001`): Install and operate DevRelay through ChatGPT Desktop on Windows using a packaged workflow skill, local typed MCP bridge, persistent deterministic run state, and Codex app-server work-item tasks.
-  - Priority: must
-  - Audience: user-facing
-  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-OBSERVABILITY-001`, `BO-DEV-QUALITY-001`, `BO-DEV-TRACEABILITY-001`
-  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **Replaceable engineering capabilities** (`CAP-DEV-EXTENSIBILITY-001`): Bind interchangeable bounded adapters to stable provider-neutral module operations.
   - Priority: must
   - Audience: user-facing
@@ -102,11 +97,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 ## Success Metrics
 
-- **Desktop goal-to-acceptance completion** (`SM-DEV-DESKTOP-E2E-001`)
-  - Measure: Clean ChatGPT Desktop runs that use the installed DevRelay plugin and one live binding per mandatory lifecycle capability to build, verify, integrate, system-verify, and business-accept a real bounded feature.
-  - Target: At least one complete release run with zero bypassed mandatory Gates, zero unverified handoffs, zero blocking traceability diagnostics, and a byte-reproducible run report.
-  - Measurement method: Install from the repository marketplace in a clean Desktop session, execute the canonical lifecycle, reconcile every run-ledger entry and graph edge, and repeat deterministic Core operations from checkpoints.
-  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-QUALITY-001`, `BO-DEV-TRACEABILITY-001`
 - **Deterministic progression** (`SM-DEV-DETERMINISM-001`)
   - Measure: Repeated Core-owned routing, validation, replay, and gate decisions for identical content-addressed inputs.
   - Target: 100 percent identical outcomes and digests.
@@ -158,9 +148,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`SCOPE-DEV-ARCHITECTURE-DISCOVERY-DETAIL-001`** One conditional ArchitectureDiscovery module covering deterministic state routing, native local inventory, optional bounded analyzers, observational normalization, confidence and material-gap policy, privacy controls, checkpoint replay, and current-snapshot traceability.
 - **`SCOPE-DEV-CHANGE-INTEGRATION-DETAIL-001`** One ChangeIntegration module covering exact verified-subject binding, configured local Git target integration, Core-owned compare-and-swap, immutable conflicts and effect receipts, checkpoint recovery, factual traceability, and progression to SystemVerification without system or business acceptance authority.
 - **`SCOPE-DEV-CONTRACT-GENERATION-DETAIL-001`** One ContractGeneration module with establish-contracts and generate-contract-change operations, typed draft outputs, a live JSON Schema 2020-12 path, extensible optional format adapters, and a separate ContractGate/ApprovedNotApplicable authority boundary.
-- **`SCOPE-DEV-DESKTOP-EXECUTION-001`** A Codex app-server execution host that creates one task per ready work item, supplies immutable contracts, persists task identities and raw handoffs, and returns control to DevRelay verification and integration.
-- **`SCOPE-DEV-DESKTOP-PLUGIN-001`** A repository-owned ChatGPT Desktop plugin package, local marketplace entry, workflow skill, local typed STDIO MCP runtime bridge, installation lifecycle, and Windows host documentation.
-- **`SCOPE-DEV-DESKTOP-REFERENCE-RUN-001`** A clean-install Windows Desktop reference run that builds a real bounded feature through every mandatory module, Gate, execution frontier, verification layer, integration step, SystemVerification, and BusinessAcceptance.
 - **`SCOPE-DEV-RUN-REPORTING-001`** Cross-cutting RunLedger and LifecycleRunReport projection that dynamically records what happened, renders a primary human-readable Markdown report, joins exact traceability, and exposes sourced performance evidence without controlling the lifecycle.
 - **`SCOPE-DEV-V1-010-REQUIREMENTS-GATHERING`** RequirementsGathering \[module\]: RequirementsGathering converts an explicit goal and project context into a canonical requirements candidate and deterministic ProjectOverview candidate.
 - **`SCOPE-DEV-V1-020-REQUIREMENTS-GATE`** RequirementsGate \[gate\]: RequirementsGate validates and approves one exact RequirementsBaseline and ProjectOverviewBaseline pair before architecture progression.
@@ -195,10 +182,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 - **`NG-DEV-AI-WRAPPER-001`** Build another monolithic coding agent or AI-provider wrapper.
   - Rationale: DevRelay standardizes deterministic engineering workflow rather than code generation.
-- **`NG-DEV-DESKTOP-ALL-ADAPTERS-LIVE-001`** Make every declared OpenSpec, Spec Kit, Structurizr, MADR, A2A, Task Master, or contract-format alternative release-ready in the first Desktop release.
-  - Rationale: V1 requires one complete live reference path per mandatory capability while preserving honest maturity labels and replaceable alternative bindings.
-- **`NG-DEV-DESKTOP-PUBLIC-DIRECTORY-001`** Publish DevRelay to the public universal OpenAI plugin directory in V1.
-  - Rationale: Repository-backed local marketplace installation is the approved Windows Desktop distribution boundary for this release.
 - **`NG-DEV-IMPLICIT-AUTHORITY-001`** Treat model confidence, adapter output, chat history, or successful execution as implicit approval.
   - Rationale: Only explicit validated gates and evidence authorize progression.
 - **`NG-DEV-METRIC-FABRICATION-001`** Infer missing duration, token, cost, wait, success, or maturity values from absent or incomplete host observations.
@@ -256,15 +239,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001`** [business; project] WorkBreakdown cannot progress without an exact approved ContractBaseline or ContractGate-owned ApprovedNotApplicable disposition.
   - Rationale: Work must not be planned against missing or unapproved interface truth.
   - Acceptance criteria: `AC-DEV-CONTRACT-GATE-001`
-- **`CON-DEV-DESKTOP-CORE-AUTHORITY-001`** [business; project] The Desktop plugin, MCP tools, app-server tasks, implementation models, and external adapters cannot select lifecycle routes, satisfy Gates, mutate TraceabilityGraph directly, or declare their own work verified or integrated.
-  - Rationale: Host integration must expose DevRelay rather than becoming a second workflow authority or coding-agent wrapper.
-  - Acceptance criteria: `AC-DEV-DESKTOP-MCP-001`, `AC-DEV-DESKTOP-TASKS-001`
-- **`CON-DEV-DESKTOP-LOCAL-FIRST-001`** [security; project] V1 runs locally on Windows and requires exact opt-in before repository content or secrets are transmitted beyond the configured ChatGPT/Codex host boundary.
-  - Rationale: The reference release handles proprietary source and must not depend on an undeclared hosted orchestration service.
-  - Acceptance criteria: `AC-DEV-DESKTOP-SECURITY-001`, `AC-DEV-DESKTOP-WINDOWS-001`
-- **`CON-DEV-DESKTOP-RELEASE-PATH-001`** [technical; project] Release readiness requires one live executable path through every mandatory lifecycle capability, but does not require every alternative adapter or public plugin-directory publication.
-  - Rationale: A trustworthy minimum usable system is different from claiming universal live interoperability or public distribution.
-  - Acceptance criteria: `AC-DEV-DESKTOP-INSTALL-001`, `AC-DEV-DESKTOP-LIVE-PATH-001`, `AC-DEV-DESKTOP-MATURITY-001`
 - **`CON-DEV-GATE-SEPARATION-001`** [business; project] Producing modules cannot approve or promote their own candidates; configured gates own progression decisions.
   - Rationale: Separate authority prevents production from becoming self-approval.
   - Acceptance criteria: `AC-DEV-GATE-PROGRESSION-001`
@@ -343,18 +317,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Measure: Canonical digest equality across replay, insertion order, process restart, and equivalent artifact relocation.
   - Target: 100 percent equality for deterministic Core-owned outputs.
   - Acceptance criteria: `AC-DEV-CONTRACT-COMPATIBILITY-001`, `AC-DEV-CONTRACT-REPLAY-001`, `AC-DEV-CONTRACT-VALIDATION-001`
-- **`NFR-DEV-DESKTOP-DETERMINISM-001`** [reliability; must; project] The Desktop host may execute probabilistic implementation engines, but Core-owned lifecycle routing, validation, checkpoint replay, Gate preparation, traceability, and reporting must remain deterministic for exact inputs.
-  - Measure: Canonical digest equality across fresh process, reordered equivalent input, checkpoint replay, and Desktop restart cases.
-  - Target: 100 percent equality for Core-owned outputs and zero duplicate checkpointed effects.
-  - Acceptance criteria: `AC-DEV-DESKTOP-DETERMINISM-001`, `AC-DEV-DESKTOP-RESUME-001`
-- **`NFR-DEV-DESKTOP-ISOLATION-001`** [security; must; project] Desktop orchestration and work-item tasks must use explicit least-privilege host-enforced grants and isolated workspaces with no undeclared cross-task access.
-  - Measure: Allowed and denied host conformance checks for every permission kind, workspace, task, and external transmission boundary.
-  - Target: No undeclared access succeeds and every granted effect remains attributable to one exact attempt.
-  - Acceptance criteria: `AC-DEV-DESKTOP-HANDOFF-001`, `AC-DEV-DESKTOP-SECURITY-001`, `AC-DEV-DESKTOP-TASKS-001`
-- **`NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001`** [compatibility; must; project] The controlled release must operate from ChatGPT Desktop on Windows with the packaged local plugin, STDIO MCP server, supported Node runtime, and local Codex app-server.
-  - Measure: Clean-install and upgrade verification on the supported Windows Desktop host and Node compatibility matrix.
-  - Target: One complete release run with no WSL, hosted-backend, or alternate-IDE dependency.
-  - Acceptance criteria: `AC-DEV-DESKTOP-INSTALL-001`, `AC-DEV-DESKTOP-WINDOWS-001`
 - **`NFR-DEV-DETERMINISM-001`** [reliability; must; project] Core-owned routing, validation, checkpoint replay, traceability projection, and gate preparation must be deterministic for exact inputs.
   - Measure: Canonical route, result, diagnostic, update, and receipt digest equality.
   - Target: 100 percent equality for deterministic Core-owned behavior.
@@ -413,8 +375,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Aliases: ContractDraft, ContractDraftSet entry
 - **Current architecture snapshot** (`TERM-DEV-CURRENT-ARCHITECTURE-SNAPSHOT-001`): A version-pinned observational artifact describing discovered implemented architecture, evidence provenance, confidence, gaps, and native attachments without approving intended design.
   - Aliases: CurrentArchitectureSnapshot
-- **Desktop release path** (`TERM-DEV-DESKTOP-RELEASE-PATH-001`): The exact release-ready set of DevRelay Core, module and Gate versions, adapter bindings, plugin package, local MCP bridge, app-server executor, policies, and host versions used for the accepted Windows Desktop reference run.
-  - Aliases: release-ready binding path
 - **Engineering gate** (`TERM-DEV-ENGINEERING-GATE-001`): A separate validation and approval boundary that decides whether an exact candidate may become an approved baseline or progress downstream.
   - Aliases: Gate
 - **Execution attempt** (`TERM-DEV-EXECUTION-ATTEMPT-001`): One immutable, content-addressed invocation of a concrete executor for one exact runnable work item in one isolated workspace.
@@ -457,4 +417,4 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 - Lifecycle: existing
 - Phase: implementation
-- Summary: The controlled library baseline is being extended into a release-ready ChatGPT Desktop for Windows product with an installable local plugin, typed local MCP bridge, one task per runnable work item, one live lifecycle path, and clean-install goal-to-BusinessAcceptance proof.
+- Summary: ArchitectureDiscovery requirements are clarified: mandatory native local inventory, optional bounded analyzers, material-gap blocking, explicit lower-confidence findings, and offline tracked-or-declared repository analysis with external-transmission opt-in.

@@ -1,15 +1,15 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-  "version": "1.8.0",
+  "baselineId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+  "version": "1.7.0",
   "approvedCandidate": {
-    "artifactId": "requirements-change-set-chatgpt-desktop-runtime-v1",
-    "digest": "sha256:549d197809b5cee859b475f8375d6a099ae5b46676c3c550ed8b5c596f66a64a"
+    "artifactId": "requirements-change-set-architecture-discovery-v1",
+    "digest": "sha256:caf935d1e918e29ff9d6e27f417a75e1c952a3626761d3f933f7d9f51fbb2d83"
   },
   "supersedes": {
-    "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-    "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+    "artifactId": "requirements-baseline-devrelay-v1-change-integration-001",
+    "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098"
   },
   "requirements": {
     "purpose": {
@@ -386,65 +386,6 @@
       }
     ],
     "successMetrics": [
-      {
-        "id": "SM-DEV-DESKTOP-E2E-001",
-        "name": "Desktop goal-to-acceptance completion",
-        "businessObjectiveIds": [
-          "BO-DEV-DETERMINISM-001",
-          "BO-DEV-MODULARITY-001",
-          "BO-DEV-QUALITY-001",
-          "BO-DEV-TRACEABILITY-001"
-        ],
-        "measure": "Clean ChatGPT Desktop runs that use the installed DevRelay plugin and one live binding per mandatory lifecycle capability to build, verify, integrate, system-verify, and business-accept a real bounded feature.",
-        "target": "At least one complete release run with zero bypassed mandatory Gates, zero unverified handoffs, zero blocking traceability diagnostics, and a byte-reproducible run report.",
-        "measurementMethod": "Install from the repository marketplace in a clean Desktop session, execute the canonical lifecycle, reconcile every run-ledger entry and graph edge, and repeat deterministic Core operations from checkpoints.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
       {
         "id": "SM-DEV-DETERMINISM-001",
         "name": "Deterministic progression",
@@ -1497,70 +1438,6 @@
         ]
       },
       {
-        "id": "CAP-DEV-DESKTOP-RUNTIME-001",
-        "name": "ChatGPT Desktop lifecycle runtime",
-        "description": "Install and operate DevRelay through ChatGPT Desktop on Windows using a packaged workflow skill, local typed MCP bridge, persistent deterministic run state, and Codex app-server work-item tasks.",
-        "businessObjectiveIds": [
-          "BO-DEV-DETERMINISM-001",
-          "BO-DEV-MODULARITY-001",
-          "BO-DEV-OBSERVABILITY-001",
-          "BO-DEV-QUALITY-001",
-          "BO-DEV-TRACEABILITY-001"
-        ],
-        "userIds": [
-          "USR-DEV-WORKFLOW-AUTHOR-001"
-        ],
-        "audience": "user-facing",
-        "key": true,
-        "priority": "must",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
         "id": "CAP-DEV-EXTENSIBILITY-001",
         "name": "Replaceable engineering capabilities",
         "description": "Bind interchangeable bounded adapters to stable provider-neutral module operations.",
@@ -2193,86 +2070,6 @@
         ]
       },
       {
-        "id": "UJ-DEV-DESKTOP-GOAL-TO-ACCEPTANCE-001",
-        "name": "Build accepted software from ChatGPT Desktop",
-        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
-        "capabilityIds": [
-          "CAP-DEV-DESKTOP-RUNTIME-001",
-          "CAP-DEV-LIFECYCLE-001",
-          "CAP-DEV-RUN-REPORTING-001"
-        ],
-        "trigger": "A user opens a local software project in ChatGPT Desktop, invokes the installed DevRelay plugin, and supplies a goal.",
-        "outcome": "The exact goal progresses through the configured deterministic lifecycle to a BusinessAcceptance record, or stops at an explicit clarification, Gate, verification failure, or blocked condition with resumable state.",
-        "steps": [
-          {
-            "sequence": 1,
-            "action": "The Desktop plugin initializes or resumes a content-addressed DevRelay run and conducts the human-facing RequirementsGathering interaction.",
-            "expectedOutcome": "Every decision becomes a structured, version-pinned artifact rather than conversational memory."
-          },
-          {
-            "sequence": 2,
-            "action": "DevRelay executes approved planning modules and Gates through the configured release-ready bindings.",
-            "expectedOutcome": "Architecture, contracts, work items, dependencies, and specialist assignments are valid and traceable before execution."
-          },
-          {
-            "sequence": 3,
-            "action": "Core derives each runnable DAG frontier and the host starts one isolated Codex task for every ready work item.",
-            "expectedOutcome": "Each task receives an immutable contract and returns a raw, verifiable handoff without acquiring workflow authority."
-          },
-          {
-            "sequence": 4,
-            "action": "DevRelay verifies, integrates, system-verifies, and business-accepts the resulting software while updating TraceabilityGraph and the human-readable run report.",
-            "expectedOutcome": "The user can prove exactly what was built, why it was built, how it was verified, and whether the business goal was accepted."
-          }
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
         "id": "UJ-DEV-GOAL-TO-ACCEPTANCE-001",
         "name": "Move an approved goal to business acceptance",
         "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
@@ -2755,77 +2552,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
-            }
-          }
-        ]
-      },
-      {
-        "id": "US-DEV-DESKTOP-RUNTIME-001",
-        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
-        "capabilityId": "CAP-DEV-DESKTOP-RUNTIME-001",
-        "userJourneyIds": [
-          "UJ-DEV-DESKTOP-GOAL-TO-ACCEPTANCE-001"
-        ],
-        "need": "Use DevRelay directly from ChatGPT Desktop on Windows to turn a software goal into production-quality accepted software through the complete deterministic lifecycle.",
-        "benefit": "The workflow is usable as an engineering system rather than only as a verified library or set of fixture-conformant contracts.",
-        "priority": "must",
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-DETERMINISM-001",
-          "AC-DEV-DESKTOP-E2E-001",
-          "AC-DEV-DESKTOP-HANDOFF-001",
-          "AC-DEV-DESKTOP-INSTALL-001",
-          "AC-DEV-DESKTOP-LIVE-PATH-001",
-          "AC-DEV-DESKTOP-MATURITY-001",
-          "AC-DEV-DESKTOP-MCP-001",
-          "AC-DEV-DESKTOP-OBSERVABILITY-001",
-          "AC-DEV-DESKTOP-RESUME-001",
-          "AC-DEV-DESKTOP-SECURITY-001",
-          "AC-DEV-DESKTOP-TASKS-001",
-          "AC-DEV-DESKTOP-WINDOWS-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -5007,618 +4733,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-DETERMINISM-001",
-        "statement": "Exact version-pinned run inputs, module and adapter bindings, policies, approvals, checkpoints, and host observations produce byte-identical Core-owned artifacts, route decisions, graph updates, and run-report projections.",
-        "verification": "Repeat complete and resumed Desktop runs, reorder equivalent input collections, and compare canonical digests for every Core-owned artifact and decision.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-E2E-001",
-        "statement": "Release acceptance includes a clean-install ChatGPT Desktop run that uses DevRelay to build a real bounded software feature from Goal through BusinessAcceptance without manually bypassing a mandatory module or Gate.",
-        "verification": "Install the packaged plugin in a fresh Desktop session, execute the reference project, and reconcile its run ledger, Git history, tests, verification evidence, graph checkpoint, and BusinessAcceptance record.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-HANDOFF-001",
-        "statement": "Every work-item task receives an immutable version-pinned contract and context bundle, and Core accepts its result only after raw-byte handoff validation, evidence closure, and dependency-aware integration assessment.",
-        "verification": "Exercise valid, malformed, substituted, stale, incomplete, cross-work-item, non-pass, and replayed task handoffs.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-INSTALL-001",
-        "statement": "The repository contains a valid local marketplace entry and installable DevRelay plugin package for ChatGPT Desktop on Windows, with documented install, upgrade, rollback, and uninstall procedures.",
-        "verification": "Validate the plugin and marketplace schemas, install from a clean local marketplace, restart Desktop, invoke the plugin in a new task, then roll back and uninstall without leaving authoritative run state ambiguous.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-LIVE-PATH-001",
-        "statement": "Every mandatory lifecycle module and Gate used by the reference circuit has at least one release-ready executable binding; conditional modules execute or produce an approved not-applicable disposition from exact state.",
-        "verification": "Generate the release circuit inventory and fail acceptance when any mandatory capability resolves only to a contract-defined or fixture-conformant binding.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-MATURITY-001",
-        "statement": "Alternative OpenSpec, Spec Kit, Structurizr, MADR, A2A, and other adapter bindings remain selectable only according to their evidence-backed maturity, and the product never presents fixture conformance as live interoperability.",
-        "verification": "Inspect the packaged capability catalog and exercise selection attempts across every maturity state and unavailable optional adapter.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-MCP-001",
-        "statement": "The plugin exposes a bounded local STDIO MCP surface with typed inputs and outputs for run creation, inspection, clarification, Gate decisions, progression, resume, and evidence retrieval while DevRelay Core remains the sole workflow authority.",
-        "verification": "Validate MCP schemas and instructions, exercise every tool with positive and negative inputs, and prove no tool can caller-select routes, fabricate Gate authority, mutate graph state directly, or bypass checkpoints.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-OBSERVABILITY-001",
-        "statement": "The Desktop experience continuously exposes the active stage, outcome, exact artifact links, Gate state, runnable frontier, task state, retries, rework, verification evidence, traceability diagnostics, and sourced performance observations in human-readable form.",
-        "verification": "Run serial, conditional, interrupted, failed, retried, parallel-frontier, and completed reference cases and reconcile every source record with the rendered report.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-RESUME-001",
-        "statement": "A Desktop or task-process interruption can resume from durable content-addressed run state without repeating a checkpointed effect, losing approval lineage, or applying one integrated change twice.",
-        "verification": "Interrupt at each effect and Gate boundary, restart Desktop and the MCP server, resume the run, and prove zero-call replay plus exactly-once integration identities.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-SECURITY-001",
-        "statement": "Filesystem, process, network, and secret access is least-privilege, explicit, bound to one run or task attempt, and enforced by the Desktop/Codex host rather than trusted to model instructions or adapter declarations.",
-        "verification": "Exercise allowed and denied permission cases, source-transmission opt-in, path escape, command substitution, secret access, external network, and cross-workspace attempts.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-TASKS-001",
-        "statement": "For every Core-derived runnable frontier, the Windows host creates one distinct Codex app-server task per work item, records its thread and attempt identity, and never lets a task select readiness, schedule unrelated work, approve itself, or integrate its own change.",
-        "verification": "Execute serial and multi-item frontiers, compare task identities and context, and attempt readiness, approval, self-verification, and self-integration authority violations.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "AC-DEV-DESKTOP-WINDOWS-001",
-        "statement": "The supported release path runs on the current ChatGPT Desktop for Windows host with documented Node and Codex CLI compatibility and no dependency on WSL, a hosted backend, or a second IDE.",
-        "verification": "Run the complete release gate and clean-install proof on Windows using supported Node versions and the installed Codex CLI, with WSL and hosted services disabled.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -8352,190 +7466,6 @@
         ]
       },
       {
-        "id": "NFR-DEV-DESKTOP-DETERMINISM-001",
-        "category": "reliability",
-        "statement": "The Desktop host may execute probabilistic implementation engines, but Core-owned lifecycle routing, validation, checkpoint replay, Gate preparation, traceability, and reporting must remain deterministic for exact inputs.",
-        "applicability": {
-          "level": "project"
-        },
-        "measure": "Canonical digest equality across fresh process, reordered equivalent input, checkpoint replay, and Desktop restart cases.",
-        "target": "100 percent equality for Core-owned outputs and zero duplicate checkpointed effects.",
-        "priority": "must",
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-DETERMINISM-001",
-          "AC-DEV-DESKTOP-RESUME-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "NFR-DEV-DESKTOP-ISOLATION-001",
-        "category": "security",
-        "statement": "Desktop orchestration and work-item tasks must use explicit least-privilege host-enforced grants and isolated workspaces with no undeclared cross-task access.",
-        "applicability": {
-          "level": "project"
-        },
-        "measure": "Allowed and denied host conformance checks for every permission kind, workspace, task, and external transmission boundary.",
-        "target": "No undeclared access succeeds and every granted effect remains attributable to one exact attempt.",
-        "priority": "must",
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-HANDOFF-001",
-          "AC-DEV-DESKTOP-SECURITY-001",
-          "AC-DEV-DESKTOP-TASKS-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "NFR-DEV-DESKTOP-WINDOWS-COMPATIBILITY-001",
-        "category": "compatibility",
-        "statement": "The controlled release must operate from ChatGPT Desktop on Windows with the packaged local plugin, STDIO MCP server, supported Node runtime, and local Codex app-server.",
-        "applicability": {
-          "level": "project"
-        },
-        "measure": "Clean-install and upgrade verification on the supported Windows Desktop host and Node compatibility matrix.",
-        "target": "One complete release run with no WSL, hosted-backend, or alternate-IDE dependency.",
-        "priority": "must",
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-INSTALL-001",
-          "AC-DEV-DESKTOP-WINDOWS-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
         "id": "NFR-DEV-DETERMINISM-001",
         "category": "reliability",
         "statement": "Core-owned routing, validation, checkpoint replay, traceability projection, and gate preparation must be deterministic for exact inputs.",
@@ -9749,184 +8679,6 @@
         ]
       },
       {
-        "id": "CON-DEV-DESKTOP-CORE-AUTHORITY-001",
-        "category": "business",
-        "statement": "The Desktop plugin, MCP tools, app-server tasks, implementation models, and external adapters cannot select lifecycle routes, satisfy Gates, mutate TraceabilityGraph directly, or declare their own work verified or integrated.",
-        "rationale": "Host integration must expose DevRelay rather than becoming a second workflow authority or coding-agent wrapper.",
-        "applicability": {
-          "level": "project"
-        },
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-MCP-001",
-          "AC-DEV-DESKTOP-TASKS-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "CON-DEV-DESKTOP-LOCAL-FIRST-001",
-        "category": "security",
-        "statement": "V1 runs locally on Windows and requires exact opt-in before repository content or secrets are transmitted beyond the configured ChatGPT/Codex host boundary.",
-        "rationale": "The reference release handles proprietary source and must not depend on an undeclared hosted orchestration service.",
-        "applicability": {
-          "level": "project"
-        },
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-SECURITY-001",
-          "AC-DEV-DESKTOP-WINDOWS-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "CON-DEV-DESKTOP-RELEASE-PATH-001",
-        "category": "technical",
-        "statement": "Release readiness requires one live executable path through every mandatory lifecycle capability, but does not require every alternative adapter or public plugin-directory publication.",
-        "rationale": "A trustworthy minimum usable system is different from claiming universal live interoperability or public distribution.",
-        "applicability": {
-          "level": "project"
-        },
-        "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-INSTALL-001",
-          "AC-DEV-DESKTOP-LIVE-PATH-001",
-          "AC-DEV-DESKTOP-MATURITY-001"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
         "id": "CON-DEV-GATE-SEPARATION-001",
         "category": "business",
         "statement": "Producing modules cannot approve or promote their own candidates; configured gates own progression decisions.",
@@ -10948,156 +9700,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
-            }
-          }
-        ]
-      },
-      {
-        "id": "SCOPE-DEV-DESKTOP-EXECUTION-001",
-        "statement": "A Codex app-server execution host that creates one task per ready work item, supplies immutable contracts, persists task identities and raw handoffs, and returns control to DevRelay verification and integration.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "SCOPE-DEV-DESKTOP-PLUGIN-001",
-        "statement": "A repository-owned ChatGPT Desktop plugin package, local marketplace entry, workflow skill, local typed STDIO MCP runtime bridge, installation lifecycle, and Windows host documentation.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "SCOPE-DEV-DESKTOP-REFERENCE-RUN-001",
-        "statement": "A clean-install Windows Desktop reference run that builds a real bounded feature through every mandatory module, Gate, execution frontier, verification layer, integration step, SystemVerification, and BusinessAcceptance.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -12453,108 +11055,6 @@
         ]
       },
       {
-        "id": "NG-DEV-DESKTOP-ALL-ADAPTERS-LIVE-001",
-        "statement": "Make every declared OpenSpec, Spec Kit, Structurizr, MADR, A2A, Task Master, or contract-format alternative release-ready in the first Desktop release.",
-        "rationale": "V1 requires one complete live reference path per mandatory capability while preserving honest maturity labels and replaceable alternative bindings.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "NG-DEV-DESKTOP-PUBLIC-DIRECTORY-001",
-        "statement": "Publish DevRelay to the public universal OpenAI plugin directory in V1.",
-        "rationale": "Repository-backed local marketplace installation is the approved Windows Desktop distribution boundary for this release.",
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
         "id": "NG-DEV-IMPLICIT-AUTHORITY-001",
         "statement": "Treat model confidence, adapter output, chat history, or successful execution as implicit approval.",
         "rationale": "Only explicit validated gates and evidence authorize progression.",
@@ -13139,60 +11639,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-change-integration-001",
               "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098"
-            }
-          }
-        ]
-      },
-      {
-        "id": "TERM-DEV-DESKTOP-RELEASE-PATH-001",
-        "term": "Desktop release path",
-        "definition": "The exact release-ready set of DevRelay Core, module and Gate versions, adapter bindings, plugin package, local MCP bridge, app-server executor, policies, and host versions used for the accepted Windows Desktop reference run.",
-        "aliases": [
-          "release-ready binding path"
-        ],
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -14162,50 +12608,42 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "implementation",
-      "summary": "The controlled library baseline is being extended into a release-ready ChatGPT Desktop for Windows product with an installable local plugin, typed local MCP bridge, one task per runnable work item, one live lifecycle path, and clean-install goal-to-BusinessAcceptance proof.",
+      "summary": "ArchitectureDiscovery requirements are clarified: mandatory native local inventory, optional bounded analyzers, material-gap blocking, explicit lower-confidence findings, and offline tracked-or-declared repository analysis with external-transmission opt-in.",
       "sourceRefs": [
-        {
-          "role": "capability-evidence",
-          "artifact": {
-            "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-            "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-          },
-          "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-        },
         {
           "role": "goal",
           "artifact": {
-            "artifactId": "goal-chatgpt-desktop-runtime-v1",
-            "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
+            "artifactId": "goal-architecture-discovery-module-v1",
+            "digest": "sha256:a5f1c2f26363ca705ac3059ba4f3ee26b2d3eed0b1cac316eb273bf8f2a4363b"
           }
         },
         {
           "role": "owner-decision",
           "artifact": {
-            "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-            "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
+            "artifactId": "owner-decisions-architecture-discovery-v1",
+            "digest": "sha256:2bcef52a56281934d73ad3f6c5530241f27a18f19609ca239a6da45ebfcdedee"
           },
           "location": "All three checkpoint-bound recommended decisions approved in chat"
         },
         {
           "role": "project-context",
           "artifact": {
-            "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-            "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
+            "artifactId": "project-context-devrelay-architecture-discovery-v1",
+            "digest": "sha256:98553600fd8344af9db86eddfdc832dc6ab1997034fbe730e06c9ea787037478"
           }
         },
         {
           "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-            "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            "artifactId": "project-overview-baseline-devrelay-v1-change-integration-001",
+            "digest": "sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73"
           }
         },
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-            "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            "artifactId": "requirements-baseline-devrelay-v1-change-integration-001",
+            "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098"
           }
         }
       ]
@@ -14398,58 +12836,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
-            }
-          }
-        ]
-      },
-      {
-        "id": "ASM-DEV-DESKTOP-V1-001",
-        "statement": "V1 targets ChatGPT Desktop on Windows only, installs from a repository-backed local marketplace, launches one Codex app-server task per runnable work item, requires one live path through every mandatory lifecycle capability, and proves release readiness through a clean-install real-feature run.",
-        "status": "confirmed",
-        "blocking": false,
-        "sourceRefs": [
-          {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-            },
-            "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-          },
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
-            },
-            "location": "All three checkpoint-bound recommended decisions approved in chat"
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-              "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -14989,7 +13375,6 @@
       "Approved WorkBreakdown, WorkDependency, SpecialistAssignment, and WorkExecution artifacts",
       "Approved WorkBreakdown, WorkDependency, and SpecialistAssignment baselines",
       "Approved WorkItemVerificationGate result and exact verified change package",
-      "At least one release-ready implementation binding for every mandatory lifecycle capability",
       "Bounded adapters or compatible implementations for configured module capabilities.",
       "Exact ProjectArchitectureState, RepositorySnapshot, ProjectOverviewBaseline, and project context",
       "Exact TraceabilityGraph snapshots and deterministic query results for lifecycle lineage and coverage.",
@@ -14998,18 +13383,13 @@
       "Host-enforced repository, process, network, and secret policy",
       "Pinned Graphology and Graphology-DAG libraries behind the Core graph-mechanics boundary.",
       "Pinned kind-specific validator and compatibility policy versions",
-      "Repository-backed local plugin marketplace and trusted local project configuration",
       "Standardized content-addressed module, Gate, adapter, checkpoint, approval, and progression records.",
-      "Supported ChatGPT Desktop for Windows installation and local Codex CLI/app-server",
-      "Supported Node runtime for the bundled STDIO MCP server",
       "Version-pinned project, architecture, contract, repository-base, candidate-workspace, verification-policy, and verifier-binding artifacts",
       "Version-pinned repository snapshot, execution policy, workspace base, and executor binding",
       "Version-pinned target RepositorySnapshot, configured local Git ref, expected target commit, integration policy, and host-enforced Git grants",
       "Versioned canonical contracts for each V1 module and lifecycle artifact."
     ],
     "risks": [
-      "A Desktop skill could be mistaken for workflow authority unless every state transition is mediated by typed Core tools.",
-      "A clean fixture run could overstate production readiness unless it exercises real repository changes, tests, Git integration, system verification, and business acceptance.",
       "A conflict resolver could silently create new unverified implementation bytes.",
       "A consistency reviewer may be mistaken for authority unless reviewer findings remain advisory inputs to the Gate.",
       "A crash between Git mutation and checkpoint persistence could duplicate or lose integration evidence.",
@@ -15044,10 +13424,7 @@
       "Module boundaries may drift into duplicated responsibility unless every contract keeps one primary purpose.",
       "OPA policy success may be mistaken for semantic completeness unless WorkDependencyGate separately reviews missing-dependency evidence.",
       "Operational telemetry may leak secrets or sensitive logs unless report projection applies explicit content policy.",
-      "Optional adapter names could mislead users unless the runtime exposes and enforces exact maturity and availability.",
-      "Plugin installation or Node/Codex host drift could make an otherwise green library unusable from the supported Windows Desktop surface.",
       "Provider-specific binding details could leak into generic workflow semantics.",
-      "Recursive app-server execution could create orphaned tasks or duplicate effects unless thread, attempt, checkpoint, and integration identities are durable and idempotent.",
       "Repository drift could bind findings to a different implementation than the snapshot claims.",
       "Retries could destroy evidence if attempts are overwritten.",
       "Reused task adapters could blur decomposition and dependency authority.",
@@ -15064,11 +13441,8 @@
       "Approved WorkDependencyAnalysis requirements and ProjectOverview baseline.",
       "Bounded manifests, fixtures, dogfood evidence, release docs, and audit results.",
       "Canonical artifacts, manifest, Gate, runtime contracts, and trusted contributor.",
-      "Clean-install Windows Desktop end-to-end reference software run and acceptance evidence",
-      "Codex app-server work-item task executor with immutable handoff verification",
       "CurrentArchitectureSnapshot discovery, confidence, gap, and provenance contracts",
       "Deterministic primary LifecycleRunReport.md renderer with exact artifact links.",
-      "DevRelay workflow skill and typed local STDIO MCP runtime bridge",
       "Dynamic report projection and adapter-maturity registry integration.",
       "Executable conformance fixtures and verification evidence for every implemented lifecycle slice.",
       "ExecutionBinding, ExecutionAttempt, ChangeSetDraft, and ExecutionEvidenceBundle contracts",
@@ -15083,8 +13457,6 @@
       "Provider-neutral ContractGeneration module and ContractGate contracts",
       "Provider-neutral WorkExecution module and execution contract",
       "Provider-neutral WorkItemVerification module and WorkItemVerificationGate",
-      "Release-ready binding path through every mandatory lifecycle capability",
-      "Repository-backed DevRelay local marketplace and installable ChatGPT Desktop plugin",
       "TraceabilityGraph coverage from business objectives through business acceptance.",
       "Trusted candidate and approved contract traceability contributors",
       "Trusted candidate and approved work-item verification traceability contributors",
@@ -15116,16 +13488,6 @@
       "dependency/opa-policy-decision",
       "dependency/semantic-policy",
       "dependency/spec-kit-consistency-review",
-      "desktop/app-server-task-lifecycle",
-      "desktop/business-acceptance",
-      "desktop/checkpoint-resume",
-      "desktop/clean-install-end-to-end-run",
-      "desktop/live-binding-coverage",
-      "desktop/local-marketplace-install",
-      "desktop/mcp-tool-conformance",
-      "desktop/permission-isolation",
-      "desktop/plugin-package-validation",
-      "desktop/work-item-handoff-verification",
       "execution/binding",
       "execution/change-set",
       "execution/checkpoint-replay",
@@ -15176,14 +13538,6 @@
         "location": "Released capability and maturity evidence at repository revision 4bda7fe707ba102bd22fe0001c83aa13ec03b0c5"
       },
       {
-        "role": "capability-evidence",
-        "artifact": {
-          "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
-          "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
-        },
-        "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
-      },
-      {
         "role": "confirmed-design-basis",
         "artifact": {
           "artifactId": "confirmed-design-basis-change-integration-v1",
@@ -15211,13 +13565,6 @@
         "artifact": {
           "artifactId": "goal-change-integration-module-v1",
           "digest": "sha256:ef3f803ea6c7b06639edddf88bb90bdc0cca28b181706d115164fa8a525206d5"
-        }
-      },
-      {
-        "role": "goal",
-        "artifact": {
-          "artifactId": "goal-chatgpt-desktop-runtime-v1",
-          "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
         }
       },
       {
@@ -15253,14 +13600,6 @@
         "artifact": {
           "artifactId": "owner-decisions-architecture-discovery-v1",
           "digest": "sha256:2bcef52a56281934d73ad3f6c5530241f27a18f19609ca239a6da45ebfcdedee"
-        },
-        "location": "All three checkpoint-bound recommended decisions approved in chat"
-      },
-      {
-        "role": "owner-decision",
-        "artifact": {
-          "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
-          "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
         },
         "location": "All three checkpoint-bound recommended decisions approved in chat"
       },
@@ -15305,13 +13644,6 @@
       {
         "role": "project-context",
         "artifact": {
-          "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
-          "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
-        }
-      },
-      {
-        "role": "project-context",
-        "artifact": {
           "artifactId": "project-context-devrelay-contract-generation-v1",
           "digest": "sha256:574fbd2a9a41598854b4328a23e3f4e5628469d3bd8a294da2017ffd9b0eaa0e"
         }
@@ -15335,13 +13667,6 @@
         "artifact": {
           "artifactId": "project-context-devrelay-work-item-verification-v1",
           "digest": "sha256:e920fcb8a5bcf01771fae363f2b752ca751622f0291c2232cc041c6e0ac97ae9"
-        }
-      },
-      {
-        "role": "project-overview-baseline",
-        "artifact": {
-          "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-          "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
         }
       },
       {
@@ -15396,13 +13721,6 @@
       {
         "role": "requirements-baseline",
         "artifact": {
-          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-        }
-      },
-      {
-        "role": "requirements-baseline",
-        "artifact": {
           "artifactId": "requirements-baseline-devrelay-v1-change-integration-001",
           "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098"
         }
@@ -15446,8 +13764,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-chatgpt-desktop-runtime-v1",
-      "digest": "sha256:3c333ca4e8959f1b4c0b5ff3eb0499d2091015194960898d95380742500356ba"
+      "artifactId": "requirements-gate-approval-architecture-discovery-v1",
+      "digest": "sha256:e1bea474e6f4b2b6e19d6285721417854576e99806565c3cb2216b98611615a6"
     }
   ]
 }
