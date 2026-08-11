@@ -531,6 +531,12 @@ export {
 } from "./chatgpt-desktop-mcp-server.mjs";
 export { runChatGptDesktopMcpStdio } from "./chatgpt-desktop-mcp-transport.mjs";
 export {
+  CODEX_APP_SERVER_CLIENT,
+  CodexAppServerClientError,
+  createChatGptDesktopAppServerClient,
+  createCodexAppServerProcess,
+} from "./chatgpt-desktop-app-server-client.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
@@ -541,6 +547,8 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
+
+
 
 
 
