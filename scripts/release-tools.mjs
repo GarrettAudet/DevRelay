@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
   existsSync,
+  cpSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -442,7 +443,8 @@ function assertPackageContents(files, manifest) {
   return paths.length;
 }
 
-function installAndImport(tarball, packageName, temporaryRoot) {
+function installAndImport(tarball, packageDocument, temporaryRoot) {
+  const packageName = packageDocument.name;
   const consumer = join(temporaryRoot, "consumer");
   mkdirSync(consumer);
   writeFileSync(
@@ -452,11 +454,19 @@ function installAndImport(tarball, packageName, temporaryRoot) {
         name: "devrelay-release-smoke",
         private: true,
         type: "module",
+        dependencies: packageDocument.dependencies,
       },
       null,
       2,
     )}\n`,
   );
+  // npm ci has already verified the exact lockfile dependency tree. Seed that
+  // tree into the isolated consumer so the tarball install remains genuinely
+  // offline without relying on incidental registry-cache entries.
+  cpSync(join(repositoryRoot, "node_modules"), join(consumer, "node_modules"), {
+    recursive: true,
+    filter: (source) => basename(source) !== ".package-lock.json",
+  });
   const install = npmInvocation([
     "install",
     "--offline",
@@ -561,7 +571,7 @@ export function runPackageCheck() {
       manifest,
     );
     const tarball = join(temporaryRoot, report[0].filename);
-    installAndImport(tarball, packageDocument.name, temporaryRoot);
+    installAndImport(tarball, packageDocument, temporaryRoot);
     console.log(
       `Package verification passed: ${packageFileCount} exact catalog-bound files and an installed root-import smoke test.`,
     );
