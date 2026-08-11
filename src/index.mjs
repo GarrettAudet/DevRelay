@@ -519,6 +519,10 @@ export {
   resolveChatGptDesktopCapabilities,
 } from "./chatgpt-desktop-capability-resolver.mjs";
 export {
+  ChatGptDesktopRunStoreError,
+  createChatGptDesktopRunStore,
+} from "./chatgpt-desktop-run-store.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
@@ -529,3 +533,5 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
+
+
