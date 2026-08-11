@@ -10,6 +10,9 @@ For a self-contained implementation-owner pickup, see
 This status page is a human-readable projection; digest-bound lifecycle
 artifacts and Gate records remain authoritative.
 
+Windows ChatGPT Desktop operators should use the
+[local installation, operation, recovery, and maturity guide](docs/chatgpt-desktop-windows.md).
+
 It does not replace engineering tools, coding agents, or model providers. A
 semantic Module defines a stable engineering contract, configured adapters
 implement bounded capabilities, and DevRelay Core owns routing, sequencing,
