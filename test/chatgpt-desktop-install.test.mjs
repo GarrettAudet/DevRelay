@@ -92,3 +92,15 @@ test("tampered package and missing dependency fail before mutation", (t) => {
   assert.match(missing.stderr, /Required dependency is unavailable: codex/i);
   assert.equal(existsSync(f.plugin), false);
 });
+
+test("installer hashing has no Get-FileHash module dependency", () => {
+  for (const script of [installScript, healthScript]) {
+    const source = readFileSync(script, "utf8");
+    assert.doesNotMatch(source, /\bGet-FileHash\b/u);
+    assert.match(source, /\[IO\.File\]::OpenRead\(\$Path\)/u);
+    assert.match(
+      source,
+      /\[Security\.Cryptography\.SHA256\]::Create\(\)/u,
+    );
+  }
+});

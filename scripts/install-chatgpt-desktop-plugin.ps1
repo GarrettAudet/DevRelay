@@ -23,7 +23,14 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 function Get-Sha256([string]$Path) {
-  return 'sha256:' + (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
+  $stream = [IO.File]::OpenRead($Path)
+  try {
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try { $hash = $sha256.ComputeHash($stream) } finally { $sha256.Dispose() }
+  } finally {
+    $stream.Dispose()
+  }
+  return 'sha256:' + ([BitConverter]::ToString($hash) -replace '-', '').ToLowerInvariant()
 }
 
 function Get-TreeDigest([string]$Root, [string[]]$RelativePaths) {

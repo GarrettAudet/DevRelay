@@ -7,7 +7,16 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-function Get-Sha256([string]$Path) { 'sha256:' + (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
+function Get-Sha256([string]$Path) {
+  $stream = [IO.File]::OpenRead($Path)
+  try {
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try { $hash = $sha256.ComputeHash($stream) } finally { $sha256.Dispose() }
+  } finally {
+    $stream.Dispose()
+  }
+  'sha256:' + ([BitConverter]::ToString($hash) -replace '-', '').ToLowerInvariant()
+}
 
 $receipt = Get-Content -LiteralPath $ReceiptPath -Raw | ConvertFrom-Json
 if ($receipt.apiVersion -ne 'devrelay.dev/v1alpha1' -or $receipt.interfaceIntentId -ne 'IF-DESKTOP-INSTALLATION') { throw 'Installation receipt is invalid.' }
