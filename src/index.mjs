@@ -514,6 +514,11 @@ export {
   validateChatGptDesktopRuntimeArtifact,
 } from "./chatgpt-desktop-runtime-artifact-validator.mjs";
 export {
+  CHATGPT_DESKTOP_CAPABILITY_MATURITY,
+  ChatGptDesktopCapabilityResolutionError,
+  resolveChatGptDesktopCapabilities,
+} from "./chatgpt-desktop-capability-resolver.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
