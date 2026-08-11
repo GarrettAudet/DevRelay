@@ -9,6 +9,8 @@ import { createLocalGitIntegrationAdapter, localGitIntegrationConfigurationDiges
 import { documentValidators, validationDetail } from "../src/schema-validation.mjs";
 
 const D = `sha256:${"a".repeat(64)}`;
+const isolatedRepositoryPath = join(tmpdir(), "devrelay-isolated");
+const customGitExecutable = join(tmpdir(), "devrelay-tools", "git-custom");
 const git = (cwd, ...args) => execFileSync("git", ["-C", cwd, ...args], { encoding: "utf8" }).trim();
 const commitFile = async (repo, path, body, message) => { await writeFile(join(repo, path), body); git(repo, "add", path); git(repo, "commit", "-m", message); return git(repo, "rev-parse", "HEAD"); };
 const configuration = (repositoryPath) => ({ repositoryPath, gitExecutable: "git", timeoutMs: 30_000, maxOutputBytes: 1024 * 1024 });
@@ -76,9 +78,9 @@ test("conflicts return exact paths and leave the target unchanged", async () => 
 
 test("malformed and substituted invocations fail before spawning Git", async () => {
   let calls = 0;
-  const adapter = adapterFor("C:\\isolated", { spawnGit: async () => { calls += 1; return {}; } });
+  const adapter = adapterFor(isolatedRepositoryPath, { spawnGit: async () => { calls += 1; return {}; } });
   await assert.rejects(adapter({}));
-  const validShape = invocation("1".repeat(40), "2".repeat(40), "fast-forward", "C:\\isolated", { adapter: { id: "substitute", version: "0.1.0", configurationDigest: D } });
+  const validShape = invocation("1".repeat(40), "2".repeat(40), "fast-forward", isolatedRepositoryPath, { adapter: { id: "substitute", version: "0.1.0", configurationDigest: D } });
   await assert.rejects(adapter(validShape, authorization(validShape)), /identity/);
   assert.equal(calls, 0);
 });
@@ -101,7 +103,7 @@ test("a concurrent ref change cannot be overwritten by the conditional update", 
 });
 
 test("configuration substitution and missing or changed TARGET-CAS authorization invoke zero Git commands", async () => {
-  let calls = 0; const repositoryPath = "C:\\isolated";
+  let calls = 0; const repositoryPath = isolatedRepositoryPath;
   const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath);
   const adapter = adapterFor(repositoryPath, { spawnGit: async () => { calls += 1; return {}; } });
   const substituted = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath, { adapter: { ...request.adapter, configurationDigest: D } });
@@ -114,7 +116,7 @@ test("configuration substitution and missing or changed TARGET-CAS authorization
 });
 
 test("denied spawn and interrupted process fail closed without an effect", async () => {
-  const repositoryPath = "C:\\isolated"; const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath);
+  const repositoryPath = isolatedRepositoryPath; const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath);
   for (const [name, response, expected] of [
     ["denied", () => { throw Object.assign(new Error("denied"), { code: "EACCES" }); }, { signal: null, timedOut: false }],
     ["timeout", () => ({ exitCode: null, signal: "SIGTERM", timedOut: true, stdout: "", stderr: "timeout" }), { signal: "SIGTERM", timedOut: true }],
@@ -138,7 +140,7 @@ test("denied spawn and interrupted process fail closed without an effect", async
 });
 
 test("tree observation failure cites both attempted commands and never fabricates preState", async () => {
-  const repositoryPath = "C:\\isolated"; const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath); const store = evidenceStore();
+  const repositoryPath = isolatedRepositoryPath; const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath); const store = evidenceStore();
   let call = 0;
   const adapter = createLocalGitIntegrationAdapter({ ...configuration(repositoryPath), ...store, spawnGit: async () => call++ === 0 ? ({ exitCode: 0, signal: null, stdout: `${"1".repeat(40)}\n`, stderr: "" }) : ({ exitCode: 1, signal: null, stdout: "", stderr: "tree unavailable" }) });
   const error = await adapter(request, authorization(request)).then(() => assert.fail("must reject"), (value) => value);
@@ -149,7 +151,7 @@ test("tree observation failure cites both attempted commands and never fabricate
 });
 
 test("custom gitExecutable is recorded exactly for a thrown spawn", async () => {
-  const custom = { ...configuration("C:\\isolated"), gitExecutable: "C:\\Tools\\git-custom.exe" };
+  const custom = { ...configuration(isolatedRepositoryPath), gitExecutable: customGitExecutable };
   const request = invocationForConfiguration("1".repeat(40), "2".repeat(40), "fast-forward", custom); const store = evidenceStore();
   const adapter = createLocalGitIntegrationAdapter({ ...custom, ...store, spawnGit: async () => { throw new Error("denied"); } });
   const error = await adapter(request, authorization(request)).then(() => assert.fail("must reject"), (value) => value);
@@ -158,7 +160,7 @@ test("custom gitExecutable is recorded exactly for a thrown spawn", async () => 
 });
 
 test("native evidence must be persisted, retrievable, and byte-exact", async () => {
-  const repositoryPath = "C:\\isolated"; const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath);
+  const repositoryPath = isolatedRepositoryPath; const request = invocation("1".repeat(40), "2".repeat(40), "fast-forward", repositoryPath);
   const spawnGit = async () => ({ exitCode: 1, signal: null, stdout: "", stderr: "missing" });
   const badRef = createLocalGitIntegrationAdapter({ ...configuration(repositoryPath), spawnGit, persistNativeEvidence: async () => ({ artifactId: "E", digest: D }), readNativeEvidence: async () => Buffer.from("wrong") });
   await assert.rejects(badRef(request, authorization(request)), /digest-mismatched/);
