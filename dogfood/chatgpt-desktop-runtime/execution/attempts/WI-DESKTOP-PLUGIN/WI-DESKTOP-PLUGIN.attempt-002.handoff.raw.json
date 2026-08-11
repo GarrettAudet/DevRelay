@@ -1,0 +1,37 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "changedFiles": [
+    ".agents/plugins/marketplace.json",
+    "plugins/devrelay/.codex-plugin/plugin.json",
+    "plugins/devrelay/.mcp.json",
+    "plugins/devrelay/skills/devrelay/SKILL.md",
+    "test/chatgpt-desktop-plugin.test.mjs"
+  ],
+  "evidence": [
+    {
+      "digest": "sha256:3893e437064452332cb36359744a4d9bde6f80df7cabb02e4e24aa10ac0915d5",
+      "kind": "chatgpt-desktop/plugin-validation",
+      "relativePath": "test/chatgpt-desktop-plugin.test.mjs"
+    }
+  ],
+  "executionId": "ATT-DESKTOP-PLUGIN-002",
+  "kind": "BootstrapWorkItemHandoff",
+  "notes": "The official plugin-creator validator passed using the pinned PyYAML 6.0.2 runtime, and all three focused Node conformance tests passed against the exact rebased read-only candidate.",
+  "outcome": "pass",
+  "residualRisks": [
+    "none"
+  ],
+  "verification": [
+    {
+      "command": "$env:PYTHONPATH='C:\\tmp\\devrelay-plugin-validator-deps'; C:\\Users\\garre\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe C:/Users/garre/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/devrelay",
+      "exitCode": 0,
+      "summary": "Official plugin validation passed."
+    },
+    {
+      "command": "node --test test/chatgpt-desktop-plugin.test.mjs",
+      "exitCode": 0,
+      "summary": "Three tests passed with no failures."
+    }
+  ],
+  "workItemId": "WI-DESKTOP-PLUGIN"
+}

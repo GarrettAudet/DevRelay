@@ -6,10 +6,22 @@ import * as api from "../../../src/index.mjs";
 import { validateWorkExecutionArtifact } from "../../../src/work-execution-artifact-validator.mjs";
 
 const root = resolve(fileURLToPath(new URL("../../../", import.meta.url)));
-const [workItemId, candidateRootArgument, executorThreadId] = process.argv.slice(2);
-if (!workItemId || !candidateRootArgument || !executorThreadId) {
+const [
+  workItemId,
+  candidateRootArgument,
+  executorThreadId,
+  verificationBaseRevision,
+  attemptNumber = "001",
+  candidateCommit,
+] = process.argv.slice(2);
+if (
+  !workItemId ||
+  !candidateRootArgument ||
+  !executorThreadId ||
+  !verificationBaseRevision
+) {
   throw new Error(
-    "usage: node materialize-frontier-verification.mjs <work-item-id> <candidate-root> <executor-thread-id>",
+    "usage: node materialize-frontier-verification.mjs <work-item-id> <candidate-root> <executor-thread-id> <verification-base-revision>",
   );
 }
 const candidateRoot = resolve(candidateRootArgument);
@@ -31,10 +43,16 @@ const rawHandoffPath = resolve(
   executionRoot,
   "attempts",
   workItemId,
-  `${workItemId}.attempt-001.handoff.raw.json`,
+  `${workItemId}.attempt-${attemptNumber}.handoff.raw.json`,
 );
 const readBytes = (path) => readFileSync(resolve(root, path));
-const readCandidateBytes = (path) => readFileSync(resolve(candidateRoot, path));
+const readCandidateBytes = (path) =>
+  candidateCommit
+    ? execFileSync("git", ["show", `${candidateCommit}:${path}`], {
+        cwd: candidateRoot,
+        stdio: ["ignore", "pipe", "ignore"],
+      })
+    : readFileSync(resolve(candidateRoot, path));
 const readJson = (path) => JSON.parse(readBytes(path));
 const body = (value, field) =>
   Object.fromEntries(
@@ -90,8 +108,12 @@ const checkpointStore = () => {
 
 const handoffBytes = readFileSync(rawHandoffPath);
 const handoff = JSON.parse(handoffBytes);
+const expectedAttemptId =
+  attemptNumber === "001"
+    ? task.executionId
+    : `ATT-DESKTOP-${slug}-${attemptNumber}`;
 if (
-  handoff.executionId !== task.executionId ||
+  handoff.executionId !== expectedAttemptId ||
   handoff.workItemId !== workItemId ||
   handoff.outcome !== "pass"
 )
@@ -105,6 +127,7 @@ const baseInvocation = readJson(
 );
 const invocation = {
   ...baseInvocation,
+  attemptId: handoff.executionId,
   executionBinding: {
     ...baseInvocation.executionBinding,
     digest: binding.bindingDigest,
@@ -119,8 +142,17 @@ write("executor-invocation.json", exactInvocation);
 const filePaths = handoff.changedFiles;
 const pathMatches = (pattern, value) => {
   if (!pattern.includes("*")) return pattern === value;
-  const escaped = pattern.replace(/[.+?^$()|[\]\\]/gu, "\\$&");
-  const expression = escaped.replaceAll("**", ".*").replaceAll("*", "[^/]*");
+  const escape = (segment) =>
+    segment.replace(/[.+?^$()|[\]\\]/gu, "\\$&");
+  const expression = pattern
+    .split("**")
+    .map((part) =>
+      part
+        .split("*")
+        .map((segment) => escape(segment))
+        .join("[^/]*"),
+    )
+    .join(".*");
   return new RegExp("^" + expression + "$", "u").test(value);
 };
 if (
@@ -141,13 +173,29 @@ const baseRevision = readJson(
 ).revision;
 const beforeBytes = (relativePath) => {
   try {
-    return execFileSync("git", ["show", `${baseRevision}:${relativePath}`], {
+    return execFileSync("git", ["show", `${verificationBaseRevision}:${relativePath}`], {
       cwd: root,
+      stdio: ["ignore", "pipe", "ignore"],
     });
   } catch {
     return null;
   }
 };
+const taskRepositorySnapshot = readJson(
+  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}/repository-snapshot.json`,
+);
+const verificationBaseSnapshot = {
+  ...taskRepositorySnapshot,
+  revision: verificationBaseRevision,
+  treeDigest: api.sha256Digest(
+    execFileSync(
+      "git",
+      ["ls-tree", "-r", "--full-tree", verificationBaseRevision],
+      { cwd: root },
+    ),
+  ),
+};
+
 const files = filePaths.map((relativePath) => {
   const bytes = readCandidateBytes(relativePath);
   return { relativePath, bytes: bytes.length, digest: api.sha256Digest(bytes) };
@@ -170,7 +218,7 @@ const mutations = files.map(({ relativePath, digest }) => {
   };
 });
 const handoffRef = ref(
-  `HANDOFF-${slug}-001`,
+  `HANDOFF-${slug}-${attemptNumber}`,
   api.sha256Digest(handoffBytes),
   {
     mediaType: "application/json",
@@ -178,11 +226,29 @@ const handoffRef = ref(
   },
 );
 
-const checks = task.verification.commands;
+const checks = [
+  ...task.verification.commands.map((command) =>
+    workItemId === "WI-DESKTOP-PLUGIN" && command.startsWith("python ")
+      ? `"C:/Users/garre/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe" ${command.slice(7)}`
+      : command,
+  ),
+  ...(workItemId === "WI-DESKTOP-APP-SERVER"
+    ? [
+        "node C:/Users/garre/.codex/visualizations/2026/07/30/019fb17e-9ac6-7301-b6af-26cb97e59383/live-app-server-wiv-probe-v2.mjs",
+      ]
+    : []),
+];
 const commandResults = checks.map((command) => {
   const result = spawnSync(command, {
     cwd: candidateRoot,
     encoding: "utf8",
+    env:
+      workItemId === "WI-DESKTOP-PLUGIN"
+        ? {
+            ...process.env,
+            PYTHONPATH: "C:\\tmp\\devrelay-plugin-validator-deps",
+          }
+        : process.env,
     shell: true,
   });
   return {
@@ -198,7 +264,7 @@ mkdirSync(outputRoot, { recursive: true });
 const rawCommandPath = resolve(outputRoot, "command-output.json");
 writeFileSync(rawCommandPath, `${api.canonicalJson(commandResults)}\n`, "utf8");
 const rawCommandRef = ref(
-  `RAW-COMMAND-OUTPUT-${slug}-001`,
+  `RAW-COMMAND-OUTPUT-${slug}-${attemptNumber}`,
   api.sha256Digest(readFileSync(rawCommandPath)),
   {
     mediaType: "application/json",
@@ -208,7 +274,7 @@ const rawCommandRef = ref(
 const testReport = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "MachineTestReport",
-  reportId: `TEST-${slug}-001`,
+  reportId: `TEST-${slug}-${attemptNumber}`,
   outcome: "pass",
   tests: {
     total: commandResults.length,
@@ -281,7 +347,7 @@ const policy = seal(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "VerificationPolicy",
-    policyId: `POL-${slug}-001`,
+    policyId: `POL-${slug}-${attemptNumber}`,
     version: "1.0.0",
     evaluationSemantics: "devrelay.work-item-verification/v1",
     rules: {
@@ -305,7 +371,7 @@ const candidateWorkspace = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "CandidateWorkspace",
   version: "1.0.0",
-  workspaceId: `CWS-${slug}-001`,
+  workspaceId: `CWS-${slug}-${attemptNumber}`,
   files,
   workspaceDigest: api.canonicalJsonDigest(files),
 };
@@ -329,9 +395,7 @@ const artifacts = {
   specialistAssignmentBaseline: readJson(
     "project/specialist-assignment-baseline.json",
   ),
-  repositoryBase: readJson(
-    `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}/repository-snapshot.json`,
-  ),
+  repositoryBase: verificationBaseSnapshot,
   candidateWorkspace,
 };
 const bindings = Object.fromEntries(
@@ -360,7 +424,7 @@ bindings.verificationPolicy.reference = {
   digest: api.canonicalJsonDigest(policyBindingArtifact),
 };
 const subject = api.bindWorkItemVerificationSubject({
-  subjectId: `SUB-${slug}-001`,
+  subjectId: `SUB-${slug}-${attemptNumber}`,
   workItemId: workItem.id,
   bindings,
 });
@@ -425,7 +489,7 @@ const verifierInvocation = seal(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "VerifierInvocation",
-    verificationAttemptId: `VAT-${slug}-001`,
+    verificationAttemptId: `VAT-${slug}-${attemptNumber}`,
     subject: ref(subject.subjectId, subject.subjectDigest),
     obligationSet: ref(
       obligationSet.obligationSetId,
@@ -499,7 +563,7 @@ const normalizedEvidence = api.normalizeWorkItemVerificationEvidence({
     rationale:
       "Content-addressed repository verification does not require wall-clock identity.",
   },
-  normalizedEvidenceId: `NVE-${slug}-001`,
+  normalizedEvidenceId: `NVE-${slug}-${attemptNumber}`,
 });
 const evaluation = api.evaluateWorkItemVerificationPolicy({
   policy,
@@ -509,7 +573,7 @@ const evaluation = api.evaluateWorkItemVerificationPolicy({
   normalizedEvidence,
 });
 const gateCandidate = api.assembleWorkItemVerificationGateCandidate({
-  candidateId: `WIVC-${slug}-001`,
+  candidateId: `WIVC-${slug}-${attemptNumber}`,
   policy,
   subject,
   obligationSet,
@@ -597,15 +661,3 @@ console.log(
     2,
   ),
 );
-
-
-
-
-
-
-
-
-
-
-
-

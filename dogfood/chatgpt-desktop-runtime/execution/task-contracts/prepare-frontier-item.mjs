@@ -115,6 +115,19 @@ const configurations = {
       "node --test test/chatgpt-desktop-run-store.test.mjs",
     ],
   },
+  "WI-DESKTOP-TASK-SUPERVISOR": {
+    allowedWritePaths: [
+      "src/chatgpt-desktop-task-supervisor.mjs",
+      "src/index.mjs",
+      "test/chatgpt-desktop-task-supervisor.test.mjs",
+      "test/fixtures/chatgpt-desktop-task-supervisor/**",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --check src/chatgpt-desktop-task-supervisor.mjs",
+      "node --test test/chatgpt-desktop-task-supervisor.test.mjs",
+    ],
+  },
 };
 const configuration = configurations[requestedWorkItemId];
 if (!configuration) {
@@ -139,25 +152,33 @@ if (!workItem || !assignment) {
 const completionFacts = read(
   "dogfood/chatgpt-desktop-runtime/execution/integrated-completion-facts.json",
 );
-const prerequisiteCompletion = read(
-  "dogfood/chatgpt-desktop-runtime/execution/integration/WI-DESKTOP-CONTRACTS/integrated-completion-fact.json",
-);
-const prerequisiteCompletionFacts = completionFacts.facts.filter(
-  ({ workItemId }) => workItemId === "WI-DESKTOP-CONTRACTS",
-);
-if (prerequisiteCompletionFacts.length !== 1) {
-  throw new Error(
-    "exact prerequisite completion fact is unavailable or ambiguous",
+const prerequisiteWorkItemIds = workDependency.edges
+  .filter(({ dependentId }) => dependentId === workItem.id)
+  .map(({ prerequisiteId }) => prerequisiteId)
+  .sort();
+const prerequisiteCompletionFacts = completionFacts.facts
+  .filter(({ workItemId }) => prerequisiteWorkItemIds.includes(workItemId))
+  .sort(({ workItemId: left }, { workItemId: right }) =>
+    left.localeCompare(right),
   );
+if (prerequisiteCompletionFacts.length !== prerequisiteWorkItemIds.length) {
+  throw new Error("exact prerequisite completion facts are unavailable");
 }
-if (
-  prerequisiteCompletion.completionId !== "ICF-DESKTOP-CONTRACTS-003" ||
-  prerequisiteCompletionFacts[0].integrationRef.artifactId !==
-    prerequisiteCompletion.integration.artifactId
-) {
-  throw new Error(
-    "WorkExecution completion set does not match the authoritative lifecycle completion fact",
+for (const prerequisiteWorkItemId of prerequisiteWorkItemIds) {
+  const prerequisiteCompletion = read(
+    `dogfood/chatgpt-desktop-runtime/execution/integration/${prerequisiteWorkItemId}/integrated-completion-fact.json`,
   );
+  const compactFact = prerequisiteCompletionFacts.find(
+    ({ workItemId }) => workItemId === prerequisiteWorkItemId,
+  );
+  if (
+    !compactFact ||
+    compactFact.integrationRef.artifactId !==
+      prerequisiteCompletion.integration.artifactId ||
+    compactFact.integrationRef.digest !== prerequisiteCompletion.integration.digest
+  ) {
+    throw new Error(`completion set does not match ${prerequisiteWorkItemId}`);
+  }
 }
 const completedWorkItemIds = completionFacts.facts.map(
   ({ workItemId }) => workItemId,
@@ -402,8 +423,11 @@ const task = selfSeal(
       "src/chatgpt-desktop-runtime-artifact-validator.mjs",
       "src/index.mjs",
       "dogfood/chatgpt-desktop-runtime/execution/integrated-completion-facts.json",
-      "dogfood/chatgpt-desktop-runtime/execution/ready-frontier-after-contracts.json",
-      "dogfood/chatgpt-desktop-runtime/execution/integration/WI-DESKTOP-CONTRACTS/integrated-completion-fact.json",
+      "dogfood/chatgpt-desktop-runtime/execution/ready-frontier-current.json",
+      ...prerequisiteWorkItemIds.map(
+        (prerequisiteWorkItemId) =>
+          `dogfood/chatgpt-desktop-runtime/execution/integration/${prerequisiteWorkItemId}/integrated-completion-fact.json`,
+      ),
     ],
     authority: {
       allowedReadPaths: ["**"],
@@ -435,7 +459,7 @@ const task = selfSeal(
         ],
         evidence: [
           {
-            kind: "chatgpt-desktop/contracts-conformance",
+            kind: workItem["required-evidence"][0].kind,
             relativePath: "relative/path",
             digest: "sha256:<64 lowercase hex>",
           },
