@@ -8,8 +8,8 @@ import { validateWorkBreakdownArtifact } from "../../../src/work-breakdown-artif
 const ROOT = new URL("../../../", import.meta.url);
 const OUTPUT = new URL("./", import.meta.url);
 const APPROVED = Object.freeze({
-  candidate: "sha256:d5059e92ca6f46876837f13b0ee62918183d55e9d41fca26c91d06d059d85235",
-  baseline: "sha256:522f0aed6b7880d1d5abaac01ef873c17f536fecd1c4bbd8ced324bd13ae4c35",
+  candidate: "sha256:8ee0d257b85d0019eb570e0cc9a07f07e5afdead17cc970a4edd6eca30f3c782",
+  baseline: "sha256:83b1d9792d89622ee6a4d6d0d7254917b4295f936db89078d432fe8ead04577e",
 });
 
 async function loaded(name) {
@@ -47,12 +47,12 @@ if (proof.value.promotedWorkBreakdownBaseline.digest !== APPROVED.baseline) thro
 validateWorkBreakdownArtifact(baseline.value);
 
 const state = structuredClone(invocationState.value);
-state.stateId = "PWBS-RUN-PROMOTED-001";
+state.stateId = "PWBS-RUN-PROMOTED-002";
 state.currentWorkBreakdownBaseline = structuredClone(proof.value.promotedWorkBreakdownBaseline);
 validateWorkBreakdownArtifact(state);
 const stateBytes = Buffer.from(`${JSON.stringify(state, null, 2)}\n`, "utf8");
 
-const history = new URL("project/history/work-breakdown/1.6.0/", ROOT);
+const history = new URL("project/history/work-breakdown/1.7.0/", ROOT);
 await preserveAndReplace(baseline.bytes, new URL("project/work-breakdown-baseline.json", ROOT), new URL("work-breakdown-baseline.json", history));
 await preserveAndReplace(stateBytes, new URL("project/project-work-breakdown-state.json", ROOT), new URL("project-work-breakdown-state.json", history));
 await preserveAndReplace(proof.bytes, new URL("project/work-breakdown-promotion.commit.json", ROOT), new URL("work-breakdown-promotion.commit.json", history));

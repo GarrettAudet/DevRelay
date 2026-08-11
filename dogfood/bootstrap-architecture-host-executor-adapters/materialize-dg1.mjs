@@ -8,7 +8,9 @@ import { canonicalJsonDigest } from "../../src/content-digest.mjs";
 import { normativeRequirementIds } from "../../src/requirements-artifact-validator.mjs";
 
 const root = process.cwd();
-const sourceRoot = "C:/Users/garre/.codex/worktrees/1c19/DevRelay-v04-work-dependency-analysis";
+const configuredSourceRoot = process.env.DEVRELAY_DG1_ARCHITECTURE_SOURCE_ROOT;
+if (!configuredSourceRoot) throw new Error("DEVRELAY_DG1_ARCHITECTURE_SOURCE_ROOT is required for an exact historical rerun");
+const sourceRoot = path.resolve(configuredSourceRoot);
 const evidenceDir = path.join(sourceRoot, "dogfood/prefix-integrity-repair-dg1-2026-08-10");
 const dir = path.join(root, "dogfood/bootstrap-architecture-host-executor-adapters/dg1-continuation");
 fs.mkdirSync(dir, { recursive: true });

@@ -1,4 +1,4 @@
-﻿import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -6,10 +6,10 @@ import { sha256Digest } from "../../../src/content-digest.mjs";
 import { validateWorkBreakdownArtifact } from "../../../src/work-breakdown-artifact-validator.mjs";
 
 const ROOT = new URL("../../../", import.meta.url);
-const OUTPUT = new URL("./scenario-wiv-portable-v2/", import.meta.url);
+const OUTPUT = new URL("./scenario-wiv-portable-v3/", import.meta.url);
 const APPROVED = Object.freeze({
-  candidate: "sha256:0b4a82735455b0138fad3247afe2a4aa6432293c5d9a4139acb293746f767fdf",
-  baseline: "sha256:ae76ad4e8640a1ebb82d16184b7d648c1d3b64efe1b99ca93a0c2d4ee729b40f",
+  candidate: "sha256:7214c322f2d98e264891e2f57cce0011be5235e8c636e39cec20d036b4162cca",
+  baseline: "sha256:933e8c4657a0327860a9ec1583783bff08eb67ea2599bc7f63f63998bfc9ead2",
 });
 
 async function loaded(name) {

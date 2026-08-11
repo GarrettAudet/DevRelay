@@ -23,13 +23,13 @@ import { createWorkDependencyAnalysisRuntime } from "../../../src/work-dependenc
 import { workDependencyBaselineTraceabilityContributor } from "../../../src/work-dependency-traceability-contributor.mjs";
 
 const ROOT = new URL("../../../", import.meta.url);
-const OUTPUT = new URL("./", import.meta.url);
+const OUTPUT = new URL("./replay-v2/", import.meta.url);
 const APPROVED = Object.freeze({
-  candidate: "sha256:a9e887fb4d8971ed492d048d191f715ac642022b3cc1ccaa40f3b558480783cb",
-  gateReview: "sha256:c0a4eb5f51395c1fceb9b21d5f9744db79f05ecbd517563ea6cb1d728975f877",
-  gateCandidate: "sha256:db6ad448efc657bfb4abeeb6647dfee75124a62bdd3aeb5814d8a48b9842e157",
-  checkpoint: "sha256:fe3527e1d232c198fc466d578858ec08895a30b4fadd48facb625aeaeaa6e054",
-  checkpointRaw: "sha256:5cecf3b66bd30b391f115c0e24fff14d9b6d6a231918ea6666f986d4ff232e1c",
+  candidate: "sha256:22e0ec5bd84f889e8e43ef8b71305aabba98a1145f116c4ff2a2d482182ec093",
+  gateReview: "sha256:90b2635a165cfe3aae9b09455afa10ffff762bcaf101c66216a8ed6308f8bc0d",
+  gateCandidate: "sha256:421174c0f8cbd31abd021699942dfd6d6c07a57bac3eaa2da24826720928a846",
+  checkpoint: "sha256:445498a047a8f929d78f0c791f3281dd021b74566581df13e5ab15d7e83db568",
+  checkpointRaw: "sha256:8c44e7d45cc1da99c59ca60ecb791b687607025801df4d880ad2581d8d7bd6b4",
   repositorySnapshot: "sha256:93661467d24c69a9798e8c0e52ee79bc68c32fa2a2966ff413064da1e9b79e75",
   repositoryRevision: "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5",
   repositoryTree: "sha256:1a727831be6c04f995a8cbf52ab6238c23ebb8e60f2a82070fb4476fecee2d2c",
@@ -173,22 +173,22 @@ const candidate = await loadedJson(
     schema: "https://devrelay.dev/artifacts/work-dependency-candidate/v1",
     mediaType: "application/vnd.devrelay.work-dependency-candidate+json",
   },
-  "WDC-614AAECDAA14A29D",
+  "WDC-8DCF11B8CD646D27",
 );
 const gateReview = await loadedJson(
   "dogfood/lifecycle-run-report/dependency-analysis/work-dependency-gate-review.json",
   CONTRACTS.gateReview,
-  "WDA-RUN-GATE-REVIEW-001",
+  "WDA-RUN-GATE-REVIEW-002",
 );
 const gateCandidate = await loadedJson(
   "dogfood/lifecycle-run-report/dependency-analysis/gate-candidate.json",
   CONTRACTS.gateCandidate,
-  "WDA-RUN-GATE-CANDIDATE-001",
+  "WDA-RUN-GATE-CANDIDATE-002",
 );
 const checkpoint = await loadedJson(
   "dogfood/lifecycle-run-report/dependency-analysis/execution-checkpoint.json",
   CONTRACTS.executionCheckpoint,
-  "WDA-RUN-DOGFOOD-001-CHECKPOINT",
+  "WDA-RUN-DOGFOOD-002-CHECKPOINT",
 );
 assert.equal(candidate.ref.digest, APPROVED.candidate);
 assert.equal(gateReview.ref.digest, APPROVED.gateReview);
@@ -203,7 +203,7 @@ assert.equal(gateCandidate.value.repositoryRevision, repositoryRevision);
 const approvalValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "WorkDependencyGateApproval",
-  approvalId: "WDA-RUN-GATE-OWNER-APPROVAL-001",
+  approvalId: "WDA-RUN-GATE-OWNER-APPROVAL-002",
   authority: "project-owner",
   decision: "approve",
   candidate: checkpoint.value.artifacts.candidate.ref,
@@ -221,7 +221,7 @@ const baselineValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "WorkDependencyBaseline",
   baselineId: "WDB-RUN-DOGFOOD",
-  version: "1.0.0",
+  version: "1.0.1",
   approvedCandidate: checkpoint.value.artifacts.candidate.ref,
   workBreakdownBaseline: checkpoint.value.inputBindings.find(
     ({ role }) => role === "work-breakdown-baseline",
@@ -298,7 +298,7 @@ assert.deepEqual(commit.baselineRef, baseline.ref);
 const priorRecord = await loadedJson(
   "dogfood/lifecycle-run-report/work-breakdown/module-execution-record.json",
   CONTRACTS.executionRecord,
-  "work-breakdown-decompose-lifecycle-run-report-v1",
+  "work-breakdown-decompose-lifecycle-run-report-v2",
 );
 const priorGraphUrl = new URL(
   "dogfood/lifecycle-run-report/work-breakdown/traceability-graph-snapshot.json",
@@ -324,6 +324,7 @@ const historicalUpdatePaths = [
   "dogfood/change-integration/work-breakdown/traceability-update.json",
   "project/history/traceability/updates/dc46268ba73b6924b2c473d2fb6294dbef7267dfd0846b72525c6fa58da84681.json",
   "dogfood/architecture-discovery/work-breakdown/traceability-update.json",
+  "dogfood/lifecycle-run-report/work-breakdown/replay-v1/traceability-update.json",
   "dogfood/lifecycle-run-report/work-breakdown/traceability-update.json",
 ];
 const historicalByDigest = new Map();
@@ -493,7 +494,7 @@ const executionRecord = exactDocument(
 const promotionProofValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "WorkDependencyGatePromotionProof",
-  proofId: "WDA-RUN-GATE-PROMOTION-001",
+  proofId: "WDA-RUN-GATE-PROMOTION-002",
   status: "promoted",
   approval: approval.ref,
   gateCandidate: gateCandidate.ref,
@@ -532,7 +533,7 @@ const writes = [
   [new URL("work-dependency-gate-promotion-proof.json", OUTPUT), promotionProof.bytes],
 ];
 for (const [url, bytes] of writes) await writeExact(url, bytes);
-const baselineHistory = new URL("project/history/work-dependency/WDB-AD-DOGFOOD/", ROOT);
+const baselineHistory = new URL("project/history/work-dependency/WDB-RUN-DOGFOOD/1.0.0/", ROOT);
 await preserveAndReplaceCurrent(
   baseline.bytes,
   projectBaselineUrl,

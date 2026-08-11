@@ -192,6 +192,67 @@ function normalizeDevRelayCandidate(candidate) {
   };
 }
 
+export function createStructurizrConformanceProof({
+  lock,
+  workspaceBytes,
+  candidateBytes,
+  normalizedWorkspace,
+  normalizedWorkspaceBytes,
+}) {
+  const proofMaterial = {
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "StructurizrConformanceProof",
+    status: "pass",
+    parser: {
+      product: "Structurizr",
+      version: lock.structurizr.version,
+      artifactDigest: `sha256:${lock.structurizr.sha256}`,
+      runtimeRequirement: { product: "Java", majorVersion: 21 },
+    },
+    inputs: {
+      workspaceDigest: sha256(workspaceBytes),
+      candidateDigest: sha256(candidateBytes),
+    },
+    export: {
+      format: "json",
+      normalization: "devrelay-c4-model/v1",
+      normalizedModelDigest: sha256(normalizedWorkspaceBytes),
+    },
+    comparison: {
+      elements: {
+        count: normalizedWorkspace.elements.length,
+        digest: canonicalJsonDigest(normalizedWorkspace.elements),
+        match: true,
+      },
+      relationships: {
+        count: normalizedWorkspace.relationships.length,
+        digest: canonicalJsonDigest(normalizedWorkspace.relationships),
+        match: true,
+      },
+      hierarchy: {
+        digest: canonicalJsonDigest(
+          normalizedWorkspace.elements.map(({ id, type, parentId }) => ({
+            id,
+            type,
+            ...(parentId ? { parentId } : {}),
+          })),
+        ),
+        match: true,
+      },
+      views: {
+        count: normalizedWorkspace.views.length,
+        digest: canonicalJsonDigest(normalizedWorkspace.views),
+        match: true,
+      },
+    },
+  };
+  return Object.freeze({
+    ...proofMaterial,
+    contentDigest: canonicalJsonDigest(proofMaterial),
+  });
+}
+
+
 export async function verifyStructurizrConformance({
   rootPath = defaultRoot,
   workspacePath,
@@ -254,57 +315,12 @@ export async function verifyStructurizrConformance({
     writeFile(path.join(absoluteOutput, "normalized-structurizr.json"), actualBytes),
   ]);
 
-  const proofMaterial = {
-    apiVersion: "devrelay.dev/v1alpha1",
-    kind: "StructurizrConformanceProof",
-    status: "pass",
-    parser: {
-      product: "Structurizr",
-      version: toolchain.lock.structurizr.version,
-      artifactDigest: `sha256:${toolchain.lock.structurizr.sha256}`,
-      javaDistribution: toolchain.lock.java.distribution,
-      javaVersion: toolchain.lock.java.version,
-      javaArtifactDigest: `sha256:${toolchain.lock.java.sha256}`,
-    },
-    inputs: {
-      workspaceDigest: sha256(workspaceBytes),
-      candidateDigest: sha256(candidateBytes),
-    },
-    export: {
-      format: "json",
-      workspaceDigest: sha256(exportedBytes),
-    },
-    comparison: {
-      elements: {
-        count: actual.elements.length,
-        digest: canonicalJsonDigest(actual.elements),
-        match: true,
-      },
-      relationships: {
-        count: actual.relationships.length,
-        digest: canonicalJsonDigest(actual.relationships),
-        match: true,
-      },
-      hierarchy: {
-        digest: canonicalJsonDigest(
-          actual.elements.map(({ id, type, parentId }) => ({
-            id,
-            type,
-            ...(parentId ? { parentId } : {}),
-          })),
-        ),
-        match: true,
-      },
-      views: {
-        count: actual.views.length,
-        digest: canonicalJsonDigest(actual.views),
-        match: true,
-      },
-    },
-  };
-  return Object.freeze({
-    ...proofMaterial,
-    contentDigest: canonicalJsonDigest(proofMaterial),
+  return createStructurizrConformanceProof({
+    lock: toolchain.lock,
+    workspaceBytes,
+    candidateBytes,
+    normalizedWorkspace: actual,
+    normalizedWorkspaceBytes: actualBytes,
   });
 }
 

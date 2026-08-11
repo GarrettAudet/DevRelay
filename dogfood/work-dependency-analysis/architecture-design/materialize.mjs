@@ -1230,6 +1230,26 @@ writeJson("architecture-gate-candidate.json", {
   progressionAllowed: false,
 });
 
+if (!process.argv.includes("--promote")) {
+  console.log(
+    JSON.stringify(
+      {
+        status: "ARCHITECTURE_GATE_CANDIDATE",
+        operation: "design-change",
+        routeReasonCode: routeDecision.reasonCode,
+        adapters: calls,
+        checkpointCount: checkpointValues.size,
+        replayAdapterCalls: 0,
+        architectureChangeSetDigest: changeSetRef.digest,
+        architectureGateReviewDigest: sha256(gateBytes),
+        structurizrConformanceProofDigest: conformanceRef.digest,
+        progressionAllowed: false,
+      },
+      null,
+      2,
+    ),
+  );
+} else {
 const ownerApprovalPath =
   "dogfood/work-dependency-analysis/architecture-design/architecture-gate-owner-approval.json";
 const ownerApprovalBytes = read(ownerApprovalPath);
@@ -1419,3 +1439,4 @@ console.log(JSON.stringify({
   promotionProofDigest: promotionProofRef.digest,
   workBreakdownProgressionAllowed: true,
 }, null, 2));
+}

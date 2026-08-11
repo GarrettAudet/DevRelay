@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
@@ -26,9 +26,9 @@ const expected = Object.freeze({
   candidate:
     "sha256:62cf155b41fb9a4d490a2dd6c785d9c195bc63d291e47ff146cbd6b702ad0540",
   gateReview:
-    "sha256:040235a578a13b3be44d2dc6edb5f0ac9b4280fa26b11a3e0c7f43209b7b318a",
+    "sha256:d2847e11cebdc42da5839a7ef8c7f2d34d487815d8b031bd77755ea3db006502",
   conformance:
-    "sha256:f69b0ba993e45ecc06e1541a758744dadc610b3208eb276cb561d4269b289e55",
+    "sha256:23c5d072179e4a62a19246b7a5cc4a2a26aaf00bcdc691f060861713050f2ba7",
 });
 
 test("WorkItemVerification ArchitectureDesign is additive, replayable, and Structurizr-conformant", async () => {

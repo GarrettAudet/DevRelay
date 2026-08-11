@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
@@ -19,9 +19,11 @@ const output = new URL(
 );
 const readBytes = (name) => readFileSync(new URL(name, output));
 const readJson = (name) => JSON.parse(readBytes(name));
-const replayOutput = new URL("replay-v6/", output);
+const replayOutput = new URL("replay-v7/", output);
 const readReplayBytes = (name) => readFileSync(new URL(name, replayOutput));
 const readReplayJson = (name) => JSON.parse(readReplayBytes(name));
+const contextOutput = new URL("../work-breakdown/context/", output);
+const readContextBytes = (name) => readFileSync(new URL(name, contextOutput));
 const run = (relativePath) => {
   const result = spawnSync(process.execPath, [relativePath], {
     cwd: rootPath,
@@ -44,7 +46,7 @@ test("WIV ContractGeneration restart reproduces the exact approved 25+9 candidat
   assert.equal(first, second);
   assert.equal(
     sha256Digest(candidateBytes),
-    "sha256:861c9a3b24a9d0d03e6aa68d7afc7e25bc8724a47f76109b3b2fc30952152014",
+    "sha256:f816fde59c1125a63b64c1b62ffca65b791a1baed13376a2a51947a9ba60dd5a",
   );
   assert.deepEqual(readBytes("contract-change-set-draft.json"), candidateBytes);
   assert.deepEqual(readBytes("execution-checkpoint.json"), checkpointBytes);
@@ -88,9 +90,12 @@ test("WIV ContractGate promotion is idempotent and keeps the nine-contract delta
   assert.equal(first, second);
   assert.deepEqual(readReplayBytes("contract-baseline.json"), baselineBytes);
   assert.deepEqual(readReplayBytes("contract-gate-promotion.json"), promotionBytes);
+  assert.deepEqual(readContextBytes("contract-baseline.json"), baselineBytes);
+  assert.deepEqual(readContextBytes("contract-disposition.json"), readReplayBytes("contract-disposition.json"));
+  assert.deepEqual(readContextBytes("contract-gate-promotion.json"), promotionBytes);
   assert.equal(
     sha256Digest(baselineBytes),
-    "sha256:621c1a83696cbbb6c2a9f8a623946dbbba0db2301e53db344c9c80537c777499",
+    "sha256:a7c00e3f80160cdbc5b9f6c58c4c4edbd94a1b825073f845475a160e0f8c9f7a",
   );
   const baseline = readReplayJson("contract-baseline.json");
   validateContractGenerationArtifact(baseline);
@@ -99,7 +104,7 @@ test("WIV ContractGate promotion is idempotent and keeps the nine-contract delta
   assert.equal(baseline.contractsDigest, canonicalJsonDigest(baseline.contracts));
   assert.equal(
     baseline.approvedCandidate.digest,
-    "sha256:861c9a3b24a9d0d03e6aa68d7afc7e25bc8724a47f76109b3b2fc30952152014",
+    "sha256:f816fde59c1125a63b64c1b62ffca65b791a1baed13376a2a51947a9ba60dd5a",
   );
   assert.equal(
     baseline.contracts.filter(({ interfaceIntentId }) =>

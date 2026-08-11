@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -50,11 +50,11 @@ test("WIV WorkBreakdown promotes ten bounded items with exhaustive coverage", ()
   assert.equal(result.progressionAllowed, true);
   assert.equal(
     sha256Digest(candidateBytes),
-    "sha256:881ea471a2af9580aa43a2a2b82762a47e70263dcfafefb0512415b9cbb2b246",
+    "sha256:7214c322f2d98e264891e2f57cce0011be5235e8c636e39cec20d036b4162cca",
   );
   assert.equal(
     sha256Digest(baselineBytes),
-    "sha256:c1fe6b0bb131a1e8315b75b72a1a08ea4ef0e49c6fffa50cc75f114917300627",
+    "sha256:933e8c4657a0327860a9ec1583783bff08eb67ea2599bc7f63f63998bfc9ead2",
   );
   assert.equal(candidate.changes.filter(({ operation }) => operation === "add").length, 10);
   assert.equal(candidate.changes.filter(({ operation }) => operation === "retire").length, 10);
@@ -75,7 +75,7 @@ test("WIV WorkDependencyAnalysis promotes one policy-allowed static DAG", () => 
     "dogfood/work-item-verification/dependency-analysis/work-dependency-candidate.json",
   );
   const baselineBytes = readBytes(
-    "dogfood/work-item-verification/dependency-analysis/replay-v6/work-dependency-baseline.json",
+    "dogfood/work-item-verification/dependency-analysis/replay-v7/work-dependency-baseline.json",
   );
   const candidate = validateWorkDependencyArtifact(JSON.parse(candidateBytes));
   const baseline = validateWorkDependencyArtifact(JSON.parse(baselineBytes));
@@ -87,11 +87,11 @@ test("WIV WorkDependencyAnalysis promotes one policy-allowed static DAG", () => 
   assert.equal(candidateResult.reviewerCalls, 1);
   assert.equal(
     sha256Digest(candidateBytes),
-    "sha256:70c7d352d6e796f0cc0e05a8d95fefefcda735fe9ec155aefd7f403e1ff5183f",
+    "sha256:005d459e99290c4a854ce5b8be044bbd7c6c89a7e394e7801d7442e4b75eae6b",
   );
   assert.equal(
     sha256Digest(baselineBytes),
-    "sha256:995f9d91adfa7ad2b6189b95c812c36d6e75c6794078d85475adb5a5b682e28d",
+    "sha256:628e85f134d4cf9eb74e7edc7ca28424c5bf6cd717f84942472f8a374cc8c857",
   );
   assert.equal(candidate.nodes.length, 10);
   assert.equal(candidate.edges.length, 18);

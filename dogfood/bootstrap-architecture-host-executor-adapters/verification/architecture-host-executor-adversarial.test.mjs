@@ -1,14 +1,38 @@
 import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import { readFile } from "node:fs/promises";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { createOpenSpecDesignHostExecutorAdapter } from "file:///C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e/src/architecture-host-executor-adapters.mjs";
-import { sha256Digest } from "file:///C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e/src/content-digest.mjs";
+const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url));
+const adapterPath = path.join(
+  repositoryRoot,
+  "src/architecture-host-executor-adapters.mjs",
+);
+const artifactPath = path.join(
+  repositoryRoot,
+  "examples/artifacts/architecture-designer-working-001.json",
+);
+const sha256Digest = (bytes) =>
+  `sha256:${crypto.createHash("sha256").update(bytes).digest("hex")}`;
 
-const artifact = JSON.parse(await readFile(
-  "C:/Users/garre/AppData/Local/Temp/devrelay-dg1-reverify-982e/examples/artifacts/architecture-designer-working-001.json",
-  "utf8",
-));
+const adapterBytes = await readFile(adapterPath);
+assert.equal(
+  sha256Digest(adapterBytes),
+  "sha256:4d4ec08d51c509dc4239aad2bd5baf20b48ad07cedd0ef98a358b0cdb6f7c972",
+  "committed adapter bytes must match the independently verified historical source",
+);
+const artifactBytes = await readFile(artifactPath);
+assert.equal(
+  sha256Digest(artifactBytes),
+  "sha256:961377f17296ea98863ae7b53792fdfa09a3a39b315979fb83e7046000ccdb25",
+  "committed fixture bytes must match the released artifact digest",
+);
+const { createOpenSpecDesignHostExecutorAdapter } = await import(
+  pathToFileURL(adapterPath),
+);
+const artifact = JSON.parse(artifactBytes);
 
 function invocation() {
   const config = {

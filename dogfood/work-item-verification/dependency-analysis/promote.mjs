@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -25,18 +25,18 @@ import { workDependencyBaselineTraceabilityContributor } from "../../../src/work
 
 const ROOT = new URL("../../../", import.meta.url);
 const OUTPUT = new URL("./", import.meta.url);
-const REPLAY = new URL("./replay-v6/", import.meta.url);
+const REPLAY = new URL("./replay-v7/", import.meta.url);
 const APPROVED = Object.freeze({
   candidate:
-    "sha256:70c7d352d6e796f0cc0e05a8d95fefefcda735fe9ec155aefd7f403e1ff5183f",
+    "sha256:005d459e99290c4a854ce5b8be044bbd7c6c89a7e394e7801d7442e4b75eae6b",
   gateReview:
-    "sha256:b2471ccaf9578e9374ab3f08f8580834c1884f0a627a136acf5c42769016b33c",
+    "sha256:98d9b602f09336fccd7399c5963d1c7c7002b8208d0dcf8b8515aec888d60888",
   gateCandidate:
-    "sha256:fe00b7621671424626778a27f31d604b19da81f0846f2b1e7c01477c6fb5489f",
+    "sha256:ec48c2458e1aea6b8f2b6a3c4494fd03b6ad4e9cd71b1b2e59270cbd088d4ce9",
   checkpoint:
-    "sha256:2c86997625be43bbdefba85404ebc5d5ca32881cb830604949360e721d892d85",
+    "sha256:8aaed195b6ea8189a0f3e47fcee3358f1670632c8ed88f81cc9935d894e0085e",
   checkpointRaw:
-    "sha256:113d427445e4fb903a27e61b730bf63f98771569f38d74b1e059cf8074f1e613",
+    "sha256:5cec7904e413ca411ca92e23adcfef2ee8a3149902df3326115519db590d326b",
   repositorySnapshot:
     "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73",
   repositoryRevision: "4bda7fe707ba102bd22fe0001c83aa13ec03b0c5",
@@ -182,7 +182,7 @@ const candidate = await loadedJson(
     schema: "https://devrelay.dev/artifacts/work-dependency-candidate/v1",
     mediaType: "application/vnd.devrelay.work-dependency-candidate+json",
   },
-  "WDC-770FDD8F22AEF74A",
+  "WDC-24593CF736123F81",
 );
 const gateReview = await loadedJson(
   "dogfood/work-item-verification/dependency-analysis/work-dependency-gate-review.json",

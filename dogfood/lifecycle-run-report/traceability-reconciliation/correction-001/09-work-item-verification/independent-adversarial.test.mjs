@@ -2,11 +2,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../../../../../src/content-digest.mjs";
 import { createInMemoryTraceabilityStore, createTraceabilityGraphService, TraceabilityConflictError } from "../../../../../src/traceability-graph.mjs";
 
-const root = resolve(new URL("../../../../../", import.meta.url).pathname.slice(1));
+const root = fileURLToPath(new URL("../../../../../", import.meta.url));
 const candidate = await import(pathToFileURL(resolve(root,"src/lifecycle-run-report-traceability-contributor.mjs")));
 const ids = candidate.LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS;
 const attempts = {

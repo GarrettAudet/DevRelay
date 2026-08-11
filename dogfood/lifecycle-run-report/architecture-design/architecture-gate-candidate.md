@@ -16,7 +16,7 @@ Status: **awaiting owner approval**
 - ArchitectureChangeSetDraft: sha256:9ec76ffaeb6a65280f408e6fd7bd673ef3e0de028012d2ea15530453d8605ef3
 - Native OpenSpec design: sha256:6d1da121d5052a0838a5108080a0224f236dd05640e0d415d5d62181ac919e95
 - Native Structurizr workspace: sha256:6e24c85cf9a6d180a062eb542b142a23689d0753fc2911b8633e19813e3b659a
-- StructurizrConformanceProof: sha256:41b943f2a69e96d7b6ecff84a08ea4a47f41a2736363762bafced01e1fc63ca6
+- StructurizrConformanceProof: sha256:e5e801d168e980ec7e795a0ad20116b705dada0a0888a8d2e5d50a4dd53c4329
 - Native ADR-RUN-001: sha256:f53102849c3d28de70bb355e5ec7e7db8c2edd5a9e3f2700e06a53b39b7cea8a
 - Native ADR-RUN-002: sha256:c30c6a37950c52e79c5efb0748bcb243b0dda6797a8a391ebb69e1b20d4abb63
 - Native ADR-RUN-003: sha256:21a8ef6c3905c46828b288cbaf0c48524298f57a88abac8eacf1df13ec2d7ec8
@@ -25,8 +25,8 @@ Status: **awaiting owner approval**
 - Native ADR-RUN-006: sha256:9c4bb3eafc2bde5d8dc6eb49d54a56e1aea1e72a7bbc301ac786efb3fb166ba4
 - Native ADR-RUN-007: sha256:6dc2d91828e33bd8eee1d194d7a50e84319f6dc3ca36d2feac404413f8021179
 - ModuleInvocation: sha256:4d60b9e02186818d7c644d5c545057b81230ce1da071fafdd8431be830fa91aa
-- ModuleResult: sha256:831f88f46e5ec0e0953f4bc8c34550700dae41ce0cf3ee132eda502e679d2ce2
-- RuntimeExecutionProof: sha256:ff247a0a2e73a40a2c7d5a98372678f59c0ebbdaa94959bb6c028c675e9940ee
+- ModuleResult: sha256:56ca36b6654a90aee2e211827082e90023e3a0c44f3508c847fad13a47143635
+- RuntimeExecutionProof: sha256:7633128decf847f94c5636603f8140c6a7883f6003970c74e11e56e519f0a1dd
 
 ## Deterministic route and chain
 

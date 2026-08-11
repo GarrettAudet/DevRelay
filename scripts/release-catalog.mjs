@@ -343,6 +343,8 @@ export const canonicalPackageExports = Object.freeze({
   "./contracts/*": "./contracts/*",
   "./modules/requirements-gathering.module.json":
     "./examples/modules/requirements-gathering.module.json",
+  "./modules/architecture-discovery.module.json":
+    "./examples/modules/architecture-discovery.module.json",
   "./modules/architecture-design.module.json":
     "./examples/modules/architecture-design.module.json",
   "./modules/work-breakdown.module.json":
@@ -365,6 +367,14 @@ export const canonicalPackageExports = Object.freeze({
     "./examples/plugins/github-spec-kit.plugin.json",
   "./plugins/openspec.plugin.json":
     "./examples/plugins/openspec.plugin.json",
+  "./plugins/native-architecture-discovery.plugin.json":
+    "./examples/plugins/native-architecture-discovery.plugin.json",
+  "./adapters/openspec-requirements":
+    "./src/openspec-requirements-adapter.mjs",
+  "./adapters/architecture-host-executors":
+    "./src/architecture-host-executor-adapters.mjs",
+  "./adapters/contract-generation-host-executor":
+    "./src/contract-generation-host-executor-adapter.mjs",
   "./plugins/spec-kit-plan.plugin.json":
     "./examples/plugins/spec-kit-plan.plugin.json",
   "./plugins/openspec-design.plugin.json":

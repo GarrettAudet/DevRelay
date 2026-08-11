@@ -6,8 +6,8 @@ import { promoteSpecialistAssignmentBaseline } from "../../../src/specialist-ass
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const write = (name, value) => writeFileSync(new URL(name, import.meta.url), canonicalJson(value) + "\n");
-const workBreakdown = read("../work-breakdown/work-breakdown-baseline.json");
-const workDependency = read("../dependency-analysis/work-dependency-baseline.json");
+const workBreakdown = read("../../../project/work-breakdown-baseline.json");
+const workDependency = read("../../../project/work-dependency-baseline.json");
 const projectOverview = read("../../../project/project-overview-baseline.json");
 const repositoryContext = read("../repository-snapshot.json");
 
@@ -111,7 +111,7 @@ const checkpointStore = {
 };
 const runtime = createSpecialistAssignmentRuntime({ checkpointStore });
 const invocation = {
-  executionId: "SA-RUN-DOGFOOD-001",
+  executionId: "SA-RUN-DOGFOOD-002",
   workBreakdown,
   workDependency,
   capabilityCatalog,
@@ -137,6 +137,7 @@ const baseline = promoteSpecialistAssignmentBaseline({
   draftRef: first.draft.ref,
   exactDraftBytes: Buffer.from(first.draft.bytesBase64, "base64"),
   approval,
+  version: "1.0.1",
 });
 const proof = {
   module: "SpecialistAssignment",

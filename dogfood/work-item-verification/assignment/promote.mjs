@@ -1,4 +1,4 @@
-﻿import {
+import {
   existsSync,
   mkdirSync,
   readFileSync,
@@ -60,9 +60,9 @@ const loaded = (value, schema, mediaType, artifactId, uri) => {
   };
 };
 
-const priorGraph = read("../dependency-analysis/replay-v3/traceability-graph-snapshot.json");
+const priorGraph = read("../dependency-analysis/replay-v7/traceability-graph-snapshot.json");
 const priorProof = read(
-  "../dependency-analysis/replay-v3/work-dependency-gate-promotion-proof.json",
+  "../dependency-analysis/replay-v7/work-dependency-gate-promotion-proof.json",
 );
 const draftValue = read("./specialist-assignment-draft.json");
 const baselineValue = read("./specialist-assignment-baseline.json");
@@ -79,12 +79,12 @@ if (sha256Digest(priorBytes) !== priorLoaded.ref.digest) {
 
 const historicalPaths = new Map([
   [
-    "sha256:2ef15cc0262e28d50985abe4055346899d93444e63f1fa449b3a538865d8a54b",
-    "../work-breakdown/traceability-update.json",
+    "sha256:f34fbdf6f833509921780e79e56096484d72d78cd6f62ca379f479b20ad29310",
+    "../work-breakdown/scenario-wiv-portable-v3/traceability-update.json",
   ],
   [
-    "sha256:1f1f0af421fb928c98adc66c38083a21ea81ba744b279fc8bf9ab250cc11c565",
-    "../dependency-analysis/replay-v3/traceability-update.json",
+    "sha256:9e7d3caa27ac3a026812cb85addb412da22a1b469053cd4a41854a5cbfdc0229",
+    "../dependency-analysis/replay-v7/traceability-update.json",
   ],
   [
     "sha256:00920a6f6f2cf849510888a69a6e22cf1747c0889ac3d5d9d5226aff905d0b3c",
@@ -93,10 +93,6 @@ const historicalPaths = new Map([
   [
     "sha256:4d7d052f347a91b104506510dc09dad51dceeb488bac5675a89ce7ca8af45067",
     "../../../project/history/traceability/updates/4d7d052f347a91b104506510dc09dad51dceeb488bac5675a89ce7ca8af45067.json",
-  ],
-  [
-    "sha256:a25ce8b7f6c2d527dd5677ed733a568712d3fc72cb5f632903cffd44730ddc6c",
-    "../dependency-analysis/replay-v3/traceability-update.json",
   ],
   [
     "sha256:b9b77863db97ccfe1aa36c24224e5cd523030500908afb208b5883b24b6a8822",
@@ -208,18 +204,18 @@ const proof = {
   nextModule: "WorkExecution",
 };
 
-writeExact("./replay-v7/candidate-traceability-update.json",
+writeExact("./replay-v8/candidate-traceability-update.json",
   candidate.prepared.update,
 );
-writeExact("./replay-v7/candidate-traceability-merge-receipt.json",
+writeExact("./replay-v8/candidate-traceability-merge-receipt.json",
   candidate.merged.receipt,
 );
-writeExact("./replay-v7/approved-traceability-update.json", approved.prepared.update);
-writeExact("./replay-v7/approved-traceability-merge-receipt.json",
+writeExact("./replay-v8/approved-traceability-update.json", approved.prepared.update);
+writeExact("./replay-v8/approved-traceability-merge-receipt.json",
   approved.merged.receipt,
 );
-writeExact("./replay-v7/traceability-graph-snapshot.json", approved.merged.snapshot);
-writeExact("./replay-v7/specialist-assignment-promotion-proof.json", proof);
+writeExact("./replay-v8/traceability-graph-snapshot.json", approved.merged.snapshot);
+writeExact("./replay-v8/specialist-assignment-promotion-proof.json", proof);
 
 
 console.log(

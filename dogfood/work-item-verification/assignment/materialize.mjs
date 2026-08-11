@@ -6,8 +6,8 @@ import { promoteSpecialistAssignmentBaseline } from "../../../src/specialist-ass
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const write = (name, value) => writeFileSync(new URL(name, import.meta.url), canonicalJson(value) + "\n");
-const workBreakdown = read("../work-breakdown/work-breakdown-baseline.json");
-const workDependency = read("../dependency-analysis/replay-v2/work-dependency-baseline.json");
+const workBreakdown = read("../work-breakdown/scenario-wiv-portable-v3/work-breakdown-baseline.json");
+const workDependency = read("../dependency-analysis/replay-v7/work-dependency-baseline.json");
 const projectOverview = read("../../../project/project-overview-baseline.json");
 const repositoryContext = read("../repository-snapshot.json");
 

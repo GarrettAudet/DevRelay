@@ -26,9 +26,9 @@ const expected = Object.freeze({
   candidate:
     "sha256:c410dd4888d660a9467d964dc447b588aac4d21290dc8045bd7b74c2f79c683c",
   gateReview:
-    "sha256:05cb58bf31b3e8884456d8f13c2416bce50c8577654bbaaf6e73990520eed3e4",
+    "sha256:cfcbdba38c87773c215adcabd9439618d0ec286ef8b7f902906f2577584c6da0",
   conformance:
-    "sha256:e50aaab16f6a807916acddd641e5c9983db6b20138abf15852682678d0f29e29",
+    "sha256:8bab36e9479c432ca8bb5b5a3ee66daf942c84dbc54e54de2b00aafc95426b04",
 });
 
 test("ContractGeneration ArchitectureDesign yields one additive replayable Structurizr-conformant Gate candidate", async () => {

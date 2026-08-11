@@ -179,10 +179,10 @@ const capabilityCatalogBytes = read(
   "dogfood/work-breakdown/work-breakdown/capability-catalog.json",
 );
 const priorGraphBytes = read(
-  "dogfood/architecture-discovery/work-breakdown/traceability-graph-snapshot.json",
+  "dogfood/lifecycle-run-report/work-breakdown/replay-v1/traceability-graph-snapshot.json",
 );
 const priorExecutionRecord = load(
-  "dogfood/architecture-discovery/work-breakdown/module-execution-record.json",
+  "dogfood/lifecycle-run-report/work-breakdown/replay-v1/module-execution-record.json",
 );
 const requirementsPromotionBytes = read(
   "dogfood/lifecycle-run-report/requirements-gate-promotion-proof.json",
@@ -191,12 +191,15 @@ const architecturePromotionBytes = read(
   "dogfood/lifecycle-run-report/architecture-design/architecture-gate-promotion-proof.json",
 );
 const priorWorkBreakdownProofBytes = read(
+  "dogfood/lifecycle-run-report/work-breakdown/replay-v1/work-breakdown-gate-promotion-proof.json",
+);
+const historicalCompletionProofBytes = read(
   "dogfood/architecture-discovery/work-breakdown/work-breakdown-gate-promotion-proof.json",
 );
 const contractDispositionBytes = read("project/contract-disposition.json");
 const contractBaselineBytes = read("project/contract-baseline.json");
 const contractPromotionBytes = read(
-  "dogfood/architecture-discovery/contract-generation/contract-gate-promotion.json",
+  "dogfood/architecture-discovery/contract-generation/replay-v2/contract-gate-promotion.json",
 );
 
 
@@ -210,6 +213,7 @@ const priorGraph = JSON.parse(priorGraphBytes);
 const requirementsPromotion = JSON.parse(requirementsPromotionBytes);
 const architecturePromotion = JSON.parse(architecturePromotionBytes);
 const priorWorkBreakdownProof = JSON.parse(priorWorkBreakdownProofBytes);
+const historicalCompletionProof = JSON.parse(historicalCompletionProofBytes);
 const contractDisposition = JSON.parse(contractDispositionBytes);
 const contractBaseline = JSON.parse(contractBaselineBytes);
 const contractPromotion = JSON.parse(contractPromotionBytes);
@@ -288,7 +292,16 @@ const priorWorkBreakdownProofRef = artifactRef(
     mediaType: "application/json",
   },
   priorWorkBreakdownProofBytes,
-  "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/work-breakdown/work-breakdown-gate-promotion-proof.json",
+  "file:///C:/repos/DevRelay/dogfood/lifecycle-run-report/work-breakdown/replay-v1/work-breakdown-gate-promotion-proof.json",
+);
+const historicalCompletionProofRef = artifactRef(
+  historicalCompletionProof.proofId,
+  {
+    schema: "https://devrelay.dev/evidence/work-breakdown-gate-promotion/v1",
+    mediaType: "application/json",
+  },
+  historicalCompletionProofBytes,
+  "file:///C:/repos/DevRelay/dogfood/architecture-discovery/work-breakdown/work-breakdown-gate-promotion-proof.json",
 );
 
 const contractDispositionRef = artifactRef(
@@ -308,7 +321,7 @@ const contractPromotionRef = artifactRef(
     mediaType: "application/json",
   },
   contractPromotionBytes,
-  "file:///C:/repos/DevRelay/dogfood/architecture-discovery/contract-generation/contract-gate-promotion.json",
+  "file:///C:/repos/DevRelay/dogfood/architecture-discovery/contract-generation/replay-v2/contract-gate-promotion.json",
 );
 
 const targetAcceptanceIds = requirements.requirements.acceptanceCriteria
@@ -334,9 +347,9 @@ const priorContractIds = currentBaseline.coverageDispositions
   .filter(({ scopeKind }) => scopeKind === "contract")
   .map(({ scopeRef }) => scopeRef)
   .sort();
-assert.equal(priorAcceptanceIds.length, 72);
-assert.equal(priorArchitectureIds.length, 74);
-assert.equal(priorContractIds.length, 34);
+assert.equal(priorAcceptanceIds.length, 78);
+assert.equal(priorArchitectureIds.length, 86);
+assert.equal(priorContractIds.length, 42);
 
 const authorizedAcceptanceIds = [
   ...new Set([...priorAcceptanceIds, ...targetAcceptanceIds]),
@@ -387,7 +400,7 @@ const traceabilityRefs = priorGraph.nodes
   .filter(({ kind, state }) => kind === "work-item" && state === "active")
   .map(({ nodeId }) => ({ nodeId, artifact: priorGraphRef }))
   .sort((left, right) => left.nodeId.localeCompare(right.nodeId, "en"));
-assert.equal(traceabilityRefs.length, 8);
+assert.equal(traceabilityRefs.length, 9);
 
 const packageReviewText = [
   "# ApprovedChangePackage review: LifecycleRunReport",
@@ -407,7 +420,7 @@ const packageReviewText = [
   `- Authorized acceptance criteria: ${authorizedAcceptanceIds.join(", ")}`,
   `- Authorized architecture elements: ${authorizedArchitectureIds.join(", ")}`,
   "",
-  "The package authorizes retirement of the eight completed LifecycleRunReport planning items, records their prior scope as already satisfied using exact release and repository evidence, and adds planning work only for the approved LifecycleRunReport delta.",
+  "The package authorizes a lineage-only rebase of the existing LifecycleRunReport plan onto the approved ContractBaseline 1.6.0. The eight report contract payloads are unchanged, so all nine work items and all 206 coverage dispositions remain byte-for-byte stable.",
   "",
 ].join("\n");
 const packageReviewBytes = writeText(
@@ -415,7 +428,7 @@ const packageReviewBytes = writeText(
   packageReviewText,
 );
 const packageReviewRef = artifactRef(
-  "approved-change-package-review-lifecycle-run-report-v1",
+  "approved-change-package-review-lifecycle-run-report-v2",
   {
     schema: "https://devrelay.dev/evidence/approved-change-package-review/v1",
     mediaType: "text/markdown",
@@ -427,7 +440,7 @@ const packageReviewRef = artifactRef(
 const approvedChangePackage = {
   apiVersion: API_VERSION,
   kind: "ApprovedChangePackage",
-  packageId: "ACP-RUN-001",
+  packageId: "ACP-RUN-002",
   preChange: {
     requirementsBaseline: clone(baselineBindings.get("requirements-baseline")),
     projectOverviewBaseline: clone(
@@ -476,7 +489,7 @@ validateWorkBreakdownArtifact(approvedChangePackage, {
 const projectState = {
   apiVersion: API_VERSION,
   kind: "ProjectWorkBreakdownState",
-  stateId: "PWBS-RUN-BASELINED-001",
+  stateId: "PWBS-RUN-BASELINED-002",
   state: "baselined",
   requirementsBaseline: requirementsRef,
   projectOverviewBaseline: overviewRef,
@@ -501,7 +514,7 @@ validateWorkBreakdownArtifact(projectState, { ref: projectStateRef });
 
 const tasksBytes = read(`${dogfoodRelative}/tasks.md`);
 const tasksRef = artifactRef(
-  "openspec-tasks-lifecycle-run-report-v1",
+  "openspec-tasks-lifecycle-run-report-v2",
   NATIVE_TASKS_CONTRACT,
   tasksBytes,
   finalUri("tasks.md"),
@@ -614,7 +627,7 @@ function workItem({
   };
 }
 
-const workItems = [
+const proposedWorkItems = [
   workItem({
     id: "WI-RUN-CONTRACTS",
     objective: "Define the closed LifecycleRunReport artifacts, Core-owned service surface, and read-only report access port.",
@@ -758,7 +771,14 @@ const workItems = [
     evidenceKind: "lifecycle-run-report/documentation-review",
   }),
 ].sort((left, right) => left.id.localeCompare(right.id, "en"));
-assert.equal(workItems.length, 9);
+assert.equal(proposedWorkItems.length, 9);
+const planningSemantics = ({ ["source-refs"]: _sourceRefs, ...item }) => item;
+assert.deepEqual(
+  proposedWorkItems.map(planningSemantics),
+  currentBaseline.workItems.map(planningSemantics),
+  "The approved ContractBaseline changes lineage only; work-item semantics must not churn.",
+);
+const workItems = clone(currentBaseline.workItems);
 
 function plannedCoverage(scopeKind, scopeRef) {
   const field =
@@ -775,27 +795,7 @@ function plannedCoverage(scopeKind, scopeRef) {
   return { scopeKind, scopeRef, disposition: "planned", workItemRefs };
 }
 
-const priorCompletionEvidence = [priorWorkBreakdownProofRef, repositoryRef];
-const coverageDispositions = [
-  ...currentBaseline.coverageDispositions.map(({ scopeKind, scopeRef }) => ({
-    scopeKind,
-    scopeRef,
-    disposition: "already-satisfied",
-    rationale:
-      "The prior ChangeIntegration work is present in the pinned repository snapshot and has an exact passing Gate promotion proof; it is historical completion evidence, not new LifecycleRunReport work.",
-    currentEvidence: clone(priorCompletionEvidence),
-  })),
-  ...targetAcceptanceIds.map((id) =>
-    plannedCoverage("acceptance-criterion", id),
-  ),
-  ...targetArchitectureIds.map((id) => plannedCoverage("architecture", id)),
-  ...targetContractIds.map((id) => plannedCoverage("contract", id)),
-].sort((left, right) =>
-  `${left.scopeKind}\u0000${left.scopeRef}`.localeCompare(
-    `${right.scopeKind}\u0000${right.scopeRef}`,
-    "en",
-  ),
-);
+const coverageDispositions = clone(currentBaseline.coverageDispositions);
 assert.equal(coverageDispositions.length, 206);
 
 const inputBindings = [
@@ -810,26 +810,12 @@ const inputBindings = [
   ["approved-change-package", approvedChangePackageRef],
 ].map(([role, artifact]) => ({ role, artifact }));
 
-const changes = [
-  ...currentBaseline.workItems.map((item) => ({
-    operation: "retire",
-    workItemId: item.id,
-    priorItemDigest: canonicalJsonDigest(item),
-    rationale:
-      "The prior LifecycleRunReport deliverable is present in the pinned 0.9.0 repository snapshot and has exact passing release evidence; retain its scope as already satisfied instead of carrying completed work into the LifecycleRunReport plan.",
-  })),
-  ...workItems.map((item) => ({ operation: "add", workItem: item })),
-].sort((left, right) =>
-  (left.workItemId ?? left.workItem.id).localeCompare(
-    right.workItemId ?? right.workItem.id,
-    "en",
-  ),
-);
+const changes = [];
 
 const workBreakdownChangeSet = {
   apiVersion: API_VERSION,
   kind: "WorkBreakdownChangeSetDraft",
-  changeSetId: "WBCS-RUN-001",
+  changeSetId: "WBCS-RUN-002",
   operation: "decompose-change",
   currentBaseline: currentBaselineRef,
   inputBindings,
@@ -883,6 +869,7 @@ for (const [ref, bytes] of [
   [requirementsPromotionRef, requirementsPromotionBytes],
   [architecturePromotionRef, architecturePromotionBytes],
   [priorWorkBreakdownProofRef, priorWorkBreakdownProofBytes],
+  [historicalCompletionProofRef, historicalCompletionProofBytes],
   [contractBaselineRef, contractBaselineBytes],
   [contractPromotionRef, contractPromotionBytes],
   [contractDispositionRef, contractDispositionBytes],
@@ -938,7 +925,7 @@ const resultFor = (invocationId) => ({
       status: "pass",
       artifact: workBreakdownChangeSetRef,
       summary:
-        "Eight completed LifecycleRunReport items are retired and their 180 scope dispositions are preserved as already satisfied with exact repository and release evidence.",
+        "The nine approved LifecycleRunReport work items and all 206 scope dispositions are preserved unchanged while the baseline is rebound to the approved ContractBaseline 1.6.0 lineage.",
     },
   ],
   diagnostics: [],
@@ -972,7 +959,7 @@ assert.equal(selectedRoute.selection.operation, "decompose-change");
 assert.equal(selectedRoute.reasonCode, "WORK_BREAKDOWN_BASELINE_PRESENT");
 const routeBytes = writeJson("module-route-decision.json", selectedRoute);
 const routeRef = artifactRef(
-  "module-route-decision-lifecycle-run-report-v1",
+  "module-route-decision-lifecycle-run-report-v2",
   ROUTE_CONTRACT,
   routeBytes,
   finalUri("module-route-decision.json"),
@@ -982,8 +969,8 @@ register(routeRef, routeBytes);
 const invocation = {
   apiVersion: API_VERSION,
   kind: "ModuleInvocation",
-  invocationId: "work-breakdown-decompose-lifecycle-run-report-v1",
-  runId: "lifecycle-run-report-dogfood-run-v1",
+  invocationId: "work-breakdown-decompose-lifecycle-run-report-v2",
+  runId: "lifecycle-run-report-dogfood-run-v2",
   nodeId: "work-breakdown",
   module: {
     id: "work-breakdown",
@@ -1105,6 +1092,7 @@ assert.equal(adapterCalls.length, callsBeforeCheckpointVerification);
 
 const evidenceByRef = new Map([
   [refKey(priorWorkBreakdownProofRef), priorWorkBreakdownProofBytes],
+  [refKey(historicalCompletionProofRef), historicalCompletionProofBytes],
   [refKey(repositoryRef), repositoryBytes],
 ]);
 const evidenceResolver = async (ref) => {
@@ -1120,16 +1108,25 @@ await validateWorkBreakdownGateCandidate({
 });
 
 const snapshot = executionRecord.mergeReceipt.snapshot;
-const activeAdWorkItems = snapshot.nodes.filter(
+const activeRunWorkItems = snapshot.nodes.filter(
   ({ kind, state, stableId }) =>
     kind === "work-item" && state === "active" && stableId.startsWith("WI-RUN-"),
 );
-const retiredAdWorkItems = snapshot.nodes.filter(
-  ({ kind, state, stableId }) =>
-    kind === "work-item" && state === "retired" && stableId.startsWith("WI-AD-"),
+const activeBefore = priorGraph.nodes.filter(
+  ({ kind, state }) => kind === "work-item" && state === "active",
 );
-assert.equal(activeAdWorkItems.length, workItems.length);
-assert.equal(retiredAdWorkItems.length, currentBaseline.workItems.length);
+const activeAfter = snapshot.nodes.filter(
+  ({ kind, state }) => kind === "work-item" && state === "active",
+);
+const retiredBefore = priorGraph.nodes.filter(
+  ({ kind, state }) => kind === "work-item" && state === "retired",
+);
+const retiredAfter = snapshot.nodes.filter(
+  ({ kind, state }) => kind === "work-item" && state === "retired",
+);
+assert.equal(activeRunWorkItems.length, workItems.length);
+assert.equal(activeAfter.length, activeBefore.length);
+assert.equal(retiredAfter.length, retiredBefore.length);
 const objectivePath = queryTraceabilityGraph(snapshot, {
   start: {
     kind: "business-objective",
@@ -1188,7 +1185,7 @@ const runtimeProof = {
 };
 const runtimeProofBytes = writeJson("runtime-execution-proof.json", runtimeProof);
 const runtimeProofRef = artifactRef(
-  "work-breakdown-runtime-proof-lifecycle-run-report-v1",
+  "work-breakdown-runtime-proof-lifecycle-run-report-v2",
   {
     schema: "https://devrelay.dev/evidence/work-breakdown-runtime/v1",
     mediaType: "application/json",
@@ -1223,19 +1220,19 @@ const gateText = [
   "",
   "- PASS: Core selected `decompose-change` from the exact baselined project state; the model did not select the operation or plug-in.",
   "- PASS: the configured bounded `openspec-tasks@0.1.0` adapter returned one canonical WorkBreakdownChangeSetDraft and did not run implementation or build commands.",
-  "- PASS: all 9 approved LifecycleRunReport acceptance criteria, all 10 approved architecture elements, and all 7 approved contracts have reciprocal planned coverage.",
-  "- PASS: all nine previously completed ChangeIntegration planning items are retired; their approved scope dispositions are retained as already satisfied with exact repository and passing dogfood evidence.",
-  "- PASS: every new WorkItemDraft uses the closed deliverable-oriented contract; dependency hints remain non-authoritative.",
-  "- PASS: the trusted contributor extended the exact prior graph by one revision, retired stale candidate work and edges, and preserved a replayable atomic merge proof.",
+  "- PASS: all 6 LifecycleRunReport acceptance criteria, all 12 architecture elements, and all 8 contracts retain reciprocal planned coverage inside the complete 206-disposition snapshot.",
+  "- PASS: the approved ContractBaseline changes lineage only; all nine work items and every coverage disposition are preserved without retire/add churn.",
+  "- PASS: every preserved WorkItemDraft uses the closed deliverable-oriented contract; dependency hints remain non-authoritative.",
+  "- PASS: the trusted contributor extended the exact prior graph by one control revision without adding, retiring, or replacing work-item nodes.",
   "",
   "## Decision",
   "",
-  "Approve the exact WorkBreakdownChangeSetDraft and promote the resulting WorkBreakdownBaseline 1.6.0 for progression to WorkDependencyAnalysis.",
+  "Approve the exact lineage-only WorkBreakdownChangeSetDraft and promote WorkBreakdownBaseline 1.7.1 for progression to WorkDependencyAnalysis.",
   "",
 ].join("\n");
 const gateBytes = writeText("work-breakdown-gate.md", gateText);
 const gateRef = artifactRef(
-  "work-breakdown-gate-lifecycle-run-report-v1",
+  "work-breakdown-gate-lifecycle-run-report-v2",
   {
     schema: "https://devrelay.dev/evidence/work-breakdown-gate-review/v1",
     mediaType: "text/markdown",
@@ -1268,7 +1265,7 @@ const workBreakdownBaseline = {
   apiVersion: API_VERSION,
   kind: "WorkBreakdownBaseline",
   baselineId: currentBaseline.baselineId,
-  version: "1.7.0",
+  version: "1.7.1",
   approvedCandidate: workBreakdownChangeSetRef,
   inputBindings: clone(workBreakdownChangeSet.inputBindings),
   workItems: clone(applied.workItems),
@@ -1309,7 +1306,7 @@ assert.equal(
 const promotionProof = {
   apiVersion: API_VERSION,
   kind: "WorkBreakdownGatePromotionProof",
-  proofId: "work-breakdown-gate-promotion-lifecycle-run-report-v1",
+  proofId: "work-breakdown-gate-promotion-lifecycle-run-report-v2",
   status: "promoted",
   operation: gatePromotion.operation,
   candidate: workBreakdownChangeSetRef,
@@ -1375,9 +1372,10 @@ const dogfoodProof = {
     ),
   },
   assertions: {
-    retiredPriorWorkItems: currentBaseline.workItems.length,
-    newWorkItems: workItems.length,
-    alreadySatisfiedCoverage: 154,
+    retiredPriorWorkItems: 0,
+    newWorkItems: 0,
+    preservedWorkItems: workItems.length,
+    alreadySatisfiedCoverage: coverageDispositions.filter(({ disposition }) => disposition === "already-satisfied").length,
     plannedAcceptanceCoverage: targetAcceptanceIds.length,
     plannedArchitectureCoverage: targetArchitectureIds.length,
     graphRevisionBefore: priorGraph.revision,
@@ -1411,8 +1409,9 @@ console.log(
       plugin: invocation.plugin,
       candidate: workBreakdownChangeSetRef.digest,
       baseline: workBreakdownBaselineRef.digest,
-      newWorkItems: workItems.length,
-      retiredPriorWorkItems: currentBaseline.workItems.length,
+      newWorkItems: 0,
+      retiredPriorWorkItems: 0,
+      preservedWorkItems: workItems.length,
       coverage: coverageDispositions.length,
       graphRevision: snapshot.revision,
       progressionAllowed: promotionProof.workDependencyAnalysisProgressionAllowed,

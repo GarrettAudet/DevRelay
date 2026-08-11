@@ -14,14 +14,14 @@ import { validateWorkBreakdownArtifact } from "../../../src/work-breakdown-artif
 import { contractGenerationDogfoodExecution as dogfood } from "./materialize.mjs";
 
 const ROOT = new URL("../../../", import.meta.url);
-const OUTPUT = new URL("./", import.meta.url);
+const OUTPUT = new URL("./replay-v2/", import.meta.url);
 const APPROVED = Object.freeze({
-  candidate: "sha256:e5f41f1733fa7dd26d82e30846033f2c2df8761440b6f02e97f38ee7b527255c",
-  gateReview: "sha256:11ef6368c714aaa209bae9cb8bf9180b07fa4f1a696432d7dbc043d986ebf753",
-  gateCandidate: "sha256:5293522ccb6f8dcd7672608b51ec0847e5d5a6cd216f2818c359c2edb7e6fe14",
-  checkpoint: "sha256:3102d800ad4740ccdeb57b53c06feaaa85fbb587e07c3a659764d9136052a86a",
-  traceabilityUpdate: "sha256:5697b99079c02566a47351e207ca5d5cb59dd0f7bc4c78235b2451aca310bf70",
-  executionRecord: "sha256:797de9bac4b9f4b6e166a088f3f15ecb887d2c47ba2ec6e70cba449ff432eac4",
+  candidate: "sha256:65667d7dabca9ea94579ba269f91b86bdf3f3e8948d5d49319594780d22e3c8a",
+  gateReview: "sha256:def968a62fedc4203d3c029ef058b40faa1cf0e79e9c1321e1a62330c1c09bba",
+  gateCandidate: "sha256:43157a9fff06dd4c5eb60a022906b302b7799468e3c605a1d1e60fa86d0bf04f",
+  checkpoint: "sha256:68f72d7ea28cc2daa6e7a12cff8723f6159c387f6216b064e1bb8924a3b431ac",
+  traceabilityUpdate: "sha256:57a50ced95b8ab747048cf30198cb4bb1d2141af87574e3a48243929ca402605",
+  executionRecord: "sha256:d684de1a45054634c319d1634ce371dbf08433d5fe954d64ae7a9ae43863795e",
 });
 const CONTRACTS = Object.freeze({
   approval: CONTRACT_GATE_APPROVAL_CONTRACT,
@@ -100,7 +100,7 @@ assert.equal(dogfood.executionRecordFile.ref.digest, APPROVED.executionRecord);
 const approvalValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "ContractGateApproval",
-  approvalId: "CGA-ARCHITECTURE-DISCOVERY-CONTRACT-CHANGE-001",
+  approvalId: "CGA-ARCHITECTURE-DISCOVERY-CONTRACT-CHANGE-002",
   authority: "project-owner",
   decision: "approve",
   policyVersion: "contract-gate/0.1.0",
@@ -119,8 +119,8 @@ const approval = document(approvalValue, approvalValue.approvalId, CONTRACTS.app
 const baselineValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "ContractBaseline",
-  baselineId: "CB-DEVRELAY-006",
-  version: "1.5.0",
+  baselineId: "CB-DEVRELAY-007",
+  version: "1.6.0",
   approvedCandidate: dogfood.candidateLoaded.ref,
   supersedes: dogfood.currentContractBaseline.ref,
   architectureBaseline: dogfood.architecture.ref,
@@ -169,7 +169,7 @@ validateWorkBreakdownArtifact(disposition.value, { ref: disposition.ref });
 const stateValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "ProjectContractState",
-  stateId: "PCS-DEVRELAY-CONTRACTS-ARCHITECTURE-DISCOVERY-BASELINED-001",
+  stateId: "PCS-DEVRELAY-CONTRACTS-ARCHITECTURE-DISCOVERY-BASELINED-002",
   state: "baselined",
   architectureBaseline: dogfood.architecture.ref,
   projectOverviewBaseline: dogfood.projectOverview.ref,
@@ -230,7 +230,7 @@ const candidatePrepared = await graph.prepare({
 await graph.mergePrepared(candidatePrepared);
 
 const gateInvocation = {
-  invocationId: "contract-gate-promotion-architecture-discovery-v1",
+  invocationId: "contract-gate-promotion-architecture-discovery-v2",
   module: { id: "contract-gate", version: "0.1.0", operation: "promote" },
 };
 const approvedPrepared = await graph.prepare({
@@ -279,7 +279,7 @@ const approvedSnapshot = document(
 const promotionValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "ContractGatePromotionProof",
-  promotionId: "CGP-ARCHITECTURE-DISCOVERY-CONTRACT-CHANGE-001",
+  promotionId: "CGP-ARCHITECTURE-DISCOVERY-CONTRACT-CHANGE-002",
   candidate: dogfood.candidateLoaded.ref,
   approval: approval.ref,
   contractBaseline: baseline.ref,
@@ -295,7 +295,7 @@ const promotionValue = {
 };
 const promotion = document(promotionValue, promotionValue.promotionId, CONTRACTS.promotion, new URL("contract-gate-promotion.json", OUTPUT));
 
-const HISTORY = new URL("project/history/contracts/CB-DEVRELAY-005/", ROOT);
+const HISTORY = new URL("project/history/contracts/CB-DEVRELAY-006/", ROOT);
 await writeExact(approval);
 await writeExact(baseline);
 await writeExact(disposition);

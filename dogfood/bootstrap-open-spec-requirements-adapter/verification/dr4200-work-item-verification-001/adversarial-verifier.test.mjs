@@ -1,23 +1,35 @@
 import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import { readFile } from "node:fs/promises";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-const candidateRoot = new URL(
-  "file:///C:/Users/garre/.codex/worktrees/7eeb/DevRelay-v04-work-dependency-analysis/",
+const repositoryRoot = fileURLToPath(new URL("../../../../", import.meta.url));
+const adapterPath = path.join(
+  repositoryRoot,
+  "src/openspec-requirements-adapter.mjs",
 );
-const adapterSource = await readFile(
-  new URL("src/openspec-requirements-adapter.mjs", candidateRoot),
-  "utf8",
+const fixturePath = path.join(
+  repositoryRoot,
+  "dogfood/bootstrap-open-spec-requirements-adapter/verification/dr4200-historical-provenance-repair-001/minimized-source-ref-fixture.json",
 );
-const fixture = JSON.parse(
-  await readFile(
-    new URL(
-      "dogfood/bootstrap-open-spec-requirements-adapter/verification/dr4200-historical-provenance-repair-001/minimized-source-ref-fixture.json",
-      candidateRoot,
-    ),
-    "utf8",
-  ),
+const sha256Digest = (bytes) =>
+  `sha256:${crypto.createHash("sha256").update(bytes).digest("hex")}`;
+const adapterBytes = await readFile(adapterPath);
+assert.equal(
+  sha256Digest(adapterBytes),
+  "sha256:365111ac2482c824299a89075bc2773bf87e8fc6286a41af7191f84d314ca048",
+  "committed adapter bytes must match the independently verified historical source",
 );
+const fixtureBytes = await readFile(fixturePath);
+assert.equal(
+  sha256Digest(fixtureBytes),
+  "sha256:8995089cc0e9d09f341e9a9ce969555a4a9e036c71ef083b52d7b3fe9fa59a69",
+  "committed fixture bytes must match the independently verified historical source",
+);
+const adapterSource = adapterBytes.toString("utf8");
+const fixture = JSON.parse(fixtureBytes);
 
 const canonical = (value) =>
   JSON.stringify(value, Object.keys(value ?? {}).sort());

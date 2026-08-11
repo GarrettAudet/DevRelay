@@ -133,7 +133,7 @@ const coveredRefs = workBreakdown.value.workItems.map(({ id }) => id);
 const contextSliceSetValue = {
   apiVersion: "devrelay.dev/v1alpha1",
   kind: "ContextSliceSet",
-  sliceSetId: "CTXS-RUN-DOGFOOD-001",
+  sliceSetId: "CTXS-RUN-DOGFOOD-002",
   slices: [
     createContextSlice({
       id: "CTX-RUN-REQUIREMENTS",
@@ -230,7 +230,7 @@ const runtime = createWorkDependencyAnalysisRuntime({
 });
 const checkpoints = memoryCheckpointStore();
 const execution = await runtime.execute({
-  executionId: "WDA-RUN-DOGFOOD-001",
+  executionId: "WDA-RUN-DOGFOOD-002",
   workBreakdown,
   projectOverview,
   contextSliceSet,
@@ -288,7 +288,7 @@ const gateReview = await exactJsonFile(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "WorkDependencyGateReview",
-    reviewId: "WDA-RUN-GATE-REVIEW-001",
+    reviewId: "WDA-RUN-GATE-REVIEW-002",
     candidate: execution.candidateRef,
     checkpointDigest: checkpoint.checkpointDigest,
     workBreakdownBaseline: workBreakdown.ref,
@@ -310,7 +310,7 @@ const gateCandidate = await exactJsonFile(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "WorkDependencyGateCandidate",
-    gateCandidateId: "WDA-RUN-GATE-CANDIDATE-001",
+    gateCandidateId: "WDA-RUN-GATE-CANDIDATE-002",
     candidate: execution.candidateRef,
     workBreakdownBaseline: workBreakdown.ref,
     projectOverviewBaseline: projectOverview.ref,
@@ -323,7 +323,7 @@ const gateCandidate = await exactJsonFile(
   },
   "https://devrelay.dev/gates/work-dependency-candidate/v1",
   "application/json",
-  "WDA-RUN-GATE-CANDIDATE-001",
+  "WDA-RUN-GATE-CANDIDATE-002",
 );
 await exactJsonFile(
   "runtime-execution-proof.json",
@@ -345,7 +345,7 @@ await exactJsonFile(
   },
   "https://devrelay.dev/evidence/work-dependency-runtime-execution-proof/v1",
   "application/json",
-  "WDA-RUN-RUNTIME-PROOF-001",
+  "WDA-RUN-RUNTIME-PROOF-002",
 );
 
 process.stdout.write(

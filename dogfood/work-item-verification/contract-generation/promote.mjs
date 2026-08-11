@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,14 +15,16 @@ import { validateWorkBreakdownArtifact } from "../../../src/work-breakdown-artif
 import { contractGenerationDogfoodExecution as dogfood } from "./materialize.mjs";
 
 const ROOT = new URL("../../../", import.meta.url);
-const OUTPUT = new URL("./replay-v6/", import.meta.url);
+const OUTPUT = new URL("./replay-v7/", import.meta.url);
+const WORK_BREAKDOWN_CONTEXT = new URL("../work-breakdown/context/", import.meta.url);
+const DISPLACED_CONTEXT = new URL("history/pre-replay-v7/", WORK_BREAKDOWN_CONTEXT);
 const APPROVED = Object.freeze({
-  candidate: "sha256:861c9a3b24a9d0d03e6aa68d7afc7e25bc8724a47f76109b3b2fc30952152014",
-  gateReview: "sha256:c425eaae5eb5474ea8a33b18b0e8bbd36dc43b91ccc4425ae632e54645c62921",
-  gateCandidate: "sha256:9247c6b4dbf23610ad224f5a20f983ded1881943f28f070cc919b6ed6b97cae7",
-  checkpoint: "sha256:16214be69a072b0aac5eef75fe863c2fdb0cfec14a3d86cda667231691e7f66a",
-  traceabilityUpdate: "sha256:a4b8559def8ee384e0b7e64fc6f2e8faabe053c76f173cfa1e6102b754bd8a3f",
-  executionRecord: "sha256:5a73e801d17cb1498feefb4dcb66fc8087b369943f6cd200d1fbdced26fb8270",
+  candidate: "sha256:f816fde59c1125a63b64c1b62ffca65b791a1baed13376a2a51947a9ba60dd5a",
+  gateReview: "sha256:b98f8c7a7adbd5a0df85c77dcb52d8eaff6dcbb1020d24e76292915d46320c20",
+  gateCandidate: "sha256:a8022c90d723999765ca783ae9f29faa14c0d5de43cbb7ecd48287d5c47dfd9f",
+  checkpoint: "sha256:4f01c4e20014952ffff8feac51a8568a42d6d3e1c7df310170077f13125aa555",
+  traceabilityUpdate: "sha256:a6c7146dcbae20dd2684e5bd20b147e3da11165218eefb54d9d7119d2c59e805",
+  executionRecord: "sha256:d0dd71562ed55ad688839b93a60750f0340e9f0877ddbadc3f90e309ba6592a7",
 });
 const CONTRACTS = Object.freeze({
   approval: CONTRACT_GATE_APPROVAL_CONTRACT,
@@ -309,6 +311,10 @@ await writeExact(approvedUpdate);
 await writeExact(approvedReceipt);
 await writeExact(approvedSnapshot);
 await writeExact(promotion);
+
+await preserveAndReplaceCurrent(baseline, new URL("contract-baseline.json", WORK_BREAKDOWN_CONTEXT), new URL("contract-baseline.json", DISPLACED_CONTEXT));
+await preserveAndReplaceCurrent(disposition, new URL("contract-disposition.json", WORK_BREAKDOWN_CONTEXT), new URL("contract-disposition.json", DISPLACED_CONTEXT));
+await preserveAndReplaceCurrent(promotion, new URL("contract-gate-promotion.json", WORK_BREAKDOWN_CONTEXT), new URL("contract-gate-promotion.json", DISPLACED_CONTEXT));
 
 process.stdout.write(JSON.stringify({
   status: "CONTRACT_BASELINE_PROMOTED",

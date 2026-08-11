@@ -19,6 +19,8 @@ import {
   specialistAssignmentCandidateTraceabilityContributor,
 } from "../../../src/specialist-assignment-traceability-contributor.mjs";
 
+const OUTPUT = new URL("./replay-v2/", import.meta.url);
+
 const read = (relativePath) =>
   JSON.parse(readFileSync(new URL(relativePath, import.meta.url), "utf8"));
 
@@ -30,7 +32,7 @@ function writeExact(relativePath, value) {
   const url =
     relativePath instanceof URL
       ? relativePath
-      : new URL(relativePath, import.meta.url);
+      : new URL(relativePath.replace(/^\.\//u, ""), OUTPUT);
   const bytes = exactFileBytes(value);
   if (existsSync(url)) {
     const current = readFileSync(url);
@@ -94,9 +96,9 @@ const loaded = (value, schema, mediaType, artifactId, uri) => {
   };
 };
 
-const priorGraph = read("../dependency-analysis/traceability-graph-snapshot.json");
+const priorGraph = read("../dependency-analysis/replay-v2/traceability-graph-snapshot.json");
 const priorProof = read(
-  "../dependency-analysis/work-dependency-gate-promotion-proof.json",
+  "../dependency-analysis/replay-v2/work-dependency-gate-promotion-proof.json",
 );
 const draftValue = read("./specialist-assignment-draft.json");
 const baselineValue = read("./specialist-assignment-baseline.json");
@@ -119,9 +121,10 @@ const historicalUpdateSourcePaths = [
   "../../change-integration/work-breakdown/traceability-update.json",
   "../../../project/history/traceability/updates/dc46268ba73b6924b2c473d2fb6294dbef7267dfd0846b72525c6fa58da84681.json",
   "../../architecture-discovery/work-breakdown/traceability-update.json",
+  "../work-breakdown/replay-v1/traceability-update.json",
   "../work-breakdown/traceability-update.json",
   "../../architecture-discovery/dependency-analysis/traceability-update.json",
-  "../dependency-analysis/traceability-update.json",
+  "../dependency-analysis/replay-v2/traceability-update.json",
 ];
 const historicalPaths = new Map(
   historicalUpdateSourcePaths.map((relativePath) => {
@@ -184,7 +187,7 @@ const draft = loaded(
 );
 const candidate = await merge({
   invocation: {
-    invocationId: "SA-RUN-DOGFOOD-001",
+    invocationId: "SA-RUN-DOGFOOD-002",
     module: {
       id: "specialist-assignment",
       version: "1.0.0",
@@ -205,7 +208,7 @@ const baseline = loaded(
 );
 const approved = await merge({
   invocation: {
-    invocationId: "SA-RUN-GATE-DOGFOOD-001",
+    invocationId: "SA-RUN-GATE-DOGFOOD-002",
     module: {
       id: "specialist-assignment-gate",
       version: "1.0.0",
