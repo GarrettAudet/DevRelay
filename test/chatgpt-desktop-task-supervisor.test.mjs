@@ -17,6 +17,12 @@ async function fixture(overrides = {}) {
     load("dogfood/chatgpt-desktop-runtime/execution/integrated-completion-facts.json"),
   ]);
   const calls = [];
+  frontier.readyWorkItemIds = ["WI-DESKTOP-TASK-SUPERVISOR"];
+  frontier.dispositions = [{ status: "ready", workItemId: "WI-DESKTOP-TASK-SUPERVISOR" }];
+  frontier.workDependencyBaseline.digest = canonicalJsonDigest(workDependencyBaseline);
+  frontier.derivation.inputDigest = canonicalJsonDigest({ workDependencyBaseline: frontier.workDependencyBaseline, completionFacts: frontier.completionFacts });
+  const frontierBody = Object.fromEntries(Object.entries(frontier).filter(([key]) => !["apiVersion", "kind", "frontierDigest"].includes(key)));
+  frontier.frontierDigest = canonicalJsonDigest(frontierBody);
   const terminals = new Map();
   const appServerClient = {
     async startTask(operation) {
@@ -79,6 +85,8 @@ test("launches a multi-item frontier deterministically and rejects duplicates or
   await assert.rejects(() => data.supervisor.superviseFrontier(data.input), /already launched/u);
   const stale = await fixture(); stale.input.frontier.workDependencyBaseline.digest = canonicalJsonDigest({ stale: true });
   await assert.rejects(() => stale.supervisor.superviseFrontier(stale.input), /digest validation|stale/u);
+  const missing = await fixture(); delete missing.input.taskContracts["WI-DESKTOP-TASK-SUPERVISOR"];
+  await assert.rejects(() => missing.supervisor.superviseFrontier(missing.input), /lacks exact work, assignment, or task contract context/u);
 });
 
 test("accepts only a closed identity-bound handoff and preserves its raw digest", async () => {

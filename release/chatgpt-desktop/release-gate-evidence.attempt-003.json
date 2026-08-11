@@ -1,0 +1,105 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChatGptDesktopReleaseGateEvidence",
+  "evidenceKind": "chatgpt-desktop/release-gate",
+  "workItemId": "WI-DESKTOP-VERIFICATION",
+  "executionId": "ATT-DESKTOP-VERIFICATION-003",
+  "host": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.14.1"
+  },
+  "outcome": "pass",
+  "failure": null,
+  "coverage": {
+    "workspaceProvisioning": [
+      "npm ci --ignore-scripts",
+      "committed package and lockfile byte-stability"
+    ],
+    "repositoryAndContracts": [
+      "test/chatgpt-desktop-runtime-contracts.test.mjs",
+      "test/chatgpt-desktop-capability-resolver.test.mjs"
+    ],
+    "packageAndInstalledPackage": [
+      "npm pack",
+      "npm install packed tarball",
+      "public export probe"
+    ],
+    "installationAndWindowsPaths": [
+      "test/chatgpt-desktop-install.test.mjs"
+    ],
+    "appServerAndMcpProtocols": [
+      "test/chatgpt-desktop-mcp-server.test.mjs",
+      "test/chatgpt-desktop-app-server-client.test.mjs"
+    ],
+    "restartDriftIsolationAndPermissionNegative": [
+      "test/chatgpt-desktop-install.test.mjs",
+      "test/chatgpt-desktop-lifecycle-controller.test.mjs",
+      "test/chatgpt-desktop-plugin.test.mjs",
+      "test/chatgpt-desktop-run-store.test.mjs",
+      "test/chatgpt-desktop-task-supervisor.test.mjs"
+    ]
+  },
+  "checks": [
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js ci --registry=https://registry.npmjs.org/ --ignore-scripts --no-audit --no-fund --fetch-retries=0 --fetch-timeout=10000",
+      "startedAt": "2026-08-11T22:49:32.436Z",
+      "finishedAt": "2026-08-11T22:49:34.284Z",
+      "exitCode": 0,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:798bd6f4a14f59ea5969767c7626801508e579798ac11b37cfac254008c87058",
+      "stderrDigest": "sha256:57cbf4d7f49c9601a8d29e5e8d78488ba982a61e9a5143192043f930edaa218b",
+      "stdoutTail": "\nadded 15 packages in 2s\n",
+      "stderrTail": "npm notice\nnpm notice New minor version of npm available! 11.11.0 -> 11.19.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v11.19.0\nnpm notice To update run: npm install -g npm@11.19.0\nnpm notice\n"
+    },
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe --test test/chatgpt-desktop-runtime-contracts.test.mjs test/chatgpt-desktop-capability-resolver.test.mjs test/chatgpt-desktop-install.test.mjs test/chatgpt-desktop-lifecycle-controller.test.mjs test/chatgpt-desktop-mcp-server.test.mjs test/chatgpt-desktop-app-server-client.test.mjs test/chatgpt-desktop-plugin.test.mjs test/chatgpt-desktop-run-store.test.mjs test/chatgpt-desktop-task-supervisor.test.mjs",
+      "startedAt": "2026-08-11T22:49:34.285Z",
+      "finishedAt": "2026-08-11T22:49:41.190Z",
+      "exitCode": 0,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:4208312baedc87c927a420c5b2dd2419ff2ccca5c2348900ec043d5f7972f9ef",
+      "stderrDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutTail": "✔ starts one bounded task and preserves request, response, event, and identity evidence (12.2023ms)\n✔ resumes a stored thread, starts a new turn, and maps interruption to cancellation (4.0552ms)\n✔ cancellation sends turn/interrupt and waits for the terminal notification (1.0415ms)\n✔ fails closed on JSON-RPC errors and duplicate attempt identities (0.7547ms)\n✔ resolves one exact release-ready binding deterministically (3.1638ms)\n✔ fixture-only and missing capabilities fail closed (0.7292ms)\n✔ rejects duplicate release bindings, incompatible versions, and tampered manifests (1.9945ms)\n✔ rejects capability drift and returns stable ordering (15.8329ms)\n✔ clean install and idempotent reinstall work through paths with spaces (2141.2274ms)\n✔ upgrade preserves prior bytes, rollback restores them, and uninstall is clean (2277.8568ms)\n✔ tampered package and missing dependency fail before mutation (2328.0059ms)\n✔ complete lifecycle executes every module and Gate in circuit order (27.0918ms)\n✔ Gate and clarification pauses require exact artifact-bound decisions (53.8571ms)\n✔ blocked run resumes only from its exact checkpoint (25.1253ms)\n✔ failure is persisted truthfully and a repeating frontier advances once per request (34.979ms)\n✔ initialize and tools/list expose only the seven approved bounded commands (2.6448ms)\n✔ every approved command validates before Core and validates the Core response (4.328ms)\n✔ unknown methods, tools, malformed calls, and caller-authored effect fields fail closed (0.5278ms)\n✔ equivalent calls and fresh server instances return byte-stable JSON (0.7006ms)\n✔ STDIO transport processes MCP newline frames in order and survives parse errors (72.0128ms)\n✔ repository marketplace exposes one installable DevRelay plugin (6.7059ms)\n✔ plugin manifest discovers one operator skill and one local MCP server (3.0306ms)\n✔ operator skill preserves Core authority and contains no scaffold placeholders (1.2923ms)\n✔ atomically commits digest-bound state and restarts with exact immutable history on Windows-compatible paths (38.8187ms)\n✔ duplicate requests replay exactly while divergent duplicates and stale revisions fail closed (26.1755ms)\n✔ an interrupted commit recovers the last valid revision without inventing lifecycle facts (27.3419ms)\n✔ corrupt content-addressed bytes are detected (13.4478ms)\n✔ MCP lifecycle operations accept their exact request and reject missing, unknown, and caller-authority fields (16.8462ms)\n✔ task start, resume, inspect, and cancel bind exact task identities and terminal handoffs (2.1028ms)\n✔ durable state operations close revision, checkpoint, digest, replay, and CAS boundaries (1.8679ms)\n✔ Windows capability resolution distinguishes release-ready bindings from missing live capability (1.3057ms)\n✔ repository-marketplace installation operations are Windows-only, revision-bound, and conditional (3.0999ms)\n✔ run view is read-only, report-policy-bound, and explicit about unavailable observations (1.0212ms)\n✔ validator approval bindings exactly match ContractBaseline 1.7.0 (1.8275ms)\n✔ packaged validator and schema have no runtime project dependency (69.6494ms)\n✔ equivalent concrete artifacts have byte-identical canonical representations (1.8066ms)\n✔ unknown envelope fields and unsupported interfaces fail closed (0.4938ms)\n✔ launches exactly one task for the exact Core frontier and persists identity before handoff (12.1014ms)\n✔ launches a multi-item frontier deterministically and rejects duplicates or a stale DAG (14.4441ms)\n✔ accepts only a closed identity-bound handoff and preserves its raw digest (8.8358ms)\n✔ cancellation remains bound to the persisted thread and turn (3.8555ms)\nℹ tests 41\nℹ suites 0\nℹ pass 41\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 6854.1285\n",
+      "stderrTail": ""
+    },
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js pack --json --pack-destination C:\\Users\\garre\\AppData\\Local\\Temp\\devrelay desktop release gate XmqhZT",
+      "startedAt": "2026-08-11T22:49:41.190Z",
+      "finishedAt": "2026-08-11T22:49:42.441Z",
+      "exitCode": 0,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:7ce6d3a65b72c16d587d05438aea60390e33382b067a757e0e5ac709e16d85ab",
+      "stderrDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutTail": "  {\n        \"path\": \"src/system-verification-artifact-validator.mjs\",\n        \"size\": 6904,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-checkpoint.mjs\",\n        \"size\": 7808,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-core.mjs\",\n        \"size\": 10573,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-review-adapter.mjs\",\n        \"size\": 5370,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-test-adapter.mjs\",\n        \"size\": 5493,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-traceability-contributor.mjs\",\n        \"size\": 8240,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-artifact-validator.mjs\",\n        \"size\": 37261,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-checkpoint-store.mjs\",\n        \"size\": 968,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-graph.mjs\",\n        \"size\": 75794,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-runtime-contracts.mjs\",\n        \"size\": 899,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-artifact-validator.mjs\",\n        \"size\": 36049,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-gate.mjs\",\n        \"size\": 15100,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-runtime-contracts.mjs\",\n        \"size\": 19380,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-traceability-contributor.mjs\",\n        \"size\": 14835,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-artifact-validator.mjs\",\n        \"size\": 8464,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-gate.mjs\",\n        \"size\": 10088,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-graph.mjs\",\n        \"size\": 8981,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-native-proposer.mjs\",\n        \"size\": 7179,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-opa.mjs\",\n        \"size\": 5465,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-runtime.mjs\",\n        \"size\": 19447,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-snapshot.mjs\",\n        \"size\": 6856,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-traceability-contributor.mjs\",\n        \"size\": 3838,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-execution-artifact-validator.mjs\",\n        \"size\": 3827,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-artifact-validator.mjs\",\n        \"size\": 20199,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-checkpoint.mjs\",\n        \"size\": 10622,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-evidence-normalizer.mjs\",\n        \"size\": 6225,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-gate.mjs\",\n        \"size\": 4151,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-input-guard.mjs\",\n        \"size\": 7421,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-policy-evaluator.mjs\",\n        \"size\": 7795,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-review-verifier-adapter.mjs\",\n        \"size\": 5695,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-test-verifier-adapter.mjs\",\n        \"size\": 6539,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-traceability-contributor.mjs\",\n        \"size\": 10610,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-verifier-binding.mjs\",\n        \"size\": 8396,\n        \"mode\": 420\n      }\n    ],\n    \"entryCount\": 292,\n    \"bundled\": []\n  }\n]\n",
+      "stderrTail": ""
+    },
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js install --registry=https://registry.npmjs.org/ --ignore-scripts --no-audit --no-fund --no-package-lock --fetch-retries=0 --fetch-timeout=10000 C:\\Users\\garre\\AppData\\Local\\Temp\\devrelay desktop release gate XmqhZT\\devrelay-0.9.0.tgz",
+      "startedAt": "2026-08-11T22:49:42.446Z",
+      "finishedAt": "2026-08-11T22:49:45.282Z",
+      "exitCode": 0,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:54c784f34761564e36571dafb4d1a0f62f91ae53eda2bca5c78c9b076dc6724a",
+      "stderrDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutTail": "\nadded 16 packages in 3s\n",
+      "stderrTail": ""
+    },
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe -e import('devrelay').then(m=>{if(typeof m!=='object')throw Error('bad root export');return import('devrelay/desktop-runtime-contracts')}).then(m=>{if(!Object.keys(m).some(k=>k.startsWith('validate')))throw Error('missing Desktop validator export')})",
+      "startedAt": "2026-08-11T22:49:45.283Z",
+      "finishedAt": "2026-08-11T22:49:47.197Z",
+      "exitCode": 0,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutTail": "",
+      "stderrTail": ""
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ChatGptDesktopReleaseGateEvidence",
+  "evidenceKind": "chatgpt-desktop/release-gate",
+  "workItemId": "WI-DESKTOP-VERIFICATION",
+  "executionId": "ATT-DESKTOP-VERIFICATION-001",
+  "host": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.14.1"
+  },
+  "outcome": "block",
+  "failure": "Focused Desktop repository suites failed. Installing the packed package failed.",
+  "coverage": {
+    "repositoryAndContracts": [
+      "test/chatgpt-desktop-runtime-contracts.test.mjs",
+      "test/chatgpt-desktop-capability-resolver.test.mjs"
+    ],
+    "packageAndInstalledPackage": [
+      "npm pack",
+      "npm install packed tarball",
+      "public export probe"
+    ],
+    "installationAndWindowsPaths": [
+      "test/chatgpt-desktop-install.test.mjs"
+    ],
+    "appServerAndMcpProtocols": [
+      "test/chatgpt-desktop-mcp-server.test.mjs",
+      "test/chatgpt-desktop-app-server-client.test.mjs"
+    ],
+    "restartDriftIsolationAndPermissionNegative": [
+      "test/chatgpt-desktop-install.test.mjs",
+      "test/chatgpt-desktop-lifecycle-controller.test.mjs",
+      "test/chatgpt-desktop-plugin.test.mjs",
+      "test/chatgpt-desktop-run-store.test.mjs",
+      "test/chatgpt-desktop-task-supervisor.test.mjs"
+    ]
+  },
+  "checks": [
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe --test test/chatgpt-desktop-runtime-contracts.test.mjs test/chatgpt-desktop-capability-resolver.test.mjs test/chatgpt-desktop-install.test.mjs test/chatgpt-desktop-lifecycle-controller.test.mjs test/chatgpt-desktop-mcp-server.test.mjs test/chatgpt-desktop-app-server-client.test.mjs test/chatgpt-desktop-plugin.test.mjs test/chatgpt-desktop-run-store.test.mjs test/chatgpt-desktop-task-supervisor.test.mjs",
+      "startedAt": "2026-08-11T22:37:15.023Z",
+      "finishedAt": "2026-08-11T22:37:39.719Z",
+      "exitCode": 1,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:8f1d1db836c8f15010f0bd3d1210b280e1c11d91d26f3d88065975131e830d6c",
+      "stderrDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutTail": "Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:100:52)\n      at Object.superviseFrontier (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:132:23)\n      at TestContext.<anonymous> (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/test/chatgpt-desktop-task-supervisor.test.mjs:55:42)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {\n    code: 'DR4121'\n  }\n\ntest at test\\chatgpt-desktop-task-supervisor.test.mjs:64:1\n✖ launches a multi-item frontier deterministically and rejects duplicates or a stale DAG (4.9548ms)\n  Error [ChatGptDesktopTaskSupervisorError]: ChatGPT Desktop task supervisor: ready work item WI-DESKTOP-VERIFICATION lacks exact work, assignment, or task contract context\n      at fail (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:21:41)\n      at contextFor (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:100:52)\n      at Object.superviseFrontier (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:132:23)\n      at TestContext.<anonymous> (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/test/chatgpt-desktop-task-supervisor.test.mjs:77:42)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    code: 'DR4121'\n  }\n\ntest at test\\chatgpt-desktop-task-supervisor.test.mjs:84:1\n✖ accepts only a closed identity-bound handoff and preserves its raw digest (3.7977ms)\n  Error [ChatGptDesktopTaskSupervisorError]: ChatGPT Desktop task supervisor: ready work item WI-DESKTOP-VERIFICATION lacks exact work, assignment, or task contract context\n      at fail (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:21:41)\n      at contextFor (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:100:52)\n      at Object.superviseFrontier (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:132:23)\n      at TestContext.<anonymous> (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/test/chatgpt-desktop-task-supervisor.test.mjs:85:55)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    code: 'DR4121'\n  }\n\ntest at test\\chatgpt-desktop-task-supervisor.test.mjs:97:1\n✖ cancellation remains bound to the persisted thread and turn (3.7007ms)\n  Error [ChatGptDesktopTaskSupervisorError]: ChatGPT Desktop task supervisor: ready work item WI-DESKTOP-VERIFICATION lacks exact work, assignment, or task contract context\n      at fail (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:21:41)\n      at contextFor (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:100:52)\n      at Object.superviseFrontier (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/src/chatgpt-desktop-task-supervisor.mjs:132:23)\n      at TestContext.<anonymous> (file:///C:/Users/garre/.codex/worktrees/84ad/DevRelay-v04-work-dependency-analysis/test/chatgpt-desktop-task-supervisor.test.mjs:98:55)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    code: 'DR4121'\n  }\n",
+      "stderrTail": ""
+    },
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js pack --json --pack-destination C:\\Users\\garre\\AppData\\Local\\Temp\\devrelay desktop release gate gVcudl",
+      "startedAt": "2026-08-11T22:37:39.720Z",
+      "finishedAt": "2026-08-11T22:37:41.041Z",
+      "exitCode": 0,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:cc456b5e5e41d026615ff5c25c58092b5253af8549acba7f58765105beef94c2",
+      "stderrDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutTail": "  {\n        \"path\": \"src/system-verification-artifact-validator.mjs\",\n        \"size\": 6904,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-checkpoint.mjs\",\n        \"size\": 7808,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-core.mjs\",\n        \"size\": 10573,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-review-adapter.mjs\",\n        \"size\": 5370,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-test-adapter.mjs\",\n        \"size\": 5493,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/system-verification-traceability-contributor.mjs\",\n        \"size\": 8240,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-artifact-validator.mjs\",\n        \"size\": 37261,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-checkpoint-store.mjs\",\n        \"size\": 968,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-graph.mjs\",\n        \"size\": 75794,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/traceability-runtime-contracts.mjs\",\n        \"size\": 899,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-artifact-validator.mjs\",\n        \"size\": 36049,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-gate.mjs\",\n        \"size\": 15100,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-runtime-contracts.mjs\",\n        \"size\": 19380,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-breakdown-traceability-contributor.mjs\",\n        \"size\": 14835,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-artifact-validator.mjs\",\n        \"size\": 8464,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-gate.mjs\",\n        \"size\": 10088,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-graph.mjs\",\n        \"size\": 8981,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-native-proposer.mjs\",\n        \"size\": 7179,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-opa.mjs\",\n        \"size\": 5465,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-runtime.mjs\",\n        \"size\": 19447,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-snapshot.mjs\",\n        \"size\": 6856,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-dependency-traceability-contributor.mjs\",\n        \"size\": 3838,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-execution-artifact-validator.mjs\",\n        \"size\": 3827,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-artifact-validator.mjs\",\n        \"size\": 20199,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-checkpoint.mjs\",\n        \"size\": 10622,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-evidence-normalizer.mjs\",\n        \"size\": 6225,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-gate.mjs\",\n        \"size\": 4151,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-input-guard.mjs\",\n        \"size\": 7421,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-policy-evaluator.mjs\",\n        \"size\": 7795,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-review-verifier-adapter.mjs\",\n        \"size\": 5695,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-test-verifier-adapter.mjs\",\n        \"size\": 6539,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-traceability-contributor.mjs\",\n        \"size\": 10610,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"src/work-item-verification-verifier-binding.mjs\",\n        \"size\": 8396,\n        \"mode\": 420\n      }\n    ],\n    \"entryCount\": 291,\n    \"bundled\": []\n  }\n]\n",
+      "stderrTail": ""
+    },
+    {
+      "command": "C:\\Program Files\\nodejs\\node.exe C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js install --ignore-scripts --no-audit --no-fund --no-package-lock --fetch-retries=0 --fetch-timeout=10000 C:\\Users\\garre\\AppData\\Local\\Temp\\devrelay desktop release gate gVcudl\\devrelay-0.9.0.tgz",
+      "startedAt": "2026-08-11T22:37:41.047Z",
+      "finishedAt": "2026-08-11T22:37:42.778Z",
+      "exitCode": 1,
+      "signal": null,
+      "spawnError": null,
+      "stdoutDigest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrDigest": "sha256:01c0e0e99541210b575b435731be39d6910675830bbb44331ce8c6f8f4120f94",
+      "stdoutTail": "",
+      "stderrTail": "npm error code EACCES\nnpm error errno EACCES\nnpm error FetchError: request to https://registry.npmjs.org/@open-policy-agent%2fopa-wasm failed, reason: \nnpm error     at ClientRequest.<anonymous> (C:\\Program Files\\nodejs\\node_modules\\npm\\node_modules\\minipass-fetch\\lib\\index.js:130:14)\nnpm error     at ClientRequest.emit (node:events:508:28)\nnpm error     at emitErrorEvent (node:_http_client:108:11)\nnpm error     at _destroy (node:_http_client:963:9)\nnpm error     at onSocketNT (node:_http_client:983:5)\nnpm error     at process.processTicksAndRejections (node:internal/process/task_queues:91:21) {\nnpm error   code: 'EACCES',\nnpm error   errno: 'EACCES',\nnpm error   type: 'system',\nnpm error   requiredBy: 'node_modules/devrelay'\nnpm error }\nnpm error\nnpm error The operation was rejected by your operating system.\nnpm error It's possible that the file was already in use (by a text editor or antivirus),\nnpm error or that you lack permissions to access it.\nnpm error\nnpm error If you believe this might be a permissions issue, please double-check the\nnpm error permissions of the file and its containing directories, or try running\nnpm error the command again as root/Administrator.\nnpm error A complete log of this run can be found in: C:\\Users\\garre\\AppData\\Local\\Temp\\devrelay desktop release gate gVcudl\\npm-cache\\_logs\\2026-08-11T22_37_41_172Z-debug-0.log\n"
+    }
+  ]
+}
