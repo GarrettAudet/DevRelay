@@ -27,11 +27,12 @@ otherwise.
   `2c4b6e3b67045544555983d408dec112eeab238f`.
 - Local-Git fixture portability repair:
   `c957db0865ef990b27eb86d6671ed0df2e35aa9e`.
-- Completed post-toolchain workflow run:
-  `31454853164`. Representative Ubuntu/Node 20 result:
-  811 pass, 16 fail, 1 skip from 828 tests.
-- Active post-local-Git workflow run:
-  `31457082371`. Status at package checkpoint: in progress.
+- Post-toolchain workflow run:
+  `31454853164`. Representative Ubuntu/Node 20: 811 pass, 16 fail, 1 skip.
+- Post-local-Git workflow run:
+  `31457082371`. Representative Ubuntu/Node 20: 817 pass, 10 fail, 1 skip.
+  The complete `not ok` set contains no local-Git adapter fixture test, closing
+  PB-004.
 
 Additional controlling sources:
 

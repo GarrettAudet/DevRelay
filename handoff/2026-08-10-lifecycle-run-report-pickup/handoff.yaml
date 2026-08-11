@@ -47,7 +47,7 @@ promotionBlockerOrder:
 blockerStatus:
   PB-001: open
   PB-003: partial
-  PB-004: verification-in-progress
+  PB-004: closed
   PB-005: partial
   PB-006: open
   PB-002: not-started
@@ -61,7 +61,7 @@ verification:
   lastGreenReleaseProof:
     commit: 31d79faed9a1b926188dc0eea34b0d443fda3a35
     releaseCheckGreen: true
-  completedPortabilityRun:
+  postToolchainRun:
     runId: 31454853164
     representativeJob:
       tests: 828
@@ -70,13 +70,18 @@ verification:
       skipped: 1
       staticVerificationGreen: true
       java: temurin-21.0.11+10
-  activePortabilityRun:
+  postLocalGitRun:
     runId: 31457082371
     commit: c957db0865ef990b27eb86d6671ed0df2e35aa9e
-    statusAtPause: in-progress
-  failureClustersBeforeActiveRun:
+    status: completed-failure
+    representativeJob:
+      tests: 828
+      passed: 817
+      failed: 10
+      skipped: 1
+    localGitFixtureFailures: 0
+  remainingFailureClusters:
     historicalMachinePathOrSource: 4
-    localGitFixturePortability: 6
     architectureProofOrPromotion: 6
 stopBefore:
   - reconstructing or substituting unavailable historical source bytes

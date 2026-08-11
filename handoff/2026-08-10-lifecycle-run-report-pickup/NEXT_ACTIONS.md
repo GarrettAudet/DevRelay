@@ -2,13 +2,10 @@
 
 ## Resume order
 
-1. Inspect GitHub Actions run `31457082371` for commit
-   `c957db0865ef990b27eb86d6671ed0df2e35aa9e`. Confirm whether the six local-Git fixture
-   failures are gone. Do not infer closure from the source patch alone.
-2. Repair the LifecycleRunReport independent adversarial verifier's repository
+1. Repair the LifecycleRunReport independent adversarial verifier's repository
    root calculation using a cross-platform file-URL/path conversion. Preserve
    every existing assertion and evidence binding.
-3. Resolve the historical bootstrap source-closure policy without fabricating
+2. Resolve the historical bootstrap source-closure policy without fabricating
    evidence:
    - preserve the immutable original `6ddd` manifest as unavailable historical
      evidence;
@@ -16,33 +13,33 @@
      checkpoint-only verification; or
    - require an explicitly supplied trusted source bundle whose bytes match the
      recorded digest.
-   Do not repoint the bootstrap verifiers at semantically different current
-   files merely to make CI green.
-4. Isolate the exact host-dependent field in the Structurizr conformance proof
+   Do not repoint bootstrap verifiers at semantically different current files
+   merely to make CI green.
+3. Isolate the exact host-dependent field in the Structurizr conformance proof
    / ArchitectureGate review bytes. Make that evidence host-independent while
    preserving semantic architecture output, then prove Windows and Linux
    generate the same bound digests.
-5. Re-run focused portability tests, then the complete supported checkout.
-6. Close remaining PB-005 provenance and PB-006 catalog/documentation
+4. Re-run focused portability tests, then the complete supported checkout.
+5. Close remaining PB-005 provenance and PB-006 catalog/documentation
    inconsistencies from one source of truth.
-7. Only after all upstream bytes are stable, perform the single transactional
+6. Only after all upstream bytes are stable, perform the single transactional
    PB-002 superseding-lineage regeneration and prove an immediate no-change
    rerun.
-8. Resume DG-1 at the exact ContractGeneration/ContractGate boundary. Present
+7. Resume DG-1 at the exact ContractGeneration/ContractGate boundary. Present
    the candidate for a separate ContractGate decision. Do not infer promotion.
-9. Continue LifecycleRunReport DG-2 through DG-6 only after the supported
-   prefix is clean.
+8. Continue LifecycleRunReport DG-2 through DG-6 only after the supported prefix
+   is clean.
 
 ## Current blocker-order status
 
 | Blocker | Status at pause |
 | --- | --- |
-| PB-001 | Open. Historical/bootstrap source closure remains; one LRR path-only defect remains. |
-| PB-003 | Partially closed. Java 21 CI setup is fixed; host-independent Structurizr/ArchitectureGate proof evidence remains. |
-| PB-004 | Source repair committed at `c957db0865ef990b27eb86d6671ed0df2e35aa9e`; CI verification is in progress. |
-| PB-005 | Partially improved by full-history checkout; end-to-end provenance closure remains open. |
+| PB-001 | Open. Three historical/bootstrap source cases plus one LRR path-only defect remain. |
+| PB-003 | Partial. Java 21 CI setup is fixed; host-independent Structurizr/ArchitectureGate proof evidence remains. |
+| PB-004 | Closed. Portable local-Git fixtures committed at `c957db0`; representative CI moved from 16 failures to 10 with all six local-Git failures gone. |
+| PB-005 | Partial. Full-history checkout is fixed; end-to-end provenance closure remains open. |
 | PB-006 | Open pending stable portable source/evidence bytes. |
-| PB-002 | Intentionally not started; must remain last. |
+| PB-002 | Not started; intentionally last. |
 
 Do not create or renumber PB authority as part of this handoff.
 

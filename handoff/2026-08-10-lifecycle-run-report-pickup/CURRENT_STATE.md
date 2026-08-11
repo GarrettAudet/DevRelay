@@ -13,28 +13,32 @@
 - LifecycleRunReport DG-2: not started
 
 The exact package commit is the branch head containing this handoff. The
-`31d79fa` identity is the last fully green release proof, not the
-current branch head. Preserve the immutable `6ddd` historical
-lineage and all unrelated bytes.
+`31d79fa` identity is the last fully green release proof, not the current branch
+head. Preserve the immutable `6ddd` historical lineage and all unrelated bytes.
 
-## What was completed before pausing
+## Work completed before pausing
 
 Two bounded portability changes are committed:
 
-1. `2c4b6e3b67045544555983d408dec112eeab238f` makes CI use full Git history and Java 21, with
-   the Linux DevRelay Java executable explicitly bound.
-2. `c957db0865ef990b27eb86d6671ed0df2e35aa9e` makes the local-Git adapter test fixtures use
-   OS-native absolute temporary paths. Product adapter behavior is unchanged.
+1. `2c4b6e3b67045544555983d408dec112eeab238f` makes CI use full Git history and
+   Temurin Java 21, with the Linux DevRelay Java executable explicitly bound.
+2. `c957db0865ef990b27eb86d6671ed0df2e35aa9e` makes the local-Git adapter test
+   fixtures use OS-native absolute temporary paths. Product adapter behavior is
+   unchanged.
 
-The first post-toolchain matrix run `31454853164` completed all four
-Node/OS jobs but failed `release:check`. Its representative Ubuntu/Node 20 job
-ran 828 tests: 811 passed, 16 failed, and 1 skipped. Static verification itself
-passed.
+The first post-toolchain matrix run `31454853164` reduced the representative
+Ubuntu/Node 20 failure count from 18 to 16. Static verification, history setup,
+Java 21 setup, and dependency installation all passed.
 
-The follow-up four-way run `31457082371` started from
-`c957db0865ef990b27eb86d6671ed0df2e35aa9e` and is still in progress at this handoff checkpoint.
-Its purpose is to verify that the six local-Git portability fixture failures are
-actually removed.
+The follow-up matrix run `31457082371` completed red on all four Node/OS jobs.
+Its representative Ubuntu/Node 20 job ran 828 tests: 817 passed, 10 failed, and
+1 skipped. None of the six local-Git fixture tests remained in the failing set,
+so PB-004 is closed by source repair plus CI evidence.
+
+The ten remaining representative failures are exactly:
+
+- four historical/path-source portability failures; and
+- six architecture proof/review digest or exact-promotion failures.
 
 ## Exact lifecycle position
 
@@ -59,9 +63,7 @@ digest-verified trusted source bundle.
 
 ## Remaining portability/evidence closure
 
-The current failures fall into a few root-cause clusters:
-
-1. **Historical bootstrap source closure.** Two bootstrap verifiers and one
+1. **Historical/bootstrap source closure.** Two bootstrap verifiers and one
    DG-1 materializer refer to source locations that existed only in the
    originating environment. Their original bytes are not committed, so a
    repository-path rewrite would silently substitute evidence.
@@ -72,7 +74,7 @@ The current failures fall into a few root-cause clusters:
    exposing host-dependent proof/review digests for several architecture
    dogfoods. Semantic architecture change digests remain stable, but exact-byte
    promotion correctly fails. Isolate and remove the host-dependent field;
-   never update golden digests merely to match Linux.
+   never update golden digests merely to match one host.
 4. **PB-005/PB-006.** Finish provenance and catalog/documentation closure once
    the source bytes are portable.
 5. **PB-002.** Regenerate superseding content-addressed lineage once, last,
@@ -81,10 +83,9 @@ The current failures fall into a few root-cause clusters:
 ## Product maturity
 
 All 18 owner-approved V1 lifecycle components retain construction coverage.
-That is strong implementation coverage, not release authority. Specialist
-AssignmentGate, WorkExecution, BusinessAcceptance, portable bootstrap/tooling,
-supported-matrix proof, and live/portable adapter evidence still carry debt.
+That is strong implementation coverage, not release authority. The active
+branch is not a release candidate while the supported matrix is red.
 
 No Gate promotion, baseline mutation, TraceabilityGraph authority change,
-accepted-prefix mutation, PB authority mutation, or LifecycleRunReport DG-2
-implementation was performed in this pause cycle.
+accepted-prefix mutation, PB authority mutation, canonical lineage regeneration,
+or LifecycleRunReport DG-2 implementation was performed in this pause cycle.
