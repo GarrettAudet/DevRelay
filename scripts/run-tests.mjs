@@ -1,8 +1,9 @@
 import { readdirSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = resolve(new URL("../", import.meta.url).pathname.slice(process.platform === "win32" ? 1 : 0));
+const root = resolve(fileURLToPath(new URL("../", import.meta.url)));
 const archivedVerifierFixtures = new Set([
   "dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-001/existing-baseline-architecture-revision.test.mjs",
   "dogfood/bootstrap-open-spec-requirements-adapter/verification/attempt-002-verifier/independent-baseline-revision.test.mjs",

@@ -8,7 +8,10 @@ import test from "node:test";
 const root = path.resolve(import.meta.dirname, "..");
 const installScript = path.join(root, "scripts", "install-chatgpt-desktop-plugin.ps1");
 const healthScript = path.join(root, "scripts", "chatgpt-desktop-plugin-health-check.ps1");
-const powershell = path.join(process.env.SystemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe");
+const powershell = process.platform === "win32"
+  ? path.join(process.env.SystemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe")
+  : undefined;
+const windowsTest = process.platform === "win32" ? test : test.skip;
 const revision = "1".repeat(40);
 
 function makeFixture(label = "fixture") {
@@ -39,7 +42,7 @@ function succeed(result) {
   return JSON.parse(result.stdout.trim().split(/\r?\n/).at(-1));
 }
 
-test("clean install and idempotent reinstall work through paths with spaces", (t) => {
+windowsTest("clean install and idempotent reinstall work through paths with spaces", (t) => {
   const f = makeFixture("clean install"); t.after(() => rmSync(f.base, { recursive: true, force: true }));
   const first = succeed(invoke(f, "install", f.receipt));
   assert.equal(first.outputs.state, "installed");
@@ -57,7 +60,7 @@ test("clean install and idempotent reinstall work through paths with spaces", (t
   assert.match(drifted.stderr, /digest mismatch/i);
 });
 
-test("upgrade preserves prior bytes, rollback restores them, and uninstall is clean", (t) => {
+windowsTest("upgrade preserves prior bytes, rollback restores them, and uninstall is clean", (t) => {
   const f = makeFixture("lifecycle"); t.after(() => rmSync(f.base, { recursive: true, force: true }));
   succeed(invoke(f, "install", f.receipt));
   const originalManifest = readFileSync(path.join(f.plugin, ".codex-plugin", "plugin.json"), "utf8");
@@ -79,7 +82,7 @@ test("upgrade preserves prior bytes, rollback restores them, and uninstall is cl
   assert.equal(existsSync(f.marketplace), false);
 });
 
-test("tampered package and missing dependency fail before mutation", (t) => {
+windowsTest("tampered package and missing dependency fail before mutation", (t) => {
   const f = makeFixture("negative"); t.after(() => rmSync(f.base, { recursive: true, force: true }));
   const tampered = invoke(f, "install", f.receipt, ["-ExpectedRepositoryDigest", `sha256:${"0".repeat(64)}`]);
   assert.notEqual(tampered.status, 0);

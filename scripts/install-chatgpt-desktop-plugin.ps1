@@ -83,6 +83,28 @@ function Test-DirectoryEqual([string]$Left, [string]$Right) {
   return $true
 }
 
+function Test-ReceiptInstallation([string]$Path, [string]$Plugin, [string]$Marketplace, [string]$RepositoryRevision, [string]$RepositoryContentDigest, [string]$ManifestDigest) {
+  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+  try { $existing = Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json } catch { return $false }
+  if ($existing.interfaceIntentId -ne 'IF-DESKTOP-INSTALLATION' -or
+      $existing.outputs.state -ne 'installed' -or
+      $existing.outputs.repositoryRevision -ne $RepositoryRevision -or
+      $existing.outputs.repositoryContentDigest -ne $RepositoryContentDigest -or
+      $existing.outputs.pluginManifestDigest -ne $ManifestDigest -or
+      [IO.Path]::GetFullPath($existing.inputs.target.pluginPath) -ne $Plugin -or
+      [IO.Path]::GetFullPath($existing.inputs.target.marketplacePath) -ne $Marketplace) { return $false }
+
+  $actualFiles = @(Get-ChildItem -LiteralPath $Plugin,$Marketplace -File -Recurse | Sort-Object FullName)
+  $recordedFiles = @($existing.outputs.installedFiles)
+  if ($actualFiles.Count -ne $recordedFiles.Count) { return $false }
+  $recordedByPath = @{}
+  foreach ($recorded in $recordedFiles) { $recordedByPath[[IO.Path]::GetFullPath($recorded.path)] = $recorded.digest }
+  foreach ($actual in $actualFiles) {
+    if (-not $recordedByPath.ContainsKey($actual.FullName) -or $recordedByPath[$actual.FullName] -ne (Get-Sha256 $actual.FullName)) { return $false }
+  }
+  return $true
+}
+
 if ($env:OS -ne 'Windows_NT') { throw 'ChatGPT Desktop installation is supported only on Windows.' }
 $repository = (Resolve-Path -LiteralPath $RepositoryPath).Path
 $sourcePlugin = Join-Path $repository 'plugins\devrelay'
@@ -146,7 +168,9 @@ $hadPlugin = Test-Path -LiteralPath $pluginTarget
 $hadMarketplace = Test-Path -LiteralPath $marketplaceTarget
 if ($Operation -eq 'install' -and ($hadPlugin -or $hadMarketplace)) {
   $marketplaceFile = Join-Path $marketplaceTarget 'marketplace.json'
-  if (-not (Test-DirectoryEqual $sourcePlugin $pluginTarget) -or -not (Test-Path -LiteralPath $marketplaceFile) -or (Get-Sha256 $sourceMarketplace) -ne (Get-Sha256 $marketplaceFile)) {
+  $receiptMatches = Test-ReceiptInstallation $receiptTarget $pluginTarget $marketplaceTarget $RepositoryRevision $repositoryDigest $pluginManifestDigest
+  $contentMatches = (Test-DirectoryEqual $sourcePlugin $pluginTarget) -and (Test-Path -LiteralPath $marketplaceFile) -and ((Get-Sha256 $sourceMarketplace) -eq (Get-Sha256 $marketplaceFile))
+  if (-not $receiptMatches -and -not $contentMatches) {
     throw 'Existing installation is ambiguous or drifted; use upgrade with its prior receipt.'
   }
 }
