@@ -437,7 +437,10 @@ export function comparePortablePaths(left, right) {
 export function releaseRepositoryFiles(directory = repositoryRoot) {
   const files = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    if (entry.isDirectory() && excludedDirectorySet.has(entry.name)) {
+    // Git administrative state is a directory in an ordinary checkout and a
+    // file in a linked worktree. Exclude reserved control names independent of
+    // their filesystem type so the same repository tree catalogs identically.
+    if (excludedDirectorySet.has(entry.name)) {
       continue;
     }
     const absolute = join(directory, entry.name);
