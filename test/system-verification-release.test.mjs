@@ -45,6 +45,8 @@ test("0.7.0 runs both typed-evidence adapters through Core, exact replay, policy
   const context={invocation:{invocationId:"SV-RELEASE-RUN",module:{id:"system-verification",version:"0.1.0",operation:"verify-system"}},invocationFingerprint:D,moduleResult,loadedInputs:{subject:[artifacts[0]],policy:[artifacts[2]]},loadedOutputs:{obligations:[artifacts[1]],evidence:[artifacts[3]],evaluation:[artifacts[4]],result:[artifacts[5]]},loadedAttachments:{}};
   const projection=await systemVerificationTraceabilityContributor.project(context);
   assert.deepEqual(projection.edges.map(({kind})=>kind),["verified-by"]);assert.equal(canonicalJson(projection).includes("business-acceptance"),false);
+  const semanticResultRef={artifactId:execution.result.resultId,digest:execution.result.resultDigest};
+  assert.ok(projection.nodes.every(({attributes})=>canonicalJson(attributes.systemVerificationResult)===canonicalJson(semanticResultRef)));
   const seed={metadata:{id:"seed",version:"1.0.0"},authority:"approved",scope:"requirements/baseline",ownership:{authority:"approved",scope:"requirements/baseline",nodeKinds:["acceptance-criterion"],edgeKinds:[]},match:()=>true,project:()=>({horizon:"requirements",nodes:[{kind:"acceptance-criterion",stableId:"AC-SV-RELEASE",label:"AC",attributes:{},sourceLocators:projection.edges[0].sourceLocators}],edges:[]})};
   const graph=createTraceabilityGraphService({graphId:"sv-release",projectId:"devrelay",store:createInMemoryTraceabilityStore(),contributors:[seed,systemVerificationTraceabilityContributor]});
   const seedContext={...context,invocation:{invocationId:"seed",module:{id:"seed",version:"1",operation:"seed"}},moduleResult:{...moduleResult,invocationId:"seed",outcome:"seed"}};
