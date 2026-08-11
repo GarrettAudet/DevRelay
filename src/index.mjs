@@ -542,6 +542,10 @@ export {
   createChatGptDesktopTaskSupervisor,
 } from "./chatgpt-desktop-task-supervisor.mjs";
 export {
+  ChatGptDesktopLifecycleControllerError,
+  createChatGptDesktopLifecycleController,
+} from "./chatgpt-desktop-lifecycle-controller.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
@@ -552,7 +556,6 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
-
 
 
 
