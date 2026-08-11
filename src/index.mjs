@@ -537,6 +537,11 @@ export {
   createCodexAppServerProcess,
 } from "./chatgpt-desktop-app-server-client.mjs";
 export {
+  CHATGPT_DESKTOP_TASK_SUPERVISOR,
+  ChatGptDesktopTaskSupervisorError,
+  createChatGptDesktopTaskSupervisor,
+} from "./chatgpt-desktop-task-supervisor.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
@@ -547,7 +552,6 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
-
 
 
 
