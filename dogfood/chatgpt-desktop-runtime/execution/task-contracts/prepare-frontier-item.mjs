@@ -45,6 +45,10 @@ const projectOverview = read("project/project-overview-baseline.json");
 const architecture = read("project/architecture-baseline.json");
 const contractBaseline = read("project/contract-baseline.json");
 const requestedWorkItemId = process.argv[2];
+const attemptNumber = process.argv[3] ?? "001";
+if (!/^\d{3}$/u.test(attemptNumber)) {
+  throw new Error("attempt number must be three digits");
+}
 const configurations = {
   "WI-DESKTOP-APP-SERVER": {
     allowedWritePaths: [
@@ -158,14 +162,18 @@ const configurations = {
     allowedWritePaths: [
       "scripts/verify-chatgpt-desktop-release.mjs",
       "test/chatgpt-desktop-release-verification.test.mjs",
+      "test/chatgpt-desktop-task-supervisor.test.mjs",
       "test/fixtures/chatgpt-desktop-release/**",
       "release/chatgpt-desktop/**",
+      "node_modules/**",
       "package.json",
     ],
     processTools: ["node", "npm.cmd", "powershell"],
+    networkHosts: ["registry.npmjs.org"],
     verificationCommands: [
       "node --check scripts/verify-chatgpt-desktop-release.mjs",
       "node --test test/chatgpt-desktop-release-verification.test.mjs",
+      "node scripts/verify-chatgpt-desktop-release.mjs",
     ],
   },
   "WI-DESKTOP-DOCUMENTATION": {
@@ -191,9 +199,14 @@ const workItem = workBreakdown.workItems.find(
   ({ id }) => id === requestedWorkItemId,
 );
 const workSlug = workItem.id.replace(/^WI-DESKTOP-/u, "");
+const attemptPathSegment =
+  attemptNumber === "001" ? "" : `attempt-${attemptNumber}/`;
 const itemArtifactPath = (name) =>
-  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItem.id}/${name}`;
-const itemOutput = new URL(`./${workItem.id}/`, OUTPUT);
+  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItem.id}/${attemptPathSegment}${name}`;
+const itemOutput = new URL(
+  `./${workItem.id}/${attemptPathSegment}`,
+  OUTPUT,
+);
 const assignment = assignmentBaseline.assignments.find(
   ({ workItemRef }) => workItemRef === workItem?.id,
 );
@@ -201,6 +214,10 @@ if (!workItem || !assignment) {
   throw new Error("approved Desktop work item or assignment is unavailable");
 }
 
+const revisionRequestPath =
+  `dogfood/chatgpt-desktop-runtime/execution/revision-requests/${workItem.id}.attempt-${attemptNumber}.revision-request.json`;
+const revisionRequest =
+  attemptNumber === "001" ? null : read(revisionRequestPath);
 const completionFacts = read(
   "dogfood/chatgpt-desktop-runtime/execution/integrated-completion-facts.json",
 );
@@ -325,7 +342,7 @@ const policy = bodySeal(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "ExecutionPolicy",
-    policyId: `desktop-local-codex-worktree-${workItem.id.toLowerCase()}-v1`,
+    policyId: `desktop-local-codex-worktree-${workItem.id.toLowerCase()}-${attemptNumber}`,
     version: "1.0.0",
     timeoutMilliseconds: 7_200_000,
     allowedPermissions: [
@@ -337,6 +354,14 @@ const policy = bodySeal(
         },
       },
       { kind: "process.spawn", scope: { values: configuration.processTools } },
+      ...(configuration.networkHosts
+        ? [
+            {
+              kind: "network.connect",
+              scope: { values: configuration.networkHosts },
+            },
+          ]
+        : []),
     ],
     outputPolicy: {
       maxEvidenceBytes: 2_000_000,
@@ -354,12 +379,13 @@ const executionConfiguration = {
   allowedWritePaths: configuration.allowedWritePaths,
   verificationCommands: configuration.verificationCommands,
   requiredSkill: configuration.requiredSkill ?? "none",
+  attemptNumber,
 };
 const binding = bodySeal(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "ExecutionBinding",
-    bindingId: `BIND-DESKTOP-${workSlug}-001`,
+    bindingId: `BIND-DESKTOP-${workSlug}-${attemptNumber}`,
     workItemId: workItem.id,
     specialistProfileId: assignment.specialistProfileRef,
     assignmentBaseline: assignmentRef,
@@ -377,7 +403,7 @@ const binding = bodySeal(
   "bindingDigest",
 );
 
-const attemptId = `ATT-DESKTOP-${workSlug}-001`;
+const attemptId = `ATT-DESKTOP-${workSlug}-${attemptNumber}`;
 const authoritativeInputs = [
   { name: "work-breakdown-baseline", artifact: workBreakdownRef },
   { name: "work-dependency-baseline", artifact: workDependencyRef },
@@ -446,12 +472,21 @@ const task = selfSeal(
   {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "BootstrapWorkExecutionTaskContract",
-    contractId: `WETC-${workItem.id}-001`,
+    contractId: `WETC-${workItem.id}-${attemptNumber}`,
     executionId: attemptId,
     status: "prepared",
     workItem,
     assignment,
     artifacts: { completionFacts, frontier, policy, binding, invocation },
+    ...(revisionRequest
+      ? {
+          revisionRequest: ref(
+            revisionRequest,
+            revisionRequest.revisionRequestId,
+            revisionRequestPath,
+          ),
+        }
+      : {}),
     contextPaths: [
       "AGENTS.md",
       "README.md",
@@ -476,6 +511,7 @@ const task = selfSeal(
       "src/index.mjs",
       "dogfood/chatgpt-desktop-runtime/execution/integrated-completion-facts.json",
       "dogfood/chatgpt-desktop-runtime/execution/ready-frontier-current.json",
+      ...(revisionRequest ? [revisionRequestPath] : []),
       ...prerequisiteWorkItemIds.map(
         (prerequisiteWorkItemId) =>
           `dogfood/chatgpt-desktop-runtime/execution/integration/${prerequisiteWorkItemId}/integrated-completion-fact.json`,
@@ -537,13 +573,16 @@ writeJson(new URL("execution-policy.json", itemOutput), policy);
 writeJson(new URL("execution-binding.json", itemOutput), binding);
 writeJson(new URL("executor-invocation.json", itemOutput), invocation);
 writeJson(new URL("repository-snapshot.json", itemOutput), repositorySnapshot);
-writeJson(new URL(`${workItem.id}.attempt-001.task.json`, OUTPUT), task);
+writeJson(
+  new URL(`${workItem.id}.attempt-${attemptNumber}.task.json`, OUTPUT),
+  task,
+);
 
 const prompt = `# DevRelay WorkExecution: ${workItem.id}
 
 Execute only the exact task contract at:
 
-\`dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItem.id}.attempt-001.task.json\`
+\`dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItem.id}.attempt-${attemptNumber}.task.json\`
 
 Read \`AGENTS.md\` first. Verify the task contract \`contentDigest\` by
 recomputing \`canonicalJsonDigest\` after omitting that field, then read every
@@ -558,7 +597,7 @@ shape declared in the task contract, with exact changed paths, exit codes,
 evidence digest, and residual risks. The parent task retains verification and
 integration authority.`;
 writeFileSync(
-  new URL(`${workItem.id}.attempt-001.prompt.md`, OUTPUT),
+  new URL(`${workItem.id}.attempt-${attemptNumber}.prompt.md`, OUTPUT),
   `${prompt}\n`,
 );
 

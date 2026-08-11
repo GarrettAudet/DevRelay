@@ -33,7 +33,9 @@ const executionRoot = resolve(
 const outputRoot = resolve(executionRoot, "verification", workItemId);
 const taskRoot = resolve(executionRoot, "task-contracts");
 const task = JSON.parse(
-  readFileSync(resolve(taskRoot, `${workItemId}.attempt-001.task.json`)),
+  readFileSync(
+    resolve(taskRoot, `${workItemId}.attempt-${attemptNumber}.task.json`),
+  ),
 );
 const { contentDigest: ignoredTaskDigest, ...taskBody } = task;
 if (api.canonicalJsonDigest(taskBody) !== task.contentDigest) {
@@ -119,11 +121,13 @@ if (
 )
   throw new Error("worker handoff identity or outcome is invalid");
 
+const attemptContractSubpath =
+  attemptNumber === "001" ? "" : `/attempt-${attemptNumber}`;
 const binding = readJson(
-  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}/execution-binding.json`,
+  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}${attemptContractSubpath}/execution-binding.json`,
 );
 const baseInvocation = readJson(
-  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}/executor-invocation.json`,
+  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}${attemptContractSubpath}/executor-invocation.json`,
 );
 const invocation = {
   ...baseInvocation,
@@ -169,7 +173,7 @@ if (new Set(filePaths).size !== filePaths.length) {
   throw new Error("worker handoff contains duplicate changed paths");
 }
 const baseRevision = readJson(
-  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}/repository-snapshot.json`,
+  `dogfood/chatgpt-desktop-runtime/execution/task-contracts/${workItemId}${attemptContractSubpath}/repository-snapshot.json`,
 ).revision;
 const beforeBytes = (relativePath) => {
   try {
