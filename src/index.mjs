@@ -523,6 +523,14 @@ export {
   createChatGptDesktopRunStore,
 } from "./chatgpt-desktop-run-store.mjs";
 export {
+  CHATGPT_DESKTOP_MCP_PROTOCOL_VERSION,
+  CHATGPT_DESKTOP_MCP_SERVER_INFO,
+  CHATGPT_DESKTOP_MCP_TOOLS,
+  ChatGptDesktopMcpError,
+  createChatGptDesktopMcpServer,
+} from "./chatgpt-desktop-mcp-server.mjs";
+export { runChatGptDesktopMcpStdio } from "./chatgpt-desktop-mcp-transport.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,
@@ -533,5 +541,7 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
+
+
 
 
