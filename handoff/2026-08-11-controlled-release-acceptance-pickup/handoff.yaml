@@ -1,0 +1,56 @@
+apiVersion: devrelay.dev/v1alpha1
+kind: ControlledReleaseAcceptancePickup
+metadata:
+  id: controlled-release-acceptance-pickup-2026-08-11
+  date: "2026-08-11"
+repository:
+  url: https://github.com/GarrettAudet/DevRelay.git
+  branch: codex/lifecycle-run-report-completion
+  verifiedSourceCommit: 477e7a449cb90d4ecb86c7271cb59f3e2d09b0d6
+target:
+  host: ChatGPT Desktop
+  operatingSystem: Windows
+  delivery: controlled-source-library
+  exclusions:
+    - public-npm-publication
+    - one-click-desktop-plugin
+    - hosted-backend
+verification:
+  local:
+    command: npm.cmd run release:check
+    total: 842
+    passed: 840
+    failed: 0
+    skipped: 2
+  githubActions:
+    runId: 31497854653
+    status: success
+    jobsPassed: 4
+    jobsTotal: 4
+  catalogDigests: 3456
+  packagePaths: 281
+  moduleCount: 11
+  pluginCount: 24
+currentBoundary:
+  stage: final-system-verification-and-business-acceptance
+  candidateMaterialized: false
+  businessAcceptanceRecorded: false
+  finalTraceabilityMerged: false
+approval:
+  priorExactCommit: 33e65bad246e9fb1d9405cc1f6e5d2d205b81871
+  correctedCommitRequiresExactCandidateApproval: true
+  approvedCoverage:
+    acceptanceCriteria: 81
+    nonFunctionalRequirements: 18
+    businessObjectives: 8
+    successMetrics: 9
+    businessScopes: 32
+  approvedLinks:
+    - US-DEV-SPECIFY-001 designed-by EL-DEVRELAY-CORE
+    - NFR-DEV-DETERMINISM-001 designed-by EL-DEVRELAY-CORE
+next:
+  - audit-and-execute-candidate-materializer
+  - present-exact-corrected-candidate-for-owner-approval
+  - execute-business-acceptance-gate-and-replay
+  - merge-acceptance-traceability-and-diagnose
+  - update-release-evidence-and-run-final-gates

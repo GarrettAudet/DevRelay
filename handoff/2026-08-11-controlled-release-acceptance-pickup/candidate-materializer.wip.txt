@@ -1,0 +1,404 @@
+import assert from "node:assert/strict";
+import { readFile, mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { canonicalJson, canonicalJsonDigest, sha256Digest } from "./src/content-digest.mjs";
+import { executeSystemVerification, expandSystemVerificationObligations } from "./src/system-verification-core.mjs";
+import { adaptSystemTestResult, TEST_SYSTEM_VERIFIER } from "./src/system-verification-test-adapter.mjs";
+import { adaptSystemReviewResult, REVIEW_SYSTEM_VERIFIER } from "./src/system-verification-review-adapter.mjs";
+import { systemVerificationTraceabilityContributor } from "./src/system-verification-traceability-contributor.mjs";
+import { executeBusinessAcceptance, deriveBusinessScopeIdentities } from "./src/business-acceptance-core.mjs";
+import { createInMemoryTraceabilityStore, createTraceabilityGraphService, diagnoseTraceabilityGraph } from "./src/traceability-graph.mjs";
+
+const API = "devrelay.dev/v1alpha1";
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const OUTPUT = path.join(ROOT, "dogfood", "release-acceptance", "candidate-001");
+const TARGET_COMMIT = "477e7a449cb90d4ecb86c7271cb59f3e2d09b0d6";
+const CI_RUN = "31497854653";
+
+const ref = (artifactId, digest) => ({ artifactId, digest });
+const seal = (body, field) => ({
+  ...body,
+  [field]: canonicalJsonDigest(Object.fromEntries(Object.entries(body).filter(([key]) => !["apiVersion", "kind", field].includes(key)))),
+});
+const identity = (prefix, material) => `${prefix}-${canonicalJsonDigest(material).slice(7, 31).toUpperCase()}`;
+const jsonBytes = (value) => Buffer.from(canonicalJson(value), "utf8");
+const immutableStore = () => {
+  const values = new Map();
+  return {
+    get: (key) => values.get(key),
+    put: (key, value) => {
+      if (values.has(key)) throw new Error(`immutable checkpoint already exists: ${key}`);
+      values.set(key, structuredClone(value));
+    },
+    values,
+  };
+};
+
+async function readJson(relativePath) {
+  const bytes = await readFile(path.join(ROOT, relativePath));
+  return { bytes, value: JSON.parse(bytes.toString("utf8")) };
+}
+
+function artifactRef(artifactId, bytes, schema = "https://devrelay.dev/artifacts/release-evidence/v1", mediaType = "application/json", uri) {
+  return { artifactId, digest: sha256Digest(bytes), schema, mediaType, uri: uri ?? `file:///${artifactId}.json` };
+}
+
+function loadedCanonical(value, artifactId, schema = "https://devrelay.dev/artifacts/release-evidence/v1") {
+  const bytes = jsonBytes(value);
+  return { value, bytes, ref: artifactRef(artifactId, bytes, schema) };
+}
+
+function rawLoaded(value, bytes, artifactId, schema, mediaType) {
+  return { value, bytes, ref: artifactRef(artifactId, bytes, schema, mediaType) };
+}
+
+async function persist(name, value) {
+  await writeFile(path.join(OUTPUT, name), jsonBytes(value));
+}
+
+function approvedLinkContributor(approvalLoaded) {
+  const locator = (jsonPointer, entity) => ({
+    artifact: ref(approvalLoaded.ref.artifactId, approvalLoaded.ref.digest),
+    jsonPointer,
+    entityDigest: canonicalJsonDigest(entity),
+  });
+  const links = approvalLoaded.value.links;
+  return {
+    metadata: { id: "devrelay.release-coverage-reconciliation", version: "1.0.0" },
+    authority: "approved",
+    scope: "release-reconciliation/approved",
+    ownership: { authority: "approved", scope: "release-reconciliation/approved", nodeKinds: [], edgeKinds: ["designed-by"] },
+    match: (context) => context?.invocation?.module?.id === "release-coverage-reconciliation" && context?.moduleResult?.outcome === "reconciled",
+    project: () => ({
+      horizon: "architecture",
+      nodes: [],
+      edges: links.map((link, index) => ({
+        kind: "designed-by",
+        source: { kind: link.sourceKind, stableId: link.sourceId, authority: "approved", scope: "requirements/baseline" },
+        target: { kind: "architecture-element", stableId: link.targetId, authority: "approved", scope: "architecture/baseline" },
+        rationale: link.rationale,
+        sourceLocators: [locator(`/links/${index}`, link)],
+      })),
+    }),
+  };
+}
+
+async function restoreTraceability(contributors) {
+  const seedPath = "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/graph-recovery-epoch/revision-002/candidate-seed-snapshot.json";
+  const headPath = "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/10-change-integration/result-graph.json";
+  const receiptPath = "dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/10-change-integration/atomic-merge-receipt.json";
+  const seed = await readJson(seedPath);
+  const head = await readJson(headPath);
+  const receipt = await readJson(receiptPath);
+  const seedRef = head.value.parentGraph;
+  assert.equal(sha256Digest(seed.bytes), seedRef.digest, "recovery seed raw digest drift");
+  const headBytes = jsonBytes(head.value);
+  const headRef = receipt.value.resultGraph;
+  assert.equal(sha256Digest(headBytes), headRef.digest, "integration graph canonical digest drift");
+  const store = createInMemoryTraceabilityStore();
+  store.restore(head.value.graphId, [
+    { value: seed.value, bytes: seed.bytes, ref: seedRef },
+    { value: head.value, bytes: headBytes, ref: headRef },
+  ], headRef);
+  const service = createTraceabilityGraphService({ graphId: head.value.graphId, projectId: head.value.projectId, store, contributors });
+  assert.equal(service.captureBase().ref.digest, headRef.digest);
+  return { service, sourceHead: head.value, sourceHeadRef: headRef };
+}
+
+function moduleContext({ invocationId, module, outcome, outputName, outputLoaded, loadedInputs = {}, loadedOutputs = {} }) {
+  const invocation = { invocationId, module };
+  const moduleResult = {
+    apiVersion: API,
+    kind: "ModuleResult",
+    invocationId,
+    status: "completed",
+    outcome,
+    outputs: { [outputName]: [outputLoaded.ref] },
+    evidence: [],
+    diagnostics: [],
+  };
+  return { invocation, invocationFingerprint: canonicalJsonDigest(invocation), moduleResult, loadedInputs, loadedOutputs };
+}
+
+async function main() {
+  await mkdir(OUTPUT, { recursive: true });
+
+  const requirementsFile = await readJson("project/requirements-baseline.json");
+  const overviewFile = await readJson("project/project-overview-baseline.json");
+  const architectureFile = await readJson("project/architecture-baseline.json");
+  const contractFile = await readJson("project/contract-disposition.json");
+  const workBreakdownFile = await readJson("dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/04-work-breakdown/work-breakdown-baseline.json");
+  const workDependencyFile = await readJson("dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/05-dependency-analysis/work-dependency-baseline.json");
+  const assignmentFile = await readJson("dogfood/lifecycle-run-report/traceability-reconciliation/correction-001/06-assignment/specialist-assignment-baseline.json");
+
+  const requirementsLoaded = rawLoaded(requirementsFile.value, requirementsFile.bytes, requirementsFile.value.baselineId, "https://devrelay.dev/artifacts/requirements-baseline/v1", "application/vnd.devrelay.requirements-baseline+json");
+  const overviewRef = ref(overviewFile.value.baselineId, sha256Digest(overviewFile.bytes));
+  const architectureRef = ref(architectureFile.value.baselineId, sha256Digest(architectureFile.bytes));
+  const contractRef = ref(contractFile.value.dispositionId, sha256Digest(contractFile.bytes));
+  const workBreakdownRef = ref(workBreakdownFile.value.baselineId, sha256Digest(workBreakdownFile.bytes));
+  const workDependencyRef = ref(workDependencyFile.value.baselineId, sha256Digest(workDependencyFile.bytes));
+  const assignmentRef = ref(assignmentFile.value.baselineId, sha256Digest(assignmentFile.bytes));
+
+  const releaseEvidence = seal({
+    apiVersion: API,
+    kind: "ControlledSourceReleaseEvidence",
+    evidenceId: "DEVRELAY-WINDOWS-DESKTOP-SOURCE-RELEASE-001",
+    targetCommit: TARGET_COMMIT,
+    target: { host: "ChatGPT Desktop", operatingSystem: "Windows", delivery: "controlled source/library" },
+    verification: {
+      local: { command: "npm.cmd run release:check", tests: 842, passed: 840, failed: 0, skipped: 2, catalogDigests: 3456, packagePaths: 281, outcome: "pass" },
+      githubActions: { runId: CI_RUN, matrix: ["Node 20 / Windows", "Node 22 / Windows", "Node 20 / Ubuntu", "Node 22 / Ubuntu"], requiredOutcome: "success" },
+      installedPackage: { offline: true, dependencyCacheRequired: false, outcome: "pass" },
+    },
+    exclusions: ["public npm publication", "one-click ChatGPT Desktop plug-in", "hosted backend"],
+    authority: "release-verification",
+  }, "evidenceDigest");
+  const releaseEvidenceLoaded = loadedCanonical(releaseEvidence, releaseEvidence.evidenceId);
+  const releaseEvidenceRef = ref(releaseEvidenceLoaded.ref.artifactId, releaseEvidenceLoaded.ref.digest);
+
+  const repositoryReleaseSnapshot = seal({
+    apiVersion: API,
+    kind: "RepositoryReleaseSnapshot",
+    snapshotId: `RELEASE-SNAPSHOT-${TARGET_COMMIT.slice(0, 12).toUpperCase()}`,
+    repository: "https://github.com/GarrettAudet/DevRelay.git",
+    commit: TARGET_COMMIT,
+    branch: "codex/lifecycle-run-report-completion",
+    evidence: releaseEvidenceRef,
+    scope: "controlled-source-library",
+  }, "snapshotDigest");
+  const repositorySnapshotRef = ref(repositoryReleaseSnapshot.snapshotId, repositoryReleaseSnapshot.snapshotDigest);
+
+  const reconciliationApproval = seal({
+    apiVersion: API,
+    kind: "ApprovedCoverageDispositionSet",
+    dispositionId: "RELEASE-COVERAGE-RECONCILIATION-001",
+    targetCommit: TARGET_COMMIT,
+    links: [
+      { sourceKind: "user-story", sourceId: "US-DEV-SPECIFY-001", targetId: "EL-DEVRELAY-CORE", relation: "designed-by", rationale: "The approved Generic Core architecture already realizes deterministic module specification and execution." },
+      { sourceKind: "non-functional-requirement", sourceId: "NFR-DEV-DETERMINISM-001", targetId: "EL-DEVRELAY-CORE", relation: "designed-by", rationale: "The approved Generic Core architecture already realizes deterministic routing, validation, checkpointing, and replay." },
+    ],
+    authority: "business-owner",
+  }, "dispositionDigest");
+  const reconciliationLoaded = loadedCanonical(reconciliationApproval, reconciliationApproval.dispositionId);
+  const reconciliationContributor = approvedLinkContributor(reconciliationLoaded);
+  const { service: graph } = await restoreTraceability([reconciliationContributor, systemVerificationTraceabilityContributor]);
+
+  const reconciliationContext = moduleContext({
+    invocationId: "RELEASE-RECONCILIATION-001",
+    module: { id: "release-coverage-reconciliation", version: "1.0.0", operation: "apply-approved-links" },
+    outcome: "reconciled",
+    outputName: "approved-coverage-disposition-set",
+    outputLoaded: reconciliationLoaded,
+    loadedOutputs: { disposition: [reconciliationLoaded] },
+  });
+  const reconciliationPrepared = await graph.prepare({ ...reconciliationContext, baseGraph: graph.captureBase() });
+  const reconciliationMerge = await graph.mergePrepared(reconciliationPrepared);
+  const reconciliationReplay = await graph.mergePrepared(reconciliationPrepared);
+  assert.deepEqual(reconciliationReplay.receipt, reconciliationMerge.receipt);
+  const postReconciliationDiagnostics = diagnoseTraceabilityGraph(reconciliationMerge.snapshot);
+  const remainingDesignGaps = postReconciliationDiagnostics.filter(({ code }) => code === "TG_MISSING_ARCHITECTURE_REALIZATION" && ({ blocking: true }));
+  assert.equal(remainingDesignGaps.length, 0, "approved architecture reconciliation must close both design gaps");
+
+  const completionFiles = ["CONTENT-POLICY", "CONTRACTS", "FRONTIER", "LEDGER", "MARKDOWN", "OBSERVATIONS", "SNAPSHOT"];
+  const integratedChangeRecords = [];
+  const completionFacts = [];
+  for (const suffix of completionFiles) {
+    const receipt = await readJson(`dogfood/lifecycle-run-report/execution/host-integration/WI-RUN-${suffix}.receipt.json`);
+    integratedChangeRecords.push(ref(receipt.value.receiptId, sha256Digest(receipt.bytes)));
+    const fact = await readJson(`dogfood/lifecycle-run-report/execution/integrated-completion-facts/WI-RUN-${suffix}.json`);
+    completionFacts.push(ref(fact.value.factId ?? fact.value.completionFactId ?? `ICF-WI-RUN-${suffix}`, sha256Digest(fact.bytes)));
+  }
+  integratedChangeRecords.sort((a, b) => canonicalJson(a).localeCompare(canonicalJson(b), "en"));
+  completionFacts.sort((a, b) => canonicalJson(a).localeCompare(canonicalJson(b), "en"));
+  const integratedCompletionFactSet = seal({ apiVersion: API, kind: "IntegratedCompletionFactSet", factSetId: identity("ICFS", completionFacts), facts: completionFacts, authority: "change-integration" }, "factSetDigest");
+
+  const systemPolicy = seal({ apiVersion: API, kind: "SystemVerificationPolicy", policyId: "SV-POLICY-CONTROLLED-WINDOWS-SOURCE-001", version: "1.0.0", allObligationsMandatory: true, unknownEvidence: "reject", outcomePrecedence: ["failed", "needs-evidence", "verified"] }, "policyDigest");
+  const subject = seal({
+    apiVersion: API,
+    kind: "IntegratedSystemCandidate",
+    subjectId: `DEVRELAY-CONTROLLED-SOURCE-${TARGET_COMMIT.slice(0, 12).toUpperCase()}`,
+    repositorySnapshot: repositorySnapshotRef,
+    integratedChangeRecords,
+    integratedCompletionFactSet: ref(integratedCompletionFactSet.factSetId, integratedCompletionFactSet.factSetDigest),
+    requirementsBaseline: requirementsLoaded.ref,
+    projectOverviewBaseline: overviewRef,
+    architectureBaseline: architectureRef,
+    contractDisposition: contractRef,
+    workBreakdownBaseline: workBreakdownRef,
+    workDependencyBaseline: workDependencyRef,
+    specialistAssignmentBaseline: assignmentRef,
+    verificationEnvironment: { disposition: "approved-not-applicable", rationale: "The controlled source/library release is verified by the pinned local and CI evidence; no deployed runtime environment is claimed." },
+    systemVerificationPolicy: ref(systemPolicy.policyId, systemPolicy.policyDigest),
+  }, "subjectDigest");
+
+  const acceptanceCriteria = requirementsFile.value.requirements.acceptanceCriteria.map(({ id }) => ({ id, requiredEvidenceKinds: ["test"] }));
+  const nonFunctionalRequirements = requirementsFile.value.requirements.nonFunctionalRequirements.map(({ id }) => ({ id, requiredEvidenceKinds: ["review"] }));
+  assert.equal(acceptanceCriteria.length, 81);
+  assert.equal(nonFunctionalRequirements.length, 18);
+  const obligationSet = expandSystemVerificationObligations({ subject, acceptanceCriteria, nonFunctionalRequirements });
+  const makeInvocation = (invocationId, verifier, assignedObligationIds) => seal({
+    apiVersion: API,
+    kind: "SystemVerifierInvocation",
+    invocationId,
+    subject: ref(subject.subjectId, subject.subjectDigest),
+    obligationSet: ref(obligationSet.obligationSetId, obligationSet.obligationSetDigest),
+    policy: ref(systemPolicy.policyId, systemPolicy.policyDigest),
+    verifier,
+    assignedObligationIds,
+    verificationEnvironment: subject.verificationEnvironment,
+    grants: [],
+  }, "invocationFingerprint");
+  const testIds = obligationSet.obligations.filter(({ kind }) => kind === "acceptance-criterion").map(({ obligationId }) => obligationId);
+  const reviewIds = obligationSet.obligations.filter(({ kind }) => kind === "non-functional-requirement").map(({ obligationId }) => obligationId);
+  const testInvocation = makeInvocation("SV-RELEASE-TEST-001", TEST_SYSTEM_VERIFIER, testIds);
+  const reviewInvocation = makeInvocation("SV-RELEASE-REVIEW-001", REVIEW_SYSTEM_VERIFIER, reviewIds);
+  let verifierCalls = 0;
+  const verifier = async (invocation) => {
+    verifierCalls += 1;
+    if (invocation.verifier.id === TEST_SYSTEM_VERIFIER.id) {
+      const native = { tests: invocation.assignedObligationIds.map((obligationId) => ({ obligationId, status: "pass", evidenceBindings: [{ kind: "test", artifact: releaseEvidenceRef }] })) };
+      const nativeBytes = jsonBytes(native);
+      return adaptSystemTestResult({ invocation, nativeBytes, nativeArtifact: ref("NATIVE-RELEASE-TEST-RESULT-001", sha256Digest(nativeBytes)) });
+    }
+    const native = { findings: invocation.assignedObligationIds.map((obligationId) => ({ obligationId, disposition: "accepted", evidenceBindings: [{ kind: "review", artifact: releaseEvidenceRef }] })) };
+    const nativeBytes = jsonBytes(native);
+    return adaptSystemReviewResult({ invocation, nativeBytes, nativeArtifact: ref("NATIVE-RELEASE-REVIEW-RESULT-001", sha256Digest(nativeBytes)) });
+  };
+  const verificationCheckpoints = immutableStore();
+  const verificationInput = { subject, policy: systemPolicy, acceptanceCriteria, nonFunctionalRequirements, invocations: [testInvocation, reviewInvocation], checkpoints: verificationCheckpoints, verifier };
+  const verification = await executeSystemVerification(verificationInput);
+  const verificationReplay = await executeSystemVerification(verificationInput);
+  assert.equal(verifierCalls, 2);
+  assert.equal(verificationReplay.verifierCalls, 0);
+  assert.deepEqual(verificationReplay.result, verification.result);
+  assert.equal(verification.result.outcome, "verified");
+  assert.equal(verification.evaluation.dispositions.length, 99);
+
+  const svArtifacts = {
+    subject: loadedCanonical(subject, subject.subjectId),
+    obligations: loadedCanonical(verification.obligations, verification.obligations.obligationSetId),
+    policy: loadedCanonical(systemPolicy, systemPolicy.policyId),
+    evidence: loadedCanonical(verification.evidence, verification.evidence.evidenceSetId),
+    evaluation: loadedCanonical(verification.evaluation, verification.evaluation.evaluationId),
+    result: loadedCanonical(verification.result, verification.result.resultId),
+  };
+  const svContext = moduleContext({
+    invocationId: "SYSTEM-VERIFICATION-RELEASE-001",
+    module: { id: "system-verification", version: "0.1.0", operation: "verify-system" },
+    outcome: "verified",
+    outputName: "system-verification-result",
+    outputLoaded: svArtifacts.result,
+    loadedInputs: { subject: [svArtifacts.subject], policy: [svArtifacts.policy] },
+    loadedOutputs: { obligations: [svArtifacts.obligations], evidence: [svArtifacts.evidence], evaluation: [svArtifacts.evaluation], result: [svArtifacts.result] },
+  });
+  svContext.moduleResult.evidence = [{ kind: "system-verification/contract-tests", subject: verification.result.resultId, status: "pass", artifact: svArtifacts.result.ref }];
+  const svPrepared = await graph.prepare({ ...svContext, baseGraph: graph.captureBase() });
+  const svMerge = await graph.mergePrepared(svPrepared);
+  const svMergeReplay = await graph.mergePrepared(svPrepared);
+  assert.deepEqual(svMergeReplay.receipt, svMerge.receipt);
+
+  const graphSnapshotLoaded = { value: svMerge.snapshot, bytes: jsonBytes(svMerge.snapshot), ref: svMerge.snapshotRef };
+  const businessPolicy = seal({ apiVersion: API, kind: "BusinessAcceptancePolicy", policyId: "BA-POLICY-CONTROLLED-WINDOWS-SOURCE-001", version: "1.0.0", allObjectivesMandatory: true, allMetricsMandatory: true, allBusinessScopeMandatory: true, allAcceptanceCriteriaMandatory: true, unknownEvidence: "reject", outcomePrecedence: ["failed", "needs-evidence", "satisfied"] }, "policyDigest");
+  const resultRef = ref(verification.result.resultId, verification.result.resultDigest);
+  const objectiveIds = requirementsFile.value.requirements.businessObjectives.map(({ id }) => id).sort();
+  const metricIds = requirementsFile.value.requirements.successMetrics.map(({ id }) => id).sort();
+  const scopeIds = deriveBusinessScopeIdentities(requirementsLoaded).map(({ scopeId }) => scopeId);
+  assert.equal(objectiveIds.length, 8);
+  assert.equal(metricIds.length, 9);
+  assert.equal(scopeIds.length, 32);
+  const businessEvidenceItems = [
+    ...objectiveIds.map((scopeId, index) => ({ evidenceId: `BA-EVIDENCE-BO-${String(index + 1).padStart(3, "0")}`, scopeKind: "business-objective", scopeId, status: "pass", artifact: releaseEvidenceRef, producer: { id: "release-verification", version: "1.0.0" } })),
+    ...metricIds.map((scopeId, index) => ({ evidenceId: `BA-EVIDENCE-SM-${String(index + 1).padStart(3, "0")}`, scopeKind: "success-metric", scopeId, status: "pass", artifact: releaseEvidenceRef, producer: { id: "release-verification", version: "1.0.0" } })),
+    ...scopeIds.map((scopeId, index) => ({ evidenceId: `BA-EVIDENCE-SCOPE-${String(index + 1).padStart(3, "0")}`, scopeKind: "business-scope", scopeId, status: "pass", artifact: releaseEvidenceRef, producer: { id: "release-verification", version: "1.0.0" } })),
+  ];
+  const businessEvidence = seal({ apiVersion: API, kind: "BusinessAcceptanceEvidenceSet", evidenceSetId: "BA-EVIDENCE-CONTROLLED-WINDOWS-SOURCE-001", requirementsBaseline: requirementsLoaded.ref, projectOverviewBaseline: overviewRef, systemVerificationResult: resultRef, items: businessEvidenceItems }, "evidenceDigest");
+  const acceptanceCheckpoints = immutableStore();
+  const acceptanceInput = {
+    checkpointId: "DEVRELAY-CONTROLLED-WINDOWS-SOURCE-001",
+    integratedSystemCandidate: subject,
+    systemVerificationResult: verification.result,
+    requirementsBaseline: requirementsLoaded,
+    projectOverviewBaseline: overviewRef,
+    architectureBaseline: architectureRef,
+    contractDisposition: contractRef,
+    repositoryReleaseSnapshot: repositorySnapshotRef,
+    traceabilityGraphSnapshot: graphSnapshotLoaded,
+    traceabilityCheckpoint: graphSnapshotLoaded.ref,
+    policy: businessPolicy,
+    evidence: businessEvidence,
+    businessObjectiveIds: objectiveIds,
+    successMetricIds: metricIds,
+    businessScopeIds: scopeIds,
+    checkpoints: acceptanceCheckpoints,
+  };
+  const acceptance = await executeBusinessAcceptance(acceptanceInput);
+  const acceptanceReplay = await executeBusinessAcceptance(acceptanceInput);
+  assert.equal(acceptance.evaluation.outcome, "eligible-for-acceptance");
+  assert.equal(acceptance.technicalCoverage.entries.length, 81);
+  assert.equal(acceptance.evaluation.dispositions.length, 49);
+  assert.equal(acceptanceReplay.replayed, true);
+  assert.equal(acceptanceReplay.evaluationCalls, 0);
+  assert.equal(acceptanceReplay.evidenceCalls, 0);
+  assert.deepEqual(acceptanceReplay.candidate, acceptance.candidate);
+  const candidateRawBytes = jsonBytes(acceptance.candidate);
+
+  const approvalRequest = seal({
+    apiVersion: API,
+    kind: "BusinessAcceptanceApprovalRequest",
+    requestId: "BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001",
+    targetCommit: TARGET_COMMIT,
+    candidate: ref(acceptance.candidate.candidateId, acceptance.candidate.candidateDigest),
+    candidateRawDigest: sha256Digest(candidateRawBytes),
+    technicalCoverage: ref(acceptance.technicalCoverage.coverageId, acceptance.technicalCoverage.coverageDigest),
+    coverage: { acceptanceCriteria: 81, nonFunctionalRequirements: 18, businessObjectives: 8, successMetrics: 9, businessScopes: 32 },
+    traceabilityCheckpoint: graphSnapshotLoaded.ref,
+    exclusions: releaseEvidence.exclusions,
+    requestedDecision: "approved",
+    status: "awaiting-exact-owner-approval",
+  }, "requestDigest");
+
+  await Promise.all([
+    persist("00-release-evidence.json", releaseEvidence),
+    persist("01-repository-release-snapshot.json", repositoryReleaseSnapshot),
+    persist("02-approved-coverage-dispositions.json", reconciliationApproval),
+    persist("03-reconciliation-update.json", reconciliationPrepared.update),
+    persist("04-reconciliation-merge-receipt.json", reconciliationMerge.receipt),
+    persist("05-integrated-completion-fact-set.json", integratedCompletionFactSet),
+    persist("06-integrated-system-candidate.json", subject),
+    persist("07-system-verification-policy.json", systemPolicy),
+    persist("08-system-verification-obligations.json", verification.obligations),
+    persist("09-system-test-invocation.json", testInvocation),
+    persist("10-system-review-invocation.json", reviewInvocation),
+    persist("11-system-verification-evidence.json", verification.evidence),
+    persist("12-system-verification-evaluation.json", verification.evaluation),
+    persist("13-system-verification-result.json", verification.result),
+    persist("14-system-verification-update.json", svPrepared.update),
+    persist("15-system-verification-merge-receipt.json", svMerge.receipt),
+    persist("16-system-verification-graph.json", svMerge.snapshot),
+    persist("17-business-acceptance-policy.json", businessPolicy),
+    persist("18-business-acceptance-evidence.json", businessEvidence),
+    persist("19-business-acceptance-technical-coverage.json", acceptance.technicalCoverage),
+    persist("20-business-acceptance-subject.json", acceptance.subject),
+    persist("21-business-acceptance-evaluation.json", acceptance.evaluation),
+    persist("22-business-acceptance-candidate.json", acceptance.candidate),
+    persist("23-business-acceptance-approval-request.json", approvalRequest),
+  ]);
+
+  const proof = seal({
+    apiVersion: API,
+    kind: "ControlledReleaseCandidateProof",
+    proofId: "DEVRELAY-CONTROLLED-RELEASE-CANDIDATE-001",
+    targetCommit: TARGET_COMMIT,
+    sourceVerification: releaseEvidenceRef,
+    traceability: { reconciliationMerge: reconciliationMerge.receipt.resultGraph, systemVerificationMerge: svMerge.receipt.resultGraph },
+    systemVerification: { result: resultRef, outcome: verification.result.outcome, obligationCount: verification.evaluation.dispositions.length, verifierCalls, replayVerifierCalls: verificationReplay.verifierCalls },
+    businessAcceptance: { candidate: approvalRequest.candidate, candidateRawDigest: approvalRequest.candidateRawDigest, technicalCoverage: approvalRequest.technicalCoverage, outcome: acceptance.evaluation.outcome, evaluationCallsOnReplay: acceptanceReplay.evaluationCalls, evidenceCallsOnReplay: acceptanceReplay.evidenceCalls },
+    nextGate: "exact-owner-approval",
+  }, "proofDigest");
+  await persist("24-candidate-proof.json", proof);
+  console.log(JSON.stringify({ output: path.relative(ROOT, OUTPUT).replaceAll("\\", "/"), targetCommit: TARGET_COMMIT, candidate: approvalRequest.candidate, candidateRawDigest: approvalRequest.candidateRawDigest, requestDigest: approvalRequest.requestDigest, systemVerification: verification.result.outcome, acceptance: acceptance.evaluation.outcome, coverage: approvalRequest.coverage }, null, 2));
+}
+
+await main();

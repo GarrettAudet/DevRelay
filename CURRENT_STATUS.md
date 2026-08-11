@@ -1,149 +1,114 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-08-10 21:47 MDT
+Last reconciled: 2026-08-11
 Active branch: `codex/lifecycle-run-report-completion`
-Source-work checkpoint: `c957db0865ef990b27eb86d6671ed0df2e35aa9e`
-Last fully green release proof: `31d79faed9a1b926188dc0eea34b0d443fda3a35`
-Active increment: `DGI-LIFECYCLE-RUN-REPORT-2026-08-10`
+Verified controlled-release source commit: `477e7a449cb90d4ecb86c7271cb59f3e2d09b0d6`
+Active boundary: final SystemVerification and BusinessAcceptance materialization
 
-This is the primary human-readable progress tracker for the current working
-tree. It is a read-only status projection, not lifecycle authority. Exact
-module artifacts, Gate approvals, baseline promotions, execution records,
-traceability checkpoints, and integration receipts remain authoritative.
+This file is a human-readable status projection. Exact module artifacts, Gate
+records, graph checkpoints, release evidence, commits, and CI runs remain the
+authoritative records.
 
 ## Executive status
 
-DevRelay retains construction coverage for all eighteen owner-approved V1
-lifecycle components. The historical release baseline at `31d79fa` remains the
-last fully green `release:check` proof. The active LifecycleRunReport completion
-branch is not release-green because portability work has exposed ten remaining
-cross-platform/evidence failures.
-
-No LifecycleRunReport DG-2 implementation, Gate promotion, canonical lineage
-advancement, accepted-prefix mutation, or mutation of the immutable `6ddd`
-lineage was started during this pause cycle.
+The portable DevRelay source/library candidate for ChatGPT Desktop on Windows
+is source-verification green. Commit `477e7a4` passed the complete local release
+gate and all four GitHub Actions Node/OS jobs. The repository is not yet marked
+BusinessAccepted because the final executable lifecycle proof has not been
+materialized and the owner's prior exact approval named superseded commit
+`33e65ba`.
 
 Current position:
 
 ```text
-DG-0  prefix/increment intake                         PASS
-DG-1  full-prefix upstream dogfood planning           PAUSED FOR PORTABILITY CLOSURE
-      RequirementsGathering                           replayed
-      RequirementsGate                                replayed/promoted
-      ArchitectureDiscovery                           state-routed
-      ArchitectureDesign                              replayed with host bindings
-      ArchitectureGate                                replayed/promoted historically
-      ContractGeneration                              reusable binding integrated
-      ContractGate                                    separate authority boundary
-DG-2  bounded LifecycleRunReport implementation       NOT STARTED
-DG-3  independent component verification              PENDING
-DG-4  expanded-prefix end-to-end replay               PENDING
-DG-5  deterministic replay/supported-matrix proof     PENDING
-DG-6  atomic promotion/next frontier                  PENDING
+RequirementsGathering through ChangeIntegration     COMPLETE
+Traceability reconciliation                         COMPLETE except final persisted two-link update
+SystemVerification implementation                   COMPLETE and release-green
+BusinessAcceptance implementation                   COMPLETE and release-green
+Final executable SystemVerification run             NEXT
+Final BusinessAcceptance candidate                  NEXT
+Exact owner approval for corrected candidate        REQUIRED
+BusinessAcceptanceGate + acceptance graph merge     PENDING
+Release handoff / final metadata commit              PENDING
 ```
 
-Safe resume order:
+No public npm publication, one-click ChatGPT Desktop plug-in, hosted backend,
+deployment, or production-service claim is in scope.
+
+## Completed release repair
+
+- `3d9ad2f`: completed the portable lifecycle release candidate and regenerated
+  its content-addressed evidence.
+- `de32a5f`: made the release catalog independent of checkout location.
+- `bbda9a6`: preserved immutable JSON release evidence across Windows/Linux
+  checkouts.
+- `14955a9`: made installed-package smoke verification cache-independent and
+  offline.
+- `33e65ba`: bound the provisioned Java 21 executable on Windows CI.
+- `477e7a4`: corrected SystemVerification traceability to carry the semantic
+  `SystemVerificationResult` reference required by downstream
+  BusinessAcceptance coverage derivation.
+
+## Verification evidence
+
+Local `npm.cmd run release:check` at `477e7a4`:
+
+- tests: 842
+- passed: 840
+- failed: 0
+- skipped: 2 intentional environment-dependent checks
+- release-catalog digests: 3,456
+- installed package paths: 281
+- modules: 11
+- plug-ins: 24
+- offline installed-package smoke: pass
+
+GitHub Actions run `31497854653` at exact commit `477e7a4`:
+
+- Node 20 / Windows: pass
+- Node 22 / Windows: pass
+- Node 20 / Ubuntu: pass
+- Node 22 / Ubuntu: pass
+
+## Final acceptance scope already authorized by the owner
+
+The owner authorized recording 81 acceptance criteria, 18 non-functional
+requirements, 8 business objectives, 9 success metrics, and 32 scope identities
+as satisfied from the cited evidence. The owner also authorized these two
+forward, already-designed links to `EL-DEVRELAY-CORE`:
+
+- `US-DEV-SPECIFY-001 -> designed-by -> EL-DEVRELAY-CORE`
+- `NFR-DEV-DETERMINISM-001 -> designed-by -> EL-DEVRELAY-CORE`
+
+The exact approval text was bound to `33e65ba`. Commit `477e7a4` is a necessary
+downstream-lineage correction, so a trustworthy final Gate must present the
+new exact candidate and obtain approval bound to its candidate raw digest and
+corrected target commit. Do not silently reuse the old exact approval.
+
+## Paused work in progress
+
+A candidate materializer draft is preserved in the latest pickup package as
+`candidate-materializer.wip.txt`. It is not execution evidence and has not been
+run. Its intended circuit is:
 
 ```text
-close remaining portability/evidence blockers
--> prove a clean supported checkout
--> close PB-005/PB-006
--> transactionally regenerate superseding content-addressed lineage (PB-002)
--> resume DG-1 at the exact ContractGeneration/ContractGate boundary
--> continue DG-2 through DG-6
+restore approved graph checkpoint
+-> merge the two approved designed-by links
+-> execute SystemVerification through both released adapters
+-> prove zero-call replay
+-> merge trusted SystemVerification traceability
+-> derive exhaustive BusinessAcceptance technical coverage
+-> execute BusinessAcceptance and zero-call replay
+-> emit an exact owner-approval request
 ```
 
-## Work completed in this pause cycle
+After exact approval, the next owner must execute BusinessAcceptanceGate,
+merge the trusted BusinessAcceptance contributor, require zero blocking graph
+diagnostics, update release/handoff artifacts, run the full release gate,
+commit, push, and verify the four-job matrix.
 
-1. `2c4b6e3b67045544555983d408dec112eeab238f`
-   - CI now checks out full Git history.
-   - CI installs Temurin Java 21.
-   - Linux binds `DEVRELAY_JAVA` to the installed Java executable.
-   - Representative failures moved from 18 to 16 and real Structurizr checks
-     began executing instead of failing for missing Java/history.
+## Pickup
 
-2. `c957db0865ef990b27eb86d6671ed0df2e35aa9e`
-   - Local-Git adapter test fixtures now use OS-native absolute temporary paths.
-   - Production adapter semantics were not changed.
-   - Representative CI moved from 16 to 10 failures.
-   - All six local-Git fixture failures disappeared, closing PB-004.
-
-3. Pause/handoff package
-   - Updated `CURRENT_STATUS.md`.
-   - Updated the self-contained
-     `handoff/2026-08-10-lifecycle-run-report-pickup/` package.
-   - Corrected the active resume branch and distinguished the historical green
-     release proof from the current red portability branch.
-   - Regenerated the package manifest and SHA-256 index atomically.
-
-## Latest verification evidence
-
-Post-toolchain run `31454853164`, representative Ubuntu/Node 20:
-
-- static verification: PASS
-- tests: 828
-- passed: 811
-- failed: 16
-- skipped: 1
-
-Post-local-Git run `31457082371`, representative Ubuntu/Node 20:
-
-- tests: 828
-- passed: 817
-- failed: 10
-- skipped: 1
-- local-Git fixture failures: 0
-
-The ten remaining failures are exactly four historical/path-source failures and
-six architecture proof/review or exact-promotion failures.
-
-## Remaining blocker clusters
-
-| Blocker | State |
-| --- | --- |
-| PB-001 path/source portability | Open. Three historical/bootstrap source cases plus one LRR path-only defect remain. |
-| PB-003 Java/Structurizr hermeticity | Partial. Java 21 is fixed; host-independent Structurizr/ArchitectureGate proof bytes remain. |
-| PB-004 local-Git negative fixtures | Closed by `c957db0` plus CI evidence. |
-| PB-005 provenance | Partial. Full-history checkout is fixed; end-to-end source/provenance closure remains. |
-| PB-006 exports/catalog/docs | Open pending stable portable bytes. |
-| PB-002 lineage regeneration | Not started by design; run once, transactionally, last. |
-
-The immutable original manifest with digest
-`sha256:6dddece4148cee24389595e2d971993f859f62df2fb0fd4da9fc1f00416bd311`
-remains superseded historical evidence. It is not present in the repository and
-must not be fabricated to make the old `6ddd` execution runnable.
-
-## Release-readiness assessment
-
-Implementation coverage is high, but the active branch is not at a release
-candidate boundary. The latest representative suite passes 817 of 828 tests
-(98.67%), and the remaining failures are concentrated in two main technical
-areas rather than ten unrelated product defects:
-
-1. historical/path-source portability and evidence closure;
-2. host-independent Structurizr/ArchitectureGate proof generation.
-
-After those are clean, PB-005/PB-006, the single PB-002 lineage transaction,
-full supported-matrix proof, and the pending LifecycleRunReport DG-2 through
-DG-6 lifecycle still remain.
-
-DevRelay is therefore close in construction coverage and materially closer than
-at the start of this repair cycle, but it is not yet releasable under its own
-fail-closed exact-byte contract.
-
-## Evidence map
-
-- Recursive working ledger: `dogfood/v1-module-sequence.working.md`
-- Active candidate: `dogfood/lifecycle-run-report/`
-- ContractGeneration authority analysis:
-  `analysis/dg1-contract-generation-48-vs-57-authority-analysis.md`
-- Canonical project context: `ProjectOverview.md` and
-  `project/project-overview-baseline.json`
-- Release description: `README.md` and `RELEASE.md`
-- Self-contained pause package:
-  `handoff/2026-08-10-lifecycle-run-report-pickup/`
-
-Update this file whenever the active Gate, promotion blocker set, accepted
-prefix, verification disposition, or repository publication state changes.
-It should eventually be generated from `LifecycleRunReport`, not maintained as
-a second source of lifecycle truth.
+Start with `handoff/2026-08-11-controlled-release-acceptance-pickup/README.md`.
+The prior `2026-08-10` package remains immutable historical context and is
+superseded for active pickup by the new package.
