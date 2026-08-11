@@ -128,6 +128,58 @@ const configurations = {
       "node --test test/chatgpt-desktop-task-supervisor.test.mjs",
     ],
   },
+  "WI-DESKTOP-LIFECYCLE": {
+    allowedWritePaths: [
+      "src/chatgpt-desktop-lifecycle-controller.mjs",
+      "src/index.mjs",
+      "test/chatgpt-desktop-lifecycle-controller.test.mjs",
+      "test/fixtures/chatgpt-desktop-lifecycle/**",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --check src/chatgpt-desktop-lifecycle-controller.mjs",
+      "node --test test/chatgpt-desktop-lifecycle-controller.test.mjs",
+    ],
+  },
+  "WI-DESKTOP-INSTALL": {
+    allowedWritePaths: [
+      "scripts/install-chatgpt-desktop-plugin.ps1",
+      "scripts/chatgpt-desktop-plugin-health-check.ps1",
+      "test/chatgpt-desktop-install.test.mjs",
+      "test/fixtures/chatgpt-desktop-install/**",
+      "package.json",
+    ],
+    processTools: ["node", "npm.cmd", "powershell"],
+    verificationCommands: [
+      "node --test test/chatgpt-desktop-install.test.mjs",
+    ],
+  },
+  "WI-DESKTOP-VERIFICATION": {
+    allowedWritePaths: [
+      "scripts/verify-chatgpt-desktop-release.mjs",
+      "test/chatgpt-desktop-release-verification.test.mjs",
+      "test/fixtures/chatgpt-desktop-release/**",
+      "release/chatgpt-desktop/**",
+      "package.json",
+    ],
+    processTools: ["node", "npm.cmd", "powershell"],
+    verificationCommands: [
+      "node --check scripts/verify-chatgpt-desktop-release.mjs",
+      "node --test test/chatgpt-desktop-release-verification.test.mjs",
+    ],
+  },
+  "WI-DESKTOP-DOCUMENTATION": {
+    allowedWritePaths: [
+      "docs/chatgpt-desktop-windows.md",
+      "plugins/devrelay/README.md",
+      "README.md",
+      "test/chatgpt-desktop-documentation.test.mjs",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --test test/chatgpt-desktop-documentation.test.mjs",
+    ],
+  },
 };
 const configuration = configurations[requestedWorkItemId];
 if (!configuration) {
