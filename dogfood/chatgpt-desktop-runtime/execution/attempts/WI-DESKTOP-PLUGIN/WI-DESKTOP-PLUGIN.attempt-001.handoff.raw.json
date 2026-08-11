@@ -1,0 +1,38 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "changedFiles": [
+    ".agents/plugins/marketplace.json",
+    "plugins/devrelay/.codex-plugin/plugin.json",
+    "plugins/devrelay/.mcp.json",
+    "plugins/devrelay/skills/devrelay/SKILL.md",
+    "test/chatgpt-desktop-plugin.test.mjs"
+  ],
+  "evidence": [
+    {
+      "digest": "sha256:3893e437064452332cb36359744a4d9bde6f80df7cabb02e4e24aa10ac0915d5",
+      "kind": "chatgpt-desktop/contracts-conformance",
+      "relativePath": "test/chatgpt-desktop-plugin.test.mjs"
+    }
+  ],
+  "executionId": "ATT-DESKTOP-PLUGIN-001",
+  "kind": "BootstrapWorkItemHandoff",
+  "notes": "Created the repository marketplace entry, validated-shape plugin manifest, single DevRelay operator skill, local STDIO MCP declaration, and focused conformance tests.",
+  "outcome": "block",
+  "residualRisks": [
+    "The exact official validator command could not run because `python` is unavailable on PATH; bundled Python also lacks the validator's required PyYAML dependency.",
+    "The declared MCP executable is owned by sibling work item WI-DESKTOP-MCP-BRIDGE and is not yet present in this workspace."
+  ],
+  "verification": [
+    {
+      "command": "python C:/Users/garre/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/devrelay",
+      "exitCode": 1,
+      "summary": "Blocked before validation because the exact `python` executable is unavailable on PATH."
+    },
+    {
+      "command": "node --test test/chatgpt-desktop-plugin.test.mjs",
+      "exitCode": 0,
+      "summary": "Three tests passed for marketplace discovery, plugin and MCP structure, and preservation of Core authority."
+    }
+  ],
+  "workItemId": "WI-DESKTOP-PLUGIN"
+}

@@ -1,0 +1,35 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "changedFiles": [
+    "src/chatgpt-desktop-run-store.mjs",
+    "src/index.mjs",
+    "test/chatgpt-desktop-run-store.test.mjs"
+  ],
+  "evidence": [
+    {
+      "digest": "sha256:0e117dea38bdc662fd64df4f007b7ac3e826d8672cd7309e22cd1f876a9dff60",
+      "kind": "chatgpt-desktop/run-store-recovery",
+      "relativePath": "test/chatgpt-desktop-run-store.test.mjs"
+    }
+  ],
+  "executionId": "ATT-DESKTOP-RUN-STORE-001",
+  "kind": "BootstrapWorkItemHandoff",
+  "notes": "Implemented an append-only local run store with atomic writes, content-addressed artifact verification, immutable revision history, restart recovery, checkpoint resume, revision conflicts, duplicate-request replay, and report/task/approval pointers.",
+  "outcome": "pass",
+  "residualRisks": [
+    "Windows may reject directory fsync with EPERM; file fsync and atomic same-directory rename remain enforced."
+  ],
+  "verification": [
+    {
+      "command": "node --check src/chatgpt-desktop-run-store.mjs",
+      "exitCode": 0,
+      "summary": "Run-store module syntax is valid."
+    },
+    {
+      "command": "node --test test/chatgpt-desktop-run-store.test.mjs",
+      "exitCode": 0,
+      "summary": "All 4 focused atomic commit, restart, duplicate, stale checkpoint, interruption recovery, and corruption tests passed."
+    }
+  ],
+  "workItemId": "WI-DESKTOP-RUN-STORE"
+}

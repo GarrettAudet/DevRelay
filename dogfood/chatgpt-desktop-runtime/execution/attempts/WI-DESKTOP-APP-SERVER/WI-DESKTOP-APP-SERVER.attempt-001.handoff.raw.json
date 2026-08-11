@@ -1,0 +1,37 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "BootstrapWorkItemHandoff",
+  "workItemId": "WI-DESKTOP-APP-SERVER",
+  "executionId": "ATT-DESKTOP-APP-SERVER-001",
+  "outcome": "pass",
+  "changedFiles": [
+    "src/chatgpt-desktop-app-server-client.mjs",
+    "src/index.mjs",
+    "test/chatgpt-desktop-app-server-client.test.mjs",
+    "test/fixtures/chatgpt-desktop-app-server/resume-cancel.jsonl",
+    "test/fixtures/chatgpt-desktop-app-server/start-complete.jsonl"
+  ],
+  "evidence": [
+    {
+      "kind": "chatgpt-desktop/app-server-conformance",
+      "relativePath": "test/chatgpt-desktop-app-server-client.test.mjs",
+      "digest": "sha256:3e71a314a0c85d5a86870e0739e480208a1c7968d1703b7166c3b6df52b8014b"
+    }
+  ],
+  "verification": [
+    {
+      "command": "node --check src/chatgpt-desktop-app-server-client.mjs",
+      "exitCode": 0,
+      "summary": "App-server client syntax validation passed."
+    },
+    {
+      "command": "node --test test/chatgpt-desktop-app-server-client.test.mjs",
+      "exitCode": 0,
+      "summary": "Four protocol conformance tests passed, covering initialization, start, event streaming, completion, cancellation, restart/resume, identity binding, evidence preservation, and JSON-RPC failure handling."
+    }
+  ],
+  "notes": "Implemented and exported a bounded JSONL app-server client for thread start/resume/read, turn start/interrupt, terminal notification handling, deterministic task identity binding, and canonical request-response-event evidence.",
+  "residualRisks": [
+    "A live local Codex app-server task was not started because the task contract explicitly forbids starting Codex tasks; protocol behavior is verified with deterministic fixtures."
+  ]
+}
