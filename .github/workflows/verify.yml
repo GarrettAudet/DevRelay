@@ -24,11 +24,22 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: npm
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Bind DevRelay Java executable
+        if: runner.os != 'Windows'
+        shell: bash
+        run: echo "DEVRELAY_JAVA=${JAVA_HOME}/bin/java" >> "$GITHUB_ENV"
       - name: Install exact dependencies
         run: npm ci
       - name: Verify source release
