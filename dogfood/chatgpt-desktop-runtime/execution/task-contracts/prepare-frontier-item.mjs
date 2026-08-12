@@ -46,8 +46,15 @@ const architecture = read("project/architecture-baseline.json");
 const contractBaseline = read("project/contract-baseline.json");
 const requestedWorkItemId = process.argv[2];
 const attemptNumber = process.argv[3] ?? "001";
+const repositoryRevisionOverride = process.argv[4];
 if (!/^\d{3}$/u.test(attemptNumber)) {
   throw new Error("attempt number must be three digits");
+}
+if (
+  repositoryRevisionOverride &&
+  !/^[0-9a-f]{40}$/u.test(repositoryRevisionOverride)
+) {
+  throw new Error("repository revision override must be a full commit id");
 }
 const configurations = {
   "WI-DESKTOP-APP-SERVER": {
@@ -188,6 +195,54 @@ const configurations = {
       "node --test test/chatgpt-desktop-documentation.test.mjs",
     ],
   },
+  "WI-DESKTOP-LIST-RUNS-STORE": {
+    allowedWritePaths: [
+      "src/chatgpt-desktop-run-store.mjs",
+      "test/chatgpt-desktop-run-store.test.mjs",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --check src/chatgpt-desktop-run-store.mjs",
+      "node --test test/chatgpt-desktop-run-store.test.mjs",
+    ],
+  },
+  "WI-DESKTOP-LIST-RUNS-MCP": {
+    allowedWritePaths: [
+      "src/chatgpt-desktop-mcp-server.mjs",
+      "src/chatgpt-desktop-lifecycle-controller.mjs",
+      "test/chatgpt-desktop-mcp-server.test.mjs",
+      "test/chatgpt-desktop-lifecycle-controller.test.mjs",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --check src/chatgpt-desktop-mcp-server.mjs",
+      "node --check src/chatgpt-desktop-lifecycle-controller.mjs",
+      "node --test test/chatgpt-desktop-mcp-server.test.mjs test/chatgpt-desktop-lifecycle-controller.test.mjs",
+    ],
+  },
+  "WI-DESKTOP-LIST-RUNS-TESTS": {
+    allowedWritePaths: [
+      "test/chatgpt-desktop-list-runs.test.mjs",
+      "test/fixtures/chatgpt-desktop-list-runs/**",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --check test/chatgpt-desktop-list-runs.test.mjs",
+      "node --test test/chatgpt-desktop-list-runs.test.mjs",
+    ],
+  },
+  "WI-DESKTOP-LIST-RUNS-DOCS": {
+    allowedWritePaths: [
+      "docs/chatgpt-desktop-windows.md",
+      "plugins/devrelay/README.md",
+      "README.md",
+      "test/chatgpt-desktop-documentation.test.mjs",
+    ],
+    processTools: ["node", "npm.cmd"],
+    verificationCommands: [
+      "node --test test/chatgpt-desktop-documentation.test.mjs",
+    ],
+  },
 };
 const configuration = configurations[requestedWorkItemId];
 if (!configuration) {
@@ -269,10 +324,12 @@ if (!readyWorkItemIds.includes(workItem.id)) {
   );
 }
 
-const currentRevision = execFileSync("git", ["rev-parse", "HEAD"], {
-  cwd: new URL(".", ROOT),
-  encoding: "utf8",
-}).trim();
+const currentRevision =
+  repositoryRevisionOverride ??
+  execFileSync("git", ["rev-parse", "HEAD"], {
+    cwd: new URL(".", ROOT),
+    encoding: "utf8",
+  }).trim();
 const treeBytes = execFileSync(
   "git",
   ["ls-tree", "-r", "--full-tree", currentRevision],
