@@ -2,8 +2,9 @@
 
 Last reconciled: 2026-08-11 MDT
 Active branch: `codex/lifecycle-run-report-completion`
-Latest source checkpoint before this update: `dbd85ba1bdb0dd6ec93824b93aa1eec5fec95f64`
-Active boundary: establish one exact cataloged and four-matrix-verified source commit
+Exact verified release-source target: `9d2b0d8e6b358dd6aed922de420224fe9efc320c`
+Exact verification run: `31564635275`
+Active boundary: corrected candidate materialization and exact owner approval
 
 This file is a human-readable status projection. Exact module artifacts, Gate
 records, graph checkpoints, release evidence, commits, and CI runs remain the
@@ -12,32 +13,29 @@ authoritative records.
 ## Executive status
 
 The portable DevRelay V1 source/library circuit is implemented through
-BusinessAcceptance. The final pre-approval circuit has executed successfully
-through released APIs: complete graph recovery, the two owner-authorized design
-links, 99-obligation SystemVerification, zero-call replay, trusted verification
-traceability, exhaustive BusinessAcceptance coverage, BusinessAcceptance
-evaluation, and zero-call replay.
+BusinessAcceptance. The pre-approval lifecycle circuit has already executed
+successfully through released APIs: complete graph recovery, the two
+authorized design links, 99-obligation SystemVerification, zero-call replay,
+trusted verification traceability, exhaustive BusinessAcceptance technical
+coverage, BusinessAcceptance evaluation, and zero-call replay.
 
-The previously materialized candidate cannot be promoted because it names the
-older source commit `477e7a4`. A subsequent required correction added the
-graph-level `verificationStatus: "pass"` classification consumed by
-BusinessAcceptance, so the corrected candidate must bind one newer exact source
-commit and its successful four-job verify run.
+The corrected release source is now stable and independently verified. Workflow
+run `31564607304` created the catalog-only source commit
+`9d2b0d8e6b358dd6aed922de420224fe9efc320c`, then dispatched verify run
+`31564635275` for that exact SHA. All four supported jobs passed:
 
-Commit `dbd85ba` introduced a guarded catalog bootstrap. Materialization run
-`31564333006` regenerated and uploaded the exact 3,467-entry source catalog, then
-stopped at the committed-catalog check before verification binding or lifecycle
-execution. Artifact `9128889947` is the generated catalog for that exact tree.
-This proves the workflow and status changes are the only content-addressed drift.
+- Node 20 on Ubuntu: pass
+- Node 22 on Ubuntu: pass
+- Node 20 on Windows: pass
+- Node 22 on Windows: pass
 
-The workflow is now being advanced to a bounded self-bootstrap:
+The materialization workflow has bound that exact commit and run ID and is now
+executing the corrected candidate through the released SystemVerification,
+BusinessAcceptance, checkpoint, contributor, and TraceabilityGraph APIs. No
+stale-source exception remains.
 
-1. regenerate and upload the exact source catalog;
-2. verify that only `release/0.9.0.json` changed;
-3. commit only that self-excluded catalog with a compare-and-swap branch check;
-4. dispatch the four-job `verify` workflow for the new catalog commit;
-5. bind the exact successful run ID and commit SHA;
-6. materialize and upload the corrected candidate only after success.
+The next authoritative boundary is the corrected exact owner-approval request.
+The earlier approval named superseded source and must not be reused.
 
 Current position:
 
@@ -51,14 +49,14 @@ SystemVerification zero-call replay                  PROVEN
 Trusted verification traceability merge              PROVEN
 BusinessAcceptance technical coverage                PROVEN EXHAUSTIVE
 BusinessAcceptance evaluation and replay              PROVEN
-Exact source-catalog bootstrap                        PROVEN
-Catalog-only source stabilization                     IN PROGRESS
-Exact four-job verification binding                   PENDING CATALOG COMMIT
-Corrected candidate persistence                       PENDING VERIFICATION
-Exact owner approval for corrected candidate          PENDING CANDIDATE
+Exact source catalog                                  COMMITTED
+Node 20/22 Ubuntu/Windows source matrix                PASS 4/4
+Corrected candidate materialization                   IN PROGRESS
+Corrected approval request persistence                PENDING CANDIDATE
+Exact owner approval                                  PENDING REQUEST
 BusinessAcceptanceGate                                PENDING APPROVAL
 Trusted acceptance traceability merge                 PENDING GATE
-Final release metadata, handoff, catalog, matrix       PENDING
+Final evidence, catalog, handoff, and matrix           PENDING
 ```
 
 No public npm publication, one-click ChatGPT Desktop plug-in, hosted backend,
@@ -78,26 +76,30 @@ deployment, or production-service claim is in scope.
   by downstream BusinessAcceptance coverage derivation.
 - `648b267`: marked trusted verified-evidence nodes with graph-level passing
   status.
-- `d3090aa`: prohibited candidate generation without an exact target commit and
-  exact verification run.
-- `dbd85ba`: added same-tree catalog guarding and exact verify-run discovery.
+- `d3090aa`: prohibited candidate generation without exact target-commit and
+  verification-run bindings.
+- `dbd85ba`: added guarded source-catalog generation and exact verify discovery.
+- `efb09ff`: added bounded catalog-only self-bootstrap and explicit verify
+  dispatch.
+- `9d2b0d8`: committed the exact self-excluded 3,467-entry source catalog.
 
-## Most recent evidence
+## Verification evidence
 
-- Materialization run `31563383966`: full corrected pre-approval circuit passed,
-  but its candidate targeted superseded source `477e7a4` and was not accepted.
-- Materialization run `31563855621`: correctly failed closed because exact target
-  commit and CI-run bindings were absent.
-- Materialization run `31564333006`: produced catalog artifact `9128889947`,
-  then correctly stopped because that catalog was not yet committed.
+Verify run `31564635275` is bound to exact head SHA `9d2b0d8...` and completed
+successfully on all four supported jobs. Each job completed dependency install,
+Java binding, the complete source release check, and cleanup successfully.
 
-The catalog artifact contains:
+The cataloged source records:
 
 - release type: `private-source`
 - modules: 11
 - plug-ins: 24
 - raw-byte file digests: 3,467
-- npm-package files: 281, including the self-excluded catalog path
+- npm-package files: 281
+
+Materialization run `31564607304` passed its catalog commit, branch
+compare-and-swap, verify dispatch, and exact successful-run binding steps before
+entering candidate execution.
 
 ## Owner authority
 
@@ -110,21 +112,21 @@ metrics, and 32 scope identities, plus these forward links:
 
 The earlier exact approval named superseded source. The corrected candidate must
 expose its exact target commit, semantic digest, raw digest,
-technical-coverage digest, and exclusions before BusinessAcceptanceGate may
-create an authoritative record.
+technical-coverage digest, graph checkpoint, and exclusions before
+BusinessAcceptanceGate may create an authoritative record.
 
 ## Next trusted transition
 
 ```text
-commit workflow + status reconciliation
--> workflow commits only the exact generated source catalog
--> workflow dispatches and requires exact four-job verify success
--> materialize corrected candidate bound to that commit and run
--> inspect and persist exact approval request
--> apply exact owner decision through BusinessAcceptanceGate
--> merge trusted BusinessAcceptance traceability
--> require zero blocking diagnostics
--> persist final evidence, catalog, handoff, and release metadata
+complete corrected candidate materialization
+-> inspect and persist exact candidate and approval request
+-> present exact request to the owner
+-> apply the exact owner decision through BusinessAcceptanceGate
+-> prove Gate replay invokes the owner zero additional times
+-> merge and replay trusted BusinessAcceptance traceability
+-> require zero blocking graph diagnostics
+-> persist final evidence, release metadata, and coherent handoff package
+-> regenerate the final content-addressed catalog
 -> run and verify the final four-job release matrix
 ```
 
