@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, readdir, rm, stat, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -11,6 +11,11 @@ test.after(async () => Promise.all(roots.map((root) => rm(root, { recursive: tru
 const root = async () => { const value = await mkdtemp(join(tmpdir(), "devrelay desktop run store ")); roots.push(value); return value; };
 const content = (artifactId, value) => ({ artifactId, content: value, mediaType: "application/json" });
 const checkpoint = (checkpointId, value) => ({ checkpointId, checkpointDigest: canonicalJsonDigest(value) });
+const lifecycle = (artifactId, runId, status, checkpointRef, secret = "") => {
+  const state = { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopLifecycleRunState", runId, status, ...(checkpointRef && { checkpoint: checkpointRef }), secret };
+  return content(artifactId, { ...state, stateDigest: canonicalJsonDigest(state) });
+};
+const revisionPath = (path, runId, revision = 1) => join(path, "runs", encodeURIComponent(runId), "revisions", `${String(revision).padStart(12, "0")}.json`);
 
 test("atomically commits digest-bound state and restarts with exact immutable history on Windows-compatible paths", async () => {
   const path = await root();
@@ -65,4 +70,75 @@ test("corrupt content-addressed bytes are detected", async () => {
   const committed = await store.commit({ runId: "RUN-4", requestId: "REQ-6", expectedRevision: 0, content: content("STATE-6", { valid: true }) });
   await writeFile(join(path, "blobs", "sha256", committed.content.digest.slice(7)), "tampered", "utf8");
   await assert.rejects(() => store.load("RUN-4"), (error) => error instanceof ChatGptDesktopRunStoreError && error.code === "DR4092");
+});
+
+test("enumerates safe run summaries newest-first with lexical run identity tie-breaking", async () => {
+  const path = await root();
+  const store = createChatGptDesktopRunStore({ rootPath: path });
+  const sensitive = "PROMPT credential=secret raw-evidence";
+  await store.commit({ runId: "RUN-B", requestId: "REQ-B", expectedRevision: 0, content: lifecycle("STATE-B", "RUN-B", "running", { artifactId: "CP-B" }, sensitive) });
+  await store.commit({ runId: "RUN-A", requestId: "REQ-A", expectedRevision: 0, content: lifecycle("STATE-A", "RUN-A", "completed", undefined, sensitive), checkpoint: checkpoint("STORE-CP-A", { value: 1 }) });
+  await store.commit({ runId: "RUN-C", requestId: "REQ-C", expectedRevision: 0, content: lifecycle("STATE-C", "RUN-C", "failed", undefined, sensitive) });
+  const older = new Date("2026-01-01T00:00:00.000Z");
+  const newer = new Date("2026-01-02T00:00:00.000Z");
+  await utimes(revisionPath(path, "RUN-C"), older, older);
+  await Promise.all(["RUN-A", "RUN-B"].map((runId) => utimes(revisionPath(path, runId), newer, newer)));
+
+  const listed = await store.listRuns();
+  assert.deepEqual(listed.runs, [
+    { runId: "RUN-A", revision: 1, lifecycleState: "completed", checkpoint: "STORE-CP-A", recoveryStatus: "current", createdAt: newer.toISOString(), updatedAt: newer.toISOString() },
+    { runId: "RUN-B", revision: 1, lifecycleState: "active", checkpoint: "CP-B", recoveryStatus: "current", createdAt: newer.toISOString(), updatedAt: newer.toISOString() },
+    { runId: "RUN-C", revision: 1, lifecycleState: "failed", checkpoint: null, recoveryStatus: "current", createdAt: older.toISOString(), updatedAt: older.toISOString() },
+  ]);
+  assert.deepEqual(listed.diagnostics, []);
+  assert.equal(JSON.stringify(listed).includes(sensitive), false);
+  assert.ok(Object.isFrozen(listed));
+  assert.deepEqual(await createChatGptDesktopRunStore({ rootPath: path }).listRuns(), listed);
+});
+
+test("enumeration reports corrupt and unreadable entries, recovers valid history, and never mutates the store", async () => {
+  const path = await root();
+  const store = createChatGptDesktopRunStore({ rootPath: path });
+  await store.commit({ runId: "RUN-RECOVER", requestId: "REQ-1", expectedRevision: 0, content: lifecycle("STATE-1", "RUN-RECOVER", "gate-required", { artifactId: "GATE-1" }) });
+  await store.commit({ runId: "RUN-RECOVER", requestId: "REQ-2", expectedRevision: 1, content: lifecycle("STATE-2", "RUN-RECOVER", "completed") });
+  await writeFile(revisionPath(path, "RUN-RECOVER", 2), "{corrupt", "utf8");
+  await store.commit({ runId: "RUN-CORRUPT", requestId: "REQ-3", expectedRevision: 0, content: lifecycle("STATE-3", "RUN-CORRUPT", "completed", undefined, "DO-NOT-LEAK") });
+  const corrupt = await store.load("RUN-CORRUPT");
+  await writeFile(join(path, "blobs", "sha256", corrupt.content.digest.slice(7)), "DO-NOT-LEAK", "utf8");
+  await mkdir(join(path, "runs", "%invalid"), { recursive: true });
+  const snapshot = async () => {
+    const files = [];
+    const visit = async (directory) => {
+      for (const entry of await readdir(directory, { withFileTypes: true })) {
+        const target = join(directory, entry.name);
+        if (entry.isDirectory()) await visit(target);
+        else {
+          const metadata = await stat(target);
+          files.push([target.slice(path.length), (await readFile(target)).toString("base64"), metadata.mtimeMs]);
+        }
+      }
+    };
+    await visit(path);
+    return files.sort((left, right) => left[0].localeCompare(right[0]));
+  };
+  const before = await snapshot();
+  const listed = await store.listRuns();
+  const after = await snapshot();
+
+  assert.deepEqual(after, before);
+  assert.deepEqual(listed.runs.map(({ runId, revision, lifecycleState, checkpoint, recoveryStatus }) => ({ runId, revision, lifecycleState, checkpoint, recoveryStatus })), [
+    { runId: "RUN-RECOVER", revision: 1, lifecycleState: "gate-required", checkpoint: "GATE-1", recoveryStatus: "recovered" },
+  ]);
+  assert.deepEqual(listed.diagnostics, [
+    { code: "DESKTOP_RUN_UNREADABLE", severity: "warning", message: "A persisted run directory has an invalid encoded identity." },
+    { code: "DESKTOP_RUN_CORRUPT", severity: "warning", message: "The persisted run is corrupt or unreadable.", runId: "RUN-CORRUPT" },
+  ]);
+  assert.equal(JSON.stringify(listed).includes("DO-NOT-LEAK"), false);
+});
+
+test("enumerating an absent store is read-only", async () => {
+  const path = join(await root(), "not-created");
+  const listed = await createChatGptDesktopRunStore({ rootPath: path }).listRuns();
+  assert.deepEqual(listed, { runs: [], diagnostics: [] });
+  await assert.rejects(() => stat(path), (error) => error.code === "ENOENT");
 });

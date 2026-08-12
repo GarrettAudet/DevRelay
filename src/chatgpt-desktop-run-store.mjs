@@ -1,11 +1,14 @@
 import { constants } from "node:fs";
-import { access, mkdir, open, readFile, readdir, rename, unlink } from "node:fs/promises";
+import { access, mkdir, open, readFile, readdir, rename, stat, unlink } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "./content-digest.mjs";
 
 const API_VERSION = "devrelay.dev/v1alpha1";
 const DIGEST = /^sha256:[0-9a-f]{64}$/u;
 const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]*$/u;
+const LIFECYCLE_STATES = new Set([
+  "created", "active", "clarification-required", "gate-required", "completed", "unable-to-proceed", "failed",
+]);
 
 export class ChatGptDesktopRunStoreError extends Error {
   constructor(message, code = "DR4091") {
@@ -140,9 +143,8 @@ export function createChatGptDesktopRunStore({ rootPath, faultInjector } = {}) {
     return entries.filter((name) => /^\d{12}\.json$/u.test(name)).map((name) => Number.parseInt(name, 10)).sort((a, b) => b - a);
   }
 
-  async function loadUnlocked(runId) {
+  async function loadExistingUnlocked(runId) {
     requireId(runId, "runId");
-    await initialize();
     const revisions = await validRevisions(runId);
     if (revisions.length === 0) return undefined;
     let corrupt = false;
@@ -158,8 +160,67 @@ export function createChatGptDesktopRunStore({ rootPath, faultInjector } = {}) {
     fail(`run ${runId} has no valid revision`, "DR4092");
   }
 
+  async function loadUnlocked(runId) {
+    await initialize();
+    return loadExistingUnlocked(runId);
+  }
+
   async function load(runId) {
     return serialize(runId, () => loadUnlocked(runId));
+  }
+
+  async function listRuns() {
+    const entries = await readdir(runs, { withFileTypes: true }).catch((error) => error?.code === "ENOENT" ? [] : Promise.reject(error));
+    const summaries = [];
+    const diagnostics = [];
+    for (const entry of entries.sort((left, right) => left.name < right.name ? -1 : left.name > right.name ? 1 : 0)) {
+      if (!entry.isDirectory()) continue;
+      let runId;
+      try {
+        runId = decodeURIComponent(entry.name);
+      } catch {
+        diagnostics.push({ code: "DESKTOP_RUN_UNREADABLE", severity: "warning", message: "A persisted run directory has an invalid encoded identity." });
+        continue;
+      }
+      if (!ID.test(runId) || encodeURIComponent(runId) !== entry.name) {
+        diagnostics.push({ code: "DESKTOP_RUN_UNREADABLE", severity: "warning", message: "A persisted run directory has an invalid identity." });
+        continue;
+      }
+      try {
+        const revision = await loadExistingUnlocked(runId);
+        if (!revision) {
+          diagnostics.push({ code: "DESKTOP_RUN_UNREADABLE", severity: "warning", message: "The persisted run has no readable revision.", runId });
+          continue;
+        }
+        const content = JSON.parse((await getArtifact(revision.content)).toString("utf8"));
+        const stateDigest = canonicalJsonDigest(Object.fromEntries(Object.entries(content).filter(([key]) => key !== "stateDigest")));
+        const lifecycleState = content?.status === "running" ? "active" : content?.status;
+        if (content?.apiVersion !== API_VERSION || content?.kind !== "DesktopLifecycleRunState" || content?.runId !== runId || content?.stateDigest !== stateDigest || !LIFECYCLE_STATES.has(lifecycleState)) {
+          diagnostics.push({ code: "DESKTOP_RUN_UNREADABLE", severity: "warning", message: "The persisted run has no valid lifecycle state.", runId });
+          continue;
+        }
+        const revisions = await validRevisions(runId);
+        const firstRevision = Math.min(...revisions);
+        const [created, updated] = await Promise.all([
+          stat(revisionPath(runId, firstRevision)),
+          stat(revisionPath(runId, revision.revision)),
+        ]);
+        const checkpoint = revision.checkpointId ?? content?.checkpoint?.artifactId ?? null;
+        summaries.push({
+          runId,
+          revision: revision.revision,
+          lifecycleState,
+          checkpoint,
+          recoveryStatus: revision.recovered ? "recovered" : "current",
+          createdAt: created.mtime.toISOString(),
+          updatedAt: updated.mtime.toISOString(),
+        });
+      } catch {
+        diagnostics.push({ code: "DESKTOP_RUN_CORRUPT", severity: "warning", message: "The persisted run is corrupt or unreadable.", runId });
+      }
+    }
+    summaries.sort((left, right) => right.updatedAt < left.updatedAt ? -1 : right.updatedAt > left.updatedAt ? 1 : left.runId < right.runId ? -1 : left.runId > right.runId ? 1 : 0);
+    return immutable({ runs: summaries, diagnostics });
   }
 
   async function commit({ runId, requestId, expectedRevision, operation = "append", content, checkpoint, taskBindings = [], approvals = [], reports = [] } = {}) {
@@ -229,5 +290,5 @@ export function createChatGptDesktopRunStore({ rootPath, faultInjector } = {}) {
     return immutable({ ...state, replayed: true });
   }
 
-  return Object.freeze({ rootPath: root, initialize, putArtifact, getArtifact, load, commit, resume });
+  return Object.freeze({ rootPath: root, initialize, putArtifact, getArtifact, load, listRuns, commit, resume });
 }
