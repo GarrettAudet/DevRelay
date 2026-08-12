@@ -2,11 +2,9 @@
 
 This package is the active resume point for the DevRelay controlled Windows source/library release.
 
-The exact verified release-source target is `9d2b0d8e6b358dd6aed922de420224fe9efc320c`. The corrected 25-file candidate artifact is fully materialized and validated, but it is not yet persisted in the remote repository.
+The exact verified source target is `9d2b0d8e6b358dd6aed922de420224fe9efc320c`; verify run `31564635275` passed all four Node/OS jobs. The corrected candidate package is persisted at `dogfood/release-acceptance/candidate-001/` and is eligible for acceptance.
 
-Persistence run `31566991321` passed candidate validation, the 842-test release gate, catalog verification, and installed-package verification. Its push was rejected because the GitHub App attempted to modify a workflow file without workflow-file permission. Runner-local commit `6f7a84a` is not remote history.
-
-Current boundary: persist the exact candidate package, finalize workflow cleanup through an authorized path, regenerate the release catalog, and pass the four-job matrix. Exact owner approval follows persistence, not before it.
+The exact owner request is `BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001` / `sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e`. It has not been approved or rejected.
 
 Read in this order:
 
@@ -16,8 +14,4 @@ Read in this order:
 4. `PICKUP_PROMPT.md`
 5. `handoff.yaml`
 
-`MANIFEST.json` and `SHA256SUMS` bind the handoff bytes. `candidate-materializer.wip.txt` is preserved implementation provenance, not current authority.
-
-The release boundary excludes public npm publication, a one-click ChatGPT Desktop plug-in, a hosted backend, deployment, and production-service operation.
-
-The package under `handoff/2026-08-10-lifecycle-run-report-pickup/` remains immutable historical context.
+`MANIFEST.json` and `SHA256SUMS` bind the package bytes. `candidate-materializer.wip.txt` is preserved implementation provenance, not current authority.
