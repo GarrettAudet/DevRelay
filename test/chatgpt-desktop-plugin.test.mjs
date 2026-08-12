@@ -37,7 +37,7 @@ test("plugin manifest discovers one operator skill and one local MCP server", as
   assert.deepEqual(mcp.mcpServers.devrelay, {
     type: "stdio",
     command: "node",
-    args: ["../../src/chatgpt-desktop-mcp-server.mjs"],
+    args: ["../../src/chatgpt-desktop-mcp-transport.mjs"],
     cwd: ".",
     startup_timeout_sec: 30,
     tool_timeout_sec: 120,

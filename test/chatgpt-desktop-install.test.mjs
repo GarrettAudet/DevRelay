@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -21,11 +21,13 @@ function makeFixture(label = "fixture") {
   cpSync(path.join(root, "plugins", "devrelay"), path.join(repository, "plugins", "devrelay"), { recursive: true });
   mkdirSync(path.join(repository, ".agents", "plugins"), { recursive: true });
   cpSync(path.join(root, ".agents", "plugins", "marketplace.json"), path.join(repository, ".agents", "plugins", "marketplace.json"));
+  cpSync(path.join(root, "src"), path.join(repository, "src"), { recursive: true });
+  symlinkSync(path.join(root, "node_modules"), path.join(repository, "node_modules"), "junction");
   const target = path.join(base, "ChatGPT Desktop state");
   return {
     base, repository,
-    plugin: path.join(target, "plugins", "devrelay"),
     marketplace: path.join(target, "marketplaces", "devrelay"),
+    plugin: path.join(target, "marketplaces", "devrelay", "plugins", "devrelay"),
     receipt: path.join(target, "receipts", "install.json"),
   };
 }
@@ -48,12 +50,20 @@ windowsTest("clean install and idempotent reinstall work through paths with spac
   assert.equal(first.outputs.state, "installed");
   assert.equal(first.inputs.target.platform, "win32");
   assert.ok(existsSync(path.join(f.plugin, ".codex-plugin", "plugin.json")));
+  const installedMarketplace = JSON.parse(readFileSync(path.join(f.marketplace, "marketplace.json"), "utf8").replace(/^\uFEFF/, ""));
+  assert.equal(path.resolve(f.marketplace, installedMarketplace.plugins[0].source.path), f.plugin);
+  const installedMcp = JSON.parse(readFileSync(path.join(f.plugin, ".mcp.json"), "utf8").replace(/^\uFEFF/, "")).mcpServers.devrelay;
+  assert.equal(path.isAbsolute(installedMcp.args[0]), true);
+  assert.equal(path.isAbsolute(installedMcp.cwd), true);
+  assert.equal(path.isAbsolute(installedMcp.env.DEVRELAY_DESKTOP_RUN_ROOT), true);
+  assert.equal(path.isAbsolute(installedMcp.env.DEVRELAY_DESKTOP_CORE_ADAPTER), true);
   assert.ok(first.outputs.installedFiles.every(({ path: file }) => path.isAbsolute(file)));
   const before = first.outputs.installedFiles.map(({ path: file, digest }) => [file, digest]);
   const second = succeed(invoke(f, "install", f.receipt));
   assert.deepEqual(second.outputs.installedFiles.map(({ path: file, digest }) => [file, digest]), before);
   const health = execFileSync(powershell, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", healthScript, "-ReceiptPath", f.receipt, "-SkipDependencyCheck"], { encoding: "utf8" });
   assert.equal(JSON.parse(health).state, "healthy");
+  assert.equal(JSON.parse(health).mcpProofs, 3);
   writeFileSync(path.join(f.plugin, ".codex-plugin", "plugin.json"), "{}\n");
   const drifted = spawnSync(powershell, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", healthScript, "-ReceiptPath", f.receipt, "-SkipDependencyCheck"], { encoding: "utf8" });
   assert.notEqual(drifted.status, 0);

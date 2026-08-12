@@ -18,8 +18,9 @@ destinations; the examples keep operational state outside the checkout.
 ```powershell
 $Repo = (Resolve-Path .).Path
 $State = Join-Path $env:LOCALAPPDATA 'DevRelay\ChatGPTDesktop'
-$Plugin = Join-Path $State 'plugins\devrelay'
 $Marketplace = Join-Path $State 'marketplaces\devrelay'
+$Plugin = Join-Path $Marketplace 'plugins\devrelay'
+$RunRoot = Join-Path $State 'runs'
 $Receipt = Join-Path $State 'receipts\install.json'
 
 npm ci
@@ -29,15 +30,19 @@ npm run desktop:install:test
   -RepositoryPath $Repo `
   -PluginPath $Plugin `
   -MarketplacePath $Marketplace `
+  -RunRootPath $RunRoot `
   -ReceiptPath $Receipt
 & .\scripts\chatgpt-desktop-plugin-health-check.ps1 -ReceiptPath $Receipt
 ```
 
 The installer verifies the local manifest and marketplace entry, checks Node
-and Codex, copies the plugin atomically, and writes an installation receipt
+and Codex, installs the plugin beneath the marketplace root so
+`./plugins/devrelay` resolves, materializes an absolute repository-backed MCP
+transport configuration and dedicated run root, and writes an installation receipt
 containing the source revision, package digests, and every installed-file
 digest. Keep the receipt: upgrade, rollback, uninstall, and health checks bind
-to it. Do not use `-SkipDependencyCheck` for an operator install; that switch is
+to it. The repository checkout and its installed dependencies remain required;
+the installer does not copy `node_modules`. Do not use `-SkipDependencyCheck` for an operator install; that switch is
 for isolated tests.
 
 Add or select the installed personal marketplace in ChatGPT Desktop, enable

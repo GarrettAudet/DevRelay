@@ -11,6 +11,7 @@ param(
   [string]$MarketplacePath,
   [Parameter(Mandatory = $true)]
   [string]$ReceiptPath,
+  [string]$RunRootPath,
   [string]$PriorReceiptPath,
   [string]$RollbackReceiptPath,
   [string]$ExpectedRepositoryDigest,
@@ -94,7 +95,7 @@ function Test-ReceiptInstallation([string]$Path, [string]$Plugin, [string]$Marke
       [IO.Path]::GetFullPath($existing.inputs.target.pluginPath) -ne $Plugin -or
       [IO.Path]::GetFullPath($existing.inputs.target.marketplacePath) -ne $Marketplace) { return $false }
 
-  $actualFiles = @(Get-ChildItem -LiteralPath $Plugin,$Marketplace -File -Recurse | Sort-Object FullName)
+  $actualFiles = @(Get-ChildItem -LiteralPath $Marketplace -File -Recurse | Sort-Object FullName)
   $recordedFiles = @($existing.outputs.installedFiles)
   if ($actualFiles.Count -ne $recordedFiles.Count) { return $false }
   $recordedByPath = @{}
@@ -106,6 +107,8 @@ function Test-ReceiptInstallation([string]$Path, [string]$Plugin, [string]$Marke
 }
 
 if ($env:OS -ne 'Windows_NT') { throw 'ChatGPT Desktop installation is supported only on Windows.' }
+$nodeCommand = Get-Command node -ErrorAction SilentlyContinue
+if (-not $nodeCommand -or -not [IO.Path]::IsPathRooted([string]$nodeCommand.Source)) { throw 'Required dependency is unavailable: node' }
 $repository = (Resolve-Path -LiteralPath $RepositoryPath).Path
 $sourcePlugin = Join-Path $repository 'plugins\devrelay'
 $sourceMarketplace = Join-Path $repository '.agents\plugins\marketplace.json'
@@ -145,6 +148,16 @@ if ($RepositoryRevision -notmatch '^[0-9a-f]{40}$') { throw 'RepositoryRevision 
 $pluginTarget = [IO.Path]::GetFullPath($PluginPath)
 $marketplaceTarget = [IO.Path]::GetFullPath($MarketplacePath)
 $receiptTarget = [IO.Path]::GetFullPath($ReceiptPath)
+$expectedPluginTarget = [IO.Path]::GetFullPath((Join-Path $marketplaceTarget 'plugins\devrelay'))
+if ($pluginTarget -ne $expectedPluginTarget) {
+  throw 'PluginPath must equal <MarketplacePath>\plugins\devrelay so marketplace source.path ./plugins/devrelay resolves.'
+}
+$runRootTarget = if ($RunRootPath) { [IO.Path]::GetFullPath($RunRootPath) } else { [IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $marketplaceTarget) 'runs')) }
+$transportPath = [IO.Path]::GetFullPath((Join-Path $repository 'src\chatgpt-desktop-mcp-transport.mjs'))
+$coreAdapterPath = [IO.Path]::GetFullPath((Join-Path $repository 'src\chatgpt-desktop-core-command-adapter.mjs'))
+foreach ($runtimePath in @($transportPath, $coreAdapterPath)) {
+  if (-not (Test-Path -LiteralPath $runtimePath -PathType Leaf)) { throw "Required repository runtime path is missing: $runtimePath" }
+}
 $pluginParent = Split-Path -Parent $pluginTarget
 $marketplaceParent = Split-Path -Parent $marketplaceTarget
 Assert-ChildPath $pluginParent $pluginTarget 'PluginPath'
@@ -190,10 +203,22 @@ try {
       $resultManifestDigest = $rollbackIdentity.pluginManifestDigest
       Copy-Directory $rollbackBackupPlugin $stagePlugin
       Copy-Directory $rollbackBackupMarketplace $stageMarketplace
+      $nestedRollbackPlugin = Join-Path $stageMarketplace 'plugins\devrelay'
+      if (Test-Path -LiteralPath $nestedRollbackPlugin) { Remove-Item -LiteralPath $nestedRollbackPlugin -Recurse -Force }
     } else {
       Copy-Directory $sourcePlugin $stagePlugin
       New-Item -ItemType Directory -Path $stageMarketplace -Force | Out-Null
       Copy-Item -LiteralPath $sourceMarketplace -Destination (Join-Path $stageMarketplace 'marketplace.json') -Force
+      $installedMcpPath = Join-Path $stagePlugin '.mcp.json'
+      $installedMcp = Get-Content -LiteralPath $installedMcpPath -Raw | ConvertFrom-Json
+      $installedMcp.mcpServers.devrelay.command = $nodeCommand.Source
+      $installedMcp.mcpServers.devrelay.args = @($transportPath)
+      $installedMcp.mcpServers.devrelay.cwd = $repository
+      $installedMcp.mcpServers.devrelay | Add-Member -NotePropertyName env -NotePropertyValue ([ordered]@{
+        DEVRELAY_DESKTOP_RUN_ROOT = $runRootTarget
+        DEVRELAY_DESKTOP_CORE_ADAPTER = $coreAdapterPath
+      }) -Force
+      $installedMcp | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $installedMcpPath -Encoding utf8
     }
   }
 
@@ -208,10 +233,11 @@ try {
   if (Test-Path -LiteralPath $pluginTarget) { Remove-Item -LiteralPath $pluginTarget -Recurse -Force }
   if (Test-Path -LiteralPath $marketplaceTarget) { Remove-Item -LiteralPath $marketplaceTarget -Recurse -Force }
   if ($Operation -ne 'uninstall') {
-    New-Item -ItemType Directory -Path $pluginParent -Force | Out-Null
     New-Item -ItemType Directory -Path $marketplaceParent -Force | Out-Null
-    Move-Item -LiteralPath $stagePlugin -Destination $pluginTarget
     Move-Item -LiteralPath $stageMarketplace -Destination $marketplaceTarget
+    New-Item -ItemType Directory -Path $pluginParent -Force | Out-Null
+    Move-Item -LiteralPath $stagePlugin -Destination $pluginTarget
+    New-Item -ItemType Directory -Path $runRootTarget -Force | Out-Null
   }
 } catch {
   if (Test-Path -LiteralPath $pluginTarget) { Remove-Item -LiteralPath $pluginTarget -Recurse -Force }
@@ -226,7 +252,7 @@ try {
 $state = @{ install = 'installed'; upgrade = 'upgraded'; rollback = 'rolled-back'; uninstall = 'uninstalled' }[$Operation]
 $installedFiles = @()
 if ($Operation -ne 'uninstall') {
-  $installedFiles = @(Get-ChildItem -LiteralPath $pluginTarget,$marketplaceTarget -File -Recurse | Sort-Object FullName | ForEach-Object {
+  $installedFiles = @(Get-ChildItem -LiteralPath $marketplaceTarget -File -Recurse | Sort-Object FullName | ForEach-Object {
     [ordered]@{ path = $_.FullName; digest = Get-Sha256 $_.FullName }
   })
 }
@@ -236,7 +262,7 @@ $receipt = [ordered]@{
   inputs = [ordered]@{
     operation = $Operation; repository = ([Uri]$repository).AbsoluteUri; repositoryRevision = $RepositoryRevision
     repositoryContentDigest = $repositoryDigest; pluginManifestDigest = $pluginManifestDigest
-    target = [ordered]@{ platform = 'win32'; chatGptDesktopVersion = 'current'; pluginPath = $pluginTarget; marketplacePath = $marketplaceTarget }
+    target = [ordered]@{ platform = 'win32'; chatGptDesktopVersion = 'current'; pluginPath = $pluginTarget; marketplacePath = $marketplaceTarget; runRootPath = $runRootTarget; transportPath = $transportPath; coreAdapterPath = $coreAdapterPath }
   }
   outputs = [ordered]@{
     receiptId = 'DESKTOP-INSTALL-' + [Guid]::NewGuid().ToString('N').ToUpperInvariant()
