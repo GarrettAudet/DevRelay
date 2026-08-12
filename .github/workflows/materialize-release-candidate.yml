@@ -7,6 +7,7 @@ on:
       - codex/lifecycle-run-report-completion
     paths:
       - .github/workflows/materialize-release-candidate.yml
+      - scripts/run-release-candidate-materializer.mjs
       - handoff/2026-08-11-controlled-release-acceptance-pickup/candidate-materializer.wip.txt
       - src/business-acceptance-core.mjs
       - src/system-verification-core.mjs
@@ -48,9 +49,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p .devrelay
-          cp handoff/2026-08-11-controlled-release-acceptance-pickup/candidate-materializer.wip.txt .devrelay-release-candidate-materializer.mjs
-          node .devrelay-release-candidate-materializer.mjs | tee .devrelay/candidate-materialization-summary.json
-          rm .devrelay-release-candidate-materializer.mjs
+          node scripts/run-release-candidate-materializer.mjs | tee .devrelay/candidate-materialization-summary.json
       - name: Regenerate catalog for materialized bytes
         run: npm run release:catalog
       - name: Upload candidate and generated catalog
