@@ -45,14 +45,18 @@ jobs:
         run: echo "DEVRELAY_JAVA=${JAVA_HOME}/bin/java" >> "$GITHUB_ENV"
       - name: Install exact dependencies
         run: npm ci
-      - name: Materialize exact candidate through released APIs
+      - name: Regenerate pre-candidate source catalog
         shell: bash
         run: |
           mkdir -p .devrelay
-          node scripts/run-release-candidate-materializer.mjs | tee .devrelay/candidate-materialization-summary.json
+          npm run release:catalog
+          cp release/0.9.0.json .devrelay/source-release-catalog.json
+      - name: Materialize exact candidate through released APIs
+        shell: bash
+        run: node scripts/run-release-candidate-materializer.mjs | tee .devrelay/candidate-materialization-summary.json
       - name: Regenerate catalog for materialized bytes
         run: npm run release:catalog
-      - name: Upload candidate and generated catalog
+      - name: Upload candidate and generated catalogs
         uses: actions/upload-artifact@v4
         with:
           name: controlled-release-candidate-${{ github.sha }}
@@ -61,4 +65,5 @@ jobs:
           path: |
             dogfood/release-acceptance/candidate-001
             .devrelay/candidate-materialization-summary.json
+            .devrelay/source-release-catalog.json
             release/0.9.0.json
