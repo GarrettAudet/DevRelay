@@ -1,22 +1,31 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
-  "kind": "ArchitectureBaseline",
-  "baselineId": "architecture-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
-  "approvedDraft": {
-    "artifactId": "architecture-change-set-chatgpt-desktop-list-runs-v1",
-    "schema": "https://devrelay.dev/artifacts/architecture-change-set-draft/v1",
-    "mediaType": "application/vnd.devrelay.architecture-change-set-draft+json",
-    "digest": "sha256:35364064121c89f4658e481c5f5b9af6b9ee288d0d5bdcd32b5eaaeabcc59ee6",
-    "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/architecture-design/architecture-change-set-draft.json"
+  "kind": "ArchitectureChangeSetDraft",
+  "changeSetId": "architecture-change-set-chatgpt-desktop-list-runs-v1",
+  "operation": "design-change",
+  "projectArchitectureState": {
+    "artifactId": "project-architecture-state-chatgpt-desktop-list-runs-v1",
+    "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+    "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+    "digest": "sha256:419cb14a8421244a6dfcb33ddc28a9da1ac165d1a55c76e931d921fca2bbe71a",
+    "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/architecture-design/project-architecture-state.json"
   },
-  "requirementsBaseline": {
+  "baseArchitectureBaseline": {
+    "artifactId": "architecture-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+    "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+    "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+    "digest": "sha256:3ff2fef6cc16487dc1a3f78b42af614bb62d0685a679dd38d527ad7dca9fd710",
+    "uri": "devrelay://project/architecture-baseline.json"
+  },
+  "baseArchitectureDigest": "sha256:3ff2fef6cc16487dc1a3f78b42af614bb62d0685a679dd38d527ad7dca9fd710",
+  "targetRequirementsBaseline": {
     "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
     "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
     "mediaType": "application/vnd.devrelay.requirements-baseline+json",
     "digest": "sha256:ae454345ec6b1a09671bde5822ef73ad96683d19cf707beea86019943a599eb1",
     "uri": "devrelay://project/requirements-baseline.json"
   },
-  "projectOverviewBaseline": {
+  "targetProjectOverviewBaseline": {
     "artifactId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
     "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
     "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
@@ -36,6 +45,23 @@
     "mediaType": "application/vnd.devrelay.repository-snapshot+json",
     "digest": "sha256:777a4761b444d95bd57e0d1e2f8af9111cd494cf94552dada645314605597f8e",
     "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/architecture-design/repository-snapshot.json"
+  },
+  "changeDisposition": "architecture-change",
+  "scope": {
+    "level": "change",
+    "boundary": "Read-only local persisted-run discovery through the existing ChatGPT Desktop MCP boundary.",
+    "in": [
+      "Run-store enumeration and integrity classification",
+      "Core-owned privacy-safe summary projection",
+      "Bounded stable pagination",
+      "Closed Desktop MCP command"
+    ],
+    "out": [
+      "Run mutation or repair",
+      "Prompt, source, credential, artifact-byte, or raw-evidence disclosure",
+      "Hosted or cross-project discovery",
+      "Lifecycle routing, Gate, graph, execution, or integration authority"
+    ]
   },
   "sections": {
     "technicalDesign": {
@@ -11703,7 +11729,7 @@
           {
             "id": "ADR-DESKTOP-006",
             "title": "Use store-owned read-only discovery with Core-owned safe projection",
-            "status": "accepted",
+            "status": "proposed",
             "contextAndProblemStatement": "Desktop operators need persisted-run discovery without exposing sensitive artifacts or permitting mutation of corrupt state.",
             "decisionDrivers": [
               "Determinism",
@@ -14537,22 +14563,136 @@
       }
     }
   },
-  "approvalPolicyVersion": "architecture-gate/0.1.0",
-  "approvalEvidence": [
+  "changes": {
+    "elementChanges": [],
+    "relationshipChanges": [],
+    "viewChanges": [],
+    "interfaceChanges": [
+      {
+        "changeId": "CHG-DESKTOP-INTERFACE-MODIFY-IF-DESKTOP-MCP-COMMANDS-LIST",
+        "entityKind": "interface",
+        "entityId": "IF-DESKTOP-MCP-COMMANDS",
+        "operation": "modify",
+        "rationale": "Add the approved bounded list-runs request and safe response to the existing Desktop MCP boundary.",
+        "compatibilityImpact": "backward-compatible",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-LIST-RUNS-001"
+        ],
+        "expectedBaseDigest": "sha256:851453257c307e6e3dc1b0a2a08897c6e20c3f7e78a5988baa7de91ac578f1d8",
+        "targetDigest": "sha256:beed29d924233cbc2d9ee9768bad161d112007a0954c43a59d041b1b6b67e80a"
+      }
+    ],
+    "constraintChanges": [],
+    "decisionChanges": [
+      {
+        "changeId": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-006",
+        "decisionId": "ADR-DESKTOP-006",
+        "operation": "add",
+        "rationale": "Record the non-mutating storage and Core projection boundary.",
+        "sourceRequirementIds": [
+          "US-DEV-DESKTOP-LIST-RUNS-001"
+        ]
+      }
+    ]
+  },
+  "traceability": [
     {
-      "artifactId": "architecture-gate-review-chatgpt-desktop-list-runs-v1",
-      "schema": "https://devrelay.dev/evidence/architecture-gate-review/v1",
-      "mediaType": "application/vnd.devrelay.architecture-gate-review+json",
-      "digest": "sha256:8f5dec88508860dfa0a7776d0ffbcc509c725b71e568143e009f839f8acbec16",
-      "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/architecture-design/architecture-gate-review.json"
-    },
-    {
-      "artifactId": "architecture-gate-approval-chatgpt-desktop-list-runs-v1",
-      "schema": "https://devrelay.dev/evidence/architecture-gate-approval/v1",
-      "mediaType": "application/vnd.devrelay.architecture-gate-approval+json",
-      "digest": "sha256:145520212ae5dfdadff7e150715349bace285e09722ebbb26f4a9ad3a62dde1f",
-      "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/architecture-design/architecture-gate-owner-approval.json"
+      "requirementId": "US-DEV-DESKTOP-LIST-RUNS-001",
+      "disposition": "designed",
+      "targets": [
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-INTERFACE-MODIFY-IF-DESKTOP-MCP-COMMANDS-LIST"
+        },
+        {
+          "kind": "change",
+          "id": "CHG-DESKTOP-DECISION-ADD-ADR-DESKTOP-006"
+        },
+        {
+          "kind": "decision",
+          "id": "ADR-DESKTOP-006"
+        },
+        {
+          "kind": "interface",
+          "id": "IF-DESKTOP-MCP-COMMANDS"
+        },
+        {
+          "kind": "technical-design",
+          "id": "TD-DESKTOP-RUNTIME-001"
+        }
+      ],
+      "rationale": "The typed MCP interface and storage-boundary decision jointly realize this approved requirement."
     }
   ],
-  "sourceRefs": []
+  "assumptions": [
+    {
+      "id": "ASM-DESKTOP-LIST-LOCAL-STORE",
+      "statement": "The command lists only the currently configured local project/store.",
+      "status": "confirmed",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-DESKTOP-LIST-METADATA-LEAK",
+      "statement": "Unbounded or open-ended summaries could leak sensitive persisted content.",
+      "impact": "Private source or credentials could be disclosed through Desktop.",
+      "mitigation": "Use a closed safe-field projection and canary-based privacy tests."
+    },
+    {
+      "id": "RISK-DESKTOP-LIST-CORRUPTION-MUTATION",
+      "statement": "Enumeration could accidentally repair or rewrite corrupt state.",
+      "impact": "Forensic evidence and deterministic recovery semantics could be destroyed.",
+      "mitigation": "Use read-only enumeration and pre/post byte-and-metadata hashes."
+    }
+  ],
+  "requiredEvidence": [
+    "architecture/exhaustive-semantic-diff",
+    "architecture/gate-review",
+    "architecture/madr-decision",
+    "architecture/openspec-design",
+    "architecture/structurizr-model-preservation"
+  ],
+  "sourceRefs": [
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:ae454345ec6b1a09671bde5822ef73ad96683d19cf707beea86019943a599eb1",
+        "uri": "devrelay://project/requirements-baseline.json"
+      }
+    },
+    {
+      "role": "architecture-baseline",
+      "artifact": {
+        "artifactId": "architecture-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:3ff2fef6cc16487dc1a3f78b42af614bb62d0685a679dd38d527ad7dca9fd710",
+        "uri": "devrelay://project/architecture-baseline.json"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-chatgpt-desktop-list-runs-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:eee75abede887e6b115a7daa8468bc21e729dc0f36bc18734ed07406127c95f6",
+        "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/project-context.json"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-a85a6bc",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:777a4761b444d95bd57e0d1e2f8af9111cd494cf94552dada645314605597f8e",
+        "uri": "devrelay://dogfood/chatgpt-desktop-list-runs/architecture-design/repository-snapshot.json"
+      }
+    }
+  ]
 }
