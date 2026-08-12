@@ -90,6 +90,10 @@ if (restoreStart < 0 || restoreEnd < 0) {
   throw new Error("candidate materializer restoreTraceability boundary was not found");
 }
 source = `${source.slice(0, restoreStart)}${restoreReplacement}${source.slice(restoreEnd)}`;
+source = source.replaceAll(
+  "requirementsBaseline: requirementsLoaded.ref",
+  "requirementsBaseline: ref(requirementsLoaded.ref.artifactId, requirementsLoaded.ref.digest)",
+);
 source = source.replace(
   'postReconciliationDiagnostics.filter(({ code }) => code === "TG_MISSING_ARCHITECTURE_REALIZATION" && ({ blocking: true }))',
   'postReconciliationDiagnostics.filter(({ code, blocking }) => code === "TG_MISSING_ARCHITECTURE_REALIZATION" && blocking === true)',
