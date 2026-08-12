@@ -89,14 +89,14 @@ export function createSystemVerificationTraceabilityContributor() {
       const evidence = new Map(values.evidence.items.map((entry, index) => [entry.evidenceId, { entry, index }]));
       const nodes = [];
       const edges = [];
-      for (const [index, disposition] of values.evaluation.dispositions.entries()) {
+      for (const disposition of values.evaluation.dispositions) {
         if (disposition.status !== "satisfied" || disposition.evidenceIds.length === 0) fail(`verified obligation ${disposition.obligationId} lacks satisfied evidence`);
         const obligation = obligations.get(disposition.obligationId);
         if (!obligation) fail(`orphan disposition ${disposition.obligationId}`);
         for (const evidenceId of disposition.evidenceIds) {
           const found = evidence.get(evidenceId);
           if (!found || found.entry.obligationId !== disposition.obligationId || found.entry.status !== "pass") fail(`evidence ${evidenceId} is missing, orphaned, or not passing`);
-          if (!nodes.some((node) => node.stableId === evidenceId)) nodes.push({ kind: "verification-evidence", stableId: evidenceId, label: evidenceId, attributes: { evidenceKind: found.entry.kind, artifact: immutable(found.entry.artifact), producer: immutable(found.entry.producer), systemVerificationResult: immutable(pointer(values.result, "resultId", "resultDigest")) }, sourceLocators: [locator(values.evidenceLoaded, `/items/${found.index}`, found.entry), locator(values.resultLoaded, "", values.result)] });
+          if (!nodes.some((node) => node.stableId === evidenceId)) nodes.push({ kind: "verification-evidence", stableId: evidenceId, label: evidenceId, verificationStatus: "pass", attributes: { evidenceKind: found.entry.kind, artifact: immutable(found.entry.artifact), producer: immutable(found.entry.producer), systemVerificationResult: immutable(pointer(values.result, "resultId", "resultDigest")) }, sourceLocators: [locator(values.evidenceLoaded, `/items/${found.index}`, found.entry), locator(values.resultLoaded, "", values.result)] });
           if (obligation.kind === "acceptance-criterion") edges.push({ kind: "verified-by", source: endpoint("acceptance-criterion", obligation.sourceRef, "approved", REQUIREMENTS_SCOPE), target: endpoint("verification-evidence", evidenceId, "approved", SCOPE), rationale: "The exact verified SystemVerification result records passing evidence for this acceptance criterion.", sourceLocators: [locator(values.obligationsLoaded, `/obligations/${values.obligations.obligations.indexOf(obligation)}`, obligation), locator(values.resultLoaded, "/evaluation", values.result.evaluation), locator(values.evidenceLoaded, `/items/${found.index}`, found.entry)] });
         }
       }
