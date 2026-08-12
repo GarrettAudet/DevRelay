@@ -1,0 +1,142 @@
+name: persist-release-candidate
+
+on:
+  push:
+    branches:
+      - codex/lifecycle-run-report-completion
+    paths:
+      - .github/workflows/persist-release-candidate.yml
+      - scripts/persist-release-candidate.mjs
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  persist:
+    name: Persist exact controlled release candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Bind DevRelay Java executable
+        shell: bash
+        run: echo "DEVRELAY_JAVA=${JAVA_HOME}/bin/java" >> "$GITHUB_ENV"
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Resolve and download exact candidate artifact
+        id: artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id=31564607304
+          expected_name=controlled-release-candidate-9d2b0d8e6b358dd6aed922de420224fe9efc320c
+          expected_id=9129184024
+          expected_digest=sha256:137f05e9685d5c504f26b53c31c2814243b538ab0a7101d451afc1fed7b12ed6
+          artifact="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" --jq ".artifacts[] | select(.name == \"${expected_name}\")")"
+          [[ "$(jq -r '.id' <<<"$artifact")" == "$expected_id" ]]
+          [[ "$(jq -r '.digest' <<<"$artifact")" == "$expected_digest" ]]
+          [[ "$(jq -r '.expired' <<<"$artifact")" == "false" ]]
+          destination="$RUNNER_TEMP/exact-release-candidate"
+          mkdir -p "$destination"
+          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name "$expected_name" --dir "$destination"
+          echo "destination=${destination}" >> "$GITHUB_OUTPUT"
+      - name: Validate and stage exact candidate transaction
+        run: node scripts/persist-release-candidate.mjs "${{ steps.artifact.outputs.destination }}"
+      - name: Regenerate final pre-approval release catalog
+        run: npm run release:catalog
+      - name: Verify complete pre-approval release tree
+        run: npm run release:check
+      - name: Commit exact candidate transaction
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch="$GITHUB_REF_NAME"
+          starting_commit="$GITHUB_SHA"
+          git fetch origin "$branch"
+          remote_commit="$(git rev-parse "origin/${branch}")"
+          if [[ "$remote_commit" != "$starting_commit" ]]; then
+            echo "Branch advanced from ${starting_commit} to ${remote_commit}; refusing persistence commit." >&2
+            exit 1
+          fi
+          git merge-base --is-ancestor 9d2b0d8e6b358dd6aed922de420224fe9efc320c HEAD
+          test -f dogfood/release-acceptance/candidate-001/23-business-acceptance-approval-request.json
+          test ! -e .github/workflows/persist-release-candidate.yml
+          test ! -e scripts/persist-release-candidate.mjs
+          grep -q '^  workflow_dispatch:$' .github/workflows/materialize-release-candidate.yml
+          if grep -q '^  push:$' .github/workflows/materialize-release-candidate.yml; then
+            echo "Materialization workflow still has a push trigger." >&2
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            final_commit="$(git rev-parse HEAD)"
+          else
+            git commit -m "Persist exact controlled release candidate"
+            final_commit="$(git rev-parse HEAD)"
+            git push origin "HEAD:${branch}"
+          fi
+          echo "final_commit=${final_commit}" >> "$GITHUB_OUTPUT"
+      - name: Dispatch exact final verification
+        id: dispatch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINAL_COMMIT: ${{ steps.commit.outputs.final_commit }}
+        run: |
+          set -euo pipefail
+          marker="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/verify.yml/dispatches" -f ref="$GITHUB_REF_NAME"
+          echo "marker=${marker}" >> "$GITHUB_OUTPUT"
+          echo "final_commit=${FINAL_COMMIT}" >> "$GITHUB_OUTPUT"
+      - name: Require exact final four-job matrix
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINAL_COMMIT: ${{ steps.dispatch.outputs.final_commit }}
+          DISPATCH_MARKER: ${{ steps.dispatch.outputs.marker }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 180); do
+            raw_runs="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${FINAL_COMMIT}&per_page=100")"
+            runs="$(jq --arg marker "$DISPATCH_MARKER" '[.workflow_runs[] | select(.name == "verify" and .event == "workflow_dispatch" and .created_at >= $marker)] | sort_by(.created_at) | reverse' <<<"$raw_runs")"
+            run_id="$(jq -r '.[0].id // empty' <<<"$runs")"
+            if [[ -z "$run_id" ]]; then
+              sleep 10
+              continue
+            fi
+            status="$(jq -r '.[0].status' <<<"$runs")"
+            conclusion="$(jq -r '.[0].conclusion // empty' <<<"$runs")"
+            if [[ "$status" != "completed" ]]; then
+              sleep 10
+              continue
+            fi
+            if [[ "$conclusion" != "success" ]]; then
+              echo "Exact final verify run ${run_id} completed with ${conclusion}." >&2
+              exit 1
+            fi
+            jobs="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/jobs?per_page=100")"
+            [[ "$(jq '[.jobs[] | select(.conclusion == "success")] | length' <<<"$jobs")" == "4" ]]
+            [[ "$(jq '.total_count' <<<"$jobs")" == "4" ]]
+            echo "Exact final verify run ${run_id} passed all four jobs for ${FINAL_COMMIT}."
+            exit 0
+          done
+          echo "No completed exact final verify run was available for ${FINAL_COMMIT}." >&2
+          exit 1

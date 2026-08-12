@@ -3,83 +3,43 @@
 ## Exact repository position
 
 - Branch: `codex/lifecycle-run-report-completion`
-- Latest checkpoint before this update: `dbd85ba1bdb0dd6ec93824b93aa1eec5fec95f64`
-- Active boundary: catalog-only source stabilization and exact verify binding
-- No authoritative final acceptance record exists yet
+- Exact verified source target: `9d2b0d8e6b358dd6aed922de420224fe9efc320c`
+- Source verify run: `31564635275` (Node 20/22 on Ubuntu/Windows: 4/4 pass)
+- Materialization run: `31564607304`
+- Candidate artifact: `9129184024`
+- Active boundary: exact candidate persistence
 
-## What is complete
+## Completed
 
-The V1 construction circuit through BusinessAcceptance is implemented. Release
-catalog and installed-package checks are portable across Windows/Linux and Node
-20/22. Java 21 is provisioned and bound on both operating-system families.
+The released pre-approval circuit has completed: graph recovery, two approved design links, 99-obligation SystemVerification, exact zero-call replay, trusted verification traceability, exhaustive BusinessAcceptance technical coverage, BusinessAcceptance evaluation, and exact zero-call replay.
 
-The final pre-approval circuit has executed successfully through released APIs:
+The exact workflow artifact was redownloaded under a unique name and validated against its GitHub artifact metadata and ZIP digest. The candidate package contains exactly 25 canonical JSON artifacts. The candidate raw digest, request digest, proof digest, graph checkpoint, SystemVerification result, target commit, coverage counts, and exclusions close over one consistent lineage.
 
-- recovery of the complete persisted TraceabilityGraph history;
-- atomic merge of the two owner-authorized designed-by links;
-- 99-obligation SystemVerification through test and review adapters;
-- exact zero-call SystemVerification replay;
-- trusted SystemVerification traceability merge;
-- exhaustive BusinessAcceptance technical-coverage derivation;
-- BusinessAcceptance evaluation and exact zero-call replay.
+## Active transaction
 
-The trusted SystemVerification contributor now marks passing evidence nodes with
-`verificationStatus: "pass"`, closing the graph traversal defect that previously
-blocked BusinessAcceptance.
+A temporary bounded workflow and script are being introduced solely to persist those exact bytes. The transaction will:
 
-## Current bootstrap evidence
+1. resolve the immutable workflow artifact by run, name, ID, and digest;
+2. validate every candidate JSON file and the critical cross-artifact bindings;
+3. copy the package without reconstruction;
+4. update `CURRENT_STATUS.md` and the entire active handoff package;
+5. freeze the materializer to explicit dispatch only;
+6. remove its own temporary workflow and script;
+7. regenerate the release catalog after all other bytes are final;
+8. run the complete release gate;
+9. push under branch compare-and-swap; and
+10. dispatch and require the exact four-job final matrix.
 
-Commit `dbd85ba` added a guarded source-catalog bootstrap. Workflow run
-`31564333006` generated and uploaded the exact source catalog as artifact
-`9128889947`. The catalog records 3,467 raw-byte file digests, 11 modules, 24
-plug-ins, and 281 npm-package files. The job then stopped at the committed-file
-check before verify binding or candidate generation, as designed.
+The transient `8e280127` matrix failure is catalog-only: all 842 tests passed, while `CURRENT_STATUS.md` differed from the previously generated catalog.
 
-The next workflow revision will commit only `release/0.9.0.json` after checking
-that no other tracked file changed, explicitly dispatch `verify` for that new
-catalog commit, and continue only after all four jobs pass for the exact SHA.
+## Exact candidate boundary
 
-## What is not complete
+- Candidate: `BA-CANDIDATE-ed2476ac90e1359f796d1ab8`
+- Semantic digest: `sha256:92b25f9e6e898b780e126079ce945a92841bd3e8508dc18503d4d85f2d42ee22`
+- Raw digest: `sha256:f0ed398f7abdd8c9540ba83842d88ecf728433011fbc2dbfe05bc751a99c8f04`
+- Request: `BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001`
+- Request digest: `sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e`
+- Requested decision: `approved`
+- Current status: `awaiting-exact-owner-approval`
 
-The successful pre-approval candidate generated earlier names source commit
-`477e7a4` and cannot be promoted after the passing-evidence correction. No
-corrected candidate is yet persisted against a same-commit successful verify
-run.
-
-No exact corrected owner approval, BusinessAcceptanceGate record, acceptance
-traceability merge, final release evidence commit, or final supported-matrix
-proof exists yet.
-
-## Approval state
-
-The owner authorized the controlled source/library release scope, satisfaction
-accounting for 81 acceptance criteria, 18 NFRs, 8 business objectives, 9 success
-metrics, and 32 scope identities, and the two designed-by links from
-`US-DEV-SPECIFY-001` and `NFR-DEV-DETERMINISM-001` to `EL-DEVRELAY-CORE`.
-
-The earlier exact approval named superseded source. BusinessAcceptanceGate must
-not reuse it silently. The corrected candidate must expose its exact target
-commit, semantic digest, raw digest, technical-coverage digest, and exclusions.
-
-## Safe continuation
-
-```text
-commit self-bootstrapping workflow and current-state update
--> commit exact generated catalog only under branch compare-and-swap
--> dispatch verify workflow for resulting commit
--> require Ubuntu/Windows and Node 20/22 success
--> materialize corrected candidate with exact SHA/run binding
--> inspect and persist exact approval request
--> execute BusinessAcceptanceGate only with exact owner decision
--> merge trusted acceptance traceability
--> require zero blocking diagnostics
--> persist final evidence, catalog, handoff, and release metadata
--> run final release check and four-job matrix
-```
-
-## Trust boundary
-
-Do not hand-author SystemVerificationResult, technical coverage,
-BusinessAcceptanceCandidate, owner approval, BusinessAcceptanceRecord,
-traceability updates, merge receipts, or final completion claims. The released
-Core, Gate, contributor, graph, and checkpoint APIs must produce them.
+No corrected owner approval, BusinessAcceptanceRecord, acceptance traceability merge, publication, deployment, or final release claim exists yet. General instructions to continue do not replace the exact owner decision required after persistence.
