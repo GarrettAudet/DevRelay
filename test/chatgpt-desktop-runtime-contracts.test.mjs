@@ -116,9 +116,9 @@ test("run view is read-only, report-policy-bound, and explicit about unavailable
   reject(mutate(value, (copy) => { delete copy.outputs.performance.reason; }));
 });
 
-test("validator approval bindings exactly match ContractBaseline 1.7.0", () => {
+test("validator approval bindings exactly match ContractBaseline 1.8.0", () => {
   const baseline = JSON.parse(readFileSync(new URL("../project/contract-baseline.json", import.meta.url), "utf8"));
-  assert.equal(baseline.version, "1.7.0");
+  assert.equal(baseline.version, "1.8.0");
   const expected = Object.fromEntries(baseline.contracts.filter(({ interfaceIntentId }) => CHATGPT_DESKTOP_RUNTIME_INTERFACE_INTENT_IDS.includes(interfaceIntentId)).map(({ id, interfaceIntentId, contentDigest }) => [interfaceIntentId, { contractId: id, contentDigest }]));
   assert.deepEqual(CHATGPT_DESKTOP_RUNTIME_APPROVED_CONTRACTS, expected);
 });
