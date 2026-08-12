@@ -3,7 +3,7 @@
 Last reconciled: 2026-08-11
 Active branch: `codex/lifecycle-run-report-completion`
 Verified controlled-release source commit: `477e7a449cb90d4ecb86c7271cb59f3e2d09b0d6`
-Active boundary: final SystemVerification and BusinessAcceptance materialization
+Active boundary: executable release-candidate materialization
 
 This file is a human-readable status projection. Exact module artifacts, Gate
 records, graph checkpoints, release evidence, commits, and CI runs remain the
@@ -14,9 +14,17 @@ authoritative records.
 The portable DevRelay source/library candidate for ChatGPT Desktop on Windows
 is source-verification green. Commit `477e7a4` passed the complete local release
 gate and all four GitHub Actions Node/OS jobs. The repository is not yet marked
-BusinessAccepted because the final executable lifecycle proof has not been
-materialized and the owner's prior exact approval named superseded commit
+BusinessAccepted because the final executable lifecycle proof has not yet been
+persisted and the owner's prior exact approval named superseded commit
 `33e65ba`.
+
+A dedicated GitHub Actions materialization workflow was added in commit
+`17cfcff0ef8cb306e6f1439eaa270db15293e3b9`. It executes the preserved candidate
+materializer through the released SystemVerification, BusinessAcceptance, and
+TraceabilityGraph APIs, regenerates the release catalog for the produced bytes,
+and uploads both the candidate package and generated catalog for inspection.
+The workflow result is pending at this checkpoint. No candidate or acceptance
+claim may be made until its exact output is retrieved and validated.
 
 Current position:
 
@@ -25,12 +33,19 @@ RequirementsGathering through ChangeIntegration     COMPLETE
 Traceability reconciliation                         COMPLETE except final persisted two-link update
 SystemVerification implementation                   COMPLETE and release-green
 BusinessAcceptance implementation                   COMPLETE and release-green
-Final executable SystemVerification run             NEXT
-Final BusinessAcceptance candidate                  NEXT
-Exact owner approval for corrected candidate        REQUIRED
+Candidate materialization workflow                  STARTED
+Final executable SystemVerification run             IN WORKFLOW
+Final BusinessAcceptance candidate                  IN WORKFLOW
+Exact owner approval for corrected candidate        REQUIRED AFTER MATERIALIZATION
 BusinessAcceptanceGate + acceptance graph merge     PENDING
 Release handoff / final metadata commit              PENDING
 ```
+
+The ordinary release-check matrix is expected to remain temporarily red after
+adding the workflow because the content-addressed release catalog has not yet
+been committed for that new repository byte. The materialization workflow
+regenerates the exact catalog alongside the candidate so both can be committed
+transactionally after inspection.
 
 No public npm publication, one-click ChatGPT Desktop plug-in, hosted backend,
 deployment, or production-service claim is in scope.
@@ -48,6 +63,8 @@ deployment, or production-service claim is in scope.
 - `477e7a4`: corrected SystemVerification traceability to carry the semantic
   `SystemVerificationResult` reference required by downstream
   BusinessAcceptance coverage derivation.
+- `17cfcff`: added an isolated candidate-materialization workflow that does not
+  grant Gate, graph, owner-approval, publication, or deployment authority.
 
 ## Verification evidence
 
@@ -70,6 +87,10 @@ GitHub Actions run `31497854653` at exact commit `477e7a4`:
 - Node 20 / Ubuntu: pass
 - Node 22 / Ubuntu: pass
 
+GitHub Actions run `31499685375` at handoff commit `60ee968` also passed all
+four jobs. This confirms that the handoff and pending release metadata remained
+source-verification green before the materialization workflow was introduced.
+
 ## Final acceptance scope already authorized by the owner
 
 The owner authorized recording 81 acceptance criteria, 18 non-functional
@@ -85,11 +106,10 @@ downstream-lineage correction, so a trustworthy final Gate must present the
 new exact candidate and obtain approval bound to its candidate raw digest and
 corrected target commit. Do not silently reuse the old exact approval.
 
-## Paused work in progress
+## Active materialization circuit
 
-A candidate materializer draft is preserved in the latest pickup package as
-`candidate-materializer.wip.txt`. It is not execution evidence and has not been
-run. Its intended circuit is:
+The workflow copies the preserved materializer into a temporary repository-root
+module so its relative imports and repository root remain exact, then executes:
 
 ```text
 restore approved graph checkpoint
@@ -102,10 +122,14 @@ restore approved graph checkpoint
 -> emit an exact owner-approval request
 ```
 
-After exact approval, the next owner must execute BusinessAcceptanceGate,
-merge the trusted BusinessAcceptance contributor, require zero blocking graph
-diagnostics, update release/handoff artifacts, run the full release gate,
-commit, push, and verify the four-job matrix.
+The temporary module is deleted before release-catalog regeneration. Only the
+persisted candidate artifacts, workflow byte, and other tracked repository
+files may enter the generated catalog.
+
+After exact approval, execute BusinessAcceptanceGate, merge the trusted
+BusinessAcceptance contributor, require zero blocking graph diagnostics, update
+release and handoff artifacts, run the full release gate, commit, push, and
+verify the four-job matrix.
 
 ## Pickup
 
