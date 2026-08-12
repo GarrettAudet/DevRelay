@@ -1,19 +1,19 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "ProjectOverviewBaseline",
-  "baselineId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
-  "version": "1.9.0",
+  "baselineId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+  "version": "1.8.0",
   "approvedOverviewCandidate": {
-    "artifactId": "project-overview-change-set-6e377dd3b77f713a4db07a51",
-    "digest": "sha256:be9850a1157d35b223562aa7275f5a3746f8893496709ea21c58892a4cf04fef"
+    "artifactId": "project-overview-change-set-chatgpt-desktop-runtime-v1",
+    "digest": "sha256:d4273625d1b6669ed53aed1c39a092edd31dc9c922e48ebcc29c544cbbf55079"
   },
   "supersedes": {
-    "artifactId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-    "digest": "sha256:30889842e88d079a91e9e33e5c288db9a0fa9c7a5d6d9c251f1ac22d669f20df"
+    "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+    "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
   },
   "requirementsBaseline": {
-    "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
-    "digest": "sha256:ae454345ec6b1a09671bde5822ef73ad96683d19cf707beea86019943a599eb1"
+    "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+    "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
   },
   "projection": {
     "id": "devrelay.requirements-to-project-overview",
@@ -689,39 +689,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
-            }
-          }
-        ]
-      },
-      {
-        "id": "CAP-DEV-DESKTOP-RUN-DISCOVERY-001",
-        "name": "ChatGPT Desktop run discovery",
-        "description": "Discover and page through persisted local DevRelay runs using deterministic privacy-safe summaries without mutating run state.",
-        "businessObjectiveIds": [
-          "BO-DEV-DETERMINISM-001",
-          "BO-DEV-OBSERVABILITY-001",
-          "BO-DEV-QUALITY-001"
-        ],
-        "userIds": [
-          "USR-DEV-WORKFLOW-AUTHOR-001"
-        ],
-        "audience": "user-facing",
-        "key": true,
-        "priority": "must",
-        "sourceRefs": [
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-list-runs-v1",
-              "digest": "sha256:87fea1db321501a88a1a65076ad534d94a736a2a779a7d4235de5e31d2b7846e"
-            },
-            "location": "Project owner approved the exact list-runs scope in chat."
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-              "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
             }
           }
         ]
@@ -1879,27 +1846,6 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
               "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
-            }
-          }
-        ]
-      },
-      {
-        "id": "SCOPE-DEV-DESKTOP-LIST-RUNS-001",
-        "statement": "A read-only, paginated, privacy-safe local Desktop command for persisted run discovery.",
-        "sourceRefs": [
-          {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-chatgpt-desktop-list-runs-v1",
-              "digest": "sha256:87fea1db321501a88a1a65076ad534d94a736a2a779a7d4235de5e31d2b7846e"
-            },
-            "location": "Project owner approved the exact list-runs scope in chat."
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-              "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
             }
           }
         ]
@@ -5860,8 +5806,6 @@
         "priority": "must",
         "acceptanceCriterionIds": [
           "AC-DEV-DESKTOP-DETERMINISM-001",
-          "AC-DEV-DESKTOP-LIST-RUNS-ORDER-001",
-          "AC-DEV-DESKTOP-LIST-RUNS-PAGE-001",
           "AC-DEV-DESKTOP-RESUME-001"
         ],
         "sourceRefs": [
@@ -6240,7 +6184,6 @@
         "target": "Zero unapproved secret or credential disclosures.",
         "priority": "must",
         "acceptanceCriterionIds": [
-          "AC-DEV-DESKTOP-LIST-RUNS-PRIVACY-001",
           "AC-DEV-RUN-SECURITY-001"
         ],
         "sourceRefs": [
@@ -7859,21 +7802,50 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "implementation",
-      "summary": "The controlled ChatGPT Desktop Windows release is building devrelay_list_runs as its clean end-to-end production feature proof.",
+      "summary": "The controlled library baseline is being extended into a release-ready ChatGPT Desktop for Windows product with an installable local plugin, typed local MCP bridge, one task per runnable work item, one live lifecycle path, and clean-install goal-to-BusinessAcceptance proof.",
       "sourceRefs": [
+        {
+          "role": "capability-evidence",
+          "artifact": {
+            "artifactId": "official-host-capability-evidence-chatgpt-desktop-runtime-v1",
+            "digest": "sha256:8245540dfae91f39e476af8de080e09c90e3afd42c6ca344022767e4d7fdc348"
+          },
+          "location": "Official OpenAI plugin, Desktop MCP, and Codex app-server documentation retrieved 2026-08-11"
+        },
         {
           "role": "goal",
           "artifact": {
-            "artifactId": "goal-chatgpt-desktop-list-runs-v1",
-            "digest": "sha256:87fea1db321501a88a1a65076ad534d94a736a2a779a7d4235de5e31d2b7846e"
+            "artifactId": "goal-chatgpt-desktop-runtime-v1",
+            "digest": "sha256:de1926c89eb33b4aac37d4c0a3bb048c53b6d7d934c080d4f75a1d8bc9bc4f07"
+          }
+        },
+        {
+          "role": "owner-decision",
+          "artifact": {
+            "artifactId": "owner-decisions-chatgpt-desktop-runtime-v1",
+            "digest": "sha256:4b23f9fe9a9b459a3f1d7eda1daba9535a35014040fae15de94d9494e7236e79"
           },
-          "location": "Project owner approved the exact list-runs scope in chat."
+          "location": "All three checkpoint-bound recommended decisions approved in chat"
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-chatgpt-desktop-runtime-v1",
+            "digest": "sha256:54ce2e60cf0a5d4309c529bb6b06867bca53d174b703784dc46c9d5a596696d0"
+          }
+        },
+        {
+          "role": "project-overview-baseline",
+          "artifact": {
+            "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+            "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+          }
         },
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
-            "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
+            "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+            "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
           }
         }
       ]
@@ -7881,11 +7853,11 @@
   },
   "renderedDocument": {
     "path": "ProjectOverview.md",
-    "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
     "mediaType": "text/markdown; charset=utf-8",
+    "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
     "artifact": {
-      "artifactId": "project-overview-markdown-7fb20b2c67eff7c573eab9ef",
-      "digest": "sha256:429c5adc50c98e0bc93125ba03ab053aab01713cb585efb8eabd6694bbd06221"
+      "artifactId": "project-overview-markdown-chatgpt-desktop-runtime-v1",
+      "digest": "sha256:0d87632277c2290671a1e1500805475128bf9b951e3cad2a449a81a7360c9988"
     },
     "renderer": {
       "id": "devrelay.project-overview.markdown",
@@ -7895,8 +7867,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-chatgpt-desktop-list-runs-v1",
-      "digest": "sha256:3812d268e835a31c3efc8da11eac655eff5c29603c6edf8226d3d056f652b126"
+      "artifactId": "requirements-gate-approval-chatgpt-desktop-runtime-v1",
+      "digest": "sha256:3c333ca4e8959f1b4c0b5ff3eb0499d2091015194960898d95380742500356ba"
     }
   ]
 }

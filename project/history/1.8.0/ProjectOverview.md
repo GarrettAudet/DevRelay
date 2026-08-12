@@ -49,11 +49,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Audience: user-facing
   - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-TRACEABILITY-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
-- **ChatGPT Desktop run discovery** (`CAP-DEV-DESKTOP-RUN-DISCOVERY-001`): Discover and page through persisted local DevRelay runs using deterministic privacy-safe summaries without mutating run state.
-  - Priority: must
-  - Audience: user-facing
-  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-OBSERVABILITY-001`, `BO-DEV-QUALITY-001`
-  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **ChatGPT Desktop lifecycle runtime** (`CAP-DEV-DESKTOP-RUNTIME-001`): Install and operate DevRelay through ChatGPT Desktop on Windows using a packaged workflow skill, local typed MCP bridge, persistent deterministic run state, and Codex app-server work-item tasks.
   - Priority: must
   - Audience: user-facing
@@ -164,7 +159,6 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`SCOPE-DEV-CHANGE-INTEGRATION-DETAIL-001`** One ChangeIntegration module covering exact verified-subject binding, configured local Git target integration, Core-owned compare-and-swap, immutable conflicts and effect receipts, checkpoint recovery, factual traceability, and progression to SystemVerification without system or business acceptance authority.
 - **`SCOPE-DEV-CONTRACT-GENERATION-DETAIL-001`** One ContractGeneration module with establish-contracts and generate-contract-change operations, typed draft outputs, a live JSON Schema 2020-12 path, extensible optional format adapters, and a separate ContractGate/ApprovedNotApplicable authority boundary.
 - **`SCOPE-DEV-DESKTOP-EXECUTION-001`** A Codex app-server execution host that creates one task per ready work item, supplies immutable contracts, persists task identities and raw handoffs, and returns control to DevRelay verification and integration.
-- **`SCOPE-DEV-DESKTOP-LIST-RUNS-001`** A read-only, paginated, privacy-safe local Desktop command for persisted run discovery.
 - **`SCOPE-DEV-DESKTOP-PLUGIN-001`** A repository-owned ChatGPT Desktop plugin package, local marketplace entry, workflow skill, local typed STDIO MCP runtime bridge, installation lifecycle, and Windows host documentation.
 - **`SCOPE-DEV-DESKTOP-REFERENCE-RUN-001`** A clean-install Windows Desktop reference run that builds a real bounded feature through every mandatory module, Gate, execution frontier, verification layer, integration step, SystemVerification, and BusinessAcceptance.
 - **`SCOPE-DEV-RUN-REPORTING-001`** Cross-cutting RunLedger and LifecycleRunReport projection that dynamically records what happened, renders a primary human-readable Markdown report, joins exact traceability, and exposes sourced performance evidence without controlling the lifecycle.
@@ -352,7 +346,7 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`NFR-DEV-DESKTOP-DETERMINISM-001`** [reliability; must; project] The Desktop host may execute probabilistic implementation engines, but Core-owned lifecycle routing, validation, checkpoint replay, Gate preparation, traceability, and reporting must remain deterministic for exact inputs.
   - Measure: Canonical digest equality across fresh process, reordered equivalent input, checkpoint replay, and Desktop restart cases.
   - Target: 100 percent equality for Core-owned outputs and zero duplicate checkpointed effects.
-  - Acceptance criteria: `AC-DEV-DESKTOP-DETERMINISM-001`, `AC-DEV-DESKTOP-LIST-RUNS-ORDER-001`, `AC-DEV-DESKTOP-LIST-RUNS-PAGE-001`, `AC-DEV-DESKTOP-RESUME-001`
+  - Acceptance criteria: `AC-DEV-DESKTOP-DETERMINISM-001`, `AC-DEV-DESKTOP-RESUME-001`
 - **`NFR-DEV-DESKTOP-ISOLATION-001`** [security; must; project] Desktop orchestration and work-item tasks must use explicit least-privilege host-enforced grants and isolated workspaces with no undeclared cross-task access.
   - Measure: Allowed and denied host conformance checks for every permission kind, workspace, task, and external transmission boundary.
   - Target: No undeclared access succeeds and every granted effect remains attributable to one exact attempt.
@@ -380,7 +374,7 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`NFR-DEV-RUN-REPORT-PRIVACY-001`** [privacy; must; project] Human-readable reports must minimize sensitive content while preserving content-addressed audit links and explicit redaction or omission dispositions.
   - Measure: Secret-scanning and redaction-policy conformance over structured and Markdown report fixtures.
   - Target: Zero unapproved secret or credential disclosures.
-  - Acceptance criteria: `AC-DEV-DESKTOP-LIST-RUNS-PRIVACY-001`, `AC-DEV-RUN-SECURITY-001`
+  - Acceptance criteria: `AC-DEV-RUN-SECURITY-001`
 - **`NFR-DEV-TRACEABILITY-001`** [observability; must; project] Every accepted lifecycle assertion must retain exact artifact, contributor, execution, authority, and graph-version provenance.
   - Measure: Accepted graph assertions lacking complete resolvable provenance.
   - Target: Zero assertions.
@@ -463,4 +457,4 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 - Lifecycle: existing
 - Phase: implementation
-- Summary: The controlled ChatGPT Desktop Windows release is building devrelay\_list\_runs as its clean end-to-end production feature proof.
+- Summary: The controlled library baseline is being extended into a release-ready ChatGPT Desktop for Windows product with an installable local plugin, typed local MCP bridge, one task per runnable work item, one live lifecycle path, and clean-install goal-to-BusinessAcceptance proof.

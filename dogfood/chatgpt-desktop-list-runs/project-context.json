@@ -1,0 +1,24 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectContext",
+  "projectId": "devrelay",
+  "lifecycle": "existing",
+  "summary": "DevRelay has an approved ChatGPT Desktop runtime baseline with a persistent local run store and seven typed MCP commands; this change adds safe run discovery as the eighth command.",
+  "stakeholders": [
+    "DevRelay product owner",
+    "ChatGPT Desktop Windows operators",
+    "DevRelay maintainers",
+    "Security and release reviewers"
+  ],
+  "domainConstraints": [
+    "Core remains the lifecycle and authority owner.",
+    "The operation cannot mutate run state or TraceabilityGraph.",
+    "The response is metadata-only and local to the configured store."
+  ],
+  "conventions": [
+    "Use exact SHA-256 artifact identities and version-pinned baselines.",
+    "Use explicit bounded pagination and closed MCP request/response schemas.",
+    "Fail closed on malformed inputs while reporting per-run storage corruption without mutation."
+  ],
+  "sourceRefs": []
+}

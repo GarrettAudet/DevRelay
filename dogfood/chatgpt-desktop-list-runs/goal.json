@@ -1,0 +1,27 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-chatgpt-desktop-list-runs-v1",
+  "statement": "Add a deterministic, read-only devrelay_list_runs command to the local ChatGPT Desktop on Windows plugin.",
+  "objectives": [
+    "Let a Desktop operator discover persisted DevRelay runs before selecting one to inspect or resume.",
+    "Return bounded privacy-safe run summaries with stable ordering and pagination.",
+    "Report corrupt or unreadable run records without repairing, deleting, or otherwise mutating them."
+  ],
+  "constraints": [
+    "The command is local to the current configured project/store and is read-only.",
+    "Newest-first ordering uses run identity as the deterministic tie-breaker.",
+    "The default page size is 50 and every page is bounded.",
+    "Summaries cannot expose prompts, source content, credentials, or raw evidence.",
+    "The public Desktop MCP contract must be generated and gated before implementation."
+  ],
+  "acceptanceCriteria": [
+    "The command returns run ID, revision, lifecycle state, checkpoint, recovery status, and timestamps for readable runs.",
+    "Pagination is bounded, stable, and newest-first with run ID as the deterministic tie-breaker.",
+    "Unreadable or corrupt runs are reported diagnostically and left byte-for-byte unchanged.",
+    "The MCP surface accepts only the declared list-runs inputs and returns only the declared safe output."
+  ],
+  "assumptions": [
+    "The project owner approved the exact list-runs scope in chat."
+  ]
+}

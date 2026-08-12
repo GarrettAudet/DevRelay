@@ -1,17 +1,43 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
-  "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-chatgpt-desktop-list-runs-001",
-  "version": "1.9.0",
-  "approvedCandidate": {
-    "artifactId": "requirements-change-set-0129dec997542202c81e286d",
-    "digest": "sha256:afc111dd0235756b71c3489b5a6cbf5c0a99810475844ebee99c7b5b02084e22"
-  },
-  "supersedes": {
+  "kind": "RequirementsChangeSet",
+  "changeSetId": "requirements-change-set-0129dec997542202c81e286d",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-chatgpt-desktop-list-runs-v1",
+        "digest": "sha256:87fea1db321501a88a1a65076ad534d94a736a2a779a7d4235de5e31d2b7846e"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-chatgpt-desktop-list-runs-v1",
+        "digest": "sha256:eee75abede887e6b115a7daa8468bc21e729dc0f36bc18734ed07406127c95f6"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+        "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+        "digest": "sha256:30889842e88d079a91e9e33e5c288db9a0fa9c7a5d6d9c251f1ac22d669f20df"
+      }
+    }
+  ],
+  "baseline": {
     "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
     "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
   },
-  "requirements": {
+  "expectedRequirementsDigest": "sha256:f8ef2ff2ae3d4ca3238b88d8c9bb5d8444c819b91961d21524c4a7d8cf54e952",
+  "replacement": {
     "purpose": {
       "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
       "sourceRefs": [
@@ -15646,10 +15672,159 @@
       }
     ]
   },
-  "approvalEvidence": [
+  "changedSections": [
+    "acceptanceCriteria",
+    "capabilities",
+    "currentStatus",
+    "deliverables",
+    "nonFunctionalRequirements",
+    "requiredEvidence",
+    "scope",
+    "userJourneys",
+    "userStories"
+  ],
+  "reason": "Add a deterministic, read-only devrelay_list_runs command to the local ChatGPT Desktop on Windows plugin.",
+  "compatibilityImpact": "unknown",
+  "risks": [
+    "A Desktop skill could be mistaken for workflow authority unless every state transition is mediated by typed Core tools.",
+    "A clean fixture run could overstate production readiness unless it exercises real repository changes, tests, Git integration, system verification, and business acceptance.",
+    "A conflict resolver could silently create new unverified implementation bytes.",
+    "A consistency reviewer may be mistaken for authority unless reviewer findings remain advisory inputs to the Gate.",
+    "A crash between Git mutation and checkpoint persistence could duplicate or lose integration evidence.",
+    "A human-readable report may become misleading if missing measurements are silently treated as zero.",
+    "A passing check subset could hide an uncovered verification-plan obligation.",
+    "A reporting service may accidentally acquire workflow authority unless its read-only boundary is enforced.",
+    "A stale frontier could run work before prerequisites are integrated.",
+    "A verified candidate could be mistaken for an integrated or system-accepted change.",
+    "A verified change may be applied to target bytes other than those it was verified against.",
+    "Adapter performance comparisons may be invalid when inputs, policies, hosts, or circuit versions differ.",
+    "Adapter-native semantics may leak into canonical contracts unless conformance remains strict.",
+    "Ambiguous edge direction could duplicate inverse facts.",
+    "An executor could exceed scope unless the host enforces exact grants.",
+    "An executor or verifier could self-certify completeness or independence.",
+    "An integrated change could be mistaken for system verification or business acceptance.",
+    "Analyzer silence could be mistaken for proof that an architecture element or relationship does not exist.",
+    "Analyzer silence could be mistaken for proof that no dependency is missing.",
+    "Compatibility claims can be wrong if compared against a stale ContractBaseline.",
+    "Conditional routing may become implicit unless every condition remains state-driven and evidence-bound.",
+    "Context slices may omit a semantically relevant source region unless Gate coverage checks remain independent of proposer selection.",
+    "Contract-format special cases in Core could prevent module and tool replacement.",
+    "Evidence could be valid but refer to different candidate bytes.",
+    "Execution could improperly claim verification or integration authority.",
+    "Frontier completion may unlock dependent work too early unless only verified integrated-completion facts affect readiness.",
+    "Gate proliferation may add friction unless quick paths remain clear and policy is risk-adjusted.",
+    "Generated, ignored, or secret-bearing files could be inspected or transmitted beyond approved policy.",
+    "Generator self-certification could admit malformed or semantically incomplete contracts.",
+    "Graphology traversal or serialization order may leak nondeterminism unless Core canonicalizes all externally visible artifacts and diagnostics.",
+    "Hidden adapter-selected context could violate deterministic invocation contracts.",
+    "Inferred current state could be mistaken for approved intended architecture.",
+    "Language-specific analyzer semantics could leak into the provider-neutral snapshot contract.",
+    "Module boundaries may drift into duplicated responsibility unless every contract keeps one primary purpose.",
+    "OPA policy success may be mistaken for semantic completeness unless WorkDependencyGate separately reviews missing-dependency evidence.",
+    "Operational telemetry may leak secrets or sensitive logs unless report projection applies explicit content policy.",
+    "Optional adapter names could mislead users unless the runtime exposes and enforces exact maturity and availability.",
+    "Plugin installation or Node/Codex host drift could make an otherwise green library unusable from the supported Windows Desktop surface.",
+    "Provider-specific binding details could leak into generic workflow semantics.",
+    "Recursive app-server execution could create orphaned tasks or duplicate effects unless thread, attempt, checkpoint, and integration identities are durable and idempotent.",
+    "Repository drift could bind findings to a different implementation than the snapshot claims.",
+    "Retries could destroy evidence if attempts are overwritten.",
+    "Reused task adapters could blur decomposition and dependency authority.",
+    "Stored execution waves could couple static dependencies to changing runtime state.",
+    "Traceability may become incomplete when future contributors omit required lifecycle relationships or evidence horizons.",
+    "Verification retries could overwrite failing evidence.",
+    "WorkBreakdown can propagate invalid scope if it starts before ContractGate resolution."
+  ],
+  "requiredEvidence": [
+    "architecture-discovery/analyzer-provenance",
+    "architecture-discovery/checkpoint-replay",
+    "architecture-discovery/confidence-gaps",
+    "architecture-discovery/native-inventory",
+    "architecture-discovery/privacy-boundary",
+    "architecture-discovery/routing",
+    "architecture-discovery/traceability-merge",
+    "architecture/gate-approval",
+    "business/acceptance",
+    "contract/checkpoint-replay",
+    "contract/compatibility",
+    "contract/coverage",
+    "contract/format-validation",
+    "contract/gate-promotion",
+    "contract/traceability-merge",
+    "dependency/checkpoint-replay",
+    "dependency/context-slice-coherence",
+    "dependency/graph-mechanics",
+    "dependency/graphology-mechanics",
+    "dependency/opa-policy-decision",
+    "dependency/semantic-policy",
+    "dependency/spec-kit-consistency-review",
+    "desktop/app-server-task-lifecycle",
+    "desktop/business-acceptance",
+    "desktop/checkpoint-resume",
+    "desktop/clean-install-end-to-end-run",
+    "desktop/list-runs-corruption-nonmutation",
+    "desktop/list-runs-mcp-conformance",
+    "desktop/list-runs-privacy",
+    "desktop/list-runs-store-conformance",
+    "desktop/live-binding-coverage",
+    "desktop/local-marketplace-install",
+    "desktop/mcp-tool-conformance",
+    "desktop/permission-isolation",
+    "desktop/plugin-package-validation",
+    "desktop/work-item-handoff-verification",
+    "execution/binding",
+    "execution/change-set",
+    "execution/checkpoint-replay",
+    "execution/isolation",
+    "execution/raw-evidence",
+    "execution/readiness",
+    "execution/traceability-merge",
+    "integration/change-proof",
+    "integration/checkpoint-replay",
+    "integration/input-binding",
+    "integration/native-effect",
+    "integration/no-mutation-conflict",
+    "integration/post-state",
+    "integration/target-cas",
+    "integration/traceability-merge",
+    "lifecycle/frontier-recalculation",
+    "release/full-verification",
+    "requirements/gate-promotion",
+    "requirements/interactive-clarification",
+    "requirements/source-provenance",
+    "run-report/adapter-comparability",
+    "run-report/dynamic-projection",
+    "run-report/human-readability",
+    "run-report/metric-provenance",
+    "run-report/non-authority",
+    "run-report/security-redaction",
+    "run-report/traceability-reconciliation",
+    "specialist-assignment/boundary",
+    "traceability/checkpoint-merge",
+    "verification/system-evidence",
+    "verification/work-item-evidence",
+    "work-item-verification/checkpoint-replay",
+    "work-item-verification/gate-promotion",
+    "work-item-verification/independence",
+    "work-item-verification/input-binding",
+    "work-item-verification/plan-coverage",
+    "work-item-verification/policy",
+    "work-item-verification/raw-evidence",
+    "work-item-verification/traceability-merge"
+  ],
+  "sourceRefs": [
     {
-      "artifactId": "requirements-gate-approval-chatgpt-desktop-list-runs-v1",
-      "digest": "sha256:3812d268e835a31c3efc8da11eac655eff5c29603c6edf8226d3d056f652b126"
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-chatgpt-desktop-list-runs-v1",
+        "digest": "sha256:87fea1db321501a88a1a65076ad534d94a736a2a779a7d4235de5e31d2b7846e"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-chatgpt-desktop-runtime-001",
+        "digest": "sha256:e08a1235f4535bca902a3c8a11c4067e55075d0c6b05c935bb0c24bb9a50d7b6"
+      }
     }
   ]
 }
