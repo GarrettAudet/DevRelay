@@ -1,0 +1,26 @@
+apiVersion: devrelay.dev/v1alpha1
+kind: ImplementationHandoff
+handoffId: DEVRELAY-V010-DESKTOP-LIVE-PATH-PAUSE-001
+branch: codex/v0.10-chatgpt-desktop-runtime
+sourceCheckpoint: 458ff419325bc621a4202d5cf6f1a5993adbf96b
+platform: windows
+host: chatgpt-desktop
+releaseReady: false
+completed:
+  - workItem: WI-DESKTOP-MCP-BRIDGE
+    commit: 3aed552b718f54e9f30637d2e266a13220f289d5
+    focusedTests: 26
+  - workItems:
+      - WI-DESKTOP-PLUGIN
+      - WI-DESKTOP-INSTALL
+    commit: 458ff419325bc621a4202d5cf6f1a5993adbf96b
+    focusedTests: 58
+nextWorkItem: WI-DESKTOP-LIFECYCLE
+remaining:
+  - production-stage-bindings
+  - terminal-canonical-verification
+  - plugin-validation-and-reinstall
+  - clean-installed-full-lifecycle-dogfood
+  - final-system-verification
+  - final-business-acceptance
+

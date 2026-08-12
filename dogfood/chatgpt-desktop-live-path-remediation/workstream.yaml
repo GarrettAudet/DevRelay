@@ -1,0 +1,67 @@
+apiVersion: devrelay.dev/v1alpha1
+kind: SystemVerificationRemediation
+remediationId: SVR-DESKTOP-LIVE-PATH-001
+platform: windows
+host: chatgpt-desktop
+trigger:
+  stage: SystemVerification
+  outcome: fix
+  finding: installed-plugin-command-is-not-executable
+upstreamDispositions:
+  requirements:
+    outcome: pass
+    authority: approved-baseline-replay
+    refs:
+      - AC-DEV-DESKTOP-LIVE-PATH-001
+      - AC-DEV-DESKTOP-E2E-001
+      - AC-DEV-DESKTOP-MCP-001
+  architecture:
+    outcome: pass
+    authority: approved-baseline-replay
+    refs:
+      - EL-DEVRELAY-CORE
+      - EL-DESKTOP-PLUGIN
+      - EL-DESKTOP-MCP-BRIDGE
+      - EL-DESKTOP-RUN-STORE
+      - EL-DESKTOP-CAPABILITY-RESOLVER
+  contracts:
+    outcome: pass
+    authority: approved-baseline-replay
+    refs:
+      - CT-IF-DESKTOP-MCP-COMMANDS
+      - CT-IF-DESKTOP-RUN-STATE
+      - CT-IF-DESKTOP-INSTALLATION
+workItems:
+  - id: WI-DESKTOP-MCP-BRIDGE
+    attempt: corrective-live-bootstrap
+    outcome: integrated
+    commit: 3aed552b718f54e9f30637d2e266a13220f289d5
+    focusedVerification:
+      passed: 26
+      failed: 0
+    requiredEvidence:
+      - installed-or-staged-stdio-subprocess
+      - real-core-adapter
+      - fail-closed-unavailable-stage
+  - id: WI-DESKTOP-PLUGIN
+    attempt: corrective-self-contained-package
+    outcome: integrated
+    commit: 458ff419325bc621a4202d5cf6f1a5993adbf96b
+  - id: WI-DESKTOP-INSTALL
+    attempt: corrective-self-contained-package
+    outcome: integrated
+    commit: 458ff419325bc621a4202d5cf6f1a5993adbf96b
+    focusedVerification:
+      passed: 58
+      failed: 0
+  - id: WI-DESKTOP-LIFECYCLE
+    attempt: corrective-production-stage-bindings
+    outcome: ready
+  - id: WI-DESKTOP-VERIFICATION
+    attempt: corrective-live-installed-gate
+    outcome: blocked-by-predecessor
+  - id: WI-DESKTOP-CLEAN-RUN
+    attempt: first-valid-clean-run
+    outcome: blocked-by-predecessor
+releaseReady: false
+

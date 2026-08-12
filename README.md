@@ -5,8 +5,8 @@ Modules with a Core-owned lifecycle traceability sidecar.
 
 For the reconciled working-tree checkpoint, active Gate, module maturity,
 promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
-For a self-contained implementation-owner pickup, see
-[handoff/2026-08-10-lifecycle-run-report-pickup/README.md](handoff/2026-08-10-lifecycle-run-report-pickup/README.md).
+For the current self-contained implementation-owner pickup, see
+[handoff/2026-08-11-desktop-live-path-pause/README.md](handoff/2026-08-11-desktop-live-path-pause/README.md).
 This status page is a human-readable projection; digest-bound lifecycle
 artifacts and Gate records remain authoritative.
 

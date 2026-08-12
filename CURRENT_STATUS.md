@@ -1,5 +1,15 @@
 # DevRelay current implementation status
 
+> **Current pause checkpoint (2026-08-11):** Active branch
+> `codex/v0.10-chatgpt-desktop-runtime`; committed source checkpoint
+> `458ff419325bc621a4202d5cf6f1a5993adbf96b`; release status **not ready**.
+> The production MCP bootstrap and installed plugin path are integrated and
+> focused tests pass 26/26 and 58/58 respectively. The next work item is
+> `WI-DESKTOP-LIFECYCLE` production stage bindings, followed by a terminal full
+> gate and a clean-installed tiny goal-to-BusinessAcceptance dogfood. The
+> historical status below is superseded. Use
+> `handoff/2026-08-11-desktop-live-path-pause/README.md` for pickup.
+
 Last reconciled: 2026-08-11
 Active branch: `codex/lifecycle-run-report-completion`
 Verified controlled-release source commit: `477e7a449cb90d4ecb86c7271cb59f3e2d09b0d6`
