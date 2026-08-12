@@ -3,10 +3,12 @@ kind: ControlledReleaseAcceptancePickup
 metadata:
   id: controlled-release-acceptance-pickup-2026-08-11
   date: "2026-08-11"
+  lastReconciled: "2026-08-12"
 repository:
   url: https://github.com/GarrettAudet/DevRelay.git
   branch: codex/lifecycle-run-report-completion
-  verifiedSourceCommit: 477e7a449cb90d4ecb86c7271cb59f3e2d09b0d6
+  documentationReconciliationBase: f1b62238dbd39e83526290abf41edf880faa493d
+  verifiedSourceCommit: 9d2b0d8e6b358dd6aed922de420224fe9efc320c
 target:
   host: ChatGPT Desktop
   operatingSystem: Windows
@@ -16,41 +18,67 @@ target:
     - one-click-desktop-plugin
     - hosted-backend
 verification:
-  local:
-    command: npm.cmd run release:check
-    total: 842
-    passed: 840
-    failed: 0
-    skipped: 2
-  githubActions:
-    runId: 31497854653
+  source:
+    runId: 31564635275
     status: success
     jobsPassed: 4
     jobsTotal: 4
-  catalogDigests: 3456
-  packagePaths: 281
-  moduleCount: 11
-  pluginCount: 24
-currentBoundary:
-  stage: final-system-verification-and-business-acceptance
-  candidateMaterialized: false
-  businessAcceptanceRecorded: false
-  finalTraceabilityMerged: false
+  materialization:
+    runId: 31564607304
+    artifactName: controlled-release-candidate-9d2b0d8e6b358dd6aed922de420224fe9efc320c
+    artifactId: "9129184024"
+    artifactZipDigest: sha256:137f05e9685d5c504f26b53c31c2814243b538ab0a7101d451afc1fed7b12ed6
+    fileCount: 25
+    status: validated
+  persistenceAttempt:
+    runId: 31566991321
+    baseCommit: f1b62238dbd39e83526290abf41edf880faa493d
+    runnerLocalCommit: 6f7a84a
+    candidateValidation: passed
+    releaseCheck:
+      total: 842
+      passed: 840
+      failed: 0
+      skipped: 2
+    catalogDigests: 3492
+    packagePaths: 281
+    moduleCount: 11
+    pluginCount: 24
+    push: rejected
+    rejection: workflow-file-permission-required
+candidate:
+  artifactValidated: true
+  repositoryPersisted: false
+  intendedPath: dogfood/release-acceptance/candidate-001
+  artifactId: BA-CANDIDATE-ed2476ac90e1359f796d1ab8
+  digest: sha256:92b25f9e6e898b780e126079ce945a92841bd3e8508dc18503d4d85f2d42ee22
+  rawDigest: sha256:f0ed398f7abdd8c9540ba83842d88ecf728433011fbc2dbfe05bc751a99c8f04
+  technicalCoverageId: BA-TECH-COVERAGE-fb1044a00dcbd9cd94fe4243
+  technicalCoverageDigest: sha256:8c1a9bb891a68aa66ce1d7e49b5860b821c07c1bccbbf355caa2b01e0baba88d
+  proofId: DEVRELAY-CONTROLLED-RELEASE-CANDIDATE-001
+  proofDigest: sha256:39794039b87830b5ad89aa37c9603680f3c64b90f852ed1c3260ffef13609265
+  outcome: eligible-for-acceptance
 approval:
-  priorExactCommit: 33e65bad246e9fb1d9405cc1f6e5d2d205b81871
-  correctedCommitRequiresExactCandidateApproval: true
+  status: blocked-pending-candidate-persistence
+  requestId: BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001
+  requestDigest: sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e
+  artifactStatus: awaiting-exact-owner-approval
+  priorApprovalIsStale: true
   approvedCoverage:
     acceptanceCriteria: 81
     nonFunctionalRequirements: 18
     businessObjectives: 8
     successMetrics: 9
     businessScopes: 32
-  approvedLinks:
-    - US-DEV-SPECIFY-001 designed-by EL-DEVRELAY-CORE
-    - NFR-DEV-DETERMINISM-001 designed-by EL-DEVRELAY-CORE
+currentBoundary:
+  stage: exact-candidate-persistence
+  candidatePersisted: false
+  businessAcceptanceRecorded: false
+  finalTraceabilityMerged: false
 next:
-  - audit-and-execute-candidate-materializer
-  - present-exact-corrected-candidate-for-owner-approval
+  - recover-and-revalidate-exact-candidate-artifact
+  - persist-candidate-with-authorized-workflow-boundary
+  - regenerate-catalog-and-pass-release-matrix
+  - obtain-exact-owner-decision
   - execute-business-acceptance-gate-and-replay
   - merge-acceptance-traceability-and-diagnose
-  - update-release-evidence-and-run-final-gates
