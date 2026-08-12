@@ -10,6 +10,14 @@ decisions, run reports, task state, and evidence. It never selects routes,
 answers clarifications, approves Gates, edits lifecycle state, or claims that
 a work-item handoff is verified or integrated.
 
+Use `devrelay_list_runs` to discover persisted local runs without a known run
+ID. It returns only privacy-safe run metadata in deterministic newest-first
+pages (default 50, allowed 1 through 100) and an opaque `nextCursor` when more
+results exist. The command is read-only: warnings identify unreadable or
+corrupt persisted runs but do not repair them, and listing grants no routing,
+Gate, progression, resume, or workflow-mutation authority. Inspect the chosen
+run separately before acting on it.
+
 This is a local personal-marketplace package, not a public plugin-directory
 listing. Adapter maturity is evidence-bound: `fixture-conformant` does not mean
 live interoperability, and only a unique `release-ready` binding satisfies a

@@ -52,7 +52,7 @@ Ask ChatGPT Desktop to use the DevRelay plugin, for example:
 > Start a DevRelay run for this repository and show every clarification or
 > approval point before progressing.
 
-The plugin exposes seven typed operations through the local bridge:
+The plugin exposes eight typed operations through the local bridge:
 
 | MCP tool | Operator intent |
 | --- | --- |
@@ -63,8 +63,9 @@ The plugin exposes seven typed operations through the local bridge:
 | `devrelay_progress_run` | Request progression from an exact approved predecessor. |
 | `devrelay_resume_run` | Resume from an exact checkpoint and checkpoint digest. |
 | `devrelay_get_evidence` | Retrieve one evidence artifact by its exact identity. |
+| `devrelay_list_runs` | Discover persisted runs through privacy-safe, read-only metadata. |
 
-Every request carries a `runId`, `requestId`, and `expectedRevision`. Reuse the
+Run-scoped requests carry a `runId`, `requestId`, and `expectedRevision`. Reuse the
 artifact references and revision returned by the latest response. A stale
 revision, changed digest, missing live capability, or permission failure is a
 stop condition, not an invitation to edit repository JSON or bypass Core.
@@ -87,6 +88,41 @@ item and preserves its task identity and raw handoff. A task's handoff is only
 a candidate: WorkItemVerification and ChangeIntegration remain separate
 authorities. Never interpret task completion as verification, integration, or
 BusinessAcceptance.
+
+## Discover persisted runs safely
+
+Use `devrelay_list_runs` when the run ID is unknown, such as after restarting
+ChatGPT Desktop. The request is deliberately smaller than every workflow
+command:
+
+```json
+{"operation":"list-runs","requestId":"REQ-LIST-RUNS-001","limit":50}
+```
+
+`operation` and `requestId` are required. `limit` is optional, defaults to 50,
+and accepts integers from 1 through 100. If a response includes `nextCursor`,
+pass that opaque value back unchanged as `cursor` to request the next page. Do
+not decode, edit, or persist assumptions about cursor contents. Omitting
+`nextCursor` means the current page is terminal. Repeating the same request
+against unchanged persisted state returns the same deterministic page.
+
+Each returned run contains only `runId`, `revision`, `lifecycleState`,
+`checkpoint`, `recoveryStatus`, `createdAt`, and `updatedAt`. Results are newest
+first by `updatedAt`, with `runId` providing a stable tie break. The list does
+not return prompts, goals, source content, credentials, raw evidence, reports,
+or lifecycle artifacts. `createdAt` and `updatedAt` are derived from the local
+persisted revision files; they are not remote-service timestamps.
+
+The response status is `completed` and may include bounded warning diagnostics
+with codes `DESKTOP_RUN_UNREADABLE` or `DESKTOP_RUN_CORRUPT`. A recovered run
+uses `recoveryStatus: "recovered"` and reports the latest valid readable
+revision. Preserve the warning and inspect the selected run before acting; the
+list command does not repair or delete corrupt state.
+
+Listing is discovery only. It has no `runId` or `expectedRevision` input and no
+authority to create, inspect, progress, resume, route, repair, approve, reject,
+or mutate a workflow. Use `devrelay_inspect_run` with the selected `runId` and
+current revision before making any workflow decision.
 
 ## Read status, reports, and evidence
 
