@@ -479,6 +479,8 @@ function installAndImport(tarball, packageDocument, temporaryRoot) {
   run(install.command, install.args, { cwd: consumer });
   const smokeProgram = [
     `const api = await import(${JSON.stringify(packageName)});`,
+    `const desktopContracts = await import(${JSON.stringify(`${packageName}/desktop-runtime-contracts`)});`,
+    'if (typeof desktopContracts.validateChatGptDesktopRuntimeArtifact !== "function") throw new Error("missing Desktop contracts validator export");',
     'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
     'if (typeof api.requirementsRuntimeArtifactContracts !== "function") throw new Error("missing RequirementsGathering contracts export");',
     'if (typeof api.architectureRuntimeArtifactContracts !== "function") throw new Error("missing ArchitectureDesign contracts export");',

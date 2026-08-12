@@ -341,6 +341,8 @@ export const canonicalPlugins = Object.freeze([
 export const canonicalPackageExports = Object.freeze({
   ".": "./src/index.mjs",
   "./contracts/*": "./contracts/*",
+  "./desktop-runtime-contracts":
+    "./src/chatgpt-desktop-runtime-artifact-validator.mjs",
   "./modules/requirements-gathering.module.json":
     "./examples/modules/requirements-gathering.module.json",
   "./modules/architecture-discovery.module.json":
