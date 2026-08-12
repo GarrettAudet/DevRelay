@@ -17,8 +17,10 @@ on:
       - src/traceability-graph.mjs
       - project/**
       - dogfood/lifecycle-run-report/**
+      - release/0.9.0.json
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -51,6 +53,50 @@ jobs:
           mkdir -p .devrelay
           npm run release:catalog
           cp release/0.9.0.json .devrelay/source-release-catalog.json
+      - name: Upload source catalog bootstrap
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-release-catalog-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 30
+          path: .devrelay/source-release-catalog.json
+      - name: Require committed source catalog
+        shell: bash
+        run: git diff --exit-code -- release/0.9.0.json
+      - name: Bind exact successful verify run
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          target_commit="$GITHUB_SHA"
+          for attempt in $(seq 1 90); do
+            run_json="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${target_commit}&per_page=100" --jq '[.workflow_runs[] | select(.name == "verify" and .event == "push")] | sort_by(.created_at) | last // {}')"
+            run_id="$(jq -r '.id // empty' <<<"$run_json")"
+            status="$(jq -r '.status // empty' <<<"$run_json")"
+            conclusion="$(jq -r '.conclusion // empty' <<<"$run_json")"
+            if [[ -z "$run_id" ]]; then
+              sleep 10
+              continue
+            fi
+            if [[ "$status" != "completed" ]]; then
+              sleep 10
+              continue
+            fi
+            if [[ "$conclusion" != "success" ]]; then
+              echo "Exact verify run ${run_id} completed with ${conclusion}." >&2
+              exit 1
+            fi
+            detail="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}")"
+            [[ "$(jq -r '.head_sha' <<<"$detail")" == "$target_commit" ]]
+            [[ "$(jq -r '.name' <<<"$detail")" == "verify" ]]
+            [[ "$(jq -r '.event' <<<"$detail")" == "push" ]]
+            echo "DEVRELAY_RELEASE_TARGET_COMMIT=${target_commit}" >> "$GITHUB_ENV"
+            echo "DEVRELAY_RELEASE_CI_RUN=${run_id}" >> "$GITHUB_ENV"
+            exit 0
+          done
+          echo "No completed verify run was found for ${target_commit}." >&2
+          exit 1
       - name: Materialize exact candidate through released APIs
         shell: bash
         run: node scripts/run-release-candidate-materializer.mjs | tee .devrelay/candidate-materialization-summary.json
