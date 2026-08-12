@@ -3,9 +3,9 @@
 ## Exact repository position
 
 - Branch: `codex/lifecycle-run-report-completion`
-- Latest checkpoint before this update: `d3090aaca2e5198c5b71b467a4cf742af58d3825`
-- Active boundary: exact same-commit verification binding and candidate persistence
-- Working tree represented by GitHub commits; no uncommitted release claim exists
+- Latest checkpoint before this update: `dbd85ba1bdb0dd6ec93824b93aa1eec5fec95f64`
+- Active boundary: catalog-only source stabilization and exact verify binding
+- No authoritative final acceptance record exists yet
 
 ## What is complete
 
@@ -13,47 +13,42 @@ The V1 construction circuit through BusinessAcceptance is implemented. Release
 catalog and installed-package checks are portable across Windows/Linux and Node
 20/22. Java 21 is provisioned and bound on both operating-system families.
 
-The final pre-approval circuit has been executed successfully through released
-APIs. Proven stages include:
+The final pre-approval circuit has executed successfully through released APIs:
 
 - recovery of the complete persisted TraceabilityGraph history;
 - atomic merge of the two owner-authorized designed-by links;
-- 99-obligation SystemVerification through the test and review adapters;
+- 99-obligation SystemVerification through test and review adapters;
 - exact zero-call SystemVerification replay;
 - trusted SystemVerification traceability merge;
 - exhaustive BusinessAcceptance technical-coverage derivation;
 - BusinessAcceptance evaluation and exact zero-call replay.
 
-The trusted SystemVerification contributor was corrected so passing evidence
-nodes carry the graph-level `verificationStatus: "pass"` required by
-BusinessAcceptance traversal.
+The trusted SystemVerification contributor now marks passing evidence nodes with
+`verificationStatus: "pass"`, closing the graph traversal defect that previously
+blocked BusinessAcceptance.
+
+## Current bootstrap evidence
+
+Commit `dbd85ba` added a guarded source-catalog bootstrap. Workflow run
+`31564333006` generated and uploaded the exact source catalog as artifact
+`9128889947`. The catalog records 3,467 raw-byte file digests, 11 modules, 24
+plug-ins, and 281 npm-package files. The job then stopped at the committed-file
+check before verify binding or candidate generation, as designed.
+
+The next workflow revision will commit only `release/0.9.0.json` after checking
+that no other tracked file changed, explicitly dispatch `verify` for that new
+catalog commit, and continue only after all four jobs pass for the exact SHA.
 
 ## What is not complete
 
-The successful pre-approval candidate named an older verified source commit and
-cannot be promoted. A corrected candidate has not yet been persisted against
-one exact commit that passed the four-job verify matrix.
+The successful pre-approval candidate generated earlier names source commit
+`477e7a4` and cannot be promoted after the passing-evidence correction. No
+corrected candidate is yet persisted against a same-commit successful verify
+run.
 
-Commit `d3090aa` correctly made target commit and CI run mandatory, but workflow
-run `31563855621` failed closed because those environment bindings were absent.
-No Gate, owner-approval, acceptance-record, acceptance traceability, publication,
-or deployment authority was exercised.
-
-## Active repair
-
-The materialization workflow is being made self-binding. It will:
-
-1. regenerate and upload the source release catalog;
-2. require that catalog to be committed exactly;
-3. wait for the `verify` run for the same `GITHUB_SHA`;
-4. require that run to complete successfully;
-5. bind the exact SHA and run ID to the materializer;
-6. execute and upload the corrected candidate package.
-
-Because the workflow and status bytes themselves change the content-addressed
-source catalog, the first run is expected to upload the exact replacement
-catalog and stop. Committing only that self-excluded catalog should produce the
-stable source checkpoint used for verification and materialization.
+No exact corrected owner approval, BusinessAcceptanceGate record, acceptance
+traceability merge, final release evidence commit, or final supported-matrix
+proof exists yet.
 
 ## Approval state
 
@@ -63,22 +58,22 @@ metrics, and 32 scope identities, and the two designed-by links from
 `US-DEV-SPECIFY-001` and `NFR-DEV-DETERMINISM-001` to `EL-DEVRELAY-CORE`.
 
 The earlier exact approval named superseded source. BusinessAcceptanceGate must
-not reuse it silently. The corrected candidate must first expose its exact
-target commit, semantic digest, raw digest, technical-coverage digest, and
-exclusions.
+not reuse it silently. The corrected candidate must expose its exact target
+commit, semantic digest, raw digest, technical-coverage digest, and exclusions.
 
 ## Safe continuation
 
 ```text
-finish self-binding workflow
--> commit generated source catalog only
--> require exact four-job verify success
--> retrieve corrected candidate artifact
--> inspect exact owner-approval request
+commit self-bootstrapping workflow and current-state update
+-> commit exact generated catalog only under branch compare-and-swap
+-> dispatch verify workflow for resulting commit
+-> require Ubuntu/Windows and Node 20/22 success
+-> materialize corrected candidate with exact SHA/run binding
+-> inspect and persist exact approval request
 -> execute BusinessAcceptanceGate only with exact owner decision
 -> merge trusted acceptance traceability
 -> require zero blocking diagnostics
--> persist final candidate, acceptance evidence, release catalog, and handoff
+-> persist final evidence, catalog, handoff, and release metadata
 -> run final release check and four-job matrix
 ```
 

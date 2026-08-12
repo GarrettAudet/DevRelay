@@ -2,8 +2,8 @@
 
 Last reconciled: 2026-08-11 MDT
 Active branch: `codex/lifecycle-run-report-completion`
-Latest source checkpoint before this update: `d3090aaca2e5198c5b71b467a4cf742af58d3825`
-Active boundary: bind and persist an exact verified release candidate
+Latest source checkpoint before this update: `dbd85ba1bdb0dd6ec93824b93aa1eec5fec95f64`
+Active boundary: establish one exact cataloged and four-matrix-verified source commit
 
 This file is a human-readable status projection. Exact module artifacts, Gate
 records, graph checkpoints, release evidence, commits, and CI runs remain the
@@ -12,37 +12,32 @@ authoritative records.
 ## Executive status
 
 The portable DevRelay V1 source/library circuit is implemented through
-BusinessAcceptance. The ordinary source release gate was previously green on
-Windows and Ubuntu under Node 20 and 22. The final pre-approval lifecycle circuit
-has also executed successfully through released APIs: graph recovery, the two
-owner-authorized design links, 99-obligation SystemVerification, zero-call
-replay, trusted verification traceability, exhaustive BusinessAcceptance
-coverage, BusinessAcceptance evaluation, and zero-call replay.
+BusinessAcceptance. The final pre-approval circuit has executed successfully
+through released APIs: complete graph recovery, the two owner-authorized design
+links, 99-obligation SystemVerification, zero-call replay, trusted verification
+traceability, exhaustive BusinessAcceptance coverage, BusinessAcceptance
+evaluation, and zero-call replay.
 
-That successful candidate was not accepted because it named the older verified
-source commit `477e7a4`. A later required correction added the graph-level
-`verificationStatus: "pass"` classification consumed by BusinessAcceptance.
-The candidate must therefore be regenerated against one exact commit that has
-itself passed the four-job verify matrix.
+The previously materialized candidate cannot be promoted because it names the
+older source commit `477e7a4`. A subsequent required correction added the
+graph-level `verificationStatus: "pass"` classification consumed by
+BusinessAcceptance, so the corrected candidate must bind one newer exact source
+commit and its successful four-job verify run.
 
-Commit `d3090aa` made the materializer require exact target-commit and CI-run
-environment bindings. Materialization run `31563855621` then failed closed before
-lifecycle execution because its workflow did not supply those bindings. This is
-a workflow wiring defect, not a SystemVerification, BusinessAcceptance, or graph
-failure.
+Commit `dbd85ba` introduced a guarded catalog bootstrap. Materialization run
+`31564333006` regenerated and uploaded the exact 3,467-entry source catalog, then
+stopped at the committed-catalog check before verification binding or lifecycle
+execution. Artifact `9128889947` is the generated catalog for that exact tree.
+This proves the workflow and status changes are the only content-addressed drift.
 
-The workflow is now being changed to:
+The workflow is now being advanced to a bounded self-bootstrap:
 
-1. regenerate and upload the exact source catalog before any acceptance work;
-2. require that catalog to match the committed source tree;
-3. locate the successful `verify` workflow run for the same `GITHUB_SHA`;
-4. bind that exact SHA and run ID into the materializer;
-5. execute and upload the candidate only after those checks pass.
-
-The first run after this workflow change is expected to stop at the committed
-catalog check and provide the exact replacement catalog as an artifact. A
-catalog-only follow-up commit will then be source-verification eligible and
-will trigger exact same-commit candidate materialization.
+1. regenerate and upload the exact source catalog;
+2. verify that only `release/0.9.0.json` changed;
+3. commit only that self-excluded catalog with a compare-and-swap branch check;
+4. dispatch the four-job `verify` workflow for the new catalog commit;
+5. bind the exact successful run ID and commit SHA;
+6. materialize and upload the corrected candidate only after success.
 
 Current position:
 
@@ -56,12 +51,14 @@ SystemVerification zero-call replay                  PROVEN
 Trusted verification traceability merge              PROVEN
 BusinessAcceptance technical coverage                PROVEN EXHAUSTIVE
 BusinessAcceptance evaluation and replay              PROVEN
-Exact same-commit verify binding                      IN PROGRESS
-Corrected candidate artifact persistence              PENDING BINDING
+Exact source-catalog bootstrap                        PROVEN
+Catalog-only source stabilization                     IN PROGRESS
+Exact four-job verification binding                   PENDING CATALOG COMMIT
+Corrected candidate persistence                       PENDING VERIFICATION
 Exact owner approval for corrected candidate          PENDING CANDIDATE
 BusinessAcceptanceGate                                PENDING APPROVAL
 Trusted acceptance traceability merge                 PENDING GATE
-Final release catalog, handoff, and matrix             PENDING
+Final release metadata, handoff, catalog, matrix       PENDING
 ```
 
 No public npm publication, one-click ChatGPT Desktop plug-in, hosted backend,
@@ -79,58 +76,56 @@ deployment, or production-service claim is in scope.
 - `33e65ba`: bound Java 21 on Windows CI.
 - `477e7a4`: carried the semantic `SystemVerificationResult` reference required
   by downstream BusinessAcceptance coverage derivation.
-- `648b267`: marked trusted verified evidence nodes with graph-level passing
-  status so BusinessAcceptance can traverse approved criterion-to-evidence
-  paths.
+- `648b267`: marked trusted verified-evidence nodes with graph-level passing
+  status.
 - `d3090aa`: prohibited candidate generation without an exact target commit and
   exact verification run.
+- `dbd85ba`: added same-tree catalog guarding and exact verify-run discovery.
 
 ## Most recent evidence
 
-GitHub Actions materialization run `31563383966` proved the full corrected
-pre-approval circuit and uploaded a candidate package. It was intentionally not
-accepted because its subject still named `477e7a4` rather than the corrected
-source lineage.
+- Materialization run `31563383966`: full corrected pre-approval circuit passed,
+  but its candidate targeted superseded source `477e7a4` and was not accepted.
+- Materialization run `31563855621`: correctly failed closed because exact target
+  commit and CI-run bindings were absent.
+- Materialization run `31564333006`: produced catalog artifact `9128889947`,
+  then correctly stopped because that catalog was not yet committed.
 
-Materialization run `31563855621` at `d3090aa` regenerated a 3,467-entry source
-catalog, then failed closed with:
+The catalog artifact contains:
 
-```text
-DEVRELAY_RELEASE_TARGET_COMMIT must be an exact Git commit
-```
-
-The accompanying four-job verify run is not sufficient by itself to authorize a
-candidate unless the materializer binds its exact run ID and head SHA.
+- release type: `private-source`
+- modules: 11
+- plug-ins: 24
+- raw-byte file digests: 3,467
+- npm-package files: 281, including the self-excluded catalog path
 
 ## Owner authority
 
-The owner has authorized the controlled source/library release scope, the
-satisfaction accounting for 81 acceptance criteria, 18 NFRs, 8 business
-objectives, 9 success metrics, and 32 scope identities, plus these two forward
-links:
+The owner authorized the controlled source/library release scope, satisfaction
+accounting for 81 acceptance criteria, 18 NFRs, 8 business objectives, 9 success
+metrics, and 32 scope identities, plus these forward links:
 
 - `US-DEV-SPECIFY-001 -> designed-by -> EL-DEVRELAY-CORE`
 - `NFR-DEV-DETERMINISM-001 -> designed-by -> EL-DEVRELAY-CORE`
 
-The earlier exact approval was bound to superseded source. The corrected
-candidate must expose its exact target commit, candidate semantic digest,
-candidate raw digest, technical-coverage digest, and exclusions before
-BusinessAcceptanceGate may create an authoritative record.
+The earlier exact approval named superseded source. The corrected candidate must
+expose its exact target commit, semantic digest, raw digest,
+technical-coverage digest, and exclusions before BusinessAcceptanceGate may
+create an authoritative record.
 
 ## Next trusted transition
 
 ```text
 commit workflow + status reconciliation
--> retrieve exact generated source catalog
--> commit only that self-excluded catalog
--> require all four verify jobs green for the catalog commit
--> materialize corrected candidate bound to that exact commit and run
--> inspect exact approval request
+-> workflow commits only the exact generated source catalog
+-> workflow dispatches and requires exact four-job verify success
+-> materialize corrected candidate bound to that commit and run
+-> inspect and persist exact approval request
 -> apply exact owner decision through BusinessAcceptanceGate
 -> merge trusted BusinessAcceptance traceability
 -> require zero blocking diagnostics
 -> persist final evidence, catalog, handoff, and release metadata
--> run and verify the full four-job release matrix
+-> run and verify the final four-job release matrix
 ```
 
 ## Pickup

@@ -20,8 +20,8 @@ on:
       - release/0.9.0.json
 
 permissions:
-  actions: read
-  contents: read
+  actions: write
+  contents: write
 
 jobs:
   materialize:
@@ -60,42 +60,71 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           path: .devrelay/source-release-catalog.json
-      - name: Require committed source catalog
+      - name: Establish exact cataloged source commit
+        id: source
         shell: bash
-        run: git diff --exit-code -- release/0.9.0.json
+        run: |
+          set -euo pipefail
+          branch="$GITHUB_REF_NAME"
+          starting_commit="$(git rev-parse HEAD)"
+          catalog_changed=false
+          if ! git diff --quiet -- release/0.9.0.json; then
+            git fetch origin "$branch"
+            remote_commit="$(git rev-parse "origin/${branch}")"
+            if [[ "$remote_commit" != "$starting_commit" ]]; then
+              echo "Branch advanced from ${starting_commit} to ${remote_commit}; refusing catalog commit." >&2
+              exit 1
+            fi
+            if [[ -n "$(git status --short --untracked-files=no | grep -v '^ M release/0.9.0.json$' || true)" ]]; then
+              echo "Files other than release/0.9.0.json changed during catalog generation." >&2
+              git status --short
+              exit 1
+            fi
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add release/0.9.0.json
+            git commit -m "Regenerate release catalog"
+            git push origin "HEAD:${branch}"
+            catalog_changed=true
+          fi
+          target_commit="$(git rev-parse HEAD)"
+          echo "catalog_changed=${catalog_changed}" >> "$GITHUB_OUTPUT"
+          echo "target_commit=${target_commit}" >> "$GITHUB_OUTPUT"
+      - name: Dispatch verification for catalog commit
+        if: steps.source.outputs.catalog_changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/workflows/verify.yml/dispatches" -f ref="$GITHUB_REF_NAME"
       - name: Bind exact successful verify run
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          TARGET_COMMIT: ${{ steps.source.outputs.target_commit }}
         run: |
           set -euo pipefail
-          target_commit="$GITHUB_SHA"
-          for attempt in $(seq 1 90); do
-            run_json="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${target_commit}&per_page=100" --jq '[.workflow_runs[] | select(.name == "verify" and .event == "push")] | sort_by(.created_at) | last // {}')"
-            run_id="$(jq -r '.id // empty' <<<"$run_json")"
-            status="$(jq -r '.status // empty' <<<"$run_json")"
-            conclusion="$(jq -r '.conclusion // empty' <<<"$run_json")"
-            if [[ -z "$run_id" ]]; then
-              sleep 10
-              continue
+          for attempt in $(seq 1 120); do
+            runs="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${TARGET_COMMIT}&per_page=100" --jq '[.workflow_runs[] | select(.name == "verify" and (.event == "push" or .event == "workflow_dispatch"))] | sort_by(.created_at) | reverse')"
+            run_id="$(jq -r '[.[] | select(.status == "completed" and .conclusion == "success")][0].id // empty' <<<"$runs")"
+            if [[ -n "$run_id" ]]; then
+              detail="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}")"
+              [[ "$(jq -r '.head_sha' <<<"$detail")" == "$TARGET_COMMIT" ]]
+              [[ "$(jq -r '.name' <<<"$detail")" == "verify" ]]
+              [[ "$(jq -r '.conclusion' <<<"$detail")" == "success" ]]
+              echo "DEVRELAY_RELEASE_TARGET_COMMIT=${TARGET_COMMIT}" >> "$GITHUB_ENV"
+              echo "DEVRELAY_RELEASE_CI_RUN=${run_id}" >> "$GITHUB_ENV"
+              exit 0
             fi
-            if [[ "$status" != "completed" ]]; then
-              sleep 10
-              continue
-            fi
-            if [[ "$conclusion" != "success" ]]; then
-              echo "Exact verify run ${run_id} completed with ${conclusion}." >&2
+            incomplete="$(jq '[.[] | select(.status != "completed")] | length' <<<"$runs")"
+            failed="$(jq '[.[] | select(.status == "completed" and .conclusion != "success")] | length' <<<"$runs")"
+            if [[ "$incomplete" == "0" && "$failed" != "0" ]]; then
+              echo "Every exact verify run for ${TARGET_COMMIT} completed without success." >&2
+              jq -r '.[] | [.id, .event, .status, .conclusion] | @tsv' <<<"$runs" >&2
               exit 1
             fi
-            detail="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}")"
-            [[ "$(jq -r '.head_sha' <<<"$detail")" == "$target_commit" ]]
-            [[ "$(jq -r '.name' <<<"$detail")" == "verify" ]]
-            [[ "$(jq -r '.event' <<<"$detail")" == "push" ]]
-            echo "DEVRELAY_RELEASE_TARGET_COMMIT=${target_commit}" >> "$GITHUB_ENV"
-            echo "DEVRELAY_RELEASE_CI_RUN=${run_id}" >> "$GITHUB_ENV"
-            exit 0
+            sleep 10
           done
-          echo "No completed verify run was found for ${target_commit}." >&2
+          echo "No successful exact verify run was available for ${TARGET_COMMIT}." >&2
           exit 1
       - name: Materialize exact candidate through released APIs
         shell: bash
@@ -105,7 +134,7 @@ jobs:
       - name: Upload candidate and generated catalogs
         uses: actions/upload-artifact@v4
         with:
-          name: controlled-release-candidate-${{ github.sha }}
+          name: controlled-release-candidate-${{ steps.source.outputs.target_commit }}
           if-no-files-found: error
           retention-days: 30
           path: |
