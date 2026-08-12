@@ -22,12 +22,15 @@ const calls = [
   ["devrelay_progress_run", { ...base, operation: "progress-run", approvedPredecessor: ref("PREDECESSOR") }],
   ["devrelay_resume_run", { ...base, operation: "resume-run", checkpoint: ref("CHECKPOINT"), checkpointDigest: digest("b") }],
   ["devrelay_get_evidence", { ...base, operation: "get-evidence", evidenceId: "EVIDENCE-1" }],
+  ["devrelay_list_runs", { operation: "list-runs", requestId: "REQ-LIST" }],
 ];
 
-const outputFor = (input) => ({ requestId: input.requestId, runId: input.runId, revision: input.expectedRevision + 1, status: "completed", artifacts: [ref("RESULT")], gateState: "not-applicable", diagnostics: [], nextAction: { kind: "none" } });
+const outputFor = (input) => input.operation === "list-runs"
+  ? { requestId: input.requestId, status: "completed", runs: [], diagnostics: [] }
+  : { requestId: input.requestId, runId: input.runId, revision: input.expectedRevision + 1, status: "completed", artifacts: [ref("RESULT")], gateState: "not-applicable", diagnostics: [], nextAction: { kind: "none" } };
 const rpc = (id, name, args) => ({ jsonrpc: "2.0", id, method: "tools/call", params: { name, arguments: args } });
 
-test("initialize and tools/list expose only the seven approved bounded commands", async () => {
+test("initialize and tools/list expose only the eight approved bounded commands", async () => {
   const server = createChatGptDesktopMcpServer({ execute: outputFor });
   const initialized = await server.handle({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} });
   assert.equal(initialized.result.protocolVersion, CHATGPT_DESKTOP_MCP_PROTOCOL_VERSION);
@@ -77,6 +80,20 @@ test("equivalent calls and fresh server instances return byte-stable JSON", asyn
   const restarted = await two.handle(rpc(7, calls[6][0], reordered));
   assert.equal(JSON.stringify(first), JSON.stringify(replay));
   assert.equal(JSON.stringify(first), JSON.stringify(restarted));
+});
+
+test("list-runs validates its closed bounded pagination request", async () => {
+  const observed = [];
+  const server = createChatGptDesktopMcpServer({ execute: async (input) => { observed.push(input); return outputFor(input); } });
+  assert.equal((await server.handle(rpc(30, "devrelay_list_runs", { operation: "list-runs", requestId: "REQ-LIST", limit: 1 }))).error, undefined);
+  assert.equal((await server.handle(rpc(31, "devrelay_list_runs", { operation: "list-runs", requestId: "REQ-LIST", limit: 100 }))).error, undefined);
+  for (const args of [
+    { operation: "list-runs", requestId: "REQ-LIST", limit: 0 },
+    { operation: "list-runs", requestId: "REQ-LIST", limit: 101 },
+    { operation: "list-runs", requestId: "REQ-LIST", cursor: "not-a-cursor" },
+    { operation: "list-runs", requestId: "REQ-LIST", route: "create-run" },
+  ]) assert.equal((await server.handle(rpc(32, "devrelay_list_runs", args))).error.code, -32602);
+  assert.equal(observed.length, 2);
 });
 
 test("STDIO transport processes MCP newline frames in order and survives parse errors", async (context) => {

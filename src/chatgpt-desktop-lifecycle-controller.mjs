@@ -3,6 +3,8 @@ import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 const API_VERSION = "devrelay.dev/v1alpha1";
 const TERMINAL = new Set(["completed", "unable-to-proceed", "failed"]);
 const PAUSED = new Set(["clarification-required", "gate-required"]);
+const LIST_RUNS_DEFAULT_LIMIT = 50;
+const LIST_RUNS_MAX_DIAGNOSTICS = 100;
 
 export class ChatGptDesktopLifecycleControllerError extends Error {
   constructor(message, code = "DR4130") {
@@ -32,6 +34,18 @@ const exactRef = (value, label) => {
 const diagnostic = (code, message, severity = "error", relatedArtifacts) => ({ code, message, severity, ...(relatedArtifacts?.length && { relatedArtifacts }) });
 const stateBody = (state) => Object.fromEntries(Object.entries(state).filter(([key]) => key !== "stateDigest"));
 const seal = (state) => ({ ...state, stateDigest: canonicalJsonDigest(stateBody(state)) });
+const encodeCursor = (offset) => Buffer.from(canonicalJson({ offset, version: 1 }), "utf8").toString("base64url");
+const decodeCursor = (cursor) => cursor === undefined ? 0 : JSON.parse(Buffer.from(cursor, "base64url").toString("utf8")).offset;
+const LIST_RUN_STATES = new Set(["created", "active", "clarification-required", "gate-required", "completed", "unable-to-proceed", "failed"]);
+const safeSummary = (value) => value && typeof value.runId === "string" && /^[A-Za-z0-9][A-Za-z0-9._:-]*$/u.test(value.runId) && Number.isInteger(value.revision) && value.revision >= 1 && LIST_RUN_STATES.has(value.lifecycleState) && (value.checkpoint === null || typeof value.checkpoint === "string") && ["current", "recovered"].includes(value.recoveryStatus) && typeof value.createdAt === "string" && typeof value.updatedAt === "string" ? {
+  runId: value.runId, revision: value.revision, lifecycleState: value.lifecycleState, checkpoint: value.checkpoint, recoveryStatus: value.recoveryStatus, createdAt: value.createdAt, updatedAt: value.updatedAt,
+} : undefined;
+const safeListDiagnostic = (value) => ({
+  code: value?.code === "DESKTOP_RUN_CORRUPT" ? "DESKTOP_RUN_CORRUPT" : "DESKTOP_RUN_UNREADABLE",
+  message: value?.code === "DESKTOP_RUN_CORRUPT" ? "A persisted run is corrupt or unreadable." : "A persisted run is unreadable.",
+  severity: "warning",
+  ...(typeof value?.runId === "string" && /^[A-Za-z0-9][A-Za-z0-9._:-]*$/u.test(value.runId) && { runId: value.runId }),
+});
 
 function validateCircuit(value, ref) {
   if (!value || value.apiVersion !== API_VERSION || value.kind !== "DesktopLifecycleCircuit" || !Array.isArray(value.stages) || value.stages.length === 0) fail("circuit is not a DesktopLifecycleCircuit", "DR4131");
@@ -63,7 +77,7 @@ function response(input, revision, state, extraArtifacts = []) {
 }
 
 export function createChatGptDesktopLifecycleController({ runStore, loadArtifact, resolveCapabilities, executeStage, createRunView } = {}) {
-  if (!runStore?.load || !runStore?.commit || !runStore?.putArtifact || !runStore?.getArtifact) fail("runStore is required");
+  if (!runStore?.load || !runStore?.listRuns || !runStore?.commit || !runStore?.putArtifact || !runStore?.getArtifact) fail("runStore is required");
   if (typeof loadArtifact !== "function" || typeof executeStage !== "function") fail("loadArtifact and executeStage are required");
   if (resolveCapabilities !== undefined && typeof resolveCapabilities !== "function") fail("resolveCapabilities must be a function");
   const circuits = new Map();
@@ -138,6 +152,21 @@ export function createChatGptDesktopLifecycleController({ runStore, loadArtifact
   }
 
   async function execute(input) {
+    if (input.operation === "list-runs") {
+      const listed = await runStore.listRuns();
+      const diagnostics = (listed?.diagnostics ?? []).slice(0, LIST_RUNS_MAX_DIAGNOSTICS).map(safeListDiagnostic);
+      const summaries = [];
+      for (const item of listed?.runs ?? []) {
+        const summary = safeSummary(item);
+        if (summary) summaries.push(summary);
+        else if (diagnostics.length < LIST_RUNS_MAX_DIAGNOSTICS) diagnostics.push(safeListDiagnostic());
+      }
+      const offset = decodeCursor(input.cursor);
+      const limit = input.limit ?? LIST_RUNS_DEFAULT_LIMIT;
+      const runs = summaries.slice(offset, offset + limit);
+      const nextOffset = offset + runs.length;
+      return immutable({ requestId: input.requestId, status: "completed", runs, diagnostics, ...(nextOffset < summaries.length && { nextCursor: encodeCursor(nextOffset) }) });
+    }
     const loaded = await storedState(input.runId);
     if (input.operation === "create-run") {
       if (loaded) fail("run already exists", "DR4133");

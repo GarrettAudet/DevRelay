@@ -89,3 +89,37 @@ test("failure is persisted truthfully and a repeating frontier advances once per
   assert.equal(completed.status, "completed");
   assert.equal(calls, 2);
 });
+
+test("list-runs returns a read-only privacy-safe page", async () => {
+  const f = await fixture([{ id: "work", kind: "module" }], async () => ({ status: "completed", artifacts: [output("SENSITIVE-PROMPT-CANARY")] }));
+  await f.create();
+  const first = await f.call("devrelay_list_runs", { operation: "list-runs", requestId: "REQ-LIST", limit: 1 });
+  assert.equal(first.status, "completed");
+  assert.equal(first.runs.length, 1);
+  assert.equal(first.runs[0].runId, "RUN-1");
+  assert.equal(first.runs[0].lifecycleState, "completed");
+  assert.equal(JSON.stringify(first).includes("SENSITIVE-PROMPT-CANARY"), false);
+  assert.equal((await f.controller.inspectState("RUN-1")).runId, "RUN-1");
+});
+
+test("list-runs defaults to 50 and uses a deterministic opaque cursor without writes", async () => {
+  let writes = 0;
+  const runs = Array.from({ length: 51 }, (_, index) => ({ runId: `RUN-${String(index).padStart(2, "0")}`, revision: 1, lifecycleState: "active", checkpoint: null, recoveryStatus: "current", createdAt: "2026-08-11T00:00:00.000Z", updatedAt: "2026-08-11T00:00:00.000Z" }));
+  const runStore = {
+    load: async () => undefined,
+    listRuns: async () => ({ runs, diagnostics: [{ code: "PRIVATE-CANARY", message: "sensitive source bytes", severity: "error" }] }),
+    commit: async () => { writes += 1; },
+    putArtifact: async () => { writes += 1; },
+    getArtifact: async () => undefined,
+  };
+  const controller = createChatGptDesktopLifecycleController({ runStore, loadArtifact: async () => undefined, executeStage: async () => undefined });
+  const first = await controller.execute({ operation: "list-runs", requestId: "REQ-1" });
+  const replay = await controller.execute({ operation: "list-runs", requestId: "REQ-1" });
+  assert.equal(first.runs.length, 50);
+  assert.equal(first.nextCursor, replay.nextCursor);
+  assert.equal(JSON.stringify(first).includes("sensitive source bytes"), false);
+  const second = await controller.execute({ operation: "list-runs", requestId: "REQ-2", cursor: first.nextCursor });
+  assert.deepEqual(second.runs.map(({ runId }) => runId), ["RUN-50"]);
+  assert.equal("nextCursor" in second, false);
+  assert.equal(writes, 0);
+});
