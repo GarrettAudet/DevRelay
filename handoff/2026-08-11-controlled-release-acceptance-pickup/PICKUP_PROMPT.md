@@ -1,13 +1,9 @@
 # Pickup prompt
 
-Continue DevRelay from the exact persisted corrected candidate on branch `codex/lifecycle-run-report-completion`.
+Continue DevRelay on branch `codex/lifecycle-run-report-completion` from the accepted controlled source/library candidate for ChatGPT Desktop on Windows.
 
-The verified source target is `9d2b0d8e6b358dd6aed922de420224fe9efc320c`; verify run `31564635275` passed Node 20/22 on Ubuntu/Windows. The 25-file candidate package is persisted at `dogfood/release-acceptance/candidate-001/`.
+BusinessAcceptance request `BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001` / `sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e` was explicitly approved for candidate `BA-CANDIDATE-ed2476ac90e1359f796d1ab8`. The released Gate produced accepted record `BA-RECORD-a6d15fb968dfbeeb5704fb42` / `sha256:a1e17d68bdf057ef5df2ceabca0befa1b4d0a79e5267a3d7a0478e3a96494cea`; replay made zero additional owner calls.
 
-The candidate is `BA-CANDIDATE-ed2476ac90e1359f796d1ab8` with semantic digest `sha256:92b25f9e6e898b780e126079ce945a92841bd3e8508dc18503d4d85f2d42ee22` and raw digest `sha256:f0ed398f7abdd8c9540ba83842d88ecf728433011fbc2dbfe05bc751a99c8f04`. Technical coverage digest: `sha256:8c1a9bb891a68aa66ce1d7e49b5860b821c07c1bccbbf355caa2b01e0baba88d`.
+Trusted traceability reconciliation and acceptance merge produced graph revision 5 / `sha256:50837069d2057932fce54375155fddb674edb65f9407a1b93b6554436ffc34d1` with zero blocking diagnostics. Final proof: `sha256:4766324761b24dc5b6146b9cbfa399505dfa110c11f969415b32e115b2c02aca`.
 
-The exact approval request is `BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001` with digest `sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e` and status `awaiting-exact-owner-approval`.
-
-First obtain an explicit owner decision over that exact request. Do not infer approval from the stale earlier approval or broad instructions. If approved, execute BusinessAcceptanceGate and zero-call replay, merge trusted BusinessAcceptance traceability and replay, require zero blocking diagnostics, then update final evidence/handoff/catalog and verify the four-job matrix.
-
-Preserve the exclusions: public npm publication, one-click ChatGPT Desktop plug-in, and hosted backend.
+Complete only the remaining promotion sequence: regenerate catalog, run local `release:check`, commit/push, and require the four-job Node 20/22 Windows/Ubuntu matrix. If those pass on the exact commit, the controlled source/library release is ready. Preserve exclusions: public npm publication, one-click Desktop plug-in, and hosted backend.

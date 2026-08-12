@@ -1,23 +1,19 @@
 # Next actions
 
-## 1. Obtain exact owner decision
+BusinessAcceptance is complete. No further owner decision is required unless accepted bytes change.
 
-Present `dogfood/release-acceptance/candidate-001/23-business-acceptance-approval-request.json` (request digest `sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e`).
+## Final promotion sequence
 
-The owner must explicitly approve or reject the exact request. The prior approval is stale because it names superseded source. General authorization to continue is not a substitute for this byte-bound decision.
+1. Regenerate the repository release catalog after all evidence and handoff bytes are final.
+2. Run `npm.cmd run release:check` and require the full gate to pass.
+3. Commit and push the exact accepted evidence and handoff.
+4. Require `verify-source-release` to pass Node 20 and 22 on Windows and Ubuntu (4/4).
+5. Report the deterministic controlled source/library release ready for ChatGPT Desktop on Windows.
 
-## 2. Execute BusinessAcceptanceGate
+## If a check fails
 
-Use the exact canonical candidate bytes, exact candidate raw digest, exact evaluation, subject, policy, evidence, technical coverage, and exact owner approval. Persist the Gate checkpoint and authoritative BusinessAcceptanceRecord. Replay must invoke the owner zero additional times.
-
-## 3. Merge trusted acceptance traceability
-
-Project only from the exact accepted Gate execution using the released BusinessAcceptance contributor. Prepare, checkpoint, atomically merge, and replay the exact update. Require zero blocking diagnostics.
-
-## 4. Finalize release evidence
-
-Update root status, this handoff package, release evidence, and release metadata. Regenerate the content-addressed catalog, run `npm run release:check`, push, and verify Node 20/22 on Ubuntu/Windows.
+Diagnose from the exact failing evidence. Preserve the accepted candidate and Gate artifacts. If a fix changes accepted product bytes or acceptance context, regenerate all dependent verification and acceptance artifacts and obtain a new exact approval.
 
 ## Prohibited shortcuts
 
-Do not reuse the superseded approval, hand-author the approval/record/update/receipt, alter the accepted scope, expand excluded delivery claims, or call the release complete before the final Gate, graph, catalog, and matrix evidence exist.
+Do not hand-edit generated acceptance artifacts, bypass the catalog, weaken graph ownership, infer a passing matrix, or expand the accepted delivery boundary.

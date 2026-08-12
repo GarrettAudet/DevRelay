@@ -2,7 +2,7 @@ apiVersion: devrelay.dev/v1alpha1
 kind: ControlledReleaseAcceptancePickup
 metadata:
   id: controlled-release-acceptance-pickup-2026-08-11
-  date: "2026-08-11"
+  date: "2026-08-12"
 repository:
   url: https://github.com/GarrettAudet/DevRelay.git
   branch: codex/lifecycle-run-report-completion
@@ -15,39 +15,39 @@ target:
     - public-npm-publication
     - one-click-desktop-plugin
     - hosted-backend
-verification:
-  githubActions:
-    runId: 31564635275
-    status: success
-    jobsPassed: 4
-    jobsTotal: 4
-  moduleCount: 11
-  pluginCount: 24
 candidate:
-  persisted: true
-  path: dogfood/release-acceptance/candidate-001
   artifactId: BA-CANDIDATE-ed2476ac90e1359f796d1ab8
   digest: sha256:92b25f9e6e898b780e126079ce945a92841bd3e8508dc18503d4d85f2d42ee22
   rawDigest: sha256:f0ed398f7abdd8c9540ba83842d88ecf728433011fbc2dbfe05bc751a99c8f04
-  proofDigest: sha256:39794039b87830b5ad89aa37c9603680f3c64b90f852ed1c3260ffef13609265
-  outcome: eligible-for-acceptance
 approval:
-  status: awaiting-exact-owner-approval
+  status: approved
   requestId: BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001
   requestDigest: sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e
-  priorApprovalIsStale: true
-  approvedCoverage:
-    acceptanceCriteria: 81
-    nonFunctionalRequirements: 18
-    businessObjectives: 8
-    successMetrics: 9
-    businessScopes: 32
+  approvalId: BA-APPROVAL-CONTROLLED-WINDOWS-SOURCE-001
+  approvalDigest: sha256:e5ea7f73bb210f01dda3f0ea1528b910970999c90ed7d66b58d6233400c74282
+businessAcceptance:
+  status: accepted
+  recordId: BA-RECORD-a6d15fb968dfbeeb5704fb42
+  recordDigest: sha256:a1e17d68bdf057ef5df2ceabca0befa1b4d0a79e5267a3d7a0478e3a96494cea
+  checkpointDigest: sha256:5552f3802b1800f5cb092a0bae3bfd62eb36656bdc70106d3f24213b3fac79cb
+  replayOwnerCalls: 0
+traceability:
+  graphRevision: 5
+  graphDigest: sha256:50837069d2057932fce54375155fddb674edb65f9407a1b93b6554436ffc34d1
+  blockingDiagnostics: 0
+  finalProofDigest: sha256:4766324761b24dc5b6146b9cbfa399505dfa110c11f969415b32e115b2c02aca
+coverage:
+  acceptanceCriteria: 81
+  nonFunctionalRequirements: 18
+  businessObjectives: 8
+  successMetrics: 9
+  businessScopes: 32
 currentBoundary:
-  stage: exact-owner-approval
-  businessAcceptanceRecorded: false
-  finalTraceabilityMerged: false
+  stage: final-promotion-verification
+  businessAcceptanceRecorded: true
+  finalTraceabilityMerged: true
 next:
-  - obtain-exact-owner-decision
-  - execute-business-acceptance-gate-and-replay
-  - merge-acceptance-traceability-and-diagnose
-  - update-final-release-evidence-catalog-and-matrix
+  - regenerate-release-catalog
+  - run-local-release-check
+  - commit-and-push-exact-evidence
+  - require-final-four-job-matrix
