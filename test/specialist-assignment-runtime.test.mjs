@@ -6,7 +6,9 @@ import {
   sha256Digest,
 } from "../src/content-digest.mjs";
 import { createSpecialistAssignmentRuntime } from "../src/specialist-assignment-runtime.mjs";
+import { createSpecialistAssignmentRuntimeV2 } from "../src/specialist-assignment-runtime-v2.mjs";
 import { promoteSpecialistAssignmentBaseline } from "../src/specialist-assignment-gate.mjs";
+import { promoteSpecialistAssignmentBaselineV2 } from "../src/specialist-assignment-gate-v2.mjs";
 import { rankSpecialistsDeterministically } from "../src/specialist-assignment.mjs";
 
 function store() {
@@ -264,4 +266,54 @@ test("Gate promotes only exact approved canonical draft bytes", async () => {
       }),
     /bytes do not match/,
   );
+});
+
+
+test("Gate v2 promotes only the exact checkpoint-replayed draft with content-addressed owner approval", async () => {
+  let calls = 0;
+  const runtime = createSpecialistAssignmentRuntimeV2({
+    checkpointStore: store(),
+    ranker: {
+      descriptor: { id: "fixture.ranker", version: "2.0.0" },
+      rank(eligibility, policy) {
+        calls += 1;
+        return rankSpecialistsDeterministically(eligibility, policy);
+      },
+    },
+  });
+  const result = await runtime.execute(invocation({ executionId: "SA-EXEC-V2" }));
+  const replay = await runtime.verifyCheckpointedExecution({
+    executionId: result.executionId,
+    executionFingerprint: result.executionFingerprint,
+  });
+  const approval = {
+    kind: "SpecialistAssignmentGateApproval",
+    decision: "approve",
+    candidate: { artifactId: result.draft.ref.artifactId, digest: result.draft.ref.digest },
+    checkpointDigest: replay.checkpointDigest,
+    executionFingerprint: replay.executionFingerprint,
+    approvedBy: "owner",
+  };
+  const exactApprovalBytes = Buffer.from(canonicalJson(approval), "utf8");
+  const approvalRef = { artifactId: "SA-GATE-APPROVAL-V2", digest: sha256Digest(exactApprovalBytes) };
+  const baseline = promoteSpecialistAssignmentBaselineV2({ checkpointReplay: replay, approval, approvalRef, exactApprovalBytes });
+  assert.equal(baseline.version, "2.0.0");
+  assert.equal(baseline.approvedDraft.digest, result.draft.ref.digest);
+  assert.deepEqual(baseline.approvalEvidence, [approvalRef]);
+  assert.equal(calls, 1, "checkpoint verification and Gate promotion must not reinvoke the ranker");
+
+  for (const forged of [structuredClone(replay), JSON.parse(JSON.stringify(replay)), { ...replay }]) {
+    assert.throws(
+      () => promoteSpecialistAssignmentBaselineV2({ checkpointReplay: forged, approval, approvalRef, exactApprovalBytes }),
+      /unforgeable checkpoint replay receipt/,
+    );
+  }
+  await assert.rejects(
+    runtime.verifyCheckpointedExecution({
+      executionId: result.executionId,
+      executionFingerprint: canonicalJsonDigest({ changed: "input-closure" }),
+    }),
+    /exact checkpoint/,
+  );
+  assert.equal(calls, 1);
 });

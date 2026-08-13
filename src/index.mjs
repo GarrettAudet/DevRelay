@@ -312,9 +312,18 @@ export {
   createSpecialistAssignmentRuntime,
 } from "./specialist-assignment-runtime.mjs";
 export {
+  SpecialistAssignmentRuntimeV2Error,
+  assertVerifiedSpecialistAssignmentReceipt,
+  createSpecialistAssignmentRuntimeV2,
+} from "./specialist-assignment-runtime-v2.mjs";
+export {
   SpecialistAssignmentGateError,
   promoteSpecialistAssignmentBaseline,
 } from "./specialist-assignment-gate.mjs";
+export {
+  SpecialistAssignmentGateV2Error,
+  promoteSpecialistAssignmentBaselineV2,
+} from "./specialist-assignment-gate-v2.mjs";
 export {
   specialistAssignmentBaselineTraceabilityContributor,
   specialistAssignmentCandidateTraceabilityContributor,

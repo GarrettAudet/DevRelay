@@ -3,25 +3,39 @@
   "kind": "ModulePlugin",
   "metadata": {
     "id": "a2a-profile-source",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Normalize version-pinned A2A 1.0 Agent Cards through explicit skill-to-capability mappings without eligibility or execution authority."
   },
-  "implements": [{
-    "module": { "id": "specialist-assignment", "version": "1.0.0" },
-    "operations": [{
-      "id": "assign-specialists",
-      "role": "proposer",
-      "execution": "effect",
-      "configSchema": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["protocolVersion", "unmappedSkillDisposition"],
-        "properties": {
-          "protocolVersion": { "const": "1.0" },
-          "unmappedSkillDisposition": { "const": "reject" }
-        }
+  "implements": [
+    {
+      "module": {
+        "id": "specialist-assignment",
+        "version": "2.0.0"
       },
-      "capabilities": []
-    }]
-  }]
+      "operations": [
+        {
+          "id": "assign-specialists",
+          "role": "proposer",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "protocolVersion",
+              "unmappedSkillDisposition"
+            ],
+            "properties": {
+              "protocolVersion": {
+                "const": "1.0"
+              },
+              "unmappedSkillDisposition": {
+                "const": "reject"
+              }
+            }
+          },
+          "capabilities": []
+        }
+      ]
+    }
+  ]
 }

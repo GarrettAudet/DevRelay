@@ -4,7 +4,7 @@
   "metadata": {
     "name": "devrelay",
     "version": "0.10.0-rc.1",
-    "releaseType": "private-source"
+    "releaseType": "github-source-prerelease"
   },
   "scope": {
     "root": ".",
@@ -141,7 +141,7 @@
     },
     {
       "id": "specialist-assignment",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "definition": "examples/modules/specialist-assignment.module.json",
       "operations": [
         {
@@ -514,11 +514,11 @@
     },
     {
       "id": "a2a-profile-source",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "manifest": "examples/plugins/a2a-profile-source.plugin.json",
       "module": {
         "id": "specialist-assignment",
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
       "bindings": [
         {
@@ -530,11 +530,11 @@
     },
     {
       "id": "native-specialist-ranker",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "manifest": "examples/plugins/native-specialist-ranker.plugin.json",
       "module": {
         "id": "specialist-assignment",
-        "version": "1.0.0"
+        "version": "2.0.0"
       },
       "bindings": [
         {
@@ -624,6 +624,33 @@
       ]
     }
   ],
+  "compatibilityModules": [
+    {
+      "id": "specialist-assignment",
+      "version": "1.0.0",
+      "definition": "examples/modules/specialist-assignment-v1.module.json"
+    }
+  ],
+  "compatibilityPlugins": [
+    {
+      "id": "a2a-profile-source",
+      "version": "1.0.0",
+      "manifest": "examples/plugins/a2a-profile-source-v1.plugin.json",
+      "module": {
+        "id": "specialist-assignment",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "native-specialist-ranker",
+      "version": "1.0.0",
+      "manifest": "examples/plugins/native-specialist-ranker-v1.plugin.json",
+      "module": {
+        "id": "specialist-assignment",
+        "version": "1.0.0"
+      }
+    }
+  ],
   "files": [
     {
       "path": ".gitattributes",
@@ -683,7 +710,7 @@
       "path": ".github/workflows/release.yml",
       "role": "continuous-integration",
       "packaged": false,
-      "digest": "sha256:38c111d1ba9255f0d8e3b916152f40983c97bde6d4d78bfa97c5e6ddb8fcd893"
+      "digest": "sha256:23db4d5465ba53e40814a39965402f74129ea9adbaa4c1c16d69048401f29ee5"
     },
     {
       "path": ".github/workflows/scorecard.yml",
@@ -713,7 +740,7 @@
       "path": "CHANGELOG.md",
       "role": "release-documentation",
       "packaged": true,
-      "digest": "sha256:f5a95e2d300e0cfcb18c55824ada006de16c9605eea12d74cc447a545bb2a26c"
+      "digest": "sha256:fe5cd8bf525237eeda0bf06173dabdf05e98600b8d4b72ce3b60a83e6f9a5848"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -731,7 +758,7 @@
       "path": "CURRENT_STATUS.md",
       "role": "repository-support",
       "packaged": false,
-      "digest": "sha256:bed8b7829c9d5ecfff42e79db08a88af56b0f373fbe4c8beaf009b9a2096a79c"
+      "digest": "sha256:4e05db4b4bfcd6b8a570a8b0500ac2626ee547e2523b0f21c04fd5c641aa72e5"
     },
     {
       "path": "DCO.md",
@@ -767,13 +794,19 @@
       "path": "README.md",
       "role": "release-documentation",
       "packaged": true,
-      "digest": "sha256:4e56d2b92cc17262df075c580072289a58f3361303612040e996348adcf22181"
+      "digest": "sha256:c0fa9c4df1beb62e710fa804d6675f7e0c7d4192123364d43124b3718a2cb99e"
     },
     {
       "path": "RELEASE.md",
       "role": "release-documentation",
       "packaged": true,
-      "digest": "sha256:21bbd70943489fc106564dbb88ca384a991cc8ef9e7a28d55dc66f77d92ee68e"
+      "digest": "sha256:cdfdc395c110229fe6e685a8d80e19d27ebba5fbeda563b66d3afd5855a099c1"
+    },
+    {
+      "path": "ROADMAP.md",
+      "role": "repository-support",
+      "packaged": false,
+      "digest": "sha256:769c6c3595264341dba2ed962e0451deea520d24b430d7e7e3a971325b0af719"
     },
     {
       "path": "SECURITY.md",
@@ -1001,7 +1034,7 @@
       "path": "docs/specialist-assignment.md",
       "role": "contract-documentation",
       "packaged": true,
-      "digest": "sha256:c11065046cf81c33dbc4602e25b34563569ec1e4410d31bec76846e8290f985a"
+      "digest": "sha256:839f0c691eaa4fd4f21b5f2a27823a35522166236be5632e37d3149a6dbb667d"
     },
     {
       "path": "docs/specs/v0.10-release-hardening/README.md",
@@ -1014,6 +1047,12 @@
       "role": "contract-documentation",
       "packaged": true,
       "digest": "sha256:0d3861773b7329ba06bb91eceb2f996e24c674d5ef650009f6cf1f50c41729db"
+    },
+    {
+      "path": "docs/specs/v0.10.2-audit-remediation/README.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:8f1117147f674d91bd3cc60d5e676fa48bf08216f14a0b8a3e460611f7ff4981"
     },
     {
       "path": "docs/system-verification.md",
@@ -18470,6 +18509,174 @@
       "digest": "sha256:e71f53380df76743dc2c50b185c5d0ad2efe7881b6f48875897913912b94f4d6"
     },
     {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/01-RequirementsGathering.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:a6b102bd95f553d63c72b443451e7d3da1157c7be782637d3f0d52d5b6b0fc02"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/02-RequirementsGate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dcf525d8298550bc3ea4d35e92e2a900943e857dff8120695b8a3c1dbea43413"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/03-ArchitectureDiscovery.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7775f2397d212e8226a7f85f6293374129a72067436e15ef9928eeef94b6e945"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/04-ArchitectureDesign.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:217883218effa50be47e5493f2bc4900d904544e247594dede4944105785a778"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/05-ArchitectureGate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2e652c543db2ee22eb657fd471b42bc9510f9db2e66af3fb41dd298c942f3f05"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/06-ContractGeneration.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:f5c34966e016668bca8672c00d821e6d18fb4a991301a7cf44ddcc11d64c1b98"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/07-ContractGate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:7ebb561ce535bd11909c24ecca187fd6704034e7b6b1460cbf607adcdca7bb90"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/08-WorkBreakdown.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:ee6f8b3512a7954cf4d87e8aa351441588f5dab06b9f9669eafc45102c8fdf3d"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/09-WorkBreakdownGate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:25f7193f7c3285916c3b42f853b76dd259a29f52572b5969edcfa47787fb42c1"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/10-WorkDependencyAnalysis.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:07c0e8fdc8649ec6a7b60b5687dcd5070a68db403f554b9c3e6fbbe1cdd677c7"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/11-WorkDependencyGate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e40a08e46b8168172b61faf44be98fe3d0d2d7f9af6c385852aa4c14d7faa773"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/12-SpecialistAssignment.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d3cda1371045628ac10e38fb2168d9e45ad6aab795c5e9dc63fd6ddea3b32fe6"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/13-SpecialistAssignmentGate.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3d3ed9aacbef04701c34cc915d05157e563c58f2a12e2ad0daf54a38075bc81d"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/14-WorkExecution.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:190bc08b319f0517fc25f191bc44d2786c5527638d4e55ab779ebd36ddd84ba7"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/15-WorkItemVerification.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:3842aa0ea02929ee6fd248c3850fb0f8b4ae3d0d060e6316cefe55ef501c7dfb"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/LifecycleRunReport.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:0868675b06daa14ab667be5ec6a86af34dd9462f56345eba7e9da64f8c14ad0d"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/README.md",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:39a9ba195b8f93a9332217b564ad0cefea40a96b604215df15a1a89f32ffdb36"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/architecture-change-design.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:084ff5acadc52fcedbb89bffaceee6b5ee049e0019dfc9ebcc43e0660c082459"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/architecture-discovery-inventory.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d8a3e6bb04983eb92a68a1e31c09bd43f930fe64b5d169fe7d14b2a7062a860a"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/contract-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:18769300300a9e32b054f0f6e7faef3d55b079b2a209d70e76040431e3a28527"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/lifecycle-checkpoint.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:dfc836f629200126d40bee71001f5873c6181e00d3faf8e79bb8d0d9efb385a3"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/requirements-reuse-disposition.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:b35d452e5f51a97a28189672bd3981e83d5c58ee6c95945758e7a78a0ba69f53"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/specialist-assignment-baseline.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4b086182792f5d3b287bbd833a5e934aedb8b2a6627dbb7600aa1052d0eac008"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/traceability-update-set.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:e36fa4d6a85ed3d9a86b47fb01ea4b824eb2b26bb68c758c2f18832e333745aa"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/work-breakdown-change-set-draft.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:4cda935e780366a5f751465d815bb7a4d4b49a949d744c44aeb6d2f51848c7c5"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/work-dependency-analysis.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:cd37ba2c62b1cb4273822e41e6bb1c3601efa397b85650f46da39222442d74f3"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/work-execution-frontier.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:2960220225dbf91821207581dd0165d595e8057f963f1d82a6453931499a8406"
+    },
+    {
+      "path": "dogfood/v0.10.0-rc.1-audit-remediation/work-item-verification-summary.json",
+      "role": "dogfood-evidence",
+      "packaged": false,
+      "digest": "sha256:d56bab374f15bbb65514d2a51cadeedd6192a691d85dba05d908bfe67efadb04"
+    },
+    {
       "path": "dogfood/v0.10.1-code-scanning-hardening/01-RequirementsGathering.json",
       "role": "dogfood-evidence",
       "packaged": false,
@@ -24380,10 +24587,16 @@
       "digest": "sha256:489b8689e437ad3740f8c67da428ba40be5b78e4f7befb4d21f795bcdb34b6d6"
     },
     {
+      "path": "examples/modules/specialist-assignment-v1.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:abd440e22e416f437e80c012d66b630e370dec54da49d90a4739efe06219057d"
+    },
+    {
       "path": "examples/modules/specialist-assignment.module.json",
       "role": "module-definition",
       "packaged": true,
-      "digest": "sha256:cdc093961e75c79beefb0f36260679d8314aa163edec960b14a5d49d7d579d36"
+      "digest": "sha256:1623472dc8fde644823c855a0104e480d4cba61f0d0996bdb5f560cf41b5da9e"
     },
     {
       "path": "examples/modules/system-verification.module.json",
@@ -24476,10 +24689,16 @@
       "digest": "sha256:cce679c3aed6f3eeb780e8ca7a2cca6e63c9be1e5cab19c1bba39bb2df6e9999"
     },
     {
+      "path": "examples/plugins/a2a-profile-source-v1.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:e4b2bc60d2499de9450357b55ed925923d785237b83f23336df58c9eaff77ca4"
+    },
+    {
       "path": "examples/plugins/a2a-profile-source.plugin.json",
       "role": "plugin-manifest",
       "packaged": true,
-      "digest": "sha256:045dcde8ffd22d0604015ca147e82d8048ae2b9746462d08861b230c8530159d"
+      "digest": "sha256:4f020538115fe2345ce5e70cdb60f51baefceb8ffedeaf97cf492c02de99b575"
     },
     {
       "path": "examples/plugins/asyncapi-contract-generator.plugin.json",
@@ -24524,10 +24743,16 @@
       "digest": "sha256:d4bf05c15e0180b46892a206961739d3664a16a671c0bc84634f5c7f016165c3"
     },
     {
+      "path": "examples/plugins/native-specialist-ranker-v1.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:598cd30488944a60971a204fcc6274d1ae13b661d546d68aec54652d1bfd2711"
+    },
+    {
       "path": "examples/plugins/native-specialist-ranker.plugin.json",
       "role": "plugin-manifest",
       "packaged": true,
-      "digest": "sha256:cfece4eb2cc72ca71f357d152fb386e1a902b4351af3bda80226d8a2d1c0cfd4"
+      "digest": "sha256:032ebbdb64d2bbe8bdcc6a2076727f4094135d789df0557207ae12e269aaaaca"
     },
     {
       "path": "examples/plugins/native-structured-dependency-proposer.plugin.json",
@@ -24953,13 +25178,13 @@
       "path": "package-lock.json",
       "role": "dependency-lock",
       "packaged": false,
-      "digest": "sha256:57abd7236cb624362d088f265bcca7a6a5af7be47a4518333e1ab8a62392b59a"
+      "digest": "sha256:3ffc4e0717d075f5771866def52958859f9c15050ca8147e1d260dd540c0bca3"
     },
     {
       "path": "package.json",
       "role": "package-metadata",
       "packaged": true,
-      "digest": "sha256:b14f43811909041daebc340cceaf894a8eb96d52a9eb5e359723381adc705b8a"
+      "digest": "sha256:6504555ee7c018f46897ed35ef065a4992270d66c641855a7451a0f062405345"
     },
     {
       "path": "policies/work-dependency-analysis/README.md",
@@ -26333,19 +26558,19 @@
       "path": "scripts/check-release-manifest.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:bc1178fdda436ceeca4cd3191f72ebd227def3c583fab3aa7def4c10852c7474"
+      "digest": "sha256:bfd5c26a1220eeca54c949c3a6534ea82fd5d21f30c44e4c0bd592a1f9c0aac5"
     },
     {
       "path": "scripts/generate-release-manifest.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:73989f369188addd49cf0846b4d837e13d04c0320686de867713bd44af465c55"
+      "digest": "sha256:a442bbf6e67f0ac67e327121a59d67117746c329829ba087e4986760ddede2a8"
     },
     {
       "path": "scripts/release-catalog.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:a48bb84793e5bd19a541fa5f1d97fc49a09b8e06ecc753940cc4599cc7438292"
+      "digest": "sha256:cad201ae25713e79b7322516e875e6ff3b4e90663a7b494a6805e278c034e1fe"
     },
     {
       "path": "scripts/release-check.mjs",
@@ -26627,7 +26852,7 @@
       "path": "src/index.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:b832f95fc66da7ed4a142dc5d8ff1368182f9075a57f1eb44390c7464d9c7ab8"
+      "digest": "sha256:90cbd48badff5122f841d16f39565dd4b84cb6a06989446ee3931fbc7807583c"
     },
     {
       "path": "src/lifecycle-run-report-artifact-validator.mjs",
@@ -26768,10 +26993,22 @@
       "digest": "sha256:dd02c8534452582dd0727d9d977702019d3d53d2bbd89973ca78b22c5010ddbb"
     },
     {
+      "path": "src/specialist-assignment-gate-v2.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:5e0d4f35fcbe15afe4225951d32250b43169169f600812516565a9da4bb3fd7a"
+    },
+    {
       "path": "src/specialist-assignment-gate.mjs",
       "role": "runtime",
       "packaged": true,
       "digest": "sha256:96cfcb4cc0c0f9fd1760172735fc450bb25215e8adac8fc34980975133e4b4cf"
+    },
+    {
+      "path": "src/specialist-assignment-runtime-v2.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:5148fb5d9cd89657c27639c3c8b7af3750044b69a491014b9d4fe9aab034acdd"
     },
     {
       "path": "src/specialist-assignment-runtime.mjs",
@@ -27491,7 +27728,7 @@
       "path": "test/release-automation.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:0ac26ed1b7667164d05ea398ae0df7e1e48ad0d4eff88217925bd8716a021c41"
+      "digest": "sha256:3e78e694247615f041351a98bb43a96d3c6f4708823e3a1a01c29fdf5ef87e69"
     },
     {
       "path": "test/release-catalog-portability.test.mjs",
@@ -27581,7 +27818,7 @@
       "path": "test/specialist-assignment-runtime.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:ebee8bf55317b64034cd9f5887eb93404198b21846712e179bd5a2c82df1cf38"
+      "digest": "sha256:1c5842b06e73446ceb14ce2b9e55fb2f80eef14010f619510c4281e54d8bc6ee"
     },
     {
       "path": "test/specialist-assignment-traceability.test.mjs",

@@ -102,7 +102,7 @@ export const canonicalModules = Object.freeze([
   },
   {
     id: "specialist-assignment",
-    version: "1.0.0",
+    version: "2.0.0",
     definition: "examples/modules/specialist-assignment.module.json",
     operations: [{ id: "assign-specialists", steps: [] }],
     plugins: ["a2a-profile-source", "native-specialist-ranker"],
@@ -135,6 +135,14 @@ export const canonicalModules = Object.freeze([
     operations: [{ id: "verify-system", steps: [] }],
     plugins: ["review-system-verifier", "test-system-verifier"],
   },
+]);
+
+export const compatibilityModules = Object.freeze([
+  { id: "specialist-assignment", version: "1.0.0", definition: "examples/modules/specialist-assignment-v1.module.json" },
+]);
+export const compatibilityPlugins = Object.freeze([
+  { id: "a2a-profile-source", version: "1.0.0", manifest: "examples/plugins/a2a-profile-source-v1.plugin.json", module: { id: "specialist-assignment", version: "1.0.0" } },
+  { id: "native-specialist-ranker", version: "1.0.0", manifest: "examples/plugins/native-specialist-ranker-v1.plugin.json", module: { id: "specialist-assignment", version: "1.0.0" } },
 ]);
 
 export const canonicalPlugins = Object.freeze([
@@ -291,16 +299,16 @@ export const canonicalPlugins = Object.freeze([
   },
   {
     id: "a2a-profile-source",
-    version: "1.0.0",
+    version: "2.0.0",
     manifest: "examples/plugins/a2a-profile-source.plugin.json",
-    module: { id: "specialist-assignment", version: "1.0.0" },
+    module: { id: "specialist-assignment", version: "2.0.0" },
     bindings: [{ operation: "assign-specialists", step: null, role: "proposer" }],
   },
   {
     id: "native-specialist-ranker",
-    version: "1.0.0",
+    version: "2.0.0",
     manifest: "examples/plugins/native-specialist-ranker.plugin.json",
-    module: { id: "specialist-assignment", version: "1.0.0" },
+    module: { id: "specialist-assignment", version: "2.0.0" },
     bindings: [{ operation: "assign-specialists", step: null, role: "proposer" }],
   },
   {

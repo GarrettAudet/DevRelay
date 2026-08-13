@@ -2,40 +2,36 @@
 
 Last reconciled: 2026-08-13 MDT
 Protected branch: `main`
-Release commit: `fa5320374efd2228d924f4aa1c49ad4b418b5770`
+Canonical audited commit: `fa5320374efd2228d924f4aa1c49ad4b418b5770`
 Candidate version: `0.10.0-rc.1`
-Release boundary: controlled GitHub source/installable library for ChatGPT Desktop on Windows
+Active remediation branch: `codex/v0.10.2-audit-remediation`
+Release boundary: public GitHub source/installable library for ChatGPT Desktop on Windows
 
 ## Executive status
 
-DevRelay is release-ready for the agreed controlled boundary. The complete deterministic construction lifecycle has been dogfooded end to end, including the v0.10.1 scanner-hardening increment. All work items are executed, verified, integrated, system-verified, traced, and business-accepted.
+DevRelay is a **conditional GitHub prerelease candidate**, not a stable production release and not yet an operational orchestration deployment. The construction lifecycle and controlled source artifact have passed their prior gates, but final prerelease promotion is intentionally blocked while the independent audit's P0 controls are executed and reverified.
 
-`main` passed the Node 22/24 Windows/Ubuntu matrix, CodeQL, and Scorecard. Actionable CodeQL alerts are zero. The controlled source-release workflow verified the exact source and installed package, materialized and attested the assets, and uploaded immutable release evidence.
+## P0 release controls
 
-```text
-RequirementsGathering through SpecialistAssignmentGate  COMPLETE
-WorkExecution frontier loop                            COMPLETE
-WorkItemVerification                                  VERIFIED
-ChangeIntegration                                     INTEGRATED
-SystemVerification                                    VERIFIED
-BusinessAcceptance                                    ACCEPTED
-TraceabilityGraph hardening increment                 REVISION 48 / ZERO BLOCKERS
-Controlled GitHub source release                      COMPLETE
-```
+- Canonical status and release evidence reconciliation: in progress.
+- SpecialistAssignment Gate 2.0 checkpoint-replay authority: implemented; focused verification passing.
+- Exact tag-to-package-version binding: implemented; full verification pending.
+- Lockfile-owned reproducible CycloneDX generation: implemented; full verification pending.
+- Protected annotated tag and immutable GitHub prerelease: pending all prior controls and BusinessAcceptance.
 
-## Exact release evidence
+## Verified evidence retained
 
-- Main commit: `fa5320374efd2228d924f4aa1c49ad4b418b5770`.
-- Main verification: run `31701048939`, all four Node/OS lanes passed.
-- CodeQL: run `31701049017`, zero actionable alerts.
-- Scorecard: run `31701048991`, five documented non-code governance signals remain dispositioned.
-- Controlled source release: run `31701807978`, artifact `9181708671`, attested and uploaded.
-- Local release gate: 867 tests, 0 failures; 4,536 catalog digests; 292 package files; 171 installed export targets.
+- Main verification run `31701048939`: four Node/OS lanes passed.
+- CodeQL run `31701049017`: zero actionable alerts.
+- Scorecard run `31701048991`: five documented governance signals.
+- Controlled source workflow run `31701807978`: artifact `9181708671`.
+
+Those records remain valid evidence for `main@fa532037…`; they are not evidence for the bytes in the active remediation candidate. New evidence will be generated after integration.
 
 ## Boundary and exclusions
 
-This release covers GitHub source plus the deterministic installable library used through ChatGPT Desktop on Windows. It does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or live execution of fixture-conformant upstream CLIs.
+This candidate covers GitHub source plus the deterministic installable library used through ChatGPT Desktop on Windows. It does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, a durable reference host, or live execution of every fixture-conformant upstream CLI.
 
-## Pickup
+## Next action
 
-The authoritative completion handoff is `handoff/2026-08-13-v0101-controlled-release-complete/README.md`.
+Complete the DevRelay lifecycle for the five audit work items, regenerate the release catalog and handoff, merge through protected `main`, then create and independently verify `v0.10.0-rc.1`.
