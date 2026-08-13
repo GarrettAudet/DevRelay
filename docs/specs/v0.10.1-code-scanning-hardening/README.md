@@ -63,7 +63,7 @@ Authoritative planning checkpoint:
 sha256:823081f24c5eb1d018302889eba209823184b4dc31c0c061901a2ab1de6fec3b
 ```
 
-Canonical local verification completed with 866 tests, 864 passes, zero
+Canonical local verification completed with 867 tests, 865 passes, zero
 failures, and two intentional skips. The local evidence deliberately reports
 `needs-external-evidence`; it does not claim scanner closure or integration
 before the exact GitHub candidate is evaluated.

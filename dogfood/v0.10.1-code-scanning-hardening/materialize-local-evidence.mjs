@@ -57,11 +57,11 @@ const body = {
     outcome: "needs-external-evidence",
     localGate: {
       command: "npm.cmd run verify",
-      tests: 866,
-      passed: 864,
+      tests: 867,
+      passed: 865,
       failed: 0,
       skipped: 2,
-      durationMilliseconds: 312529.7137,
+      durationMilliseconds: 311603.8793,
       staticInventory: {
         jsonArtifacts: 3681,
         javascriptModules: 500,

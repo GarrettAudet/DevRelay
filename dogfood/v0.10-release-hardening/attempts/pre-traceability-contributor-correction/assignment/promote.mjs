@@ -35,22 +35,7 @@ function exactFileBytes(value) {
 }
 
 function openMutableProjectFile(filePath) {
-  for (;;) {
-    try {
-      return { descriptor: openSync(filePath, "wx+"), created: true };
-    } catch (error) {
-      if (!(error && typeof error === "object" && error.code === "EEXIST")) {
-        throw error;
-      }
-    }
-    try {
-      return { descriptor: openSync(filePath, "r+"), created: false };
-    } catch (error) {
-      if (!(error && typeof error === "object" && error.code === "ENOENT")) {
-        throw error;
-      }
-    }
-  }
+  return openSync(filePath, "a+");
 }
 
 function readDescriptorBytes(descriptor) {
@@ -123,10 +108,10 @@ function preserveAndReplaceProject(
   const currentUrl = new URL(relativePath, import.meta.url);
   const nextBytes = exactFileBytes(value);
   mkdirSync(new URL(".", currentUrl), { recursive: true });
-  const { descriptor, created } = openMutableProjectFile(currentUrl);
+  const descriptor = openMutableProjectFile(currentUrl);
   try {
-    if (!created) {
-      const currentBytes = readDescriptorBytes(descriptor);
+    const currentBytes = readDescriptorBytes(descriptor);
+    if (currentBytes.length > 0) {
       if (currentBytes.equals(nextBytes)) return;
       const current = JSON.parse(currentBytes);
       const identity = identityOf(current);

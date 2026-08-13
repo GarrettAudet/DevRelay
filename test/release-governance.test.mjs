@@ -11,10 +11,19 @@ test("public OSS governance surface is complete and internally consistent", () =
 
   const license = text("LICENSE");
   assert.match(license, /Apache License\s+Version 2\.0/u);
-  assert.equal(license.split(/\r?\n/u).find((line) => line.trim().startsWith("http:"))?.trim(), "http://www.apache.org/licenses/");
+  assert.equal(
+    license
+      .split(/\r?\n/u)
+      .find((line) => line.trim().startsWith("http:"))
+      ?.trim(),
+    "http://www.apache.org/licenses/",
+  );
 
   assert.match(text("NOTICE"), /DevRelay/u);
-  assert.match(text("DCO.md"), /Developer Certificate of Origin,?\s+Version 1\.1/u);
+  assert.match(
+    text("DCO.md"),
+    /Developer Certificate of Origin,?\s+Version 1\.1/u,
+  );
   assert.match(text("CONTRIBUTING.md"), /Signed-off-by/u);
   assert.match(text("CONTRIBUTING.md"), /DCO/u);
   assert.match(text("GOVERNANCE.md"), /Garrett Audet/u);
@@ -29,6 +38,26 @@ test("public OSS governance surface is complete and internally consistent", () =
   assert.equal(text(".github/CODEOWNERS").trim(), "* @GarrettAudet");
   assert.match(text(".github/pull_request_template.md"), /DCO/u);
   assert.match(text(".github/ISSUE_TEMPLATE/bug_report.yml"), /Bug report/u);
-  assert.match(text(".github/ISSUE_TEMPLATE/feature_request.yml"), /Feature request/u);
+  assert.match(
+    text(".github/ISSUE_TEMPLATE/feature_request.yml"),
+    /Feature request/u,
+  );
   assert.match(text(".github/dependabot.yml"), /package-ecosystem:\s*npm/u);
+});
+
+test("assignment promotions use one atomic create-or-open descriptor", () => {
+  const promotionPaths = [
+    "dogfood/architecture-discovery/assignment/promote.mjs",
+    "dogfood/change-integration/assignment/promote.mjs",
+    "dogfood/lifecycle-run-report/assignment/promote.mjs",
+    "dogfood/v0.10-release-hardening/assignment/promote.mjs",
+    "dogfood/v0.10-release-hardening/attempts/pre-traceability-contributor-correction/assignment/promote.mjs",
+    "dogfood/v0.10-release-hardening/attempts/pre-work-execution-runtime-correction/assignment/promote.mjs",
+    "dogfood/work-execution/assignment/promote.mjs",
+  ];
+  for (const path of promotionPaths) {
+    const source = text(path);
+    assert.match(source, /openSync\(filePath, "a\+"\)/u, path);
+    assert.doesNotMatch(source, /openSync\(filePath, "(?:r\+|wx\+)"\)/u, path);
+  }
 });
