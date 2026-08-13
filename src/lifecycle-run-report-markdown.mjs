@@ -15,8 +15,9 @@ export class LifecycleRunReportMarkdownError extends Error {
   constructor(message) { super(`lifecycle run report markdown rendering failed: ${message}`); this.name="LifecycleRunReportMarkdownError"; this.code="DR4430"; }
 }
 
-const text = value => String(value ?? "").normalize("NFC").replace(/\\/g,"\\\\").replace(/[\r\n]+/g," ").replace(/\|/g,"\\|").trim();
-const code = value => `\`${text(value).replace(/`/g,"\\`")}\``;
+const normalizedText = value => String(value ?? "").normalize("NFC").replace(/[\r\n]+/g," ").trim();
+const text = value => normalizedText(value).replace(/\\/g,"\\\\").replace(/\|/g,"\\|");
+const code = value => `\`${normalizedText(value).replace(/\\/g,"\\\\").replace(/`/g,"\\`").replace(/\|/g,"\\|")}\``;
 const refLink = ref => `[${text(ref.artifactId)}](devrelay-artifact://${encodeURIComponent(ref.artifactId)}?digest=${ref.digest.slice(7)})`;
 const refs = values => [...new Map((values??[]).map(value=>[refKey(value),value])).values()].sort((a,b)=>compare(refKey(a),refKey(b)));
 const metric = value => ["measured","estimated"].includes(value.availability)
