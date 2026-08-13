@@ -3,6 +3,8 @@ import { dirname } from "node:path";
 import {
   canonicalModules,
   canonicalPlugins,
+  compatibilityModules,
+  compatibilityPlugins,
   excludedReleaseDirectories,
   npmPackPaths,
   rawDigest,
@@ -32,7 +34,7 @@ const manifest = {
   metadata: {
     name: "devrelay",
     version: sourceReleaseVersion,
-    releaseType: "private-source",
+    releaseType: "github-source-prerelease",
   },
   scope: {
     root: ".",
@@ -47,6 +49,8 @@ const manifest = {
   digestAlgorithm: "sha256-raw-bytes",
   modules: canonicalModules,
   plugins: canonicalPlugins,
+  compatibilityModules,
+  compatibilityPlugins,
   files: repositoryFiles.map((path) => ({
     path,
     role: roleFor(path),

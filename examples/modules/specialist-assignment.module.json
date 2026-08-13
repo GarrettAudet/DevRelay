@@ -3,7 +3,7 @@
   "kind": "ModuleDefinition",
   "metadata": {
     "id": "specialist-assignment",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Assign every approved work item exactly once to an eligible provider-neutral specialist profile without scheduling or execution."
   },
   "operations": [
@@ -12,54 +12,244 @@
       "description": "Normalize configured profile sources, compute exact eligibility in Core, invoke one bounded ranker, and assemble one complete candidate.",
       "adapterExecution": "effect",
       "inputs": [
-        { "name": "work-breakdown-baseline", "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1", "mediaTypes": ["application/vnd.devrelay.work-breakdown-baseline+json"], "cardinality": "one", "required": true },
-        { "name": "work-dependency-baseline", "schema": "https://devrelay.dev/artifacts/work-dependency-baseline/v1", "mediaTypes": ["application/vnd.devrelay.work-dependency-baseline+json"], "cardinality": "one", "required": true },
-        { "name": "capability-catalog", "schema": "https://devrelay.dev/artifacts/capability-catalog/v1", "mediaTypes": ["application/vnd.devrelay.capability-catalog+json"], "cardinality": "one", "required": true },
-        { "name": "specialist-catalog", "schema": "https://devrelay.dev/artifacts/specialist-catalog/v1", "mediaTypes": ["application/vnd.devrelay.specialist-catalog+json"], "cardinality": "one", "required": true },
-        { "name": "assignment-policy", "schema": "https://devrelay.dev/artifacts/assignment-policy/v1", "mediaTypes": ["application/vnd.devrelay.assignment-policy+json"], "cardinality": "one", "required": true },
-        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
-        { "name": "repository-context", "variants": [
-          { "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1", "mediaTypes": ["application/vnd.devrelay.repository-snapshot+json"] },
-          { "schema": "https://devrelay.dev/artifacts/approved-not-applicable/v1", "mediaTypes": ["application/vnd.devrelay.approved-not-applicable+json"] }
-        ], "cardinality": "one", "required": true }
+        {
+          "name": "work-breakdown-baseline",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "work-dependency-baseline",
+          "schema": "https://devrelay.dev/artifacts/work-dependency-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-dependency-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "capability-catalog",
+          "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.capability-catalog+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "specialist-catalog",
+          "schema": "https://devrelay.dev/artifacts/specialist-catalog/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.specialist-catalog+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "assignment-policy",
+          "schema": "https://devrelay.dev/artifacts/assignment-policy/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.assignment-policy+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "repository-context",
+          "variants": [
+            {
+              "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+              "mediaTypes": [
+                "application/vnd.devrelay.repository-snapshot+json"
+              ]
+            },
+            {
+              "schema": "https://devrelay.dev/artifacts/approved-not-applicable/v1",
+              "mediaTypes": [
+                "application/vnd.devrelay.approved-not-applicable+json"
+              ]
+            }
+          ],
+          "cardinality": "one",
+          "required": true
+        }
       ],
       "outputs": [
-        { "name": "specialist-assignment-draft", "schema": "https://devrelay.dev/artifacts/specialist-assignment-draft/v1", "mediaTypes": ["application/vnd.devrelay.specialist-assignment-draft+json"], "cardinality": "one", "required": false }
+        {
+          "name": "specialist-assignment-draft",
+          "schema": "https://devrelay.dev/artifacts/specialist-assignment-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.specialist-assignment-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
       ],
       "inputRules": [],
-      "outcomes": ["assigned", "needs_clarification", "baseline_drift", "unable_to_proceed", "execution_failed"],
+      "outcomes": [
+        "assigned",
+        "needs_clarification",
+        "baseline_drift",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
       "resultContracts": {
         "assigned": {
           "status": "completed",
-          "requiredInputs": ["work-breakdown-baseline", "work-dependency-baseline", "capability-catalog", "specialist-catalog", "assignment-policy", "project-overview-baseline", "repository-context"],
+          "requiredInputs": [
+            "work-breakdown-baseline",
+            "work-dependency-baseline",
+            "capability-catalog",
+            "specialist-catalog",
+            "assignment-policy",
+            "project-overview-baseline",
+            "repository-context"
+          ],
           "forbiddenInputs": [],
-          "requiredOutputs": ["specialist-assignment-draft"],
-          "allowedOutputs": ["specialist-assignment-draft"],
+          "requiredOutputs": [
+            "specialist-assignment-draft"
+          ],
+          "allowedOutputs": [
+            "specialist-assignment-draft"
+          ],
           "requiredEvidence": [
-            { "kind": "specialist-assignment/eligibility", "statuses": ["pass"], "artifactOutput": "specialist-assignment-draft" },
-            { "kind": "specialist-assignment/ranking", "statuses": ["pass"], "artifactOutput": "specialist-assignment-draft" },
-            { "kind": "specialist-assignment/completeness", "statuses": ["pass"], "artifactOutput": "specialist-assignment-draft" }
+            {
+              "kind": "specialist-assignment/eligibility",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "specialist-assignment-draft"
+            },
+            {
+              "kind": "specialist-assignment/ranking",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "specialist-assignment-draft"
+            },
+            {
+              "kind": "specialist-assignment/completeness",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "specialist-assignment-draft"
+            }
           ],
           "diagnosticsRequired": false
         },
-        "needs_clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
-        "baseline_drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
-        "unable_to_proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
-        "execution_failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+        "needs_clarification": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "baseline_drift": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
       },
-      "evidence": ["specialist-assignment/eligibility", "specialist-assignment/ranking", "specialist-assignment/completeness"],
-      "optionsSchema": { "type": "object", "additionalProperties": false, "properties": { "profileSourceId": { "type": "string" }, "rankerId": { "type": "string" } } },
+      "evidence": [
+        "specialist-assignment/eligibility",
+        "specialist-assignment/ranking",
+        "specialist-assignment/completeness"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "profileSourceId": {
+            "type": "string"
+          },
+          "rankerId": {
+            "type": "string"
+          }
+        }
+      },
       "extensionPorts": [
-        { "id": "profile-source", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/a2a-agent-card-snapshot/v1", "outputSchema": "https://devrelay.dev/artifacts/specialist-catalog/v1", "required": true },
-        { "id": "assignment-ranker", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/eligibility-evaluation-set/v1", "outputSchema": "https://devrelay.dev/artifacts/ranker-selection-set/v1", "required": true }
+        {
+          "id": "profile-source",
+          "role": "proposer",
+          "inputSchema": "https://devrelay.dev/artifacts/a2a-agent-card-snapshot/v1",
+          "outputSchema": "https://devrelay.dev/artifacts/specialist-catalog/v1",
+          "required": true
+        },
+        {
+          "id": "assignment-ranker",
+          "role": "proposer",
+          "inputSchema": "https://devrelay.dev/artifacts/eligibility-evaluation-set/v1",
+          "outputSchema": "https://devrelay.dev/artifacts/ranker-selection-set/v1",
+          "required": true
+        }
       ],
       "orchestrationPlan": [
-        { "id": "input-guard", "kind": "core", "handler": "specialist-assignment/input-guard" },
-        { "id": "profiles", "kind": "extension-port", "handler": "profile-source" },
-        { "id": "eligibility", "kind": "core", "handler": "specialist-assignment/eligibility" },
-        { "id": "ranking", "kind": "extension-port", "handler": "assignment-ranker" },
-        { "id": "candidate", "kind": "core", "handler": "specialist-assignment/candidate-assembler" },
-        { "id": "checkpoint", "kind": "core", "handler": "specialist-assignment/checkpoint" }
+        {
+          "id": "input-guard",
+          "kind": "core",
+          "handler": "specialist-assignment/input-guard"
+        },
+        {
+          "id": "profiles",
+          "kind": "extension-port",
+          "handler": "profile-source"
+        },
+        {
+          "id": "eligibility",
+          "kind": "core",
+          "handler": "specialist-assignment/eligibility"
+        },
+        {
+          "id": "ranking",
+          "kind": "extension-port",
+          "handler": "assignment-ranker"
+        },
+        {
+          "id": "candidate",
+          "kind": "core",
+          "handler": "specialist-assignment/candidate-assembler"
+        },
+        {
+          "id": "checkpoint",
+          "kind": "core",
+          "handler": "specialist-assignment/checkpoint"
+        }
       ]
     }
   ]
