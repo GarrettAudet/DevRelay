@@ -1,63 +1,65 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-08-12 MDT
-Active branch: `codex/lifecycle-run-report-completion`
-Exact verified release-source target: `9d2b0d8e6b358dd6aed922de420224fe9efc320c`
-Latest passing persisted-source matrix: `31627413374`
-Active boundary: final catalog, local release gate, and final four-job promotion matrix
+Last reconciled: 2026-08-13 MDT
+Active branch: `codex/v0.10-release-hardening`
+Source base: `430cb5c09f1aa69b60f48fb37b06f3c3d7d8213d`
+Candidate version: `0.10.0-rc.1`
+Active boundary: final catalog, protected pull request, and promotion checks
 
-This file is a human-readable status projection. Exact module artifacts, Gate records, graph checkpoints, release evidence, commits, and CI checks remain authoritative.
+This is a human-readable projection. Content-addressed module artifacts, gate
+records, traceability checkpoints, commits, and GitHub checks are authoritative.
 
 ## Executive status
 
-The portable DevRelay V1 deterministic source/library circuit is implemented through BusinessAcceptance for use through ChatGPT Desktop on Windows.
+The complete DevRelay V1 construction lifecycle has been exercised for the
+public open-source source/library boundary operated through ChatGPT Desktop on
+Windows. All eight v0.10 release work items are executed, independently
+verified, integrated, and represented in the living TraceabilityGraph.
 
-The owner explicitly approved request `BA-APPROVAL-REQUEST-CONTROLLED-WINDOWS-SOURCE-001` / `sha256:29c7606125b0280d05186cb3d532c4e8a8043984c109e853350c6dd57d6eca6e` for candidate `BA-CANDIDATE-ed2476ac90e1359f796d1ab8`. The released BusinessAcceptanceGate produced accepted record `BA-RECORD-a6d15fb968dfbeeb5704fb42` / `sha256:a1e17d68bdf057ef5df2ceabca0befa1b4d0a79e5267a3d7a0478e3a96494cea`; exact replay made zero additional owner calls.
-
-The historical graph lacked the 32 approved `business-scope` observations and could not be taken over by the expanded requirements observer because Core detected contributor-contract drift. A bounded trusted reconciliation reused the released requirements projector to add only those missing scope nodes and `defines` edges. BusinessAcceptance traceability then merged and replayed atomically. Final graph `traceability-graph-devrelay-work-breakdown-r5` / `sha256:50837069d2057932fce54375155fddb674edb65f9407a1b93b6554436ffc34d1` has zero blocking diagnostics.
-
-Current position:
+The exact candidate passed SystemVerification and BusinessAcceptance. Replay
+made zero additional verifier or owner calls. Final graph revision 47 has zero
+blocking diagnostics.
 
 ```text
 RequirementsGathering through ChangeIntegration     COMPLETE
-99-obligation SystemVerification                     VERIFIED
-SystemVerification zero-call replay                  VERIFIED
-BusinessAcceptance technical coverage                EXHAUSTIVE
-Exact owner approval                                  APPROVED
-BusinessAcceptanceGate                                ACCEPTED
-BusinessAcceptance zero-call replay                   VERIFIED
-Trusted acceptance traceability merge                 VERIFIED
-Blocking traceability diagnostics                     ZERO
-Final acceptance evidence                             PERSISTED
-Final catalog/local gate/matrix                       IN PROGRESS
+Eight-item release DAG                               INTEGRATED
+Independent installed-tarball Desktop dogfood       ACCEPTED + REPLAYED
+108-obligation SystemVerification                    VERIFIED
+BusinessAcceptance                                  ACCEPTED
+Final TraceabilityGraph                              REVISION 47 / ZERO BLOCKERS
+Catalog and protected-main promotion                 IN PROGRESS
 ```
 
-## Exact acceptance evidence
+## Exact final-gate evidence
 
-- Candidate: `BA-CANDIDATE-ed2476ac90e1359f796d1ab8` / `sha256:92b25f9e6e898b780e126079ce945a92841bd3e8508dc18503d4d85f2d42ee22`
-- Candidate raw digest: `sha256:f0ed398f7abdd8c9540ba83842d88ecf728433011fbc2dbfe05bc751a99c8f04`
-- Technical coverage: `BA-TECH-COVERAGE-fb1044a00dcbd9cd94fe4243` / `sha256:8c1a9bb891a68aa66ce1d7e49b5860b821c07c1bccbbf355caa2b01e0baba88d`
-- Owner approval: `BA-APPROVAL-CONTROLLED-WINDOWS-SOURCE-001` / `sha256:e5ea7f73bb210f01dda3f0ea1528b910970999c90ed7d66b58d6233400c74282`
-- Gate checkpoint: `sha256:5552f3802b1800f5cb092a0bae3bfd62eb36656bdc70106d3f24213b3fac79cb`
-- Accepted record: `BA-RECORD-a6d15fb968dfbeeb5704fb42` / `sha256:a1e17d68bdf057ef5df2ceabca0befa1b4d0a79e5267a3d7a0478e3a96494cea`
-- Acceptance graph: `traceability-graph-devrelay-work-breakdown-r5` / `sha256:50837069d2057932fce54375155fddb674edb65f9407a1b93b6554436ffc34d1`
-- Final proof: `DEVRELAY-CONTROLLED-SOURCE-RELEASE-ACCEPTANCE-001` / `sha256:4766324761b24dc5b6146b9cbfa399505dfa110c11f969415b32e115b2c02aca`
-- Coverage: 81 acceptance criteria, 18 NFRs, 8 objectives, 9 metrics, and 32 business scopes.
+- Release evidence: `RCES-DEVRELAY-V010-DESKTOP-WINDOWS-001` / `sha256:3e4d5edc4eac3617622e3b9fcb37a2fec28128e06a528cb3686697dd7819bf2b`
+- SystemVerification: `SVR-67910A823F0F96AA` / `sha256:fbdd363eba0803b260d0057931a0f863fb4d9af5140e5045b7ee9529d44d79b5`
+- Business candidate: `BA-CANDIDATE-7f97c18b956444fdd0321aa2` / `sha256:b457b61aa3cb8eda7cc6b6a005fea7efa071c2bc9a1a8954cc0919c6966071b7`
+- Accepted record: `BA-RECORD-994267d2f224bfd3ebb8d928` / `sha256:9295eee9227b109434d46c8188fa3a457b0f78ef2b01f61f8fdfc5966ee0eb13`
+- Traceability graph: `traceability-graph-devrelay-work-breakdown-r47` / `sha256:2e9dfbc7a2e2ff8d9bb0a4f915c4e2e8e1968bdfd6ef68fc76d6e1a82d0d9374`
+- Coverage: 88 acceptance criteria, 20 NFRs, 9 objectives, 11 metrics, 34 business scopes, and 8 integrated work items.
 
-## Accepted delivery boundary
+## Release boundary
 
-This acceptance covers the deterministic DevRelay source/library for ChatGPT Desktop on Windows. It does not claim public npm publication, a one-click Desktop plug-in, or a hosted backend.
+This candidate covers GitHub source plus the deterministic installable tarball,
+used through ChatGPT Desktop on Windows. It does not claim public npm
+publication, a one-click Desktop plug-in, a hosted backend, or live execution of
+fixture-conformant upstream CLIs.
 
-## Next trusted transition
+## Remaining trusted transition
 
 ```text
-regenerate content-addressed catalog
--> run complete local release gate
--> commit and push exact accepted evidence
--> require Node 20/22 on Windows/Ubuntu to pass 4/4
--> report controlled source/library release ready
+regenerate the content-addressed catalog
+-> run local verify and release:check
+-> commit and push the exact candidate
+-> open a protected-main pull request
+-> require the Node 22/24 Windows/Ubuntu matrix and security checks
+-> merge and record the final protected commit and source-release result
 ```
+
+No further product decision is required unless the accepted candidate or its
+release boundary changes.
 
 ## Pickup
 
-Use `handoff/2026-08-11-controlled-release-acceptance-pickup/README.md`. The older `2026-08-10` package remains immutable historical context.
+Use `handoff/2026-08-13-v010-release-promotion/README.md`.
