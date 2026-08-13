@@ -1,10 +1,12 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import {
+  closeSync,
   existsSync,
+  fstatSync,
+  openSync,
   readFileSync,
   readdirSync,
-  statSync,
 } from "node:fs";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -452,15 +454,28 @@ export function rawDigest(path) {
   if (
     relativePath !== path ||
     relativePath.startsWith("../") ||
-    relativePath === ".." ||
-    !statSync(absolute).isFile()
+    relativePath === ".."
   ) {
     throw new Error(path + " is not a regular release-repository file");
   }
-  return (
-    "sha256:" +
-    createHash("sha256").update(readFileSync(absolute)).digest("hex")
-  );
+  let descriptor;
+  try {
+    descriptor = openSync(absolute, "r");
+    if (!fstatSync(descriptor).isFile()) {
+      throw new Error(path + " is not a regular release-repository file");
+    }
+    return (
+      "sha256:" +
+      createHash("sha256").update(readFileSync(descriptor)).digest("hex")
+    );
+  } catch (error) {
+    if (error && typeof error === "object" && error.code === "ENOENT") {
+      throw new Error(path + " is not a regular release-repository file");
+    }
+    throw error;
+  } finally {
+    if (descriptor !== undefined) closeSync(descriptor);
+  }
 }
 
 function npmInvocation(args) {

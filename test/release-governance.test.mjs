@@ -11,7 +11,7 @@ test("public OSS governance surface is complete and internally consistent", () =
 
   const license = text("LICENSE");
   assert.match(license, /Apache License\s+Version 2\.0/u);
-  assert.match(license, /http:\/\/www\.apache\.org\/licenses\//u);
+  assert.equal(license.split(/\r?\n/u).find((line) => line.trim().startsWith("http:"))?.trim(), "http://www.apache.org/licenses/");
 
   assert.match(text("NOTICE"), /DevRelay/u);
   assert.match(text("DCO.md"), /Developer Certificate of Origin,?\s+Version 1\.1/u);

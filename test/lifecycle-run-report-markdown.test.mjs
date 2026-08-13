@@ -54,3 +54,13 @@ test("stage source facts are linked and every top-level link is policy-filtered"
   assert.match(markdown,/## Important artifacts\n\n\n## Next action/);
   assert.match(renderLifecycleRunReport({snapshot,contentPolicy:policy,contentPolicyRef:policyRef}).markdown,/devrelay-artifact:\/\/fact-1\?digest=/);
 });
+
+test("table text escapes backslashes before pipes without creating an unescaped delimiter",()=>{
+  const escaped=structuredClone(snapshot);
+  escaped.stages[0].operation="C:\\workspace|verify";
+  delete escaped.snapshotDigest;
+  escaped.snapshotDigest=canonicalJsonDigest(Object.fromEntries(Object.entries(escaped).filter(([key])=>!["apiVersion","kind"].includes(key))));
+  const markdown=renderLifecycleRunReport({snapshot:escaped,contentPolicy:policy,contentPolicyRef:policyRef}).markdown;
+  assert.match(markdown,/C:\\\\workspace\\\|verify/);
+  assert.doesNotMatch(markdown,/C:\\workspace\\\|verify/);
+});

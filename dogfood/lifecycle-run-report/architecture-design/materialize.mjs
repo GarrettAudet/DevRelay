@@ -23,7 +23,7 @@ const writeJson = (name, value) => {
   return bytes;
 };
 const writeText = (name, value) => {
-  const bytes = Buffer.from(value.replace(/\n/g, "\n"), "utf8");
+  const bytes = Buffer.from(value.replace(/\r\n?/g, "\n"), "utf8");
   fs.writeFileSync(path.join(dir, name), bytes);
   return bytes;
 };

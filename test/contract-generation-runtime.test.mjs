@@ -187,10 +187,10 @@ test("live JSON Schema path covers 34 exact intents and replays without generato
   });
   assert.equal(receipt.checkpoint.artifacts.validationSet.value.status, "pass");
   assert.ok(
-    Object.values(receipt.checkpoint.nativeArtifacts).every(({ bytesBase64 }) =>
-      Buffer.from(bytesBase64, "base64").toString("utf8").includes(
-        "https://json-schema.org/draft/2020-12/schema",
-      ),
+    Object.values(receipt.checkpoint.nativeArtifacts).every(
+      ({ bytesBase64 }) =>
+        JSON.parse(Buffer.from(bytesBase64, "base64").toString("utf8"))
+          .$schema === "https://json-schema.org/draft/2020-12/schema",
     ),
   );
 });
