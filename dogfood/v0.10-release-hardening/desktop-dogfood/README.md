@@ -14,7 +14,7 @@ operations. That failure caused the scoped public-API correction in this release
 candidate.
 
 The restarted run installed the corrected candidate tarball with digest
-`sha256:e570192759e7e2a4dec23be0f3424e01ad8cc220d8187dde6398fd57c68fff41`.
+`sha256:4153070221d379179bbed7932556e6391d4ca044c195733afd231e72f455a285`.
 It then:
 
 1. validated approved requirements, overview, architecture, and work breakdown;
@@ -29,10 +29,10 @@ It then:
 10. recorded SystemVerification and BusinessAcceptance evidence.
 
 Exact replay preserved application commit
-`9c13e9b6d0675b689f68ea10d48a58a33353ded3`, ledger checkpoint
-`sha256:bcda5a0a2c75d619ed0cade0a44b979eb88d61ad1a4b2e8b31928e6564bf9153`,
+`43d78f16d51a75d5b389c5dd836b3ca6490ddb1a`, ledger checkpoint
+`sha256:8d486c9f3b5e9b25b52e51876c5c441ad02cfa176328928cdf5b675b1a516a86`,
 and report digest
-`sha256:1bb0df45da2d364cf91b4f5bea872e495317c9c1bab172b0e8c080d1cfb4884f`.
+`sha256:d60e42209601482842773a18e167b94903cc76916c719597a8444cddf31607ff`.
 
 Adapter maturity remains explicit. OpenSpec, Spec Kit, Structurizr, and MADR are
 fixture-conformant in this run. The native dependency proposer, Core DAG

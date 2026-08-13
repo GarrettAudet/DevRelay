@@ -8,7 +8,7 @@
 - Business objectives: 9
 - Success metrics: 11
 - Business scopes: 34
-- Traceability graph: `sha256:6d32f1dd72535574497e4965cb9f204cb9b1298606ab6614187c688f2ca3945e`
+- Traceability graph: `sha256:2e9dfbc7a2e2ff8d9bb0a4f915c4e2e8e1968bdfd6ef68fc76d6e1a82d0d9374`
 - Blocking diagnostics: 0
 - Promotion: pending final protected-main checks on the persisted commit
 

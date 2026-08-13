@@ -12,8 +12,8 @@
 
 - Eight release work items are executed, verified, integrated, and traced.
 - Independent Windows Desktop installed-tarball dogfood passed and replayed.
-- SystemVerification `SVR-E5179972C74118BD` is verified.
-- BusinessAcceptance record `BA-RECORD-17ab9ab84a83473b9586dc4a` is accepted.
+- SystemVerification `SVR-67910A823F0F96AA` is verified.
+- BusinessAcceptance record `BA-RECORD-994267d2f224bfd3ebb8d928` is accepted.
 - TraceabilityGraph revision 47 has zero blocking diagnostics.
 - Coverage is 88 acceptance criteria, 20 NFRs, 9 objectives, 11 metrics, 34 scopes, and 8 integrated work items.
 

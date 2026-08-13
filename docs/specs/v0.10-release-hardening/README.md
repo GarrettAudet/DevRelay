@@ -37,10 +37,10 @@ passed SystemVerification and BusinessAcceptance, including zero-call replay.
 
 ## Final-gate evidence
 
-- Candidate evidence digest: `sha256:3b9cf72560ffe0b920ea9e8f1a07cf628b1713fd63a423003f6dd92b91aea683`.
-- SystemVerification digest: `sha256:0ed2af46a9d5ab067361ece9b98229320954f14f92565ad8b05127d2757bd593`.
-- BusinessAcceptance record digest: `sha256:bb434c8785ddf3dabe3b1f534058260a776e5c9b2ba601768de088c02e5253ac`.
-- Final graph digest: `sha256:6d32f1dd72535574497e4965cb9f204cb9b1298606ab6614187c688f2ca3945e`.
+- Candidate evidence digest: `sha256:3e4d5edc4eac3617622e3b9fcb37a2fec28128e06a528cb3686697dd7819bf2b`.
+- SystemVerification digest: `sha256:fbdd363eba0803b260d0057931a0f863fb4d9af5140e5045b7ee9529d44d79b5`.
+- BusinessAcceptance record digest: `sha256:9295eee9227b109434d46c8188fa3a457b0f78ef2b01f61f8fdfc5966ee0eb13`.
+- Final graph digest: `sha256:2e9dfbc7a2e2ff8d9bb0a4f915c4e2e8e1968bdfd6ef68fc76d6e1a82d0d9374`.
 - Blocking traceability diagnostics: zero.
 
 ## Dogfood findings resolved

@@ -134,6 +134,10 @@ const coverage = releaseCriterionIds.map((criterionId) => {
     evidence: criterionEvidence[criterionId].map(evidenceRef),
   };
 });
+const desktopDogfoodSummary = readJson(
+  "dogfood/v0.10-release-hardening/desktop-dogfood/evidence/desktop-dogfood-summary.json",
+);
+
 const body = {
   apiVersion: API,
   kind: "ReleaseCandidateEvidenceSet",
@@ -165,8 +169,7 @@ const body = {
     sourceReleaseDryRunId: "31676437994",
   },
   correctedCandidateTarball: {
-    digest:
-      "sha256:e570192759e7e2a4dec23be0f3424e01ad8cc220d8187dde6398fd57c68fff41",
+    digest: desktopDogfoodSummary.package.digest,
     status: "locally-installed-and-dogfooded",
     finalProtectedMatrix: "pending-after-acceptance-persistence",
   },

@@ -32,11 +32,11 @@ Catalog and protected-main promotion                 IN PROGRESS
 
 ## Exact final-gate evidence
 
-- Release evidence: `RCES-DEVRELAY-V010-DESKTOP-WINDOWS-001` / `sha256:3b9cf72560ffe0b920ea9e8f1a07cf628b1713fd63a423003f6dd92b91aea683`
-- SystemVerification: `SVR-E5179972C74118BD` / `sha256:0ed2af46a9d5ab067361ece9b98229320954f14f92565ad8b05127d2757bd593`
-- Business candidate: `BA-CANDIDATE-133f91300f1a1f8eb7c4743f` / `sha256:89553577b09c1982156c388e6cfbb44569cc0321aed7b42b0b0a8ff1dd0605dc`
-- Accepted record: `BA-RECORD-17ab9ab84a83473b9586dc4a` / `sha256:bb434c8785ddf3dabe3b1f534058260a776e5c9b2ba601768de088c02e5253ac`
-- Traceability graph: `traceability-graph-devrelay-work-breakdown-r47` / `sha256:6d32f1dd72535574497e4965cb9f204cb9b1298606ab6614187c688f2ca3945e`
+- Release evidence: `RCES-DEVRELAY-V010-DESKTOP-WINDOWS-001` / `sha256:3e4d5edc4eac3617622e3b9fcb37a2fec28128e06a528cb3686697dd7819bf2b`
+- SystemVerification: `SVR-67910A823F0F96AA` / `sha256:fbdd363eba0803b260d0057931a0f863fb4d9af5140e5045b7ee9529d44d79b5`
+- Business candidate: `BA-CANDIDATE-7f97c18b956444fdd0321aa2` / `sha256:b457b61aa3cb8eda7cc6b6a005fea7efa071c2bc9a1a8954cc0919c6966071b7`
+- Accepted record: `BA-RECORD-994267d2f224bfd3ebb8d928` / `sha256:9295eee9227b109434d46c8188fa3a457b0f78ef2b01f61f8fdfc5966ee0eb13`
+- Traceability graph: `traceability-graph-devrelay-work-breakdown-r47` / `sha256:2e9dfbc7a2e2ff8d9bb0a4f915c4e2e8e1968bdfd6ef68fc76d6e1a82d0d9374`
 - Coverage: 88 acceptance criteria, 20 NFRs, 9 objectives, 11 metrics, 34 business scopes, and 8 integrated work items.
 
 ## Release boundary

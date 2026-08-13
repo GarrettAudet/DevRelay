@@ -1,27 +1,43 @@
 import crypto from "node:crypto";
 
 const FAILURE = Object.freeze({ ok: false, code: "INVALID_CREDENTIALS" });
+const PASSWORD_KEY_BYTES = 64;
+const PASSWORD_SALT_BYTES = 16;
+const SCRYPT_OPTIONS = Object.freeze({
+  N: 16_384,
+  r: 8,
+  p: 1,
+  maxmem: 64 * 1024 * 1024,
+});
 
-const timingSafeTextEqual = (left, right) => {
-  const leftDigest = crypto.createHash("sha256").update(left).digest();
-  const rightDigest = crypto.createHash("sha256").update(right).digest();
-  return crypto.timingSafeEqual(leftDigest, rightDigest);
-};
+const derivePassword = (password, salt) =>
+  crypto.scryptSync(password, salt, PASSWORD_KEY_BYTES, SCRYPT_OPTIONS);
 
-export function createAuthService({ users, sessionTtlMs = 3_600_000, now = Date.now }) {
+export function createAuthService({
+  users,
+  sessionTtlMs = 3_600_000,
+  now = Date.now,
+}) {
   const records = new Map(
-    users.map(({ username, password }) => [
-      username,
-      crypto.createHash("sha256").update(password).digest("hex"),
-    ]),
+    users.map(({ username, password }) => {
+      const salt = crypto.randomBytes(PASSWORD_SALT_BYTES);
+      return [username, { salt, passwordHash: derivePassword(password, salt) }];
+    }),
+  );
+  const dummySalt = crypto.randomBytes(PASSWORD_SALT_BYTES);
+  const dummyHash = derivePassword(
+    crypto.randomBytes(PASSWORD_KEY_BYTES),
+    dummySalt,
   );
   const sessions = new Map();
 
   return {
     signIn(username, password) {
-      const stored = records.get(username);
-      const supplied = crypto.createHash("sha256").update(password).digest("hex");
-      const accepted = stored !== undefined && timingSafeTextEqual(stored, supplied);
+      const record = records.get(username);
+      const supplied = derivePassword(password, record?.salt ?? dummySalt);
+      const accepted =
+        record !== undefined &&
+        crypto.timingSafeEqual(record.passwordHash, supplied);
       if (!accepted) return { ...FAILURE };
 
       const token = crypto.randomUUID();
