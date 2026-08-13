@@ -1,5 +1,4 @@
 import {
-  existsSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
@@ -26,23 +25,43 @@ function exactFileBytes(value) {
   return Buffer.from(canonicalJson(value) + "\n", "utf8");
 }
 
+function readIfPresent(filePath) {
+  try {
+    return readFileSync(filePath);
+  } catch (error) {
+    if (error && typeof error === "object" && error.code === "ENOENT") {
+      return undefined;
+    }
+    throw error;
+  }
+}
+
+function writeExclusiveOrVerify(filePath, bytes, mismatchMessage) {
+  try {
+    writeFileSync(filePath, bytes, { flag: "wx" });
+    return;
+  } catch (error) {
+    if (!(error && typeof error === "object" && error.code === "EEXIST")) {
+      throw error;
+    }
+  }
+  if (!readFileSync(filePath).equals(bytes)) {
+    throw new Error(mismatchMessage);
+  }
+}
+
 function writeExact(relativePath, value) {
   const url =
     relativePath instanceof URL
       ? relativePath
       : new URL(relativePath, import.meta.url);
   const bytes = exactFileBytes(value);
-  if (existsSync(url)) {
-    const current = readFileSync(url);
-    if (!current.equals(bytes)) {
-      throw new Error(
-        `immutable assignment artifact already differs: ${url.pathname}`,
-      );
-    }
-    return;
-  }
   mkdirSync(new URL(".", url), { recursive: true });
-  writeFileSync(url, bytes, { flag: "wx" });
+  writeExclusiveOrVerify(
+    url,
+    bytes,
+    "immutable assignment artifact already differs: " + url.pathname,
+  );
 }
 
 const loaded = (value, schema, mediaType, artifactId, uri) => {

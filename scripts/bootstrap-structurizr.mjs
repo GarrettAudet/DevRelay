@@ -16,6 +16,32 @@ import { fileURLToPath } from "node:url";
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.resolve(scriptDirectory, "..");
 const lockPath = path.join(scriptDirectory, "structurizr-toolchain-lock.json");
+const STRUCTURIZR_URL =
+  "https://download.structurizr.com/structurizr-2026.06.28.war";
+const TEMURIN_URL =
+  "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12%2B8/OpenJDK21U-jre_x64_windows_hotspot_21.0.12_8.zip";
+
+export function pinnedToolchainUrl(kind, entry) {
+  if (
+    kind === "structurizr" &&
+    entry.version === "2026.06.28" &&
+    entry.url === STRUCTURIZR_URL &&
+    entry.sha256 ===
+      "7bcee3932b1a6e62c07113008ec4959ced6700f666a3d02f708a1a2ebfdefed0"
+  ) {
+    return STRUCTURIZR_URL;
+  }
+  if (
+    kind === "java" &&
+    entry.version === "21.0.12+8" &&
+    entry.url === TEMURIN_URL &&
+    entry.sha256 ===
+      "b8aa18fef5edb69bee8618f99677d66d0873d22cb40d974c15ac9ffcdecf73ba"
+  ) {
+    return TEMURIN_URL;
+  }
+  throw new Error("toolchain lock contains an unapproved download");
+}
 
 async function exists(filePath) {
   try {
@@ -97,7 +123,7 @@ async function ensurePinnedJava(rootPath, lock) {
   const archivePath = path.resolve(rootPath, lock.java.cachePath);
   const javaPath = path.resolve(rootPath, lock.java.executablePath);
   await downloadPinned(
-    lock.java.url,
+    pinnedToolchainUrl("java", lock.java),
     archivePath,
     lock.java.sha256,
     "Temurin Java runtime",
@@ -157,7 +183,7 @@ export async function ensureStructurizrToolchain({
     );
   } else {
     await downloadPinned(
-      lock.structurizr.url,
+      pinnedToolchainUrl("structurizr", lock.structurizr),
       warPath,
       lock.structurizr.sha256,
       "Structurizr WAR",

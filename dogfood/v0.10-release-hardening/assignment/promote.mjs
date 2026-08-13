@@ -1,8 +1,14 @@
 import {
-  existsSync,
+  closeSync,
+  fstatSync,
+  fsyncSync,
+  ftruncateSync,
   mkdirSync,
+  openSync,
   readFileSync,
+  readSync,
   writeFileSync,
+  writeSync,
 } from "node:fs";
 
 import {
@@ -28,57 +34,111 @@ function exactFileBytes(value) {
   return Buffer.from(canonicalJson(value) + "\n", "utf8");
 }
 
+function openMutableProjectFile(filePath) {
+  return openSync(filePath, "a+");
+}
+
+function readDescriptorBytes(descriptor) {
+  const bytes = Buffer.alloc(fstatSync(descriptor).size);
+  let offset = 0;
+  while (offset < bytes.length) {
+    const count = readSync(
+      descriptor,
+      bytes,
+      offset,
+      bytes.length - offset,
+      offset,
+    );
+    if (count === 0)
+      throw new Error("assignment project file ended during descriptor read");
+    offset += count;
+  }
+  return bytes;
+}
+
+function replaceDescriptorBytes(descriptor, bytes) {
+  ftruncateSync(descriptor, 0);
+  let offset = 0;
+  while (offset < bytes.length) {
+    offset += writeSync(
+      descriptor,
+      bytes,
+      offset,
+      bytes.length - offset,
+      offset,
+    );
+  }
+  fsyncSync(descriptor);
+}
+
+function writeExclusiveOrVerify(filePath, bytes, mismatchMessage) {
+  try {
+    writeFileSync(filePath, bytes, { flag: "wx" });
+    return;
+  } catch (error) {
+    if (!(error && typeof error === "object" && error.code === "EEXIST")) {
+      throw error;
+    }
+  }
+  if (!readFileSync(filePath).equals(bytes)) {
+    throw new Error(mismatchMessage);
+  }
+}
+
 function writeExact(relativePath, value) {
   const url =
     relativePath instanceof URL
       ? relativePath
       : new URL(relativePath.replace(/^\.\//u, ""), OUTPUT);
   const bytes = exactFileBytes(value);
-  if (existsSync(url)) {
-    const current = readFileSync(url);
-    if (!current.equals(bytes)) {
-      throw new Error(
-        `immutable assignment artifact already differs: ${url.pathname}`,
-      );
-    }
-    return;
-  }
   mkdirSync(new URL(".", url), { recursive: true });
-  writeFileSync(url, bytes, { flag: "wx" });
+  writeExclusiveOrVerify(
+    url,
+    bytes,
+    "immutable assignment artifact already differs: " + url.pathname,
+  );
 }
 
-function preserveAndReplaceProject(relativePath, value, historyName, identityOf) {
+function preserveAndReplaceProject(
+  relativePath,
+  value,
+  historyName,
+  identityOf,
+) {
   const currentUrl = new URL(relativePath, import.meta.url);
   const nextBytes = exactFileBytes(value);
-  if (existsSync(currentUrl)) {
-    const currentBytes = readFileSync(currentUrl);
-    if (currentBytes.equals(nextBytes)) return;
-    const current = JSON.parse(currentBytes);
-    const identity = identityOf(current);
-    if (
-      typeof identity !== "string" ||
-      !/^[A-Za-z0-9._-]+$/u.test(identity)
-    ) {
-      throw new Error("current assignment artifact lacks a safe history identity");
-    }
-    const historyUrl = new URL(
-      `../../../project/history/specialist-assignment/${identity}/${historyName}`,
-      import.meta.url,
-    );
-    const historyBytes = exactFileBytes(current);
-    if (existsSync(historyUrl)) {
-      if (!readFileSync(historyUrl).equals(historyBytes)) {
+  mkdirSync(new URL(".", currentUrl), { recursive: true });
+  const descriptor = openMutableProjectFile(currentUrl);
+  try {
+    const currentBytes = readDescriptorBytes(descriptor);
+    if (currentBytes.length > 0) {
+      if (currentBytes.equals(nextBytes)) return;
+      const current = JSON.parse(currentBytes);
+      const identity = identityOf(current);
+      if (
+        typeof identity !== "string" ||
+        !/^[A-Za-z0-9._-]+$/u.test(identity)
+      ) {
         throw new Error(
-          `assignment history already differs: ${historyUrl.pathname}`,
+          "current assignment artifact lacks a safe history identity",
         );
       }
-    } else {
+      const historyUrl = new URL(
+        `../../../project/history/specialist-assignment/${identity}/${historyName}`,
+        import.meta.url,
+      );
+      const historyBytes = exactFileBytes(current);
       mkdirSync(new URL(".", historyUrl), { recursive: true });
-      writeFileSync(historyUrl, historyBytes, { flag: "wx" });
+      writeExclusiveOrVerify(
+        historyUrl,
+        historyBytes,
+        "assignment history already differs: " + historyUrl.pathname,
+      );
     }
+    replaceDescriptorBytes(descriptor, nextBytes);
+  } finally {
+    closeSync(descriptor);
   }
-  mkdirSync(new URL(".", currentUrl), { recursive: true });
-  writeFileSync(currentUrl, nextBytes);
 }
 
 const loaded = (value, schema, mediaType, artifactId, uri) => {
@@ -96,7 +156,9 @@ const loaded = (value, schema, mediaType, artifactId, uri) => {
   };
 };
 
-const priorGraph = read("../dependency-analysis/replay-v4/traceability-graph-snapshot.json");
+const priorGraph = read(
+  "../dependency-analysis/replay-v4/traceability-graph-snapshot.json",
+);
 const priorProof = read(
   "../dependency-analysis/replay-v4/work-dependency-gate-promotion-proof.json",
 );
@@ -129,7 +191,10 @@ const historicalUpdateSourcePaths = [
 const historicalPaths = new Map(
   historicalUpdateSourcePaths.map((relativePath) => {
     const update = read(relativePath);
-    return [sha256Digest(Buffer.from(canonicalJson(update), "utf8")), relativePath];
+    return [
+      sha256Digest(Buffer.from(canonicalJson(update), "utf8")),
+      relativePath,
+    ];
   }),
 );
 const historicalUpdates = priorGraph.appliedUpdates.map((ref) => {
@@ -233,10 +298,7 @@ const proof = {
   nextModule: "WorkExecution",
 };
 
-writeExact(
-  "./candidate-traceability-update.json",
-  candidate.prepared.update,
-);
+writeExact("./candidate-traceability-update.json", candidate.prepared.update);
 writeExact(
   "./candidate-traceability-merge-receipt.json",
   candidate.merged.receipt,

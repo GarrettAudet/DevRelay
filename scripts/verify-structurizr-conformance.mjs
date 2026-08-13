@@ -1,12 +1,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import {
-  mkdir,
-  readFile,
-  rm,
-  writeFile,
-} from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,11 +14,17 @@ const defaultRoot = path.resolve(scriptDirectory, "..");
 const sha256 = (bytes) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
-function runStructurizr({ javaPath, warPath }, args) {
-  const result = spawnSync(javaPath, ["-jar", warPath, ...args], {
-    encoding: "utf8",
-    windowsHide: true,
-  });
+export function structurizrJavaArgs({ warPath, tempDirectory }, args) {
+  if (!tempDirectory) throw new TypeError("tempDirectory is required");
+  return [`-Djava.io.tmpdir=${tempDirectory}`, "-jar", warPath, ...args];
+}
+
+function runStructurizr({ javaPath, warPath }, args, tempDirectory) {
+  const result = spawnSync(
+    javaPath,
+    structurizrJavaArgs({ warPath, tempDirectory }, args),
+    { encoding: "utf8", windowsHide: true },
+  );
   if (result.status !== 0) {
     throw new Error(
       `Structurizr ${args[0]} failed:\n${result.stderr || result.stdout}`,
@@ -57,7 +58,10 @@ function normalizeStructurizrWorkspace(workspace) {
   const allStructurizrElements = [];
 
   for (const system of workspace.model?.softwareSystems ?? []) {
-    const systemId = requireDevRelayId(system, `software system ${system.name}`);
+    const systemId = requireDevRelayId(
+      system,
+      `software system ${system.name}`,
+    );
     const systemEntry = normalizedElement(system, "software-system");
     elements.push(systemEntry);
     numericToDevRelay.set(system.id, systemId);
@@ -158,29 +162,16 @@ function normalizeDevRelayCandidate(candidate) {
       })
       .sort((left, right) => left.id.localeCompare(right.id)),
     relationships: model.relationships
-      .map(
-        ({
-          id,
-          sourceElementId,
-          targetElementId,
-          description,
-        }) => ({
-          id,
-          sourceElementId,
-          targetElementId,
-          description,
-        }),
-      )
+      .map(({ id, sourceElementId, targetElementId, description }) => ({
+        id,
+        sourceElementId,
+        targetElementId,
+        description,
+      }))
       .sort((left, right) => left.id.localeCompare(right.id)),
     views: diagrams.views
       .map(
-        ({
-          viewKey,
-          type,
-          scopeElementId,
-          elementIds,
-          relationshipIds,
-        }) => ({
+        ({ viewKey, type, scopeElementId, elementIds, relationshipIds }) => ({
           viewKey,
           type,
           scopeElementId,
@@ -252,7 +243,6 @@ export function createStructurizrConformanceProof({
   });
 }
 
-
 export async function verifyStructurizrConformance({
   rootPath = defaultRoot,
   workspacePath,
@@ -272,56 +262,73 @@ export async function verifyStructurizrConformance({
   await rm(exportedPath, { force: true });
 
   const toolchain = await ensureStructurizrToolchain({ rootPath });
-  runStructurizr(toolchain, [
-    "validate",
-    "-workspace",
-    absoluteWorkspace,
-  ]);
-  runStructurizr(toolchain, [
-    "export",
-    "-workspace",
-    absoluteWorkspace,
-    "-format",
-    "json",
-    "-output",
-    absoluteOutput,
-  ]);
-
-  const [workspaceBytes, candidateBytes, exportedBytes] = await Promise.all([
-    readFile(absoluteWorkspace),
-    readFile(absoluteCandidate),
-    readFile(exportedPath),
-  ]);
-  const candidate = JSON.parse(candidateBytes);
-  const exported = JSON.parse(exportedBytes);
-  const expected = normalizeDevRelayCandidate(candidate);
-  const actual = normalizeStructurizrWorkspace(exported);
-  assert.deepEqual(
-    actual,
-    expected,
-    "official Structurizr export diverges from the canonical DevRelay architecture",
+  const javaTempDirectory = await mkdtemp(
+    path.join(absoluteOutput, ".structurizr-java-tmp-"),
   );
+  try {
+    runStructurizr(
+      toolchain,
+      ["validate", "-workspace", absoluteWorkspace],
+      javaTempDirectory,
+    );
+    runStructurizr(
+      toolchain,
+      [
+        "export",
+        "-workspace",
+        absoluteWorkspace,
+        "-format",
+        "json",
+        "-output",
+        absoluteOutput,
+      ],
+      javaTempDirectory,
+    );
 
-  const expectedBytes = Buffer.from(
-    `${JSON.stringify(expected, null, 2)}\n`,
-    "utf8",
-  );
-  const actualBytes = Buffer.from(
-    `${JSON.stringify(actual, null, 2)}\n`,
-    "utf8",
-  );
-  await Promise.all([
-    writeFile(path.join(absoluteOutput, "normalized-devrelay.json"), expectedBytes),
-    writeFile(path.join(absoluteOutput, "normalized-structurizr.json"), actualBytes),
-  ]);
+    const [workspaceBytes, candidateBytes, exportedBytes] = await Promise.all([
+      readFile(absoluteWorkspace),
+      readFile(absoluteCandidate),
+      readFile(exportedPath),
+    ]);
+    const candidate = JSON.parse(candidateBytes);
+    const exported = JSON.parse(exportedBytes);
+    const expected = normalizeDevRelayCandidate(candidate);
+    const actual = normalizeStructurizrWorkspace(exported);
+    assert.deepEqual(
+      actual,
+      expected,
+      "official Structurizr export diverges from the canonical DevRelay architecture",
+    );
 
-  return createStructurizrConformanceProof({
-    lock: toolchain.lock,
-    workspaceBytes,
-    candidateBytes,
-    normalizedWorkspace: actual,
-    normalizedWorkspaceBytes: actualBytes,
-  });
+    const expectedBytes = Buffer.from(
+      `${JSON.stringify(expected, null, 2)}\n`,
+      "utf8",
+    );
+    const actualBytes = Buffer.from(
+      `${JSON.stringify(actual, null, 2)}\n`,
+      "utf8",
+    );
+    await Promise.all([
+      writeFile(
+        path.join(absoluteOutput, "normalized-devrelay.json"),
+        expectedBytes,
+      ),
+      writeFile(
+        path.join(absoluteOutput, "normalized-structurizr.json"),
+        actualBytes,
+      ),
+    ]);
+
+    return createStructurizrConformanceProof({
+      lock: toolchain.lock,
+      workspaceBytes,
+      candidateBytes,
+      normalizedWorkspace: actual,
+      normalizedWorkspaceBytes: actualBytes,
+    });
+  } finally {
+    await rm(javaTempDirectory, { recursive: true, force: true });
+  }
 }
 
 if (
@@ -336,8 +343,7 @@ if (
       process.argv[3] ??
       "dogfood/work-dependency-analysis/architecture-design/architecture-change-set-draft.json",
     outputDirectory:
-      process.argv[4] ??
-      ".devrelay/conformance/work-dependency-analysis",
+      process.argv[4] ?? ".devrelay/conformance/work-dependency-analysis",
   });
   console.log(JSON.stringify(proof, null, 2));
 }
