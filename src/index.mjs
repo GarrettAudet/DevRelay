@@ -537,6 +537,40 @@ export {
   validateLifecycleRunReportArtifact,
 } from "./lifecycle-run-report-artifact-validator.mjs";
 export {
+  RunLedgerError,
+  createRunLedger,
+  createRunLedgerCheckpoint,
+  verifyRunLedgerCheckpoint,
+} from "./lifecycle-run-report-ledger.mjs";
+export {
+  LifecycleRunObservationError,
+  evaluateRunComparability,
+  ingestRunHostObservation,
+  ingestRunHostObservations,
+  resolveAdapterMaturity,
+} from "./lifecycle-run-report-observations.mjs";
+export {
+  LifecycleRunReportFrontierError,
+  createIntegratedCompletionRegistry,
+  deriveReadyFrontier,
+} from "./lifecycle-run-report-frontier.mjs";
+export {
+  LifecycleRunSnapshotError,
+  projectLifecycleRunSnapshot,
+} from "./lifecycle-run-report-snapshot.mjs";
+export {
+  LifecycleRunContentPolicyError,
+  applyLifecycleRunReportContentPolicy,
+} from "./lifecycle-run-report-content-policy.mjs";
+export {
+  LIFECYCLE_RUN_REPORT_RENDERER_VERSION,
+  LifecycleRunReportMarkdownError,
+  createLifecycleRunReportAccess,
+  renderLifecycleRunReport,
+  renderLifecycleRunReportMarkdown,
+  renderLifecycleRunReportMarkdownBytes,
+} from "./lifecycle-run-report-markdown.mjs";
+export {
   LIFECYCLE_RUN_REPORT_COMPLETION_WORK_ITEMS,
   createCanonicalChangeIntegrationClosure,
   createLifecycleRunReportTraceabilityContributor,

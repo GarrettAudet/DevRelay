@@ -7,10 +7,11 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `work-breakdown@0.1.0`, `work-dependency-analysis@0.1.0`,
 `specialist-assignment@1.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, and `system-verification@0.1.0` as one Apache-2.0
-open-source preview, version `0.10.0-rc.1`. The source package also advances the immutable TraceabilityGraph
-vocabulary to current `1.5.0` acceptance semantics while preserving
-exact `1.0.0` and `1.1.0` support.
+`change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
+`business-acceptance-gate@0.1.0` as one Apache-2.0
+open-source preview, version `0.10.0-rc.1`. The source package retains `1.5.0` as the compatibility default and adds
+explicit `1.6.0` execution-attempt semantics while preserving historical
+vocabulary support.
 
 `package.json` declares `"private": false` and `"license": "Apache-2.0"` so
 the GitHub-source tarball has accurate package metadata. This release does not
@@ -61,6 +62,9 @@ exact accepted GitHub source.
   acceptance-criterion and NFR obligations, typed test/review evidence,
   deterministic policy outcomes, zero-call replay, and trusted forward-only
   verification traceability without BusinessAcceptance authority.
+- BusinessAcceptance exhaustive technical coverage, business objective/metric/scope
+  evaluation, exact owner approval, zero-call replay, accepted-record authority,
+  and forward-only acceptance traceability.
 - Closed TraceabilityGraph snapshot, update, receipt, diagnostic-report, and
   ModuleExecutionRecord contracts through the public JavaScript API.
 - Trusted RequirementsGathering, ArchitectureDesign, ContractGeneration,
@@ -90,8 +94,8 @@ review contract. ContractGeneration ships its deterministic JSON Schema
 generator; OpenAPI, AsyncAPI, and Protobuf remain fixture-conformant contracts.
 ChangeIntegration ships a bounded local Git adapter. SystemVerification ships
 fixture-conformant test and review verifier bindings only; remote repository,
-pull-request, deployment, live external verification, and BusinessAcceptance
-integrations are not included.
+pull-request, deployment, live external verification, and external owner-interface
+integrations are not included. BusinessAcceptance Core and its Gate are included.
 Release notes and user-facing descriptions must preserve that
 distinction. ArchitectureDiscovery ships its executable provider-neutral Core building blocks and deterministic native inventory binding. Optional analyzers remain contract-defined and are not claimed live-conformant.
 
@@ -133,8 +137,7 @@ Use `npm run verify` for the static checks and test suite without packaging.
 ## Release checklist
 
 - [ ] Work from a clean checkout of the intended commit.
-- [ ] Confirm package, RequirementsGathering, ArchitectureDesign,
-      WorkBreakdown, and WorkDependencyAnalysis versions.
+- [ ] Confirm package and every released lifecycle Module/Gate version.
 - [ ] Confirm paired Requirements/ProjectOverview promotion and explicit
       ArchitectureDesign project-overview input coverage.
 - [ ] Confirm WorkBreakdown drift blocks before adapter entry and the Gate
@@ -149,7 +152,9 @@ Use `npm run verify` for the static checks and test suite without packaging.
       adapter reinvocation, and proves the exact applied update.
 - [ ] Confirm candidate/approved scope separation, contributor ownership, and
       orphan/unscoped/missing-evidence diagnostics.
-- [ ] Confirm `npm run release:check` passes on Windows with Node 22 and Node 24.
+- [ ] Confirm `npm run release:check` passes on Node 22 and 24 across Windows and Ubuntu.
+- [ ] Confirm the exact SystemVerification result, owner approval, BusinessAcceptance
+      record, and final graph carry zero blocking diagnostics.
 - [ ] Review the package file list and mandatory release digest catalog.
 - [ ] Confirm the no-live-command-adapters limitation remains visible.
 - [ ] Review `CHANGELOG.md`, security guidance, and residual risks.

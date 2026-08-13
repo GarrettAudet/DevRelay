@@ -3,7 +3,7 @@
 BusinessAcceptance is the owner-controlled lifecycle Gate after
 SystemVerification. It accepts only an exact verified `SystemVerificationResult`,
 the current approved requirements/project-overview pair, the integrated-system
-subject, an exact vocabulary-1.5 TraceabilityGraph checkpoint, and canonical raw
+subject, an exact supported TraceabilityGraph checkpoint, and canonical raw
 business evidence. It does not execute technical tests.
 
 Core derives exhaustive technical coverage for every approved acceptance
@@ -19,12 +19,13 @@ trusted `business-acceptance/accepted` contributor. Core prepares and
 checkpoints that update before an atomic merge; replay reuses the exact receipt.
 Blocking graph diagnostics prevent release sealing.
 
-DevRelay 0.8.0 releases this module boundary from executable Core, Gate,
-checkpoint-replay, trusted-contributor, and TraceabilityGraph conformance tests.
-It does not claim that the full V1 project is accepted. ArchitectureDiscovery
-and the dynamic LifecycleRunReport still lack authoritative evidence, so the
-project disposition is pending and no current `SCOPE-*` identity is asserted
-satisfied by the release.
+DevRelay 0.10.0-rc.1 executes this boundary through the complete V1
+construction lifecycle for the GitHub source and deterministic installable
+tarball operated through ChatGPT Desktop on Windows. The exact current
+SystemVerification result, BusinessAcceptance record, and final graph are
+published under `dogfood/v0.10-release-hardening/final-acceptance/`. The
+historical pre-v0.10 pending disposition is retained as provenance only and is
+not the current project status.
 
 The exact attempt-004 handoff and parent rejection are preserved as history;
 the fabricated generated artifacts were deliberately excluded from integration and

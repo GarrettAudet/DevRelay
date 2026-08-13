@@ -1,0 +1,43 @@
+apiVersion: devrelay.dev/v1alpha1
+kind: ReleasePromotionPickup
+metadata:
+  id: devrelay-v010-release-promotion-2026-08-13
+  date: "2026-08-13"
+repository:
+  url: https://github.com/GarrettAudet/DevRelay.git
+  branch: codex/v0.10-release-hardening
+  sourceBaseCommit: 430cb5c09f1aa69b60f48fb37b06f3c3d7d8213d
+target:
+  version: 0.10.0-rc.1
+  host: ChatGPT Desktop
+  operatingSystem: Windows
+  delivery: github-source-and-installable-tarball
+systemVerification:
+  status: verified
+  resultId: SVR-E5179972C74118BD
+  digest: sha256:0ed2af46a9d5ab067361ece9b98229320954f14f92565ad8b05127d2757bd593
+businessAcceptance:
+  status: accepted
+  candidateId: BA-CANDIDATE-133f91300f1a1f8eb7c4743f
+  candidateDigest: sha256:89553577b09c1982156c388e6cfbb44569cc0321aed7b42b0b0a8ff1dd0605dc
+  recordId: BA-RECORD-17ab9ab84a83473b9586dc4a
+  recordDigest: sha256:bb434c8785ddf3dabe3b1f534058260a776e5c9b2ba601768de088c02e5253ac
+traceability:
+  graphRevision: 47
+  graphDigest: sha256:6d32f1dd72535574497e4965cb9f204cb9b1298606ab6614187c688f2ca3945e
+  blockingDiagnostics: 0
+coverage:
+  acceptanceCriteria: 88
+  nonFunctionalRequirements: 20
+  businessObjectives: 9
+  successMetrics: 11
+  businessScopes: 34
+  integratedWorkItems: 8
+currentBoundary:
+  stage: final-protected-main-promotion
+next:
+  - regenerate-release-catalog
+  - run-local-kernel-and-release-gates
+  - commit-and-push-exact-candidate
+  - pass-protected-main-checks
+  - merge-and-record-final-source-release

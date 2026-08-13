@@ -31,10 +31,16 @@ test("release conformance exercises real Core, Gate, checkpoints, contributor, a
   assert.match(trace,/diagnoseTraceabilityGraph\(/);
 });
 
-test("full V1 project acceptance remains explicitly pending",()=>{
-  const disposition=json("../dogfood/business-acceptance/project-acceptance-pending.json");
-  assert.equal(disposition.outcome,"pending");
-  assert.deepEqual(disposition.blockingScope,["LifecycleRunReport"]);
-  assert.equal(disposition.satisfiedScopeIds.length,0);
-  assert.equal(disposition.authority,"release-conformance-observation");
+test("the historical pending disposition is superseded by the exact v0.10 accepted record",()=>{
+  const historical=json("../dogfood/business-acceptance/project-acceptance-pending.json");
+  const summary=json("../dogfood/v0.10-release-hardening/final-acceptance/final-acceptance-summary.json");
+  const record=json("../dogfood/v0.10-release-hardening/final-acceptance/26-business-acceptance-record.json");
+  assert.equal(historical.outcome,"pending");
+  assert.deepEqual(historical.blockingScope,["LifecycleRunReport"]);
+  assert.equal(historical.authority,"release-conformance-observation");
+  assert.equal(record.outcome,"accepted");
+  assert.equal(record.lifecycleDisposition,"construction-complete");
+  assert.equal(summary.businessAcceptance.artifactId,record.recordId);
+  assert.equal(summary.businessAcceptance.digest,record.recordDigest);
+  assert.equal(summary.blockingDiagnostics,0);
 });

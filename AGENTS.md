@@ -7,53 +7,42 @@ software-engineering Modules and interchangeable bounded adapters.
 
 ## Current scope
 
-The executable contract slices are:
-
-- `requirements-gathering@0.1.0`, which turns a goal and project context into
-  a typed requirements candidate, its deterministic project-overview
-  projection, or a clarification checkpoint through one configured plug-in;
-- `architecture-design@0.1.0`, which state-routes an approved paired
-  `RequirementsBaseline` and `ProjectOverviewBaseline` into
-  `establish-baseline` or `design-change` and executes a configured designer,
-  modeler, decision-recorder chain;
-- `work-breakdown@0.1.0`, which state-routes exact approved requirements,
-  project-overview, architecture, contract-disposition, repository, and
-  capability inputs into `establish-breakdown` or `decompose-change`, producing
-  one bounded planning candidate without executing work;
-- `contract-generation@0.1.0`, which state-routes approved required interface intent through bounded kind-selected generators, Core-owned format validation and canonical diff, exact checkpoint replay, and a separate ContractGate promotion boundary;
-- `TraceabilityGraph`, a Core-owned sidecar that projects validated results
-  from all three Modules into one living lifecycle graph and returns a standardized
-  update plus merge proof in `ModuleExecutionRecord`. It is not a Module,
-  adapter, gate, or workflow stage.
-
-The complete owner-approved V1 lifecycle inventory is recorded in the root
-`ProjectOverview.md` and its structured pair under `project/`:
+The executable V1 lifecycle is:
 
 ```text
 RequirementsGathering -> RequirementsGate -> ArchitectureDiscovery?
 -> ArchitectureDesign -> ArchitectureGate -> ContractGeneration?
--> WorkBreakdown -> WorkDependencyAnalysis -> SpecialistAssignment
--> WorkExecution -> WorkItemVerification -> ChangeIntegration
--> SystemVerification -> BusinessAcceptance
+-> ContractGate | ApprovedNotApplicable -> WorkBreakdown -> WorkBreakdownGate
+-> WorkDependencyAnalysis -> WorkDependencyGate -> SpecialistAssignment
+-> SpecialistAssignmentGate -> repeat each ready DAG frontier:
+   WorkExecution -> WorkItemVerification -> ChangeIntegration
+-> SystemVerification -> BusinessAcceptanceGate
 ```
 
-Question marks identify deterministic conditional Modules, not optional
-product scope. TraceabilityGraph runs beside this lifecycle and is not an
-additional stage.
+Question marks are deterministic conditional routes, not missing product scope.
+TraceabilityGraph runs beside every stage and is never a workflow stage or
+plug-in authority.
 
-RequirementsGathering supports bounded OpenSpec and GitHub Spec Kit
-requirements bindings. ArchitectureDesign V1 uses bounded Spec Kit plan or
-OpenSpec design bindings, followed by Structurizr and MADR bindings.
-WorkBreakdown supports bounded Spec Kit tasks and OpenSpec tasks bindings for
-both operations; host configuration selects the preferred adapter.
+Released semantic modules, gates, Core runtimes, schemas, manifests,
+conformance fixtures, checkpoint/replay boundaries, and trusted traceability
+contributors are shipped. The bundled graph and checkpoint stores are reference
+implementations; durable host persistence remains external.
 
-The manifests and conformance fixtures are present; live upstream command
-adapters are not shipped. Do not claim live interoperability from contract
-fixtures. `ArchitectureDiscovery` is an explicit prerequisite contract for an
-unknown existing system, but no executable discovery Module ships in `0.1.0`.
+Adapter maturity must be stated precisely:
 
-Do not add a workflow platform, agent framework, package marketplace,
-distributed scheduler, provider wrapper, or plug-in-specific kernel behavior.
+- deterministic native implementations ship for repository inventory,
+  JSON Schema generation, dependency proposal/DAG mechanics, specialist
+  selection, local Git integration, lifecycle-run reporting, and gate/runtime
+  mechanics;
+- OpenSpec, GitHub Spec Kit, Task Master, Structurizr, MADR, A2A, test, and
+  review bindings are bounded contracts or fixture-conformant adapters unless
+  a specific live execution record proves otherwise;
+- no implicit model, provider, command, adapter, or network operation exists.
+
+The supported `0.10.0-rc.1` release boundary is GitHub source plus a
+deterministic installable tarball operated through ChatGPT Desktop on Windows.
+Do not claim public npm publication, a one-click Desktop plug-in, a hosted
+backend, or live upstream interoperability from fixture evidence.
 
 ## Invariants
 

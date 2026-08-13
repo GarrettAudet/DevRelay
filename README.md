@@ -6,7 +6,7 @@ Modules with a Core-owned lifecycle traceability sidecar.
 For the reconciled working-tree checkpoint, active Gate, module maturity,
 promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
 For a self-contained implementation-owner pickup, see
-[handoff/2026-08-10-lifecycle-run-report-pickup/README.md](handoff/2026-08-10-lifecycle-run-report-pickup/README.md).
+[handoff/2026-08-13-v010-release-promotion/README.md](handoff/2026-08-13-v010-release-promotion/README.md).
 This status page is a human-readable projection; digest-bound lifecycle
 artifacts and Gate records remain authoritative.
 
@@ -22,7 +22,8 @@ DevRelay `0.10.0-rc.1` is an Apache-2.0 open-source preview containing DevRelay 
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@1.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, and `system-verification@0.1.0`. Source-package
+`change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
+`business-acceptance-gate@0.1.0`. Source-package
 versions and immutable Module
 versions are intentionally independent. The supported distribution is GitHub
 source plus a deterministic installable tarball; no public npm publication is
@@ -58,6 +59,11 @@ the complete suite. `release:check` also verifies the release digest catalog
 as a mandatory release input, builds an allowlisted tarball in a temporary
 directory, installs it offline, and exercises every fixed and wildcard public
 package export from the installed bytes.
+
+For the dynamic, human-readable run projection available to Desktop hosts, see
+[LifecycleRunReport](docs/lifecycle-run-report.md). Its ledger, ready-frontier,
+snapshot, content-policy, and Markdown renderer APIs are available from the
+installed package root; the report remains read-only and never controls a Gate.
 
 ## Library quickstart
 
