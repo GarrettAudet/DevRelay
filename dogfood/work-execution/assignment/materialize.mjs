@@ -8,7 +8,7 @@ const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "
 const write = (name, value) => writeFileSync(new URL(name, import.meta.url), canonicalJson(value) + "\n");
 const workBreakdown = read("../work-breakdown/work-breakdown-baseline.json");
 const workDependency = read("../dependency-analysis/work-dependency-baseline.json");
-const projectOverview = read("../../../project/project-overview-baseline.json");
+const projectOverview = read("../../../project/history/1.7.0/project-overview-baseline.json");
 const repositoryContext = read("../repository-snapshot.json");
 
 const capabilities = [

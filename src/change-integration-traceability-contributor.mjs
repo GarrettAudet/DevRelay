@@ -144,6 +144,7 @@ export function createChangeIntegrationTraceabilityContributor() {
       scope: SCOPE,
       nodeKinds: ["change-set", "integrated-change-record"],
       edgeKinds: ["produces", "implemented-by", "realized-by", "integrated-as"],
+      retention: "append-only",
     }),
     async project(context) {
       if (!matches(context)) fail("project called for a nonmatching execution");

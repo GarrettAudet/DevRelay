@@ -1,19 +1,19 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "ProjectOverviewBaseline",
-  "baselineId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-  "version": "1.7.0",
+  "baselineId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+  "version": "1.8.0",
   "approvedOverviewCandidate": {
-    "artifactId": "project-overview-change-set-architecture-discovery-v1",
-    "digest": "sha256:4b2c3bf77a2ce71c6954e6b87bbcd6cb2176c014feaae7c793fcfc6a94e7014a"
+    "artifactId": "project-overview-change-set-v0.10-release-hardening-v1",
+    "digest": "sha256:b37e2ab9be97e2f9b87976bd921d7ec1fe1ddba5ac7b1cc3f2ec53c8cac7865e"
   },
   "supersedes": {
-    "artifactId": "project-overview-baseline-devrelay-v1-change-integration-001",
-    "digest": "sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73"
+    "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+    "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
   },
   "requirementsBaseline": {
-    "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-    "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+    "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+    "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
   },
   "projection": {
     "id": "devrelay.requirements-to-project-overview",
@@ -152,6 +152,61 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-wda-001",
               "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-OSS-001",
+        "statement": "Release DevRelay as a trustworthy open-source source/library distribution that supports deterministic end-to-end software engineering from ChatGPT Desktop on Windows.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -405,60 +460,54 @@
         "needs": [
           "Gauge lifecycle and adapter performance without inspecting raw JSON or inventing unavailable metrics.",
           "Inspect exact artifacts, decisions, evidence, and progression state.",
+          "Install a complete DevRelay source/library artifact from GitHub without relying on public npm publication.",
           "Read one concise report of what happened, why progression changed, and where the evidence lives.",
           "Run a complete engineering lifecycle without relying on model memory.",
+          "Run the full deterministic lifecycle from ChatGPT Desktop on Windows with human-readable evidence.",
           "Swap compatible adapters without redesigning the workflow."
         ],
         "sourceRefs": [
           {
-            "role": "capability-evidence",
-            "artifact": {
-              "artifactId": "capability-evidence-lifecycle-run-report-v1",
-              "digest": "sha256:56b50d301bffed317cfc6390a7f7a938e21d42c7784e801ea26ead7d81e38160"
-            },
-            "location": "Released capability and maturity evidence at repository revision 4bda7fe707ba102bd22fe0001c83aa13ec03b0c5"
-          },
-          {
             "role": "goal",
             "artifact": {
-              "artifactId": "goal-devrelay-v1-end-to-end-completion",
-              "digest": "sha256:a1cf4d6563810dc5a88e792bb47acd4e245626b7132ba8ef91876e2deef615ec"
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
             }
           },
           {
             "role": "owner-decision",
             "artifact": {
-              "artifactId": "owner-decisions-lifecycle-run-report-v1",
-              "digest": "sha256:8b3d4ffbfc58e53726d26124bcd0daa4bf642d9d88719e11997eecddcc3b3d46"
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
             },
-            "location": "Frozen V1 lifecycle, frontier loop, assignment boundary, maturity vocabulary, reporting, and complete-run authority"
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
           },
           {
             "role": "project-context",
             "artifact": {
-              "artifactId": "project-context-devrelay-lifecycle-run-report-v1",
-              "digest": "sha256:b031933401e1904b50f664351919337976e14b193a266d0f77b4c44451f1142c"
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
             }
           },
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-wda-001",
-              "digest": "sha256:b915cba9e0af8480229611aff735f265d38bd8c1c4d5fabf19b64432549c16bf"
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
             }
           },
           {
             "role": "repository-snapshot",
             "artifact": {
-              "artifactId": "repository-snapshot-devrelay-4bda7fe",
-              "digest": "sha256:7e15e070e21469126f2d1128d21075ecf3c12becc10d1b5492f1ac2cf0291c73"
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
             }
           },
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-wda-001",
-              "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -750,6 +799,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-OSS-RELEASE-001",
+        "name": "Verified open-source source/library release",
+        "description": "Materialize, validate, and publish an Apache-2.0/DCO GitHub source and tarball release with complete package exports and Windows Desktop dogfood evidence.",
+        "businessObjectiveIds": [
+          "BO-DEV-OSS-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -1178,6 +1286,116 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-OSS-DOGFOOD-001",
+        "name": "Accepted Windows Desktop dogfood",
+        "businessObjectiveIds": [
+          "BO-DEV-OSS-001"
+        ],
+        "measure": "Applicable DevRelay lifecycle stages and required Gates completed for both the release hardening change and one minimal software project.",
+        "target": "100 percent, with explicit not-applicable dispositions for conditional stages.",
+        "measurementMethod": "Reconcile lifecycle run records, traceability updates, verification evidence, integration receipts, and BusinessAcceptance decisions.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-OSS-EXPORTS-001",
+        "name": "Installed package export completeness",
+        "businessObjectiveIds": [
+          "BO-DEV-OSS-001"
+        ],
+        "measure": "Declared package exports that resolve from a clean install of the generated release tarball.",
+        "target": "100 percent, including every fixed and wildcard export.",
+        "measurementMethod": "Enumerate package.json exports, pack and install the tarball in an isolated consumer, then resolve or import every expanded subpath.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -1673,6 +1891,104 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-OSS-DOGFOOD-001",
+        "statement": "A production-like ChatGPT Desktop on Windows run of the complete applicable DevRelay lifecycle for the release change plus a separate minimal software project.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-OSS-PREVIEW-001",
+        "statement": "A public Apache-2.0/DCO GitHub source/library preview with a deterministic installable tarball, complete package exports, community and security controls, supported Node verification, and protected-main promotion evidence.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -3107,6 +3423,156 @@
         ]
       },
       {
+        "id": "NG-DEV-OSS-HOSTED-001",
+        "statement": "Operate a hosted DevRelay backend or service in V0.10.",
+        "rationale": "Hosted operations are outside the source/library preview boundary.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-OSS-NPM-001",
+        "statement": "Publish DevRelay to the public npm registry in V0.10.",
+        "rationale": "GitHub source and an installable release tarball are the approved distribution channels.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-OSS-PLUGIN-001",
+        "statement": "Ship a one-click ChatGPT Desktop plug-in in V0.10.",
+        "rationale": "The approved deliverable is a deterministic source/library used through the Desktop host.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
         "id": "NG-DEV-RUN-REPORT-AUTHORITY-001",
         "statement": "Turn the run report, operational telemetry, or performance score into a workflow controller or approval authority.",
         "rationale": "Reporting observes trusted workflow facts; it does not create or promote them.",
@@ -4113,6 +4579,235 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-wda-001",
               "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-OSS-BRANCH-001",
+        "category": "security",
+        "statement": "main is the protected default branch and release promotion requires verified evidence.",
+        "rationale": "Public source distribution needs an owner-controlled, auditable promotion boundary.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-OSS-MAIN-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-OSS-DISTRIBUTION-001",
+        "category": "business",
+        "statement": "V0.10 uses GitHub source and release tarballs only and is not published to the public npm registry.",
+        "rationale": "The owner selected a controlled public source/library preview before registry distribution.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-OSS-DISTRIBUTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-OSS-LICENSE-001",
+        "category": "legal",
+        "statement": "Source and packaged artifacts use Apache-2.0 licensing and contributions use DCO sign-off.",
+        "rationale": "The owner selected a permissive open-source license and lightweight provenance model.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-OSS-GOVERNANCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-OSS-PLATFORM-001",
+        "category": "platform",
+        "statement": "ChatGPT Desktop on Windows is the supported V0.10 product host; other desktop hosts and a hosted service are not release claims.",
+        "rationale": "The release scope is intentionally narrow and evidence must match the supported environment.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-OSS-DOGFOOD-001",
+          "AC-DEV-OSS-WINDOWS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -5272,6 +5967,125 @@
         ]
       },
       {
+        "id": "NFR-DEV-OSS-COMPATIBILITY-001",
+        "category": "compatibility",
+        "statement": "The V0.10 public source/library preview must remain usable from ChatGPT Desktop on Windows with supported Node LTS releases.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Passing Windows canonical gate and installed-package consumer runs for every supported Node major.",
+        "target": "100 percent of the declared Windows and Node matrix.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-OSS-WINDOWS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-OSS-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Release catalog generation, export enumeration, tarball validation, installed-package verification, and lifecycle replay must be deterministic for exact source and configuration inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Digest equality and zero-call replay across repeated candidate materialization and verification.",
+        "target": "100 percent equality for canonical artifacts and zero unexplained drift.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-OSS-DOGFOOD-001",
+          "AC-DEV-OSS-EXPORTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
         "id": "NFR-DEV-PORTABILITY-001",
         "category": "compatibility",
         "statement": "Canonical lifecycle contracts must remain independent of IDE, AI provider, model, operating host, and bounded external tool.",
@@ -6386,6 +7200,59 @@
         ]
       },
       {
+        "id": "TERM-DEV-OSS-PREVIEW-001",
+        "term": "Open-source preview",
+        "definition": "The public Apache-2.0/DCO GitHub source and installable tarball release that has passed the scoped V0.10 evidence gates without claiming npm publication or hosted operation.",
+        "aliases": [
+          "OSS preview"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
         "id": "TERM-DEV-PROJECT-OVERVIEW-001",
         "term": "ProjectOverviewBaseline",
         "definition": "The compact approved project-wide context deterministically projected from the paired RequirementsBaseline and explicitly supplied to downstream modules.",
@@ -6405,6 +7272,59 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-RELEASE-DEFINING-HOST-001",
+        "term": "Release-defining host",
+        "definition": "The environment whose passing end-to-end evidence is required for the release claim; for V0.10 this is ChatGPT Desktop on Windows.",
+        "aliases": [
+          "Supported host"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v010-public-oss-preview",
+              "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+              "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            },
+            "location": "All three checkpoint-bound recommended decisions approved in chat"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+              "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a38d2ff",
+              "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+              "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
             }
           }
         ]
@@ -7010,43 +7930,50 @@
     ],
     "currentStatus": {
       "lifecycle": "existing",
-      "phase": "implementation",
-      "summary": "ArchitectureDiscovery requirements are clarified: mandatory native local inventory, optional bounded analyzers, material-gap blocking, explicit lower-confidence findings, and offline tracked-or-declared repository analysis with external-transmission opt-in.",
+      "phase": "planning",
+      "summary": "The V0.10 public GitHub source/library preview requirements are clarified: GitHub-only distribution, Apache-2.0 with DCO, a public security contact, protected main, Windows Desktop support, package-export conformance, and complete recursive dogfood evidence.",
       "sourceRefs": [
         {
           "role": "goal",
           "artifact": {
-            "artifactId": "goal-architecture-discovery-module-v1",
-            "digest": "sha256:a5f1c2f26363ca705ac3059ba4f3ee26b2d3eed0b1cac316eb273bf8f2a4363b"
+            "artifactId": "goal-devrelay-v010-public-oss-preview",
+            "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
           }
         },
         {
           "role": "owner-decision",
           "artifact": {
-            "artifactId": "owner-decisions-architecture-discovery-v1",
-            "digest": "sha256:2bcef52a56281934d73ad3f6c5530241f27a18f19609ca239a6da45ebfcdedee"
+            "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+            "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
           },
           "location": "All three checkpoint-bound recommended decisions approved in chat"
         },
         {
           "role": "project-context",
           "artifact": {
-            "artifactId": "project-context-devrelay-architecture-discovery-v1",
-            "digest": "sha256:98553600fd8344af9db86eddfdc832dc6ab1997034fbe730e06c9ea787037478"
+            "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
+            "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
           }
         },
         {
           "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "project-overview-baseline-devrelay-v1-change-integration-001",
-            "digest": "sha256:07667d8fd97d050eda48995a1bc98a65c1b0b19c8c49e769868d931860c4ae73"
+            "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
+            "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-a38d2ff",
+            "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
           }
         },
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-change-integration-001",
-            "digest": "sha256:91aacadde03d10378ec19cd4f99d70b0d6474d540f956ec96ed0650da5ba9098"
+            "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
+            "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
           }
         }
       ]
@@ -7057,8 +7984,8 @@
     "mediaType": "text/markdown; charset=utf-8",
     "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
     "artifact": {
-      "artifactId": "project-overview-markdown-architecture-discovery-v1",
-      "digest": "sha256:7f7140222639141d33d036a1f5a2189ef307f6e9c65ac1d1a213890376168515"
+      "artifactId": "project-overview-markdown-v0.10-release-hardening-v1",
+      "digest": "sha256:9d31d62c868e1092cd0a40c4bc0f0f3adfe38ba7ab019ef1563ec2aac01250c9"
     },
     "renderer": {
       "id": "devrelay.project-overview.markdown",
@@ -7068,8 +7995,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-architecture-discovery-v1",
-      "digest": "sha256:e1bea474e6f4b2b6e19d6285721417854576e99806565c3cb2216b98611615a6"
+      "artifactId": "requirements-gate-approval-v0.10-release-hardening-v1",
+      "digest": "sha256:c3b2600e354dd7105feba48c3e7466885d5cf7d6b5f70a08456307d8d641c245"
     }
   ]
 }

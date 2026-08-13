@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/v0.10-release-hardening/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+        "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/v0.10-release-hardening/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-v0.10-release-hardening-v1",
+        "digest": "sha256:e6891959c3bad541c53d4f96419f93228c3ca3c6aed0197a9cf8d0e02f78bbfa"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/v0.10-release-hardening/native/openspec/specs/v0.10-release-hardening/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-v0.10-release-hardening-v1",
+        "digest": "sha256:286996f3053303b54d93f361f4bfcdc946084edf9b11a3493922156959d8f1f1"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-v0.10-release-hardening-v1",
+      "digest": "sha256:54ec1bc4e63f6faf8ca0df3bca1a3006b7f6cd29ef66cdf66d17729479c38011"
+    },
+    {
+      "artifactId": "project-overview-change-set-v0.10-release-hardening-v1",
+      "digest": "sha256:b37e2ab9be97e2f9b87976bd921d7ec1fe1ddba5ac7b1cc3f2ec53c8cac7865e"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

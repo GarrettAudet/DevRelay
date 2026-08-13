@@ -47,7 +47,16 @@ function validateRawExecutorBinding(value, context) {
   if (!invocation || invocation.kind !== "ExecutorInvocation" || !binding || binding.kind !== "ExecutionBinding") fail("RawExecutorResult requires exact invocation and binding context");
   if (value.attemptId !== invocation.attemptId || value.invocationFingerprint !== invocation.invocationFingerprint) fail("RawExecutorResult invocation binding does not match");
   if (value.bindingDigest !== binding.bindingDigest || value.executor.id !== binding.executor.id || value.executor.version !== binding.executor.version) fail("RawExecutorResult executor binding does not match");
-  if (invocation.executionBinding.digest !== binding.bindingDigest) fail("ExecutorInvocation does not reference the exact ExecutionBinding digest");
+  if (context.bindingRef !== undefined) {
+    if (
+      invocation.executionBinding.artifactId !== context.bindingRef.artifactId ||
+      invocation.executionBinding.digest !== context.bindingRef.digest
+    ) {
+      fail("ExecutorInvocation does not reference the exact ExecutionBinding artifact");
+    }
+  } else if (invocation.executionBinding.digest !== binding.bindingDigest) {
+    fail("ExecutorInvocation does not reference the exact legacy ExecutionBinding digest");
+  }
 }
 
 export function validateWorkExecutionArtifact(value, context = {}) {

@@ -17,17 +17,16 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.9.0` is a private, source-only release containing DevRelay Core,
+DevRelay `0.10.0-rc.1` is an Apache-2.0 open-source preview containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@1.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, and `system-verification@0.1.0`. Source-package
 versions and immutable Module
-versions are intentionally independent. The package is `UNLICENSED` and is
-not published to the public npm registry. Access to the source does not grant
-permission to use or redistribute it; see [LICENSE](LICENSE) and
-[RELEASE.md](RELEASE.md).
+versions are intentionally independent. The supported distribution is GitHub
+source plus a deterministic installable tarball; no public npm publication is
+claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 
 The release contains Core, schemas, versioned manifests, fixtures, and bounded
 adapter contracts, plus an in-memory reference graph and checkpoint store. It
@@ -36,13 +35,17 @@ OpenSpec, GitHub Spec Kit, Task Master, Structurizr, or MADR command adapters.
 ArchitectureDiscovery includes its deterministic offline native inventory plug-in; optional analyzers remain bounded adapter ports.
 WorkDependencyAnalysis includes its provider-neutral native structured proposer,
 ContractGeneration includes its deterministic JSON Schema generator, and
-ChangeIntegration includes its bounded local Git adapter.
+WorkExecution includes the complete Core-owned readiness, binding, raw-byte
+checkpoint, zero-call replay, result-assembly, and trusted candidate-traceability
+runtime behind a proposer-only executor port. Execution-era graphs explicitly opt
+into traceability vocabulary 1.6; historical circuits remain byte-identical on
+the 1.5 default. ChangeIntegration includes its bounded local Git adapter.
 SystemVerification includes fixture-conformant test and review verifier
 bindings; it creates no BusinessAcceptance fact or decision.
 
 ## Source setup and verification
 
-From an authorized source checkout with Node.js 20 or 22:
+From a source checkout with Node.js 22 or 24:
 
 ```sh
 npm ci
@@ -53,12 +56,12 @@ npm run release:check
 `verify` parses JSON, checks JavaScript syntax and LF-only text, and runs
 the complete suite. `release:check` also verifies the release digest catalog
 as a mandatory release input, builds an allowlisted tarball in a temporary
-directory, installs it offline, and smoke-tests the package root and all eleven
-module manifests.
+directory, installs it offline, and exercises every fixed and wildcard public
+package export from the installed bytes.
 
 ## Library quickstart
 
-The controlled source tarball exposes an intentional package root. A host can
+The installable GitHub-source tarball exposes an intentional package root. A host can
 load the semantic modules and supply its own artifact store, checkpoint store,
 capability enforcement, and adapter implementations:
 
@@ -553,7 +556,7 @@ In a source checkout, `dogfood/work-breakdown/` records the complete
 module-by-module run used for this release: interactive RequirementsGathering,
 approved paired requirements/project-overview baselines, ArchitectureDesign
 discovery and baseline establishment, and the executable WorkBreakdown run.
-The evidence tree is intentionally excluded from the controlled npm package.
+The evidence tree is intentionally excluded from the installable package.
 
 The WorkBreakdown proof state-routes the existing repository through
 `establish-breakdown` with a bounded `openspec-tasks` fixture, produces seven

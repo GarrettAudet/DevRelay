@@ -15,7 +15,6 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   canonicalModules,
-  canonicalPackageExports,
   comparePortablePaths,
   expectedPackagedPaths,
   parseReleaseManifest,
@@ -265,6 +264,7 @@ export function runReleaseManifestCheck() {
 }
 
 const requiredPackageFiles = [
+  "NOTICE",
   "contracts/module-execution-record.schema.json",
   "contracts/architecture-design-artifacts.schema.json",
   "contracts/business-acceptance-artifacts.schema.json",
@@ -289,39 +289,6 @@ const requiredPackageFiles = [
   "docs/work-breakdown.md",
   "docs/work-dependency-analysis.md",
   "docs/work-item-verification.md",
-  "examples/modules/architecture-design.module.json",
-  "examples/modules/change-integration.module.json",
-  "examples/modules/contract-generation.module.json",
-  "examples/modules/requirements-gathering.module.json",
-  "examples/modules/specialist-assignment.module.json",
-  "examples/modules/system-verification.module.json",
-  "examples/modules/work-breakdown.module.json",
-  "examples/modules/work-dependency-analysis.module.json",
-  "examples/modules/work-execution.module.json",
-  "examples/modules/work-item-verification.module.json",
-  "examples/plugins/a2a-profile-source.plugin.json",
-  "examples/plugins/asyncapi-contract-generator.plugin.json",
-  "examples/plugins/github-spec-kit.plugin.json",
-  "examples/plugins/json-schema-contract-generator.plugin.json",
-  "examples/plugins/openapi-contract-generator.plugin.json",
-  "examples/plugins/protobuf-contract-generator.plugin.json",
-  "examples/plugins/madr.plugin.json",
-  "examples/plugins/local-git-integration.plugin.json",
-  "examples/plugins/native-specialist-ranker.plugin.json",
-  "examples/plugins/openspec-design.plugin.json",
-  "examples/plugins/openspec.plugin.json",
-  "examples/plugins/spec-kit-plan.plugin.json",
-  "examples/plugins/structurizr.plugin.json",
-  "examples/plugins/openspec-tasks.plugin.json",
-  "examples/plugins/spec-kit-tasks.plugin.json",
-  "examples/plugins/native-structured-dependency-proposer.plugin.json",
-  "examples/plugins/openspec-dependency-proposer.plugin.json",
-  "examples/plugins/spec-kit-dependency-reviewer.plugin.json",
-  "examples/plugins/task-master-dependency-proposer.plugin.json",
-  "examples/plugins/review-system-verifier.plugin.json",
-  "examples/plugins/review-verifier.plugin.json",
-  "examples/plugins/test-system-verifier.plugin.json",
-  "examples/plugins/test-verifier.plugin.json",
   "policies/work-dependency-analysis/dependency.rego",
   "policies/work-dependency-analysis/policy.wasm",
   "openspec/schemas/devrelay-work-breakdown/schema.yaml",
@@ -360,17 +327,101 @@ const requiredPackageFiles = [
   "src/work-dependency-traceability-contributor.mjs",
 ];
 
+function packageExportKind(target) {
+  if (target.endsWith(".json")) return "json";
+  if (/\.(?:c|m)?js$/u.test(target)) return "javascript";
+  return "resource";
+}
+
+function assertExportTarget(target, subpath) {
+  if (
+    typeof target !== "string" ||
+    !target.startsWith("./") ||
+    target.includes("\\") ||
+    target.split("/").some((segment) => segment === "..")
+  ) {
+    throw new Error(`package export ${subpath} has an unsafe or unsupported target`);
+  }
+}
+
+export function enumeratePackageExports(exportsMap, packagePaths, packageName) {
+  if (
+    !exportsMap ||
+    typeof exportsMap !== "object" ||
+    Array.isArray(exportsMap) ||
+    typeof packageName !== "string" ||
+    packageName.length === 0
+  ) {
+    throw new Error("package exports and package name must be declared");
+  }
+  const paths = [...packagePaths].sort(comparePortablePaths);
+  const inventory = [];
+  for (const [subpath, target] of Object.entries(exportsMap).sort(([left], [right]) =>
+    comparePortablePaths(left, right),
+  )) {
+    assertExportTarget(target, subpath);
+    const subpathStars = [...subpath].filter((character) => character === "*").length;
+    const targetStars = [...target].filter((character) => character === "*").length;
+    if (subpathStars !== targetStars || subpathStars > 1) {
+      throw new Error(`package export ${subpath} must use zero or one matching wildcard`);
+    }
+    if (subpathStars === 0) {
+      const targetPath = target.slice(2);
+      if (!paths.includes(targetPath)) {
+        throw new Error(`package export ${subpath} targets missing tarball file ${targetPath}`);
+      }
+      inventory.push({
+        specifier: subpath === "." ? packageName : packageName + subpath.slice(1),
+        target: targetPath,
+        kind: packageExportKind(targetPath),
+      });
+      continue;
+    }
+    const [targetPrefix, targetSuffix] = target.slice(2).split("*");
+    const [subpathPrefix, subpathSuffix] = subpath.split("*");
+    const matches = paths.filter(
+      (path) =>
+        path.startsWith(targetPrefix) &&
+        path.endsWith(targetSuffix) &&
+        path.length >= targetPrefix.length + targetSuffix.length,
+    );
+    if (matches.length === 0) {
+      throw new Error(`package export ${subpath} wildcard matches no tarball files`);
+    }
+    for (const targetPath of matches) {
+      const capture = targetPath.slice(
+        targetPrefix.length,
+        targetPath.length - targetSuffix.length,
+      );
+      const exportedSubpath = subpathPrefix + capture + subpathSuffix;
+      inventory.push({
+        specifier: packageName + exportedSubpath.slice(1),
+        target: targetPath,
+        kind: packageExportKind(targetPath),
+      });
+    }
+  }
+  const specifiers = inventory.map(({ specifier }) => specifier);
+  if (new Set(specifiers).size !== specifiers.length) {
+    throw new Error("package exports resolve to duplicate public specifiers");
+  }
+  return inventory.sort((left, right) => comparePortablePaths(left.specifier, right.specifier));
+}
+
 function assertPackageMetadata(packageDocument) {
   if (packageDocument.version !== sourceReleaseVersion) {
     throw new Error(
       `package version must be ${sourceReleaseVersion} for this source release`,
     );
   }
-  if (packageDocument.private !== true) {
-    throw new Error("source-only release must remain private");
+  if (packageDocument.private !== false) {
+    throw new Error("open-source preview package must be publishable");
   }
-  if (packageDocument.license !== "UNLICENSED") {
-    throw new Error("source-only release must remain UNLICENSED");
+  if (packageDocument.license !== "Apache-2.0") {
+    throw new Error("open-source preview package must use Apache-2.0");
+  }
+  if (packageDocument.engines?.node !== ">=22") {
+    throw new Error("open-source preview package must support maintained Node 22+");
   }
   if (packageDocument.dependencies?.ajv !== "8.20.0") {
     throw new Error("Ajv must be pinned exactly to 8.20.0");
@@ -393,17 +444,12 @@ function assertPackageMetadata(packageDocument) {
   if (packageDocument.main !== "./src/index.mjs") {
     throw new Error("package main must point to the intentional public API");
   }
-  if (
-    JSON.stringify(packageDocument.exports) !==
-    JSON.stringify(canonicalPackageExports)
-  ) {
-    throw new Error(
-      "package exports must expose only the canonical module/plugin surface and declared supporting paths",
-    );
+  if (!packageDocument.exports || typeof packageDocument.exports !== "object") {
+    throw new Error("package exports must declare the public package surface");
   }
 }
 
-function assertPackageContents(files, manifest) {
+function assertPackageContents(files, manifest, packageDocument) {
   const paths = files.map(({ path }) => path).sort(comparePortablePaths);
   const expected = expectedPackagedPaths(manifest);
   if (JSON.stringify(paths) !== JSON.stringify(expected)) {
@@ -440,10 +486,15 @@ function assertPackageContents(files, manifest) {
         missingRequired.join("\n"),
     );
   }
-  return paths.length;
+  return {
+    fileCount: paths.length,
+    exportInventory: enumeratePackageExports(
+      packageDocument.exports, paths, packageDocument.name,
+    ),
+  };
 }
 
-function installAndImport(tarball, packageDocument, temporaryRoot) {
+function installAndImport(tarball, packageDocument, temporaryRoot, exportInventory) {
   const packageName = packageDocument.name;
   const consumer = join(temporaryRoot, "consumer");
   mkdirSync(consumer);
@@ -516,34 +567,20 @@ function installAndImport(tarball, packageDocument, temporaryRoot) {
     'if (typeof api.systemVerificationTraceabilityContributor !== "object") throw new Error("missing SystemVerification traceability contributor export");',
     'const { createRequire } = await import("node:module");',
     "const require = createRequire(import.meta.url);",
-    `require.resolve(${JSON.stringify(
-      `${packageName}/modules/requirements-gathering.module.json`,
-    )});`,
-    `require.resolve(${JSON.stringify(
-      `${packageName}/modules/architecture-design.module.json`,
-    )});`,
-    `require.resolve(${JSON.stringify(
-      `${packageName}/modules/work-breakdown.module.json`,
-    )});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/work-dependency-analysis.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/contract-generation.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/specialist-assignment.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/work-execution.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/work-item-verification.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/change-integration.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/modules/system-verification.module.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/test-system-verifier.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/review-system-verifier.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/native-structured-dependency-proposer.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/openspec-dependency-proposer.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/spec-kit-dependency-reviewer.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/task-master-dependency-proposer.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/plugins/json-schema-contract-generator.plugin.json`)});`,
-    `require.resolve(${JSON.stringify(`${packageName}/policies/work-dependency-analysis/policy.wasm`)});`,
+    `const exportInventory = ${JSON.stringify(exportInventory)};`,
+    "for (const entry of exportInventory) {",
+    "  require.resolve(entry.specifier);",
+    '  if (entry.kind === "json") {',
+    '    const loaded = await import(entry.specifier, { with: { type: "json" } });',
+    '    if (!("default" in loaded)) throw new Error(`JSON export ${entry.specifier} has no default export`);',
+    '  } else if (entry.kind === "javascript") {',
+    "    await import(entry.specifier);",
+    "  }",
+    "}",
   ].join("\n");
-  run(process.execPath, ["--input-type=module", "--eval", smokeProgram], {
-    cwd: consumer,
-  });
+  const smokePath = join(consumer, "release-smoke.mjs");
+  writeFileSync(smokePath, `${smokeProgram}\n`, "utf8");
+  run(process.execPath, [smokePath], { cwd: consumer });
 }
 
 export function runPackageCheck() {
@@ -566,14 +603,17 @@ export function runPackageCheck() {
     if (!Array.isArray(report) || report.length !== 1) {
       throw new Error("npm pack returned an unexpected report");
     }
-    const packageFileCount = assertPackageContents(
+    const packageCheck = assertPackageContents(
       report[0].files ?? [],
       manifest,
+      packageDocument,
     );
     const tarball = join(temporaryRoot, report[0].filename);
-    installAndImport(tarball, packageDocument, temporaryRoot);
+    installAndImport(
+      tarball, packageDocument, temporaryRoot, packageCheck.exportInventory,
+    );
     console.log(
-      `Package verification passed: ${packageFileCount} exact catalog-bound files and an installed root-import smoke test.`,
+      `Package verification passed: ${packageCheck.fileCount} exact catalog-bound files and ${packageCheck.exportInventory.length} installed export targets.`,
     );
   } finally {
     rmSync(temporaryRoot, { force: true, recursive: true });

@@ -6,9 +6,9 @@ import * as api from "../src/index.mjs";
 const text=path=>readFileSync(new URL(path,import.meta.url),"utf8");
 const json=path=>JSON.parse(text(path));
 
-test("0.9.0 preserves executable BusinessAcceptance boundaries, not attempt-004 artifacts",()=>{
+test("the current preview preserves executable BusinessAcceptance boundaries, not attempt-004 artifacts",()=>{
   const pkg=json("../package.json");
-  assert.equal(pkg.version,"0.9.0");
+  assert.equal(pkg.version,"0.10.0-rc.1");
   assert.equal(typeof api.executeBusinessAcceptance,"function");
   assert.equal(typeof api.executeBusinessAcceptanceGate,"function");
   assert.equal(typeof api.createBusinessAcceptanceCheckpointController,"function");

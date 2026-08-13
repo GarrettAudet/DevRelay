@@ -1,0 +1,12 @@
+# DevRelay V0.10 public OSS preview Requirements Gate approval
+
+Status: **pass**
+
+The project owner approved atomic requirements/ProjectOverview promotion and ArchitectureDesign progression for the exact digest-bound candidate recorded in requirements-gate-owner-approval.json.
+
+- RequirementsGateCandidate: sha256:54d418027d9fe9b9e13c2c07e717b929fe3834d704cfaf35c314a7ac30232b27
+- RequirementsChangeSet: sha256:54ec1bc4e63f6faf8ca0df3bca1a3006b7f6cd29ef66cdf66d17729479c38011
+- ProjectOverviewChangeSetDraft: sha256:b37e2ab9be97e2f9b87976bd921d7ec1fe1ddba5ac7b1cc3f2ec53c8cac7865e
+- Candidate ProjectOverview.md: sha256:9d31d62c868e1092cd0a40c4bc0f0f3adfe38ba7ab019ef1563ec2aac01250c9
+- Terminal checkpoint: sha256:0d3ae7ccbdf528895430fe0590c1effdb671457413acc05a59741d2b09e339ca
+- Approval artifact: sha256:c3b2600e354dd7105feba48c3e7466885d5cf7d6b5f70a08456307d8d641c245

@@ -95,7 +95,7 @@ function approvedProjection(context) {
 }
 
 function contributor({ id, authority, scope, traceKind, project }) {
-  return Object.freeze({ metadata: immutable({ id, version: "1.0.0" }), authority, scope, ownership: immutable({ authority, scope, nodeKinds: ["verification-evidence"], edgeKinds: authority === "candidate" ? [] : ["verified-by"] }), match(context) { return allLoaded(context).some(({ value }) => value?.kind === traceKind); }, async project(context) { if (!this.match(context)) fail("project called for a nonmatching execution"); return project(context); } });
+  return Object.freeze({ metadata: immutable({ id, version: "1.0.0" }), authority, scope, ownership: immutable({ authority, scope, nodeKinds: ["verification-evidence"], edgeKinds: authority === "candidate" ? [] : ["verified-by"], retention: "append-only" }), match(context) { return allLoaded(context).some(({ value }) => value?.kind === traceKind); }, async project(context) { if (!this.match(context)) fail("project called for a nonmatching execution"); return project(context); } });
 }
 
 export const workItemVerificationCandidateTraceabilityContributor = contributor({ id: "devrelay.work-item-verification-candidate", authority: "candidate", scope: CANDIDATE_SCOPE, traceKind: "WorkItemVerificationTraceabilityCandidate", project: candidateProjection });

@@ -1,0 +1,48 @@
+# Architecture Gate candidate: public OSS release hardening 0.1.0
+
+Status: **awaiting owner approval**
+
+## Exact bindings
+
+- RequirementsBaseline: sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860
+- ProjectOverviewBaseline: sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686
+- ProjectContext: sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f
+- RepositorySnapshot: sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9
+- ArchitectureBaseline: sha256:dcab07305935477707fdeda7c0c99a0a88afc246539844f8737ccfef29abc3bc
+- ProjectArchitectureState: sha256:b309d2acc616d0dfcff14335bbc83b54018bcf6c64c85896a54b9e6c11d6c1e0
+- ModuleRouteDecision: sha256:39c888edaef2a0f8cb9e41ed5b2c2955bb6ee15c50e1e46a2627decb04a08e5a
+- ArchitectureDiscoveryDecision: sha256:5e68d1df70f2038bc59865d5ffe449427b3b503f8a0db1fd5a409895718877ac
+- DesignerWorkingArtifact: sha256:d0eafb8750f50c4745e84e034ede5bdd0b3d7b44f35e49b859fa4466ca5b14e3
+- ModelerWorkingArtifact: sha256:fbe43d5418ee812c41e36ecafa5b6085059addc5fd01149fcc81c4bc2163670a
+- ArchitectureChangeSetDraft: sha256:b26d920120debd1ae55afbc70b42f9e7aa53f646a853c05317607d7e36bc369c
+- Native OpenSpec design: sha256:548cd0a215cae1634adbc94e0e875da060d46dfde95d2657e20efa4b43dfd9e4
+- Native Structurizr workspace: sha256:2c6ac0ca2fe515617d08b7826a9ba10c653b3685057569126c482f644ab77e36
+- StructurizrConformanceProof: sha256:7e5f978ff48825670de67d11a0cfc37a1c70fa4b61ac6e1170128b20bd8c327b
+- Native ADR-REL-001: sha256:72678302242552288f814a304cf74bb6ec55e64b1ab9990085ed5cdfde623c8d
+- Native ADR-REL-002: sha256:bce47cb70bbe702190d6c7117ed697ce93379e850339680363429a6939ae98e6
+- Native ADR-REL-003: sha256:28ef62945ce79c69463216aaea535ee1ae8ca19a7e217e166bfc8960a209db62
+- ModuleInvocation: sha256:2d88949d88d6df3fbb0e382949c559b5a612f297143ea56550b36602eab302f0
+- ModuleResult: sha256:07d2701ed950d3afc4542d94a796df4288f0dc20d8a2953386b6fa364fb65a48
+- RuntimeExecutionProof: sha256:3f99b93f08eae33f644a51950c8ab9f61266d0b142e246fce85e44cf1cb2d4d7
+
+## Deterministic route and chain
+
+- Project state is `baselined`; Core selected `design-change` with `BASELINE_REQUIRES_CHANGE_DESIGN`.
+- Configured chain executed as OpenSpec design -> Structurizr -> MADR with three checkpoints and zero adapter calls on replay.
+- OpenSpec and MADR effects remain bounded deterministic adapter fixtures; the official Structurizr 2026.06.28 binary separately parsed and exported the workspace for canonical comparison.
+
+## Gate findings
+
+- PASS: official Structurizr validation accepted the software-system -> container -> component hierarchy; JSON export normalized exactly to 101 elements, 95 relationships, the hierarchy, and 32 declared views.
+- PASS: Package Export Projector derives the complete public-subpath inventory from package.json exports without a second authority list.
+- PASS: Tarball Materializer and Installed Package Verifier keep GitHub source, exact tarball bytes, and Windows Node 22/24 consumer evidence separate and digest-bound.
+- PASS: Release Evidence Assembler cannot approve or promote lifecycle artifacts; GitHub effects remain host-enforced after BusinessAcceptance.
+- PASS: the design contains no public npm publisher, one-click Desktop plug-in, or hosted backend.
+- PASS: all three new structured interfaces require ContractGeneration JSON Schemas before WorkBreakdown progression.
+- PASS: ArchitectureDiscovery was deterministically bypassed because the exact approved ArchitectureBaseline exists.
+- PASS: exhaustive typed changes and reciprocal traceability cover all approved normative requirements.
+- PASS: traceability remains forward-only; inverse traversal remains derived by TraceabilityGraph.
+
+## Approval boundary
+
+Approval must bind this exact ArchitectureChangeSetDraft and all exact input and native-artifact digests above. Any modification requires a new Architecture Gate candidate.

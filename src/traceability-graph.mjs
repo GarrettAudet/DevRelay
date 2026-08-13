@@ -7,6 +7,7 @@ import {
   TRACEABILITY_ANALYZER,
   TRACEABILITY_EDGE_KINDS,
   TRACEABILITY_EDGE_KINDS_V1_1,
+  TRACEABILITY_EDGE_KINDS_V1_6,
   TRACEABILITY_GRAPH_MEDIA_TYPE,
   TRACEABILITY_GRAPH_SCHEMA,
   TRACEABILITY_HORIZONS,
@@ -16,8 +17,10 @@ import {
   TRACEABILITY_UPDATE_MEDIA_TYPE,
   TRACEABILITY_UPDATE_SCHEMA,
   TRACEABILITY_NODE_KINDS,
+  TRACEABILITY_NODE_KINDS_V1_6,
   TRACEABILITY_VOCABULARY,
   TRACEABILITY_VOCABULARY_V1_1,
+  TRACEABILITY_VOCABULARY_V1_6,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityDiagnosticId,
@@ -318,18 +321,20 @@ function normalizeOwnedKinds(value, allowed, label, forbidden = new Set()) {
   return Object.freeze(normalized);
 }
 
-function contributorOwnership(contributor, index) {
+function contributorOwnership(contributor, index, nodeKindSet, edgeKindSet) {
   const ownership = requireRecord(
     contributor.ownership,
     `contributors[${index}].ownership`,
   );
   if (
-    Object.keys(ownership).sort().join(",") !==
-    "authority,edgeKinds,nodeKinds,scope"
+    ![
+      "authority,edgeKinds,nodeKinds,scope",
+      "authority,edgeKinds,nodeKinds,retention,scope",
+    ].includes(Object.keys(ownership).sort().join(","))
   ) {
     fail(
       "TG_INVALID_CONTRIBUTOR",
-      `contributors[${index}].ownership must contain exactly authority, edgeKinds, nodeKinds, and scope`,
+      `contributors[${index}].ownership must contain authority, edgeKinds, nodeKinds, scope, and optional retention`,
     );
   }
   const scope = requireString(ownership.scope, `contributors[${index}].ownership.scope`);
@@ -340,6 +345,13 @@ function contributorOwnership(contributor, index) {
   if (!CONTRIBUTOR_AUTHORITIES.has(authority)) {
     fail("TG_INVALID_CONTRIBUTOR", `contributors[${index}] has unauthorized authority ${authority}`);
   }
+  const retention = ownership.retention ?? "replace";
+  if (!["replace", "append-only"].includes(retention)) {
+    fail(
+      "TG_INVALID_CONTRIBUTOR",
+      `contributors[${index}].ownership.retention is invalid`,
+    );
+  }
   if (contributor.scope !== scope || contributor.authority !== authority) {
     fail(
       "TG_INVALID_CONTRIBUTOR",
@@ -349,15 +361,16 @@ function contributorOwnership(contributor, index) {
   return Object.freeze({
     scope,
     authority,
+    ...(ownership.retention === undefined ? {} : { retention }),
     nodeKinds: normalizeOwnedKinds(
       ownership.nodeKinds,
-      TRACE_NODE_KIND_SET,
+      nodeKindSet,
       `contributors[${index}].ownership.nodeKinds`,
       new Set(["artifact-reference"]),
     ),
     edgeKinds: normalizeOwnedKinds(
       ownership.edgeKinds,
-      TRACE_EDGE_KIND_SET,
+      edgeKindSet,
       `contributors[${index}].ownership.edgeKinds`,
     ),
   });
@@ -387,7 +400,11 @@ function contributorIdentity(metadata, index, ownership) {
   });
 }
 
-function normalizeContributors(contributors) {
+function normalizeContributors(
+  contributors,
+  nodeKindSet = TRACE_NODE_KIND_SET,
+  edgeKindSet = TRACE_EDGE_KIND_SET,
+) {
   if (!Array.isArray(contributors)) {
     fail("TG_INVALID_ARGUMENT", "contributors must be an array");
   }
@@ -396,7 +413,7 @@ function normalizeContributors(contributors) {
     if (typeof contributor.project !== "function") {
       fail("TG_INVALID_ARGUMENT", `contributors[${index}].project must be a function`);
     }
-    const ownership = contributorOwnership(contributor, index);
+    const ownership = contributorOwnership(contributor, index, nodeKindSet, edgeKindSet);
     return Object.freeze({
       ...contributor,
       metadata: contributorIdentity(contributor.metadata, index, ownership),
@@ -785,6 +802,18 @@ function diffRecords(baseRecords, desired, owners, idField) {
       );
     }
     if (previous?.contentDigest === desiredRecord.contentDigest) continue;
+    const owner = owners.find(
+      (candidate) =>
+        candidate.scope === desiredRecord.scope &&
+        candidate.authority === desiredRecord.authority &&
+        sameContributor(candidate.contributor, desiredRecord.contributor),
+    );
+    if (previous && owner?.retention === "append-only") {
+      fail(
+        "TG_APPEND_ONLY_CONFLICT",
+        `${idField} ${desiredRecord[idField]} cannot be replaced in append-only scope ${owner.scope}`,
+      );
+    }
     changes.push({
       precondition: previous
         ? { state: "match", contentDigest: previous.contentDigest }
@@ -793,7 +822,7 @@ function diffRecords(baseRecords, desired, owners, idField) {
     });
   }
   for (const owner of owners) {
-    if (owner.empty) continue;
+    if (owner.empty || owner.retention === "append-only") continue;
     for (const previous of baseRecords) {
       if (
         previous.scope !== owner.scope ||
@@ -1688,7 +1717,7 @@ function normalizeBase(store, graphId, projectId, baseGraph) {
   );
 }
 
-function selectUpdateVocabulary(baseVocabulary, rawProjects) {
+function selectUpdateVocabulary(baseVocabulary, rawProjects, targetVocabulary) {
   const usesOnlyV1_1Edges = rawProjects.every(({ projected }) =>
     projected.edges.every(({ kind }) => TRACEABILITY_EDGE_KINDS_V1_1.includes(kind)),
   );
@@ -1699,7 +1728,7 @@ function selectUpdateVocabulary(baseVocabulary, rawProjects) {
   ) {
     return TRACEABILITY_VOCABULARY_V1_1;
   }
-  return TRACEABILITY_VOCABULARY;
+  return targetVocabulary;
 }
 function preparedValue(baseGraphRef, updateEntry) {
   const checkpoint = immutableJson({
@@ -1717,7 +1746,13 @@ function preparedValue(baseGraphRef, updateEntry) {
   return value;
 }
 
-export function createTraceabilityGraphService({ graphId, projectId, store, contributors }) {
+export function createTraceabilityGraphService({
+  graphId,
+  projectId,
+  store,
+  contributors,
+  vocabulary = TRACEABILITY_VOCABULARY,
+}) {
   requireString(graphId, "graphId");
   requireString(projectId, "projectId");
   requireRecord(store, "store");
@@ -1726,7 +1761,15 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
       fail("TG_INVALID_ARGUMENT", `store.${method} must be a function`);
     }
   }
-  const registered = normalizeContributors(contributors);
+  const usesVocabularyV1_6 =
+    vocabulary.id === TRACEABILITY_VOCABULARY_V1_6.id &&
+    vocabulary.version === TRACEABILITY_VOCABULARY_V1_6.version &&
+    vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_6.contractDigest;
+  const registered = normalizeContributors(
+    contributors,
+    new Set(usesVocabularyV1_6 ? TRACEABILITY_NODE_KINDS_V1_6 : TRACEABILITY_NODE_KINDS),
+    new Set(usesVocabularyV1_6 ? TRACEABILITY_EDGE_KINDS_V1_6 : TRACEABILITY_EDGE_KINDS),
+  );
   const initialSnapshot = {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "TraceabilityGraphSnapshot",
@@ -1734,7 +1777,7 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
     projectId,
     revision: 0,
     horizon: "requirements",
-    vocabulary: TRACEABILITY_VOCABULARY,
+    vocabulary,
     parentGraph: null,
     lastAppliedUpdate: null,
     appliedUpdates: [],
@@ -1861,6 +1904,7 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
         authority: contributor.ownership.authority,
         nodeKinds: contributor.ownership.nodeKinds,
         edgeKinds: contributor.ownership.edgeKinds,
+        retention: contributor.ownership.retention,
       };
       const ownerKey = `${owner.authority}\u0000${owner.scope}`;
       if (activeOwners.has(ownerKey)) {
@@ -2055,7 +2099,11 @@ export function createTraceabilityGraphService({ graphId, projectId, store, cont
       projectId,
       baseGraph: immutableJson(base.ref),
       horizon: maxHorizon(rawProjects.map(({ projected }) => projected.horizon)),
-      vocabulary: selectUpdateVocabulary(base.value.vocabulary, rawProjects),
+      vocabulary: selectUpdateVocabulary(
+        base.value.vocabulary,
+        rawProjects,
+        vocabulary,
+      ),
       producer: producer(invocation, invocationFingerprint, moduleResult),
       sourceArtifacts,
       scopes,

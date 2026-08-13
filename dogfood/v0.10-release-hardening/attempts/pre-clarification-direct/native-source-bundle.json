@@ -1,0 +1,64 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/v0.10-release-hardening/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-v0.10-release-hardening-v1",
+        "digest": "sha256:0f2afd50da5f4499d43d82efee494bad51bdf1125ae00e6f7b181f4cc6080be5"
+      }
+    },
+    {
+      "role": "capability-evidence",
+      "path": "dogfood/v0.10-release-hardening/capability-evidence.md",
+      "artifact": {
+        "artifactId": "capability-evidence-v0.10-release-hardening-v1",
+        "digest": "sha256:26b15c655feb3e5ecfe90be92960b7f61ba40f690c94172f02c238ce4fa2d122"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/v0.10-release-hardening/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-v0.10-release-hardening-v1",
+        "digest": "sha256:75037c62286190b40706caf0a721edda8ce79b04f58a99cb5872c48beeffcfb7"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/v0.10-release-hardening/native/openspec/specs/v0.10-release-hardening/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-v0.10-release-hardening-v1",
+        "digest": "sha256:0a650e0b7c5ce9385fe25bc26da27bb5fb024c2b7e18c9ac29f4d77c304e3c7f"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-v0.10-release-hardening-v1",
+      "digest": "sha256:e00a898a7e56df3c68067b209f8f899a3b856113cd495d59ab0070152a8fa0e7"
+    },
+    {
+      "artifactId": "project-overview-change-set-v0.10-release-hardening-v1",
+      "digest": "sha256:a046d7271119bec05062c6d7ec6fdc8acc4540b06680cb1d77bc61a8029cb0c9"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec adapter binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

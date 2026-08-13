@@ -2,15 +2,18 @@
 
 ## Supported version
 
-The current supported source release is DevRelay `0.3.x`. Pre-release branches
-and older snapshots are not supported security baselines.
+The supported public preview line is DevRelay `0.10.0-rc.x`. The historical
+`0.9.0` controlled-source candidate and older snapshots are not supported
+security baselines.
 
 ## Reporting a vulnerability
 
 Do not place exploit details, secrets, or sensitive repository content in a
-public issue. If this repository is hosted on a service with private security
-advisories, use that channel. Otherwise, contact the maintainers through an
-authorized private channel and include:
+public issue. Use the repository's
+[private vulnerability reporting](https://github.com/GarrettAudet/DevRelay/security/advisories/new)
+channel. If that channel is unavailable, contact the repository owner through
+`garrett.audet@gmail.com` before sharing details.
+Include:
 
 - the affected version and commit;
 - the relevant module, contract, or runtime boundary;
@@ -18,9 +21,13 @@ authorized private channel and include:
 - whether credentials, external effects, or untrusted artifacts are involved;
 - any suggested mitigation.
 
-The maintainers will acknowledge the report through the same private channel
-and coordinate remediation and disclosure. No response-time guarantee is made
-for this source preview.
+The project targets acknowledgement within three business days and an initial
+triage update within seven business days. These are best-effort preview targets,
+not service-level guarantees. Maintainers will coordinate remediation and
+disclosure through the same private channel and credit reporters who request
+credit.
+
+## Security boundary
 
 DevRelay contract validation is not a host sandbox. A host remains responsible
 for capability enforcement, process isolation, secret handling, network

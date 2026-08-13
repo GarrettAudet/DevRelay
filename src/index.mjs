@@ -329,12 +329,45 @@ export {
   TRACEABILITY_NODE_KINDS_V1_3,
   TRACEABILITY_VOCABULARY_V1_2,
   TRACEABILITY_VOCABULARY_V1_3,
+  TRACEABILITY_EDGE_KINDS_V1_4,
+  TRACEABILITY_EDGE_KINDS_V1_5,
+  TRACEABILITY_EDGE_KINDS_V1_6,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
+  TRACEABILITY_NODE_KINDS_V1_4,
+  TRACEABILITY_NODE_KINDS_V1_5,
+  TRACEABILITY_NODE_KINDS_V1_6,
+  TRACEABILITY_VOCABULARY_V1_4,
+  TRACEABILITY_VOCABULARY_V1_5,
+  TRACEABILITY_VOCABULARY_V1_6,
 } from "./traceability-artifact-validator.mjs";
 export {
   workItemVerificationApprovedTraceabilityContributor,
   workItemVerificationCandidateTraceabilityContributor,
   workItemVerificationTraceabilityContributors,
 } from "./work-item-verification-traceability-contributor.mjs";
+export {
+  WORK_EXECUTION_ARTIFACT_KINDS,
+  WorkExecutionArtifactValidationError,
+  validateWorkExecutionArtifact,
+} from "./work-execution-artifact-validator.mjs";
+export {
+  WorkExecutionRuntimeError,
+  assembleExecutorInvocation,
+  assembleWorkExecutionResult,
+  createCanonicalWorkExecutionInput,
+  createInMemoryWorkExecutionCheckpointStore,
+  createWorkExecutionCheckpointController,
+  deriveRunnableFrontierProof,
+  executeWorkItem,
+  loadWorkExecutionInput,
+  validateExecutionBinding,
+} from "./work-execution-runtime.mjs";
+export {
+  createWorkExecutionTraceabilityContributor,
+  workExecutionTraceabilityContributor,
+} from "./work-execution-traceability-contributor.mjs";
 export {
   changeIntegrationTraceabilityContributor,
   createChangeIntegrationTraceabilityContributor,

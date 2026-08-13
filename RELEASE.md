@@ -7,19 +7,19 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `work-breakdown@0.1.0`, `work-dependency-analysis@0.1.0`,
 `specialist-assignment@1.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, and `system-verification@0.1.0` as one private
-source release, version `0.9.0`. The source package also advances the immutable TraceabilityGraph
+`change-integration@0.1.0`, and `system-verification@0.1.0` as one Apache-2.0
+open-source preview, version `0.10.0-rc.1`. The source package also advances the immutable TraceabilityGraph
 vocabulary to current `1.5.0` acceptance semantics while preserving
 exact `1.0.0` and `1.1.0` support.
 
-`package.json` intentionally retains `"private": true` and
-`"license": "UNLICENSED"`. Do not run `npm publish`. The local package tarball
-is a verification and controlled-distribution artifact, not a public npm
-release.
+`package.json` declares `"private": false` and `"license": "Apache-2.0"` so
+the GitHub-source tarball has accurate package metadata. This release does not
+publish to the public npm registry; the installable tarball is derived from the
+exact accepted GitHub source.
 
 ## Supported release surface
 
-- Node.js 20 and 22.
+- Node.js 22 and 24 on Windows.
 - The public JavaScript API exported by `src/index.mjs`.
 - JSON Schema contracts under `contracts/`.
 - Versioned module and bounded adapter manifests under `examples/modules/` and
@@ -48,7 +48,9 @@ release.
 - SpecialistAssignment A2A profile discovery, Core-owned eligibility, deterministic
   ranking, and separate assignment Gate authority.
 - WorkExecution exact readiness, assignment, policy, repository, retry, and
-  checkpoint boundaries with a proposer-only executor port.
+  checkpoint boundaries; exact raw executor-byte preservation; zero-call replay;
+  closed candidate result assembly; and trusted forward-only attempt traceability
+  with explicit vocabulary 1.6 opt-in behind a proposer-only executor port.
 - WorkItemVerification obligation expansion, independent verifier binding,
   normalized evidence, deterministic policy evaluation, approval Gate, and
   verification traceability.
@@ -100,9 +102,9 @@ verifier, not a shipped command adapter.
 
 The source checkout also carries one Gate-validated project-wide DevRelay V1
 RequirementsBaseline and ProjectOverviewBaseline under `project/`, with the
-exact generated root `ProjectOverview.md` recording all fourteen approved
-lifecycle components. These repository-operating artifacts are intentionally
-outside the controlled npm tarball surface.
+exact generated root `ProjectOverview.md` recording the approved lifecycle
+components. These repository-operating artifacts are intentionally outside the
+installable tarball surface.
 
 ## Reproduce the release checks
 
@@ -123,8 +125,8 @@ working tree:
 5. verifies the mandatory final release digest catalog.
 6. builds an allowlisted package in a temporary directory.
 7. installs that tarball offline and smoke-tests the package root,
-   TraceabilityGraph surface, and all eleven module manifests from a disposable
-   consumer.
+   TraceabilityGraph surface, and every declared fixed and wildcard public
+   package export from a disposable consumer.
 
 Use `npm run verify` for the static checks and test suite without packaging.
 
@@ -147,7 +149,7 @@ Use `npm run verify` for the static checks and test suite without packaging.
       adapter reinvocation, and proves the exact applied update.
 - [ ] Confirm candidate/approved scope separation, contributor ownership, and
       orphan/unscoped/missing-evidence diagnostics.
-- [ ] Confirm `npm run release:check` passes on Node 20 and Node 22.
+- [ ] Confirm `npm run release:check` passes on Windows with Node 22 and Node 24.
 - [ ] Review the package file list and mandatory release digest catalog.
 - [ ] Confirm the no-live-command-adapters limitation remains visible.
 - [ ] Review `CHANGELOG.md`, security guidance, and residual risks.

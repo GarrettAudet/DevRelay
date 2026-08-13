@@ -215,23 +215,49 @@ export const TRACEABILITY_VOCABULARY_V1_4 = Object.freeze({
   version: CURRENT_VOCABULARY_MATERIAL.version,
   contractDigest: canonicalJsonDigest(CURRENT_VOCABULARY_MATERIAL),
 });
-export const TRACEABILITY_ENDPOINT_POLICY_VERSION = "1.5.0";
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5 = "1.5.0";
 export const TRACEABILITY_HORIZONS = Object.freeze([...TRACEABILITY_HORIZONS_V1_4, "acceptance"]);
-export const TRACEABILITY_NODE_KINDS = Object.freeze([...TRACEABILITY_NODE_KINDS_V1_4, "business-acceptance-record", "business-scope"].sort());
-export const TRACEABILITY_EDGE_KINDS = TRACEABILITY_EDGE_KINDS_V1_4;
+export const TRACEABILITY_NODE_KINDS_V1_5 = Object.freeze([...TRACEABILITY_NODE_KINDS_V1_4, "business-acceptance-record", "business-scope"].sort());
+export const TRACEABILITY_EDGE_KINDS_V1_5 = TRACEABILITY_EDGE_KINDS_V1_4;
 const CURRENT_VOCABULARY_MATERIAL_V1_5 = Object.freeze({
   id: "devrelay.traceability/v1",
   version: "1.5.0",
   horizons: TRACEABILITY_HORIZONS,
-  nodeKinds: TRACEABILITY_NODE_KINDS,
-  edgeKinds: TRACEABILITY_EDGE_KINDS,
-  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION,
+  nodeKinds: TRACEABILITY_NODE_KINDS_V1_5,
+  edgeKinds: TRACEABILITY_EDGE_KINDS_V1_5,
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5,
 });
-export const TRACEABILITY_VOCABULARY = Object.freeze({
+export const TRACEABILITY_VOCABULARY_V1_5 = Object.freeze({
   id: CURRENT_VOCABULARY_MATERIAL_V1_5.id,
   version: CURRENT_VOCABULARY_MATERIAL_V1_5.version,
   contractDigest: canonicalJsonDigest(CURRENT_VOCABULARY_MATERIAL_V1_5),
 });
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION = TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5;
+export const TRACEABILITY_NODE_KINDS = TRACEABILITY_NODE_KINDS_V1_5;
+export const TRACEABILITY_EDGE_KINDS = TRACEABILITY_EDGE_KINDS_V1_5;
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6 = "1.6.0";
+export const TRACEABILITY_NODE_KINDS_V1_6 = Object.freeze([
+  ...TRACEABILITY_NODE_KINDS_V1_5,
+  "execution-attempt",
+].sort());
+export const TRACEABILITY_EDGE_KINDS_V1_6 = Object.freeze([
+  ...TRACEABILITY_EDGE_KINDS_V1_5,
+  "attempted-by",
+].sort());
+const CURRENT_VOCABULARY_MATERIAL_V1_6 = Object.freeze({
+  id: "devrelay.traceability/v1",
+  version: "1.6.0",
+  horizons: TRACEABILITY_HORIZONS,
+  nodeKinds: TRACEABILITY_NODE_KINDS_V1_6,
+  edgeKinds: TRACEABILITY_EDGE_KINDS_V1_6,
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
+});
+export const TRACEABILITY_VOCABULARY_V1_6 = Object.freeze({
+  id: CURRENT_VOCABULARY_MATERIAL_V1_6.id,
+  version: CURRENT_VOCABULARY_MATERIAL_V1_6.version,
+  contractDigest: canonicalJsonDigest(CURRENT_VOCABULARY_MATERIAL_V1_6),
+});
+export const TRACEABILITY_VOCABULARY = TRACEABILITY_VOCABULARY_V1_5;
 export const TRACEABILITY_ANALYZER = Object.freeze({
   id: "devrelay.traceability/analyzer",
   version: "1.0.0",
@@ -251,17 +277,24 @@ export const TRACEABILITY_MERGE_ENGINE = Object.freeze({
 });
 
 
-const NODE_KINDS = new Set(TRACEABILITY_NODE_KINDS);
-const EDGE_KINDS = new Set(TRACEABILITY_EDGE_KINDS);
+const NODE_KINDS = new Set(TRACEABILITY_NODE_KINDS_V1_6);
+const EDGE_KINDS = new Set(TRACEABILITY_EDGE_KINDS_V1_6);
+const EDGE_KINDS_V1_5 = new Set(TRACEABILITY_EDGE_KINDS_V1_5);
 const EDGE_KINDS_V1_4 = new Set(TRACEABILITY_EDGE_KINDS_V1_4);
 const EDGE_KINDS_V1_3 = new Set(TRACEABILITY_EDGE_KINDS_V1_3);
 const EDGE_KINDS_V1_2 = new Set(TRACEABILITY_EDGE_KINDS_V1_2);
 const EDGE_KINDS_V1_1 = new Set(TRACEABILITY_EDGE_KINDS_V1_1);
 const EDGE_KINDS_V1_0 = new Set(TRACEABILITY_EDGE_KINDS_V1_0);
+const V1_6_VOCABULARY_PROFILE = Object.freeze({
+  version: "1.6.0",
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
+  edgeKinds: EDGE_KINDS,
+  horizons: new Set(TRACEABILITY_HORIZONS),
+});
 const CURRENT_VOCABULARY_PROFILE = Object.freeze({
   version: "1.5.0",
   endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION,
-  edgeKinds: EDGE_KINDS,
+  edgeKinds: EDGE_KINDS_V1_5,
   horizons: new Set(TRACEABILITY_HORIZONS),
 });
 const V1_4_VOCABULARY_PROFILE = Object.freeze({
@@ -547,7 +580,9 @@ const WORK_BREAKDOWN_SCOPE = "work-breakdown/candidate";
 const supportsIntegrationEndpoints = (profile) =>
   new Set([
     TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4,
+    TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5,
     TRACEABILITY_ENDPOINT_POLICY_VERSION,
+    TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
   ]).has(profile.endpointPolicyVersion);
 
 function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
@@ -583,7 +618,7 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
           "user-story",
         ]).has(sourceKind) && targetKind === "acceptance-criterion"
       ) || (
-        profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION &&
+        new Set([TRACEABILITY_ENDPOINT_POLICY_VERSION, TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6]).has(profile.endpointPolicyVersion) &&
         new Set(["business-objective", "business-scope", "success-metric"]).has(sourceKind) &&
         targetKind === "business-acceptance-record"
       );
@@ -638,7 +673,12 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
     case "produces":
       return (sourceKind === "test" && targetKind === "verification-evidence") ||
         (supportsIntegrationEndpoints(profile) &&
-          sourceKind === "work-item" && targetKind === "change-set");
+          sourceKind === "work-item" && targetKind === "change-set") ||
+        (profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6 &&
+          sourceKind === "execution-attempt" && targetKind === "change-set");
+    case "attempted-by":
+      return profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6 &&
+        sourceKind === "work-item" && targetKind === "execution-attempt";
     case "integrated-as":
       return supportsIntegrationEndpoints(profile) &&
         sourceKind === "change-set" && targetKind === "integrated-change-record";
@@ -653,7 +693,7 @@ function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
     case "proposed-assignment":
     case "assigned-to":
       return (
-        new Set([TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_3, TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4, TRACEABILITY_ENDPOINT_POLICY_VERSION]).has(profile.endpointPolicyVersion) &&
+        new Set([TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_3, TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4, TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5, TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6]).has(profile.endpointPolicyVersion) &&
         sourceKind === "work-item" &&
         targetKind === "specialist-profile"
       );
@@ -854,6 +894,9 @@ function assertUpdateClosure(update) {
 }
 
 function assertVocabulary(vocabulary) {
+  if (sameContract(vocabulary, TRACEABILITY_VOCABULARY_V1_6)) {
+    return V1_6_VOCABULARY_PROFILE;
+  }
   if (sameContract(vocabulary, TRACEABILITY_VOCABULARY)) {
     return CURRENT_VOCABULARY_PROFILE;
   }
@@ -888,6 +931,7 @@ export function assertTraceabilityVocabularyTransition(
     ["1.3.0", 3],
     ["1.4.0", 4],
     ["1.5.0", 5],
+    ["1.6.0", 6],
   ]);
   if (rank.get(updateProfile.version) < rank.get(parentProfile.version)) {
     fail(

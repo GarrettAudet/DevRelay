@@ -1,9 +1,25 @@
 {
   "name": "devrelay",
-  "version": "0.9.0",
-  "private": true,
-  "license": "UNLICENSED",
+  "version": "0.10.0-rc.1",
+  "private": false,
+  "license": "Apache-2.0",
   "description": "A deterministic runner for composable software-engineering modules with lifecycle traceability.",
+  "author": "Garrett Audet",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GarrettAudet/DevRelay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GarrettAudet/DevRelay/issues"
+  },
+  "homepage": "https://github.com/GarrettAudet/DevRelay#readme",
+  "keywords": [
+    "software-engineering",
+    "spec-driven-development",
+    "workflow",
+    "orchestration",
+    "traceability"
+  ],
   "type": "module",
   "main": "./src/index.mjs",
   "exports": {
@@ -67,6 +83,7 @@
     "examples/native/",
     "examples/results/",
     "examples/modules/requirements-gathering.module.json",
+    "examples/modules/architecture-discovery.module.json",
     "examples/modules/architecture-design.module.json",
     "examples/modules/work-breakdown.module.json",
     "examples/modules/work-dependency-analysis.module.json",
@@ -76,6 +93,7 @@
     "examples/modules/work-item-verification.module.json",
     "examples/plugins/github-spec-kit.plugin.json",
     "examples/plugins/openspec.plugin.json",
+    "examples/plugins/native-architecture-discovery.plugin.json",
     "examples/plugins/spec-kit-plan.plugin.json",
     "examples/plugins/openspec-design.plugin.json",
     "examples/plugins/structurizr.plugin.json",
@@ -101,6 +119,7 @@
     "CHANGELOG.md",
     "RELEASE.md",
     "LICENSE",
+    "NOTICE",
     "SECURITY.md",
     "CONTRIBUTING.md",
     "examples/modules/change-integration.module.json",
@@ -117,7 +136,7 @@
     "release:check": "node scripts/release-check.mjs"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "dependencies": {
     "@open-policy-agent/opa-wasm": "1.10.0",

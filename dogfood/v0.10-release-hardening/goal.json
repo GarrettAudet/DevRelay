@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-devrelay-v010-public-oss-preview",
+  "statement": "Release DevRelay as a deterministic open-source source/library distribution that can be used end to end from ChatGPT Desktop on Windows to build production-quality software.",
+  "objectives": [
+    "Publish the complete DevRelay source and an installable release tarball through GitHub without publishing to the public npm registry.",
+    "Make every declared package export resolve from the packed and installed artifact, including ArchitectureDiscovery module and plug-in manifests.",
+    "Adopt Apache-2.0 licensing, DCO contribution governance, public support guidance, and a private vulnerability-reporting path.",
+    "Protect main as the default branch and require verified release evidence before promotion.",
+    "Run the complete released DevRelay lifecycle and a small end-to-end software dogfood from ChatGPT Desktop on Windows before BusinessAcceptance."
+  ],
+  "constraints": [
+    "GitHub source and an installable release tarball are the only V0.10 distribution channels.",
+    "The supported end-user host for this release is ChatGPT Desktop on Windows.",
+    "The security contact is garrett.audet@gmail.com.",
+    "The default branch is main and must be protected.",
+    "No candidate becomes authoritative without deterministic validation, exact evidence, and Gate progression."
+  ],
+  "acceptanceCriteria": [
+    "A clean consumer can install the GitHub-produced tarball and resolve every declared package export.",
+    "The release includes Apache-2.0 LICENSE and NOTICE files plus DCO, contribution, conduct, governance, support, and security guidance.",
+    "CI and local release verification pass on supported Node versions, with Windows as the release-defining environment.",
+    "The complete released DevRelay lifecycle produces requirements, design, contracts or a disposition, work planning, execution, verification, integration, system evidence, and business acceptance for this change.",
+    "A separate minimal software project completes the same end-to-end path from ChatGPT Desktop on Windows."
+  ],
+  "assumptions": [
+    "The owner has approved Apache-2.0 with DCO, GitHub-only distribution, the security contact, and protected main.",
+    "The bounded OpenSpec adapter uses ChatGPT as its host-supplied capability executor and does not claim an upstream OpenSpec CLI invocation.",
+    "Public npm publication, a one-click Desktop plug-in, and a hosted backend are outside V0.10."
+  ]
+}
