@@ -2,36 +2,49 @@
 
 Last reconciled: 2026-08-13 MDT
 Protected branch: `main`
-Canonical audited commit: `fa5320374efd2228d924f4aa1c49ad4b418b5770`
+Canonical audited base: `fa5320374efd2228d924f4aa1c49ad4b418b5770`
+Integrated implementation commit: `a8deb6b2616c55da735e517da723f91f851926d9`
 Candidate version: `0.10.0-rc.1`
-Active remediation branch: `codex/v0.10.2-audit-remediation`
+Active branch: `codex/v0.10.2-audit-remediation`
 Release boundary: public GitHub source/installable library for ChatGPT Desktop on Windows
 
 ## Executive status
 
-DevRelay is a **conditional GitHub prerelease candidate**, not a stable production release and not yet an operational orchestration deployment. The construction lifecycle and controlled source artifact have passed their prior gates, but final prerelease promotion is intentionally blocked while the independent audit's P0 controls are executed and reverified.
+DevRelay is a locally verified **GitHub prerelease candidate**, not a stable
+production release and not an operational orchestration deployment. The audit's
+first four P0 controls are closed in the integrated implementation. The exact
+annotated tag, GitHub prerelease assets, and released-artifact consumer proof do
+not exist yet and remain the sole release frontier.
 
 ## P0 release controls
 
-- Canonical status and release evidence reconciliation: in progress.
-- SpecialistAssignment Gate 2.0 checkpoint-replay authority: implemented; focused verification passing.
-- Exact tag-to-package-version binding: implemented; full verification pending.
-- Lockfile-owned reproducible CycloneDX generation: implemented; full verification pending.
-- Protected annotated tag and immutable GitHub prerelease: pending all prior controls and BusinessAcceptance.
+- Canonical status, roadmap, release evidence, and pickup reconciliation: complete.
+- SpecialistAssignment Gate 2.0 checkpoint-replay authority: complete; v1 retained unchanged.
+- Exact tag-to-package-version binding: complete and release-fatal.
+- Lockfile-owned reproducible CycloneDX generation without ignored npm errors: complete.
+- Protected annotated tag and immutable GitHub prerelease: pending protected-main integration.
 
-## Verified evidence retained
+## Exact local evidence
 
-- Main verification run `31701048939`: four Node/OS lanes passed.
-- CodeQL run `31701049017`: zero actionable alerts.
-- Scorecard run `31701048991`: five documented governance signals.
-- Controlled source workflow run `31701807978`: artifact `9181708671`.
-
-Those records remain valid evidence for `main@fa532037…`; they are not evidence for the bytes in the active remediation candidate. New evidence will be generated after integration.
+- Complete release gate: 868 tests; 866 passed; 0 failed; 2 intentionally skipped.
+- Release catalog: 4,599 exact repository digests and 298 package paths.
+- Installed package: 298 catalog-bound files and 174 export targets verified.
+- SpecialistAssignment v2: checkpoint replay performs zero ranker calls and rejects cloned, serialized, and spread pseudo-receipts.
+- Prior audited-main evidence remains historical evidence for `fa532037…`; it is not substituted for this candidate's new CI evidence.
 
 ## Boundary and exclusions
 
-This candidate covers GitHub source plus the deterministic installable library used through ChatGPT Desktop on Windows. It does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, a durable reference host, or live execution of every fixture-conformant upstream CLI.
+This candidate covers GitHub source plus the deterministic installable library
+used through ChatGPT Desktop on Windows. It does not claim public npm
+publication, a one-click Desktop plug-in, a hosted backend, a durable reference
+host, live execution of every fixture-conformant upstream CLI, or stable
+production-deployment readiness.
 
 ## Next action
 
-Complete the DevRelay lifecycle for the five audit work items, regenerate the release catalog and handoff, merge through protected `main`, then create and independently verify `v0.10.0-rc.1`.
+Push the exact candidate, merge only through protected `main` after all required
+checks pass, create annotated tag `v0.10.0-rc.1` on that exact merge commit,
+verify the GitHub prerelease and clean Windows consumer install, then append the
+remaining DevRelay lifecycle, traceability, SystemVerification, and
+BusinessAcceptance evidence. The active pickup is
+[handoff/2026-08-13-v0100-rc1-audit-remediation/README.md](handoff/2026-08-13-v0100-rc1-audit-remediation/README.md).

@@ -23,7 +23,7 @@ MADR decisions, native work proposal, Graphology-DAG, OPA policy, Spec Kit
 consistency review, A2A profile discovery, and the native deterministic ranker.
 No fixture-conformant adapter is presented as live upstream CLI evidence.
 
-Current result: four implementation items are verified. The release item
+Current result: four implementation items are verified and integrated in `a8deb6b2616c55da735e517da723f91f851926d9`. The release item
 remains dependent on the full release gate, protected-main integration,
 annotated tag, GitHub prerelease, and clean Windows install from the released
 tarball. `LifecycleRunReport.md` is the primary readable projection;
