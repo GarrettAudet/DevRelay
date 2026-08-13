@@ -26,7 +26,7 @@ Release rule:
 The correction remains inside approved elements `EL-DEVRELAY-CORE`,
 `EL-RUN-MARKDOWN-RENDERER`, `EL-REL-EVIDENCE-ASSEMBLER`,
 `EL-REL-GITHUB-PROMOTION`, and `EL-REL-TOOLING`. The design uses descriptor-bound
-file operations, exclusive immutable writes, exact code-owned download URLs,
+file operations, single-descriptor atomic assignment replacement, exact code-owned download URLs,
 least-privilege workflow jobs, and ordered Markdown escaping. ContractGeneration
 is `ApprovedNotApplicable` because no API, schema, event, package export, or
 protocol changes.
@@ -49,25 +49,24 @@ security/release profile for all four items.
 ## Current lifecycle state
 
 ```text
-RequirementsGathering through SpecialistAssignmentGate: pass
-WorkExecution: candidate change materialized for the three ready work items
-WorkItemVerification: local gate pass; external scanner and protected-CI evidence pending
-ChangeIntegration: pending protected PR
-SystemVerification: pending protected CI and scanner reevaluation
-BusinessAcceptance: pending exact post-merge evidence
+RequirementsGathering through SpecialistAssignmentGate: COMPLETE
+WorkExecution: COMPLETE
+WorkItemVerification: VERIFIED
+ChangeIntegration: INTEGRATED
+SystemVerification: VERIFIED
+BusinessAcceptance: ACCEPTED
+TraceabilityGraph: REVISION 48 / ZERO BLOCKERS
+Controlled GitHub source release: COMPLETE
 ```
 
-Authoritative planning checkpoint:
+Final protected-main commit: `fa5320374efd2228d924f4aa1c49ad4b418b5770`.
 
-```text
-sha256:823081f24c5eb1d018302889eba209823184b4dc31c0c061901a2ab1de6fec3b
-```
-
-Canonical local verification completed with 867 tests, 865 passes, zero
-failures, and two intentional skips. The local evidence deliberately reports
-`needs-external-evidence`; it does not claim scanner closure or integration
-before the exact GitHub candidate is evaluated.
+Canonical local verification completed with 867 tests, 865 passes, zero failures,
+and two intentional skips. Protected main passed Node 22/24 on Windows and
+Ubuntu, CodeQL with zero actionable alerts, Scorecard with five documented
+non-code dispositions, and controlled source-release run `31701807978` with
+attested immutable artifact `9181708671`.
 
 See `dogfood/v0.10.1-code-scanning-hardening/` for the module-by-module records,
 full work snapshot, dependency and OPA evidence, assignments, traceability
-proposal, and human-readable LifecycleRunReport.
+merge proof, completion evidence, and human-readable LifecycleRunReport.
