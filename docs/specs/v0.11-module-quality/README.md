@@ -54,8 +54,6 @@ Every approved module improvement is appended to the released circuit before the
 
 ## Current stage
 
-`ArchitectureGate`
+`BusinessAcceptanceGate: accepted`
 
-RequirementsGathering and RequirementsGate passed, the approved 1.9.0 RequirementsBaseline and ProjectOverviewBaseline were promoted atomically, and ArchitectureDiscovery was deterministically bypassed because an approved baseline exists. ArchitectureDesign produced and replayed the exact change candidate, passed official Structurizr conformance, and is awaiting exact ArchitectureGate approval after the repository verification gate completes.
-
-See `CURRENT_STATE.md` and `dogfood/v0.11-module-quality/architecture-design/architecture-gate-candidate.md` for the exact bindings and evidence.
+Construction is complete. All 16 approved work items were executed, independently verified, and integrated through four dependency frontiers. The installed-package Windows dogfood completed all 20 lifecycle components, SystemVerification passed, BusinessAcceptance was recorded, and the final traceability graph has zero blocking diagnostics. See `CURRENT_STATE.md`, `dogfood/v0.11-module-quality/lifecycle-report/module-quality-report.md`, and `dogfood/v0.11-module-quality/final-acceptance/FINAL_ACCEPTANCE.md`.
