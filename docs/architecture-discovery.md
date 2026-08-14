@@ -128,3 +128,7 @@ routing/input guards, native inventory, analyzer registry, normalization, gap
 policy, checkpoint, and trusted traceability contributor already covered by the
 ArchitectureDiscovery conformance tests. The module definition remains
 `examples/modules/architecture-discovery.module.json`.
+
+## Godot and GDScript
+
+The native offline inventory recognizes `project.godot` and `.gd` files. It records the Godot project name and main scene, plus observed GDScript `class_name`, functions, signals, `extends`, `preload`, and `load` relationships. Every finding remains tied to the exact repository-file digest; no source is transmitted externally.

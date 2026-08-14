@@ -300,9 +300,13 @@ a closed provider response before returning the declared handoff or terminal
 candidate. Core still owns routing, chain order, checkpoint replay, artifact
 lineage, Gate authority, and traceability. This adapter version accepts only
 provider response maturity `contract-defined` or `fixture-conformant` and
-rejects every provider-authored `live-conformant` claim. A future live binding
-requires a separately versioned Core/host-trusted execution-attestation
-contract; a provider boolean cannot grant that maturity. OpenSpec Design binds only
+rejects every provider-authored `live-conformant` claim. Live execution is
+separately recorded with `createProviderExecutionAttestation` and verified with
+`validateProviderExecutionAttestation`. The trusted record binds the exact
+adapter configuration, request, tool version, observed command, successful
+execution, native outputs, and host-observer identity. `resolveAdapterMaturity`
+requires that exact attestation before it can emit `live-conformant` or
+`release-ready`; a provider boolean can never grant maturity. OpenSpec Design binds only
 `design-change/designer`, so Spec Kit remains the designer for
 `establish-baseline`; the factory does not fabricate an OpenSpec baseline
 binding. In particular,

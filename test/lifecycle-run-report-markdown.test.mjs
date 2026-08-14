@@ -64,3 +64,14 @@ test("table text escapes backslashes before pipes without creating an unescaped 
   assert.match(markdown,/C:\\\\workspace\\\|verify/);
   assert.doesNotMatch(markdown,/C:\\workspace\\\|verify/);
 });
+
+
+test("summary view is concise, binding-rich, and Windows encoding safe",()=>{
+  const result=renderLifecycleRunReport({view:"summary",snapshot,contentPolicy:policy,contentPolicyRef:policyRef});
+  assert.equal(result.access.view,"summary");
+  assert.match(result.markdown,/\| Stage \| Operation \| Adapters \|/);
+  assert.match(result.markdown,/adapter-Build/);
+  assert.doesNotMatch(result.markdown,/## Run performance|## Adapter maturity|## Traceability|## Diagnostics|## Important artifacts/);
+  assert.doesNotMatch(result.markdown,/â|→|—|\r/);
+  assert.ok(result.markdown.length < renderLifecycleRunReport({snapshot,contentPolicy:policy,contentPolicyRef:policyRef}).markdown.length);
+});

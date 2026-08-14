@@ -31,5 +31,5 @@ test("installed package root exposes the complete read-only LifecycleRunReport h
   for (const [name, implementation] of Object.entries(expected)) {
     assert.equal(publicApi[name], implementation, name);
   }
-  assert.equal(publicApi.LIFECYCLE_RUN_REPORT_RENDERER_VERSION, "1.0.0");
+  assert.equal(publicApi.LIFECYCLE_RUN_REPORT_RENDERER_VERSION, "1.1.0");
 });
