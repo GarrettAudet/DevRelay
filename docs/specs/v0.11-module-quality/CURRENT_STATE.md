@@ -2,7 +2,7 @@
 
 Date: 2026-08-14
 Branch: `codex/v0.11-module-quality`
-Implementation commit: `6ed3c91bce70abfc696fa63754f10c0d6206b9d7`
+Implementation commit: `a5b3edaee195a23ac5fb1a0d72834f6d0e377d58`
 Status: `construction-complete / release-ready candidate`
 
 ## Lifecycle result
@@ -18,9 +18,9 @@ All released stages were dogfooded in sequence. Requirements, architecture, cont
 - WorkDependencyBaseline: `sha256:99617ec8a8ea5ba44f1e7549a6587f30364720ed87d9e2a41e8507448ebf7ca9`
 - SpecialistAssignmentBaseline: `sha256:f7f81aa8f231394bca6f5bb6f5f421977605e5355f1b876386bd2492e983dd6c`
 - Final integrated implementation ref: `82b0ac7b12e61ae1b20499887237e4b6149f2b85`
-- SystemVerification: `sha256:d1f8d93984bdf7a1c2e47c414223311a3762b2e4fa41e9dca37955471416d746`
-- BusinessAcceptance: `sha256:c6bbf3bd211669ee13af2b7e440762ee236ea8012334171f306b67c1e3f33cd4`
-- TraceabilityGraph revision 48: `sha256:5443b343928d1e64e03ee0675af1154e95c4b6de09bbf194334d337bb932eade`
+- SystemVerification: `sha256:2c8081d865cccd21281484cae80b70527a0356482bde5453c10ef7751e22c466`
+- BusinessAcceptance: `sha256:7169b95768e22bc6edf6d890b2a5b2b0d386696f98bc37b6333eeeeeb1407e7d`
+- TraceabilityGraph revision 48: `sha256:9264d1948757052e9d0a32f6ffa27bce6424ca6c8a7bc5c8c15390006383b1e0`
 
 ## Windows dogfood
 

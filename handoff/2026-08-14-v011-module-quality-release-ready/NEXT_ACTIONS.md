@@ -1,6 +1,6 @@
 # Next actions
 
-1. Confirm the evidence-seal commit directly follows `6ed3c91bce70abfc696fa63754f10c0d6206b9d7`.
+1. Confirm the evidence-seal commit directly follows `a5b3edaee195a23ac5fb1a0d72834f6d0e377d58`.
 2. Run `npm.cmd run release:check` on that exact commit.
 3. Push `codex/v0.11-module-quality` to GitHub.
 4. Promote through protected `main` after required checks pass.
