@@ -590,3 +590,9 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
+
+export {
+  ProviderExecutionAttestationError,
+  createProviderExecutionAttestation,
+  validateProviderExecutionAttestation,
+} from "./provider-execution-attestation.mjs";

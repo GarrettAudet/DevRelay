@@ -305,12 +305,19 @@ const metric = {
   unit: "count",
   provenance: { kind: "host", artifact: { artifactId: "AUTH-TESTS", digest: testsDigest } },
 };
+const stageAdapterBindings = (evidence) => {
+  const candidates = [evidence.adapter, ...(evidence.adapters ?? []), evidence.proposer, evidence.executor].filter(Boolean).map((value) => typeof value === "string" ? { id:value } : value);
+  return [...new Map(candidates.map((value) => {
+    const binding={ id:value.id, version:value.version ?? "0.1.0", configurationDigest:canonicalJsonDigest(value) };
+    return [`${binding.id}\0${binding.version}\0${binding.configurationDigest}`,binding];
+  })).values()].sort((left,right)=>`${left.id}\0${left.version}`.localeCompare(`${right.id}\0${right.version}`,"en"));
+};
 const stages = stageEvidence.map((evidence, index) => ({
   componentKind: "module",
   componentId: evidence.module,
   sequence: index,
   operation: evidence.operation,
-  adapterBindings: evidence.adapter ? [{ id: evidence.adapter.id, version: evidence.adapter.version ?? "0.1.0", configurationDigest: canonicalJsonDigest(evidence.adapter) }] : [],
+  adapterBindings: stageAdapterBindings(evidence),
   status: evidence.status === "skipped" ? "skipped" : "completed",
   outcome: evidence.status === "skipped" ? "skipped" : ["approved", "accepted"].includes(evidence.status) ? "approved" : "completed",
   gateResult: evidence.gate ? "approved" : "not-applicable",
@@ -365,6 +372,7 @@ const policyBody = {
 };
 const policy = { ...policyBody, policyDigest: canonicalJsonDigest(Object.fromEntries(Object.entries(policyBody).filter(([key]) => !["apiVersion", "kind"].includes(key)))) };
 const rendered = renderLifecycleRunReport({
+  view: "summary",
   snapshot,
   contentPolicy: policy,
   contentPolicyRef: { artifactId: policy.policyId, digest: policy.policyDigest },
