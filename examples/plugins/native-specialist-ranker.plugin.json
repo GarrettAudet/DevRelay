@@ -3,17 +3,27 @@
   "kind": "ModulePlugin",
   "metadata": {
     "id": "native-specialist-ranker",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Deterministically select only from Core-supplied eligible profiles by explicit priority then lexical profile ID."
   },
-  "implements": [{
-    "module": { "id": "specialist-assignment", "version": "1.0.0" },
-    "operations": [{
-      "id": "assign-specialists",
-      "role": "proposer",
-      "execution": "pure",
-      "configSchema": { "type": "object", "additionalProperties": false },
-      "capabilities": []
-    }]
-  }]
+  "implements": [
+    {
+      "module": {
+        "id": "specialist-assignment",
+        "version": "2.0.0"
+      },
+      "operations": [
+        {
+          "id": "assign-specialists",
+          "role": "proposer",
+          "execution": "pure",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false
+          },
+          "capabilities": []
+        }
+      ]
+    }
+  ]
 }

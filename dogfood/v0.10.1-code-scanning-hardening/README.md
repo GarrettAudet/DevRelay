@@ -26,11 +26,10 @@ node dogfood\v0.10.1-code-scanning-hardening\materialize-lifecycle.mjs
 ```
 
 The materializer is deterministic for the exact protected-main source commit
-`37e968516623c3d135f8829b0e56e19a7ba59722`. Generated module records are
-planning and Gate evidence only. WorkExecution, WorkItemVerification,
-ChangeIntegration, SystemVerification, graph merge proof, and
-BusinessAcceptance must be appended from their actual effects; this package
-does not claim those outcomes early.
+`37e968516623c3d135f8829b0e56e19a7ba59722`. Its first thirteen module records
+are planning and Gate evidence only. The factual post-execution records were
+later appended from the actual protected effects and exact GitHub evidence;
+they bind final main commit `fa5320374efd2228d924f4aa1c49ad4b418b5770`.
 
 
 After implementation, run:
@@ -41,5 +40,16 @@ node dogfood\v0.10.1-code-scanning-hardening\materialize-local-evidence.mjs
 
 This binds the exact dirty candidate file set and canonical local gate result
 to a content-addressed evidence record. Its WorkItemVerification outcome stays
-`needs-external-evidence` until protected CI, CodeQL, Scorecard, and the
-installed source-release checks complete.
+`needs-external-evidence` because it is deliberately a pre-integration local
+record and is never rewritten after external evidence arrives.
+
+After the exact protected commit and source-release run exist, reproduce the
+completion package with:
+
+```powershell
+node dogfood\v0.10.1-code-scanning-hardening\materialize-final-release-evidence.mjs
+```
+
+The post-release directory and stage records 14 through 18 contain the factual
+WorkExecution, WorkItemVerification, ChangeIntegration, SystemVerification,
+BusinessAcceptance, and Core traceability-merge evidence.

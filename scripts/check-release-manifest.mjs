@@ -3,6 +3,8 @@ import { join } from "node:path";
 import {
   canonicalModules,
   canonicalPlugins,
+  compatibilityModules,
+  compatibilityPlugins,
   comparePortablePaths,
   excludedReleaseDirectories,
   expectedPackagedPaths,
@@ -58,15 +60,15 @@ exact(
   {
     name: "devrelay",
     version: sourceReleaseVersion,
-    releaseType: "private-source",
+    releaseType: "github-source-prerelease",
   },
-  `metadata does not identify the private DevRelay ${sourceReleaseVersion} source release`,
+  `metadata does not identify the DevRelay ${sourceReleaseVersion} GitHub source prerelease`,
 );
 exact(
   manifest.scope,
   {
     root: ".",
-    inclusion: "all-regular-files-recursive",
+    inclusion: "git-tracked-regular-files",
     excludedDirectories: excludedReleaseDirectories,
     selfExclusion: {
       path: releaseManifestRelativePath,
@@ -89,6 +91,8 @@ exact(
   canonicalPlugins,
   "plugin IDs, versions, module owners, or operation/step/role bindings changed",
 );
+exact(manifest.compatibilityModules, compatibilityModules, "compatibility module set changed");
+exact(manifest.compatibilityPlugins, compatibilityPlugins, "compatibility plugin set changed");
 if (!Array.isArray(manifest.files)) {
   fail("files must be an array");
 }
@@ -152,6 +156,16 @@ for (const expected of canonicalModules) {
   );
 }
 
+for (const expected of compatibilityModules) {
+  const definition = loadJson(expected.definition);
+  if (definition.metadata?.id !== expected.id || definition.metadata?.version !== expected.version) fail(expected.definition + " compatibility identity changed");
+}
+for (const expected of compatibilityPlugins) {
+  const plugin = loadJson(expected.manifest);
+  if (plugin.metadata?.id !== expected.id || plugin.metadata?.version !== expected.version || plugin.implements?.length !== 1) fail(expected.manifest + " compatibility identity changed");
+  exact(plugin.implements[0].module, expected.module, expected.manifest + " compatibility owner changed");
+}
+
 const canonicalModuleIds = new Set(canonicalModules.map(({ id }) => id));
 const canonicalModulePaths = matchingFiles(
   "examples/modules",
@@ -166,7 +180,7 @@ exact(
   canonicalModulePaths.sort((left, right) =>
     comparePortablePaths(left.id + ":" + left.path, right.id + ":" + right.path),
   ),
-  canonicalModules
+  [...canonicalModules, ...compatibilityModules]
     .map(({ id, definition }) => ({ id, path: definition }))
     .sort((left, right) =>
       comparePortablePaths(left.id + ":" + left.path, right.id + ":" + right.path),
@@ -174,11 +188,13 @@ exact(
   "canonical module IDs must exist at exactly their declared paths",
 );
 
+const compatibilityPluginPaths = new Set(compatibilityPlugins.map(({ manifest }) => manifest));
 const canonicalPluginIds = canonicalPlugins
   .map(({ id }) => id)
   .sort(comparePortablePaths);
 const pluginsForCanonicalModules = [];
 for (const path of matchingFiles("examples/plugins", ".plugin.json")) {
+  if (compatibilityPluginPaths.has(path)) continue;
   const plugin = loadJson(path);
   if (
     (plugin.implements ?? []).some(({ module }) =>
@@ -234,7 +250,11 @@ console.log(
     actualPackagePaths.length +
     " exact npm-package paths, " +
     canonicalModules.length +
-    " modules, and " +
+    " active modules, " +
     canonicalPlugins.length +
-    " plugins.",
+    " active plugins, " +
+    compatibilityModules.length +
+    " compatibility modules, and " +
+    compatibilityPlugins.length +
+    " compatibility plugins.",
 );

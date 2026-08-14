@@ -1,0 +1,258 @@
+{
+  "changeSetId": "WBCS-RC-QUALITY-001",
+  "contentDigest": "sha256:460337d41398ddc412bf901058265ec6389405f34ec5faadff9aeb6fcd9502c0",
+  "coverageDispositions": [
+    {
+      "disposition": "planned",
+      "scopeRef": "FINDING-LIVE-ATTESTATION",
+      "workItemRefs": [
+        "WI-RC-LIVE-PROVIDER-ATTESTATION",
+        "WI-RC-GDSCRIPT-DISCOVERY",
+        "WI-RC-RUN-BINDINGS",
+        "WI-RC-REPORT-UX"
+      ]
+    },
+    {
+      "disposition": "planned",
+      "scopeRef": "FINDING-GDSCRIPT-DISCOVERY",
+      "workItemRefs": [
+        "WI-RC-LIVE-PROVIDER-ATTESTATION",
+        "WI-RC-GDSCRIPT-DISCOVERY",
+        "WI-RC-RUN-BINDINGS",
+        "WI-RC-REPORT-UX"
+      ]
+    },
+    {
+      "disposition": "planned",
+      "scopeRef": "FINDING-RUN-BINDINGS",
+      "workItemRefs": [
+        "WI-RC-LIVE-PROVIDER-ATTESTATION",
+        "WI-RC-GDSCRIPT-DISCOVERY",
+        "WI-RC-RUN-BINDINGS",
+        "WI-RC-REPORT-UX"
+      ]
+    },
+    {
+      "disposition": "planned",
+      "scopeRef": "FINDING-REPORT-UX",
+      "workItemRefs": [
+        "WI-RC-LIVE-PROVIDER-ATTESTATION",
+        "WI-RC-GDSCRIPT-DISCOVERY",
+        "WI-RC-RUN-BINDINGS",
+        "WI-RC-REPORT-UX"
+      ]
+    }
+  ],
+  "kind": "WorkBreakdownChangeSetDraft",
+  "workItems": [
+    {
+      "acceptance-criterion-refs": [
+        "AC-DEV-ADAPTER-MATURITY-001"
+      ],
+      "architecture-refs": [
+        "ARCH-RC-QUALITY-001"
+      ],
+      "bounded-scope": [
+        "provider attestation contract",
+        "trusted constructor and validator",
+        "maturity resolver integration",
+        "conformance tests and documentation"
+      ],
+      "contract-refs": [
+        "CONTRACT-RC-QUALITY-001"
+      ],
+      "deliverables": [
+        "trusted attestation API",
+        "schema and validator",
+        "positive and forgery regression tests",
+        "updated maturity documentation"
+      ],
+      "dependency-hints": [],
+      "id": "WI-RC-LIVE-PROVIDER-ATTESTATION",
+      "objective": "Make live-provider maturity provable only from host-observed, digest-bound execution evidence for OpenSpec, Spec Kit, Structurizr, and MADR bindings.",
+      "required-capabilities": [
+        "CAP-NODEJS-ENGINEERING",
+        "CAP-SECURITY-ENGINEERING",
+        "CAP-ADAPTER-INTEGRATION"
+      ],
+      "required-evidence": [
+        "unit tests",
+        "schema validation",
+        "installed-package export verification"
+      ],
+      "requirement-refs": [
+        "AC-DEV-ADAPTER-MATURITY-001"
+      ],
+      "source-refs": [
+        "FINDING-LIVE-ATTESTATION",
+        "FINDING-GDSCRIPT-DISCOVERY",
+        "FINDING-RUN-BINDINGS",
+        "FINDING-REPORT-UX"
+      ],
+      "user-story-refs": [],
+      "verification-plan": [
+        "validate an observed exact execution",
+        "reject provider-authored and substituted evidence",
+        "preserve contract-defined and fixture-conformant compatibility"
+      ],
+      "work-type": "code-change"
+    },
+    {
+      "acceptance-criterion-refs": [
+        "AC-DEV-AD-INVENTORY-001",
+        "AC-DEV-AD-PROVENANCE-001"
+      ],
+      "architecture-refs": [
+        "ARCH-RC-QUALITY-001"
+      ],
+      "bounded-scope": [
+        ".gd language detection",
+        "project.godot manifest and main-scene detection",
+        "class, function, signal, extends, preload, and load observations"
+      ],
+      "contract-refs": [
+        "CONTRACT-RC-QUALITY-001"
+      ],
+      "deliverables": [
+        "native analyzer changes",
+        "Godot/GDScript fixture tests",
+        "documented offline behavior"
+      ],
+      "dependency-hints": [],
+      "id": "WI-RC-GDSCRIPT-DISCOVERY",
+      "objective": "Produce deterministic semantic architecture findings for Godot GDScript repositories.",
+      "required-capabilities": [
+        "CAP-NODEJS-ENGINEERING",
+        "CAP-STATIC-ANALYSIS"
+      ],
+      "required-evidence": [
+        "unit tests",
+        "determinism proof",
+        "exact source-reference assertions"
+      ],
+      "requirement-refs": [
+        "AC-DEV-AD-INVENTORY-001",
+        "AC-DEV-AD-PROVENANCE-001"
+      ],
+      "source-refs": [
+        "FINDING-LIVE-ATTESTATION",
+        "FINDING-GDSCRIPT-DISCOVERY",
+        "FINDING-RUN-BINDINGS",
+        "FINDING-REPORT-UX"
+      ],
+      "user-story-refs": [],
+      "verification-plan": [
+        "inventory exact project.godot and .gd bytes twice",
+        "assert semantic findings and stable digest",
+        "assert source provenance"
+      ],
+      "work-type": "code-change"
+    },
+    {
+      "acceptance-criterion-refs": [
+        "AC-DEV-RUN-HUMAN-READABLE-001",
+        "AC-DEV-ADAPTER-MATURITY-001"
+      ],
+      "architecture-refs": [
+        "ARCH-RC-QUALITY-001"
+      ],
+      "bounded-scope": [
+        "stage projection",
+        "adapter fact association",
+        "fail-closed conflict checks",
+        "stage-table integration tests"
+      ],
+      "contract-refs": [
+        "CONTRACT-RC-QUALITY-001"
+      ],
+      "deliverables": [
+        "binding-aware snapshot projection",
+        "conflict regression tests",
+        "human-readable stage table evidence"
+      ],
+      "dependency-hints": [],
+      "id": "WI-RC-RUN-BINDINGS",
+      "objective": "Populate lifecycle stages with exact operation and plug-in bindings from digest-bound execution context.",
+      "required-capabilities": [
+        "CAP-NODEJS-ENGINEERING",
+        "CAP-TRACEABILITY-ENGINEERING"
+      ],
+      "required-evidence": [
+        "unit tests",
+        "generated lifecycle snapshot",
+        "rendered table"
+      ],
+      "requirement-refs": [
+        "AC-DEV-RUN-HUMAN-READABLE-001",
+        "AC-DEV-ADAPTER-MATURITY-001"
+      ],
+      "source-refs": [
+        "FINDING-LIVE-ATTESTATION",
+        "FINDING-GDSCRIPT-DISCOVERY",
+        "FINDING-RUN-BINDINGS",
+        "FINDING-REPORT-UX"
+      ],
+      "user-story-refs": [],
+      "verification-plan": [
+        "project module and adapter facts",
+        "assert exact operation and bindings",
+        "reject unbound or contradictory details"
+      ],
+      "work-type": "code-change"
+    },
+    {
+      "acceptance-criterion-refs": [
+        "AC-DEV-RUN-HUMAN-READABLE-001",
+        "AC-DEV-RUN-DYNAMIC-001"
+      ],
+      "architecture-refs": [
+        "ARCH-RC-QUALITY-001"
+      ],
+      "bounded-scope": [
+        "summary view",
+        "ASCII-safe placeholders and arrows",
+        "concise sections",
+        "full-view compatibility"
+      ],
+      "contract-refs": [
+        "CONTRACT-RC-QUALITY-001"
+      ],
+      "deliverables": [
+        "summary renderer",
+        "encoding regression tests",
+        "updated generated report"
+      ],
+      "dependency-hints": [
+        "WI-RC-RUN-BINDINGS"
+      ],
+      "id": "WI-RC-REPORT-UX",
+      "objective": "Provide a concise human-first lifecycle report without Windows encoding artifacts while retaining linked evidence.",
+      "required-capabilities": [
+        "CAP-NODEJS-ENGINEERING",
+        "CAP-TECHNICAL-WRITING"
+      ],
+      "required-evidence": [
+        "unit tests",
+        "byte-level encoding assertions",
+        "rendered report artifact"
+      ],
+      "requirement-refs": [
+        "AC-DEV-RUN-HUMAN-READABLE-001",
+        "AC-DEV-RUN-DYNAMIC-001"
+      ],
+      "source-refs": [
+        "FINDING-LIVE-ATTESTATION",
+        "FINDING-GDSCRIPT-DISCOVERY",
+        "FINDING-RUN-BINDINGS",
+        "FINDING-REPORT-UX"
+      ],
+      "user-story-refs": [],
+      "verification-plan": [
+        "render summary and full views",
+        "assert LF/NFC and absence of mojibake",
+        "assert operation and adapter columns remain present"
+      ],
+      "work-type": "code-change"
+    }
+  ]
+}

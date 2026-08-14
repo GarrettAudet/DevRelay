@@ -45,15 +45,15 @@ test("the canonical project baseline contains the exact approved V1 lifecycle", 
       lifecycle.conditional,
     );
   }
-  assert.equal(requirementsBaseline.version, "1.8.0");
-  assert.equal(overviewBaseline.version, "1.8.0");
+  assert.equal(requirementsBaseline.version, "1.9.0");
+  assert.equal(overviewBaseline.version, "1.9.0");
   assert.equal(
     sha256Digest(await readFile(new URL("project/requirements-baseline.json", root))),
-    "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860",
+    "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32",
   );
   assert.equal(
     sha256Digest(await readFile(new URL("project/project-overview-baseline.json", root))),
-    "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686",
+    "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb",
   );
 
   assert.deepEqual(

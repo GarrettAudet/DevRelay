@@ -312,9 +312,18 @@ export {
   createSpecialistAssignmentRuntime,
 } from "./specialist-assignment-runtime.mjs";
 export {
+  SpecialistAssignmentRuntimeV2Error,
+  assertVerifiedSpecialistAssignmentReceipt,
+  createSpecialistAssignmentRuntimeV2,
+} from "./specialist-assignment-runtime-v2.mjs";
+export {
   SpecialistAssignmentGateError,
   promoteSpecialistAssignmentBaseline,
 } from "./specialist-assignment-gate.mjs";
+export {
+  SpecialistAssignmentGateV2Error,
+  promoteSpecialistAssignmentBaselineV2,
+} from "./specialist-assignment-gate-v2.mjs";
 export {
   specialistAssignmentBaselineTraceabilityContributor,
   specialistAssignmentCandidateTraceabilityContributor,
@@ -581,3 +590,77 @@ export {
   lifecycleRunReportTraceabilityContributor,
   resolveLifecycleRunReportCanonicalClosure,
 } from "./lifecycle-run-report-traceability-contributor.mjs";
+
+export {
+  ProviderExecutionAttestationError,
+  createProviderExecutionAttestation,
+  validateProviderExecutionAttestation,
+} from "./provider-execution-attestation.mjs";
+
+export {
+  RequirementsInterviewError,
+  assessRequirementsClosure,
+  createClarificationWave,
+  runAdaptiveRequirementsInterview,
+} from "./requirements-interview.mjs";
+export {
+  ExecutionReceiptError,
+  recordExecutionReceipt,
+  verifyExecutionReceipt,
+} from "./execution-receipt.mjs";
+export {
+  ProviderToolchainError,
+  evaluateProviderAvailability,
+  createProviderAcquisitionPlan,
+  resolveProviderBinding,
+  authorizeProviderInvocation,
+} from "./provider-toolchain.mjs";
+export {
+  GdscriptDiscoveryError,
+  analyzeGodotRepository,
+} from "./gdscript-discovery-analyzer.mjs";
+export {
+  TraceabilityQueryError,
+  createTraceabilityQueryService,
+} from "./traceability-query-service.mjs";
+export {
+  TwoPhaseEvidenceSealError,
+  createImplementationSeal,
+  createEvidenceSealRecord,
+  verifyTwoPhaseEvidenceSeal,
+} from "./two-phase-evidence-seal.mjs";
+export {
+  LocalPerformanceMetricsError,
+  recordLocalPerformanceMetrics,
+  verifyLocalPerformanceMetrics,
+} from "./local-performance-metrics.mjs";
+export {
+  RequirementsStrategyError,
+  createRequirementsStrategyRegistry,
+  runRequirementsStrategyChain,
+} from "./requirements-strategies.mjs";
+export {
+  LiveProviderAdapterError,
+  createLiveProviderAdapter,
+  createOpenSpecLiveAdapter,
+  createSpecKitLiveAdapter,
+  createStructurizrLiveAdapter,
+  createMadrLiveAdapter,
+} from "./live-provider-adapters.mjs";
+export {
+  GodotProviderAdapterError,
+  createGodotMcpAdapter,
+  createGdUnit4VerificationAdapter,
+} from "./godot-provider-adapters.mjs";
+export { MadrConformanceError, validateMadrDocument } from "./madr-conformance.mjs";
+export {
+  GodotCompatibilityError,
+  createGodotCompatibilityPolicy,
+  verifyGodotCompatibilityPolicy,
+  evaluateGodotCompatibility,
+} from "./godot-compatibility.mjs";
+export {
+  ModuleQualityReportError,
+  createModuleQualityReport,
+  renderModuleQualityReportMarkdown,
+} from "./module-quality-report.mjs";

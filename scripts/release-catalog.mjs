@@ -6,9 +6,8 @@ import {
   fstatSync,
   openSync,
   readFileSync,
-  readdirSync,
 } from "node:fs";
-import { basename, dirname, join, relative, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const repositoryRoot = resolve(
@@ -102,7 +101,7 @@ export const canonicalModules = Object.freeze([
   },
   {
     id: "specialist-assignment",
-    version: "1.0.0",
+    version: "2.0.0",
     definition: "examples/modules/specialist-assignment.module.json",
     operations: [{ id: "assign-specialists", steps: [] }],
     plugins: ["a2a-profile-source", "native-specialist-ranker"],
@@ -135,6 +134,14 @@ export const canonicalModules = Object.freeze([
     operations: [{ id: "verify-system", steps: [] }],
     plugins: ["review-system-verifier", "test-system-verifier"],
   },
+]);
+
+export const compatibilityModules = Object.freeze([
+  { id: "specialist-assignment", version: "1.0.0", definition: "examples/modules/specialist-assignment-v1.module.json" },
+]);
+export const compatibilityPlugins = Object.freeze([
+  { id: "a2a-profile-source", version: "1.0.0", manifest: "examples/plugins/a2a-profile-source-v1.plugin.json", module: { id: "specialist-assignment", version: "1.0.0" } },
+  { id: "native-specialist-ranker", version: "1.0.0", manifest: "examples/plugins/native-specialist-ranker-v1.plugin.json", module: { id: "specialist-assignment", version: "1.0.0" } },
 ]);
 
 export const canonicalPlugins = Object.freeze([
@@ -291,16 +298,16 @@ export const canonicalPlugins = Object.freeze([
   },
   {
     id: "a2a-profile-source",
-    version: "1.0.0",
+    version: "2.0.0",
     manifest: "examples/plugins/a2a-profile-source.plugin.json",
-    module: { id: "specialist-assignment", version: "1.0.0" },
+    module: { id: "specialist-assignment", version: "2.0.0" },
     bindings: [{ operation: "assign-specialists", step: null, role: "proposer" }],
   },
   {
     id: "native-specialist-ranker",
-    version: "1.0.0",
+    version: "2.0.0",
     manifest: "examples/plugins/native-specialist-ranker.plugin.json",
-    module: { id: "specialist-assignment", version: "1.0.0" },
+    module: { id: "specialist-assignment", version: "2.0.0" },
     bindings: [{ operation: "assign-specialists", step: null, role: "proposer" }],
   },
   {
@@ -347,26 +354,32 @@ export function comparePortablePaths(left, right) {
   return left < right ? -1 : 1;
 }
 
-export function releaseRepositoryFiles(directory = repositoryRoot) {
-  const files = [];
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    // Git administrative state is a directory in an ordinary checkout and a
-    // file in a linked worktree. Exclude reserved control names independent of
-    // their filesystem type so the same repository tree catalogs identically.
-    if (excludedDirectorySet.has(entry.name)) {
-      continue;
-    }
-    const absolute = join(directory, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...releaseRepositoryFiles(absolute));
-    } else if (entry.isFile()) {
-      const path = portablePath(relative(repositoryRoot, absolute));
-      if (path !== releaseManifestRelativePath) {
-        files.push(path);
-      }
-    }
+export function releaseRepositoryFiles() {
+  const result = spawnSync("git", ["ls-files", "-z", "--cached"], {
+    cwd: repositoryRoot,
+    encoding: "buffer",
+    windowsHide: true,
+  });
+  if (result.error) throw result.error;
+  if (result.status !== 0) {
+    throw new Error(
+      "git ls-files failed with status " +
+        result.status +
+        "\n" +
+        [result.stdout, result.stderr]
+          .filter(Boolean)
+          .map((value) => value.toString("utf8"))
+          .join("\n"),
+    );
   }
-  return files.sort(comparePortablePaths);
+  return result.stdout
+    .toString("utf8")
+    .split("\0")
+    .filter(Boolean)
+    .map(portablePath)
+    .filter((path) => path !== releaseManifestRelativePath)
+    .filter((path) => !excludedDirectorySet.has(path.split("/")[0]))
+    .sort(comparePortablePaths);
 }
 
 export function roleFor(path) {

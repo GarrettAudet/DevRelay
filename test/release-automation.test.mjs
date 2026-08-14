@@ -39,8 +39,23 @@ test("automation has bounded permissions and never publishes to npm", () => {
   assert.match(text(".github/workflows/codeql.yml"), /security-events:\s*write/u);
   assert.match(text(".github/workflows/scorecard.yml"), /publish_results:\s*true/u);
   const release = text(".github/workflows/release.yml");
+  const packageMetadata = JSON.parse(text("package.json"));
+  const lockfile = JSON.parse(text("package-lock.json"));
+  assert.equal(packageMetadata.devDependencies["@cyclonedx/cyclonedx-npm"], "6.0.1");
+  assert.equal(
+    lockfile.packages[""].devDependencies["@cyclonedx/cyclonedx-npm"], "6.0.1",
+  );
   assert.match(release, /npm run release:check/u);
-  assert.match(release, /npm sbom --sbom-format=cyclonedx/u);
+  assert.match(release, /PACKAGE_VERSION=.*package\.json.*version/u);
+  assert.match(release, /EXPECTED_TAG="v\$\{PACKAGE_VERSION\}"/u);
+  assert.match(release, /GITHUB_REF_NAME.*EXPECTED_TAG/u);
+  assert.match(release, /steps\.release-identity\.outputs\.package-version/u);
+  assert.match(
+    release,
+    /\.\/node_modules\/\.bin\/cyclonedx-npm --package-lock-only --omit dev --output-reproducible --validate/u,
+  );
+  assert.doesNotMatch(release, /--ignore-npm-errors/u);
+  assert.doesNotMatch(release, /\bnpx\b/u);
   assert.match(release, /sha256sum/u);
   assert.match(release, /attest-build-provenance/u);
   assert.match(release, /gh release create/u);
