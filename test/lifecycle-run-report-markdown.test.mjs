@@ -73,5 +73,6 @@ test("summary view is concise, binding-rich, and Windows encoding safe",()=>{
   assert.match(result.markdown,/adapter-Build/);
   assert.doesNotMatch(result.markdown,/## Run performance|## Adapter maturity|## Traceability|## Diagnostics|## Important artifacts/);
   assert.doesNotMatch(result.markdown,/â|→|—|\r/);
+  assert.doesNotMatch(result.markdown,/\.\./);
   assert.ok(result.markdown.length < renderLifecycleRunReport({snapshot,contentPolicy:policy,contentPolicyRef:policyRef}).markdown.length);
 });
