@@ -1,5 +1,6 @@
 import {
   closeSync,
+  constants,
   fstatSync,
   fsyncSync,
   ftruncateSync,
@@ -35,21 +36,7 @@ function exactFileBytes(value) {
 }
 
 function openMutableProjectFile(filePath) {
-  try {
-    return openSync(filePath, "r+");
-  } catch (error) {
-    if (!(error && typeof error === "object" && error.code === "ENOENT")) {
-      throw error;
-    }
-  }
-  try {
-    return openSync(filePath, "wx+");
-  } catch (error) {
-    if (!(error && typeof error === "object" && error.code === "EEXIST")) {
-      throw error;
-    }
-    return openSync(filePath, "r+");
-  }
+  return openSync(filePath, constants.O_RDWR | constants.O_CREAT);
 }
 
 function readDescriptorBytes(descriptor) {

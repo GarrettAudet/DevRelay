@@ -51,5 +51,5 @@ test("V0.11 assignment promotion persists exact bytes, forward traceability, and
   assert.equal(promotion.resultingGraph.digest, "sha256:ccd8e63b6c58c2b41a03c3259973a58e7fa1d313f7bfeb1b57fe1e7e147245f7");
   assert.equal(promotion.nextModule, "WorkExecution");
   assert.doesNotMatch(source, /openSync\(filePath, "a\+"\)/u);
-  assert.match(source, /openSync\(filePath, "r\+"\)/u);
+  assert.match(source, /constants\.O_RDWR \| constants\.O_CREAT/u);
 });

@@ -20,21 +20,7 @@ const fixtureFiles = ["project.godot", "main.gd", "main.tscn", "test/provider_fi
 fs.mkdirSync(rawDirectory, { recursive: true });
 
 function openMutableEvidenceFile(filePath) {
-  try {
-    return fs.openSync(filePath, "r+");
-  } catch (error) {
-    if (!(error && typeof error === "object" && error.code === "ENOENT")) {
-      throw error;
-    }
-  }
-  try {
-    return fs.openSync(filePath, "wx+");
-  } catch (error) {
-    if (!(error && typeof error === "object" && error.code === "EEXIST")) {
-      throw error;
-    }
-    return fs.openSync(filePath, "r+");
-  }
+  return fs.openSync(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT);
 }
 
 const evidenceDescriptor = openMutableEvidenceFile(evidencePath);
