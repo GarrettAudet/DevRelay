@@ -63,13 +63,13 @@ test("handoff manifest and checksums bind the exact pickup bytes", () => {
     return [parts.join(" "), digest];
   }));
   assert.equal(expected.get("MANIFEST.json"), sha256(manifestBytes));
-  assert.equal(manifest.implementationCommit, "a06de6394c4902dad4e4677568b3dbf7c50324d2");
+  assert.equal(manifest.implementationCommit, "6ed3c91bce70abfc696fa63754f10c0d6206b9d7");
 });
 
 test("acceptance proof binds the immutable implementation commit", () => {
   const proof = readJson(path.join(root, "30-final-acceptance-proof.json"));
   const head = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8", windowsHide: true }).trim();
-  const implementation = "a06de6394c4902dad4e4677568b3dbf7c50324d2";
+  const implementation = "6ed3c91bce70abfc696fa63754f10c0d6206b9d7";
   assert.equal(proof.sourceBaseCommit, implementation);
   assert.equal(proof.blockingDiagnostics, 0);
   assert.equal(proof.disposition, "accepted-for-protected-source-release-promotion");
