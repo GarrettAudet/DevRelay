@@ -74,7 +74,8 @@ export function renderLifecycleRunReportMarkdown(snapshotOrOptions,maybeOptions)
   const failed=stages.filter(value=>value.status==="failed").length;
   const active=stages.filter(value=>value.status==="active").length;
   const skipped=stages.filter(value=>value.status==="skipped").length;
-  const summary=`${stages.length} lifecycle component${stages.length===1?" was":"s were"} observed: ${completed} completed, ${active} active, ${failed} failed, and ${skipped} skipped. Next action: ${next(snapshot.nextAction)}.`;
+  const summaryNextAction=next(snapshot.nextAction).replace(/[.!?]+$/u,"");
+  const summary=`${stages.length} lifecycle component${stages.length===1?" was":"s were"} observed: ${completed} completed, ${active} active, ${failed} failed, and ${skipped} skipped. Next action: ${summaryNextAction}.`;
   if(view==="summary") return [
     "# Lifecycle Run Report","","## Executive summary","",
     renderValue(context,"/executiveSummary",summary),"",
