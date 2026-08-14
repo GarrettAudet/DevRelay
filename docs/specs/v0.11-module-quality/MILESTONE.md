@@ -14,12 +14,13 @@ Release-ready candidate for the ChatGPT Desktop on Windows source/library bounda
 - Dynamic concise lifecycle reporting with exact operation and plug-in bindings.
 - A complete installed-package Windows dogfood through BusinessAcceptance.
 - Five PR CodeQL release blockers closed with linear uncontrolled-input validation and atomic Windows-safe descriptor handling.
+- Cross-platform release catalogs bound to the exact Git-tracked source tree, independent of local runtime caches.
 
 ## Verification
 
 - 16/16 work items integrated.
-- 914 tests; 912 passed; zero failed; two expected skips.
-- The complete 914-test kernel gate passed after the CodeQL remediation and GitHub merge-ref portability correction at implementation commit `a5b3edaee195a23ac5fb1a0d72834f6d0e377d58`.
+- 915 tests; 913 passed; zero failed; two expected skips.
+- The complete 915-test kernel gate passed after the CodeQL remediation and GitHub merge-ref portability correction at implementation commit `868c00e2dc8c0d610d919dbc68256bab9d0e6ca2`.
 - SystemVerification `verified`; BusinessAcceptance `accepted`.
 - 104 acceptance criteria and 26 NFRs covered.
 - TraceabilityGraph revision 48; zero blocking diagnostics.
