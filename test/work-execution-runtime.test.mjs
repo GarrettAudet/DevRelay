@@ -55,19 +55,19 @@ function loadedFile(relativePath, artifactId, schema, mediaType) {
 
 function fixture({ workItemId = "WI-REL-WORK-EXECUTION-RUNTIME" } = {}) {
   const workBreakdown = loadedFile(
-    "../project/work-breakdown-baseline.json",
+    "../project/history/work-breakdown/1.8.0/work-breakdown-baseline.json",
     "WBB-WB-DOGFOOD",
     "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
     "application/vnd.devrelay.work-breakdown-baseline+json",
   );
   const dependencies = loaded(
-    valueFrom("../project/work-dependency-baseline.json"),
+    valueFrom("../project/history/work-dependency/WDB-REL-RELEASE-HARDENING-R3/1.0.3/work-dependency-baseline.json"),
     "WDB-REL-RELEASE-HARDENING-R3",
     "https://devrelay.dev/artifacts/work-dependency-baseline/v1",
     "application/vnd.devrelay.work-dependency-baseline+json",
   );
   const assignment = loaded(
-    valueFrom("../project/specialist-assignment-baseline.json"),
+    valueFrom("../project/history/specialist-assignment/SAB-2B5DB52B6A0CB2EA/specialist-assignment-baseline.json"),
     "SAB-2B5DB52B6A0CB2EA",
     "https://devrelay.dev/artifacts/specialist-assignment-baseline/v1",
     "application/vnd.devrelay.specialist-assignment-baseline+json",

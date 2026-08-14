@@ -1,0 +1,7 @@
+# ArchitectureGate owner approval source
+
+The project owner approved the exact V0.11 ArchitectureGate candidate in chat with the statement:
+
+> I approve the exact V0.11 ArchitectureGate candidate.
+
+The structured approval binds the exact candidate, Gate review, required evidence, and repository revision. Any byte change requires a new Gate candidate and approval.

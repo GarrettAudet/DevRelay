@@ -1,15 +1,15 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
-  "version": "1.8.0",
+  "baselineId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+  "version": "1.9.0",
   "approvedCandidate": {
-    "artifactId": "requirements-change-set-v0.10-release-hardening-v1",
-    "digest": "sha256:54ec1bc4e63f6faf8ca0df3bca1a3006b7f6cd29ef66cdf66d17729479c38011"
+    "artifactId": "requirements-change-set-v0.11-module-quality-v1",
+    "digest": "sha256:e47196d2701d9ae5548ff7d7392388e2f3082c29c76ee5d8fd67438c68f31501"
   },
   "supersedes": {
-    "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-    "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+    "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+    "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
   },
   "requirements": {
     "purpose": {
@@ -54,6 +54,116 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-DOMAIN-PACK-001",
+        "statement": "Support production-quality domain workflows through optional packs without placing domain behavior in Generic Core.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-LIVE-INTEGRATION-001",
+        "statement": "Replace ambiguous contract-only integration claims with version-pinned, receipt-backed live provider conformance while preserving Core authority.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -223,6 +333,61 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-REQ-QUALITY-001",
+        "statement": "Elicit sufficiently complete, testable requirements through adaptive interview depth and deterministic mandatory closure.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -468,6 +633,116 @@
         ]
       },
       {
+        "id": "SM-DEV-GODOT-E2E-001",
+        "name": "Accepted Godot domain dogfood",
+        "businessObjectiveIds": [
+          "BO-DEV-DOMAIN-PACK-001"
+        ],
+        "measure": "Applicable lifecycle stages completed for a small Godot change from a clean Windows Desktop checkout.",
+        "target": "100 percent of applicable Modules and Gates pass with exact evidence and compatibility bindings.",
+        "measurementMethod": "Reconcile the LifecycleRunReport, GdUnit4 evidence, screenshots and input receipts, export smoke test, trace queries, Git seals, and BusinessAcceptance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-LIVE-INTEGRATION-001",
+        "name": "Honest live provider maturity",
+        "businessObjectiveIds": [
+          "BO-DEV-LIVE-INTEGRATION-001"
+        ],
+        "measure": "Priority provider bindings backed by exact live execution attestations and negative conformance evidence.",
+        "target": "100 percent of OpenSpec, Spec Kit, current Structurizr, MADR conformance, Godot AI, and GdUnit4 release claims are live-attested or explicitly unavailable.",
+        "measurementMethod": "Validate provider versions, configuration, permissions, raw receipts, normalized outputs, replay behavior, and maturity records.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "SM-DEV-MODULARITY-001",
         "name": "Adapter-independent semantics",
         "businessObjectiveIds": [
@@ -625,6 +900,61 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-REQ-CLOSURE-001",
+        "name": "Deterministic requirements closure",
+        "businessObjectiveIds": [
+          "BO-DEV-REQ-QUALITY-001"
+        ],
+        "measure": "Applicable decision-domain weight resolved with zero blocking unknowns or contradictions.",
+        "target": "At least 0.99 weighted coverage and exactly zero blocking unresolved decisions for every promoted candidate.",
+        "measurementMethod": "Recompute the version-pinned RequirementsClosureAssessment from question waves, responses, dispositions, weights, and source artifacts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -1597,6 +1927,183 @@
         ]
       },
       {
+        "id": "CAP-DEV-DESKTOP-SKILLS-001",
+        "name": "Repository-scoped DevRelay skills",
+        "description": "Expose cycle, Godot release, provider conformance, and trace query workflows to ChatGPT Desktop without duplicating Core policy.",
+        "businessObjectiveIds": [
+          "BO-DEV-DOMAIN-PACK-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-EVIDENCE-SEAL-001",
+        "name": "Two-phase Git evidence sealing",
+        "description": "Separate the implementation commit from an evidence-seal commit without self-referential commit claims.",
+        "businessObjectiveIds": [
+          "BO-DEV-LIVE-INTEGRATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-EXECUTION-RECEIPT-001",
+        "name": "Automatic execution receipts and metrics",
+        "description": "Capture raw provider observations, redacted evidence views, deterministic fingerprints, and local performance metrics.",
+        "businessObjectiveIds": [
+          "BO-DEV-LIVE-INTEGRATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-DEV-EXTENSIBILITY-001",
         "name": "Replaceable engineering capabilities",
         "description": "Bind interchangeable bounded adapters to stable provider-neutral module operations.",
@@ -1622,6 +2129,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-GODOT-PACK-001",
+        "name": "Optional Godot engineering pack",
+        "description": "Bind Godot AI and GdUnit4 inspection, execution, verification, screenshots, inputs, exports, and compatibility evidence to existing Module ports.",
+        "businessObjectiveIds": [
+          "BO-DEV-DOMAIN-PACK-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -1653,6 +2219,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-LIVE-PROVIDER-001",
+        "name": "Live provider attestation",
+        "description": "Invoke version-pinned bounded providers and preserve exact execution, normalization, and conformance evidence.",
+        "businessObjectiveIds": [
+          "BO-DEV-LIVE-INTEGRATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -1712,6 +2337,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
               "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-REQ-INTERVIEW-001",
+        "name": "Adaptive requirements interview",
+        "description": "Run native or configured strategy chains in breadth-first waves and produce a deterministic closure proof.",
+        "businessObjectiveIds": [
+          "BO-DEV-REQ-QUALITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -1810,6 +2494,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-TRACE-QUERY-001",
+        "name": "Queryable traceability",
+        "description": "Answer read-only provenance, coverage, evidence, impact, and orphan questions with compact results by default.",
+        "businessObjectiveIds": [
+          "BO-DEV-LIVE-INTEGRATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -2382,6 +3125,89 @@
         ]
       },
       {
+        "id": "UJ-DEV-MODULE-QUALITY-001",
+        "name": "Run a live-attested domain engineering cycle",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-DEV-DESKTOP-SKILLS-001",
+          "CAP-DEV-EVIDENCE-SEAL-001",
+          "CAP-DEV-EXECUTION-RECEIPT-001",
+          "CAP-DEV-GODOT-PACK-001",
+          "CAP-DEV-LIVE-PROVIDER-001",
+          "CAP-DEV-REQ-INTERVIEW-001",
+          "CAP-DEV-TRACE-QUERY-001"
+        ],
+        "trigger": "A user starts a bounded software change from ChatGPT Desktop on Windows.",
+        "outcome": "The change progresses from exhaustively closed requirements through live domain execution, verification, traceability, integration, and acceptance with exact evidence.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Answer breadth-first requirements waves until deterministic closure.",
+            "expectedOutcome": "All blocking decisions are resolved and weighted coverage is at least 0.99."
+          },
+          {
+            "sequence": 2,
+            "action": "Execute configured live specification and architecture providers through bounded adapters.",
+            "expectedOutcome": "Native artifacts, provider receipts, normalization, and conformance evidence are preserved."
+          },
+          {
+            "sequence": 3,
+            "action": "Run a bounded Godot work item with explicit grants and structured verification.",
+            "expectedOutcome": "Code, tests, screenshots, inputs, logs, export, and smoke evidence are version-bound."
+          },
+          {
+            "sequence": 4,
+            "action": "Query traceability, integrate, seal evidence, and request acceptance.",
+            "expectedOutcome": "The lifecycle is compactly understandable and every claim resolves to exact source evidence."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "UJ-DEV-OSS-RELEASE-001",
         "name": "Release and consume the GitHub source/library preview",
         "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
@@ -2852,6 +3678,185 @@
         ]
       },
       {
+        "id": "US-DEV-DESKTOP-SKILLS-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-DESKTOP-SKILLS-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Operate common DevRelay cycles, Godot releases, provider conformance, and trace queries through discoverable repository skills.",
+        "benefit": "A clean GitHub checkout has the same simple ChatGPT Desktop operating surface without hidden duplicated policy.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-DESKTOP-SKILLS-001",
+          "AC-DEV-MODULE-QUALITY-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-EVIDENCE-SEAL-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-EVIDENCE-SEAL-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Seal verification evidence after the implementation commit without a self-referential commit claim.",
+        "benefit": "Source and evidence identities remain immutable, understandable, and independently verifiable.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GIT-SEAL-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-EXECUTION-RECEIPT-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-EXECUTION-RECEIPT-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Inspect exact raw provider receipts and local performance measurements for every material execution.",
+        "benefit": "Failures, retries, provider behavior, and bottlenecks can be reconstructed without relying on summaries.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-METRICS-001",
+          "AC-DEV-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "US-DEV-EXTEND-001",
         "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
         "capabilityId": "CAP-DEV-EXTENSIBILITY-001",
@@ -2952,6 +3957,68 @@
         ]
       },
       {
+        "id": "US-DEV-GODOT-PACK-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-GODOT-PACK-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Use an optional Godot-aware execution and verification pack through the same DevRelay lifecycle.",
+        "benefit": "Godot changes receive least-privilege execution, structured tests, visual evidence, export verification, and tested compatibility.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GODOT-COMPAT-001",
+          "AC-DEV-GODOT-GRANTS-001",
+          "AC-DEV-GODOT-VERIFY-001",
+          "AC-DEV-MODULE-QUALITY-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "US-DEV-INSPECT-RUN-001",
         "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
         "capabilityId": "CAP-DEV-RUN-REPORTING-001",
@@ -3016,6 +4083,142 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-wda-001",
               "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-LIVE-PROVIDER-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-LIVE-PROVIDER-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Invoke configured specification and architecture providers as bounded live operations with honest maturity evidence.",
+        "benefit": "Provider swapping improves engineering quality without transferring lifecycle authority or obscuring what actually executed.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-LIVE-ARCH-001",
+          "AC-DEV-LIVE-SPEC-001",
+          "AC-DEV-PROVIDER-ACQUISITION-001",
+          "AC-DEV-PROVIDER-FAILURE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-MODULE-QUALITY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-REQ-INTERVIEW-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Use deep but proportionate requirements elicitation and live best-in-class engineering providers through one deterministic lifecycle.",
+        "benefit": "Production-quality changes remain modular, reproducible, inspectable, and provider-replaceable instead of relying on prompt improvisation.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-DESKTOP-SKILLS-001",
+          "AC-DEV-GIT-SEAL-001",
+          "AC-DEV-GODOT-COMPAT-001",
+          "AC-DEV-GODOT-GRANTS-001",
+          "AC-DEV-GODOT-VERIFY-001",
+          "AC-DEV-LIVE-ARCH-001",
+          "AC-DEV-LIVE-SPEC-001",
+          "AC-DEV-METRICS-001",
+          "AC-DEV-MODULE-QUALITY-E2E-001",
+          "AC-DEV-PROVIDER-ACQUISITION-001",
+          "AC-DEV-PROVIDER-FAILURE-001",
+          "AC-DEV-RECEIPTS-001",
+          "AC-DEV-REQ-CLOSURE-001",
+          "AC-DEV-REQ-STRATEGIES-001",
+          "AC-DEV-REQ-WAVES-001",
+          "AC-DEV-TRACE-QUERY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -3213,6 +4416,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-DEV-TRACE-QUERY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-TRACE-QUERY-001",
+        "userJourneyIds": [
+          "UJ-DEV-MODULE-QUALITY-001"
+        ],
+        "need": "Ask concise provenance, coverage, evidence, impact, and orphan questions about a lifecycle run.",
+        "benefit": "The graph remains useful to humans as its size grows without dumping every edge by default.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-TRACE-QUERY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -5098,6 +6360,56 @@
         ]
       },
       {
+        "id": "AC-DEV-DESKTOP-SKILLS-001",
+        "statement": "The four repository-scoped skills invoke released DevRelay operations from ChatGPT Desktop on Windows and contain no hidden Module policy.",
+        "verification": "Validate skill structure and triggering, execute each from a clean checkout, and compare actions with the same direct DevRelay operations.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "AC-DEV-FRONTIER-LOOP-001",
         "statement": "Core derives each runnable frontier from the immutable WorkDependencyBaseline plus separately approved integrated-completion facts, executes independent ready items concurrently where policy permits, and derives the next frontier only after required verification and integration facts are recorded.",
         "verification": "Run branching, joining, serial, failed-item, retry, partial-frontier, and resumed fixtures and verify that no dependent item becomes ready from assignment, execution start, or unintegrated changes.",
@@ -5235,6 +6547,356 @@
         ]
       },
       {
+        "id": "AC-DEV-GIT-SEAL-001",
+        "statement": "ChangeIntegration distinguishes an implementation commit from a later evidence-seal commit and never requires either commit to contain its own identity.",
+        "verification": "Create and verify both commits, validate parentage and evidence bindings, and reject self-referential or stale seals.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-GODOT-COMPAT-001",
+        "statement": "The Godot pack claims only version combinations recorded in a pinned matrix and exercised by DevRelay live conformance and end-to-end tests.",
+        "verification": "Reject untested or mismatched engine, Godot AI, GdUnit4, adapter, and Windows combinations; verify every supported matrix row.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-GODOT-GRANTS-001",
+        "statement": "Godot inspection is read-only by default and every write, input, execution, screenshot, or test operation is separately allowlisted and receipted.",
+        "verification": "Exercise denied and granted operations, inspect exact effect checkpoints, and prove no undeclared capability executes.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-GODOT-VERIFY-001",
+        "statement": "Godot acceptance preserves focused and full GdUnit4 results, flake or soak evidence, export and exported-build smoke evidence, hashes, original screenshots, and exact input receipts.",
+        "verification": "Run the declared Windows matrix and reconcile JUnit, logs, images, actions, exports, hashes, and ApprovedNotApplicable dispositions.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-LIVE-ARCH-001",
+        "statement": "Current Structurizr tooling validates, inspects, and exports the real model and MADR records are rendered and validated from pinned templates without a fictitious CLI claim.",
+        "verification": "Execute the pinned Structurizr toolchain, normalize exports, compare hierarchy and views, and validate MADR template and semantic conformance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-LIVE-SPEC-001",
+        "statement": "OpenSpec and Spec Kit execute bounded live capabilities with exact native artifact archival, strict validation, permissions, version identity, and provider receipts.",
+        "verification": "Run both providers from a clean Windows checkout, validate native outputs, normalize them, and compare live attestations with negative fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-METRICS-001",
+        "statement": "Local-only telemetry records host-observed cycle, provider, retry, test, cache, changed-file, receipt-size, and available token or tool metrics without inventing unavailable values.",
+        "verification": "Run repeated executions, validate units and unknown fields, and prove no network export or implicit Gate dependency.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "AC-DEV-MODEL-INDEPENDENCE-001",
         "statement": "Changing the AI model or bounded implementation tool does not alter the canonical module sequence, artifact contracts, gates, or traceability vocabulary.",
         "verification": "Run compatible adapter substitutions and compare canonical outputs, validation, route, and graph contracts.",
@@ -5251,6 +6913,56 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-MODULE-QUALITY-E2E-001",
+        "statement": "A clean GitHub checkout completes a small Godot change through every applicable Module and Gate with live providers, receipts, trace queries, compact reporting, two-phase sealing, and BusinessAcceptance.",
+        "verification": "Reconcile the complete Windows Desktop LifecycleRunReport with exact artifacts, provider attestations, checkpoints, graph updates, tests, commits, seal, and acceptance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -5601,6 +7313,306 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
               "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-PROVIDER-ACQUISITION-001",
+        "statement": "Provider acquisition is project-local, checksum-pinned, explicitly approved before first download, offline by default, and never silently upgraded.",
+        "verification": "Exercise clean install, checksum mismatch, denied network, existing cache, and attempted floating-version cases.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-PROVIDER-FAILURE-001",
+        "statement": "Provider absence or failure is explicit and never silently replaced; native fallback occurs only when pinned configuration authorizes it.",
+        "verification": "Run unavailable, failed, configured-fallback, and replay cases and inspect diagnostics and maturity records.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-RECEIPTS-001",
+        "statement": "Core persists immutable local raw receipts and digest-bound redacted Git views containing all host-observed execution identity, output, timing, version, retry, and artifact fields.",
+        "verification": "Exercise stdout, stderr, structured MCP, missing observation, retry, redaction, secret detection, checkpoint, and replay cases.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-REQ-CLOSURE-001",
+        "statement": "No candidate progresses unless every blocking decision is closed, contradictions are zero, and reproducible weighted coverage is at least 0.99.",
+        "verification": "Recompute closure from pinned catalog, weights, questions, responses, assumptions, and dispositions; exercise below-threshold and blocking-negative fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-REQ-STRATEGIES-001",
+        "statement": "A native composite strategy works without external tools and configured Spec Kit, BMAD, GSD, Superpowers, or OpenSpec strategies may propose bounded questions without owning closure.",
+        "verification": "Execute native and configured strategy fixtures, verify deduplication and conflict handling, and scan Core for provider-specific routing.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-REQ-WAVES-001",
+        "statement": "RequirementsGathering asks every presently knowable applicable question in breadth-first waves and issues later waves only for newly exposed dependencies, gaps, or conflicts.",
+        "verification": "Run new, ambiguous, and small-change fixtures and compare wave membership, reasons, resume state, and deterministic replay.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -6028,6 +8040,56 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-wda-001",
               "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-DEV-TRACE-QUERY-001",
+        "statement": "A read-only MCP surface answers why, coverage, evidence, impact, and orphan questions with compact shortest-path results by default and cannot mutate graph state.",
+        "verification": "Run query fixtures across graph scopes, compare compact and expanded results, and prove graph version and digest remain unchanged.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -8206,6 +10268,368 @@
         ]
       },
       {
+        "id": "NFR-DEV-MQ-COMPATIBILITY-001",
+        "category": "compatibility",
+        "statement": "Live support claims must bind exact DevRelay, provider, runtime, engine, operating-system, and adapter versions.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Execute every supported compatibility row and negative mismatched rows.",
+        "target": "100 percent of claimed rows pass; untested rows are unavailable.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GODOT-COMPAT-001",
+          "AC-DEV-LIVE-ARCH-001",
+          "AC-DEV-LIVE-SPEC-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-MQ-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Question waves, closure, provider selection, receipt canonicalization, queries, metrics, compatibility evaluation, and sealing must be deterministic for exact inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Digest equality and zero-call replay across repeated runs.",
+        "target": "100 percent equality with zero unexplained drift.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GIT-SEAL-001",
+          "AC-DEV-RECEIPTS-001",
+          "AC-DEV-REQ-CLOSURE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-MQ-PERFORMANCE-001",
+        "category": "performance",
+        "statement": "Instrumentation and compact reporting must expose their own overhead and avoid materially dominating bounded provider execution.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Compare instrumented and baseline run durations and receipt sizes on the Windows reference host.",
+        "target": "Measured overhead is reported and remains within the approved performance policy established during ArchitectureDesign.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-METRICS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-MQ-PRIVACY-001",
+        "category": "privacy",
+        "statement": "Raw execution evidence and telemetry remain local unless a separately approved export explicitly grants disclosure.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Inspect network activity, persisted paths, redacted views, and optional-provider configuration.",
+        "target": "Zero default external telemetry or source transmission.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-METRICS-001",
+          "AC-DEV-PROVIDER-ACQUISITION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-MQ-SECURITY-001",
+        "category": "security",
+        "statement": "External providers and Godot effects must be least-privilege, offline by default, explicitly granted, secret-safe, and fail closed.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Denied-operation, checksum, redaction, secret, and network-isolation conformance cases.",
+        "target": "Zero undeclared effects, silent downloads, secret-bearing committed receipts, or implicit network calls.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-GODOT-GRANTS-001",
+          "AC-DEV-PROVIDER-ACQUISITION-001",
+          "AC-DEV-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-DEV-MQ-USABILITY-001",
+        "category": "usability",
+        "statement": "Requirements and trace reporting must remain compact, resumable, and human-readable while preserving expandable exact evidence.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Review breadth-first wave summaries and compact query/report output for representative small and complex changes.",
+        "target": "Every run exposes status, blockers, coverage, next action, and evidence links without requiring a full edge dump.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-DEV-REQ-WAVES-001",
+          "AC-DEV-TRACE-QUERY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "NFR-DEV-OSS-COMPATIBILITY-001",
         "category": "compatibility",
         "statement": "The V0.10 public source/library preview must remain usable from ChatGPT Desktop on Windows with supported Node LTS releases.",
@@ -9601,6 +12025,294 @@
         ]
       },
       {
+        "id": "CON-DEV-MQ-CORE-001",
+        "category": "technical",
+        "statement": "Generic Core and semantic Module contracts remain provider-neutral and domain-neutral; Godot behavior resides in an optional pack.",
+        "rationale": "Best-in-class capability swapping must not create product-specific routing or lifecycle authority.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-GODOT-GRANTS-001",
+          "AC-DEV-REQ-STRATEGIES-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MQ-EVIDENCE-001",
+        "category": "security",
+        "statement": "Raw receipts remain local and Git receives only digest-bound redacted views that pass secret and unsafe-content checks.",
+        "rationale": "Exact evidence and open-source safety must coexist.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MQ-FEEDBACK-001",
+        "category": "data",
+        "statement": "Sentry and PostHog remain disabled, uninstalled, and outside V0.11.",
+        "rationale": "Production feedback requires a separate consent, retention, and privacy design.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-METRICS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MQ-HOST-001",
+        "category": "platform",
+        "statement": "ChatGPT Desktop on Windows is the release-defining V0.11 host.",
+        "rationale": "Release evidence must match the owner-supported product environment.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-DESKTOP-SKILLS-001",
+          "AC-DEV-MODULE-QUALITY-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-DEV-MQ-PROVIDER-001",
+        "category": "security",
+        "statement": "Provider acquisition and execution are project-local, checksum-pinned, explicitly approved, offline by default, and never silently substituted.",
+        "rationale": "Live integration must not weaken reproducibility or trust boundaries.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-DEV-PROVIDER-ACQUISITION-001",
+          "AC-DEV-PROVIDER-FAILURE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "CON-DEV-OSS-BRANCH-001",
         "category": "security",
         "statement": "main is the protected default branch and release promotion requires verified evidence.",
@@ -10758,6 +13470,251 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-MQ-GODOT-001",
+        "statement": "An optional Godot pack with least-privilege inspection, execution, structured verification, screenshots, input receipts, exports, smoke tests, and tested compatibility.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-MQ-INFRASTRUCTURE-001",
+        "statement": "Automatic raw receipt capture, redaction, local performance metrics, two-phase Git sealing, and read-only compact traceability MCP queries.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-MQ-LIVE-ADAPTERS-001",
+        "statement": "Live provider conformance for OpenSpec, Spec Kit, current Structurizr tooling, MADR format rendering and validation, Godot AI, and GdUnit4.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-MQ-REQUIREMENTS-001",
+        "statement": "Adaptive breadth-first requirements interviewing, native and optional strategy composition, persistent waves, conflicts, coverage, and deterministic closure.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-DEV-MQ-SKILLS-001",
+        "statement": "Repository-scoped devrelay-cycle, devrelay-godot-release, devrelay-plugin-conformance, and devrelay-trace-query skills for ChatGPT Desktop on Windows.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -12290,6 +15247,256 @@
         ]
       },
       {
+        "id": "NG-DEV-MQ-CORE-GODOT-001",
+        "statement": "Add Godot-specific branches or contracts to Generic Core.",
+        "rationale": "Godot is an optional domain pack.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-MQ-FORCED-UPSTREAM-001",
+        "statement": "Require every external interviewing framework to execute live when it lacks a bounded deterministic integration surface.",
+        "rationale": "DevRelay adopts useful practices natively and labels external maturity honestly.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-MQ-PRODUCTION-FEEDBACK-001",
+        "statement": "Integrate Sentry or PostHog in V0.11.",
+        "rationale": "Production feedback is deferred pending privacy requirements.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-MQ-REMOTE-TELEMETRY-001",
+        "statement": "Send performance, source, test, screenshot, or usage telemetry to a remote service by default.",
+        "rationale": "V0.11 telemetry is local-only.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-DEV-MQ-UNTESTED-COMPAT-001",
+        "statement": "Claim support for an untested Godot or provider version.",
+        "rationale": "Compatibility is live-attested, not inferred.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "NG-DEV-OSS-HOSTED-001",
         "statement": "Operate a hosted DevRelay backend or service in V0.10.",
         "rationale": "Hosted operations are outside the source/library preview boundary.",
@@ -13289,6 +16496,218 @@
         ]
       },
       {
+        "id": "TERM-DEV-MQ-CLOSURE-001",
+        "term": "Requirements closure",
+        "definition": "A reproducible assessment in which all blocking decisions are closed, contradictions are absent, and weighted applicable-domain coverage meets policy.",
+        "aliases": [
+          "Closure proof"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-MQ-GODOT-PACK-001",
+        "term": "Godot engineering pack",
+        "definition": "The optional versioned DevRelay adapter bundle that maps Godot AI and GdUnit4 capabilities into existing provider-neutral lifecycle ports.",
+        "aliases": [
+          "Godot pack"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-MQ-LIVE-ATTESTATION-001",
+        "term": "Live provider attestation",
+        "definition": "Digest-bound evidence of an exact provider version executing an exact bounded operation with pinned inputs, configuration, permissions, native outputs, and result.",
+        "aliases": [
+          "Live conformance receipt"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-DEV-MQ-SEAL-001",
+        "term": "Evidence seal commit",
+        "definition": "A commit created after the implementation commit that contains immutable evidence referencing the implementation identity without attempting to reference its own commit hash.",
+        "aliases": [
+          "Seal commit"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
         "id": "TERM-DEV-OSS-PREVIEW-001",
         "term": "Open-source preview",
         "definition": "The public Apache-2.0/DCO GitHub source and installable tarball release that has passed the scoped V0.10 evidence gates without claiming npm publication or hosted operation.",
@@ -14020,49 +17439,49 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "planning",
-      "summary": "The V0.10 public GitHub source/library preview requirements are clarified: GitHub-only distribution, Apache-2.0 with DCO, a public security contact, protected main, Windows Desktop support, package-export conformance, and complete recursive dogfood evidence.",
+      "summary": "V0.11 module-quality requirements are clarified and closed: adaptive breadth-first requirements interviews, live-attested priority providers, an optional Godot pack, automatic receipts, two-phase Git sealing, queryable traceability, local telemetry, and four repository-scoped Desktop skills.",
       "sourceRefs": [
         {
           "role": "goal",
           "artifact": {
-            "artifactId": "goal-devrelay-v010-public-oss-preview",
-            "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+            "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+            "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
           }
         },
         {
           "role": "owner-decision",
           "artifact": {
-            "artifactId": "owner-decisions-v0.10-release-hardening-v1",
-            "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+            "artifactId": "owner-decisions-v0.11-module-quality-v1",
+            "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
           },
-          "location": "All three checkpoint-bound recommended decisions approved in chat"
+          "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
         },
         {
           "role": "project-context",
           "artifact": {
-            "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
-            "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+            "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+            "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
           }
         },
         {
           "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-            "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+            "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+            "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
           }
         },
         {
           "role": "repository-snapshot",
           "artifact": {
-            "artifactId": "repository-snapshot-devrelay-a38d2ff",
-            "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+            "artifactId": "repository-snapshot-devrelay-a97f1f5",
+            "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
           }
         },
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-            "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+            "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
           }
         }
       ]
@@ -14255,6 +17674,108 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-lifecycle-001",
               "digest": "sha256:c75fd7eab03c6409613cf2a9032794c133ca53aefccafeb6dd66931c16d0dff1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-DEV-MQ-OWNER-001",
+        "statement": "The owner approved all recorded V0.11 module-quality requirements decisions and the corrected provider-matrix compatibility boundary.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-DEV-MQ-UPSTREAM-001",
+        "statement": "An upstream declaration is research input and does not become a DevRelay compatibility or maturity claim until live-attested.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-v0.11-module-quality-v1",
+              "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            },
+            "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+              "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a97f1f5",
+              "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+              "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
             }
           }
         ]
@@ -14990,6 +18511,7 @@
     "dependencies": [
       "A bounded Spec Kit consistency-review binding plus optional Task Master and OpenSpec proposal bindings.",
       "A durable host for artifact, checkpoint, graph, approval, and execution-record persistence.",
+      "A local immutable receipt store and a Git-safe redaction and secret-scanning boundary.",
       "A trusted host observation boundary for optional timing, token, cost, queue, and approval-wait measurements.",
       "A version-pinned OPA policy bundle and deterministic evaluation host.",
       "Approved ArchitectureBaseline interface intent and contract-generation disposition",
@@ -15005,6 +18527,7 @@
       "Generic registry, effect checkpoint, Gate replay, and TraceabilityGraph boundaries.",
       "GitHub repository settings allowing the owner to set main as default, enable branch protection or rulesets, and enable private vulnerability reporting.",
       "Host-enforced repository, process, network, and secret policy",
+      "Owner-approved version-pinned adapter evaluations and first-download grants for every selected upstream provider.",
       "Pinned Graphology and Graphology-DAG libraries behind the Core graph-mechanics boundary.",
       "Pinned kind-specific validator and compatibility policy versions",
       "Standardized content-addressed module, Gate, adapter, checkpoint, approval, and progression records.",
@@ -15012,14 +18535,17 @@
       "Version-pinned repository snapshot, execution policy, workspace base, and executor binding",
       "Version-pinned target RepositorySnapshot, configured local Git ref, expected target commit, integration policy, and host-enforced Git grants",
       "Versioned canonical contracts for each V1 module and lifecycle artifact.",
+      "Windows hosts capable of running ChatGPT Desktop, supported Node versions, selected Godot versions, Godot AI, GdUnit4, and current Structurizr tooling.",
       "Windows runners with supported Node 22 and Node 24 toolchains."
     ],
     "risks": [
+      "A Godot compatibility claim can drift if engine, plug-in, test framework, adapter, or Windows versions are not pinned together.",
       "A conflict resolver could silently create new unverified implementation bytes.",
       "A consistency reviewer may be mistaken for authority unless reviewer findings remain advisory inputs to the Gate.",
       "A crash between Git mutation and checkpoint persistence could duplicate or lose integration evidence.",
       "A declared package export may remain absent from the packed artifact unless verification derives required files from package.json itself.",
       "A human-readable report may become misleading if missing measurements are silently treated as zero.",
+      "A numerical closure score can create false assurance unless all blocking domains and contradictions remain independent hard gates.",
       "A passing check subset could hide an uncovered verification-plan obligation.",
       "A reporting service may accidentally acquire workflow authority unless its read-only boundary is enforced.",
       "A stale frontier could run work before prerequisites are integrated.",
@@ -15048,16 +18574,19 @@
       "Graphology traversal or serialization order may leak nondeterminism unless Core canonicalizes all externally visible artifacts and diagnostics.",
       "Hidden adapter-selected context could violate deterministic invocation contracts.",
       "Inferred current state could be mistaken for approved intended architecture.",
+      "Instrumentation can add overhead or nondeterminism unless timing and unavailable host observations are modeled explicitly.",
       "Language-specific analyzer semantics could leak into the provider-neutral snapshot contract.",
       "Module boundaries may drift into duplicated responsibility unless every contract keeps one primary purpose.",
       "OPA policy success may be mistaken for semantic completeness unless WorkDependencyGate separately reviews missing-dependency evidence.",
       "Operational telemetry may leak secrets or sensitive logs unless report projection applies explicit content policy.",
       "Provider-specific binding details could leak into generic workflow semantics.",
+      "Raw provider output, logs, screenshots, or test receipts can contain secrets, personal information, or unsafe repository content.",
       "Repository drift could bind findings to a different implementation than the snapshot claims.",
       "Retries could destroy evidence if attempts are overwritten.",
       "Reused task adapters could blur decomposition and dependency authority.",
       "Stored execution waves could couple static dependencies to changing runtime state.",
       "Traceability may become incomplete when future contributors omit required lifecycle relationships or evidence horizons.",
+      "Upstream tools can change commands, licenses, telemetry, compatibility, or artifact shapes after a version is evaluated.",
       "Verification retries could overwrite failing evidence.",
       "WorkBreakdown can propagate invalid scope if it starts before ContractGate resolution."
     ],
@@ -15071,6 +18600,7 @@
       "Bounded manifests, fixtures, dogfood evidence, release docs, and audit results.",
       "Canonical artifacts, manifest, Gate, runtime contracts, and trusted contributor.",
       "Complete release-hardening and minimal-software-project LifecycleRunReports for ChatGPT Desktop on Windows.",
+      "Core execution receipt recorder, redaction boundary, local RunMetrics artifact, two-phase Git seal contract, and read-only traceability MCP query surface.",
       "CurrentArchitectureSnapshot discovery, confidence, gap, and provenance contracts",
       "Deterministic package-export inventory and clean installed-package verifier.",
       "Deterministic primary LifecycleRunReport.md renderer with exact artifact links.",
@@ -15078,23 +18608,27 @@
       "Executable conformance fixtures and verification evidence for every implemented lifecycle slice.",
       "ExecutionBinding, ExecutionAttempt, ChangeSetDraft, and ExecutionEvidenceBundle contracts",
       "Fixture-conformant optional OpenAPI, AsyncAPI, and Protobuf bindings",
+      "Four repository-scoped DevRelay skills and a clean-checkout Windows Desktop end-to-end acceptance package.",
       "GitHub source and installable V0.10 release tarball with exact catalog, checksums, and provenance evidence.",
       "IntegratedChangeRecord, IntegrationConflictSet, IntegrationAttempt, and updated RepositorySnapshot contracts",
       "LifecycleRunSnapshot and RunLedger artifact contracts.",
       "Live JSON Schema 2020-12 generator and pinned validator path",
       "Live native repository inventory adapter and optional analyzer adapter contracts",
       "One complete DevRelay V1 end-to-end dogfood report followed by evidence-driven optimization recommendations.",
+      "Optional Godot engineering pack with compatibility matrix, permissions, receipts, GdUnit4 evidence, export, smoke, and release workflow.",
       "Provider-neutral ArchitectureDiscovery module and conditional route",
       "Provider-neutral ChangeIntegration module and local Git integration adapter contract",
       "Provider-neutral ContractGeneration module and ContractGate contracts",
       "Provider-neutral WorkExecution module and execution contract",
       "Provider-neutral WorkItemVerification module and WorkItemVerificationGate",
+      "RequirementsGathering 0.2 decision-domain, wave, strategy, conflict, coverage, continuation, and closure contracts with native implementation.",
       "TraceabilityGraph coverage from business objectives through business acceptance.",
       "Trusted candidate and approved contract traceability contributors",
       "Trusted candidate and approved work-item verification traceability contributors",
       "Trusted execution-attempt traceability contributors",
       "Trusted integrated-change traceability contributor and merge proof",
       "VerificationPolicy, VerificationAttempt, WorkItemVerificationDraft, VerificationEvidenceBundle, and approved verification-result contracts",
+      "Version-pinned adapter evaluations and live conformance records for priority specification, architecture, Godot, and testing providers.",
       "Versioned bounded adapter manifests for replaceable external engineering capabilities."
     ],
     "requiredEvidence": [
@@ -15120,15 +18654,24 @@
       "dependency/opa-policy-decision",
       "dependency/semantic-policy",
       "dependency/spec-kit-consistency-review",
+      "desktop/repository-skills",
       "dogfood/full-lifecycle",
+      "dogfood/godot-full-lifecycle",
       "dogfood/minimal-software-project",
       "execution/binding",
       "execution/change-set",
       "execution/checkpoint-replay",
       "execution/isolation",
       "execution/raw-evidence",
+      "execution/raw-receipts",
       "execution/readiness",
+      "execution/redaction",
+      "execution/run-metrics",
       "execution/traceability-merge",
+      "godot/compatibility-matrix",
+      "godot/export-smoke",
+      "godot/screenshots-and-inputs",
+      "godot/structured-tests",
       "integration/change-proof",
       "integration/checkpoint-replay",
       "integration/input-binding",
@@ -15137,16 +18680,21 @@
       "integration/post-state",
       "integration/target-cas",
       "integration/traceability-merge",
+      "integration/two-phase-seal",
       "lifecycle/frontier-recalculation",
       "oss/license-and-governance",
       "oss/protected-main",
       "oss/security-contact",
+      "providers/live-attestation",
+      "providers/negative-conformance",
       "release/full-verification",
       "release/installed-package-windows",
       "release/package-export-completeness",
       "release/source-catalog",
+      "requirements/closure-assessment",
       "requirements/gate-promotion",
       "requirements/interactive-clarification",
+      "requirements/interview-waves",
       "requirements/source-provenance",
       "run-report/adapter-comparability",
       "run-report/dynamic-projection",
@@ -15157,6 +18705,7 @@
       "run-report/traceability-reconciliation",
       "specialist-assignment/boundary",
       "traceability/checkpoint-merge",
+      "traceability/read-only-query",
       "verification/system-evidence",
       "verification/work-item-evidence",
       "work-item-verification/checkpoint-replay",
@@ -15172,52 +18721,52 @@
       {
         "role": "goal",
         "artifact": {
-          "artifactId": "goal-devrelay-v010-public-oss-preview",
-          "digest": "sha256:20b949b1b66bcd913bacec7310bb332434814f5ce9d7d863fafd93c8e689622a"
+          "artifactId": "goal-devrelay-v0.11-module-quality-v1",
+          "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
         }
       },
       {
         "role": "owner-decision",
         "artifact": {
-          "artifactId": "owner-decisions-v0.10-release-hardening-v1",
-          "digest": "sha256:cc9dea323a67c3a39bb92273a80af2065206e0e549608fa1e135760d279a9ae9"
+          "artifactId": "owner-decisions-v0.11-module-quality-v1",
+          "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
         },
-        "location": "All three checkpoint-bound recommended decisions approved in chat"
+        "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
       },
       {
         "role": "project-context",
         "artifact": {
-          "artifactId": "project-context-devrelay-v0.10-release-hardening-v1",
-          "digest": "sha256:bcc34ef5e994edebd50a56f6be5dda0ad6c42341465dc48c31aa0de3c8db5a4f"
+          "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+          "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
         }
       },
       {
         "role": "project-overview-baseline",
         "artifact": {
-          "artifactId": "project-overview-baseline-devrelay-v1-architecture-discovery-001",
-          "digest": "sha256:b8f2910a06e208b73854baa64b24103193936a3c2a9a5bde61b294300f008985"
+          "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
+          "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
         }
       },
       {
         "role": "repository-snapshot",
         "artifact": {
-          "artifactId": "repository-snapshot-devrelay-a38d2ff",
-          "digest": "sha256:a0a7f32db9f68215d68b6bca04ef0800d808fd3d3862c51bbc904115eebf16a9"
+          "artifactId": "repository-snapshot-devrelay-a97f1f5",
+          "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
         }
       },
       {
         "role": "requirements-baseline",
         "artifact": {
-          "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
-          "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+          "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
+          "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
         }
       }
     ]
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-v0.10-release-hardening-v1",
-      "digest": "sha256:c3b2600e354dd7105feba48c3e7466885d5cf7d6b5f70a08456307d8d641c245"
+      "artifactId": "requirements-gate-approval-v0.11-module-quality-v1",
+      "digest": "sha256:4e8411cc93678976d65ab1f47c5e9cf9e7c95392fd2f0a2512f6b1d2fd057379"
     }
   ]
 }
