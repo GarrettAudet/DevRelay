@@ -1,5 +1,6 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
 import { validateLifecycleRunReportArtifact } from "./lifecycle-run-report-artifact-validator.mjs";
+import { validateProviderExecutionAttestation } from "./provider-execution-attestation.mjs";
 
 const API_VERSION = "devrelay.dev/v1alpha1";
 const AVAILABILITIES = new Set(["measured", "estimated", "unavailable", "not-applicable"]);
@@ -53,13 +54,21 @@ export function ingestRunHostObservations(inputs) {
   return observations;
 }
 
-export function resolveAdapterMaturity({adapter, evidence, comparability}) {
+export function resolveAdapterMaturity({adapter, evidence, comparability, trustedObservers=[]}) {
   if (!adapter || typeof adapter !== "object") fail("adapter binding is required");
   if (!Array.isArray(evidence) || evidence.length === 0) fail("adapter maturity requires declared evidence");
   const admitted = evidence.map(item => {
     if (!item?.artifact?.artifactId || !item.artifact.digest) fail("maturity evidence requires an exact artifact reference");
     if (!MATURITY.includes(item.maturity)) fail(`unsupported adapter maturity ${item.maturity}`);
     if (!same(item.adapter, adapter)) fail("maturity evidence adapter binding does not match the assessed binding");
+    if (["live-conformant", "release-ready"].includes(item.maturity)) {
+      if (!item.attestation) fail(`${item.maturity} evidence requires a trusted provider execution attestation`);
+      const trustedObserver=trustedObservers.find(observer=>same(observer,item.attestation.observer));
+      if (!trustedObserver) fail("attestation observer is not in the Core/host trust configuration");
+      try { validateProviderExecutionAttestation(item.attestation, { expectedBinding: adapter, expectedObserver: trustedObserver }); } catch (error) { fail(error.message); }
+      if (item.artifact.artifactId !== item.attestation.attestationId || item.artifact.digest !== item.attestation.attestationDigest) fail("maturity evidence does not reference the exact attestation");
+      if (MATURITY.indexOf(item.attestation.maturity) < MATURITY.indexOf(item.maturity)) fail("attestation maturity is weaker than the claimed maturity");
+    }
     return item;
   });
   const selected = admitted.reduce((best, item) => MATURITY.indexOf(item.maturity) > MATURITY.indexOf(best.maturity) ? item : best);

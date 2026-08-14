@@ -1,0 +1,124 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "LifecycleCompletionEvidence",
+  "completionId": "LCE-SCAN-HARDENING-001",
+  "finalCommit": "fa5320374efd2228d924f4aa1c49ad4b418b5770",
+  "outcome": "construction-complete",
+  "workItems": [
+    {
+      "workItemId": "WI-SCAN-EXECUTABLE-CODE",
+      "outcome": "integrated",
+      "changeSets": [
+        "9ccba1d440f67f55f15a213346b13c7bae44c20f",
+        "fa5320374efd2228d924f4aa1c49ad4b418b5770"
+      ],
+      "acceptanceCriteria": [
+        "AC-DEV-ARTIFACT-HANDOFF-001",
+        "AC-DEV-RUN-HUMAN-READABLE-001",
+        "AC-DEV-RUN-SECURITY-001"
+      ],
+      "architectureElements": [
+        "EL-DEVRELAY-CORE",
+        "EL-REL-TOOLING",
+        "EL-RUN-MARKDOWN-RENDERER"
+      ],
+      "evidence": [
+        "EV-SCAN-LOCAL-VERIFY",
+        "EV-SCAN-CODEQL-ZERO"
+      ]
+    },
+    {
+      "workItemId": "WI-SCAN-GOVERNANCE-DISPOSITIONS",
+      "outcome": "integrated",
+      "changeSets": [
+        "9ccba1d440f67f55f15a213346b13c7bae44c20f"
+      ],
+      "acceptanceCriteria": [
+        "AC-DEV-OSS-GOVERNANCE-001"
+      ],
+      "architectureElements": [
+        "EL-REL-EVIDENCE-ASSEMBLER"
+      ],
+      "evidence": [
+        "EV-SCAN-SCORECARD-DISPOSITIONS"
+      ]
+    },
+    {
+      "workItemId": "WI-SCAN-RELEASE-PERMISSIONS",
+      "outcome": "integrated",
+      "changeSets": [
+        "9ccba1d440f67f55f15a213346b13c7bae44c20f"
+      ],
+      "acceptanceCriteria": [
+        "AC-DEV-OSS-MAIN-001"
+      ],
+      "architectureElements": [
+        "EL-REL-GITHUB-PROMOTION"
+      ],
+      "evidence": [
+        "EV-SCAN-SOURCE-RELEASE"
+      ]
+    },
+    {
+      "workItemId": "WI-SCAN-VERIFICATION",
+      "outcome": "integrated",
+      "changeSets": [
+        "fa5320374efd2228d924f4aa1c49ad4b418b5770"
+      ],
+      "acceptanceCriteria": [
+        "AC-DEV-OSS-DOGFOOD-001",
+        "AC-DEV-OSS-MAIN-001"
+      ],
+      "architectureElements": [
+        "EL-REL-EVIDENCE-ASSEMBLER",
+        "EL-REL-GITHUB-PROMOTION",
+        "EL-REL-INSTALLED-VERIFIER"
+      ],
+      "evidence": [
+        "EV-SCAN-LOCAL-VERIFY",
+        "EV-SCAN-MAIN-MATRIX",
+        "EV-SCAN-CODEQL-ZERO",
+        "EV-SCAN-SCORECARD-DISPOSITIONS",
+        "EV-SCAN-SOURCE-RELEASE"
+      ]
+    }
+  ],
+  "systemVerification": {
+    "outcome": "verified",
+    "acceptanceCriteria": [
+      "AC-DEV-ARTIFACT-HANDOFF-001",
+      "AC-DEV-OSS-DOGFOOD-001",
+      "AC-DEV-OSS-GOVERNANCE-001",
+      "AC-DEV-OSS-MAIN-001",
+      "AC-DEV-RUN-HUMAN-READABLE-001",
+      "AC-DEV-RUN-SECURITY-001"
+    ],
+    "nonFunctionalRequirements": [
+      "NFR-DEV-DETERMINISM-001",
+      "NFR-DEV-OSS-DETERMINISM-001",
+      "NFR-DEV-RUN-REPORT-PRIVACY-001"
+    ],
+    "evidence": {
+      "artifactId": "CSRE-DEVRELAY-V0101-WINDOWS-001",
+      "digest": "sha256:f6b3a1f7c9fd1f6570afba299b65c3e87cbec4a3240c897503cb8aa61b42cae6",
+      "mediaType": "application/vnd.devrelay.release-evidence+json",
+      "schema": "https://devrelay.dev/artifacts/release-evidence/v1",
+      "uri": "devrelay://repository/dogfood/v0.10.1-code-scanning-hardening/post-release/controlled-source-release-evidence.json"
+    },
+    "blockingDiagnostics": 0
+  },
+  "businessAcceptance": {
+    "outcome": "accepted",
+    "approvalBasis": "Standing owner authorization in the active release task to approve necessary items while preserving the agreed controlled Windows source/library boundary.",
+    "acceptedCommit": "fa5320374efd2228d924f4aa1c49ad4b418b5770",
+    "lifecycleDisposition": "construction-complete"
+  },
+  "traceability": {
+    "updateDigest": "sha256:1fc3363b35dfa6a0652105676956de54e45b5f3f663c7fe9549d62e15651a7c0",
+    "mergeProofDigest": "sha256:561119d4adec3642a73c9a0b63f47e19f46c5648e12a65d6a88d8b663d2ccc45",
+    "resultingGraphVersion": 48
+  },
+  "remainingReleaseBlockers": [],
+  "authority": "lifecycle-completion-record",
+  "completionDigest": "sha256:ebedee01e86500358c8c7238d889e16bf21855254ad8f08b12e0a2e94d98e066"
+}

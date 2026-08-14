@@ -23,7 +23,13 @@ version.
 
 ## Unreleased
 
-No changes yet.
+- Added `specialist-assignment@2.0.0` with checkpoint-only replay authority at
+  promotion, exact content-addressed owner approval, and adversarial rejection
+  of cloned or serialized pseudo-receipts. Immutable 1.0 manifests remain packaged.
+- Added fatal Git tag/package-version equality, one parsed release identity, and
+  lockfile-owned reproducible CycloneDX generation without ignored npm errors.
+- Reconciled canonical status as a conditional prerelease candidate pending the
+  exact protected tag and immutable GitHub prerelease.
 
 ## 0.7.0 - 2026-08-08
 

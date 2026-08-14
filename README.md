@@ -5,8 +5,10 @@ Modules with a Core-owned lifecycle traceability sidecar.
 
 For the reconciled working-tree checkpoint, active Gate, module maturity,
 promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
+The ordered release, durable-host, and ChatGPT Desktop integration work is in
+[ROADMAP.md](ROADMAP.md).
 For a self-contained implementation-owner pickup, see
-[handoff/2026-08-13-v010-release-promotion/README.md](handoff/2026-08-13-v010-release-promotion/README.md).
+[handoff/2026-08-13-v0100-rc1-audit-remediation/README.md](handoff/2026-08-13-v0100-rc1-audit-remediation/README.md).
 This status page is a human-readable projection; digest-bound lifecycle
 artifacts and Gate records remain authoritative.
 
@@ -20,7 +22,7 @@ validation, checkpointing, traceability, and progression.
 DevRelay `0.10.0-rc.1` is an Apache-2.0 open-source preview containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
-`work-dependency-analysis@0.1.0`, `specialist-assignment@1.0.0`,
+`work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0`. Source-package

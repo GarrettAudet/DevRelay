@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { createProviderExecutionAttestation } from "../src/provider-execution-attestation.mjs";
+import { canonicalJsonDigest } from "../src/content-digest.mjs";
 import {
   evaluateRunComparability,
   ingestRunHostObservation,
@@ -60,4 +62,16 @@ test("any exact dimension mismatch is explicitly non-comparable", () => {
   const decision = evaluateRunComparability({decisionId:"comparison-2",leftRunId:"run-1",rightRunId:"run-2",left,right});
   assert.equal(decision.disposition,"not-comparable");
   assert.deepEqual(decision.reasons,["policy digest differs","host digest differs"]);
+});
+
+
+test("live maturity requires the exact trusted provider execution attestation",()=>{
+  const observer={id:"desktop-host",version:"1.0.0",configurationDigest:canonicalJsonDigest("observer"),authority:"host-trusted-observer"};
+  const request={artifactId:"request-live",digest:canonicalJsonDigest("request-live")};
+  const attestation=createProviderExecutionAttestation({attestationId:"live-attestation",binding:adapter,capability:"requirements.gather",request,tool:{name:"OpenSpec",version:"1.0.0"},command:{executable:"openspec",arguments:["requirements.gather"],workingDirectoryDigest:canonicalJsonDigest("cwd")},execution:{startedAt:"2026-08-13T10:00:00.000Z",completedAt:"2026-08-13T10:00:01.000Z",exitCode:0,stdoutDigest:canonicalJsonDigest("stdout"),stderrDigest:canonicalJsonDigest("stderr")},nativeArtifacts:[{artifactId:"proposal.md",digest:canonicalJsonDigest("proposal")}],observer});
+  const evidence={adapter,maturity:"live-conformant",artifact:{artifactId:attestation.attestationId,digest:attestation.attestationDigest},attestation};
+  assert.equal(resolveAdapterMaturity({adapter,evidence:[evidence],comparability:comparabilityUnavailable,trustedObservers:[observer]}).assessment.maturity,"live-conformant");
+  assert.throws(()=>resolveAdapterMaturity({adapter,evidence:[evidence],comparability:comparabilityUnavailable}),/not in the Core\/host trust configuration/);
+  const claim=structuredClone(evidence);delete claim.attestation;
+  assert.throws(()=>resolveAdapterMaturity({adapter,evidence:[claim],comparability:comparabilityUnavailable,trustedObservers:[observer]}),/trusted provider execution attestation/);
 });

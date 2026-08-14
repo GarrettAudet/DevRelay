@@ -20,8 +20,9 @@ const languages = new Map([
   [".js", "JavaScript"], [".jsx", "JavaScript"], [".mjs", "JavaScript"], [".cjs", "JavaScript"],
   [".ts", "TypeScript"], [".tsx", "TypeScript"], [".py", "Python"], [".java", "Java"],
   [".cs", "C#"], [".fs", "F#"], [".vb", "Visual Basic .NET"], [".go", "Go"], [".rs", "Rust"],
+  [".gd", "GDScript"],
 ]);
-const manifestNames = new Set(["package.json", "pyproject.toml", "requirements.txt", "pom.xml", "build.gradle", "build.gradle.kts", "cargo.toml", "go.mod"]);
+const manifestNames = new Set(["package.json", "pyproject.toml", "requirements.txt", "pom.xml", "build.gradle", "build.gradle.kts", "cargo.toml", "go.mod", "project.godot"]);
 const manifestExtensions = new Set([".csproj", ".fsproj", ".vbproj", ".sln"]);
 const extension = (path) => { const name=path.slice(path.lastIndexOf("/")+1); const index=name.lastIndexOf("."); return index < 0 ? "" : name.slice(index).toLowerCase(); };
 const basename = (path) => path.slice(path.lastIndexOf("/") + 1);
@@ -83,10 +84,19 @@ function inventoryFile(invocation, file) {
     if (match) results.push(finding(invocation,file,"package",`package:${match[1]}`,`${file.path} declares Maven artifact ${match[1]}.`,match[1]));
   }
 
-  const conventional=/^(?:index|main|app|program|startup)\.(?:[cm]?[jt]sx?|py|java|cs)$/i;
+  if (name === "project.godot") {
+    const projectName=file.text.match(/^config\/name\s*=\s*["']([^"']+)["']/m)?.[1];
+    if (projectName) results.push(finding(invocation,file,"package",`package:${projectName}`,`${file.path} declares Godot project ${projectName}.`,projectName));
+    const mainScene=file.text.match(/^run\/main_scene\s*=\s*["']([^"']+)["']/m)?.[1];
+    if (mainScene) results.push(finding(invocation,file,"interface",`entry-point:${mainScene}`,`${file.path} declares main scene ${mainScene}.`,mainScene));
+  }
+
+  const conventional=/^(?:index|main|app|game|program|startup)\.(?:[cm]?[jt]sx?|py|java|cs|gd)$/i;
   if (conventional.test(basename(file.path))) results.push(finding(invocation,file,"interface",`entry-point:${file.path}`,`${file.path} is a conventional executable or module entry point.`));
 
-  const patterns = language === "Python"
+  const patterns = language === "GDScript"
+    ? [[/^\s*class_name\s+([A-Za-z_]\w*)/gm,"class"],[/^\s*(?:static\s+)?func\s+([A-Za-z_]\w*)\s*\(/gm,"function"],[/^\s*signal\s+([A-Za-z_]\w*)/gm,"signal"]]
+    : language === "Python"
     ? [[/^\s*(?:async\s+)?def\s+([A-Za-z_]\w*)/gm,"function"],[/^\s*class\s+([A-Za-z_]\w*)/gm,"class"]]
     : language === "Java" || language === "C#"
       ? [[/\b(?:public\s+)?(?:class|interface|record|enum)\s+([A-Za-z_]\w*)/g,"type"]]
@@ -102,6 +112,10 @@ function inventoryFile(invocation, file) {
   } else if (language === "Python") for (const match of file.text.matchAll(/^\s*(?:from|import)\s+([A-Za-z_][\w.]*)/gm)) relationships.push(match[1]);
   else if (language === "Java") for (const match of file.text.matchAll(/^\s*import\s+(?:static\s+)?([\w.]+)/gm)) relationships.push(match[1]);
   else if (language === "C#") for (const match of file.text.matchAll(/^\s*using\s+([\w.]+)/gm)) relationships.push(match[1]);
+  else if (language === "GDScript") {
+    for (const match of file.text.matchAll(/^\s*extends\s+["']([^"']+)["']/gm)) relationships.push(match[1]);
+    for (const match of file.text.matchAll(/\b(?:preload|load)\s*\(\s*["']([^"']+)["']\s*\)/g)) relationships.push(match[1]);
+  }
   for (const target of ordered(new Set(relationships))) results.push(finding(invocation,file,"relationship",`relationship:${file.path}:${target}`,`${file.path} references ${target}.`,target));
   return results;
 }

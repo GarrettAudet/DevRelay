@@ -78,3 +78,27 @@ test("inventory performs zero network calls and exposes no Gate, graph, progress
   walk(result);
   assert.equal(result.status,"completed");
 });
+
+
+test("native inventory discovers Godot and GDScript semantics deterministically",()=>{
+  const files=[
+    file("project.godot",'[application]\nconfig/name="Circuit Runner"\nrun/main_scene="res://scenes/main.tscn"\n'),
+    file("scripts/main.gd",'class_name CircuitRunner\nextends "res://scripts/base_runner.gd"\nsignal completed(result)\nconst CONFIG = preload("res://config/runtime.gd")\nfunc execute(goal):\n  return load("res://scenes/result.tscn")\n'),
+  ];
+  const first=run(files),second=run(files);
+  assert.equal(first.inventoryDigest,second.inventoryDigest);
+  const statements=first.findings.map(({statement})=>statement);
+  for(const expected of [
+    "scripts/main.gd is implemented in GDScript.",
+    "project.godot is a repository manifest.",
+    "project.godot declares Godot project Circuit Runner.",
+    "project.godot declares main scene res://scenes/main.tscn.",
+    "scripts/main.gd exposes observed class CircuitRunner.",
+    "scripts/main.gd exposes observed signal completed.",
+    "scripts/main.gd exposes observed function execute.",
+    "scripts/main.gd references res://scripts/base_runner.gd.",
+    "scripts/main.gd references res://config/runtime.gd.",
+    "scripts/main.gd references res://scenes/result.tscn.",
+  ]) assert.ok(statements.includes(expected),expected);
+  assert.ok(first.findings.every(finding=>finding.sources.every(source=>source.artifact.digest.startsWith("sha256:"))));
+});

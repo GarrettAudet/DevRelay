@@ -5,7 +5,7 @@
 This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`,
 `work-breakdown@0.1.0`, `work-dependency-analysis@0.1.0`,
-`specialist-assignment@1.0.0`,
+`specialist-assignment@2.0.0` (with the immutable `1.0.0` manifest retained),
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
@@ -46,8 +46,10 @@ exact accepted GitHub source.
 - ContractGeneration state routing, live JSON Schema generation, independent
   format validation, canonical compatibility diffing, checkpoint replay, and a
   separate raw-byte-bound Contract Gate through the public API.
-- SpecialistAssignment A2A profile discovery, Core-owned eligibility, deterministic
-  ranking, and separate assignment Gate authority.
+- SpecialistAssignment 2.0 A2A profile discovery, Core-owned eligibility,
+  deterministic ranking, unforgeable checkpoint-replay Gate authority, exact
+  draft/approval byte binding, and zero-call replay. The 1.0 manifest remains
+  packaged for compatibility and is not the trusted release route.
 - WorkExecution exact readiness, assignment, policy, repository, retry, and
   checkpoint boundaries; exact raw executor-byte preservation; zero-call replay;
   closed candidate result assembly; and trusted forward-only attempt traceability
