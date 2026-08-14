@@ -20,8 +20,8 @@ Authority: read-only projection; canonical artifacts and Gate records remain aut
 | 10 | WorkExecution | execute-work-item | ChatGPT Desktop executor | core-owned | passed | execution-v2 |
 | 11 | WorkItemVerification | verify-work-item | test verifier + live provider evidence | core-owned | verified | verification-v2 |
 | 12 | ChangeIntegration | integrate-change | local Git adapter | core-owned | integrated | integration-v2 |
-| 13 | SystemVerification | verify-system | test and review verifiers | core-owned | pending | not run |
-| 14 | BusinessAcceptance | accept-release | owner Gate | core-owned | pending | not requested |
+| 13 | SystemVerification | verify-system | test and review verifiers | core-owned | verified | final acceptance evidence |
+| 14 | BusinessAcceptance | accept-release | owner Gate | core-owned | accepted | final acceptance record |
 
 ## Providers
 
@@ -40,6 +40,6 @@ Authority: read-only projection; canonical artifacts and Gate records remain aut
 
 ## Next action
 
-Run SystemVerification and BusinessAcceptance.
+Promote the sealed V0.11 release candidate.
 
-Report digest: sha256:f763a7a7a9621055cba9483fc8828fe9c0d244b6a81f16d4788f4785673395a6
+Report digest: sha256:e72d8658591a0d7d46fccabbf5abbafe4a16ebb48b335199d0bfb3a9b04c7a61
