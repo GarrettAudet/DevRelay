@@ -1,0 +1,33 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsClosureAssessment",
+  "assessmentId": "requirements-closure-assessment-v0.11-module-quality-v1",
+  "candidate": "v0.11-module-quality",
+  "catalogVersion": "requirements-decision-domain-catalog-proposal-0.2.0",
+  "policy": {
+    "depth": "adaptive",
+    "minimumWeightedCoverage": 0.99,
+    "blockingDomainsRequireClosure": true,
+    "questionMode": "breadth-first-waves"
+  },
+  "domains": [
+    { "id": "purpose-and-outcomes", "weight": 0.10, "status": "resolved", "evidence": ["owner-assessment-intake.md", "requirements-decisions-round-1.md"] },
+    { "id": "stakeholders-and-users", "weight": 0.06, "status": "resolved", "evidence": ["requirements-decisions-round-1.md"] },
+    { "id": "success-and-failure-signals", "weight": 0.08, "status": "resolved", "evidence": ["requirements-decisions-round-1.md", "requirements-decisions-round-3.md"] },
+    { "id": "scope-and-non-goals", "weight": 0.08, "status": "resolved", "evidence": ["owner-assessment-intake.md", "requirements-decisions-round-3.md"] },
+    { "id": "capabilities-and-behavior", "weight": 0.08, "status": "resolved", "evidence": ["requirements-decisions-round-2.md", "requirements-decisions-round-3.md"] },
+    { "id": "acceptance-and-error-paths", "weight": 0.10, "status": "resolved", "evidence": ["requirements-decisions-round-2.md", "requirements-decisions-round-3.md"] },
+    { "id": "providers-integrations-and-compatibility", "weight": 0.12, "status": "resolved", "evidence": ["upstream-benchmark.md", "requirements-decisions-round-3.md", "requirements-decisions-round-4.md"] },
+    { "id": "security-privacy-and-permissions", "weight": 0.10, "status": "resolved", "evidence": ["requirements-decisions-round-3.md"] },
+    { "id": "performance-reliability-and-operations", "weight": 0.08, "status": "resolved", "evidence": ["owner-assessment-intake.md", "requirements-decisions-round-3.md"] },
+    { "id": "delivery-rollout-and-versioning", "weight": 0.06, "status": "resolved", "evidence": ["requirements-decisions-round-3.md", "requirements-decisions-round-4.md"] },
+    { "id": "verification-evidence-and-traceability", "weight": 0.08, "status": "resolved", "evidence": ["owner-assessment-intake.md", "requirements-decisions-round-3.md"] },
+    { "id": "risks-dependencies-and-approvals", "weight": 0.06, "status": "resolved", "evidence": ["requirements-decisions-round-2.md", "requirements-decisions-round-3.md"] }
+  ],
+  "weightedCoverage": 1.0,
+  "blockingUnresolvedCount": 0,
+  "contradictionCount": 0,
+  "uncoveredWeight": 0.0,
+  "outcome": "closed",
+  "next": "requirements-gate-candidate"
+}

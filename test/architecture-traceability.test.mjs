@@ -183,6 +183,30 @@ test("Architecture change projection includes typed change targets", async () =>
   );
 });
 
+test("Architecture change projection ignores historical citations absent from the current requirements baseline", async () => {
+  const candidate = structuredClone(architectureChange);
+  candidate.sections.architectureModel.content.elements[0].sourceRequirementIds.push(
+    "US-HISTORICAL-RETIRED-001",
+  );
+  const candidateRef = {
+    ...architectureChangeResult.outputs["architecture-change-set-draft"][0],
+    artifactId: "architecture-change-set-with-historical-citation-001",
+    digest: canonicalJsonDigest(candidate),
+    uri: "memory://fixtures/architecture-change-set-with-historical-citation-001.json",
+  };
+
+  const projected = await architectureTraceabilityContributor.project(
+    architectureContext({ change: true, candidate, candidateRef }),
+  );
+  assert.equal(
+    findEdges(projected, "designed-by").some(
+      ({ source: edgeSource }) =>
+        edgeSource.stableId === "US-HISTORICAL-RETIRED-001",
+    ),
+    false,
+  );
+});
+
 test("Architecture contributor resolves attached sections and uses attachment provenance", async () => {
   const candidate = structuredClone(architectureDraft);
   const model = candidate.sections.architectureModel.content;

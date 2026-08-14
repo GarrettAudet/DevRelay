@@ -733,6 +733,15 @@ async function projectArchitecture(context) {
   if (requirements.value.kind !== "RequirementsBaseline") {
     fail("ArchitectureDesign input is not a RequirementsBaseline");
   }
+  const currentRequirementIds = new Set(
+    [
+      "businessObjectives", "successMetrics", "stakeholders", "users",
+      "capabilities", "userJourneys", "userStories", "acceptanceCriteria",
+      "nonFunctionalRequirements", "constraints",
+    ].flatMap((field) =>
+      (requirements.value.requirements[field] ?? []).map(({ id }) => id),
+    ),
+  );
   return projectSelectedArchitecture(context, {
     candidate,
     requirements,
@@ -741,6 +750,7 @@ async function projectArchitecture(context) {
         ? "requirementsBaseline"
         : "targetRequirementsBaseline",
     traceability: candidate.value.traceability,
+    currentRequirementIds,
   });
 }
 
