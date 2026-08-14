@@ -41,7 +41,13 @@ function openMutableProjectFile(filePath) {
     if (!(error && typeof error === "object" && error.code === "ENOENT")) {
       throw error;
     }
-    writeFileSync(filePath, Buffer.alloc(0), { flag: "wx" });
+  }
+  try {
+    return openSync(filePath, "wx+");
+  } catch (error) {
+    if (!(error && typeof error === "object" && error.code === "EEXIST")) {
+      throw error;
+    }
     return openSync(filePath, "r+");
   }
 }

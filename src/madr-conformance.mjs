@@ -21,6 +21,23 @@ const REQUIRED_HEADINGS = Object.freeze([
   "Decision Outcome",
 ]);
 
+function containsSingleLinePlaceholder(text) {
+  let state = "outside";
+  for (const character of text) {
+    if (character === "\n") {
+      state = "outside";
+    } else if (character === "{") {
+      state = "opened";
+    } else if (character === "}") {
+      if (state === "content") return true;
+      state = "outside";
+    } else if (state === "opened") {
+      state = "content";
+    }
+  }
+  return false;
+}
+
 function exactTemplate(template) {
   if (
     !template ||
@@ -42,7 +59,7 @@ export function validateMadrDocument({ documentId, bytes, template }) {
   if (Buffer.from(text, "utf8").compare(raw) !== 0) fail("document is not canonical UTF-8");
   if (text.includes("\r")) fail("document must use LF line endings");
   const title = text.match(/^# ([^\n]+)$/mu)?.[1]?.trim();
-  if (!title || /\{.+\}/u.test(title)) fail("document title is missing or unresolved");
+  if (!title || containsSingleLinePlaceholder(title)) fail("document title is missing or unresolved");
   const headings = [...text.matchAll(/^## ([^\n]+)$/gmu)].map((match) => match[1].trim());
   const missing = REQUIRED_HEADINGS.filter((heading) => !headings.includes(heading));
   if (missing.length) fail(`required MADR headings are absent: ${missing.join(", ")}`);
@@ -51,7 +68,7 @@ export function validateMadrDocument({ documentId, bytes, template }) {
   if (!/^\* Good, because .+$/mu.test(text) || !/^\* Bad, because .+$/mu.test(text)) {
     fail("Consequences must include explicit good and bad outcomes");
   }
-  if (/\{[^\n}]+\}/u.test(text)) fail("document contains unresolved MADR placeholders");
+  if (containsSingleLinePlaceholder(text)) fail("document contains unresolved MADR placeholders");
   const templateIdentity = exactTemplate(template);
   const material = {
     documentId,

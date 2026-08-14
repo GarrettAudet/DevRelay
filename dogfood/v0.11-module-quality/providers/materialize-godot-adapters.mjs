@@ -18,6 +18,47 @@ const ref = (artifactId, file, extra = {}) => ({ artifactId, digest: sha256Diges
 const fixtureFiles = ["project.godot", "main.gd", "main.tscn", "test/provider_fixture_test.gd"];
 
 fs.mkdirSync(rawDirectory, { recursive: true });
+
+function openMutableEvidenceFile(filePath) {
+  try {
+    return fs.openSync(filePath, "r+");
+  } catch (error) {
+    if (!(error && typeof error === "object" && error.code === "ENOENT")) {
+      throw error;
+    }
+  }
+  try {
+    return fs.openSync(filePath, "wx+");
+  } catch (error) {
+    if (!(error && typeof error === "object" && error.code === "EEXIST")) {
+      throw error;
+    }
+    return fs.openSync(filePath, "r+");
+  }
+}
+
+const evidenceDescriptor = openMutableEvidenceFile(evidencePath);
+
+function readDescriptorBytes(descriptor) {
+  const bytes = Buffer.alloc(fs.fstatSync(descriptor).size);
+  let offset = 0;
+  while (offset < bytes.length) {
+    const count = fs.readSync(descriptor, bytes, offset, bytes.length - offset, offset);
+    if (count === 0) throw new Error("Godot adapter evidence ended during descriptor read");
+    offset += count;
+  }
+  return bytes;
+}
+
+function replaceDescriptorBytes(descriptor, bytes) {
+  fs.ftruncateSync(descriptor, 0);
+  let offset = 0;
+  while (offset < bytes.length) {
+    offset += fs.writeSync(descriptor, bytes, offset, bytes.length - offset, offset);
+  }
+  fs.fsyncSync(descriptor);
+}
+
 const materializerRef = ref("V011-GODOT-ADAPTER-MATERIALIZER", new URL(import.meta.url));
 const inputMaterial = {
   schemaVersion: "1.0.0",
@@ -34,10 +75,12 @@ const inputMaterial = {
   },
 };
 const inputDigest = canonicalJsonDigest(inputMaterial);
-if (fs.existsSync(evidencePath)) {
-  const existing = JSON.parse(fs.readFileSync(evidencePath, "utf8"));
+const existingEvidenceBytes = readDescriptorBytes(evidenceDescriptor);
+if (existingEvidenceBytes.length > 0) {
+  const existing = JSON.parse(existingEvidenceBytes.toString("utf8"));
   const { evidenceDigest, ...body } = existing;
   if (existing.inputDigest === inputDigest && evidenceDigest === canonicalJsonDigest(body)) {
+    fs.closeSync(evidenceDescriptor);
     console.log(JSON.stringify({ replayed: true, inputDigest, evidenceDigest }, null, 2));
     process.exit(0);
   }
@@ -224,7 +267,8 @@ const material = {
   ],
 };
 material.evidenceDigest = canonicalJsonDigest(material);
-fs.writeFileSync(evidencePath, `${JSON.stringify(material, null, 2)}\n`);
+replaceDescriptorBytes(evidenceDescriptor, Buffer.from(`${JSON.stringify(material, null, 2)}\n`, "utf8"));
+fs.closeSync(evidenceDescriptor);
 fs.writeFileSync(path.join(evidenceDirectory, "GODOT_ADAPTER_EVIDENCE.md"), [
   "# V0.11 Godot adapter evidence",
   "",
