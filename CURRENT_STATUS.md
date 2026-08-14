@@ -3,7 +3,7 @@
 Last reconciled: 2026-08-13 MDT
 Protected branch: `main`
 Canonical audited base: `fa5320374efd2228d924f4aa1c49ad4b418b5770`
-Quality-remediation implementation commit: `7c94314ce2e76f3416954e8e2c256382ebbebea6`
+Quality-remediation implementation commit: `bc7c5525e8828346863c27b4988ac7c79b55306d`
 Candidate version: `0.10.0-rc.1`
 Active branch: `codex/v0.10.2-audit-remediation`
 Release boundary: public GitHub source/installable library for ChatGPT Desktop on Windows
