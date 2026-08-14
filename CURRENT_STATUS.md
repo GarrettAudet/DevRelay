@@ -2,7 +2,7 @@
 
 Last reconciled: 2026-08-14 MDT
 Protected branch: `main`
-Implementation commit: `60806542ee919a69a705209e09b22d0216676c8c`
+Implementation commit: `a06de6394c4902dad4e4677568b3dbf7c50324d2`
 Candidate version: `0.10.0-rc.1`
 Workflow increment: `V0.11 module-quality`
 Active branch: `codex/v0.11-module-quality`
@@ -10,17 +10,17 @@ Release boundary: GitHub source/installable library for ChatGPT Desktop on Windo
 
 ## Executive status
 
-V0.11 construction is complete and BusinessAcceptance is recorded. The approved 16-item DAG was executed through four frontiers; every work item was independently verified and integrated. The external installed-package dogfood completed all 20 lifecycle components against a minimal Godot project on Windows, including live OpenSpec, Spec Kit, Structurizr, MADR, and GdUnit4 receipts. The final TraceabilityGraph is at revision 48 with zero blocking diagnostics.
+V0.11 construction is complete and BusinessAcceptance is recorded. The approved 16-item DAG was executed through four frontiers; every work item was independently verified and integrated. The external installed-package dogfood completed all 20 lifecycle components against a minimal Godot project on Windows, including live OpenSpec, Spec Kit, Structurizr, MADR, and GdUnit4 receipts. The final TraceabilityGraph is at revision 48 with zero blocking diagnostics. The PR security gate then identified five high-severity CodeQL findings; implementation commit `a06de6394c4902dad4e4677568b3dbf7c50324d2` removes both uncontrolled-input regex paths and all three file check/use races while preserving the Windows descriptor contract. The canonical 914-test kernel gate passed again after remediation.
 
 ## Exact evidence
 
 - Canonical verification: 914 tests; 912 passed; 0 failed; 2 expected skips.
-- Release catalog before the evidence seal: 7,671 exact repository digests and 324 npm-package paths.
+- Release catalog for the evidence seal: 7,721 exact repository digests and 325 npm-package files.
 - Integrated work: 16/16 work items across four Core-derived DAG frontiers.
-- SystemVerification: `verified`, digest `sha256:95f681308ce7dceadb3aed898fe750a7bb17b10ba927dd4fccd8af513cac7ff5`.
-- BusinessAcceptance: `accepted`, digest `sha256:c5de0c96cc3dfba8c73a124abb9ea2bdea557d7a4917b04a7892961b23b7e7d2`.
+- SystemVerification: `verified`, digest `sha256:ccbedee1c593e74b2a0d6512fc7bf5f4dde83aff6388e1fde4b97c9d0981f7eb`.
+- BusinessAcceptance: `accepted`, digest `sha256:ba24026f8e5241b0dc487fcf29e1311acb3daed655a65e11f63310816c963b32`.
 - Accepted coverage: 104 acceptance criteria, 26 NFRs, 12 business objectives, 14 success metrics, 39 business-scope identities.
-- TraceabilityGraph revision 48: `sha256:007ffb791004ab288e7569659530e5bcf1334626bafa6fc522e2a4d42b5fb0b2`; zero blockers.
+- TraceabilityGraph revision 48: `sha256:cccd61ae3752d5ec8beadeb1f2a7e11ea2e82f709bdd56143ba3ca084ff829b3`; zero blockers.
 - Human-readable lifecycle report: `sha256:e72d8658591a0d7d46fccabbf5abbafe4a16ebb48b335199d0bfb3a9b04c7a61`.
 
 ## Remaining release action

@@ -2,12 +2,12 @@
 
 Date: 2026-08-14
 Branch: `codex/v0.11-module-quality`
-Implementation commit: `60806542ee919a69a705209e09b22d0216676c8c`
+Implementation commit: `a06de6394c4902dad4e4677568b3dbf7c50324d2`
 Status: `construction-complete / release-ready candidate`
 
 ## Lifecycle result
 
-All released stages were dogfooded in sequence. Requirements, architecture, contracts, work breakdown, dependency analysis, and specialist assignment were promoted through their exact Gates. Four Core-derived work frontiers executed 16/16 items through WorkExecution, WorkItemVerification, and ChangeIntegration. SystemVerification returned `verified`; BusinessAcceptanceGate returned `accepted`.
+All released stages were dogfooded in sequence. Requirements, architecture, contracts, work breakdown, dependency analysis, and specialist assignment were promoted through their exact Gates. Four Core-derived work frontiers executed 16/16 items through WorkExecution, WorkItemVerification, and ChangeIntegration. SystemVerification returned `verified`; BusinessAcceptanceGate returned `accepted`. The release-sealing revision also closed all five PR CodeQL findings through linear MADR placeholder scanning and atomic Windows-safe artifact descriptors, then reran the full 914-test kernel gate and final lifecycle modules.
 
 ## Final bindings
 
@@ -18,9 +18,9 @@ All released stages were dogfooded in sequence. Requirements, architecture, cont
 - WorkDependencyBaseline: `sha256:99617ec8a8ea5ba44f1e7549a6587f30364720ed87d9e2a41e8507448ebf7ca9`
 - SpecialistAssignmentBaseline: `sha256:f7f81aa8f231394bca6f5bb6f5f421977605e5355f1b876386bd2492e983dd6c`
 - Final integrated implementation ref: `82b0ac7b12e61ae1b20499887237e4b6149f2b85`
-- SystemVerification: `sha256:95f681308ce7dceadb3aed898fe750a7bb17b10ba927dd4fccd8af513cac7ff5`
-- BusinessAcceptance: `sha256:c5de0c96cc3dfba8c73a124abb9ea2bdea557d7a4917b04a7892961b23b7e7d2`
-- TraceabilityGraph revision 48: `sha256:007ffb791004ab288e7569659530e5bcf1334626bafa6fc522e2a4d42b5fb0b2`
+- SystemVerification: `sha256:ccbedee1c593e74b2a0d6512fc7bf5f4dde83aff6388e1fde4b97c9d0981f7eb`
+- BusinessAcceptance: `sha256:ba24026f8e5241b0dc487fcf29e1311acb3daed655a65e11f63310816c963b32`
+- TraceabilityGraph revision 48: `sha256:cccd61ae3752d5ec8beadeb1f2a7e11ea2e82f709bdd56143ba3ca084ff829b3`
 
 ## Windows dogfood
 
