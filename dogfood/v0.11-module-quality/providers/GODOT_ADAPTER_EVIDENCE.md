@@ -1,6 +1,6 @@
 # V0.11 Godot adapter evidence
 
-Evidence digest: `sha256:4099b010c6d37cb585d3718e3db8e7c66c0c82262b72042f484985271719c47f`
+Evidence digest: `sha256:e8082260acb8ffe889a0b85b8e0d764b2d62298e40a435750ce470e1984fb678`
 
 - Godot AI screenshot receipt: passed through the production adapter.
 - Godot AI input receipt: passed with explicit capability grant `GRANT-GODOT-MCP-INPUT-V011-001`.
