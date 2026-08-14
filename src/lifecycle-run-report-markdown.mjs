@@ -24,6 +24,11 @@ const metric = value => ["measured","estimated"].includes(value.availability)
   ? `${value.value} ${value.unit} (${value.availability})`
   : `${value.availability}: ${text(value.absenceReason)}`;
 const next = value => value.description ? `${value.disposition}: ${text(value.description)}` : value.disposition;
+const withoutTerminalPunctuation = value => {
+  let end=value.length;
+  while(end>0 && [".","!","?"].includes(value[end-1])) end-=1;
+  return value.slice(0,end);
+};
 
 function approved({policy,policyRef,classifications,defaultClassification,path,value,source}) {
   const classification=classifications[path] ?? defaultClassification;
@@ -74,7 +79,7 @@ export function renderLifecycleRunReportMarkdown(snapshotOrOptions,maybeOptions)
   const failed=stages.filter(value=>value.status==="failed").length;
   const active=stages.filter(value=>value.status==="active").length;
   const skipped=stages.filter(value=>value.status==="skipped").length;
-  const summaryNextAction=next(snapshot.nextAction).replace(/[.!?]+$/u,"");
+  const summaryNextAction=withoutTerminalPunctuation(next(snapshot.nextAction));
   const summary=`${stages.length} lifecycle component${stages.length===1?" was":"s were"} observed: ${completed} completed, ${active} active, ${failed} failed, and ${skipped} skipped. Next action: ${summaryNextAction}.`;
   if(view==="summary") return [
     "# Lifecycle Run Report","","## Executive summary","",
