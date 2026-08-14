@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { relative, resolve } from "node:path";
 import test from "node:test";
 import {
   releaseManifestRelativePath,
@@ -13,6 +13,17 @@ test("release inventory excludes Git administration in directories and linked wo
   assert.equal(files.includes(".git"), false);
   assert.equal(files.some((path) => path.startsWith(".git/")), false);
   assert.equal(files.includes(releaseManifestRelativePath), false);
+});
+
+test("release inventory is invariant to untracked runtime files", () => {
+  const target = resolve("test", `.release-catalog-untracked-${process.pid}-${Date.now()}.tmp`);
+  writeFileSync(target, "runtime-only\n", "utf8");
+  try {
+    const relativePath = relative(process.cwd(), target).split("\\").join("/");
+    assert.equal(releaseRepositoryFiles().includes(relativePath), false);
+  } finally {
+    unlinkSync(target);
+  }
 });
 
 const immutableCrLfArtifacts = new Map([

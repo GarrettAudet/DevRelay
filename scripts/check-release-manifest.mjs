@@ -68,7 +68,7 @@ exact(
   manifest.scope,
   {
     root: ".",
-    inclusion: "all-regular-files-recursive",
+    inclusion: "git-tracked-regular-files",
     excludedDirectories: excludedReleaseDirectories,
     selfExclusion: {
       path: releaseManifestRelativePath,
