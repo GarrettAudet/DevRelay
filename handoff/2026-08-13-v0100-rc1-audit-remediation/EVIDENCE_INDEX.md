@@ -1,6 +1,6 @@
 # Evidence index
 
-- Implementation commit: `7c94314ce2e76f3416954e8e2c256382ebbebea6`
+- Implementation commit: `bc7c5525e8828346863c27b4988ac7c79b55306d`
 - Dogfood circuit: `dogfood/v0.10.0-rc.1-quality-remediation/`
 - Work breakdown: `dogfood/v0.10.0-rc.1-quality-remediation/work-breakdown-change-set-draft.json`
 - Dependency DAG: `dogfood/v0.10.0-rc.1-quality-remediation/work-dependency-analysis.json`
