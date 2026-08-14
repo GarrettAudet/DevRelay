@@ -19,7 +19,7 @@ Release-ready candidate for the ChatGPT Desktop on Windows source/library bounda
 
 - 16/16 work items integrated.
 - 914 tests; 912 passed; zero failed; two expected skips.
-- The complete 914-test kernel gate passed again after the CodeQL remediation at implementation commit `a06de6394c4902dad4e4677568b3dbf7c50324d2`.
+- The complete 914-test kernel gate passed again after the CodeQL remediation at implementation commit `6ed3c91bce70abfc696fa63754f10c0d6206b9d7`.
 - SystemVerification `verified`; BusinessAcceptance `accepted`.
 - 104 acceptance criteria and 26 NFRs covered.
 - TraceabilityGraph revision 48; zero blocking diagnostics.
