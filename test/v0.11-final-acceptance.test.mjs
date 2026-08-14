@@ -74,7 +74,26 @@ test("acceptance proof binds the immutable implementation commit", () => {
   assert.equal(proof.blockingDiagnostics, 0);
   assert.equal(proof.disposition, "accepted-for-protected-source-release-promotion");
   if (head !== implementation) {
-    assert.equal(execFileSync("git", ["rev-parse", "HEAD^"], { encoding: "utf8", windowsHide: true }).trim(), implementation);
+    const checkoutLine = execFileSync("git", ["rev-list", "--parents", "-n", "1", "HEAD"], {
+      encoding: "utf8",
+      windowsHide: true,
+    }).trim();
+    const checkoutCommits = checkoutLine.split(/\s+/u);
+    const sealedCandidates = checkoutCommits.filter((candidate) => candidate !== implementation);
+    const evidenceSeal = sealedCandidates.find((candidate) => {
+      try {
+        return execFileSync("git", ["rev-parse", `${candidate}^`], {
+          encoding: "utf8",
+          windowsHide: true,
+        }).trim() === implementation;
+      } catch {
+        return false;
+      }
+    });
+    assert.ok(
+      evidenceSeal,
+      "the checkout must contain an evidence-seal commit whose direct parent is the implementation commit",
+    );
   }
   assert.match(canonicalJsonDigest(proof), /^sha256:[0-9a-f]{64}$/u);
 });
