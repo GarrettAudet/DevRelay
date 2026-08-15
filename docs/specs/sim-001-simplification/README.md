@@ -6,7 +6,7 @@ Make the verified deterministic runtime easy to adopt from ChatGPT Desktop on Wi
 
 ## Current stage
 
-RequirementsGathering wave 1 is closed. The exact paired baseline candidate is being materialized for Requirements Gate approval. No architecture or implementation is authorized until that Gate promotes the pair.
+Construction, SystemVerification, and BusinessAcceptance are complete. All 12 approved work items are verified and integrated, the terminal Core-derived frontier is empty, and the exact `0.10.0-rc.2` Windows source/library preview is pending only evidence-seal verification and protected-`main` promotion. RM-001 is the next separate increment.
 
 ## Approved decisions
 

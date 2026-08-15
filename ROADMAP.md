@@ -1,67 +1,34 @@
 # DevRelay roadmap
 
-DevRelay's roadmap prioritizes trustworthy operation over adding more semantic
-modules. The supported release-defining environment is ChatGPT Desktop on
-Windows, distributed from GitHub as source plus a deterministic installable
-tarball. Public npm publication, a hosted backend, and a one-click Desktop
-plug-in are not current release claims.
+DevRelay prioritizes deterministic, traceable software delivery through ChatGPT Desktop on Windows. GitHub source plus an installable package is the supported distribution boundary. Public npm publication, a hosted backend, one-click Desktop installation, and non-Windows support remain outside the current claim.
 
-## `v0.10.0-rc.1` — trustworthy GitHub prerelease
+## `0.10.0-rc.2` — simplified Windows source/library preview
 
-Status: in release verification.
+Status: construction and BusinessAcceptance complete; pending evidence-seal verification and protected-`main` promotion.
 
-- Reconcile canonical status and release evidence.
-- Make SpecialistAssignment `2.0.0` promotion depend on an unforgeable,
-  checkpoint-replayed candidate and exact content-addressed owner approval.
-- Retain SpecialistAssignment `1.0.0` as an immutable compatibility contract.
-- Fail the release when the Git tag is not exactly `v` plus package version.
-- Generate CycloneDX from the lockfile-owned tool without ignored npm errors.
-- Pass the complete package, catalog, Windows/Linux Node 22/24, security, and
-  fresh-install gates before publishing the annotated GitHub prerelease.
+- Small eight-operation public facade and seven operator CLI commands.
+- Quick, standard, assurance, and inspect profiles without Gate bypass.
+- Durable local SQLite/artifact/Git-worktree host with explicit grants and recovery.
+- Compact human-readable evidence plus queryable TraceabilityGraph output.
+- Optional Godot/GdUnit4 pack and real Windows lifecycle dogfood.
+- Live-attested OpenSpec, Spec Kit, Structurizr, and MADR provider execution.
 
-Exit: the exact protected-`main` commit is tagged `v0.10.0-rc.1`, the GitHub
-prerelease and attested assets exist, and a clean Windows consumer installs and
-uses the released tarball.
+Exit: the exact evidence-seal commit passes `npm.cmd run release:check`, is promoted through protected `main`, and is published as a GitHub prerelease with checksum-bound assets.
 
-## `0.11` — durable local reference host and executor
+## `RM-001` — RoadmapManagement and session bootstrap
 
-Planned after the prerelease; estimated 14–22 focused hours for the first MVP.
+Status: owner intake decisions approved; next implementation increment after RC2 sealing.
 
-- Durable artifact, execution-checkpoint, traceability-checkpoint, and graph
-  stores with schema migrations, compare-and-swap, backup, and restore.
-- A bounded general-purpose local WorkExecution adapter and isolated workspace
-  manager for one approved work item.
-- Operator CLI for initialize, run, resume, inspect, diagnose, and export.
-- Kill/restart/recover conformance and crash-boundary evidence.
-- Fast, integration, serial-conformance, release, performance, and
-  fault-injection verification lanes with published regression budgets.
-- Read-only MCP inspection surface for ChatGPT Desktop.
-- Common Gate authority vocabulary where module semantics permit it:
-  checkpoint replay, candidate byte binding, approval binding, promotion
-  payload, and substitution diagnostics.
+- Structured, content-addressed `RoadmapBaseline` with concise `Roadmap.md` projection.
+- Candidate triage, roadmap review, and explicit reprioritization operations.
+- RequirementsGathering waves with mandatory 0.99 closure for net-new initiatives.
+- Human-owned RoadmapGate with keep, defer, merge, or discard dispositions.
+- Mandatory `DevRelaySessionBootstrap` for every fresh DevRelay task/workspace.
+- Digest-bound ProjectOverview, roadmap, lifecycle, Gate, frontier, and blocker context.
+- Fail-closed `SessionContextReceipt` and refresh at the next Module boundary after baseline promotion.
 
-Exit: one complete local lifecycle can survive interruption and resume from
-durable state with zero duplicate external effects and human-readable evidence.
+Exit: a fresh ChatGPT Desktop task deterministically loads and proves current project/roadmap context, and roadmap mutations remain explicit, gated, auditable, and module-input-safe.
 
-## `0.12` — ChatGPT Desktop integration adapters
+## Later hardening
 
-Planned after `0.11`; estimated 10–16 focused hours for the first supported
-integration slice.
-
-- ChatGPT Desktop/Codex executor binding through explicit capability demands.
-- MCP commands for starting, resuming, inspecting, and exporting a run while
-  preserving Core authority.
-- GitHub source, pull-request, check, and release adapters with exact identity
-  and permission boundaries.
-- End-to-end Desktop dogfood against a small production-quality software goal.
-
-Exit: a Windows Desktop user can initiate and inspect the complete deterministic
-circuit without manually assembling internal artifacts.
-
-## Stable production-quality line
-
-A stable claim follows operational evidence, not a calendar label: documented
-performance envelopes, durable recovery, supported migrations, fault
-injection, security review, API stability tiers or declarations, and repeated
-end-to-end adopters. Additional lifecycle modules are deferred until they solve
-measured workflow gaps without weakening the existing authority boundaries.
+Stable release claims require repeated adopter dogfood, documented performance envelopes, migration support, fault injection, security review, API stability guarantees, and independent human review. Optional planning-system adapters and additional domain packs enter only through evaluated, bounded contracts.
