@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as facade from "devrelay";
 import * as api from "devrelay/advanced";
+import * as godot from "devrelay/packs/godot/index.mjs";
 
 const API = "devrelay.dev/v1alpha1";
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -71,9 +72,9 @@ for (const [command, input] of [
 const providerEvidence = json(path.join(devrelayRoot, "dogfood/v0.11-module-quality/providers/live-provider-evidence.json"));
 const godotAdapterEvidence = json(path.join(devrelayRoot, "dogfood/v0.11-module-quality/providers/godot-adapter-evidence.json"));
 const compatibilityPolicy = json(path.join(devrelayRoot, "dogfood/v0.11-module-quality/providers/godot-compatibility-policy.json"));
-api.verifyGodotCompatibilityPolicy(compatibilityPolicy);
+godot.verifyGodotCompatibilityPolicy(compatibilityPolicy);
 const compatibilityTuple = compatibilityPolicy.supportedTuples[0];
-const compatibilityDecision = api.evaluateGodotCompatibility({
+const compatibilityDecision = godot.evaluateGodotCompatibility({
   decisionId: "GCD-GREETING-E2E-001",
   policy: compatibilityPolicy,
   ...compatibilityTuple,
@@ -151,7 +152,7 @@ record("RequirementsGathering", "establish-requirements", "completed", ref("REQ-
 record("RequirementsGate", "approve-baseline", "approved", ref("REQ-GATE-GREETING-001", closedInterview.assessment), { weightedCoverage: closedInterview.assessment.weightedCoverage });
 
 const discoveryFiles = ["project.godot", "main.gd", "main.tscn", "test/greeting_card_test.gd"].map((relative) => ({ path: relative, content: read(relative).toString("utf8"), tracked: true }));
-const discovery = api.analyzeGodotRepository({ files: discoveryFiles, ignorePaths: [".godot"] });
+const discovery = godot.analyzeGodotRepository({ files: discoveryFiles, ignorePaths: [".godot"] });
 assert.ok(discovery.findings.length >= 5);
 assert.equal(discovery.gaps.filter(({ blocking }) => blocking).length, 0);
 record("ArchitectureDiscovery", "discover-repository", "completed", ref("DISCOVERY-GREETING-001", discovery), { analyzer: "devrelay.gdscript-discovery", semanticFindings: discovery.findings.length });
@@ -257,7 +258,7 @@ const findFile = (directory, name) => {
     else if (entry.name === name) return candidate;
   }
 };
-const gdunit = api.createGdUnit4VerificationAdapter({
+const gdunit = godot.createGdUnit4VerificationAdapter({
   hostExecute: async ({ stage, effect }) => {
     const reportRelative = "reports/" + stage;
     const reportDirectory = path.join(runtime, reportRelative);
