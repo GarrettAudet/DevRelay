@@ -1,0 +1,87 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "invocation-requirements-sim-001-simplification-openspec-clarify-v1",
+  "runId": "dogfood-sim-001-simplification-v1",
+  "nodeId": "requirements-gathering",
+  "module": {
+    "id": "requirements-gathering",
+    "version": "0.1.0",
+    "operation": "gather"
+  },
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "inputs": {
+    "goal": [
+      {
+        "artifactId": "goal-devrelay-sim-001-simplification-v1",
+        "schema": "https://devrelay.dev/artifacts/goal/v1",
+        "mediaType": "application/vnd.devrelay.goal+json",
+        "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/goal.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-3374e75",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/repository-snapshot.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ]
+  },
+  "options": {},
+  "config": {
+    "projectRoot": "C:/repos/DevRelay",
+    "toolName": "OpenSpec",
+    "toolVersion": "conversation-contract-v1",
+    "nativeOperation": "requirements.gather",
+    "changeName": "sim-001-simplification-module-v1",
+    "schema": "devrelay-requirements",
+    "bridge": "agent-command"
+  },
+  "grants": [
+    {
+      "kind": "filesystem.read",
+      "scope": "C:/repos/DevRelay"
+    },
+    {
+      "kind": "filesystem.write",
+      "scope": "C:/repos/DevRelay/openspec/changes"
+    },
+    {
+      "kind": "network.connect",
+      "scope": "host:implementation-engine"
+    }
+  ]
+}

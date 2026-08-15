@@ -41,10 +41,10 @@ test("V0.11 ArchitectureGate promotion is exact and routes only to ContractGener
   const approval = JSON.parse(approvalBytes);
   const proof = readJson(architectureOutput, "architecture-gate-promotion-proof.json");
   const journal = JSON.parse(
-    readFileSync(new URL("../project/architecture-promotion.commit.json", import.meta.url)),
+    readFileSync(new URL("../project/history/architecture/architecture-baseline-devrelay-v1-v0.11-module-quality-002/architecture-promotion.commit.json", import.meta.url)),
   );
   const baselineBytes = readFileSync(
-    new URL("../project/architecture-baseline.json", import.meta.url),
+    new URL("../project/history/architecture/architecture-baseline-devrelay-v1-v0.11-module-quality-002/architecture-baseline.json", import.meta.url),
   );
   const baseline = JSON.parse(baselineBytes);
 

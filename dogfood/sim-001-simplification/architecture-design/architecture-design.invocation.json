@@ -1,0 +1,180 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleInvocation",
+  "invocationId": "architecture-design-change-sim-001-simplification-v2",
+  "runId": "sim-001-simplification-architecture-run-v2",
+  "nodeId": "architecture-design",
+  "module": {
+    "id": "architecture-design",
+    "version": "0.1.0",
+    "operation": "design-change"
+  },
+  "adapters": [
+    {
+      "step": "designer",
+      "plugin": {
+        "id": "openspec-design",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "1.0",
+        "changeName": "sim-001-simplification",
+        "schema": "devrelay-architecture",
+        "artifact": "design.md",
+        "bridge": "agent-command",
+        "toolName": "OpenSpec"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/openspec/changes"
+        },
+        {
+          "kind": "network.connect",
+          "scope": "host:implementation-engine"
+        }
+      ]
+    },
+    {
+      "step": "modeler",
+      "plugin": {
+        "id": "structurizr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "toolVersion": "2026.06.28",
+        "workspacePath": "dogfood/sim-001-simplification/architecture-design/workspace.dsl",
+        "exportFormat": "static",
+        "toolName": "Structurizr DSL"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/architecture"
+        },
+        {
+          "kind": "process.spawn",
+          "scope": "structurizr-export"
+        }
+      ]
+    },
+    {
+      "step": "decision-recorder",
+      "plugin": {
+        "id": "madr",
+        "version": "0.1.0"
+      },
+      "config": {
+        "projectRoot": "C:/repos/DevRelay",
+        "templateVersion": "4.0",
+        "decisionsPath": "C:/repos/DevRelay/dogfood/sim-001-simplification/architecture-design",
+        "toolName": "MADR",
+        "toolVersion": "4.0"
+      },
+      "grants": [
+        {
+          "kind": "filesystem.read",
+          "scope": "C:/repos/DevRelay"
+        },
+        {
+          "kind": "filesystem.write",
+          "scope": "C:/repos/DevRelay/dogfood/sim-001-simplification/architecture-design"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "project-architecture-state": [
+      {
+        "artifactId": "project-architecture-state-sim-001-simplification-v1",
+        "schema": "https://devrelay.dev/artifacts/project-architecture-state/v1",
+        "mediaType": "application/vnd.devrelay.project-architecture-state+json",
+        "digest": "sha256:1a142e690fdc4e62424974beda3feea707aa988ed0a6ac1181441523e9bb0575",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/architecture-design/project-architecture-state.json"
+      }
+    ],
+    "routing-decision": [
+      {
+        "artifactId": "module-route-decision-sim-001-simplification-architecture-v1",
+        "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+        "mediaType": "application/vnd.devrelay.module-route-decision+json",
+        "digest": "sha256:3fcb4fb28c194ccf938de9500c7240067a6cd460a222cb67caad5b5345c0001a",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/architecture-design/module-route-decision.json"
+      }
+    ],
+    "requirements-baseline": [
+      {
+        "artifactId": "requirements-baseline-devrelay-v1-sim-001-simplification-001",
+        "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+        "mediaType": "application/vnd.devrelay.requirements-baseline+json",
+        "digest": "sha256:d6bf55b38cbe96d4c1fdca87d0ed07e2697a7a90e5ab33bb7c27098f88229de5",
+        "uri": "file:///C:/repos/DevRelay/project/requirements-baseline.json"
+      }
+    ],
+    "project-overview-baseline": [
+      {
+        "artifactId": "project-overview-baseline-devrelay-v1-sim-001-simplification-001",
+        "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+        "mediaType": "application/vnd.devrelay.project-overview-baseline+json",
+        "digest": "sha256:17fc515e1da2ed916692e87e73567ab18289eeb00b2dd4faecc7372e875bfa00",
+        "uri": "file:///C:/repos/DevRelay/project/project-overview-baseline.json"
+      }
+    ],
+    "project-context": [
+      {
+        "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/project-context.json"
+      }
+    ],
+    "repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-3374e75-sim-001-simplification",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca",
+        "uri": "file:///C:/repos/DevRelay/dogfood/sim-001-simplification/repository-snapshot.json"
+      }
+    ],
+    "architecture-baseline": [
+      {
+        "artifactId": "architecture-baseline-devrelay-v1-v0.11-module-quality-002",
+        "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+        "mediaType": "application/vnd.devrelay.architecture-baseline+json",
+        "digest": "sha256:248e888701ce3aa30481bdda40624faa8fec95a45aefc76334ba5fd648fe48bb",
+        "uri": "file:///C:/repos/DevRelay/project/architecture-baseline.json"
+      }
+    ],
+    "architecture-baseline-project-context": [
+      {
+        "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
+        "schema": "https://devrelay.dev/artifacts/project-context/v1",
+        "mediaType": "application/vnd.devrelay.project-context+json",
+        "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac",
+        "uri": "file:///C:/repos/DevRelay/dogfood/v0.11-module-quality/project-context.json"
+      }
+    ],
+    "architecture-baseline-repository-snapshot": [
+      {
+        "artifactId": "repository-snapshot-devrelay-a97f1f5-v011-module-quality",
+        "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+        "mediaType": "application/vnd.devrelay.repository-snapshot+json",
+        "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200",
+        "uri": "file:///C:/repos/DevRelay/dogfood/v0.11-module-quality/repository-snapshot.json"
+      }
+    ]
+  },
+  "options": {}
+}

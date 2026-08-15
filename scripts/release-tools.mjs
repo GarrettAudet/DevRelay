@@ -441,7 +441,7 @@ function assertPackageMetadata(packageDocument) {
       "fast-uri must remain pinned to the audited 3.1.5 override",
     );
   }
-  if (packageDocument.main !== "./src/index.mjs") {
+  if (packageDocument.main !== "./src/root.mjs") {
     throw new Error("package main must point to the intentional public API");
   }
   if (!packageDocument.exports || typeof packageDocument.exports !== "object") {
@@ -529,7 +529,10 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
   ]);
   run(install.command, install.args, { cwd: consumer });
   const smokeProgram = [
-    `const api = await import(${JSON.stringify(packageName)});`,
+    `const facade = await import(${JSON.stringify(packageName)});`,
+    `const api = await import(${JSON.stringify(`${packageName}/advanced`)});`,
+    'const expectedFacade = ["createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];',
+    'if (JSON.stringify(Object.keys(facade).sort()) !== JSON.stringify(expectedFacade)) throw new Error("unexpected root facade exports");',
     'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
     'if (typeof api.requirementsRuntimeArtifactContracts !== "function") throw new Error("missing RequirementsGathering contracts export");',
     'if (typeof api.architectureRuntimeArtifactContracts !== "function") throw new Error("missing ArchitectureDesign contracts export");',

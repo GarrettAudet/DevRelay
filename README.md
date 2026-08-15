@@ -19,7 +19,7 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.10.0-rc.1` is an Apache-2.0 open-source preview containing DevRelay Core,
+DevRelay `0.10.0-rc.2` is an Apache-2.0 open-source preview containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
@@ -31,9 +31,10 @@ versions are intentionally independent. The supported distribution is GitHub
 source plus a deterministic installable tarball; no public npm publication is
 claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 
-The release contains Core, schemas, versioned manifests, fixtures, and bounded
-adapter contracts, plus an in-memory reference graph and checkpoint store. It
-does not contain a durable graph backend, approval-gate contributors, or live
+The release contains Core, schemas, versioned manifests, fixtures, bounded
+adapter contracts, a small eight-operation facade, workflow profiles, a
+filesystem-backed local Windows host boundary, and a deterministic operator CLI.
+It does not contain a one-click ChatGPT Desktop plug-in, a hosted backend, or live
 OpenSpec, GitHub Spec Kit, Task Master, Structurizr, or MADR command adapters.
 ArchitectureDiscovery includes its deterministic offline native inventory plug-in; optional analyzers remain bounded adapter ports.
 WorkDependencyAnalysis includes its provider-neutral native structured proposer,
@@ -64,14 +65,43 @@ package export from the installed bytes.
 
 For the dynamic, human-readable run projection available to Desktop hosts, see
 [LifecycleRunReport](docs/lifecycle-run-report.md). Its ledger, ready-frontier,
-snapshot, content-policy, and Markdown renderer APIs are available from the
-installed package root; the report remains read-only and never controls a Gate.
+snapshot, content-policy, and Markdown renderer APIs are available from
+`devrelay/advanced`; the report remains read-only and never controls a Gate.
 
 ## Library quickstart
 
-The installable GitHub-source tarball exposes an intentional package root. A host can
-load the semantic modules and supply its own artifact store, checkpoint store,
-capability enforcement, and adapter implementations:
+The package root is intentionally limited to eight ordinary operations:
+
+```js
+import {
+  createDevRelay,
+  createLocalHost,
+  defineModule,
+  definePlugin,
+  inspect,
+  resume,
+  run,
+  verify,
+} from "devrelay";
+
+const host = createLocalHost({ hostId: "desktop.windows", services, grants });
+const relay = createDevRelay({
+  projectId: "example",
+  host,
+  profile: "standard",
+  modules: [defineModule(moduleDefinition)],
+  plugins: [definePlugin(pluginDefinition)],
+});
+const result = await run(relay, request);
+```
+
+The installed `devrelay` command exposes versioned `init`, `run`, `resume`,
+`status`, `verify`, `inspect`, and `evidence` operations. Human output is concise
+by default; `--json` is the lossless automation surface.
+
+Low-level, provider-neutral Core contracts remain available from the explicit
+advanced tier. A host using that tier supplies its own artifact store, checkpoint
+store, capability enforcement, and adapter implementations:
 
 ```js
 import { readFile } from "node:fs/promises";
@@ -82,7 +112,7 @@ import {
   validateRequirementsGatePromotion,
   validateWorkBreakdownGatePromotion,
   workBreakdownRuntimeArtifactContracts,
-} from "devrelay";
+} from "devrelay/advanced";
 
 const require = createRequire(import.meta.url);
 const loadJson = async (specifier) =>
@@ -131,7 +161,7 @@ import {
   createTraceabilityGraphService,
   requirementsTraceabilityContributors,
   workBreakdownTraceabilityContributors,
-} from "devrelay";
+} from "devrelay/advanced";
 
 const traceabilityGraph = createTraceabilityGraphService({
   graphId: "graph-example",

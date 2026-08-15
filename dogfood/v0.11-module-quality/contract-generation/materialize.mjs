@@ -91,24 +91,24 @@ const moduleDefinition = JSON.parse(
   await readFile(new URL("examples/modules/contract-generation.module.json", ROOT), "utf8"),
 );
 const architecture = await loadedFile(
-  "project/architecture-baseline.json",
+  "project/history/architecture/architecture-baseline-devrelay-v1-v0.11-module-quality-002/architecture-baseline.json",
   "https://devrelay.dev/artifacts/architecture-baseline/v1",
   "application/vnd.devrelay.architecture-baseline+json",
   "baselineId",
 );
 const projectArchitectureState = JSON.parse(
-  await readFile(new URL("project/project-architecture-state.json", ROOT), "utf8"),
+  await readFile(new URL("project/history/architecture/architecture-baseline-devrelay-v1-v0.11-module-quality-002/project-architecture-state.json", ROOT), "utf8"),
 );
 architecture.ref = normalizeRepositoryArtifactUris(projectArchitectureState.architectureBaseline);
 const projectOverview = await loadedFile(
-  "project/project-overview-baseline.json",
+  "project/history/1.9.0/project-overview-baseline.json",
   "https://devrelay.dev/artifacts/project-overview-baseline/v1",
   "application/vnd.devrelay.project-overview-baseline+json",
   "baselineId",
 );
 projectOverview.ref = normalizeRepositoryArtifactUris(architecture.value.projectOverviewBaseline);
 const requirements = await loadedFile(
-  "project/requirements-baseline.json",
+  "project/history/1.9.0/requirements-baseline.json",
   "https://devrelay.dev/artifacts/requirements-baseline/v1",
   "application/vnd.devrelay.requirements-baseline+json",
   "baselineId",

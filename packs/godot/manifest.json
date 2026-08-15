@@ -1,0 +1,18 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "DevRelayPackManifest",
+  "id": "devrelay.godot",
+  "version": "0.1.0",
+  "entrypoint": "./packs/godot/index.mjs",
+  "maturity": "fixture-conformant",
+  "capabilities": ["godot.inspect", "godot.test"],
+  "dependencies": ["godot-engine"],
+  "providerBindings": ["godot-ai-mcp", "gdunit4"],
+  "permissionDemands": [
+    { "kind": "process.spawn", "values": ["gdunit4", "godot"] }
+  ],
+  "rollback": {
+    "strategy": "disable-and-remove-binding",
+    "instructions": "Disable the pack manifest and remove its provider bindings; Core baselines remain unchanged."
+  }
+}

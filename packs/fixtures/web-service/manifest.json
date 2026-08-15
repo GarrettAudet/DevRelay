@@ -1,0 +1,16 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "DevRelayPackManifest",
+  "id": "fixture.web-service",
+  "version": "0.0.0-fixture",
+  "entrypoint": "./packs/fixtures/web-service/index.mjs",
+  "maturity": "fixture-conformant",
+  "capabilities": ["web-service.contract-test"],
+  "dependencies": ["node"],
+  "providerBindings": [],
+  "permissionDemands": [{ "kind": "process.spawn", "values": ["node"] }],
+  "rollback": {
+    "strategy": "disable-and-remove-binding",
+    "instructions": "Disable the synthetic fixture pack."
+  }
+}

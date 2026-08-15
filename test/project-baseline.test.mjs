@@ -18,11 +18,12 @@ async function json(relativePath) {
 }
 
 test("the canonical project baseline contains the exact approved V1 lifecycle", async () => {
-  const [requirementsBaseline, overviewBaseline, overviewBytes] =
+  const [requirementsBaseline, overviewBaseline, overviewBytes, promotion] =
     await Promise.all([
       json("project/requirements-baseline.json"),
       json("project/project-overview-baseline.json"),
       readFile(new URL("ProjectOverview.md", root)),
+      json("project/requirements-promotion.commit.json"),
     ]);
 
   validateRequirementsArtifact(requirementsBaseline);
@@ -45,15 +46,27 @@ test("the canonical project baseline contains the exact approved V1 lifecycle", 
       lifecycle.conditional,
     );
   }
-  assert.equal(requirementsBaseline.version, "1.9.0");
-  assert.equal(overviewBaseline.version, "1.9.0");
+  assert.equal(requirementsBaseline.version, "2.0.0");
+  assert.equal(overviewBaseline.version, "2.0.0");
   assert.equal(
     sha256Digest(await readFile(new URL("project/requirements-baseline.json", root))),
-    "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32",
+    promotion.next.requirementsBaseline.digest,
   );
   assert.equal(
     sha256Digest(await readFile(new URL("project/project-overview-baseline.json", root))),
-    "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb",
+    promotion.next.projectOverviewBaseline.digest,
+  );
+  assert.equal(
+    sha256Digest(
+      await readFile(new URL("project/history/1.9.0/requirements-baseline.json", root)),
+    ),
+    promotion.previous.requirementsBaseline.digest,
+  );
+  assert.equal(
+    sha256Digest(
+      await readFile(new URL("project/history/1.9.0/project-overview-baseline.json", root)),
+    ),
+    promotion.previous.projectOverviewBaseline.digest,
   );
 
   assert.deepEqual(

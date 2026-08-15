@@ -103,27 +103,27 @@ function specKitReview(graphMechanics) {
 }
 
 const workBreakdown = await loadedFile(
-  "project/work-breakdown-baseline.json",
+  "project/history/work-breakdown/1.9.1/work-breakdown-baseline.json",
   "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
   "application/vnd.devrelay.work-breakdown-baseline+json",
 );
 const projectOverview = await loadedFile(
-  "project/project-overview-baseline.json",
+  "project/history/1.9.0/project-overview-baseline.json",
   "https://devrelay.dev/artifacts/project-overview-baseline/v1",
   "application/vnd.devrelay.project-overview-baseline+json",
 );
 const requirements = await loadedFile(
-  "project/requirements-baseline.json",
+  "project/history/1.9.0/requirements-baseline.json",
   "https://devrelay.dev/artifacts/requirements-baseline/v1",
   "application/vnd.devrelay.requirements-baseline+json",
 );
 const architecture = await loadedFile(
-  "project/architecture-baseline.json",
+  "project/history/architecture/architecture-baseline-devrelay-v1-v0.11-module-quality-002/architecture-baseline.json",
   "https://devrelay.dev/artifacts/architecture-baseline/v1",
   "application/vnd.devrelay.architecture-baseline+json",
 );
 const contracts = await loadedFile(
-  "project/contract-baseline.json",
+  "project/history/contracts/CB-DEVRELAY-010/contract-baseline.json",
   "https://devrelay.dev/artifacts/contract-baseline/v1",
   "application/vnd.devrelay.contract-baseline+json",
 );
@@ -132,6 +132,14 @@ const repository = await loadedFile(
   "https://devrelay.dev/artifacts/repository-snapshot/v1",
   "application/vnd.devrelay.repository-snapshot+json",
 );
+
+// Historical replays read immutable archived bytes while preserving the
+// originally approved logical artifact locations in candidate identity.
+workBreakdown.ref.uri = "devrelay://repository/project/work-breakdown-baseline.json";
+projectOverview.ref.uri = "devrelay://repository/project/project-overview-baseline.json";
+requirements.ref.uri = "devrelay://repository/project/requirements-baseline.json";
+architecture.ref.uri = "devrelay://repository/project/architecture-baseline.json";
+contracts.ref.uri = "devrelay://repository/project/contract-baseline.json";
 if (repository.value.revision !== REPOSITORY_REVISION) {
   throw new Error("repository snapshot revision drifted before dependency analysis");
 }
