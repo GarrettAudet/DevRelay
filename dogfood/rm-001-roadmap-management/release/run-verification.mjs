@@ -8,7 +8,9 @@ const commit = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).
 const parentCommit = execFileSync("git", ["rev-parse", "HEAD^"], { encoding: "utf8" }).trim();
 const status = execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" });
 if (status !== "") throw new Error("RM verification must begin from the clean implementation commit");
-const tree = execFileSync("git", ["ls-tree", "-r", "--full-tree", "HEAD"]);
+const tree = execFileSync("git", ["ls-tree", "-r", "--full-tree", "HEAD"], {
+  maxBuffer: 128 * 1024 * 1024,
+});
 const treeDigest = sha256Digest(tree);
 
 function write(relativePath, bytes) {
