@@ -134,6 +134,17 @@ export const canonicalModules = Object.freeze([
     operations: [{ id: "verify-system", steps: [] }],
     plugins: ["review-system-verifier", "test-system-verifier"],
   },
+  {
+    id: "roadmap-management",
+    version: "0.1.0",
+    definition: "examples/modules/roadmap-management.module.json",
+    operations: [
+      { id: "reprioritize", steps: [] },
+      { id: "review-roadmap", steps: [] },
+      { id: "triage-candidate", steps: [] },
+    ],
+    plugins: ["native-structured-roadmap-proposer"],
+  },
 ]);
 
 export const compatibilityModules = Object.freeze([
@@ -145,6 +156,17 @@ export const compatibilityPlugins = Object.freeze([
 ]);
 
 export const canonicalPlugins = Object.freeze([
+  {
+    id: "native-structured-roadmap-proposer",
+    version: "0.1.0",
+    manifest: "examples/plugins/native-structured-roadmap-proposer.plugin.json",
+    module: { id: "roadmap-management", version: "0.1.0" },
+    bindings: [
+      { operation: "reprioritize", step: null, role: "proposer" },
+      { operation: "review-roadmap", step: null, role: "proposer" },
+      { operation: "triage-candidate", step: null, role: "proposer" },
+    ],
+  },
   {
     id: "native-architecture-discovery",
     version: "0.1.0",

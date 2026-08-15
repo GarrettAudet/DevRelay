@@ -2,30 +2,49 @@
 
 Last reconciled: 2026-08-15 MDT
 Protected branch: `main`
-Immutable implementation commit: `53760e86617fcc28286a916200866448a441d4c8`
-Candidate version: `0.10.0-rc.2`
-Workflow increment: `SIM-001 simplification`
-Active branch: `codex/sim-001-simplification`
+Accepted predecessor: `0daf16c6582c603a25c34e97ca078f98676c8e3f`
+Candidate version: `0.10.0-rc.3`
+Workflow increment: `RM-001 RoadmapManagement and session bootstrap`
+Active branch: `codex/rm-001-roadmap-management`
 Release boundary: GitHub source/installable library operated end-to-end through ChatGPT Desktop on Windows
 
 ## Executive status
 
-SIM-001 construction, SystemVerification, and BusinessAcceptance are complete. The approved 12-item dependency DAG executed through six integration frontiers and a seventh Core-derived terminal frontier with no ready work remaining. The installed RC2 package completed all 20 lifecycle components against a minimal Godot project on Windows, exercised all seven CLI commands and the eight-operation public facade, used live-attested OpenSpec, Spec Kit, Structurizr, MADR, Godot 4.7.1, and GdUnit4 6.2 capabilities, and produced reconstructable two-phase Git evidence.
+RM-001 has completed RequirementsGathering and Gate, ArchitectureDesign and Gate, ContractGeneration and Gate, WorkBreakdown and Gate, WorkDependencyAnalysis and Gate, and SpecialistAssignment and Gate. Seven approved work items are implemented on the active branch. The canonical implementation gate passes 993 tests with 991 passing, zero failures, and two intentional environment-dependent skips.
 
-The final TraceabilityGraph is revision 41 with zero blocking diagnostics. SIM-001 is accepted for its controlled Windows source/library preview boundary. RM-001 RoadmapManagement and mandatory fresh-task session bootstrap are the next approved increment; they are not part of the RC2 release candidate.
+The implementation adds provider-neutral RoadmapManagement triage, review, and reprioritization; explicit weighted scoring; exact replay; a human-owned RoadmapGate; authoritative structured baselines; concise Roadmap projection; trusted traceability; and mandatory fail-closed fresh-task session bootstrap for configured ChatGPT Desktop tasks on Windows.
 
-## Exact evidence
+## Current lifecycle position
 
-- Canonical verification: 983 tests; 981 passed; 0 failed; 2 expected skips.
-- Integrated work: 12/12 work items across six execution/verification/integration frontiers.
-- Terminal ready frontier: zero ready work items; digest `sha256:4e4501334017f139cf786e8d93c561e89e3d66df9238c26ef345180f4316a744`.
-- SystemVerification: `verified`, digest `sha256:11e45310627ef60f6e1f62cc40fd06d1c782135aea736baed27f36306ff9510e`.
-- BusinessAcceptance: `accepted`, digest `sha256:2f102e5aeabe6d37d34bd86a8f07416b5f16e990f10cff8955992c9d36088869`.
-- Accepted coverage: 119 acceptance criteria, 32 NFRs, 14 business objectives, 18 success metrics, 43 business-scope identities.
-- TraceabilityGraph revision 41: `sha256:14b4fdd3d4745276b56ee86a7302d1c99e1be1359a891f5e6653172653c7feea`; zero blockers.
-- Windows dogfood summary: `sha256:2e27beb3ed1dc0bc82f4efb09d91608866bf652fe72327b82c623b92afdec902`.
-- Reconstructable dogfood history bundle: `sha256:717231c925540443b26362f02987934efa865697b5e9b6801cfd28c5af60243e`.
+```text
+RequirementsGathering         complete
+RequirementsGate              complete
+ArchitectureDesign            complete
+ArchitectureGate              complete
+ContractGeneration            complete
+ContractGate                  complete
+WorkBreakdown                 complete
+WorkBreakdownGate             complete
+WorkDependencyAnalysis        complete
+WorkDependencyGate            complete
+SpecialistAssignment          complete
+SpecialistAssignmentGate      complete
+WorkExecution                 implementation present; evidence seal pending
+WorkItemVerification          canonical and focused gates green
+ChangeIntegration             implementation commit pending
+SystemVerification            pending exact clean-commit run
+BusinessAcceptance            pending exact release candidate
+```
 
-## Remaining release action
+## Exact approved planning artifacts
 
-Create the direct evidence-seal child of implementation commit `53760e86617fcc28286a916200866448a441d4c8`, run `npm.cmd run release:check`, push `codex/sim-001-simplification`, and promote through protected `main`. This preview does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or non-Windows support. The active pickup is [handoff/2026-08-15-sim-001-release-ready/README.md](handoff/2026-08-15-sim-001-release-ready/README.md).
+- Requirements baseline: `sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb`.
+- Architecture baseline: `sha256:265711e213a313d162d09b4b46e9cb2c1c84b29e48b03d21875a851fb9a8a4d3`.
+- Contract baseline: `sha256:ca5c00ad3f7bf8827bed1a9b1f347fd64e74331e7f225ea32d52c684a34b8997`.
+- WorkBreakdown baseline: `sha256:859b2b9c5927bdda64f37f19e23cb8fbf741767a7a1089d2f1da922c46c157fd`.
+- WorkDependency baseline: `sha256:1d25ec55d62dfbd313dfe5e0d87e4d63cd913f0cfc82d8dd3dea0ec349c810dd`.
+- SpecialistAssignment baseline: `sha256:8ce5ea22995330c1bda8e2f47b52049930aa5147cd43c36686d5346ae3127e55`.
+
+## Next exact action
+
+Create the clean RM-001 implementation commit, run the raw Windows verification and performance receipt collector from that immutable commit, execute the packed Desktop roadmap scenario, promote the first RoadmapBaseline, refresh session context, merge trusted traceability, run `npm.cmd run release:check`, then complete SystemVerification, BusinessAcceptance, the evidence seal, milestone, and pickup package.

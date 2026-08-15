@@ -6,7 +6,7 @@ Modules with a Core-owned lifecycle traceability sidecar.
 For the reconciled working-tree checkpoint, active Gate, module maturity,
 promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
 The ordered release, durable-host, and ChatGPT Desktop integration work is in
-[ROADMAP.md](ROADMAP.md).
+[Roadmap.md](Roadmap.md).
 For a self-contained implementation-owner pickup, see
 [handoff/2026-08-13-v0100-rc1-audit-remediation/README.md](handoff/2026-08-13-v0100-rc1-audit-remediation/README.md).
 This status page is a human-readable projection; digest-bound lifecycle
@@ -19,12 +19,12 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.10.0-rc.2` is an Apache-2.0 open-source preview containing DevRelay Core,
+DevRelay `0.10.0-rc.3` is an Apache-2.0 open-source preview containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
+`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0`. Source-package
 versions and immutable Module
 versions are intentionally independent. The supported distribution is GitHub
@@ -34,8 +34,9 @@ claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 The release contains Core, schemas, versioned manifests, fixtures, bounded
 adapter contracts, a small eight-operation facade, workflow profiles, a
 filesystem-backed local Windows host boundary, and a deterministic operator CLI.
-It does not contain a one-click ChatGPT Desktop plug-in, a hosted backend, or live
-OpenSpec, GitHub Spec Kit, Task Master, Structurizr, or MADR command adapters.
+It does not contain a one-click ChatGPT Desktop plug-in or a hosted backend. The
+Windows Desktop facade requires a trusted fresh-task session bootstrap and passes
+its exact receipt into every public operation. Provider maturity is evidence-bound: manifests and contract conformance never imply live execution, while validated host-observed provider receipts may raise an exact binding to live-conformant maturity.
 ArchitectureDiscovery includes its deterministic offline native inventory plug-in; optional analyzers remain bounded adapter ports.
 WorkDependencyAnalysis includes its provider-neutral native structured proposer,
 ContractGeneration includes its deterministic JSON Schema generator, and
@@ -84,6 +85,7 @@ import {
   verify,
 } from "devrelay";
 
+// services must contain bootstrap, run, resume, verify, and inspect.
 const host = createLocalHost({ hostId: "desktop.windows", services, grants });
 const relay = createDevRelay({
   projectId: "example",
@@ -92,8 +94,17 @@ const relay = createDevRelay({
   modules: [defineModule(moduleDefinition)],
   plugins: [definePlugin(pluginDefinition)],
 });
-const result = await run(relay, request);
+const result = await run(relay, {
+  taskId: "desktop-task-42",
+  goal: "Build the feature",
+});
 ```
+
+A fresh `taskId` is the Desktop task/tab boundary. The trusted `bootstrap` service
+must return a valid digest-bound `SessionContextReceipt`; missing or stale context
+fails closed before the selected operation. See
+[DevRelaySessionBootstrap](docs/session-bootstrap.md) and
+[RoadmapManagement](docs/roadmap-management.md).
 
 The installed `devrelay` command exposes versioned `init`, `run`, `resume`,
 `status`, `verify`, `inspect`, and `evidence` operations. Human output is concise

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.0-rc.3 - 2026-08-15
+
+### Added
+
+- Added `roadmap-management@0.1.0` with deterministic triage, review, reprioritization, explicit weighted scoring, exact checkpoint replay, a human-owned Roadmap Gate, authoritative structured baselines, concise `Roadmap.md` projection, and trusted forward traceability.
+- Added mandatory fail-closed `DevRelaySessionBootstrap` for every fresh configured ChatGPT Desktop task on Windows, including exact project/roadmap context receipts and next-Module-boundary refresh after baseline promotion.
+
+### Verification
+
+- The complete canonical gate passes 993 tests with 991 passing, zero failures, and two intentional environment-dependent skips.
+- RM-001 was recursively dogfooded through RequirementsGathering, ArchitectureDesign, ContractGeneration, WorkBreakdown, WorkDependencyAnalysis, and SpecialistAssignment before implementation.
+
+### Release scope
+
+- This remains an advanced GitHub source/installable-library preview for ChatGPT Desktop on Windows. It does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or non-Windows support.
+
 ## 0.10.0-rc.2 - 2026-08-15
 
 ### Added

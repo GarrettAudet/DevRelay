@@ -1,11 +1,13 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
 import { resolveWorkflowProfile } from "./workflow-profiles.mjs";
+import { validateRoadmapArtifact } from "./roadmap-management-artifact-validator.mjs";
 
 const API_VERSION = "devrelay.dev/v1alpha1";
 const NAME = /^[a-z][a-z0-9.-]{1,127}$/u;
 const VERSION = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const DIGEST = /^sha256:[0-9a-f]{64}$/u;
 const OPERATIONS = Object.freeze(["run", "resume", "verify", "inspect"]);
+const HOST_OPERATIONS = Object.freeze(["bootstrap", ...OPERATIONS]);
 
 export class DevRelayFacadeError extends Error {
   constructor(message, code = "DR4740") {
@@ -70,7 +72,7 @@ export function definePlugin(definition) {
 export function createLocalHost({ hostId = "local.windows", platform = process.platform, services, grants = [] }) {
   if (!NAME.test(hostId) || platform !== "win32") fail("supported local host must be an explicitly named Windows host");
   ensureObject(services, "host services");
-  for (const operation of OPERATIONS) if (typeof services[operation] !== "function") fail(`host service ${operation} is required`);
+  for (const operation of HOST_OPERATIONS) if (typeof services[operation] !== "function") fail(`host service ${operation} is required`);
   const declaredGrants = deepFreeze(grants);
   const hostDigest = canonicalJsonDigest({ hostId, platform, grants: declaredGrants });
   return Object.freeze({
@@ -81,7 +83,7 @@ export function createLocalHost({ hostId = "local.windows", platform = process.p
     grants: declaredGrants,
     hostDigest,
     async invoke(operation, request) {
-      if (!OPERATIONS.includes(operation)) fail(`unsupported host operation ${operation}`);
+      if (!HOST_OPERATIONS.includes(operation)) fail(`unsupported host operation ${operation}`);
       return services[operation](deepFreeze(request));
     },
   });
@@ -111,7 +113,11 @@ function requireText(value, label) {
 }
 function normalizeRequest(operation, request, defaults) {
   ensureObject(request, `${operation} request`);
-  const common = { projectId: requireText(request.projectId, "projectId"), profile: request.profile ?? defaults.profile };
+  const common = {
+    projectId: requireText(request.projectId, "projectId"),
+    taskId: requireText(request.taskId, "taskId"),
+    profile: request.profile ?? defaults.profile,
+  };
   resolveWorkflowProfile({
     profileName: common.profile,
     projectRiskContext: request.projectRiskContext,
@@ -153,16 +159,51 @@ export function createDevRelay({ projectId, host, profile = "standard", modules 
     profile,
     configurationDigest,
   };
+  const sessionReceipts = new Map();
+  const loadSessionReceipt = async (normalized) => {
+    const cached = sessionReceipts.get(normalized.taskId);
+    if (cached) return cached;
+    const receipt = await host.invoke("bootstrap", {
+      apiVersion: API_VERSION,
+      projectId,
+      taskId: normalized.taskId,
+      profile: normalized.profile,
+      configurationDigest,
+      host: { hostId: host.hostId, hostDigest: host.hostDigest },
+    });
+    try {
+      validateRoadmapArtifact(receipt);
+    } catch (error) {
+      fail(`host returned an invalid session context receipt: ${error.message}`, "DR4742");
+    }
+    if (receipt.projectId !== projectId || receipt.taskId !== normalized.taskId) {
+      fail("session context receipt identity was substituted", "DR4742");
+    }
+    if (receipt.outcome === "fail" || receipt.moduleExecutionAllowed !== true) {
+      fail(`session context bootstrap failed: ${(receipt.diagnostics ?? []).join("; ") || "execution is not allowed"}`, "DR4742");
+    }
+    sessionReceipts.set(normalized.taskId, receipt);
+    return receipt;
+  };
   for (const operation of OPERATIONS) {
     relay[operation] = async (request = {}) => {
       if (request.projectId !== undefined && request.projectId !== projectId) fail("request project identity does not match configured project", "DR4741");
       const normalized = normalizeRequest(operation, { ...request, projectId }, { profile });
-      const outputs = await host.invoke(operation, {
+      const receipt = await loadSessionReceipt(normalized);
+      const sessionContext = deepFreeze({
+        receipt,
+        executionConstraint: receipt.outcome === "RoadmapNotInitialized"
+          ? "roadmap-baseline-establishment-only"
+          : "full",
+      });
+      const boundRequest = deepFreeze({
         ...normalized,
+        sessionContext,
         configurationDigest,
         host: { hostId: host.hostId, hostDigest: host.hostDigest },
       });
-      return envelope(operation, normalized, outputs);
+      const outputs = await host.invoke(operation, boundRequest);
+      return envelope(operation, boundRequest, outputs);
     };
   }
   return Object.freeze(relay);

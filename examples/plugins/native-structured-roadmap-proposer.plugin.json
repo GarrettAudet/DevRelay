@@ -1,0 +1,17 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "native-structured-roadmap-proposer",
+    "version": "0.1.0",
+    "description": "Default deterministic RoadmapManagement proposer with explicit scoring, stable ordering, and proposer-only authority."
+  },
+  "implements": [{
+    "module": { "id": "roadmap-management", "version": "0.1.0" },
+    "operations": [
+      { "id": "triage-candidate", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false }, "capabilities": [] },
+      { "id": "review-roadmap", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false }, "capabilities": [] },
+      { "id": "reprioritize", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false }, "capabilities": [] }
+    ]
+  }]
+}

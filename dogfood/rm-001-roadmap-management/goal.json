@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-devrelay-rm-001-roadmap-management-v1",
+  "statement": "Add deterministic RoadmapManagement and mandatory fresh-task context bootstrap so DevRelay users can capture, evaluate, prioritize, and resume roadmap work from exact approved project state.",
+  "objectives": [
+    "Capture net-new initiatives as auditable candidates without silently mutating approved scope.",
+    "Use RequirementsGathering to close initiative intent before keep, defer, merge, or discard disposition.",
+    "Maintain an authoritative structured RoadmapBaseline with a concise deterministic Roadmap.md projection.",
+    "Load and prove current project, roadmap, lifecycle, Gate, frontier, and blocker context at every fresh DevRelay task.",
+    "Keep roadmap authority human-owned and explicit while preserving exact ModuleInvocation inputs."
+  ],
+  "constraints": [
+    "RoadmapManagement is cross-cutting and is not inserted as a mandatory software-construction stage.",
+    "RoadmapGate alone approves RoadmapBaseline changes.",
+    "Fresh-task context applies only to DevRelay tasks in the configured workspace, not unrelated ChatGPT conversations.",
+    "Session context never replaces content-addressed ModuleInvocation inputs or becomes hidden Core state.",
+    "V1 owns prioritization and disposition, not dates, staffing, scheduling, execution, or work-item status."
+  ],
+  "acceptanceCriteria": [
+    "A fresh DevRelay task fails closed unless it loads a valid digest-bound SessionContextSnapshot and records a SessionContextReceipt.",
+    "A net-new initiative reaches RoadmapGate only after adaptive RequirementsGathering closes at or above 0.99 with no blocking unknowns or contradictions.",
+    "RoadmapManagement returns exactly one audited keep, defer, merge, or discard recommendation and never mutates the roadmap directly.",
+    "Roadmap.md is a concise deterministic projection of the authoritative RoadmapBaseline.",
+    "Every roadmap priority and disposition is reproducible from exact baselines, explicit weights, evidence, and owner approval."
+  ],
+  "assumptions": [
+    "The owner's approvals in this task close all twelve RM-001 intake decisions exactly as recorded.",
+    "The sealed SIM-001 evidence commit is the immutable implementation baseline for RM-001.",
+    "ChatGPT Desktop on Windows remains the release-defining host."
+  ]
+}

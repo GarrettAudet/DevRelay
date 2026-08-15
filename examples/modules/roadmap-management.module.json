@@ -1,0 +1,97 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "roadmap-management",
+    "version": "0.1.0",
+    "description": "Review, triage, and reprioritize governed roadmap initiatives without scheduling, execution, work-status, or baseline-promotion authority."
+  },
+  "operations": [
+    {
+      "id": "triage-candidate",
+      "description": "Compare one requirements-closed net-new candidate with exact current project state and propose exactly one keep, defer, merge, or discard disposition.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "roadmap-intake-candidate", "schema": "https://devrelay.dev/artifacts/roadmap-intake-candidate/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-intake-candidate+json"], "cardinality": "one", "required": true },
+        { "name": "roadmap-baseline", "schema": "https://devrelay.dev/artifacts/roadmap-baseline/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-baseline+json"], "cardinality": "one", "required": false },
+        { "name": "roadmap-not-initialized", "schema": "https://devrelay.dev/artifacts/roadmap-not-initialized/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-not-initialized+json"], "cardinality": "one", "required": false },
+        { "name": "priority-policy", "schema": "https://devrelay.dev/artifacts/roadmap-priority-policy/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-priority-policy+json"], "cardinality": "one", "required": true },
+        { "name": "context-slice-set", "schema": "https://devrelay.dev/artifacts/context-slice-set/v1", "mediaTypes": ["application/vnd.devrelay.context-slice-set+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "roadmap-change-set-draft", "schema": "https://devrelay.dev/artifacts/roadmap-change-set-draft/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-change-set-draft+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["decomposed", "needs_clarification", "unable_to_proceed", "execution_failed", "baseline_drift"],
+      "resultContracts": {
+        "decomposed": { "status": "completed", "requiredInputs": ["project-overview-baseline", "roadmap-intake-candidate", "priority-policy", "context-slice-set"], "forbiddenInputs": [], "requiredOutputs": ["roadmap-change-set-draft"], "allowedOutputs": ["roadmap-change-set-draft"], "requiredEvidence": [{ "kind": "roadmap/native-proposal", "statuses": ["pass"], "artifactOutput": "roadmap-change-set-draft" }, { "kind": "roadmap/priority-evaluation", "statuses": ["pass"], "artifactOutput": "roadmap-change-set-draft" }], "diagnosticsRequired": false },
+        "needs_clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable_to_proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution_failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline_drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["roadmap/native-proposal", "roadmap/priority-evaluation", "roadmap/context-comparison"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "roadmap-proposer", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/roadmap-proposal-request/v1", "outputSchema": "https://devrelay.dev/artifacts/roadmap-proposal/v1", "required": true }],
+      "orchestrationPlan": [
+        { "id": "input-guard", "kind": "core", "handler": "roadmap/input-guard" },
+        { "id": "context-compare", "kind": "core", "handler": "roadmap/context-comparator" },
+        { "id": "proposal", "kind": "extension-port", "handler": "roadmap-proposer" },
+        { "id": "priority", "kind": "core", "handler": "roadmap/priority-evaluator" },
+        { "id": "candidate", "kind": "core", "handler": "roadmap/candidate-assembler" },
+        { "id": "checkpoint", "kind": "core", "handler": "roadmap/checkpoint" }
+      ]
+    },
+    {
+      "id": "review-roadmap",
+      "description": "Review the complete approved RoadmapBaseline using exact current context and return a deterministic human-readable draft without mutating it.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "roadmap-baseline", "schema": "https://devrelay.dev/artifacts/roadmap-baseline/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "priority-policy", "schema": "https://devrelay.dev/artifacts/roadmap-priority-policy/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-priority-policy+json"], "cardinality": "one", "required": true },
+        { "name": "context-slice-set", "schema": "https://devrelay.dev/artifacts/context-slice-set/v1", "mediaTypes": ["application/vnd.devrelay.context-slice-set+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "roadmap-draft", "schema": "https://devrelay.dev/artifacts/roadmap-draft/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-draft+json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["decomposed", "needs_clarification", "unable_to_proceed", "execution_failed", "baseline_drift"],
+      "resultContracts": {
+        "decomposed": { "status": "completed", "requiredInputs": ["project-overview-baseline", "roadmap-baseline", "priority-policy", "context-slice-set"], "forbiddenInputs": [], "requiredOutputs": ["roadmap-draft"], "allowedOutputs": ["roadmap-draft"], "requiredEvidence": [{ "kind": "roadmap/native-proposal", "statuses": ["pass"], "artifactOutput": "roadmap-draft" }], "diagnosticsRequired": false },
+        "needs_clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable_to_proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution_failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline_drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["roadmap/native-proposal", "roadmap/context-comparison"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "roadmap-proposer", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/roadmap-proposal-request/v1", "outputSchema": "https://devrelay.dev/artifacts/roadmap-proposal/v1", "required": true }],
+      "orchestrationPlan": [{ "id": "input-guard", "kind": "core", "handler": "roadmap/input-guard" }, { "id": "proposal", "kind": "extension-port", "handler": "roadmap-proposer" }, { "id": "candidate", "kind": "core", "handler": "roadmap/candidate-assembler" }, { "id": "checkpoint", "kind": "core", "handler": "roadmap/checkpoint" }]
+    },
+    {
+      "id": "reprioritize",
+      "description": "Recompute the complete roadmap ordering from one explicit versioned priority policy and exact current factor facts.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "roadmap-baseline", "schema": "https://devrelay.dev/artifacts/roadmap-baseline/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "priority-policy", "schema": "https://devrelay.dev/artifacts/roadmap-priority-policy/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-priority-policy+json"], "cardinality": "one", "required": true },
+        { "name": "context-slice-set", "schema": "https://devrelay.dev/artifacts/context-slice-set/v1", "mediaTypes": ["application/vnd.devrelay.context-slice-set+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "roadmap-change-set-draft", "schema": "https://devrelay.dev/artifacts/roadmap-change-set-draft/v1", "mediaTypes": ["application/vnd.devrelay.roadmap-change-set-draft+json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["decomposed", "needs_clarification", "unable_to_proceed", "execution_failed", "baseline_drift"],
+      "resultContracts": {
+        "decomposed": { "status": "completed", "requiredInputs": ["project-overview-baseline", "roadmap-baseline", "priority-policy", "context-slice-set"], "forbiddenInputs": [], "requiredOutputs": ["roadmap-change-set-draft"], "allowedOutputs": ["roadmap-change-set-draft"], "requiredEvidence": [{ "kind": "roadmap/priority-evaluation", "statuses": ["pass"], "artifactOutput": "roadmap-change-set-draft" }], "diagnosticsRequired": false },
+        "needs_clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable_to_proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution_failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline_drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["roadmap/priority-evaluation", "roadmap/context-comparison"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "roadmap-proposer", "role": "proposer", "inputSchema": "https://devrelay.dev/artifacts/roadmap-proposal-request/v1", "outputSchema": "https://devrelay.dev/artifacts/roadmap-proposal/v1", "required": true }],
+      "orchestrationPlan": [{ "id": "input-guard", "kind": "core", "handler": "roadmap/input-guard" }, { "id": "priority", "kind": "core", "handler": "roadmap/priority-evaluator" }, { "id": "proposal", "kind": "extension-port", "handler": "roadmap-proposer" }, { "id": "candidate", "kind": "core", "handler": "roadmap/candidate-assembler" }, { "id": "checkpoint", "kind": "core", "handler": "roadmap/checkpoint" }]
+    }
+  ]
+}

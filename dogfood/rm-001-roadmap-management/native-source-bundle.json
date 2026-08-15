@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "owner-decision",
+      "path": "dogfood/rm-001-roadmap-management/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-rm-001-roadmap-management-v1",
+        "digest": "sha256:f3adef6d46afa2f3b696273662b63c9419fc18ddf85c145ec88f101f18a0b648"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/rm-001-roadmap-management/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-rm-001-roadmap-management-v1",
+        "digest": "sha256:4dcc87e82c1f5a5de808c8e7c747bd4c051c6f3bdbd1dcdfce9046e532465043"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/rm-001-roadmap-management/native/openspec/specs/rm-001-roadmap-management/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-rm-001-roadmap-management-v1",
+        "digest": "sha256:df984f03b3ba14a05dea4e2f4e168d465d920e73a75b1ecc8d6c4d092461553c"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-rm-001-roadmap-management-v1",
+      "digest": "sha256:d9e351c3e63fe17b2fe9f81c1c410ce5ac5011b84bd93df6132fced18448d828"
+    },
+    {
+      "artifactId": "project-overview-change-set-rm-001-roadmap-management-v1",
+      "digest": "sha256:f88747e028bc4326ba657c4fa87e45f18c1356972de1ef15d67cc78f91cc36af"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "The OpenSpec binding is fixture-conformant through the bounded conversation contract; this invocation does not claim upstream CLI execution."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

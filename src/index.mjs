@@ -651,6 +651,35 @@ export {
 } from "./module-quality-report.mjs";
 
 export {
+  ROADMAP_ARTIFACT_CONTRACTS,
+  RoadmapArtifactValidationError,
+  validateRoadmapArtifact,
+} from "./roadmap-management-artifact-validator.mjs";
+export {
+  ROADMAP_PRIORITY_FACTORS,
+  RoadmapManagementError,
+  createRoadmapIntakeCandidate,
+  createRoadmapManagementRuntime,
+  createRoadmapNotInitialized,
+  createRoadmapPriorityPolicy,
+  evaluateRoadmapPriority,
+  renderRoadmapMarkdown,
+} from "./roadmap-management.mjs";
+export { RoadmapGateError, promoteRoadmapBaseline } from "./roadmap-gate.mjs";
+export {
+  DEVRELAY_SESSION_REQUIRED_CONTEXT_ROLES,
+  SessionBootstrapError,
+  assertSessionContextReceipt,
+  createSessionContextSnapshot,
+  executeSessionBootstrap,
+  refreshSessionContext,
+} from "./session-bootstrap.mjs";
+export {
+  createRoadmapTraceabilityContributor,
+  roadmapTraceabilityContributor,
+} from "./roadmap-traceability-contributor.mjs";
+
+export {
   WorkflowProfileError,
   createWorkflowProfileCatalog,
   resolveWorkflowProfile,

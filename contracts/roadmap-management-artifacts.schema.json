@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json",
+  "title": "DevRelay RoadmapManagement artifacts",
+  "oneOf": [
+    { "$ref": "#/$defs/intakeCandidate" },
+    { "$ref": "#/$defs/roadmapDraft" },
+    { "$ref": "#/$defs/changeSet" },
+    { "$ref": "#/$defs/baseline" },
+    { "$ref": "#/$defs/notInitialized" },
+    { "$ref": "#/$defs/gateApproval" },
+    { "$ref": "#/$defs/promotionProof" },
+    { "$ref": "#/$defs/sessionSnapshot" },
+    { "$ref": "#/$defs/sessionReceipt" }
+  ],
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "schema", "mediaType", "digest", "uri"],
+      "properties": {
+        "artifactId": { "$ref": "#/$defs/id" },
+        "schema": { "type": "string", "format": "uri" },
+        "mediaType": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "artifact": { "$ref": "#/$defs/ref" },
+        "jsonPointer": { "type": "string" }
+      }
+    },
+    "factorValues": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategicAlignment", "userValue", "urgency", "riskReduction", "effort", "dependencies", "confidence"],
+      "properties": {
+        "strategicAlignment": { "type": "number", "minimum": 0, "maximum": 1 },
+        "userValue": { "type": "number", "minimum": 0, "maximum": 1 },
+        "urgency": { "type": "number", "minimum": 0, "maximum": 1 },
+        "riskReduction": { "type": "number", "minimum": 0, "maximum": 1 },
+        "effort": { "type": "number", "minimum": 0, "maximum": 1 },
+        "dependencies": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "priority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policyId", "factors", "weightedScore", "scoreDigest"],
+      "properties": {
+        "policyId": { "$ref": "#/$defs/id" },
+        "factors": { "$ref": "#/$defs/factorValues" },
+        "weightedScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "scoreDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "initiative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "purpose", "status", "recommendation", "rationale", "priority", "requirementsBaseline", "sourceRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "purpose": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "status": { "enum": ["candidate", "kept", "deferred", "merged", "discarded"] },
+        "recommendation": { "enum": ["keep", "defer", "merge", "discard"] },
+        "rationale": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "priority": { "$ref": "#/$defs/priority" },
+        "requirementsBaseline": { "$ref": "#/$defs/ref" },
+        "mergeTargetId": { "$ref": "#/$defs/id" },
+        "sourceRefs": { "type": "array", "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "intakeCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "candidateId", "confirmedNetNew", "title", "purpose", "requirementsBaseline", "contextBindings", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapIntakeCandidate" },
+        "candidateId": { "$ref": "#/$defs/id" },
+        "confirmedNetNew": { "const": true },
+        "title": { "type": "string", "minLength": 1 },
+        "purpose": { "type": "string", "minLength": 1 },
+        "requirementsBaseline": { "$ref": "#/$defs/ref" },
+        "contextBindings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "roadmapDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "draftId", "operation", "baseDisposition", "initiatives", "priorityPolicy", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapDraft" },
+        "draftId": { "$ref": "#/$defs/id" },
+        "operation": { "enum": ["triage-candidate", "review-roadmap", "reprioritize"] },
+        "baseDisposition": { "enum": ["RoadmapNotInitialized", "RoadmapBaseline"] },
+        "initiatives": { "type": "array", "items": { "$ref": "#/$defs/initiative" } },
+        "priorityPolicy": { "$ref": "#/$defs/ref" },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "changeSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "changeSetId", "operation", "currentBaseline", "changes", "projection", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapChangeSetDraft" },
+        "changeSetId": { "$ref": "#/$defs/id" },
+        "operation": { "enum": ["triage-candidate", "review-roadmap", "reprioritize"] },
+        "currentBaseline": { "oneOf": [{ "$ref": "#/$defs/ref" }, { "type": "null" }] },
+        "changes": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+        "projection": { "type": "string" },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "baselineId", "version", "approvedCandidate", "initiatives", "priorityPolicy", "projectionDigest", "approvalEvidence", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapBaseline" },
+        "baselineId": { "$ref": "#/$defs/id" },
+        "version": { "$ref": "#/$defs/version" },
+        "approvedCandidate": { "$ref": "#/$defs/ref" },
+        "supersedes": { "$ref": "#/$defs/ref" },
+        "initiatives": { "type": "array", "items": { "$ref": "#/$defs/initiative" } },
+        "priorityPolicy": { "$ref": "#/$defs/ref" },
+        "projectionDigest": { "$ref": "#/$defs/digest" },
+        "approvalEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "notInitialized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "projectId", "disposition", "nextOperation", "readOnlyInspectionAllowed", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapNotInitialized" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "disposition": { "const": "not-initialized" },
+        "nextOperation": { "const": "establish-baseline" },
+        "readOnlyInspectionAllowed": { "const": true },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "gateApproval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "approvalId", "authority", "decision", "candidate", "currentBaselineDisposition", "terminalCheckpointDigest", "policyVersion"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapGateApproval" },
+        "approvalId": { "$ref": "#/$defs/id" },
+        "authority": { "const": "project-owner" },
+        "decision": { "enum": ["approve", "reject"] },
+        "candidate": { "$ref": "#/$defs/ref" },
+        "currentBaselineDisposition": { "oneOf": [{ "$ref": "#/$defs/ref" }, { "const": "RoadmapNotInitialized" }] },
+        "terminalCheckpointDigest": { "$ref": "#/$defs/digest" },
+        "policyVersion": { "type": "string", "minLength": 1 }
+      }
+    },
+    "promotionProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "proofId", "status", "candidate", "approval", "roadmapBaseline", "roadmapProjection", "checkpointDigest", "refreshRequired", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "RoadmapGatePromotionProof" },
+        "proofId": { "$ref": "#/$defs/id" },
+        "status": { "const": "promoted" },
+        "candidate": { "$ref": "#/$defs/ref" },
+        "approval": { "$ref": "#/$defs/ref" },
+        "roadmapBaseline": { "$ref": "#/$defs/ref" },
+        "roadmapProjection": { "$ref": "#/$defs/ref" },
+        "checkpointDigest": { "$ref": "#/$defs/digest" },
+        "refreshRequired": { "const": true },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "contextBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact", "artifactVersion"],
+      "properties": {
+        "role": { "enum": ["project-overview", "project-overview-projection", "roadmap", "roadmap-projection", "lifecycle-status", "requirements-baseline", "architecture-baseline", "contract-baseline", "work-breakdown-baseline", "work-dependency-baseline", "specialist-assignment-baseline", "pending-gate", "ready-frontier", "clarifications", "blockers"] },
+        "artifact": { "$ref": "#/$defs/ref" },
+        "artifactVersion": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "sessionSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "snapshotId", "projectId", "taskId", "workspaceId", "repositoryRevision", "bindings", "roadmapDisposition", "createdAt", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "SessionContextSnapshot" },
+        "snapshotId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "workspaceId": { "$ref": "#/$defs/id" },
+        "repositoryRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "bindings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/contextBinding" } },
+        "roadmapDisposition": { "enum": ["initialized", "RoadmapNotInitialized"] },
+        "createdAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$"
+        },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "sessionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "receiptId", "snapshot", "projectId", "taskId", "workspaceId", "repositoryRevision", "roadmapDisposition", "outcome", "durationMs", "cache", "validatedBindings", "moduleExecutionAllowed", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "SessionContextReceipt" },
+        "receiptId": { "$ref": "#/$defs/id" },
+        "snapshot": { "$ref": "#/$defs/ref" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "workspaceId": { "$ref": "#/$defs/id" },
+        "repositoryRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "roadmapDisposition": { "enum": ["initialized", "RoadmapNotInitialized"] },
+        "outcome": { "enum": ["pass", "fail", "RoadmapNotInitialized"] },
+        "durationMs": { "type": "number", "minimum": 0 },
+        "cache": { "enum": ["cold", "warm"] },
+        "validatedBindings": { "type": "array", "items": { "$ref": "#/$defs/contextBinding" } },
+        "diagnostics": { "type": "array", "items": { "type": "string" } },
+        "moduleExecutionAllowed": { "type": "boolean" },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    }
+  }
+}
