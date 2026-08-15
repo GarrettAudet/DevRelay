@@ -5,7 +5,7 @@ const SCOPE = "roadmap/baseline";
 const fail = (message) => { throw new TypeError(`roadmap traceability contributor: ${message}`); };
 const immutable = (value) => Object.freeze(structuredClone(value));
 const locator = (loaded, jsonPointer, entity) => ({ artifact: { artifactId: loaded.ref.artifactId, digest: loaded.ref.digest }, jsonPointer, entityDigest: canonicalJsonDigest(entity) });
-const endpoint = (stableId) => ({ kind: "artifact-reference", stableId, authority: "approved", scope: SCOPE });
+const endpoint = (stableId) => ({ kind: "business-scope", stableId, authority: "approved", scope: SCOPE });
 
 function matches(context) {
   const module = context?.invocation?.module;
@@ -45,8 +45,8 @@ function initiativeNode(loaded, initiative, position) {
     uri: `${loaded.ref.uri}#/initiatives/${position}`,
   };
   return {
-    kind: "artifact-reference",
-    stableId: canonicalJsonDigest({ schema: artifact.schema, artifactId: artifact.artifactId, digest }),
+    kind: "business-scope",
+    stableId: initiative.id,
     label: initiative.title,
     attributes: { artifact, artifactKind: "RoadmapInitiative", status: initiative.status, recommendation: initiative.recommendation, weightedScore: initiative.priority.weightedScore },
     sourceLocators: [locator(loaded, `/initiatives/${position}`, initiative)],
@@ -61,12 +61,12 @@ async function project(context) {
   const nodes = [root, ...initiatives].sort((a, b) => canonicalJson(a).localeCompare(canonicalJson(b), "en"));
   const edges = initiatives.map((node, position) => ({
     kind: "contains",
-    source: endpoint(root.stableId),
+    source: { artifact: loaded.ref },
     target: endpoint(node.stableId),
     rationale: "The approved RoadmapBaseline contains this governed initiative and its current disposition.",
     sourceLocators: [locator(loaded, `/initiatives/${position}`, loaded.value.initiatives[position])],
   })).sort((a, b) => canonicalJson(a).localeCompare(canonicalJson(b), "en"));
-  return { horizon: "planning", nodes, edges, ...(edges.length === 0 ? { reason: "The approved roadmap contains no initiatives." } : {}) };
+  return { horizon: "requirements", nodes, edges, ...(edges.length === 0 ? { reason: "The approved roadmap contains no initiatives." } : {}) };
 }
 
 export function createRoadmapTraceabilityContributor() {
@@ -75,7 +75,7 @@ export function createRoadmapTraceabilityContributor() {
     match: matches,
     scope: SCOPE,
     authority: "approved",
-    ownership: immutable({ scope: SCOPE, authority: "approved", nodeKinds: ["artifact-reference"], edgeKinds: ["contains"] }),
+    ownership: immutable({ scope: SCOPE, authority: "approved", nodeKinds: ["business-scope"], edgeKinds: ["contains"] }),
     project,
   });
 }
