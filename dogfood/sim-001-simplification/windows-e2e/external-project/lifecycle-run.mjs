@@ -51,7 +51,7 @@ const facadeKickoff = await facade.run(relay, { goal: "Build and verify the dete
 const operator = api.createOperatorCli({
   relay,
   initialize: async () => ({ runId, status: "initialized", profile: "standard" }),
-  evidence: async () => ({ runId, status: "available-after-run" }),
+  evidence: async () => ({ runId, status: "completed", availability: "available-after-run", evidence: [] }),
 });
 const operatorResults = [];
 for (const [command, input] of [
