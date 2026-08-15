@@ -24,6 +24,10 @@ import {
   refreshSessionContext,
 } from "../src/session-bootstrap.mjs";
 import { roadmapTraceabilityContributor } from "../src/roadmap-traceability-contributor.mjs";
+import {
+  createInMemoryTraceabilityStore,
+  createTraceabilityGraphService,
+} from "../src/traceability-graph.mjs";
 
 const API = "devrelay.dev/v1alpha1";
 const D = `sha256:${"a".repeat(64)}`;
@@ -317,20 +321,34 @@ test("missing or substituted context fails closed while a missing roadmap is exp
   assert.throws(() => assertSessionContextReceipt({ receipt: failed, snapshot: current.snapshot, currentBindings: current.bindings, currentRepositoryRevision: REVISION }), /does not allow/u);
 });
 
-test("trusted roadmap traceability projects only approved baseline containment", async () => {
+test("trusted roadmap traceability registers and atomically merges approved baseline containment", async () => {
   const { first } = await initialCandidate();
   const { promoted } = approvedPromotion(first.changeSet);
+  const invocation = { invocationId: "RM-GATE-TRACE-001", module: { id: "roadmap-gate", version: "0.1.0", operation: "promote-baseline" } };
   const context = {
-    invocation: { module: { id: "roadmap-gate", operation: "promote-baseline" } },
-    moduleResult: { status: "completed", outcome: "promoted" },
+    invocation,
+    invocationFingerprint: canonicalJsonDigest(invocation),
+    moduleResult: { invocationId: invocation.invocationId, status: "completed", outcome: "promoted", outputs: { "roadmap-baseline": [promoted.baselineRef] }, evidence: [] },
     loadedOutputs: {
       "roadmap-baseline": [{ value: promoted.baseline, bytes: promoted.baselineBytes, ref: promoted.baselineRef }],
     },
   };
   assert.equal(roadmapTraceabilityContributor.match(context), true);
   const projection = await roadmapTraceabilityContributor.project(context);
-  assert.equal(projection.nodes.length, 2);
+  assert.deepEqual(projection.nodes.map(({ kind }) => kind).sort(), ["artifact-reference", "business-scope"]);
   assert.equal(projection.edges.length, 1);
   assert.equal(projection.edges[0].kind, "contains");
-  assert.equal(projection.nodes.every(({ kind }) => kind === "artifact-reference"), true);
+  assert.deepEqual(roadmapTraceabilityContributor.ownership, { scope: "roadmap/baseline", authority: "approved", nodeKinds: ["business-scope"], edgeKinds: ["contains"] });
+
+  const service = createTraceabilityGraphService({
+    graphId: "roadmap-traceability",
+    projectId: "devrelay",
+    store: createInMemoryTraceabilityStore(),
+    contributors: [roadmapTraceabilityContributor],
+  });
+  const prepared = await service.prepare({ baseGraph: service.captureBase(), ...context });
+  const merged = await service.mergePrepared(prepared);
+  assert.equal(merged.receipt.disposition, "merged");
+  assert.deepEqual(merged.snapshot.nodes.map(({ kind }) => kind).sort(), ["artifact-reference", "business-scope"]);
+  assert.equal(merged.snapshot.edges[0].kind, "contains");
 });
