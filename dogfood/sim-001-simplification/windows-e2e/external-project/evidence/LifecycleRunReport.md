@@ -1,0 +1,42 @@
+# Lifecycle Run Report
+
+## Executive summary
+
+20 lifecycle components were observed: 18 completed, 0 active, 0 failed, and 2 skipped. Next action: none.
+
+- Run: `windows-godot-greeting-sim001`
+- Ledger: [ledger-windows-godot-greeting-sim001](devrelay-artifact://ledger-windows-godot-greeting-sim001?digest=eee7a4f9042c742f001629b3b5a66c3d9d137ecf2bb016e6fb87204f104fe44e)
+- Traceability graph: [TRACE-GREETING-001](devrelay-artifact://TRACE-GREETING-001?digest=b5a2aced4bfdd929d1dafcc3db8491202538b264835ba67006975e296a74b594)
+
+## Stages
+
+| Stage | Operation | Adapters | Outcome | Gate | Rework | Performance | Important outputs | Source facts | Next action |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1. `RequirementsGathering` | `establish-requirements` | `openspec` `1.0.0`<br>`spec-kit` `1.0.0` | completed | not-applicable | 1 attempt | Unavailable | [REQ-GREETING-001](devrelay-artifact://REQ-GREETING-001?digest=7fcc852a8a27c40a0e095400a1c7fba5889cc59e599389812e5f016112f6cf64) | [STAGE-01](devrelay-artifact://STAGE-01?digest=d8d9f7eb4f532bdcf9c146c6d8ee304ebb4305b31bc60dab4e7296a12d1e116f) | none |
+| 2. `RequirementsGate` | `approve-baseline` | None | approved | approved | 1 attempt | Unavailable | [REQ-GATE-GREETING-001](devrelay-artifact://REQ-GATE-GREETING-001?digest=7570be5e2c213359dbf432f13c08426b44bd9301ac7ae8ccd670ba065222dc00) | [STAGE-02](devrelay-artifact://STAGE-02?digest=bcfeced7c713ff48e305606b1b8529a7c62c7125ce81a7570d5393bebe784bc8) | none |
+| 3. `ArchitectureDiscovery` | `discover-repository` | None | completed | not-applicable | 1 attempt | Unavailable | [DISCOVERY-GREETING-001](devrelay-artifact://DISCOVERY-GREETING-001?digest=a93b0af92b77e859be0772a14113ea4a7405ecc9e8b5e0febd14ecbaea9ebfb3) | [STAGE-03](devrelay-artifact://STAGE-03?digest=8e188f460030a3cb82874039fbc79ad9e875419df798bf0f4af7cb1a6ca8b1fd) | none |
+| 4. `ArchitectureDesign` | `establish-baseline` | `madr` `1.0.0`<br>`structurizr` `1.0.0` | completed | not-applicable | 1 attempt | Unavailable | [ARCH-GREETING-001](devrelay-artifact://ARCH-GREETING-001?digest=4db4222438d05d8a5752e67ab1e9f8532de3ab8bd92bb8663e1dc0aec410ef3b) | [STAGE-04](devrelay-artifact://STAGE-04?digest=7a7a69a141f3f02d986605cbac9740e12705c427569b774e810dab43364c7078) | none |
+| 5. `ArchitectureGate` | `approve-baseline` | None | approved | approved | 1 attempt | Unavailable | [ARCH-GATE-GREETING-001](devrelay-artifact://ARCH-GATE-GREETING-001?digest=4db4222438d05d8a5752e67ab1e9f8532de3ab8bd92bb8663e1dc0aec410ef3b) | [STAGE-05](devrelay-artifact://STAGE-05?digest=f2912cb69a4caa3d5a455fb3e2cb4613bb2409a82ab8c13e6a723c9b81375c9d) | none |
+| 6. `ContractGeneration` | `approved-not-applicable` | None | skipped | not-applicable | 1 attempt | Unavailable | [CD-GREETING-NA-001](devrelay-artifact://CD-GREETING-NA-001?digest=1ce1ad35c55dccd5b19160825b19f265d23cf622a492f9658d31b19d997e795b) | [STAGE-06](devrelay-artifact://STAGE-06?digest=8b42dcb3a2c6267f7c215b4ce566654714d5e8d0297b04116b25ccff4964e241) | none |
+| 7. `ContractGate` | `approved-not-applicable` | None | skipped | not-applicable | 1 attempt | Unavailable | [CONTRACT-GATE-GREETING-NA-001](devrelay-artifact://CONTRACT-GATE-GREETING-NA-001?digest=1ce1ad35c55dccd5b19160825b19f265d23cf622a492f9658d31b19d997e795b) | [STAGE-07](devrelay-artifact://STAGE-07?digest=9a707f0150551b956bffcd76608ab28d51479822200104e476a8ebf6cd5d1735) | none |
+| 8. `WorkBreakdown` | `establish-breakdown` | None | completed | not-applicable | 1 attempt | Unavailable | [WBB-GREETING-001](devrelay-artifact://WBB-GREETING-001?digest=d14c5659bdcaac8c4f1d73f94b37edf98fa6ca9191ab666f8128e49b65c89605) | [STAGE-08](devrelay-artifact://STAGE-08?digest=73329d75e24b79198c2b8a1df847964ed7f7bfe276276513d8ea7998bae30241) | none |
+| 9. `WorkBreakdownGate` | `approve-baseline` | None | approved | approved | 1 attempt | Unavailable | [WB-GATE-GREETING-001](devrelay-artifact://WB-GATE-GREETING-001?digest=d14c5659bdcaac8c4f1d73f94b37edf98fa6ca9191ab666f8128e49b65c89605) | [STAGE-09](devrelay-artifact://STAGE-09?digest=0890d5b3c8f4dbee158154dd55e63e9c5d3daadf9217e2710a016ccf35b8d96b) | none |
+| 10. `WorkDependencyAnalysis` | `establish-dependencies` | None | completed | not-applicable | 1 attempt | Unavailable | [WDB-GREETING-001](devrelay-artifact://WDB-GREETING-001?digest=db519b7d7a4109d820e897d22f8805c9451b3f7394e8cdcd159c5bdfb4d112e2) | [STAGE-10](devrelay-artifact://STAGE-10?digest=833b2da314dced542390578efd023f9e8f5c09978c109d394ca731c8807649d7) | none |
+| 11. `WorkDependencyGate` | `approve-baseline` | None | approved | approved | 1 attempt | Unavailable | [WD-GATE-GREETING-001](devrelay-artifact://WD-GATE-GREETING-001?digest=db519b7d7a4109d820e897d22f8805c9451b3f7394e8cdcd159c5bdfb4d112e2) | [STAGE-11](devrelay-artifact://STAGE-11?digest=34397e8cd34b52b1c31661683b92291dae9bbdb66600618d5b6d2a07bd4f952a) | none |
+| 12. `SpecialistAssignment` | `assign-specialists` | None | completed | not-applicable | 1 attempt | Unavailable | [SAB-DA55F443DA0DA5D1](devrelay-artifact://SAB-DA55F443DA0DA5D1?digest=b66f26ab490384047e783b21bca1c17ef3b675c4c818cd08e18a9224283c2bba) | [STAGE-12](devrelay-artifact://STAGE-12?digest=93cad4cc65043e87ddc143ee43d46cd48cb7943e460bedb23cfcf8893f4647eb) | none |
+| 13. `SpecialistAssignmentGate` | `approve-baseline` | None | approved | approved | 1 attempt | Unavailable | [SA-GATE-GREETING-001](devrelay-artifact://SA-GATE-GREETING-001?digest=b66f26ab490384047e783b21bca1c17ef3b675c4c818cd08e18a9224283c2bba) | [STAGE-13](devrelay-artifact://STAGE-13?digest=f0a5d688e3300ac23dcae1b50ce79a5fa2be80eec9cf3bbc7a4db904d15d51cd) | none |
+| 14. `WorkExecution` | `execute-work-item` | None | completed | not-applicable | 1 attempt | Unavailable | [ER-D088E4BAD75D38C8](devrelay-artifact://ER-D088E4BAD75D38C8?digest=689bdf542a15a21feec5ae1598e7541813b1739a39dd58d99cca88eed84e4c21) | [STAGE-14](devrelay-artifact://STAGE-14?digest=89ba0b51d1d313e535f35e44368e1cd1de98e9a79dd781c711f02f2924e00a92) | none |
+| 15. `WorkItemVerification` | `verify-work-item` | None | completed | not-applicable | 1 attempt | Unavailable | [GDE-7421E3A7F177EA8B](devrelay-artifact://GDE-7421E3A7F177EA8B?digest=48c8f4a5072d24c77c0734185f3efcc8bb4981f42b7f154bc3a5ab25d1c54893) | [STAGE-15](devrelay-artifact://STAGE-15?digest=fc6efac4fbfb9092ba02ff9983bc54dd6f93075ab0a488acd0522a41430e19a1) | none |
+| 16. `WorkItemVerificationGate` | `approve-verification` | None | approved | approved | 1 attempt | Unavailable | [WIV-GATE-GREETING-001](devrelay-artifact://WIV-GATE-GREETING-001?digest=48c8f4a5072d24c77c0734185f3efcc8bb4981f42b7f154bc3a5ab25d1c54893) | [STAGE-16](devrelay-artifact://STAGE-16?digest=5474c094a59aae1d5625bef2ba70129aee0424d47f9ffe7a2595d3987338ed10) | none |
+| 17. `ChangeIntegration` | `integrate-change` | None | completed | not-applicable | 1 attempt | Unavailable | [ICR-GREETING-001](devrelay-artifact://ICR-GREETING-001?digest=5937881a8d9cacb2fa08d4bed566f1a47132acc1eee4bb45fe124491f9429748) | [STAGE-17](devrelay-artifact://STAGE-17?digest=1bb0e56ee646d0dc82900ebbcb38602d53aa01c0a823e1271271f04c9969f0da) | none |
+| 18. `TraceabilityGraph` | `merge-and-query` | None | completed | not-applicable | 1 attempt | Unavailable | [TRACE-GREETING-001](devrelay-artifact://TRACE-GREETING-001?digest=b5a2aced4bfdd929d1dafcc3db8491202538b264835ba67006975e296a74b594) | [STAGE-18](devrelay-artifact://STAGE-18?digest=f3475b294ff76b96d41b8482ead30c37fcb1a3eb43f69a0fe326f3ecc81a1012) | none |
+| 19. `SystemVerification` | `verify-integrated-system` | None | completed | not-applicable | 1 attempt | Unavailable | [SYSTEM-EVIDENCE-GREETING-001](devrelay-artifact://SYSTEM-EVIDENCE-GREETING-001?digest=5a3515516222ffa106dccd7af0a70f12ea7bd4ed63c519f0b9235f56cf750b41) | [STAGE-19](devrelay-artifact://STAGE-19?digest=1bbe46f388cc9603e192bbf37d38ff19a44212f4e8da4945770f223dc976792d) | none |
+| 20. `BusinessAcceptanceGate` | `accept-system` | None | approved | approved | 1 attempt | Unavailable | [BA-GREETING-001](devrelay-artifact://BA-GREETING-001?digest=af97ffa7797faa0f13c4dd20476068e161d9fdd761d171d6566dd16ee04c9ee0) | [STAGE-20](devrelay-artifact://STAGE-20?digest=489ead7e703be0cd76a3bd1eee14cef05cee73f12c83e7215c3c630151e6323a) | none |
+
+## Next action
+
+none
+
+---
+
+Generated by DevRelay LifecycleRunReport renderer 1.1.0. This concise report is a read-only projection; linked canonical artifacts retain complete authoritative evidence.

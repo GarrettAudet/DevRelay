@@ -2,8 +2,9 @@
 
 ## Status
 
-Requirements intake approved. This is a queued follow-on increment and does
-not alter the approved SIM-001 candidate or its active execution DAG.
+Requirements intake decisions are approved. SIM-001 is now accepted, so RM-001
+is the active next increment after the RC2 evidence seal. It remains a separate
+change and does not alter the accepted SIM-001 candidate.
 
 ## Goal
 
