@@ -303,7 +303,7 @@ if (fs.existsSync(path.join(root, ".git"))) throw new Error("External dogfood re
 execFileSync("git", ["init", "--initial-branch=main"], { cwd: root, windowsHide: true });
 git("config", "user.name", "DevRelay ChatGPT Desktop Dogfood");
 git("config", "user.email", "dogfood@devrelay.invalid");
-git("add", ".gitignore", "README.md", "package.json", "package-lock.json", "lifecycle-run.mjs", "project.godot", "requirements", "architecture");
+git("add", ".gitignore", "README.md", "package.json", "lifecycle-run.mjs", "project.godot", "requirements", "architecture");
 git("commit", "-m", "Baseline approved Greeting Card design");
 const baselineCommit = git("rev-parse", "HEAD");
 git("add", "main.gd", "main.tscn", "test");
