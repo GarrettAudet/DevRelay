@@ -2,9 +2,7 @@
 
 ## Status
 
-Requirements intake decisions are approved. SIM-001 is now accepted, so RM-001
-is the active next increment after the RC2 evidence seal. It remains a separate
-change and does not alter the accepted SIM-001 candidate.
+Requirements, architecture, contracts, work breakdown, dependency analysis, and specialist assignment are approved. The seven-item implementation is complete and the canonical gate is green. RM-001 is now at clean implementation sealing, Windows Desktop E2E, SystemVerification, and BusinessAcceptance. It remains a separate RC3 increment and does not alter the accepted SIM-001 RC2 evidence.
 
 ## Goal
 
@@ -91,9 +89,4 @@ RoadmapManagement may run:
 
 ## Next lifecycle step
 
-After SIM-001 is sealed, run the complete released DevRelay circuit for
-RM-001: RequirementsGathering and Gate, ArchitectureDesign and Gate,
-ContractGeneration disposition and Gate, WorkBreakdown and Gate,
-WorkDependencyAnalysis and Gate, SpecialistAssignment and Gate, then execute,
-verify, integrate, system-verify, and obtain BusinessAcceptance.
-
+The released circuit has completed through SpecialistAssignmentGate. Next, seal the clean implementation commit; execute, verify, and integrate the seven-item static DAG; run the installed Windows Desktop roadmap scenario; then complete SystemVerification, BusinessAcceptance, evidence sealing, and protected-main promotion.

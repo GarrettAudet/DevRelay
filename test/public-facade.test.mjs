@@ -12,14 +12,52 @@ import {
   run,
   verify,
 } from "../src/public-facade.mjs";
+import { canonicalJsonDigest } from "../src/content-digest.mjs";
 
 const digest = `sha256:${"a".repeat(64)}`;
-function fixture() {
+function sessionReceipt(taskId, outcome = "pass") {
+  const roadmapDisposition = outcome === "RoadmapNotInitialized" ? "RoadmapNotInitialized" : "initialized";
+  const validatedBindings = outcome === "fail" ? [] : [
+    "project-overview",
+    "project-overview-projection",
+    "lifecycle-status",
+    ...(outcome === "pass" ? ["roadmap", "roadmap-projection"] : []),
+  ].map((role) => ({ role, artifact: { artifactId: `CTX-${role}`, schema: "https://devrelay.dev/test/v1", mediaType: "application/json", digest, uri: `memory://devrelay/context/${role}` }, artifactVersion: "1.0.0" }));
+  const material = {
+    apiVersion: "devrelay.dev/v1alpha1",
+    kind: "SessionContextReceipt",
+    receiptId: `SESSION-RECEIPT-${taskId}`,
+    snapshot: {
+      artifactId: `SESSION-${taskId}`,
+      schema: "https://devrelay.dev/artifacts/session-context-snapshot/v1",
+      mediaType: "application/vnd.devrelay.session-context-snapshot+json",
+      digest,
+      uri: `memory://devrelay/session/${taskId}.json`,
+    },
+    projectId: "PROJECT-1",
+    taskId,
+    workspaceId: "WORKSPACE-1",
+    repositoryRevision: "a".repeat(40),
+    roadmapDisposition,
+    outcome,
+    durationMs: 1,
+    cache: "cold",
+    validatedBindings,
+    ...(outcome === "fail" ? { diagnostics: ["context digest mismatch"] } : {}),
+    moduleExecutionAllowed: outcome !== "fail",
+  };
+  return { ...material, contentDigest: canonicalJsonDigest(material) };
+}
+function fixture({ bootstrapOutcome = "pass" } = {}) {
   const calls = [];
   const services = Object.fromEntries(["run", "resume", "verify", "inspect"].map((operation) => [operation, async (input) => {
     calls.push({ operation, input });
     return { outcome: "pass", operation, artifacts: [{ artifactId: `${operation}-result`, digest }] };
   }]));
+  services.bootstrap = async (input) => {
+    calls.push({ operation: "bootstrap", input });
+    return sessionReceipt(input.taskId, bootstrapOutcome);
+  };
   const host = createLocalHost({ services, grants: [{ kind: "process.spawn", values: ["node"] }] });
   const relay = createDevRelay({
     projectId: "PROJECT-1",
@@ -49,28 +87,30 @@ test("createDevRelay resolves an exact profile and hides mutable internals", () 
 
 test("run delegates a normalized provider-neutral request", async () => {
   const { relay, calls } = fixture();
-  const result = await run(relay, { goal: "Build the feature" });
+  const result = await run(relay, { taskId: "TASK-1", goal: "Build the feature" });
   assert.equal(result.outputs.operation, "run");
-  assert.equal(calls[0].input.projectId, "PROJECT-1");
+  assert.equal(calls[0].operation, "bootstrap");
+  assert.equal(calls[1].input.projectId, "PROJECT-1");
+  assert.equal(calls[1].input.sessionContext.receipt.taskId, "TASK-1");
   assert.equal(result.interfaceIntentId, "IF-SIM-FACADE");
 });
 
 test("resume requires an exact checkpoint and rejects stale-shaped identity", async () => {
   const { relay } = fixture();
-  await assert.rejects(() => resume(relay, { runId: "RUN-1", checkpointDigest: "latest" }), /exact checkpoint/u);
-  const result = await resume(relay, { runId: "RUN-1", checkpointDigest: digest });
+  await assert.rejects(() => resume(relay, { taskId: "TASK-1", runId: "RUN-1", checkpointDigest: "latest" }), /exact checkpoint/u);
+  const result = await resume(relay, { taskId: "TASK-1", runId: "RUN-1", checkpointDigest: digest });
   assert.equal(result.outputs.operation, "resume");
 });
 
 test("verify requires an explicit subject", async () => {
   const { relay } = fixture();
-  await assert.rejects(() => verify(relay, { runId: "RUN-1" }), /subject/u);
-  assert.equal((await verify(relay, { runId: "RUN-1", subject: { artifactId: "A", digest } })).outputs.operation, "verify");
+  await assert.rejects(() => verify(relay, { taskId: "TASK-1", runId: "RUN-1" }), /subject/u);
+  assert.equal((await verify(relay, { taskId: "TASK-1", runId: "RUN-1", subject: { artifactId: "A", digest } })).outputs.operation, "verify");
 });
 
 test("inspect is read-only delegation through the same stable envelope", async () => {
   const { relay } = fixture();
-  const result = await inspect(relay, { runId: "RUN-1" });
+  const result = await inspect(relay, { taskId: "TASK-1", runId: "RUN-1" });
   assert.equal(result.outputs.operation, "inspect");
   assert.match(result.operationDigest, /^sha256:/u);
 });
@@ -81,13 +121,31 @@ test("rejects invalid project, profile, host, module, and plugin", async () => {
   assert.throws(() => defineModule({ id: "Bad", version: "1", operations: [] }), /identity/u);
   assert.throws(() => definePlugin({ id: "bad.plugin", version: "1.0.0", capabilities: [] }), /capabilities/u);
   const { relay } = fixture();
-  await assert.rejects(() => relay.run({ goal: "x", profile: "unknown" }), /unknown profile/u);
+  await assert.rejects(() => relay.run({ taskId: "TASK-1", goal: "x", profile: "unknown" }), /unknown profile/u);
 });
 
 test("caller cannot substitute configured project or smuggle hidden grants", async () => {
   const { relay, calls } = fixture();
-  await assert.rejects(() => relay.run({ projectId: "OTHER", goal: "x" }), /does not match/u);
-  await relay.run({ goal: "x", grants: [{ kind: "network.connect", values: ["example.com"] }] });
-  assert.equal(calls[0].input.host.hostDigest !== undefined, true);
-  assert.equal(calls[0].input.host.grants, undefined);
+  await assert.rejects(() => relay.run({ taskId: "TASK-1", projectId: "OTHER", goal: "x" }), /does not match/u);
+  await relay.run({ taskId: "TASK-1", goal: "x", grants: [{ kind: "network.connect", values: ["example.com"] }] });
+  const runCall = calls.find(({ operation }) => operation === "run");
+  assert.equal(runCall.input.host.hostDigest !== undefined, true);
+  assert.equal(runCall.input.host.grants, undefined);
+});
+test("fresh DevRelay tasks bootstrap once and fail closed on invalid context", async () => {
+  const { relay, calls } = fixture();
+  await relay.run({ taskId: "TASK-A", goal: "first" });
+  await relay.run({ taskId: "TASK-A", goal: "second" });
+  await relay.run({ taskId: "TASK-B", goal: "third" });
+  assert.equal(calls.filter(({ operation }) => operation === "bootstrap").length, 2);
+  await assert.rejects(() => relay.run({ goal: "missing task identity" }), /taskId is required/u);
+  const failed = fixture({ bootstrapOutcome: "fail" }).relay;
+  await assert.rejects(() => failed.run({ taskId: "TASK-FAIL", goal: "blocked" }), /context digest mismatch/u);
+});
+
+test("RoadmapNotInitialized constrains execution to baseline establishment", async () => {
+  const { relay, calls } = fixture({ bootstrapOutcome: "RoadmapNotInitialized" });
+  await relay.inspect({ taskId: "TASK-ROADMAP", runId: "RUN-1" });
+  const inspectCall = calls.find(({ operation }) => operation === "inspect");
+  assert.equal(inspectCall.input.sessionContext.executionConstraint, "roadmap-baseline-establishment-only");
 });

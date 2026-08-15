@@ -7,9 +7,10 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `work-breakdown@0.1.0`, `work-dependency-analysis@0.1.0`,
 `specialist-assignment@2.0.0` (with the immutable `1.0.0` manifest retained),
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
+`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting
+`roadmap-management@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
-open-source preview, version `0.10.0-rc.2`. The source package retains `1.5.0` as the compatibility default and adds
+open-source preview, version `0.10.0-rc.3`. The source package retains `1.5.0` as the compatibility default and adds
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
@@ -66,6 +67,8 @@ exact accepted GitHub source.
   acceptance-criterion and NFR obligations, typed test/review evidence,
   deterministic policy outcomes, zero-call replay, and trusted forward-only
   verification traceability without BusinessAcceptance authority.
+- RoadmapManagement deterministic triage, review, reprioritization, exact weighted scoring, a human-owned Gate, structured baseline, concise projection, and trusted containment traceability.
+- Mandatory DevRelaySessionBootstrap for every fresh configured ChatGPT Desktop task on Windows, with exact context receipts and next-Module-boundary refresh.
 - BusinessAcceptance exhaustive technical coverage, business objective/metric/scope
   evaluation, exact owner approval, zero-call replay, accepted-record authority,
   and forward-only acceptance traceability.
@@ -85,15 +88,13 @@ exact accepted GitHub source.
   included in V1.
 
 The bundled graph and traceability checkpoint stores remain in-memory reference
-implementations. The rc.2 local host adds filesystem-backed run, checkpoint,
+implementations. The rc.3 local host adds filesystem-backed run, checkpoint,
 artifact, grant, isolation, and recovery primitives for Windows; the complete
 long-lived reference-host milestone remains reserved for 0.11. Gate
 contributors require explicit validated Gate context; successful module results
 never imply approval.
 
-Live OpenSpec, GitHub Spec Kit, Task Master, Structurizr, and MADR command
-adapters are not included. The manifests define bounded capabilities and the
-tests exercise contract adapters and fixtures. WorkDependencyAnalysis does
+Provider maturity is evidence-bound. The source package includes bounded live-provider adapter factories and validates host-observed execution attestations; manifests or provider self-claims alone never establish live conformance. Historical fixture-only runs remain fixture-conformant and are not rewritten. WorkDependencyAnalysis does
 ship its provider-neutral native structured proposer; OpenSpec and Task Master
 remain optional proposal contracts, and Spec Kit remains a bounded advisory
 review contract. ContractGeneration ships its deterministic JSON Schema

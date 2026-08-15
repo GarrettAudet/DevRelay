@@ -7,19 +7,17 @@ const text = (name) => readFile(new URL(name, root), "utf8");
 const json = async (name) => JSON.parse(await text(name));
 
 test("SIM-001 release identity is consistently 0.10.0-rc.2", async () => {
-  const [pkg, lock, readme, release, changelog, notes] = await Promise.all([
-    json("package.json"),
-    json("package-lock.json"),
-    text("README.md"),
-    text("RELEASE.md"),
+  const [assetManifest, evidenceSet, changelog, notes] = await Promise.all([
+    json("dogfood/sim-001-simplification/release-assets-manifest.json"),
+    json("dogfood/sim-001-simplification/final-acceptance/00-release-candidate-evidence-set.json"),
     text("CHANGELOG.md"),
     text("docs/releases/0.10.0-rc.2.md"),
   ]);
-  assert.equal(pkg.version, "0.10.0-rc.2");
-  assert.equal(pkg.main, "./src/root.mjs");
-  assert.equal(lock.version, pkg.version);
-  assert.equal(lock.packages[""].version, pkg.version);
-  for (const value of [readme, release, changelog, notes]) assert.match(value, /0\.10\.0-rc\.2/u);
+  assert.equal(assetManifest.release, "0.10.0-rc.2");
+  assert.equal(assetManifest.implementationCommit, "53760e86617fcc28286a916200866448a441d4c8");
+  assert.equal(evidenceSet.implementationCommit, assetManifest.implementationCommit);
+  assert.equal(evidenceSet.releaseCatalog.artifactId, "devrelay-release-catalog-0.10.0-rc.2");
+  for (const value of [changelog, notes]) assert.match(value, /0\.10\.0-rc\.2/u);
 });
 
 test("SIM-001 docs preserve preview, API tier, and deferred-host boundaries", async () => {
