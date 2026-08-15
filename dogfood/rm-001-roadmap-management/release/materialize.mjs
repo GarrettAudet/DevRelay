@@ -56,11 +56,16 @@ function refFor({ artifactId, schema, mediaType, uri, rawBytes }) {
 }
 function loadedRoot(relativePath, artifactId, schema, mediaType, uri, artifactVersion) {
   const rawBytes = bytes(relativePath);
+  const value = mediaType === "text/markdown" ? rawBytes.toString("utf8") : JSON.parse(rawBytes.toString("utf8"));
+  const ref = refFor({ artifactId, schema, mediaType, uri, rawBytes });
   return {
-    value: mediaType === "text/markdown" ? rawBytes.toString("utf8") : JSON.parse(rawBytes.toString("utf8")),
+    value,
     bytes: rawBytes,
-    ref: refFor({ artifactId, schema, mediaType, uri, rawBytes }),
-    artifactVersion,
+    ref,
+    artifactVersion:
+      artifactVersion ??
+      (typeof value === "object" && value !== null ? value.version ?? value.baselineId : undefined) ??
+      ref.digest,
   };
 }
 function loadedValue(value, artifactId, schema, mediaType, uri) {
