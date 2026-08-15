@@ -19,7 +19,7 @@ trusted `business-acceptance/accepted` contributor. Core prepares and
 checkpoints that update before an atomic merge; replay reuses the exact receipt.
 Blocking graph diagnostics prevent release sealing.
 
-DevRelay 0.10.0-rc.1 executes this boundary through the complete V1
+DevRelay 0.10.0-rc.2 executes this boundary through the complete V1
 construction lifecycle for the GitHub source and deterministic installable
 tarball operated through ChatGPT Desktop on Windows. The exact current
 SystemVerification result, BusinessAcceptance record, and final graph are

@@ -9,7 +9,7 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, `system-verification@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
-open-source preview, version `0.10.0-rc.1`. The source package retains `1.5.0` as the compatibility default and adds
+open-source preview, version `0.10.0-rc.2`. The source package retains `1.5.0` as the compatibility default and adds
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
@@ -21,7 +21,7 @@ exact accepted GitHub source.
 ## Supported release surface
 
 - Node.js 22 and 24 on Windows.
-- The public JavaScript API exported by `src/index.mjs`.
+- The eight-operation facade exported by `devrelay`, provider-neutral low-level contracts under `devrelay/advanced`, the deprecated `devrelay/compat/v1` bridge, and optional `devrelay/packs/*` bindings.
 - JSON Schema contracts under `contracts/`.
 - Versioned module and bounded adapter manifests under `examples/modules/` and
   `examples/plugins/`.
@@ -29,7 +29,9 @@ exact accepted GitHub source.
 - Typed requirements, deterministic ProjectOverview projection/rendering,
   atomic paired Requirements Gate validation, and ArchitectureDesign's explicit
   project-overview context contract through the public JavaScript API.
-- ArchitectureDiscovery deterministic state routing, offline tracked-or-declared native inventory, optional bounded analyzer port, observational normalization, Core-owned confidence and material-gap policy, exact checkpoint replay, trusted candidate-only traceability, and explicit source-transmission consent through the public API.
+- ArchitectureDiscovery deterministic state routing, offline tracked-or-declared native inventory, optional bounded analyzer port, observational normalization, Core-owned confidence and material-gap policy, exact checkpoint replay, trusted candidate-only traceability, and explicit source-transmission consent through the advanced API.
+- Standard, fast, and high-assurance workflow profiles; a filesystem-backed Windows local-host storage/isolation/execution boundary; and the versioned `init`, `run`, `resume`, `status`, `verify`, `inspect`, and `evidence` CLI commands.
+- Optional pack conformance with Godot/GdUnit4 and provider-neutral web-service fixtures; domain behavior does not enter Generic Core.
 - WorkBreakdown state routing, pre-adapter baseline drift detection, closed
   work-item and coverage contracts, typed change application, deterministic
   checkpoint-only Gate validation, raw-byte-bound baseline commit payloads,
@@ -82,8 +84,10 @@ exact accepted GitHub source.
   commit payloads. Portable cross-process verification receipts are not
   included in V1.
 
-The bundled graph and traceability checkpoint stores are in-memory reference
-implementations. Production hosts must supply durable atomic stores. Gate
+The bundled graph and traceability checkpoint stores remain in-memory reference
+implementations. The rc.2 local host adds filesystem-backed run, checkpoint,
+artifact, grant, isolation, and recovery primitives for Windows; the complete
+long-lived reference-host milestone remains reserved for 0.11. Gate
 contributors require explicit validated Gate context; successful module results
 never imply approval.
 

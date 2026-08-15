@@ -1,0 +1,36 @@
+# Requirements Gate candidate: DevRelay SIM-001 simplification
+
+Status: **awaiting owner approval**
+
+## Exact bindings
+
+- RequirementsBaseline: sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32
+- ProjectOverviewBaseline: sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb
+- ClarificationRequest: sha256:c53019b4316839193d253da7af27ce04f3a1ca1532039d3ab2734c482cbdd782
+- ClarificationResponse: sha256:4f9e5336d77925f9f72928cedf7a3ed09d7de2f1dce70f792271688aa1c98ba2
+- RequirementsClosureAssessment: sha256:da1b83a44883ddf5a82e7d9c06f88d1ccf081e5e0c0d795d01a9812684ddcedb
+- Continuation: sha256:348a3f45bdd3de069ebe662021a9dc050bd3fcaf15f523b88d291afe29a58817
+- RepositorySnapshot: sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca
+- RequirementsChangeSet: sha256:64e21a67be6df9451c12fd26336e8e3bfcef276928ff23437553622ae0f1d412
+- ProjectOverviewChangeSetDraft: sha256:9e42de9413063ff3fb6d0922fc1e7fe475516d6e21ae2f47e7cdf99532f750f8
+- Candidate ProjectOverview.md: sha256:af7e523e23d22bfec31bf383d894c9510620a190888d2bc4560f6523c7d4fb74
+- NativeSourceBundle: sha256:b53a5badb0fa9eb7c569b48def40f90b1562a05df92f304f33cefe9170e651c8
+- Terminal checkpoint: sha256:624c3b0ec6b1cffd5789f80f99ba89eb86d158ccba4737cfd2e6aa6ee5fb0cdc
+- Execution proof: sha256:729ab49883f62f4d1b2f8a4e228e2ecbcc34a80bcba7956764792a69ecbf3ede
+
+## Gate findings
+
+- PASS: all twelve normalized blocking decisions have exact approved responses across the preserved interview waves.
+- PASS: the version, facade, profile, evidence, pack, compatibility, review, and durable-host boundaries are explicit.
+- PASS: deterministic closure has 1.00 weighted coverage, zero blocking unknowns, and zero contradictions.
+- PASS: the candidate preserves existing requirement identities and adds only the approved SIM-001 simplification scope.
+- PASS: Core remains provider-neutral and domain-neutral; advanced providers and domain behavior remain bounded adapters or optional packs.
+- PASS: provider acquisition, version pinning, offline defaults, grants, fallback, receipts, redaction, and maturity claims are explicit.
+- PASS: facade, profile, API-tier, evidence-distribution, durable-host, CLI, and Windows Desktop evidence is mandatory before acceptance.
+- PASS: complete clean-checkout ChatGPT Desktop on Windows simplified-cycle evidence is mandatory before acceptance.
+- PASS: RequirementsGathering remains a candidate producer; this Gate alone owns atomic baseline-pair promotion.
+- PASS: ProjectOverview is a deterministic projection of the exact replacement requirements.
+
+## Approval boundary
+
+Approval must bind the exact paired change, candidate Markdown, native bundle, and terminal checkpoint. Any modification requires a new Requirements Gate candidate.

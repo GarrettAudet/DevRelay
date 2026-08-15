@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.10.0-rc.2 - 2026-08-15
+
+### Added
+
+- Added a stable eight-operation package facade, explicit advanced and compatibility tiers, workflow profiles, a deterministic operator CLI, and filesystem-backed Windows local-host primitives.
+- Added reusable optional-pack conformance with Godot/GdUnit4 and synthetic web-service fixtures, plus checksum-bound release evidence assets.
+
+### Changed
+
+- Historical lifecycle replay now reads immutable version-pinned snapshots, preventing current project baselines from changing approved V0.11 evidence.
+- The public package root is intentionally small; low-level contracts moved to `devrelay/advanced`, while `devrelay/compat/v1` remains deprecated through the 0.11 prerelease line.
+
+### Release scope
+
+- This is an advanced open-source preview for ChatGPT Desktop on Windows, distributed through GitHub source and an installable tarball. It is not a stable release, hosted backend, public npm publication, or one-click Desktop plug-in.
+- Independent human review remains required before stable status. The complete long-lived local reference-host milestone remains 0.11.
+
 ## 0.9.0 - 2026-08-10
 
 - Added release-ready `architecture-discovery@0.1.0` with deterministic state routing, offline tracked-or-declared native inventory, optional bounded analyzer substitution, observational normalization, Core-owned material-gap clarification, exact checkpoint replay, and candidate-only traceability.

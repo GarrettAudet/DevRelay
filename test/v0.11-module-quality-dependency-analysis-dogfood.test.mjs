@@ -16,11 +16,11 @@ const readBytes = (base, name) => readFileSync(new URL(name, base));
 const readJson = (base, name) => JSON.parse(readBytes(base, name));
 
 test("approved V0.11 WorkBreakdown promotion is exact and advances only to WorkDependencyAnalysis", () => {
-  const baselineBytes = readFileSync(new URL("../project/work-breakdown-baseline.json", import.meta.url));
+  const baselineBytes = readFileSync(new URL("../project/history/work-breakdown/1.9.1/work-breakdown-baseline.json", import.meta.url));
   const baseline = JSON.parse(baselineBytes);
   const proof = readJson(workBreakdownOutput, "work-breakdown-gate-promotion-proof.json");
   const approvalBytes = readBytes(workBreakdownOutput, "work-breakdown-gate-owner-approval.json");
-  const commit = JSON.parse(readFileSync(new URL("../project/work-breakdown-promotion.commit.json", import.meta.url)));
+  const commit = JSON.parse(readFileSync(new URL("../project/history/work-breakdown/1.9.1/work-breakdown-promotion.commit.json", import.meta.url)));
 
   validateWorkBreakdownArtifact(baseline);
   assert.equal(baseline.version, "1.9.1");

@@ -54,7 +54,7 @@ test("declared ArchitectureDiscovery exports remain part of the package contract
     await readFile(new URL("../package.json", import.meta.url), "utf8"),
   );
   const paths = [
-    "src/index.mjs",
+    "src/root.mjs",
     "examples/modules/architecture-discovery.module.json",
     "examples/plugins/native-architecture-discovery.plugin.json",
   ];

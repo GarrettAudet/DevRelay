@@ -14,8 +14,8 @@ test("V0.11 SpecialistAssignment binds all 16 work items through V2 checkpoint r
   const gate = value("../dogfood/v0.11-module-quality/assignment/specialist-assignment-gate-candidate.json");
   const approval = value("../dogfood/v0.11-module-quality/assignment/specialist-assignment-gate-owner-approval.json");
   const proof = value("../dogfood/v0.11-module-quality/assignment/specialist-assignment-dogfood-proof.json");
-  const workBreakdown = value("../project/work-breakdown-baseline.json");
-  const workDependency = value("../project/work-dependency-baseline.json");
+  const workBreakdown = value("../project/history/work-breakdown/1.9.1/work-breakdown-baseline.json");
+  const workDependency = value("../project/history/work-dependency/WDB-V011-MODULE-QUALITY-002/WDA-GATE-PROMOTION-V011-MODULE-QUALITY-002/work-dependency-baseline.json");
 
   validateSpecialistAssignmentArtifact(draft);
   validateSpecialistAssignmentArtifact(baseline);
@@ -41,7 +41,7 @@ test("V0.11 SpecialistAssignment binds all 16 work items through V2 checkpoint r
 
 test("V0.11 assignment promotion persists exact bytes, forward traceability, and Windows-safe replacement", () => {
   const dogfoodBaseline = bytes("../dogfood/v0.11-module-quality/assignment/specialist-assignment-baseline.json");
-  const projectBaseline = bytes("../project/specialist-assignment-baseline.json");
+  const projectBaseline = bytes("../project/history/specialist-assignment/SAB-22406E70A72F9D66/specialist-assignment-baseline.json");
   const promotion = value("../dogfood/v0.11-module-quality/assignment/promotion/specialist-assignment-promotion-proof.json");
   const source = bytes("../dogfood/v0.11-module-quality/assignment/promote.mjs").toString("utf8");
 

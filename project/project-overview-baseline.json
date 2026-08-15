@@ -1,19 +1,19 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "ProjectOverviewBaseline",
-  "baselineId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
-  "version": "1.9.0",
+  "baselineId": "project-overview-baseline-devrelay-v1-sim-001-simplification-001",
+  "version": "2.0.0",
   "approvedOverviewCandidate": {
-    "artifactId": "project-overview-change-set-v0.11-module-quality-v1",
-    "digest": "sha256:78eaf4aee08bfd19a8bb4354e3bf8417a0d380ef03c7a5a7e84fa403bbb69666"
+    "artifactId": "project-overview-change-set-sim-001-simplification-v1",
+    "digest": "sha256:9e42de9413063ff3fb6d0922fc1e7fe475516d6e21ae2f47e7cdf99532f750f8"
   },
   "supersedes": {
-    "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
-    "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+    "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+    "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
   },
   "requirementsBaseline": {
-    "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
-    "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+    "artifactId": "requirements-baseline-devrelay-v1-sim-001-simplification-001",
+    "digest": "sha256:d6bf55b38cbe96d4c1fdca87d0ed07e2697a7a90e5ab33bb7c27098f88229de5"
   },
   "projection": {
     "id": "devrelay.requirements-to-project-overview",
@@ -41,6 +41,61 @@
       ]
     },
     "businessObjectives": [
+      {
+        "id": "BO-DEV-ADOPTION-001",
+        "statement": "Make DevRelay straightforward to adopt and operate without weakening deterministic lifecycle authority, evidence, or traceability.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
       {
         "id": "BO-DEV-DETERMINISM-001",
         "statement": "Make software-engineering progression reproducible and fail closed when required inputs, evidence, or approvals are invalid.",
@@ -118,6 +173,61 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
               "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-DURABLE-HOST-001",
+        "statement": "Provide a recoverable local Windows host that turns the verified library into a practical ChatGPT Desktop engineering runtime.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
             }
           }
         ]
@@ -746,6 +856,65 @@
     ],
     "keyCapabilities": [
       {
+        "id": "CAP-DEV-API-TIERS-001",
+        "name": "Explicit API tiers",
+        "description": "Separate ordinary facade APIs, advanced subpaths, compatibility surfaces, and optional domain packs.",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-DEV-ARCHITECTURE-DISCOVERY-001",
         "name": "Evidence-bound current architecture discovery",
         "description": "Discover an existing repository's implemented architecture through a deterministic local inventory and replaceable bounded analyzers, producing one observational CurrentArchitectureSnapshot.",
@@ -962,6 +1131,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
               "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-EVIDENCE-DISTRIBUTION-001",
+        "name": "Externalized verifiable evidence",
+        "description": "Keep Git compact while preserving checksum-bound full lifecycle evidence in release assets.",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
             }
           }
         ]
@@ -1264,6 +1492,124 @@
         ]
       },
       {
+        "id": "CAP-DEV-LOCAL-HOST-001",
+        "name": "Durable Windows local host",
+        "description": "Persist state and artifacts, isolate work, enforce grants, recover crashes, and bind one Desktop executor.",
+        "businessObjectiveIds": [
+          "BO-DEV-DURABLE-HOST-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-OPERATOR-CLI-001",
+        "name": "Deterministic operator CLI",
+        "description": "Provide profile-aware run, resume, verify, inspect, and evidence commands beneath ChatGPT Desktop.",
+        "businessObjectiveIds": [
+          "BO-DEV-DURABLE-HOST-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-DEV-OSS-RELEASE-001",
         "name": "Verified open-source source/library release",
         "description": "Materialize, validate, and publish an Apache-2.0/DCO GitHub source and tarball release with complete package exports and Windows Desktop dogfood evidence.",
@@ -1444,6 +1790,65 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-wda-001",
               "digest": "sha256:4b072ef574875f3a5659d5e0a33a13564820e32ba866273f6ff2f460b60759b0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-SIMPLE-FACADE-001",
+        "name": "Simple DevRelay facade",
+        "description": "Expose ordinary configuration, execution, recovery, verification, and inspection through a small stable API.",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
             }
           }
         ]
@@ -1678,6 +2083,65 @@
         ]
       },
       {
+        "id": "CAP-DEV-WORKFLOW-PROFILES-001",
+        "name": "Risk-scaled workflow profiles",
+        "description": "Select deterministic quick, standard, assurance, or inspect policies without bypassing Core or required Gates.",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-WDA-ANALYZE-001",
         "name": "Work dependency analysis",
         "description": "Analyze an approved work breakdown and propose directed dependencies and dispositions.",
@@ -1838,6 +2302,116 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-EVIDENCE-WEIGHT-001",
+        "name": "Compact source evidence",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "measure": "Full raw lifecycle evidence retained directly in Git after externalization.",
+        "target": "Only minimal fixtures, compact summaries, manifests, and checksums remain in Git; full evidence is independently retrievable and checksum-verifiable.",
+        "measurementMethod": "Compare tracked evidence inventory with the release-asset manifest and verify every external digest.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-FIRST-RUN-001",
+        "name": "Successful first run",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "measure": "A new user completes a standard-profile deterministic run from a clean GitHub checkout on ChatGPT Desktop for Windows.",
+        "target": "One documented setup path, no internal artifact construction by the user, and a passing compact run summary.",
+        "measurementMethod": "Execute the clean-checkout Windows Desktop acceptance fixture and review the operator transcript.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
             }
           }
         ]
@@ -2089,6 +2663,61 @@
         ]
       },
       {
+        "id": "SM-DEV-PUBLIC-SURFACE-001",
+        "name": "Small public surface",
+        "businessObjectiveIds": [
+          "BO-DEV-ADOPTION-001"
+        ],
+        "measure": "Top-level supported facade operations required for ordinary use.",
+        "target": "No more than eight primary facade operations; advanced contracts remain under explicit subpaths.",
+        "measurementMethod": "Inspect generated API inventory and execute public-surface conformance tests.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "SM-DEV-QUALITY-001",
         "name": "Verified progression",
         "businessObjectiveIds": [
@@ -2110,6 +2739,61 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-RECOVERY-001",
+        "name": "Durable recovery",
+        "businessObjectiveIds": [
+          "BO-DEV-DURABLE-HOST-001"
+        ],
+        "measure": "Interrupted local runs resumed without repeating checkpointed effects or losing approvals and evidence.",
+        "target": "100 percent of crash-window fixtures recover deterministically with zero duplicate completed effects.",
+        "measurementMethod": "Run SQLite, artifact-store, worktree, and executor crash-recovery tests on Windows.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
             }
           }
         ]
@@ -3853,6 +4537,202 @@
         ]
       },
       {
+        "id": "SCOPE-SIM-DELIVERY-001",
+        "statement": "Bounded stacked pull requests, 0.10.0-rc.2 preview identity, independent stable-review policy, and superseded pull-request disposition.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-SIM-EVIDENCE-001",
+        "statement": "Compact in-repository evidence plus checksum-bound GitHub Release evidence assets and retrieval verification.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-SIM-FACADE-001",
+        "statement": "Small root facade, explicit advanced subpaths, workflow profiles, compatibility window, compact operator reporting, and migration guidance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-SIM-HOST-001",
+        "statement": "Durable Windows local host with SQLite, content-addressed artifacts, isolated worktrees, explicit grants, one Desktop executor, recovery, CLI, and performance budgets.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "SCOPE-WDA-ADAPTERS-001",
         "statement": "Bounded replaceable analysis manifests and conformance fixtures.",
         "sourceRefs": [
@@ -4906,6 +5786,256 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-SIM-CORE-REWRITE-001",
+        "statement": "Rewrite or weaken the deterministic Module, Gate, checkpoint, traceability, or evidence model.",
+        "rationale": "The increment simplifies the product surface, not the trust architecture.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-SIM-GODOT-CORE-001",
+        "statement": "Move Godot, GdUnit4, or future web-service behavior into Generic Core.",
+        "rationale": "Domain behavior remains optional and replaceable.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-SIM-MULTIPLATFORM-001",
+        "statement": "Claim release readiness for macOS, Linux, hosted execution, or a browser-only host.",
+        "rationale": "ChatGPT Desktop on Windows is the approved release boundary.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-SIM-PACKAGE-SPLIT-001",
+        "statement": "Immediately split the repository into multiple physical workspace packages.",
+        "rationale": "Subpath conformance must prove boundaries before a physical split.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-SIM-STABLE-WITHOUT-REVIEW-001",
+        "statement": "Call a candidate stable without independent human review.",
+        "rationale": "Unreviewed artifacts remain previews.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
             }
           }
         ]
@@ -6938,6 +8068,236 @@
         ]
       },
       {
+        "id": "CON-SIM-AUTHORITY-001",
+        "category": "technical",
+        "statement": "Facade and profiles may simplify configuration and presentation but cannot move routing, validation, Gate, checkpoint, traceability, or progression authority out of Core.",
+        "rationale": "Product simplicity must not weaken DevRelay's trust model.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-SIM-FACADE-001",
+          "AC-SIM-PROFILES-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-SIM-EVIDENCE-001",
+        "category": "data",
+        "statement": "Evidence externalization must preserve immutable content digests, media types, provenance, availability checks, and offline-verifiable manifests.",
+        "rationale": "Repository reduction cannot sacrifice reproducibility.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-SIM-EVIDENCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-SIM-HISTORY-001",
+        "category": "schedule",
+        "statement": "The simplification increment must not rewrite published Git history or mutate the verified V0.11 implementation/evidence pair.",
+        "rationale": "Existing release evidence is an immutable trust input.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-SIM-EVIDENCE-001",
+          "AC-SIM-PR-DECOMPOSITION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-SIM-PLATFORM-001",
+        "category": "platform",
+        "statement": "ChatGPT Desktop on Windows is the only release-defining interactive host for this increment.",
+        "rationale": "Verification must match the owner-supported product surface.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-SIM-WINDOWS-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "CON-WDA-NO-EXECUTION-001",
         "category": "technical",
         "statement": "WorkDependencyAnalysis is analysis and approval, not assignment, scheduling, or execution.",
@@ -8500,6 +9860,368 @@
         ]
       },
       {
+        "id": "NFR-SIM-COMPATIBILITY-001",
+        "category": "compatibility",
+        "statement": "0.10.0-rc.2 must preserve the declared compat/v1 window and support the release-defined Node versions on ChatGPT Desktop for Windows.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Run installed-package and migration matrices on supported Windows and Node combinations.",
+        "target": "100 percent of claimed combinations and compat examples pass.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-SIM-COMPAT-001",
+          "AC-SIM-WINDOWS-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-SIM-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Facade calls, profile resolution, CLI commands, durable recovery, and evidence retrieval must be deterministic for exact content-addressed inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Compare outputs, digests, transition histories, and effect counts across repeated and recovered runs.",
+        "target": "100 percent equality with zero duplicate completed effects.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-SIM-CLI-001",
+          "AC-SIM-CRASH-RECOVERY-001",
+          "AC-SIM-PROFILES-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-SIM-MAINTAINABILITY-001",
+        "category": "maintainability",
+        "statement": "Facade, advanced APIs, host services, and domain packs must have enforceable import boundaries and independently reviewable changes.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Run architecture boundary checks and inspect stacked pull-request scopes.",
+        "target": "Zero forbidden imports and every replacement pull request stays within its approved work-item scope.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-SIM-API-TIERS-001",
+          "AC-SIM-DOMAIN-PACK-001",
+          "AC-SIM-PR-DECOMPOSITION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-SIM-PERFORMANCE-001",
+        "category": "performance",
+        "statement": "Profile-specific latency and storage budgets must be measured on the Windows reference host and regressions must fail the applicable release lane.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Record cold and warm run duration, checkpoint reuse, database size, evidence size, and command latency.",
+        "target": "Budgets are defined during ArchitectureDesign and all release-defining measurements meet them.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-SIM-DURABLE-HOST-001",
+          "AC-SIM-FAST-LANE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-SIM-SECURITY-001",
+        "category": "security",
+        "statement": "The local host must fail closed on undeclared filesystem, process, network, secret, worktree, database, or artifact access.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Exercise capability denial, path escape, SQL migration, artifact tamper, and executor substitution fixtures.",
+        "target": "Zero undeclared effects or accepted tampered state.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-SIM-CRASH-RECOVERY-001",
+          "AC-SIM-DURABLE-HOST-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-SIM-USABILITY-001",
+        "category": "usability",
+        "statement": "Ordinary users must operate DevRelay through a compact facade, profile choice, concise status, and expandable evidence rather than internal artifact construction.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Run clean-checkout operator studies and API inventory checks.",
+        "target": "At most eight primary facade operations and one documented standard path.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-SIM-FACADE-001",
+          "AC-SIM-WINDOWS-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "NFR-WDA-DETERMINISM-001",
         "category": "reliability",
         "statement": "Routing, mechanical validation, canonical ordering, replay, and Gate commit preparation must be deterministic for exact inputs.",
@@ -9668,6 +11390,218 @@
         ]
       },
       {
+        "id": "TERM-SIM-EVIDENCE-ASSET-001",
+        "term": "Evidence asset",
+        "definition": "An immutable GitHub Release attachment bound by a committed manifest containing its digest, media type, size, provenance, and retrieval identity.",
+        "aliases": [
+          "External evidence bundle"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-SIM-FACADE-001",
+        "term": "DevRelay facade",
+        "definition": "The small supported root API used for ordinary project configuration, execution, recovery, verification, and inspection.",
+        "aliases": [
+          "Simple API"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-SIM-LOCAL-HOST-001",
+        "term": "Local reference host",
+        "definition": "The Windows process and CLI that durably persists DevRelay state and artifacts, enforces capabilities, manages isolated worktrees, and binds Desktop execution.",
+        "aliases": [
+          "Durable host"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-SIM-PROFILE-001",
+        "term": "Workflow profile",
+        "definition": "A versioned immutable policy selection that scales workflow depth and verification cost without bypassing Core validation or applicable Gates.",
+        "aliases": [
+          "Profile"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-sim-001-simplification-v1",
+              "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
+            },
+            "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+              "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-3374e75",
+              "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+              "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
+            }
+          }
+        ]
+      },
+      {
         "id": "TERM-WDA-ANALYSIS-SNAPSHOT-001",
         "term": "WorkBreakdown analysis snapshot",
         "definition": "The complete immutable projection of one exact approved WorkBreakdownBaseline used as the work-item universe for a single full dependency analysis.",
@@ -10031,49 +11965,49 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "planning",
-      "summary": "V0.11 module-quality requirements are clarified and closed: adaptive breadth-first requirements interviews, live-attested priority providers, an optional Godot pack, automatic receipts, two-phase Git sealing, queryable traceability, local telemetry, and four repository-scoped Desktop skills.",
+      "summary": "SIM-001 simplification requirements are closed: a small facade, risk-scaled workflow profiles, explicit API tiers, compact repository evidence, optional domain packs, preview-safe review policy, and a durable Windows local host.",
       "sourceRefs": [
         {
           "role": "goal",
           "artifact": {
-            "artifactId": "goal-devrelay-v0.11-module-quality-v1",
-            "digest": "sha256:8add4c88416e292ad15c62f789b333fc8995290552d4971bd463e28214cf98b3"
+            "artifactId": "goal-devrelay-sim-001-simplification-v1",
+            "digest": "sha256:ded52bbe2a91de7c93606e08f92dfe75839fb5314386df8dbb5b7e2b91f6d0c9"
           }
         },
         {
           "role": "owner-decision",
           "artifact": {
-            "artifactId": "owner-decisions-v0.11-module-quality-v1",
-            "digest": "sha256:983d2334485993c12fa7c8657f6c8d3a3ab97c798198c3332a84cbb32b36daf6"
+            "artifactId": "owner-decisions-sim-001-simplification-v1",
+            "digest": "sha256:afa258666c7fa0b4182f823e9af6dbbc30ab27d7d1d803e526b6d5c4265c1302"
           },
-          "location": "All twenty-one normalized blocking decisions approved across the preserved interview waves"
+          "location": "All twelve normalized blocking decisions approved in clarification wave 1"
         },
         {
           "role": "project-context",
           "artifact": {
-            "artifactId": "project-context-devrelay-v0.11-module-quality-v1",
-            "digest": "sha256:42d411334e6863b724fc2bf08ce161564dbb8b4d47cce3f6a02244bf4f65dfac"
+            "artifactId": "project-context-devrelay-sim-001-simplification-v1",
+            "digest": "sha256:d20e78741c02270ce55c1b5ecf4a7f3a958c7c966d9ff61095b7289ac298e103"
           }
         },
         {
           "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "project-overview-baseline-devrelay-v1-v0.10-release-hardening-001",
-            "digest": "sha256:73bb80da65f4f62f42f09475b950cc874c787d01a112aae3f5079d8667e20686"
+            "artifactId": "project-overview-baseline-devrelay-v1-v0.11-module-quality-001",
+            "digest": "sha256:59192795eeb773025158c16a21bc939f86b7113455974d61e5c5a31a5e8a4ffb"
           }
         },
         {
           "role": "repository-snapshot",
           "artifact": {
-            "artifactId": "repository-snapshot-devrelay-a97f1f5",
-            "digest": "sha256:317c73888f9b33e7830859993418b91ce2984db8e4dfda92a78c4e58b52fe200"
+            "artifactId": "repository-snapshot-devrelay-3374e75",
+            "digest": "sha256:d683f78299576e36b4c57bd1f40b883f17abee07698f0920bcca013be9de97ca"
           }
         },
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
-            "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            "artifactId": "requirements-baseline-devrelay-v1-v0.11-module-quality-001",
+            "digest": "sha256:8f586e039e70f614ccfbf9190cf8f712b2f158529fd0c1f530fa09e72b23eb32"
           }
         }
       ]
@@ -10084,8 +12018,8 @@
     "mediaType": "text/markdown; charset=utf-8",
     "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
     "artifact": {
-      "artifactId": "project-overview-markdown-v0.11-module-quality-v1",
-      "digest": "sha256:cf975c5144d0e78cbbd8616a801868ecc53ee9f0ed2b19b330bd81c33c79c0fd"
+      "artifactId": "project-overview-markdown-sim-001-simplification-v1",
+      "digest": "sha256:af7e523e23d22bfec31bf383d894c9510620a190888d2bc4560f6523c7d4fb74"
     },
     "renderer": {
       "id": "devrelay.project-overview.markdown",
@@ -10095,8 +12029,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-v0.11-module-quality-v1",
-      "digest": "sha256:4e8411cc93678976d65ab1f47c5e9cf9e7c95392fd2f0a2512f6b1d2fd057379"
+      "artifactId": "requirements-gate-approval-sim-001-simplification-v1",
+      "digest": "sha256:be5d9e47f00511f85c9d676a5c650f7c423397bd4211554c82efee7ca1805bae"
     }
   ]
 }

@@ -616,10 +616,6 @@ export {
   authorizeProviderInvocation,
 } from "./provider-toolchain.mjs";
 export {
-  GdscriptDiscoveryError,
-  analyzeGodotRepository,
-} from "./gdscript-discovery-analyzer.mjs";
-export {
   TraceabilityQueryError,
   createTraceabilityQueryService,
 } from "./traceability-query-service.mjs";
@@ -647,20 +643,69 @@ export {
   createStructurizrLiveAdapter,
   createMadrLiveAdapter,
 } from "./live-provider-adapters.mjs";
-export {
-  GodotProviderAdapterError,
-  createGodotMcpAdapter,
-  createGdUnit4VerificationAdapter,
-} from "./godot-provider-adapters.mjs";
 export { MadrConformanceError, validateMadrDocument } from "./madr-conformance.mjs";
-export {
-  GodotCompatibilityError,
-  createGodotCompatibilityPolicy,
-  verifyGodotCompatibilityPolicy,
-  evaluateGodotCompatibility,
-} from "./godot-compatibility.mjs";
 export {
   ModuleQualityReportError,
   createModuleQualityReport,
   renderModuleQualityReportMarkdown,
 } from "./module-quality-report.mjs";
+
+export {
+  WorkflowProfileError,
+  createWorkflowProfileCatalog,
+  resolveWorkflowProfile,
+  verifyResolvedWorkflowProfile,
+} from "./workflow-profiles.mjs";
+export {
+  LocalHostStorageError,
+  createLocalHostStorage,
+} from "./local-host-storage.mjs";
+export {
+  LocalHostIsolationError,
+  createCapabilityEnforcer,
+  createGitWorktreeManager,
+} from "./local-host-isolation.mjs";
+export {
+  ReleaseEvidenceAssetError,
+  createReleaseEvidenceManifest,
+  createReleaseEvidenceUploadRequest,
+  scanReleaseEvidenceSecrets,
+  verifyReleaseEvidenceRetrieval,
+} from "./release-evidence-assets.mjs";
+export {
+  DevRelayFacadeError,
+  createDevRelay,
+  createLocalHost,
+  defineModule,
+  definePlugin,
+  inspect,
+  resume,
+  run,
+  verify,
+} from "./public-facade.mjs";
+
+export {
+  ApiTierError,
+  SUPPORTED_ROOT_EXPORTS,
+  createApiTierManifest,
+  diagnoseForbiddenImport,
+  verifyApiTierExports,
+} from "./api-tiers.mjs";
+export {
+  DesktopExecutionCoordinatorError,
+  createDesktopExecutionCoordinator,
+} from "./desktop-execution-coordinator.mjs";
+
+export {
+  OperatorCliError,
+  OPERATOR_COMMANDS,
+  OPERATOR_EXIT_CODES,
+  createOperatorCli,
+  parseOperatorArguments,
+} from "./operator-cli.mjs";
+export {
+  PackConformanceError,
+  definePackManifest,
+  evaluatePackConformance,
+  scanGenericCoreIdentifiers,
+} from "./pack-conformance.mjs";

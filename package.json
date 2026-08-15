@@ -1,6 +1,6 @@
 {
   "name": "devrelay",
-  "version": "0.10.0-rc.1",
+  "version": "0.10.0-rc.2",
   "private": false,
   "license": "Apache-2.0",
   "description": "A deterministic runner for composable software-engineering modules with lifecycle traceability.",
@@ -21,9 +21,11 @@
     "traceability"
   ],
   "type": "module",
-  "main": "./src/index.mjs",
+  "main": "./src/root.mjs",
   "exports": {
-    ".": "./src/index.mjs",
+    ".": "./src/root.mjs",
+    "./advanced": "./src/index.mjs",
+    "./compat/v1": "./src/compat-v1.mjs",
     "./contracts/*": "./contracts/*",
     "./modules/requirements-gathering.module.json": "./examples/modules/requirements-gathering.module.json",
     "./modules/architecture-discovery.module.json": "./examples/modules/architecture-discovery.module.json",
@@ -74,7 +76,8 @@
     "./package.json": "./package.json",
     "./modules/specialist-assignment-v1.module.json": "./examples/modules/specialist-assignment-v1.module.json",
     "./plugins/a2a-profile-source-v1.plugin.json": "./examples/plugins/a2a-profile-source-v1.plugin.json",
-    "./plugins/native-specialist-ranker-v1.plugin.json": "./examples/plugins/native-specialist-ranker-v1.plugin.json"
+    "./plugins/native-specialist-ranker-v1.plugin.json": "./examples/plugins/native-specialist-ranker-v1.plugin.json",
+    "./packs/*": "./packs/*"
   },
   "files": [
     "src/",
@@ -133,7 +136,9 @@
     "examples/plugins/review-system-verifier.plugin.json",
     "examples/modules/specialist-assignment-v1.module.json",
     "examples/plugins/a2a-profile-source-v1.plugin.json",
-    "examples/plugins/native-specialist-ranker-v1.plugin.json"
+    "examples/plugins/native-specialist-ranker-v1.plugin.json",
+    "bin/",
+    "packs/"
   ],
   "scripts": {
     "test": "node scripts/run-tests.mjs --test-concurrency=1",
@@ -155,5 +160,8 @@
   },
   "devDependencies": {
     "@cyclonedx/cyclonedx-npm": "6.0.1"
+  },
+  "bin": {
+    "devrelay": "./bin/devrelay.mjs"
   }
 }

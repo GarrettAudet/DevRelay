@@ -1,0 +1,61 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "OwnerDecisionSet",
+  "decisionSetId": "rm-001-roadmap-management-wave-1",
+  "status": "approved-intake",
+  "decisions": [
+    {
+      "id": "Q-RM-BOUNDARY-001",
+      "decision": "RoadmapManagement is a cross-cutting semantic Module with triage-candidate, review-roadmap, and reprioritize operations."
+    },
+    {
+      "id": "Q-RM-AUTHORITY-001",
+      "decision": "Detection creates a RoadmapIntakeCandidate only; RoadmapGate alone may approve changes to RoadmapBaseline."
+    },
+    {
+      "id": "Q-RM-CLARITY-001",
+      "decision": "Potential initiatives use RequirementsGathering breadth-first clarification waves with mandatory 0.99 closure before roadmap disposition."
+    },
+    {
+      "id": "Q-RM-DISPOSITION-001",
+      "decision": "RoadmapManagement recommends exactly one of keep, defer, merge, or discard, and preserves every disposition for audit."
+    },
+    {
+      "id": "Q-RM-PRIORITY-001",
+      "decision": "Prioritization uses explicit configurable weights over strategic alignment, user value, urgency, risk reduction, effort range, dependencies, and confidence."
+    },
+    {
+      "id": "Q-RM-STORAGE-001",
+      "decision": "RoadmapBaseline is the authoritative structured artifact and Roadmap.md is its concise deterministic human-readable projection."
+    },
+    {
+      "id": "Q-RM-CONTEXT-001",
+      "decision": "Every fresh DevRelay task in the configured project workspace must run DevRelaySessionBootstrap and read compact digest-bound project, roadmap, lifecycle, Gate, and ready-frontier context."
+    },
+    {
+      "id": "Q-RM-RECEIPT-001",
+      "decision": "Session bootstrap emits a SessionContextReceipt and fails closed on missing, stale, substituted, malformed, or digest-mismatched required context."
+    },
+    {
+      "id": "Q-RM-REFRESH-001",
+      "decision": "A baseline promotion during a task requires a refreshed context snapshot at the next Module boundary."
+    },
+    {
+      "id": "Q-RM-EXPLICIT-INPUTS-001",
+      "decision": "Session context never replaces explicit content-addressed ModuleInvocation inputs and never becomes hidden Core or conversational authority."
+    },
+    {
+      "id": "Q-RM-INITIALIZATION-001",
+      "decision": "A missing roadmap uses an explicit RoadmapNotInitialized disposition and routes to baseline establishment without fabricating an empty roadmap."
+    },
+    {
+      "id": "Q-RM-ADAPTERS-001",
+      "decision": "The native file contract is authoritative; external planning systems are optional adapters."
+    }
+  ],
+  "source": {
+    "channel": "owner-chat",
+    "date": "2026-08-14"
+  },
+  "next": "run-released-requirements-gathering-after-sim-001"
+}

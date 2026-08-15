@@ -59,5 +59,9 @@ test("module-quality report is dynamic, compact, ASCII-safe, and shows operation
 
 test("frontier-three APIs are exported", async () => {
   const api = await import("../src/index.mjs");
-  for (const name of ["createGodotCompatibilityPolicy", "evaluateGodotCompatibility", "createModuleQualityReport", "renderModuleQualityReportMarkdown"]) assert.equal(typeof api[name], "function", name);
+  for (const name of ["createModuleQualityReport", "renderModuleQualityReportMarkdown"])
+    assert.equal(typeof api[name], "function", name);
+  const godotPack = await import("../packs/godot/index.mjs");
+  for (const name of ["createGodotCompatibilityPolicy", "evaluateGodotCompatibility"])
+    assert.equal(typeof godotPack[name], "function", name);
 });

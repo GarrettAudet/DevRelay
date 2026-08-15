@@ -258,7 +258,8 @@ test("new second-frontier APIs are exported by the package surface", async () =>
     "recordLocalPerformanceMetrics",
     "createRequirementsStrategyRegistry",
     "createOpenSpecLiveAdapter",
-    "createGodotMcpAdapter",
-    "createGdUnit4VerificationAdapter",
   ]) assert.equal(typeof api[name], "function", `${name} must be exported`);
+  const godotPack = await import("../packs/godot/index.mjs");
+  for (const name of ["createGodotMcpAdapter", "createGdUnit4VerificationAdapter"])
+    assert.equal(typeof godotPack[name], "function", `${name} must be pack-exported`);
 });

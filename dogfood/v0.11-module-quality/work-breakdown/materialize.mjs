@@ -168,9 +168,9 @@ function createTraceabilityCheckpointStore() {
   };
 }
 
-const requirementsBytes = read("project/requirements-baseline.json");
-const overviewBytes = read("project/project-overview-baseline.json");
-const architectureBytes = read("project/architecture-baseline.json");
+const requirementsBytes = read("project/history/1.9.0/requirements-baseline.json");
+const overviewBytes = read("project/history/1.9.0/project-overview-baseline.json");
+const architectureBytes = read("project/history/architecture/architecture-baseline-devrelay-v1-v0.11-module-quality-002/architecture-baseline.json");
 const repositoryBytes = read(
   "dogfood/v0.11-module-quality/repository-snapshot.json",
 );
@@ -193,8 +193,8 @@ const architecturePromotionBytes = read(
 const priorWorkBreakdownProofBytes = read(
   "dogfood/v0.10-release-hardening/work-breakdown/work-breakdown-gate-promotion-proof.json",
 );
-const contractDispositionBytes = read("project/contract-disposition.json");
-const contractBaselineBytes = read("project/contract-baseline.json");
+const contractDispositionBytes = read("project/history/contracts/CB-DEVRELAY-010/contract-disposition.json");
+const contractBaselineBytes = read("project/history/contracts/CB-DEVRELAY-010/contract-baseline.json");
 const contractPromotionBytes = read(
   "dogfood/v0.11-module-quality/contract-generation/replay-v2/contract-gate-promotion.json",
 );
@@ -765,7 +765,7 @@ for (const [ref, bytes] of [
 register(priorGraphRef, Buffer.from(canonicalJson(priorGraph), "utf8"));
 register(
   overview.renderedDocument.artifact,
-  read("ProjectOverview.md"),
+  read("project/history/1.9.0/ProjectOverview.md"),
 );
 for (const entry of architecture.sections.nativeArtifacts.content.entries) {
   register(entry.artifact, read(entry.logicalPath));
