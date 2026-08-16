@@ -28,6 +28,10 @@ Evidence package                                       sealed
 Final clean gate and protected-main promotion          pending
 ```
 
+## Post-seal CI correction
+
+GitHub Ubuntu runners exposed a runner-coupled test fixture: it relied on `process.platform` while exercising a Windows-only host contract. The fixture now explicitly supplies `platform: "win32"`; the production guard remains fail-closed for non-Windows hosts. The changed test is not part of the npm package, so runtime/package bytes and the accepted capability boundary are unchanged. Exact branch-tip CI must pass before promotion.
+
 ## Exact evidence
 
 - Implementation: `a812b6e9764f2ed27f6beef7a7832f9406b98bdb`

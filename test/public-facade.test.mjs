@@ -58,7 +58,7 @@ function fixture({ bootstrapOutcome = "pass" } = {}) {
     calls.push({ operation: "bootstrap", input });
     return sessionReceipt(input.taskId, bootstrapOutcome);
   };
-  const host = createLocalHost({ services, grants: [{ kind: "process.spawn", values: ["node"] }] });
+  const host = createLocalHost({ platform: "win32", services, grants: [{ kind: "process.spawn", values: ["node"] }] });
   const relay = createDevRelay({
     projectId: "PROJECT-1",
     host,
