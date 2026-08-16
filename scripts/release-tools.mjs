@@ -591,7 +591,7 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
     'const rmApprovalBytes = Buffer.from(api.canonicalJson(rmApproval), "utf8");',
     'const rmApprovalRef = rmRef(rmApproval.approvalId, api.sha256Digest(rmApprovalBytes), api.ROADMAP_ARTIFACT_CONTRACTS.RoadmapGateApproval.schema, api.ROADMAP_ARTIFACT_CONTRACTS.RoadmapGateApproval.mediaType);',
     'const rmPromotion = api.promoteRoadmapBaseline({ changeSet: rmResult.changeSet, changeSetRef: rmChangeRef, changeSetBytes: rmChangeBytes, approval: rmApproval, approvalRef: rmApprovalRef, approvalBytes: rmApprovalBytes, terminalCheckpointDigest: rmDigest, priorityPolicyRef: rmPolicyRef, sourceRefs: [rmSource] });',
-    'if (!rmPromotion.refreshRequired || !rmPromotion.projection.startsWith("# Roadmap\n")) throw new Error("installed RoadmapGate did not produce baseline plus refresh");',
+    'if (!rmPromotion.refreshRequired || !rmPromotion.projection.startsWith("# Roadmap\\n")) throw new Error("installed RoadmapGate did not produce baseline plus refresh");',
     'const rmContextBytes = new Map();',
     'const rmBindings = ["project-overview", "project-overview-projection", "lifecycle-status", "roadmap", "roadmap-projection"].map((role) => { const bytes = Buffer.from(`installed:${role}`, "utf8"); const artifact = rmRef(`RM-CONTEXT-${role}`, api.sha256Digest(bytes)); rmContextBytes.set(artifact.digest, bytes); return { role, artifact, artifactVersion: "1.0.0" }; });',
     'const rmSnapshot = api.createSessionContextSnapshot({ projectId: "RM-INSTALLED", taskId: "RM-DESKTOP-TASK", workspaceId: "RM-WORKSPACE", repositoryRevision: "b".repeat(40), bindings: rmBindings, roadmapDisposition: "initialized", createdAt: "2026-08-15T12:00:00Z" });',
