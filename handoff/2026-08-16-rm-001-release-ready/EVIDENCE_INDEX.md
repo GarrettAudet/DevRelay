@@ -9,4 +9,7 @@
 | BusinessAcceptance | `dogfood/rm-001-roadmap-management/release/final-acceptance/business-acceptance-record.json` | `sha256:19cae637e9f5a511b678984eb4654225bae70bd784ab4f58a5b0437016f08559` |
 | Final graph | `dogfood/rm-001-roadmap-management/release/final-acceptance/29-business-acceptance-graph.json` | `sha256:7ed7ecc3795ab572ccf43f7a38552515394dafde9d52ec04e178d0637614904b` |
 | Roadmap | `project/roadmap-baseline.json` | `sha256:0de80f85d33d1f05897726fcf1a8cb3c9dfab27b205c5a2a5069a17e0e90dbbb` |
+| Evidence commit | Git commit | `2dfe6986cb7a4203ff1287905f290353597728a9` |
+| Two-phase seal | `dogfood/rm-001-roadmap-management/release/evidence-seal-record.json` | `sha256:b63c09ad8ef44968130c7446f5578b1ee7fe3236c129e36389442bdc4da86d6f` |
+| Seal verification | `dogfood/rm-001-roadmap-management/release/evidence-seal-verification.json` | verified |
 | Catalog | `release/0.10.0-rc.3.json` | exact inventory |

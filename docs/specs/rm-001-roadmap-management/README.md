@@ -15,7 +15,7 @@ The authoritative artifact is a content-addressed `RoadmapBaseline`; `Roadmap.md
 ## Verification
 
 - 993 tests: 991 passed, 0 failed, 2 intentional environment skips.
-- Performance, catalog (7,754 digests), package (364 files), and installed exports (186) passed.
+- Performance, catalog (7,756 digests), package (364 files), and installed exports (186) passed.
 - Full Windows Desktop dogfood passed.
 - Seven work items verified and integrated; frontier empty.
 - SystemVerification verified; BusinessAcceptance accepted.
@@ -25,4 +25,4 @@ See [MILESTONE.md](MILESTONE.md) and `dogfood/rm-001-roadmap-management/release/
 
 ## Next
 
-Seal and promote RC3 through protected `main`. Every additional idea enters as a RequirementsGathering-backed roadmap candidate.
+The direct-child evidence commit and two-phase seal are verified. Run the clean branch-tip gate, push RC3, and promote through protected `main`. Every additional idea enters as a RequirementsGathering-backed roadmap candidate.

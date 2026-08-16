@@ -1,6 +1,6 @@
 # Pickup prompt
 
-Continue from the RM-001 handoff on `codex/rm-001-roadmap-management`. First verify checksums, Git status, implementation/evidence lineage, two-phase seal, release catalog, and GitHub checks. Do not regenerate accepted artifacts unless exact verification fails.
+Continue from the RM-001 handoff on `codex/rm-001-roadmap-management`. First verify checksums, Git status, implementation/evidence lineage (evidence commit `2dfe6986cb7a4203ff1287905f290353597728a9`), two-phase seal, release catalog, and GitHub checks. Do not regenerate accepted artifacts unless exact verification fails.
 
 The boundary is GitHub source plus an installable deterministic library operated through ChatGPT Desktop on Windows. It excludes public npm, a one-click Desktop plug-in, hosted backend, and non-Windows claims.
 

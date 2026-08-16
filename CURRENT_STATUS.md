@@ -11,7 +11,7 @@ Release boundary: GitHub source/installable library operated end-to-end through 
 
 RM-001 is complete through BusinessAcceptance on immutable implementation commit `a812b6e9764f2ed27f6beef7a7832f9406b98bdb`. All seven work items are verified and integrated; the frontier is empty; traceability revision 19 has zero blockers.
 
-The release gate passes 993 tests (991 passed, 0 failed, 2 intentional environment-gated skips), 7,754 repository digests, 364 package files, and 186 installed export targets.
+The release gate passes 993 tests (991 passed, 0 failed, 2 intentional environment-gated skips), 7,756 repository digests, 364 package files, and 186 installed export targets.
 
 Delivered: roadmap triage/review/reprioritization; human RoadmapGate; atomic baseline promotion; structured `RoadmapBaseline` and concise `Roadmap.md`; trusted traceability; and mandatory fail-closed fresh-task context bootstrap with next-module-boundary refresh.
 
@@ -24,8 +24,8 @@ WorkItemVerification                                   verified
 ChangeIntegration                                      integrated
 SystemVerification                                     verified
 BusinessAcceptance                                     accepted
-Evidence package                                       sealing
-Protected-main promotion                               pending
+Evidence package                                       sealed
+Final clean gate and protected-main promotion          pending
 ```
 
 ## Exact evidence
@@ -38,4 +38,4 @@ Protected-main promotion                               pending
 - Final graph: `sha256:7ed7ecc3795ab572ccf43f7a38552515394dafde9d52ec04e178d0637614904b`
 - Roadmap: `sha256:0de80f85d33d1f05897726fcf1a8cb3c9dfab27b205c5a2a5069a17e0e90dbbb`
 
-This candidate excludes public npm publication, a one-click Desktop plug-in, a hosted backend, and non-Windows support. Next: seal and push the evidence child, then promote through protected `main`.
+This candidate excludes public npm publication, a one-click Desktop plug-in, a hosted backend, and non-Windows support. Evidence commit: `2dfe6986cb7a4203ff1287905f290353597728a9`. Two-phase seal: `sha256:b63c09ad8ef44968130c7446f5578b1ee7fe3236c129e36389442bdc4da86d6f` (verified). Next: run the clean tip gate, push, then promote through protected `main`.
