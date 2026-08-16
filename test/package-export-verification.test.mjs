@@ -87,4 +87,5 @@ test("installed export smoke is file-backed for the Windows command-length bound
   assert.ok(source.includes('const smokePath = join(consumer, "release-smoke.mjs")'));
   assert.ok(source.includes('run(process.execPath, [smokePath]'));
   assert.equal(source.includes('["--input-type=module", "--eval", smokeProgram]'), false);
+  assert.ok(source.includes('startsWith("# Roadmap\\\\n")'));
 });
