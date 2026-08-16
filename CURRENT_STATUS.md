@@ -1,50 +1,41 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-08-15 MDT
+Last reconciled: 2026-08-16 MDT
 Protected branch: `main`
-Accepted predecessor: `0daf16c6582c603a25c34e97ca078f98676c8e3f`
-Candidate version: `0.10.0-rc.3`
-Workflow increment: `RM-001 RoadmapManagement and session bootstrap`
-Active branch: `codex/rm-001-roadmap-management`
+Candidate: `0.10.0-rc.3`
+Increment: `RM-001 RoadmapManagement and session bootstrap`
+Branch: `codex/rm-001-roadmap-management`
 Release boundary: GitHub source/installable library operated end-to-end through ChatGPT Desktop on Windows
 
-## Executive status
+## Status
 
-RM-001 has completed RequirementsGathering and Gate, ArchitectureDesign and Gate, ContractGeneration and Gate, WorkBreakdown and Gate, WorkDependencyAnalysis and Gate, and SpecialistAssignment and Gate. Seven approved work items are implemented on the active branch. The canonical implementation gate passes 993 tests with 991 passing, zero failures, and two intentional environment-dependent skips.
+RM-001 is complete through BusinessAcceptance on immutable implementation commit `a812b6e9764f2ed27f6beef7a7832f9406b98bdb`. All seven work items are verified and integrated; the frontier is empty; traceability revision 19 has zero blockers.
 
-The implementation adds provider-neutral RoadmapManagement triage, review, and reprioritization; explicit weighted scoring; exact replay; a human-owned RoadmapGate; authoritative structured baselines; concise Roadmap projection; trusted traceability; and mandatory fail-closed fresh-task session bootstrap for configured ChatGPT Desktop tasks on Windows.
+The release gate passes 993 tests (991 passed, 0 failed, 2 intentional environment-gated skips), 7,754 repository digests, 364 package files, and 186 installed export targets.
 
-## Current lifecycle position
+Delivered: roadmap triage/review/reprioritization; human RoadmapGate; atomic baseline promotion; structured `RoadmapBaseline` and concise `Roadmap.md`; trusted traceability; and mandatory fail-closed fresh-task context bootstrap with next-module-boundary refresh.
+
+## Lifecycle
 
 ```text
-RequirementsGathering         complete
-RequirementsGate              complete
-ArchitectureDesign            complete
-ArchitectureGate              complete
-ContractGeneration            complete
-ContractGate                  complete
-WorkBreakdown                 complete
-WorkBreakdownGate             complete
-WorkDependencyAnalysis        complete
-WorkDependencyGate            complete
-SpecialistAssignment          complete
-SpecialistAssignmentGate      complete
-WorkExecution                 implementation present; evidence seal pending
-WorkItemVerification          canonical and focused gates green
-ChangeIntegration             implementation commit pending
-SystemVerification            pending exact clean-commit run
-BusinessAcceptance            pending exact release candidate
+RequirementsGathering through SpecialistAssignmentGate  complete
+WorkExecution (7)                                       complete
+WorkItemVerification                                   verified
+ChangeIntegration                                      integrated
+SystemVerification                                     verified
+BusinessAcceptance                                     accepted
+Evidence package                                       sealing
+Protected-main promotion                               pending
 ```
 
-## Exact approved planning artifacts
+## Exact evidence
 
-- Requirements baseline: `sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb`.
-- Architecture baseline: `sha256:265711e213a313d162d09b4b46e9cb2c1c84b29e48b03d21875a851fb9a8a4d3`.
-- Contract baseline: `sha256:ca5c00ad3f7bf8827bed1a9b1f347fd64e74331e7f225ea32d52c684a34b8997`.
-- WorkBreakdown baseline: `sha256:859b2b9c5927bdda64f37f19e23cb8fbf741767a7a1089d2f1da922c46c157fd`.
-- WorkDependency baseline: `sha256:1d25ec55d62dfbd313dfe5e0d87e4d63cd913f0cfc82d8dd3dea0ec349c810dd`.
-- SpecialistAssignment baseline: `sha256:8ce5ea22995330c1bda8e2f47b52049930aa5147cd43c36686d5346ae3127e55`.
+- Implementation: `a812b6e9764f2ed27f6beef7a7832f9406b98bdb`
+- Verification: `sha256:58412a7719e9c35e8a7075cfd412d84a2b3189acb51f7bf87c24dbf0575c44a9`
+- Lifecycle: `sha256:90a1725eee3faf787a4f231ae2238504500dc2580119b056c6a0e1762bb337fe`
+- SystemVerification: `sha256:b0c7e9ed49aab10387aceaaa29032e786e73e020695e5946880334da7003f4ea`
+- BusinessAcceptance: `sha256:19cae637e9f5a511b678984eb4654225bae70bd784ab4f58a5b0437016f08559`
+- Final graph: `sha256:7ed7ecc3795ab572ccf43f7a38552515394dafde9d52ec04e178d0637614904b`
+- Roadmap: `sha256:0de80f85d33d1f05897726fcf1a8cb3c9dfab27b205c5a2a5069a17e0e90dbbb`
 
-## Next exact action
-
-Create the clean RM-001 implementation commit, run the raw Windows verification and performance receipt collector from that immutable commit, execute the packed Desktop roadmap scenario, promote the first RoadmapBaseline, refresh session context, merge trusted traceability, run `npm.cmd run release:check`, then complete SystemVerification, BusinessAcceptance, the evidence seal, milestone, and pickup package.
+This candidate excludes public npm publication, a one-click Desktop plug-in, a hosted backend, and non-Windows support. Next: seal and push the evidence child, then promote through protected `main`.
