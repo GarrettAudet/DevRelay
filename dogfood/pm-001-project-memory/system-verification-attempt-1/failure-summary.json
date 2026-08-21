@@ -1,0 +1,30 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "Pm001SystemVerificationFailureSummary",
+  "candidateCommit": "44ce24d146b17247dc70a3fb407e0ec78a2a7a36",
+  "command": "npm.cmd run verify",
+  "outcome": "failed",
+  "tests": {
+    "total": 1037,
+    "passed": 1027,
+    "failed": 8,
+    "skipped": 2
+  },
+  "failingConditions": [
+    {
+      "id": "SV-PM-001-WINDOWS-ARCHIVE-MODULE",
+      "count": 7,
+      "classification": "environment-compatibility",
+      "evidence": "Windows PowerShell could locate but not autoload Microsoft.PowerShell.Archive because the host module path was incomplete.",
+      "route": "fix"
+    },
+    {
+      "id": "SV-PM-001-BASELINE-SEAL",
+      "count": 1,
+      "classification": "candidate-assembly",
+      "evidence": "The implementation commit omitted the approved 2.2.0 RequirementsBaseline/ProjectOverview evidence pair, exposing a stale 2.1.0 pair.",
+      "route": "fix"
+    }
+  ],
+  "progressionAllowed": false
+}
