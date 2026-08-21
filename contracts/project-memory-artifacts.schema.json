@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/project-memory-artifacts.schema.json",
+  "title": "DevRelay ProjectMemory artifacts",
+  "oneOf": [
+    { "$ref": "#/$defs/memoryUpdateCandidate" },
+    { "$ref": "#/$defs/projectMemoryBaseline" },
+    { "$ref": "#/$defs/projectMemoryGateApproval" },
+    { "$ref": "#/$defs/projectMemoryPromotionProof" },
+    { "$ref": "#/$defs/memoryProviderReceipt" },
+    { "$ref": "#/$defs/traceabilityContextProjection" },
+    { "$ref": "#/$defs/memoryContextBundle" },
+    { "$ref": "#/$defs/sessionConclusion" },
+    { "$ref": "#/$defs/synopsisProjectionReceipt" },
+    { "$ref": "#/$defs/concludeReceipt" },
+    { "$ref": "#/$defs/projectMemorySessionState" }
+  ],
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "timestamp": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$" },
+    "ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "schema", "mediaType", "digest", "uri"],
+      "properties": {
+        "artifactId": { "$ref": "#/$defs/id" },
+        "schema": { "type": "string", "format": "uri" },
+        "mediaType": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "artifact": { "$ref": "#/$defs/ref" },
+        "jsonPointer": { "type": "string" }
+      }
+    },
+    "memoryRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "statement", "authority", "status", "effectiveAt", "sourceRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "category": { "enum": ["goal", "direction", "decision", "assumption", "constraint", "status", "issue", "pattern", "terminology", "next-action"] },
+        "statement": { "type": "string", "minLength": 1, "maxLength": 16384 },
+        "authority": { "enum": ["approved-project", "approved-domain", "validated-status"] },
+        "status": { "enum": ["active", "superseded", "retained", "rejected"] },
+        "effectiveAt": { "$ref": "#/$defs/timestamp" },
+        "supersedes": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "domain": { "enum": ["project-memory", "requirements", "architecture", "contracts", "roadmap", "work-planning", "execution", "verification", "integration", "acceptance"] },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "memoryChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["changeId", "disposition", "qualitative", "domain", "rationale", "sourceRefs"],
+      "properties": {
+        "changeId": { "$ref": "#/$defs/id" },
+        "disposition": { "enum": ["add", "replace", "supersede", "retain", "reject"] },
+        "qualitative": { "type": "boolean" },
+        "domain": { "enum": ["project-memory", "requirements", "architecture", "contracts", "roadmap", "work-planning", "execution", "verification", "integration", "acceptance"] },
+        "targetMemoryId": { "$ref": "#/$defs/id" },
+        "proposedMemory": { "$ref": "#/$defs/memoryRecord" },
+        "rationale": { "type": "string", "minLength": 1, "maxLength": 8192 },
+        "conflicts": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "memoryUpdateCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "candidateId", "projectId", "sessionId", "taskId", "baseBaseline", "baseGraphCheckpoint", "producerType", "changes", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "MemoryUpdateCandidate" },
+        "candidateId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "sessionId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "baseBaseline": { "$ref": "#/$defs/ref" },
+        "baseGraphCheckpoint": { "$ref": "#/$defs/ref" },
+        "producerType": { "enum": ["main", "worker"] },
+        "parentTaskId": { "$ref": "#/$defs/id" },
+        "changes": { "type": "array", "items": { "$ref": "#/$defs/memoryChange" } },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "projectMemoryBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "baselineId", "projectId", "version", "approvedCandidate", "records", "graphCheckpoint", "projectionDigest", "approvalEvidence", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "ProjectMemoryBaseline" },
+        "baselineId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "version": { "$ref": "#/$defs/version" },
+        "approvedCandidate": { "$ref": "#/$defs/ref" },
+        "supersedes": { "$ref": "#/$defs/ref" },
+        "records": { "type": "array", "items": { "$ref": "#/$defs/memoryRecord" } },
+        "graphCheckpoint": { "$ref": "#/$defs/ref" },
+        "projectionDigest": { "$ref": "#/$defs/digest" },
+        "providerSyncReceipt": { "$ref": "#/$defs/ref" },
+        "approvalEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "changeDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["changeId", "decision"],
+      "properties": {
+        "changeId": { "$ref": "#/$defs/id" },
+        "decision": { "enum": ["approve", "reject"] },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "projectMemoryGateApproval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "approvalId", "authority", "candidate", "baseBaseline", "decisions", "terminalCheckpointDigest", "policyVersion", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "ProjectMemoryGateApproval" },
+        "approvalId": { "$ref": "#/$defs/id" },
+        "authority": { "const": "project-owner" },
+        "candidate": { "$ref": "#/$defs/ref" },
+        "baseBaseline": { "$ref": "#/$defs/ref" },
+        "decisions": { "type": "array", "items": { "$ref": "#/$defs/changeDecision" } },
+        "terminalCheckpointDigest": { "$ref": "#/$defs/digest" },
+        "policyVersion": { "type": "string", "minLength": 1 },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "projectMemoryPromotionProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "proofId", "status", "candidate", "approval", "projectMemoryBaseline", "synopsisProjection", "providerSyncReceipt", "graphCheckpoint", "checkpointDigest", "refreshRequired", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "ProjectMemoryGatePromotionProof" },
+        "proofId": { "$ref": "#/$defs/id" },
+        "status": { "const": "promoted" },
+        "candidate": { "$ref": "#/$defs/ref" },
+        "approval": { "$ref": "#/$defs/ref" },
+        "projectMemoryBaseline": { "$ref": "#/$defs/ref" },
+        "synopsisProjection": { "$ref": "#/$defs/ref" },
+        "providerSyncReceipt": { "$ref": "#/$defs/ref" },
+        "graphCheckpoint": { "$ref": "#/$defs/ref" },
+        "checkpointDigest": { "$ref": "#/$defs/digest" },
+        "refreshRequired": { "const": true },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "memoryCitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rank", "sourceRef", "score"],
+      "properties": {
+        "rank": { "type": "integer", "minimum": 1 },
+        "sourceRef": { "$ref": "#/$defs/sourceRef" },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "memoryProviderReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "receiptId", "providerId", "providerVersion", "operation", "namespace", "configurationDigest", "inputCheckpoints", "commandFingerprint", "outcome", "durationMs", "replayed", "citations", "outputDigest", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "MemoryProviderReceipt" },
+        "receiptId": { "$ref": "#/$defs/id" },
+        "providerId": { "$ref": "#/$defs/id" },
+        "providerVersion": { "type": "string", "minLength": 1 },
+        "operation": { "enum": ["retrieve", "index", "synchronize"] },
+        "namespace": { "type": "string", "pattern": "^[A-Za-z0-9._:/-]+$" },
+        "configurationDigest": { "$ref": "#/$defs/digest" },
+        "inputCheckpoints": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } },
+        "queryDigest": { "$ref": "#/$defs/digest" },
+        "commandFingerprint": { "$ref": "#/$defs/digest" },
+        "outcome": { "enum": ["pass", "fail", "native-equivalent"] },
+        "durationMs": { "type": "number", "minimum": 0 },
+        "replayed": { "type": "boolean" },
+        "citations": { "type": "array", "items": { "$ref": "#/$defs/memoryCitation" } },
+        "outputDigest": { "$ref": "#/$defs/digest" },
+        "diagnostics": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "traceNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "label", "sourceRefs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "kind": { "$ref": "#/$defs/id" },
+        "label": { "type": "string", "minLength": 1 },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "traceEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "from", "kind", "to"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "from": { "$ref": "#/$defs/id" },
+        "kind": { "$ref": "#/$defs/id" },
+        "to": { "$ref": "#/$defs/id" }
+      }
+    },
+    "traceabilityContextProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "projectionId", "graphCheckpoint", "graphVersion", "scope", "lifecyclePosition", "nodes", "edges", "diagnostics", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "TraceabilityContextProjection" },
+        "projectionId": { "$ref": "#/$defs/id" },
+        "graphCheckpoint": { "$ref": "#/$defs/ref" },
+        "graphVersion": { "$ref": "#/$defs/version" },
+        "scope": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "lifecyclePosition": { "type": "string", "minLength": 1 },
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/traceNode" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/traceEdge" } },
+        "diagnostics": { "type": "array", "items": { "type": "string" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "contextItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["memoryId", "statement", "authorityRank", "effectiveAt", "sourceRefs"],
+      "properties": {
+        "memoryId": { "$ref": "#/$defs/id" },
+        "statement": { "type": "string", "minLength": 1 },
+        "authorityRank": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "effectiveAt": { "$ref": "#/$defs/timestamp" },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }
+      }
+    },
+    "memoryContextBundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "bundleId", "projectId", "sessionId", "taskId", "moduleInvocationId", "projectMemoryBaseline", "synopsisProjection", "traceabilityProjection", "providerReceipt", "items", "freshness", "diagnostics", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "MemoryContextBundle" },
+        "bundleId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "sessionId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "moduleInvocationId": { "$ref": "#/$defs/id" },
+        "projectMemoryBaseline": { "$ref": "#/$defs/ref" },
+        "synopsisProjection": { "$ref": "#/$defs/ref" },
+        "traceabilityProjection": { "$ref": "#/$defs/ref" },
+        "providerReceipt": { "$ref": "#/$defs/ref" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/contextItem" } },
+        "freshness": { "enum": ["fresh", "stale"] },
+        "diagnostics": { "type": "array", "items": { "type": "string" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "sessionConclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "conclusionId", "projectId", "sessionId", "taskId", "producerType", "startingBaseline", "startingGraphCheckpoint", "contextReceipt", "completedArtifacts", "evidence", "pendingDecisions", "memoryCandidate", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "SessionConclusion" },
+        "conclusionId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "sessionId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "producerType": { "enum": ["main", "worker"] },
+        "parentTaskId": { "$ref": "#/$defs/id" },
+        "startingBaseline": { "$ref": "#/$defs/ref" },
+        "startingGraphCheckpoint": { "$ref": "#/$defs/ref" },
+        "contextReceipt": { "$ref": "#/$defs/ref" },
+        "completedArtifacts": { "type": "array", "items": { "$ref": "#/$defs/ref" } },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/ref" } },
+        "pendingDecisions": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "workerConclusions": { "type": "array", "items": { "$ref": "#/$defs/ref" } },
+        "memoryCandidate": { "$ref": "#/$defs/ref" },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "synopsisProjectionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "receiptId", "baseline", "projection", "projectionDigest", "coverageIds", "format", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "SynopsisProjectionReceipt" },
+        "receiptId": { "$ref": "#/$defs/id" },
+        "baseline": { "$ref": "#/$defs/ref" },
+        "projection": { "$ref": "#/$defs/ref" },
+        "projectionDigest": { "$ref": "#/$defs/digest" },
+        "coverageIds": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "format": { "const": "utf8-nfc-lf" },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "concludeReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "receiptId", "projectId", "sessionId", "taskId", "conclusion", "inputBaseline", "resultBaseline", "inputGraphCheckpoint", "resultGraphCheckpoint", "deltaDigest", "synopsisDigest", "providerSyncReceipt", "resultingCheckpointDigest", "outcome", "replayed", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "ConcludeReceipt" },
+        "receiptId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "sessionId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "conclusion": { "$ref": "#/$defs/ref" },
+        "inputBaseline": { "$ref": "#/$defs/ref" },
+        "resultBaseline": { "$ref": "#/$defs/ref" },
+        "inputGraphCheckpoint": { "$ref": "#/$defs/ref" },
+        "resultGraphCheckpoint": { "$ref": "#/$defs/ref" },
+        "deltaDigest": { "$ref": "#/$defs/digest" },
+        "synopsisDigest": { "$ref": "#/$defs/digest" },
+        "providerSyncReceipt": { "$ref": "#/$defs/ref" },
+        "resultingCheckpointDigest": { "$ref": "#/$defs/digest" },
+        "outcome": { "enum": ["concluded", "blocked", "abandoned"] },
+        "replayed": { "type": "boolean" },
+        "diagnostics": { "type": "array", "items": { "type": "string" } },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "projectMemorySessionState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "stateId", "projectId", "sessionId", "taskId", "status", "baseline", "graphCheckpoint", "lastCheckpointDigest", "updatedAt", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "ProjectMemorySessionState" },
+        "stateId": { "$ref": "#/$defs/id" },
+        "projectId": { "$ref": "#/$defs/id" },
+        "sessionId": { "$ref": "#/$defs/id" },
+        "taskId": { "$ref": "#/$defs/id" },
+        "status": { "enum": ["open", "concluding", "concluded", "abandoned"] },
+        "baseline": { "$ref": "#/$defs/ref" },
+        "graphCheckpoint": { "$ref": "#/$defs/ref" },
+        "lastCheckpointDigest": { "$ref": "#/$defs/digest" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "abandonmentRationale": { "type": "string", "minLength": 1 },
+        "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    }
+  }
+}
