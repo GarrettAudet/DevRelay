@@ -1,0 +1,46 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "mem0-project-memory",
+    "version": "0.1.0",
+    "description": "Pinned local-only Mem0 provider binding for cited ProjectMemory retrieval; live maturity requires an exact trusted host execution attestation."
+  },
+  "implements": [
+    {
+      "module": { "id": "project-memory", "version": "0.1.0" },
+      "operations": [
+        {
+          "id": "load-context",
+          "role": "proposer",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "store": { "const": "local" },
+              "allowNetwork": { "const": false },
+              "allowSourceTransmission": { "const": false }
+            }
+          },
+          "capabilities": [{ "kind": "process.spawn", "scope": "Exact version-pinned local Mem0 executable; network and source transmission denied" }]
+        },
+        {
+          "id": "refresh-context",
+          "role": "proposer",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "store": { "const": "local" },
+              "allowNetwork": { "const": false },
+              "allowSourceTransmission": { "const": false }
+            }
+          },
+          "capabilities": [{ "kind": "process.spawn", "scope": "Exact version-pinned local Mem0 executable; network and source transmission denied" }]
+        }
+      ]
+    }
+  ]
+}

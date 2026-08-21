@@ -1,0 +1,142 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "project-memory",
+    "version": "0.1.0",
+    "description": "Load authoritative project context before configured work and propose or conclude exact memory changes without granting providers baseline, Gate, graph, or workflow authority."
+  },
+  "operations": [
+    {
+      "id": "load-context",
+      "description": "Load CurrentSynopsis first, then the exact approved ProjectMemory baseline and trusted traceability projection, and assemble one bounded context bundle.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-baseline", "schema": "https://devrelay.dev/artifacts/project-memory-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "synopsis-projection-receipt", "schema": "https://devrelay.dev/evidence/synopsis-projection-receipt/v1", "mediaTypes": ["application/vnd.devrelay.synopsis-projection-receipt+json"], "cardinality": "one", "required": true },
+        { "name": "traceability-context-projection", "schema": "https://devrelay.dev/artifacts/traceability-context-projection/v1", "mediaTypes": ["application/vnd.devrelay.traceability-context-projection+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-session-state", "schema": "https://devrelay.dev/artifacts/project-memory-session-state/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-session-state+json"], "cardinality": "one", "required": false }
+      ],
+      "outputs": [
+        { "name": "memory-context-bundle", "schema": "https://devrelay.dev/artifacts/memory-context-bundle/v1", "mediaTypes": ["application/vnd.devrelay.memory-context-bundle+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["context-loaded", "recovery-required", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "context-loaded": { "status": "completed", "requiredInputs": ["project-overview-baseline", "project-memory-baseline", "synopsis-projection-receipt", "traceability-context-projection"], "forbiddenInputs": [], "requiredOutputs": ["memory-context-bundle"], "allowedOutputs": ["memory-context-bundle"], "requiredEvidence": [{ "kind": "project-memory/context-load", "statuses": ["pass"], "artifactOutput": "memory-context-bundle" }, { "kind": "project-memory/provider-receipt", "statuses": ["pass"], "artifactOutput": "memory-context-bundle" }], "diagnosticsRequired": false },
+        "recovery-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["project-memory/context-load", "project-memory/provider-receipt"],
+      "optionsSchema": { "type": "object", "additionalProperties": false, "properties": { "cache": { "enum": ["cold", "warm"] }, "query": { "type": "string", "maxLength": 4096 } } },
+      "extensionPorts": [{ "id": "memory-provider", "role": "proposer", "inputSchema": "https://devrelay.dev/generated/if-pm-provider/v1", "outputSchema": "https://devrelay.dev/evidence/memory-provider-receipt/v1", "required": false }],
+      "orchestrationPlan": [
+        { "id": "input-guard", "kind": "core", "handler": "project-memory/input-guard" },
+        { "id": "synopsis-load", "kind": "core", "handler": "project-memory/synopsis-loader" },
+        { "id": "trace-projection", "kind": "core", "handler": "project-memory/trace-projector" },
+        { "id": "provider-retrieval", "kind": "extension-port", "handler": "memory-provider" },
+        { "id": "context-assembly", "kind": "core", "handler": "project-memory/context-assembler" },
+        { "id": "checkpoint", "kind": "core", "handler": "project-memory/checkpoint" }
+      ]
+    },
+    {
+      "id": "refresh-context",
+      "description": "Revalidate exact current baselines and refresh the bounded context at a deterministic module boundary.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-baseline", "schema": "https://devrelay.dev/artifacts/project-memory-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "synopsis-projection-receipt", "schema": "https://devrelay.dev/evidence/synopsis-projection-receipt/v1", "mediaTypes": ["application/vnd.devrelay.synopsis-projection-receipt+json"], "cardinality": "one", "required": true },
+        { "name": "traceability-context-projection", "schema": "https://devrelay.dev/artifacts/traceability-context-projection/v1", "mediaTypes": ["application/vnd.devrelay.traceability-context-projection+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-session-state", "schema": "https://devrelay.dev/artifacts/project-memory-session-state/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-session-state+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "memory-context-bundle", "schema": "https://devrelay.dev/artifacts/memory-context-bundle/v1", "mediaTypes": ["application/vnd.devrelay.memory-context-bundle+json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["context-loaded", "recovery-required", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "context-loaded": { "status": "completed", "requiredInputs": ["project-overview-baseline", "project-memory-baseline", "synopsis-projection-receipt", "traceability-context-projection", "project-memory-session-state"], "forbiddenInputs": [], "requiredOutputs": ["memory-context-bundle"], "allowedOutputs": ["memory-context-bundle"], "requiredEvidence": [{ "kind": "project-memory/context-load", "statuses": ["pass"], "artifactOutput": "memory-context-bundle" }, { "kind": "project-memory/provider-receipt", "statuses": ["pass"], "artifactOutput": "memory-context-bundle" }], "diagnosticsRequired": false },
+        "recovery-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["project-memory/context-load", "project-memory/provider-receipt"],
+      "optionsSchema": { "type": "object", "additionalProperties": false, "properties": { "cache": { "enum": ["cold", "warm"] }, "query": { "type": "string", "maxLength": 4096 } } },
+      "extensionPorts": [{ "id": "memory-provider", "role": "proposer", "inputSchema": "https://devrelay.dev/generated/if-pm-provider/v1", "outputSchema": "https://devrelay.dev/evidence/memory-provider-receipt/v1", "required": false }],
+      "orchestrationPlan": [
+        { "id": "input-guard", "kind": "core", "handler": "project-memory/input-guard" },
+        { "id": "synopsis-load", "kind": "core", "handler": "project-memory/synopsis-loader" },
+        { "id": "trace-projection", "kind": "core", "handler": "project-memory/trace-projector" },
+        { "id": "provider-retrieval", "kind": "extension-port", "handler": "memory-provider" },
+        { "id": "context-assembly", "kind": "core", "handler": "project-memory/context-assembler" },
+        { "id": "checkpoint", "kind": "core", "handler": "project-memory/checkpoint" }
+      ]
+    },
+    {
+      "id": "propose-update",
+      "description": "Normalize completed task facts into an exact candidate of add, replace, supersede, retain, or reject memory dispositions without promotion authority.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-baseline", "schema": "https://devrelay.dev/artifacts/project-memory-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "session-conclusion", "schema": "https://devrelay.dev/artifacts/session-conclusion/v1", "mediaTypes": ["application/vnd.devrelay.session-conclusion+json"], "cardinality": "one", "required": true },
+        { "name": "traceability-context-projection", "schema": "https://devrelay.dev/artifacts/traceability-context-projection/v1", "mediaTypes": ["application/vnd.devrelay.traceability-context-projection+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "memory-update-candidate", "schema": "https://devrelay.dev/artifacts/memory-update-candidate/v1", "mediaTypes": ["application/vnd.devrelay.memory-update-candidate+json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["candidate-proposed", "needs-clarification", "baseline-drift", "unable-to-proceed"],
+      "resultContracts": {
+        "candidate-proposed": { "status": "completed", "requiredInputs": ["project-overview-baseline", "project-memory-baseline", "session-conclusion", "traceability-context-projection"], "forbiddenInputs": [], "requiredOutputs": ["memory-update-candidate"], "allowedOutputs": ["memory-update-candidate"], "requiredEvidence": [{ "kind": "project-memory/candidate-normalization", "statuses": ["pass"], "artifactOutput": "memory-update-candidate" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["project-memory/candidate-normalization"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [],
+      "orchestrationPlan": [
+        { "id": "input-guard", "kind": "core", "handler": "project-memory/input-guard" },
+        { "id": "candidate-normalization", "kind": "core", "handler": "project-memory/candidate-normalizer" },
+        { "id": "checkpoint", "kind": "core", "handler": "project-memory/checkpoint" }
+      ]
+    },
+    {
+      "id": "conclude-session",
+      "description": "Apply only the exact approval-bound ProjectMemoryGate promotion, regenerate the synopsis, synchronize derived memory, and issue one idempotent conclusion receipt.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-overview-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-baseline", "schema": "https://devrelay.dev/artifacts/project-memory-baseline/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "memory-update-candidate", "schema": "https://devrelay.dev/artifacts/memory-update-candidate/v1", "mediaTypes": ["application/vnd.devrelay.memory-update-candidate+json"], "cardinality": "one", "required": true },
+        { "name": "session-conclusion", "schema": "https://devrelay.dev/artifacts/session-conclusion/v1", "mediaTypes": ["application/vnd.devrelay.session-conclusion+json"], "cardinality": "one", "required": true },
+        { "name": "project-memory-gate-approval", "schema": "https://devrelay.dev/evidence/project-memory-gate-approval/v1", "mediaTypes": ["application/vnd.devrelay.project-memory-gate-approval+json"], "cardinality": "one", "required": true },
+        { "name": "memory-provider-receipt", "schema": "https://devrelay.dev/evidence/memory-provider-receipt/v1", "mediaTypes": ["application/vnd.devrelay.memory-provider-receipt+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "conclude-receipt", "schema": "https://devrelay.dev/evidence/conclude-receipt/v1", "mediaTypes": ["application/vnd.devrelay.conclude-receipt+json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["session-concluded", "needs-clarification", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "session-concluded": { "status": "completed", "requiredInputs": ["project-overview-baseline", "project-memory-baseline", "memory-update-candidate", "session-conclusion", "project-memory-gate-approval", "memory-provider-receipt"], "forbiddenInputs": [], "requiredOutputs": ["conclude-receipt"], "allowedOutputs": ["conclude-receipt"], "requiredEvidence": [{ "kind": "project-memory/gate-promotion", "statuses": ["pass"], "artifactOutput": "conclude-receipt" }, { "kind": "project-memory/provider-synchronization", "statuses": ["pass"], "artifactOutput": "conclude-receipt" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["project-memory/gate-promotion", "project-memory/provider-synchronization"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [],
+      "orchestrationPlan": [
+        { "id": "input-guard", "kind": "core", "handler": "project-memory/input-guard" },
+        { "id": "gate-validation", "kind": "core", "handler": "project-memory/gate-validator" },
+        { "id": "atomic-promotion", "kind": "core", "handler": "project-memory/atomic-promoter" },
+        { "id": "synopsis-projection", "kind": "core", "handler": "project-memory/synopsis-projector" },
+        { "id": "provider-synchronization", "kind": "core", "handler": "project-memory/provider-synchronization-validator" },
+        { "id": "trace-contribution", "kind": "core", "handler": "project-memory/trace-contributor" },
+        { "id": "checkpoint", "kind": "core", "handler": "project-memory/checkpoint" }
+      ]
+    }
+  ]
+}

@@ -145,6 +145,18 @@ export const canonicalModules = Object.freeze([
     ],
     plugins: ["native-structured-roadmap-proposer"],
   },
+  {
+    id: "project-memory",
+    version: "0.1.0",
+    definition: "examples/modules/project-memory.module.json",
+    operations: [
+      { id: "conclude-session", steps: [] },
+      { id: "load-context", steps: [] },
+      { id: "propose-update", steps: [] },
+      { id: "refresh-context", steps: [] },
+    ],
+    plugins: ["mem0-project-memory"],
+  },
 ]);
 
 export const compatibilityModules = Object.freeze([
@@ -156,6 +168,16 @@ export const compatibilityPlugins = Object.freeze([
 ]);
 
 export const canonicalPlugins = Object.freeze([
+  {
+    id: "mem0-project-memory",
+    version: "0.1.0",
+    manifest: "examples/plugins/mem0-project-memory.plugin.json",
+    module: { id: "project-memory", version: "0.1.0" },
+    bindings: [
+      { operation: "load-context", step: null, role: "proposer" },
+      { operation: "refresh-context", step: null, role: "proposer" },
+    ],
+  },
   {
     id: "native-structured-roadmap-proposer",
     version: "0.1.0",

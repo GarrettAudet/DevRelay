@@ -8,7 +8,7 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `specialist-assignment@2.0.0` (with the immutable `1.0.0` manifest retained),
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting
-`roadmap-management@0.1.0`, and the separate
+`roadmap-management@0.1.0`, `project-memory@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
 open-source preview, version `0.10.0-rc.3`. The source package retains `1.5.0` as the compatibility default and adds
 explicit `1.6.0` execution-attempt semantics while preserving historical
@@ -22,7 +22,7 @@ exact accepted GitHub source.
 ## Supported release surface
 
 - Node.js 22 and 24 on Windows.
-- The eight-operation facade exported by `devrelay`, provider-neutral low-level contracts under `devrelay/advanced`, the deprecated `devrelay/compat/v1` bridge, and optional `devrelay/packs/*` bindings.
+- The nine-operation facade exported by `devrelay`, provider-neutral low-level contracts under `devrelay/advanced`, the deprecated `devrelay/compat/v1` bridge, and optional `devrelay/packs/*` bindings.
 - JSON Schema contracts under `contracts/`.
 - Versioned module and bounded adapter manifests under `examples/modules/` and
   `examples/plugins/`.

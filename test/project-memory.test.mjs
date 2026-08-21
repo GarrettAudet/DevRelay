@@ -363,3 +363,36 @@ test("provider failure proceeds only through a complete verified native equivale
     ["MEM-DIRECTION", "MEM-STATUS"],
   );
 });
+
+test("provider receipt timing is measured by Core and rejects clock reversal", async () => {
+  const native = retrieveNativeProjectMemory({ baseline: baselineValue, query: "" });
+  const ticks = [100, 106.5];
+  const runtime = createProjectMemoryRuntime({
+    monotonicNow: () => ticks.shift(),
+    provider: {
+      id: "mem0.local",
+      version: "1.0.0",
+      configurationDigest: D,
+      async retrieve() { return native; },
+    },
+  });
+  const request = {
+    executionId: "PM-EXEC-TIMING",
+    requestedOperation: "load-context",
+    projectId: "devrelay",
+    sessionId: "S-1",
+    taskId: "TASK-1",
+    moduleId: "work-execution",
+    moduleInvocationId: "INV-TIMING",
+    projectMemoryBaseline: baseline,
+    synopsisProjection: synopsisRef,
+    traceabilityProjection: trace,
+    query: "",
+  };
+  const result = await runtime.execute(request);
+  assert.equal(result.providerReceipt.value.durationMs, 6.5);
+
+  const invalidTicks = [5, 4];
+  const invalid = createProjectMemoryRuntime({ monotonicNow: () => invalidTicks.shift() });
+  await assert.rejects(() => invalid.execute({ ...request, executionId: "PM-EXEC-TIMING-INVALID" }), /invalid retrieval duration/u);
+});

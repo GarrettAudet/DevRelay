@@ -76,6 +76,42 @@ test("conflicts return exact paths and leave the target unchanged", async () => 
   } finally { await rm(fixture.root, { recursive: true, force: true }); }
 });
 
+test("temporary repository cleanup uses bounded Windows lock retries", async () => {
+  const fixture = await repositoryFixture();
+  let cleanupOptions;
+  try {
+    git(fixture.repo, "checkout", "-b", "source");
+    const source = await commitFile(
+      fixture.repo,
+      "cleanup.txt",
+      "cleanup\n",
+      "cleanup",
+    );
+    git(fixture.repo, "checkout", "main");
+    const request = invocation(
+      fixture.base,
+      source,
+      "fast-forward",
+      fixture.repo,
+    );
+    const adapter = adapterFor(fixture.repo, {
+      removeWorkDirectory: async (directory, options) => {
+        cleanupOptions = structuredClone(options);
+        return rm(directory, options);
+      },
+    });
+    const result = await adapter(request, authorization(request));
+    assert.equal(result.terminalState, "integrated");
+    assert.deepEqual(cleanupOptions, {
+      recursive: true,
+      force: true,
+      maxRetries: 8,
+      retryDelay: 100,
+    });
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
 test("malformed and substituted invocations fail before spawning Git", async () => {
   let calls = 0;
   const adapter = adapterFor(isolatedRepositoryPath, { spawnGit: async () => { calls += 1; return {}; } });

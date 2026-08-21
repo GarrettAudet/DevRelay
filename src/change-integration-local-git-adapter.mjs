@@ -106,10 +106,12 @@ export function createLocalGitIntegrationAdapter({
   persistNativeEvidence,
   readNativeEvidence,
   temporaryRoot = tmpdir(),
+  removeWorkDirectory = rm,
 } = {}) {
   const configuration = localGitIntegrationConfiguration({ repositoryPath, gitExecutable, timeoutMs, maxOutputBytes });
   const configurationDigest = canonicalJsonDigest(configuration);
   if (typeof persistNativeEvidence !== "function" || typeof readNativeEvidence !== "function") throw new TypeError("persistNativeEvidence and readNativeEvidence callbacks are required");
+  if (typeof removeWorkDirectory !== "function") throw new TypeError("removeWorkDirectory must be a function");
 
   const invokeGit = spawnGit ?? (async (args) => {
     try {
@@ -243,7 +245,14 @@ export function createLocalGitIntegrationAdapter({
       validateChangeIntegrationArtifact(result, { invocation });
       return freeze(result);
     } finally {
-      if (workDirectory) await rm(workDirectory, { recursive: true, force: true });
+      if (workDirectory) {
+        await removeWorkDirectory(workDirectory, {
+          recursive: true,
+          force: true,
+          maxRetries: 8,
+          retryDelay: 100,
+        });
+      }
     }
   };
 }
