@@ -4,9 +4,9 @@
 
 - Branch: `codex/ep-001-environment-preparation`
 - Base: PM-001 evidence commit `1c01dfb5f58dfce2600dc5f184e6224756ee4a46`
-- Current stage: WorkBreakdown
-- Current outcome: RequirementsGate, ArchitectureGate, and ContractGate passed; ContractBaseline `CB-DEVRELAY-014` promoted with 89 contracts
-- Implementation: blocked pending WorkBreakdown, dependency, and assignment Gates
+- Current stage: WorkDependencyAnalysis
+- Current outcome: RequirementsGate, ArchitectureGate, ContractGate, and WorkBreakdownGate passed; nine EP-001 work items promoted with complete 25/13/7 coverage
+- Implementation: blocked pending dependency and assignment Gates
 
 ## Goal
 
@@ -31,6 +31,9 @@ Define and deliver deterministic environment preparation and readiness verificat
 - `dogfood/ep-001-environment-preparation/contract-generation/contract-change-set-draft.json`
 - `dogfood/ep-001-environment-preparation/contract-generation/contract-gate-candidate.json`
 - `dogfood/ep-001-environment-preparation/contract-generation/replay-v1/contract-gate-promotion.json`
+- `dogfood/ep-001-environment-preparation/work-breakdown/work-breakdown-change-set-draft.json`
+- `dogfood/ep-001-environment-preparation/work-breakdown/work-breakdown-gate-promotion-proof.json`
+- `dogfood/ep-001-environment-preparation/work-breakdown/work-breakdown-baseline.json`
 
 ## Gate
 
