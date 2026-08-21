@@ -1,0 +1,26 @@
+# EP-001 EnvironmentPreparation/Verification requirements
+
+- Should the contract model two layers: the DevRelay host environment and one or more project-specific named target profiles used for build, test, staging, or other work?.
+- Should Core establish or update the environment baseline after SpecialistAssignmentGate, verify it before the first ready execution frontier, and revalidate its fingerprint before every later frontier?.
+- Should preparation default to project-local, reversible changes; require explicit grants for process, network, secrets, or filesystem effects; and require separate approval for machine-global changes?.
+- Should EP-001 own only environment preparation plus readiness proof, while WorkExecution performs product work, SystemVerification evaluates the integrated system, and ReleasePreparation packages/promotes releases?.
+- Should profiles classify checks as required or optional, where any failed/unknown required check blocks and optional failures produce visible warnings?.
+- Should evidence preserve exact command/tool identity, version, configuration digest, exit code, duration, stdout/stderr receipt or artifact digest, repository commit, profile digest, and resulting fingerprint?.
+- Should environment profiles contain secret references and required-presence metadata only, never secret values, with receipts proving access/redaction without recording the value?.
+- Should readiness bind the repository commit, all upstream baseline digests, profile version/digest, adapter/tool versions, host fingerprint, and relevant target fingerprints so any change deterministically invalidates it?.
+- Should a profile be able to pin OS/architecture, shells, runtimes, package managers, SDKs, system tools, services, environment variables, filesystem prerequisites, and external capability attestations?.
+- Should V1 ship a deterministic native Windows inventory/verifier as the default, with acquisition/configuration and technology-specific analyzers as optional bounded adapters?.
+- Should deterministic equality, fail-closed behavior, zero-call replay, redaction, crash recovery, and bounded parallel check execution be mandatory release acceptance properties?.
+- Should missing requirements produce one consolidated remediation plan and clarification wave rather than prompting after each individual check?.
+- Should DevRelay claim support only for its Windows Desktop host while permitting project profiles for arbitrary technologies through adapters, with no implied support until live evidence exists?.
+- Should preparation be a module that proposes/prepares state and EnvironmentVerificationGate be the sole readiness authority that can unblock WorkExecution?.
+- Must every mutation declare rollback/cleanup behavior, before/after fingerprints, and an idempotency key, with unsupported rollback blocking global changes?.
+- Should EP-001 produce an approved EnvironmentBaseline/EnvironmentChangeSet plus per-use readiness receipts, without claiming deployment, staging success, or release readiness?.
+- Should the Gate accept only exact, current, policy-compliant evidence and emit ready, needs-clarification, remediation-required, baseline-drift, or unable-to-proceed?.
+- Should TraceabilityGraph link EnvironmentProfile -> required-by -> WorkItem and EnvironmentReadinessReceipt -> authorizes-environment-for -> execution attempt, with only forward factual edges?.
+- Should network access be denied by default and allowed only by exact destination/purpose grants, with every attempt recorded and no silent fallback to an online provider?.
+- Should exact checkpoint replay perform zero preparation effects, while expired or drifted state creates a new verification attempt rather than mutating historical evidence?.
+- When ChatGPT Desktop version or another host fact cannot be read through a stable API, may a time-bounded user/host attestation satisfy the check if explicitly labeled non-native and policy permits it?.
+- Should adapter slots be capability-oriented (inventory, acquire, configure, service-check, target-probe) so tools such as PowerShell, winget, Scoop, Chocolatey, Docker, or mise can be swapped without becoming module special cases?.
+- Should V1 avoid a universal wall-clock SLA and instead record per-check/per-profile duration, cache hits, retries, and bottlenecks so later policy can set evidence-based thresholds?.
+- Should ChatGPT Desktop show the proposed mutations, grants, expected impact, rollback plan, and evidence obligations before effectful preparation begins?.

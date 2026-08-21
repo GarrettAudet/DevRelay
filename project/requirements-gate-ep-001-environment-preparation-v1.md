@@ -1,0 +1,13 @@
+# DevRelay EP-001 EnvironmentPreparation/Verification Requirements Gate approval
+
+Status: **pass**
+
+The standing owner approval was applied after exact candidate, checkpoint replay, closure, and atomic pair validation.
+
+- RequirementsGateCandidate: sha256:be36e6c4d7624865f0953654651edc39a0e65aed1220d5975e7ed0b5238cfc4a
+- RequirementsChangeSet: sha256:8a37aa7c744badc4bdf42b22bbf44eca8dd9841bdb4fc1b8c750391f3b9e6a22
+- ProjectOverviewChangeSetDraft: sha256:bcceb35c28db7fc3a8f051a83c5a1d0c11c73109673a5a1d20e31fccd6144b92
+- Candidate ProjectOverview.md: sha256:d9eb52a4b8cd0c622b72de5d0df33d4134b19a6e1b5d35c55d923cb0a092f00b
+- RequirementsClosureAssessment: sha256:9c550e786cde62a6cba54c747089c88f1499bff8fff94d9e38e6bfd45817d47a
+- Terminal checkpoint: sha256:a0327972468a2039adca7540acf57be311849cdd47a4aa9c4a43aed740932149
+- Approval artifact: sha256:633a01a4fc9b32ba652201f2ce4bf519b3fbbf36362bb91103ac963caf606d66
