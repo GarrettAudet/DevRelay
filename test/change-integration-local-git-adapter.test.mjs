@@ -112,6 +112,39 @@ test("temporary repository cleanup uses bounded Windows lock retries", async () 
     await rm(fixture.root, { recursive: true, force: true });
   }
 });
+test("an exhausted Windows cleanup lock cannot replace an integrated result", async () => {
+  const fixture = await repositoryFixture();
+  let cleanupCalls = 0;
+  try {
+    git(fixture.repo, "checkout", "-b", "source");
+    const source = await commitFile(
+      fixture.repo,
+      "cleanup-lock.txt",
+      "cleanup lock\n",
+      "cleanup lock",
+    );
+    git(fixture.repo, "checkout", "main");
+    const request = invocation(
+      fixture.base,
+      source,
+      "fast-forward",
+      fixture.repo,
+    );
+    const adapter = adapterFor(fixture.repo, {
+      removeWorkDirectory: async () => {
+        cleanupCalls += 1;
+        throw Object.assign(new Error("resource busy or locked"), { code: "EBUSY" });
+      },
+    });
+    const result = await adapter(request, authorization(request));
+    assert.equal(cleanupCalls, 1);
+    assert.equal(result.terminalState, "integrated");
+    assert.equal(result.effectState, "applied");
+    assert.equal(git(fixture.repo, "rev-parse", "main"), source);
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
 test("malformed and substituted invocations fail before spawning Git", async () => {
   let calls = 0;
   const adapter = adapterFor(isolatedRepositoryPath, { spawnGit: async () => { calls += 1; return {}; } });

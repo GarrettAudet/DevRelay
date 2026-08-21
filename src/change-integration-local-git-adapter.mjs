@@ -246,12 +246,18 @@ export function createLocalGitIntegrationAdapter({
       return freeze(result);
     } finally {
       if (workDirectory) {
-        await removeWorkDirectory(workDirectory, {
-          recursive: true,
-          force: true,
-          maxRetries: 8,
-          retryDelay: 100,
-        });
+        try {
+          await removeWorkDirectory(workDirectory, {
+            recursive: true,
+            force: true,
+            maxRetries: 8,
+            retryDelay: 100,
+          });
+        } catch {
+          // Cleanup is deliberately best-effort. An exhausted Windows file-lock
+          // retry must not replace the authoritative Git effect result after
+          // the target CAS has already been observed and recorded.
+        }
       }
     }
   };
