@@ -4,9 +4,9 @@
 
 - Branch: `codex/ep-001-environment-preparation`
 - Base: PM-001 evidence commit `1c01dfb5f58dfce2600dc5f184e6224756ee4a46`
-- Current stage: ArchitectureDesign
-- Current outcome: RequirementsGathering and RequirementsGate passed; paired baseline version `2.3.0` promoted
-- Contracts, planning, and implementation: blocked pending ArchitectureGate promotion
+- Current stage: ContractGeneration
+- Current outcome: RequirementsGate and ArchitectureGate passed; requirements/project-overview `2.3.0` and EP-001 architecture baselines promoted
+- Planning and implementation: blocked pending ContractGate promotion
 
 ## Goal
 
@@ -24,6 +24,10 @@ Define and deliver deterministic environment preparation and readiness verificat
 - `dogfood/ep-001-environment-preparation/requirements-change-set.json`
 - `dogfood/ep-001-environment-preparation/project-overview-change-set-draft.json`
 - `dogfood/ep-001-environment-preparation/requirements-gate-promotion-proof.json`
+- `dogfood/ep-001-environment-preparation/architecture-design/architecture-change-set-draft.json`
+- `dogfood/ep-001-environment-preparation/architecture-design/structurizr-conformance-proof.json`
+- `dogfood/ep-001-environment-preparation/architecture-design/runtime-execution-proof.json`
+- `dogfood/ep-001-environment-preparation/architecture-design/architecture-gate-promotion-proof.json`
 
 ## Gate
 

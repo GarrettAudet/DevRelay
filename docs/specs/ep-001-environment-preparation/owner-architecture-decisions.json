@@ -1,0 +1,42 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "OwnerArchitectureDecisionSet",
+  "decisionSetId": "owner-architecture-decisions-ep-001-environment-preparation-v1",
+  "scope": "EP-001 EnvironmentPreparation/Verification",
+  "status": "approved",
+  "decisions": [
+    {
+      "decisionId": "EP-ARCH-001",
+      "decision": "EnvironmentPreparation is a bounded semantic module, while EnvironmentVerificationGate remains Core-owned and is the sole readiness authority."
+    },
+    {
+      "decisionId": "EP-ARCH-002",
+      "decision": "Readiness is evaluated against two profile layers: the DevRelay Windows Desktop host and one or more named project target profiles."
+    },
+    {
+      "decisionId": "EP-ARCH-003",
+      "decision": "A deterministic native Windows inventory and verifier is the default implementation; inventory, acquisition, configuration, service-check, and target-probe adapters are optional capability bindings."
+    },
+    {
+      "decisionId": "EP-ARCH-004",
+      "decision": "Preparation effects are project-local, reversible, idempotent, explicitly granted, fingerprinted before and after execution, and checkpointed for zero-effect replay."
+    },
+    {
+      "decisionId": "EP-ARCH-005",
+      "decision": "Readiness binds the repository and approved upstream baselines to exact profiles, adapter and tool identities, and host and target fingerprints; drift creates a new immutable attempt."
+    },
+    {
+      "decisionId": "EP-ARCH-006",
+      "decision": "Secrets remain opaque references with presence attestations, and network access is denied by default unless an exact destination and purpose grant is approved."
+    },
+    {
+      "decisionId": "EP-ARCH-007",
+      "decision": "A trusted contributor derives forward-only traceability from verified readiness artifacts; adapters cannot mutate TraceabilityGraph or select relationship types."
+    }
+  ],
+  "approval": {
+    "actor": "Garrett Audet",
+    "statement": "I approve all EP-001 requirements and derived architecture decisions.",
+    "recordedIn": "DevRelay ChatGPT Desktop task"
+  }
+}
