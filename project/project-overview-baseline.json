@@ -1,19 +1,19 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "ProjectOverviewBaseline",
-  "baselineId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
-  "version": "2.1.0",
+  "baselineId": "project-overview-baseline-devrelay-v1-pm-001-project-memory-001",
+  "version": "2.2.0",
   "approvedOverviewCandidate": {
-    "artifactId": "project-overview-change-set-rm-001-roadmap-management-v1",
-    "digest": "sha256:f88747e028bc4326ba657c4fa87e45f18c1356972de1ef15d67cc78f91cc36af"
+    "artifactId": "project-overview-change-set-pm-001-project-memory-v1",
+    "digest": "sha256:168d0709d451f706e0398c2ca28e3980c2986b03e6a7c3155c40b3f30bc073e1"
   },
   "supersedes": {
-    "artifactId": "project-overview-baseline-devrelay-v1-sim-001-simplification-001",
-    "digest": "sha256:17fc515e1da2ed916692e87e73567ab18289eeb00b2dd4faecc7372e875bfa00"
+    "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+    "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
   },
   "requirementsBaseline": {
-    "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
-    "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+    "artifactId": "requirements-baseline-devrelay-v1-pm-001-project-memory-001",
+    "digest": "sha256:fad5cb780e38554a3c8f4adc8e34b8354b8503419debe448f1c80526dc07d658"
   },
   "projection": {
     "id": "devrelay.requirements-to-project-overview",
@@ -432,6 +432,68 @@
         ]
       },
       {
+        "id": "BO-DEV-PROJECT-MEMORY-001",
+        "statement": "Preserve accurate project direction, decisions, rationale, state, and lessons across every DevRelay task without relying on conversational memory.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
         "id": "BO-DEV-QUALITY-001",
         "statement": "Require scoped verification and evidence before work, changes, systems, or business outcomes advance.",
         "stakeholderIds": [
@@ -617,6 +679,68 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-sim-001-simplification-001",
               "digest": "sha256:d6bf55b38cbe96d4c1fdca87d0ed07e2697a7a90e5ab33bb7c27098f88229de5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-SESSION-CONTINUITY-001",
+        "statement": "Make every completed worker frontier and task produce a reviewable, traceable synopsis that a fresh ChatGPT Desktop task can safely resume.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
             }
           }
         ]
@@ -1661,6 +1785,270 @@
         ]
       },
       {
+        "id": "CAP-DEV-MEM0-001",
+        "name": "Bounded Mem0 retrieval",
+        "description": "Index and retrieve approved project and session memory through a local, version-pinned, proposer-only Mem0 adapter.",
+        "businessObjectiveIds": [
+          "BO-DEV-PROJECT-MEMORY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-MEMORY-CONCLUDE-001",
+        "name": "Session conclusion and handoff",
+        "description": "Conclude workers, frontiers, and main tasks through reviewed deltas, synopsis projection, provider synchronization, and exact receipts.",
+        "businessObjectiveIds": [
+          "BO-DEV-SESSION-CONTINUITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-MEMORY-CONTEXT-001",
+        "name": "Deterministic memory context",
+        "description": "Assemble a bounded digest-bound context bundle from project invariants, relevant memory, session state, and traceability context.",
+        "businessObjectiveIds": [
+          "BO-DEV-PROJECT-MEMORY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-MEMORY-TRACE-001",
+        "name": "Traceability-aware memory",
+        "description": "Expose approved lifecycle paths and diagnostics through trusted digest-bound TraceabilityContextProjection artifacts.",
+        "businessObjectiveIds": [
+          "BO-DEV-PROJECT-MEMORY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-DEV-OPERATOR-CLI-001",
         "name": "Deterministic operator CLI",
         "description": "Provide profile-aware run, resume, verify, inspect, and evidence commands beneath ChatGPT Desktop.",
@@ -1774,6 +2162,72 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-architecture-discovery-001",
               "digest": "sha256:c53332998c1b46848b0131f54341bed23b174d727e635731258fecf03aec5948"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-PROJECT-MEMORY-001",
+        "name": "Authoritative project memory",
+        "description": "Maintain versioned project direction, decisions, rationale, status, lessons, conflicts, and supersession history.",
+        "businessObjectiveIds": [
+          "BO-DEV-PROJECT-MEMORY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
             }
           }
         ]
@@ -2809,6 +3263,254 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
               "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MEMORY-BOOTSTRAP-001",
+        "name": "Accurate memory bootstrap",
+        "businessObjectiveIds": [
+          "BO-DEV-PROJECT-MEMORY-001"
+        ],
+        "measure": "Configured DevRelay tasks beginning with a verified current ProjectMemory context bundle.",
+        "target": "100 percent; inaccurate or unverifiable memory blocks execution.",
+        "measurementMethod": "Run fresh-task, stale, substitution, drift, provider-failure, native-recovery, and replay fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MEMORY-CONCLUSION-001",
+        "name": "Concluded task continuity",
+        "businessObjectiveIds": [
+          "BO-DEV-SESSION-CONTINUITY-001"
+        ],
+        "measure": "Completed frontiers, worker tasks, and main tasks with a verified ConcludeReceipt.",
+        "target": "100 percent before completion or handoff acceptance.",
+        "measurementMethod": "Reconcile session checkpoints, delta review, Gate approval, synopsis projection, provider synchronization, and handoff acceptance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MEMORY-SYNOPSIS-001",
+        "name": "Synopsis parity",
+        "businessObjectiveIds": [
+          "BO-DEV-SESSION-CONTINUITY-001"
+        ],
+        "measure": "CurrentSynopsis.md projections matching the approved ProjectMemoryBaseline.",
+        "target": "100 percent deterministic UTF-8 NFC LF byte parity with complete active-memory dispositions.",
+        "measurementMethod": "Regenerate the synopsis and compare bytes, coverage manifest, references, and digest.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-DEV-MEMORY-TRACEABILITY-001",
+        "name": "Traceable memory claims",
+        "businessObjectiveIds": [
+          "BO-DEV-PROJECT-MEMORY-001"
+        ],
+        "measure": "Active memory records resolving to exact artifacts, decisions, graph nodes, graph edges, or session receipts.",
+        "target": "100 percent source resolution and zero provider-authored authority facts.",
+        "measurementMethod": "Validate every active record against the pinned ProjectMemory and TraceabilityGraph checkpoints.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
             }
           }
         ]
@@ -4989,6 +5691,286 @@
         ]
       },
       {
+        "id": "SCOPE-PM-CONCLUDE-001",
+        "statement": "Worker, frontier, and main-task conclusion; /conclude Desktop UX; delta review; cross-domain routing; CurrentSynopsis.md; open-session recovery; and ConcludeReceipt.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-PM-DOGFOOD-001",
+        "statement": "Complete released-circuit dogfood plus installed-package ChatGPT/Codex Desktop Windows fresh-task, worker, conclusion, and resume acceptance.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-PM-MEM0-001",
+        "statement": "Version-pinned local Mem0 adapter with live execution attestation, project/session/module-attribution namespaces, synchronization verification, deterministic retrieval receipts, and native equivalence fallback.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-PM-MODULE-001",
+        "statement": "ProjectMemory cross-cutting module, ProjectMemoryGate, canonical baseline, update candidates, authority and precedence policy, checkpoints, receipts, and native recovery.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-PM-TRACE-001",
+        "statement": "Trusted TraceabilityContextProjection and source-resolving current-state, rationale, provenance, coverage, evidence-gap, orphan, and impact queries.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
         "id": "SCOPE-RM-BOOTSTRAP-001",
         "statement": "Mandatory DevRelaySessionBootstrap, SessionContextSnapshot, SessionContextReceipt, drift detection, RoadmapNotInitialized routing, and next-boundary refresh.",
         "sourceRefs": [
@@ -6385,6 +7367,291 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-PM-CROSS-PROJECT-001",
+        "statement": "Share project memory or personal preferences across repositories by default.",
+        "rationale": "Cross-project memory is a separate opt-in privacy and authority decision.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-PM-DOMAIN-BYPASS-001",
+        "statement": "Use /conclude or ProjectMemoryGate to bypass RequirementsGate, ArchitectureGate, ContractGate, RoadmapGate, or another domain Gate.",
+        "rationale": "Memory records approved state; it does not create unapproved domain truth.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-PM-MEM0-AUTHORITY-001",
+        "statement": "Allow Mem0 to select lifecycle stages, approve decisions, mutate baselines, write graph edges, or become required canonical storage.",
+        "rationale": "Provider replacement and deterministic recovery require Core-owned authority.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-PM-MODULE-AGENTS-001",
+        "statement": "Turn deterministic lifecycle modules into autonomous agents with independent durable memories.",
+        "rationale": "Module attribution is a namespace, not an authority boundary.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-PM-RAW-CHAT-001",
+        "statement": "Store every raw conversation by default or treat chat history as authoritative project memory.",
+        "rationale": "Durable memory is normalized, source-linked, minimized, and explicitly governed.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
             }
           }
         ]
@@ -8867,6 +10134,265 @@
         ]
       },
       {
+        "id": "CON-PM-AUTHORITY-001",
+        "category": "technical",
+        "statement": "Core and ProjectMemoryGate own canonical memory authority; Mem0, modules, models, sessions, and adapters remain proposer-only.",
+        "rationale": "Retrieval convenience cannot become project truth or workflow authority.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-PM-AUTHORITY-001",
+          "AC-PM-PROMOTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-PM-DOMAIN-001",
+        "category": "technical",
+        "statement": "ProjectMemory cannot activate a change to another authoritative baseline until that domain's module and Gate approve the exact delta.",
+        "rationale": "Memory must reflect approved engineering truth rather than bypass lifecycle authority.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-PM-DOMAIN-ROUTING-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-PM-HOST-001",
+        "category": "platform",
+        "statement": "ChatGPT/Codex Desktop on Windows is the release-defining interactive host; closeout cannot rely on an undocumented tab-close callback.",
+        "rationale": "The supported behavior must be enforceable through DevRelay contracts, skills, plug-in surfaces, MCP, checkpoints, and next-task recovery.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-PM-CONCLUDE-001",
+          "AC-PM-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-PM-TRACE-001",
+        "category": "technical",
+        "statement": "Mem0 receives only trusted digest-bound TraceabilityContextProjection artifacts and cannot access or mutate TraceabilityGraph directly.",
+        "rationale": "The graph remains the authoritative lifecycle relationship service.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-PM-TRACE-PROJECTION-001",
+          "AC-PM-TRACE-QUERY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
         "id": "CON-RM-AUTHORITY-001",
         "category": "technical",
         "statement": "Candidate detection and adapters are proposer-only; RoadmapGate alone promotes RoadmapBaseline and Generic Core retains validation, checkpoint, and progression authority.",
@@ -10889,6 +12415,346 @@
         ]
       },
       {
+        "id": "NFR-PM-ACCURACY-001",
+        "category": "reliability",
+        "statement": "DevRelay must not execute from missing, stale, conflicting, unsupported, or unverifiable project memory.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Run the complete corruption, drift, conflict, provider, and native-equivalence matrices.",
+        "target": "Zero module executions from an inaccurate context bundle.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-PM-BOOTSTRAP-001",
+          "AC-PM-DOMAIN-ROUTING-001",
+          "AC-PM-FALLBACK-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-PM-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Memory normalization, authority ordering, context assembly, delta classification, synopsis projection, receipts, checkpoints, and replay must be byte-stable for exact inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Compare canonical bytes, digests, order, and provider call counts across repeats and restarts.",
+        "target": "100 percent equality and zero duplicate provider calls on replay.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-PM-PRECEDENCE-001",
+          "AC-PM-RETRIEVAL-001",
+          "AC-PM-SYNOPSIS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-PM-PERFORMANCE-001",
+        "category": "performance",
+        "statement": "Mandatory memory bootstrap, retrieval, frontier reconciliation, and conclusion must remain fast enough for use at every task and frontier boundary and report measured latency and cache behavior.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Measure cold and warm native and Mem0 paths on the Windows reference host.",
+        "target": "ArchitectureDesign defines release budgets and SystemVerification rejects regressions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-PM-BOOTSTRAP-001",
+          "AC-PM-CONCLUDE-001",
+          "AC-PM-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-PM-SECURITY-001",
+        "category": "security",
+        "statement": "Memory capture, projection, retrieval, and synchronization must reject secrets, unsafe controls, path escapes, unauthorized provider access, and undeclared external transmission.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Run secret, injection, path, permission, network, redaction, and sensitive-deletion fixtures.",
+        "target": "Zero unauthorized disclosures, writes, graph mutations, or provider transmissions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-PM-HISTORY-001",
+          "AC-PM-MEM0-001",
+          "AC-PM-TRACE-PROJECTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-PM-USABILITY-001",
+        "category": "usability",
+        "statement": "Task startup and conclusion must present compact human-readable state and deltas while keeping exact evidence expandable.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Review standard Windows Desktop startup, worker handoff, conflict, recovery, and conclusion transcripts.",
+        "target": "One concise briefing and one concise conclusion diff, with direct exact-artifact references.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-PM-BRIEFING-001",
+          "AC-PM-DELTA-REVIEW-001",
+          "AC-PM-E2E-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
         "id": "NFR-RM-DETERMINISM-001",
         "category": "reliability",
         "statement": "Roadmap routing, scoring, ordering, projection, session snapshots, receipts, refresh, and replay must be byte-stable for exact inputs.",
@@ -12662,6 +14528,366 @@
         ]
       },
       {
+        "id": "TERM-PM-BASELINE-001",
+        "term": "ProjectMemoryBaseline",
+        "definition": "The authoritative content-addressed project-scoped memory state containing active, pending, superseded, and historical records plus exact source identities.",
+        "aliases": [
+          "Project memory"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-PM-CONCLUDE-RECEIPT-001",
+        "term": "ConcludeReceipt",
+        "definition": "Proof that an exact session or frontier was reconciled against pinned memory and graph checkpoints, its delta was governed, its synopsis rendered, and provider synchronization verified.",
+        "aliases": [
+          "Conclusion receipt"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-PM-CONCLUSION-001",
+        "term": "SessionConclusion",
+        "definition": "An immutable session or frontier closeout describing accomplished work, decisions, deltas, blockers, open questions, next action, and exact supporting artifacts.",
+        "aliases": [
+          "Conclusion"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-PM-CONTEXT-001",
+        "term": "MemoryContextBundle",
+        "definition": "The validated bounded task or module input containing mandatory project invariants, relevant approved memory, session context, lifecycle state, and retrieval receipts.",
+        "aliases": [
+          "Memory context"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-PM-SYNOPSIS-001",
+        "term": "CurrentSynopsis.md",
+        "definition": "The deterministic compact handoff projection of complete active ProjectMemory coverage through included content or exact references.",
+        "aliases": [
+          "Project synopsis"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-PM-TRACE-PROJECTION-001",
+        "term": "TraceabilityContextProjection",
+        "definition": "A trusted digest-bound read-only memory view of selected approved TraceabilityGraph nodes, forward edges, diagnostics, paths, lifecycle state, and graph checkpoint.",
+        "aliases": [
+          "Trace memory view"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-pm-001-project-memory-v1",
+              "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+            },
+            "location": "All PM-001 decisions approved across clarification waves 1 and 2"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+              "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+              "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+              "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-pm-001-project-memory-v1",
+              "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
         "id": "TERM-RM-BASELINE-001",
         "term": "RoadmapBaseline",
         "definition": "The authoritative structured, content-addressed set of approved roadmap initiatives, priorities, and disposition history.",
@@ -13449,49 +15675,56 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "planning",
-      "summary": "RM-001 requirements are closed: deterministic roadmap triage and prioritization, human-owned RoadmapGate authority, an authoritative structured baseline and concise projection, plus mandatory fail-closed fresh-task session context.",
+      "summary": "PM-001 requirements are closed: authoritative project memory, mandatory task bootstrap, traceability-aware retrieval, bounded local Mem0 integration, explicit qualitative-delta approval, and receipt-bound session conclusion.",
       "sourceRefs": [
         {
           "role": "goal",
           "artifact": {
-            "artifactId": "goal-devrelay-rm-001-roadmap-management-v1",
-            "digest": "sha256:c2deb18fb05a708cd9ae272a4971c37c209f89fecf817e8a2789f514117e5d98"
+            "artifactId": "goal-devrelay-pm-001-project-memory-v1",
+            "digest": "sha256:a875335f9684b1a773c878e8bc3b70d06f4f911abd000a79257f17a7fd24cf38"
           }
         },
         {
           "role": "owner-decision",
           "artifact": {
-            "artifactId": "owner-decisions-rm-001-roadmap-management-v1",
-            "digest": "sha256:f3adef6d46afa2f3b696273662b63c9419fc18ddf85c145ec88f101f18a0b648"
+            "artifactId": "owner-decisions-pm-001-project-memory-v1",
+            "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
           },
-          "location": "All twelve normalized blocking decisions approved in clarification wave 1"
+          "location": "All PM-001 decisions approved across clarification waves 1 and 2"
         },
         {
           "role": "project-context",
           "artifact": {
-            "artifactId": "project-context-devrelay-rm-001-roadmap-management-v1",
-            "digest": "sha256:130342b380fd1db8e4f3eaefbc5847821a915454a29fc439631b90994b75d446"
+            "artifactId": "project-context-devrelay-pm-001-project-memory-v1",
+            "digest": "sha256:1d0b0f1ce6db73cab2926336bafe3502c25831897f1ac69e466780f23f3a17a4"
           }
         },
         {
           "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "project-overview-baseline-devrelay-v1-sim-001-simplification-001",
-            "digest": "sha256:17fc515e1da2ed916692e87e73567ab18289eeb00b2dd4faecc7372e875bfa00"
+            "artifactId": "project-overview-baseline-devrelay-v1-rm-001-roadmap-management-001",
+            "digest": "sha256:9e1d862557194706eab075f677ea9c95b0cc153b6af4ca1423774aabbbf820c9"
           }
         },
         {
           "role": "repository-snapshot",
           "artifact": {
-            "artifactId": "repository-snapshot-devrelay-0daf16c",
-            "digest": "sha256:9ce13359c2c00cd2c84d852fea04c34b7f6b9f0f99c7da6b2c02edc114cbd7db"
+            "artifactId": "repository-snapshot-devrelay-a18e6fb-pm-001",
+            "digest": "sha256:544787b3fa91b8c7b38594b1d0c7effc9feb2b4494dd1f63b6a93d58c0efe903"
           }
         },
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-sim-001-simplification-001",
-            "digest": "sha256:d6bf55b38cbe96d4c1fdca87d0ed07e2697a7a90e5ab33bb7c27098f88229de5"
+            "artifactId": "requirements-baseline-devrelay-v1-rm-001-roadmap-management-001",
+            "digest": "sha256:c2420bde2e483dbd9e38509cae3eefa69b8f1c8032554a505e90b1dd087b33eb"
+          }
+        },
+        {
+          "role": "requirements-closure",
+          "artifact": {
+            "artifactId": "requirements-closure-pm-001-project-memory-v1",
+            "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
           }
         }
       ]
@@ -13502,8 +15735,8 @@
     "mediaType": "text/markdown; charset=utf-8",
     "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
     "artifact": {
-      "artifactId": "project-overview-markdown-rm-001-roadmap-management-v1",
-      "digest": "sha256:c843c6f8871d648ed34a30b33e3fd9043014f70601aa18f5b54defa49ed820d6"
+      "artifactId": "project-overview-markdown-pm-001-project-memory-v1",
+      "digest": "sha256:c0923de2f498c711d8e31d627dcbad9786c387ebc8de98451173dddc53aefd40"
     },
     "renderer": {
       "id": "devrelay.project-overview.markdown",
@@ -13513,8 +15746,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-rm-001-roadmap-management-v1",
-      "digest": "sha256:6d6e2460bdddd737b5a528083d32ab7d155d4f4eda767cfe968dc19f69509126"
+      "artifactId": "requirements-gate-approval-pm-001-project-memory-v1",
+      "digest": "sha256:4b2424f7efd4b961bac3a8837aa77f0843c27ad9621847c5d6011809c0b1be5a"
     }
   ]
 }

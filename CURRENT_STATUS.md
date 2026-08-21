@@ -1,45 +1,49 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-08-16 MDT
+Last reconciled: 2026-08-21 MDT
 Protected branch: `main`
 Candidate: `0.10.0-rc.3`
-Increment: `RM-001 RoadmapManagement and session bootstrap`
-Branch: `codex/rm-001-roadmap-management`
+Increment: `PM-001 ProjectMemory`
+Branch: `codex/pm-001-project-memory`
 Release boundary: GitHub source/installable library operated end-to-end through ChatGPT Desktop on Windows
 
 ## Status
 
-RM-001 is complete through BusinessAcceptance on immutable implementation commit `a812b6e9764f2ed27f6beef7a7832f9406b98bdb`. All seven work items are verified and integrated; the frontier is empty; traceability revision 19 has zero blockers.
+PM-001 is complete through SystemVerification, BusinessAcceptance, and `/conclude` on implementation commit `61274bee4c1c726952b509017c1af85c1e1bce66`. All nine approved work items are verified and integrated. The acceptance graph is revision 35 with zero blocking diagnostics.
 
-The release gate passes 993 tests (991 passed, 0 failed, 2 intentional environment-gated skips), 7,756 repository digests, 364 package files, and 186 installed export targets.
+The exact system candidate passed 1,038 tests (1,036 passed, 0 failed, 2 intentional skips), 7,465 JSON parses, 745 JavaScript syntax checks, 8,790 LF-only text checks, a 376-file/190-export installed-package smoke, and the full Windows Desktop ProjectMemory scenario with live-conformant Mem0 3.1.6, zero network attempts, atomic `/conclude`, restart, and zero-call replay.
 
-Delivered: roadmap triage/review/reprioritization; human RoadmapGate; atomic baseline promotion; structured `RoadmapBaseline` and concise `Roadmap.md`; trusted traceability; and mandatory fail-closed fresh-task context bootstrap with next-module-boundary refresh.
+The durable `ProjectMemoryBaseline` and generated `CurrentSynopsis.md` are now repository state. A fresh-task proof loads `CurrentSynopsis`, the exact baseline, and bounded traceability context in that order; exact replay invokes zero providers. Mem0 remains a derived rebuildable index, while the canonical baseline is authoritative.
 
 ## Lifecycle
 
 ```text
-RequirementsGathering through SpecialistAssignmentGate  complete
-WorkExecution (7)                                       complete
-WorkItemVerification                                   verified
-ChangeIntegration                                      integrated
-SystemVerification                                     verified
-BusinessAcceptance                                     accepted
-Evidence package                                       sealed
-Final clean gate and protected-main promotion          pending
+RequirementsGathering -> RequirementsGate                 complete
+ArchitectureDesign -> ArchitectureGate                    complete
+ContractGeneration -> ContractGate                        complete
+WorkBreakdown -> WorkBreakdownGate                        complete
+WorkDependencyAnalysis -> WorkDependencyGate              complete
+SpecialistAssignment -> SpecialistAssignmentGate          complete
+WorkExecution / WorkItemVerification / ChangeIntegration  complete (9 items)
+SystemVerification                                        verified
+BusinessAcceptance                                        accepted
+ProjectMemory /conclude                                   concluded
+Evidence seal and protected-main promotion                verify branch tip, then promote
 ```
-
-## Post-seal CI correction
-
-GitHub Ubuntu runners exposed a runner-coupled test fixture: it relied on `process.platform` while exercising a Windows-only host contract. The fixture now explicitly supplies `platform: "win32"`; the production guard remains fail-closed for non-Windows hosts. The changed test is not part of the npm package, so runtime/package bytes and the accepted capability boundary are unchanged. Exact branch-tip CI must pass before promotion.
 
 ## Exact evidence
 
-- Implementation: `a812b6e9764f2ed27f6beef7a7832f9406b98bdb`
-- Verification: `sha256:58412a7719e9c35e8a7075cfd412d84a2b3189acb51f7bf87c24dbf0575c44a9`
-- Lifecycle: `sha256:90a1725eee3faf787a4f231ae2238504500dc2580119b056c6a0e1762bb337fe`
-- SystemVerification: `sha256:b0c7e9ed49aab10387aceaaa29032e786e73e020695e5946880334da7003f4ea`
-- BusinessAcceptance: `sha256:19cae637e9f5a511b678984eb4654225bae70bd784ab4f58a5b0437016f08559`
-- Final graph: `sha256:7ed7ecc3795ab572ccf43f7a38552515394dafde9d52ec04e178d0637614904b`
-- Roadmap: `sha256:0de80f85d33d1f05897726fcf1a8cb3c9dfab27b205c5a2a5069a17e0e90dbbb`
+- Implementation commit: `61274bee4c1c726952b509017c1af85c1e1bce66`
+- SystemVerification: `sha256:05fb20f06b45abf6687417010533aa7b47a55cedfa68bf1f2ca02dfa97af0827`
+- BusinessAcceptance: `sha256:48914543b6f35d28244aedd0dabfd2ce85ce95c4ae88713c7d6f0b0da607622a`
+- Acceptance graph: `sha256:d1809d46dd58ba95c8bbf5f40ecee1708c99bd56c9cf133b159d2422ddfbde50`
+- ProjectMemory baseline: `sha256:d4b9406c9857e3f1726793a8f604ba48173f7b40f8080646ad45bdaf9f028928`
+- CurrentSynopsis: `sha256:b3eff7f27313935a232d68019d8bafc9b7af44c96bd269d4d00dab5e0c5e5ee8`
+- `/conclude` receipt: `sha256:26c4260e98bbb0b0d3eb7b89cb3d0d39c93019e54eaa747d5426f3803f276111`
+- Windows installed-package receipt: `sha256:ab79e8e732f09d90337b25d7e433b4b36972a8126b17efbcfcc5b185e7acbf33`
 
-This candidate excludes public npm publication, a one-click Desktop plug-in, a hosted backend, and non-Windows support. Evidence commit: `2dfe6986cb7a4203ff1287905f290353597728a9`. Two-phase seal: `sha256:b63c09ad8ef44968130c7446f5578b1ee7fe3236c129e36389442bdc4da86d6f` (verified). Next: run the clean tip gate, push, then promote through protected `main`.
+## Promotion rule and next work
+
+Regenerate the release catalog and run the clean branch-tip `npm.cmd run verify` plus installed-package checks before promotion. Protected `main` remains the merge authority.
+
+The next product increments are EnvironmentPreparation/Verification and ReleasePreparation. They must begin by loading ProjectMemory, then run the complete currently released DevRelay circuit. This candidate does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or non-Windows support.

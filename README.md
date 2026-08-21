@@ -8,7 +8,7 @@ promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
 The ordered release, durable-host, and ChatGPT Desktop integration work is in
 [Roadmap.md](Roadmap.md).
 For a self-contained implementation-owner pickup, see
-[handoff/2026-08-13-v0100-rc1-audit-remediation/README.md](handoff/2026-08-13-v0100-rc1-audit-remediation/README.md).
+[handoff/2026-08-21-pm-001-project-memory-release/README.md](handoff/2026-08-21-pm-001-project-memory-release/README.md).
 This status page is a human-readable projection; digest-bound lifecycle
 artifacts and Gate records remain authoritative.
 

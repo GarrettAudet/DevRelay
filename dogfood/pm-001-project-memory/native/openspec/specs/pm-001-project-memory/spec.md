@@ -1,0 +1,30 @@
+# PM-001 ProjectMemory requirements
+
+- ProjectMemory is a cross-cutting DevRelay semantic module; its content-addressed ProjectMemoryBaseline is authoritative and Mem0 is a bounded derived retrieval and indexing adapter.
+- ProjectMemory is the first semantic context loaded for every configured DevRelay task and is refreshed after every approved module boundary.
+- A missing, malformed, stale, substituted, digest-mismatched, or otherwise inaccurate canonical memory context blocks execution until repaired.
+- A Mem0 failure may use native recovery only when Core proves an equivalent accurate MemoryContextBundle; otherwise execution blocks.
+- Mem0 operates locally on the Windows reference host by default; external model, embedding, memory, or cloud transmission requires explicit opt-in.
+- Every module receives mandatory project invariants plus only relevant retrieved memory through an explicit digest-bound MemoryContextBundle.
+- Approved project authority outranks recency; current-session recency influences retrieval only among records with equal authority.
+- Module memory is invocation-scoped context and attribution, not an independent authoritative agent memory.
+- Modules and adapters return typed MemoryUpdateCandidates and cannot directly mutate ProjectMemory, Mem0, or TraceabilityGraph.
+- Evidence-backed status may be promoted after deterministic validation; direction, preferences, assumptions, requirements, and decisions require exact ProjectMemoryGate approval.
+- Raw conversations are not stored by default; DevRelay preserves normalized decisions, rationale, questions, outcomes, and source receipts, with raw transcript capture opt-in.
+- A trusted Core contributor derives a digest-bound TraceabilityContextProjection after an approved graph merge; Mem0 never receives graph mutation authority or direct graph-service access.
+- The traceability projection covers lifecycle nodes, forward relationships, current stage, approvals, blockers, orphan diagnostics, evidence gaps, and objective-to-evidence paths without uncontrolled graph duplication.
+- Every provider retrieval binds query identity, provider version and configuration, project-memory version, graph checkpoint, ranked source references, result digest, and replay identity.
+- Memory is append-only and superseded rather than silently overwritten; conflicts require clarification or an explicit supersession candidate.
+- Credentials, raw secrets, and unapproved sensitive or personal information are rejected or redacted before memory ingestion.
+- ProjectMemory is project-scoped; cross-project personal memory is a separate opt-in future capability.
+- Every task starts with a compact briefing of direction, roadmap item, lifecycle position, recent decisions, blockers, and next action.
+- DevRelay automatically invokes the conclude operation at terminal worker and main-task boundaries and also exposes the user-facing /conclude command.
+- Worker conclusions cannot promote ProjectMemory; the parent or integration owner validates and serially merges exact worker conclusion candidates.
+- After every completed parallel frontier and terminal task, DevRelay shows explicit add, replace, supersede, retain, and reject memory dispositions for user approval or rejection.
+- Every qualitative direction or decision remains inactive until the user approves the exact ProjectMemory change set.
+- A proposed memory change that affects requirements, architecture, contracts, roadmap, work planning, or another authoritative domain routes through that domain's clarification and Gate before becoming active memory.
+- CurrentSynopsis.md is a deterministic compact projection covering the complete active ProjectMemory through included content or exact references and is the first handoff document loaded in a new task.
+- An unconcluded session blocks a new task until it is resumed, concluded from its last checkpoint, or explicitly abandoned with rationale.
+- Concurrent worker conclusions bind optimistic baseline versions; the parent rejects or reconciles stale and conflicting candidates before promotion.
+- Task completion requires a ConcludeReceipt binding the session, baseline versions, graph checkpoint, update and synopsis digests, Mem0 synchronization status, and resulting checkpoint.
+- ChatGPT/Codex Desktop on Windows hosts ProjectMemory through DevRelay skills, plug-in surfaces, and MCP tools without relying on an undocumented tab-close hook.
