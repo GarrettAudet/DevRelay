@@ -5,6 +5,9 @@ const API_VERSION = "devrelay.dev/v1alpha1";
 const REQUIRED_ROLES = Object.freeze([
   "project-overview",
   "project-overview-projection",
+  "project-memory-baseline",
+  "current-synopsis",
+  "traceability-context",
   "lifecycle-status",
 ]);
 
@@ -90,8 +93,13 @@ export async function executeSessionBootstrap({
   for (const binding of snapshot.bindings) {
     try {
       const loaded = await artifactResolver(binding.artifact);
-      const bytes = Buffer.isBuffer(loaded) ? loaded : loaded?.bytes;
-      if (!Buffer.isBuffer(bytes)) throw new Error("artifact bytes unavailable");
+      const rawBytes = Buffer.isBuffer(loaded) || ArrayBuffer.isView(loaded)
+        ? loaded
+        : loaded?.bytes;
+      if (!Buffer.isBuffer(rawBytes) && !ArrayBuffer.isView(rawBytes)) {
+        throw new Error("artifact bytes unavailable");
+      }
+      const bytes = Buffer.from(rawBytes.buffer ?? rawBytes, rawBytes.byteOffset ?? 0, rawBytes.byteLength ?? rawBytes.length);
       if (sha256Digest(bytes) !== binding.artifact.digest) throw new Error("artifact digest mismatch");
       validatedBindings.push(structuredClone(binding));
     } catch (error) {

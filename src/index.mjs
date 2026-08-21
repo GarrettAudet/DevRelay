@@ -3,6 +3,26 @@ export {
   createProjectMemoryContextBootstrap,
   createProjectMemorySessionState,
 } from "./project-memory-context.mjs";
+export {
+  ProjectMemoryRuntimeError,
+  assembleMemoryContext,
+  createInMemoryProjectMemoryCheckpointStore,
+  createInMemoryProjectMemoryStore,
+  createMemoryUpdateCandidate,
+  createProjectMemoryRuntime,
+  loadProjectMemoryArtifact,
+  projectMemoryNamespace,
+  resolveMemoryChangeRoutes,
+  retrieveNativeProjectMemory,
+  routeProjectMemoryOperation,
+  verifyNativeMemoryEquivalence,
+} from "./project-memory.mjs";
+export {
+  PROJECT_MEMORY_ARTIFACT_CONTRACTS,
+  ProjectMemoryArtifactValidationError,
+  validateProjectMemoryArtifact,
+  withProjectMemoryContentDigest,
+} from "./project-memory-artifact-validator.mjs";
 export { Mem0ProjectMemoryAdapterError, createMem0ProjectMemoryAdapter } from "./mem0-project-memory-adapter.mjs";
 export { ProjectMemoryTraceabilityError, createTraceabilityContextProjection, queryTraceabilityContext } from "./project-memory-traceability.mjs";
 export {

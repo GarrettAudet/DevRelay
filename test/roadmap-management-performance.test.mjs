@@ -16,7 +16,7 @@ const policyRef = ref("RM-PERF-POLICY");
 const p95 = (samples) => [...samples].sort((a, b) => a - b)[Math.ceil(samples.length * 0.95) - 1];
 
 function sessionFixture() {
-  const roles = ["project-overview", "project-overview-projection", "lifecycle-status", "roadmap", "roadmap-projection"];
+  const roles = ["project-overview", "project-overview-projection", "project-memory-baseline", "current-synopsis", "traceability-context", "lifecycle-status", "roadmap", "roadmap-projection"];
   const bytesByDigest = new Map();
   const bindings = roles.map((role) => {
     const bytes = Buffer.from(`performance:${role}`, "utf8");
