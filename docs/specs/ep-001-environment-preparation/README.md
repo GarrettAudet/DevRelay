@@ -4,9 +4,9 @@
 
 - Branch: `codex/ep-001-environment-preparation`
 - Base: PM-001 evidence commit `1c01dfb5f58dfce2600dc5f184e6224756ee4a46`
-- Current stage: SpecialistAssignment
-- Current outcome: upstream Gates plus WorkDependencyGate passed; nine EP-001 work items form an approved 13-edge static DAG
-- Implementation: blocked pending SpecialistAssignmentGate
+- Current stage: WorkExecution / WorkItemVerification / ChangeIntegration frontier loop
+- Current outcome: all planning Gates passed; 9/9 work items have approved specialist profiles (7 A2A-discovered, 2 integration-owner)
+- Implementation: authorized only for the next Core-derived ready DAG frontier
 
 ## Goal
 
@@ -37,6 +37,8 @@ Define and deliver deterministic environment preparation and readiness verificat
 - `dogfood/ep-001-environment-preparation/dependency-analysis/work-dependency-candidate.json`
 - `dogfood/ep-001-environment-preparation/dependency-analysis/promotion/work-dependency-gate-promotion-proof.json`
 - `dogfood/ep-001-environment-preparation/dependency-analysis/promotion/work-dependency-baseline.json`
+- `dogfood/ep-001-environment-preparation/assignment/specialist-assignment-baseline.json`
+- `dogfood/ep-001-environment-preparation/assignment/promotion/specialist-assignment-promotion-proof.json`
 
 ## Gate
 
