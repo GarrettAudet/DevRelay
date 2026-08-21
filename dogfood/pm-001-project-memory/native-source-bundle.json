@@ -1,0 +1,64 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "requirements-closure",
+      "path": "dogfood/pm-001-project-memory/requirements-closure-assessment.json",
+      "artifact": {
+        "artifactId": "requirements-closure-pm-001-project-memory-v1",
+        "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+      }
+    },
+    {
+      "role": "owner-decision",
+      "path": "dogfood/pm-001-project-memory/owner-decisions.md",
+      "artifact": {
+        "artifactId": "owner-decisions-pm-001-project-memory-v1",
+        "digest": "sha256:dafac3641bde8f0fa427c450a05aa9e763bf6811db489edc8d14170fd5d531de"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/pm-001-project-memory/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-pm-001-project-memory-v1",
+        "digest": "sha256:0af1acb6b50fbab3c0b19ebcecc88005f58e6aed0c7f7cc4097c66634be198da"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/pm-001-project-memory/native/openspec/specs/pm-001-project-memory/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-pm-001-project-memory-v1",
+        "digest": "sha256:6685594dbb6fdaafe8483c2c70e17920a584c5c7a77f7ba486e90d42613ce120"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-pm-001-project-memory-v1",
+      "digest": "sha256:2508f336c7119948f3b0a731195082bd8526181dd3865119606a83de826b319f"
+    },
+    {
+      "artifactId": "project-overview-change-set-pm-001-project-memory-v1",
+      "digest": "sha256:168d0709d451f706e0398c2ca28e3980c2986b03e6a7c3155c40b3f30bc073e1"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "This RequirementsGathering invocation uses the bounded OpenSpec conversation contract; PM-001 implementation acceptance separately requires live local Mem0 provider attestation."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}
