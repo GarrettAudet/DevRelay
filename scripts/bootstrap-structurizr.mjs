@@ -158,7 +158,7 @@ export function powershellExtractionInvocation(archivePath, extractionRoot) {
     args: Object.freeze([
       "-NoProfile",
       "-Command",
-      "Expand-Archive -LiteralPath $env:DEVRELAY_ARCHIVE_PATH -DestinationPath $env:DEVRELAY_EXTRACTION_ROOT -Force",
+      "Import-Module (Join-Path $env:SystemRoot 'System32\\WindowsPowerShell\\v1.0\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1') -Force; Expand-Archive -LiteralPath $env:DEVRELAY_ARCHIVE_PATH -DestinationPath $env:DEVRELAY_EXTRACTION_ROOT -Force",
     ]),
     env: Object.freeze({
       DEVRELAY_ARCHIVE_PATH: archivePath,
