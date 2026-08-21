@@ -7,7 +7,7 @@ DevRelay package versions and lifecycle Module versions are independent. The pac
 | Surface | Version or window | Status |
 | --- | --- | --- |
 | GitHub source/library preview | 0.10.0-rc.2 | Preview for ChatGPT Desktop on Windows |
-| Root facade | 0.10 prerelease | Supported default; eight operations |
+| Root facade | 0.10 prerelease | Supported default; nine operations |
 | Advanced API | 0.10 prerelease | Supported explicit low-level tier |
 | compat/v1 | Through 0.11.x prerelease | Deprecated; migration required |
 | Optional packs | Independently versioned | Must pass pack conformance |

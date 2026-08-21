@@ -55,3 +55,16 @@ test("context load receipt identity is stable for equal inputs", async () => {
   assert.equal(canonicalJson(JSON.parse(canonicalJson(baseline))), canonicalJson(baseline));
   assert.match(canonicalJsonDigest(request), /^sha256:/u);
 });
+
+test("context load timing is Core-observed and rejects an invalid monotonic clock", async () => {
+  const request = { executionId: "E-TIMING", operation: "load-context", projectId: "devrelay", sessionId: "S-1", taskId: "T-TIMING", workspaceId: "W", repositoryRevision: "c".repeat(40), moduleId: "m", moduleInvocationId: "i", projectMemoryBaseline: loaded(baseline).ref, synopsisProjection: synopsisRef, traceabilityProjection: loaded(trace).ref, query: "", cache: "warm", durationMs: 9999 };
+  const ticks = [10, 17];
+  const bootstrap = createProjectMemoryContextBootstrap({ loadArtifact: async (artifact) => values.get(artifact.digest), runtime: createProjectMemoryRuntime(), clock: () => "2026-08-20T15:00:00Z", monotonicNow: () => ticks.shift() });
+  const result = await bootstrap.load(request);
+  assert.equal(result.receipt.durationMs, 7);
+  assert.equal(result.receipt.cache, "warm");
+
+  const invalidTicks = [20, 19];
+  const invalid = createProjectMemoryContextBootstrap({ loadArtifact: async (artifact) => values.get(artifact.digest), runtime: createProjectMemoryRuntime(), monotonicNow: () => invalidTicks.shift() });
+  await assert.rejects(() => invalid.load({ ...request, executionId: "E-TIMING-INVALID" }), /invalid duration/u);
+});

@@ -24,7 +24,7 @@ DevRelay `0.10.0-rc.3` is an Apache-2.0 open-source preview containing DevRelay 
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0`, and the separate
+`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0` and `project-memory@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0`. Source-package
 versions and immutable Module
 versions are intentionally independent. The supported distribution is GitHub
@@ -32,7 +32,7 @@ source plus a deterministic installable tarball; no public npm publication is
 claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 
 The release contains Core, schemas, versioned manifests, fixtures, bounded
-adapter contracts, a small eight-operation facade, workflow profiles, a
+adapter contracts, a small nine-operation facade, workflow profiles, a
 filesystem-backed local Windows host boundary, and a deterministic operator CLI.
 It does not contain a one-click ChatGPT Desktop plug-in or a hosted backend. The
 Windows Desktop facade requires a trusted fresh-task session bootstrap and passes
@@ -71,7 +71,7 @@ snapshot, content-policy, and Markdown renderer APIs are available from
 
 ## Library quickstart
 
-The package root is intentionally limited to eight ordinary operations:
+The package root is intentionally limited to nine ordinary operations:
 
 ```js
 import {

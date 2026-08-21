@@ -497,8 +497,10 @@ function checkpointBytes(value) {
 export function createProjectMemoryRuntime({
   provider,
   checkpoints = createInMemoryProjectMemoryCheckpointStore(),
+  monotonicNow = () => performance.now(),
 } = {}) {
   const configuredProvider = provider ?? null;
+  if (typeof monotonicNow !== "function") fail("monotonicNow must be a function", "DR5322");
   return Object.freeze({
     async execute(request) {
       const route = routeProjectMemoryOperation(request);
@@ -555,6 +557,7 @@ export function createProjectMemoryRuntime({
           candidate: loadProjectMemoryArtifact(candidate),
         };
       } else {
+        const retrievalStartedAt = monotonicNow();
         const namespace = projectMemoryNamespace({
           projectId: request.projectId,
           sessionId: request.sessionId,
@@ -604,6 +607,10 @@ export function createProjectMemoryRuntime({
             fail(`provider failed and native equivalence is incomplete: ${equivalence.missingMemoryIds.join(", ")}`, "DR5321");
           }
         }
+        const retrievalCompletedAt = monotonicNow();
+        if (!Number.isFinite(retrievalStartedAt) || !Number.isFinite(retrievalCompletedAt) || retrievalCompletedAt < retrievalStartedAt) {
+          fail("monotonic clock returned an invalid retrieval duration", "DR5322");
+        }
         const receiptValue = providerReceipt({
           providerId,
           providerVersion,
@@ -616,7 +623,7 @@ export function createProjectMemoryRuntime({
           ],
           query: request.query ?? "",
           outcome,
-          durationMs: 0,
+          durationMs: retrievalCompletedAt - retrievalStartedAt,
           replayed: false,
           citations: retrieval.citations,
           items: retrieval.items,

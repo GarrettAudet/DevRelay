@@ -46,8 +46,14 @@ export function createProjectMemorySessionState({ projectId, sessionId, taskId, 
   }));
 }
 
-export function createProjectMemoryContextBootstrap({ loadArtifact, runtime, clock = () => new Date().toISOString() } = {}) {
+export function createProjectMemoryContextBootstrap({
+  loadArtifact,
+  runtime,
+  clock = () => new Date().toISOString(),
+  monotonicNow = () => performance.now(),
+} = {}) {
   if (typeof loadArtifact !== "function" || typeof runtime?.execute !== "function") fail("loadArtifact and runtime.execute are required");
+  if (typeof monotonicNow !== "function") fail("monotonicNow must be a function");
   return Object.freeze({
     async load(request) {
       const route = routeProjectMemoryOperation({
@@ -57,6 +63,7 @@ export function createProjectMemoryContextBootstrap({ loadArtifact, runtime, clo
         contextStale: request.contextStale,
       });
       if (route.outcome === "blocked") return route;
+      const startedAt = monotonicNow();
       const order = [];
       const synopsis = verifyLoaded(await loadArtifact(request.synopsisProjection, "synopsis"), request.synopsisProjection, "synopsis");
       order.push("current-synopsis");
@@ -75,6 +82,11 @@ export function createProjectMemoryContextBootstrap({ loadArtifact, runtime, clo
         traceabilityProjection: loadProjectMemoryArtifact(traceValue, traceLoaded.ref.uri),
         synopsisProjection: synopsis.ref,
       });
+      const completedAt = monotonicNow();
+      if (!Number.isFinite(startedAt) || !Number.isFinite(completedAt) || completedAt < startedAt) {
+        fail("monotonic clock returned an invalid duration", "DR5332");
+      }
+      const durationMs = completedAt - startedAt;
       const receipt = immutable({
         apiVersion: "devrelay.dev/v1alpha1",
         kind: "ProjectMemoryContextLoadReceipt",
@@ -86,7 +98,7 @@ export function createProjectMemoryContextBootstrap({ loadArtifact, runtime, clo
         loadOrder: order,
         bindings: [synopsis.ref, baselineLoaded.ref, traceLoaded.ref],
         cache: request.cache ?? "cold",
-        durationMs: request.durationMs ?? 0,
+        durationMs,
         loadedAt: clock(),
         outcome: "pass",
         contentDigest: canonicalJsonDigest({ taskId: request.taskId, operation: route.operation, order, bindings: [synopsis.ref, baselineLoaded.ref, traceLoaded.ref] }),
