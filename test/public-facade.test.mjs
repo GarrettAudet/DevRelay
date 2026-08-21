@@ -5,6 +5,7 @@ import {
   DevRelayFacadeError,
   createDevRelay,
   createLocalHost,
+  conclude,
   defineModule,
   definePlugin,
   inspect,
@@ -50,7 +51,7 @@ function sessionReceipt(taskId, outcome = "pass") {
 }
 function fixture({ bootstrapOutcome = "pass" } = {}) {
   const calls = [];
-  const services = Object.fromEntries(["run", "resume", "verify", "inspect"].map((operation) => [operation, async (input) => {
+  const services = Object.fromEntries(["run", "resume", "verify", "inspect", "conclude"].map((operation) => [operation, async (input) => {
     calls.push({ operation, input });
     return { outcome: "pass", operation, artifacts: [{ artifactId: `${operation}-result`, digest }] };
   }]));
@@ -113,6 +114,15 @@ test("inspect is read-only delegation through the same stable envelope", async (
   const result = await inspect(relay, { taskId: "TASK-1", runId: "RUN-1" });
   assert.equal(result.outputs.operation, "inspect");
   assert.match(result.operationDigest, /^sha256:/u);
+});
+
+test("/conclude is an explicit Desktop operation bound to the bootstrapped task", async () => {
+  const { relay, calls } = fixture();
+  await assert.rejects(() => conclude(relay, { taskId: "TASK-1" }), /sessionId/u);
+  const result = await conclude(relay, { taskId: "TASK-1", sessionId: "SESSION-1" });
+  assert.equal(result.outputs.operation, "conclude");
+  assert.equal(calls[0].operation, "bootstrap");
+  assert.equal(calls[1].input.sessionContext.receipt.taskId, "TASK-1");
 });
 
 test("rejects invalid project, profile, host, module, and plugin", async () => {

@@ -1,4 +1,20 @@
 export {
+  ProjectMemoryContextError,
+  createProjectMemoryContextBootstrap,
+  createProjectMemorySessionState,
+} from "./project-memory-context.mjs";
+export { Mem0ProjectMemoryAdapterError, createMem0ProjectMemoryAdapter } from "./mem0-project-memory-adapter.mjs";
+export { ProjectMemoryTraceabilityError, createTraceabilityContextProjection, queryTraceabilityContext } from "./project-memory-traceability.mjs";
+export {
+  ProjectMemoryConcludeError,
+  createInMemoryConcludeJournal,
+  createProjectMemoryConclusionCoordinator,
+  createProjectMemoryGateApproval,
+  createSessionConclusion,
+  renderCurrentSynopsis,
+} from "./project-memory-conclude.mjs";
+
+export {
   ContractError,
   createInvocationFingerprint,
   createModuleRegistry,
@@ -705,6 +721,7 @@ export {
   DevRelayFacadeError,
   createDevRelay,
   createLocalHost,
+  conclude,
   defineModule,
   definePlugin,
   inspect,
