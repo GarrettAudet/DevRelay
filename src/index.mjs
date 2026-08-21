@@ -26,6 +26,12 @@ export {
 export { Mem0ProjectMemoryAdapterError, createMem0ProjectMemoryAdapter } from "./mem0-project-memory-adapter.mjs";
 export { ProjectMemoryTraceabilityError, createTraceabilityContextProjection, queryTraceabilityContext } from "./project-memory-traceability.mjs";
 export {
+  ENVIRONMENT_PREPARATION_ARTIFACT_CONTRACTS,
+  EnvironmentPreparationArtifactValidationError,
+  validateEnvironmentPreparationArtifact,
+  withEnvironmentPreparationContentDigest,
+} from "./environment-preparation-artifact-validator.mjs";
+export {
   ProjectMemoryConcludeError,
   createInMemoryConcludeJournal,
   createProjectMemoryConclusionCoordinator,
