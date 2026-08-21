@@ -32,6 +32,15 @@ export {
   withEnvironmentPreparationContentDigest,
 } from "./environment-preparation-artifact-validator.mjs";
 export {
+  EnvironmentPreparationInventoryError,
+  createEnvironmentInventoryCheckpointController,
+  createNativeWindowsEnvironmentHost,
+  createNativeWindowsEnvironmentInventory,
+  detectEnvironmentInventoryDrift,
+  resolveEnvironmentProfileSet,
+  routeEnvironmentPreparationOperation,
+} from "./environment-preparation-profile-inventory.mjs";
+export {
   ProjectMemoryConcludeError,
   createInMemoryConcludeJournal,
   createProjectMemoryConclusionCoordinator,
