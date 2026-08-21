@@ -1,0 +1,27 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "Pm001SystemVerificationFailureSummary",
+  "candidateBaseCommit": "b88625923647fad6f8093811a44cfd785fc2f268",
+  "command": "npm.cmd run release:check",
+  "outcome": "failed",
+  "completedEvidence": {
+    "fullTests": {
+      "total": 1037,
+      "passed": 1035,
+      "failed": 0,
+      "skipped": 2
+    },
+    "releaseCatalog": "verified"
+  },
+  "failingConditions": [
+    {
+      "id": "SV-PM-002-INSTALLED-BOOTSTRAP-ROLES",
+      "count": 1,
+      "classification": "installed-package-smoke",
+      "diagnosticCode": "DR5230",
+      "evidence": "The packed-library smoke context omitted project-memory-baseline, current-synopsis, and traceability-context.",
+      "route": "fix"
+    }
+  ],
+  "progressionAllowed": false
+}

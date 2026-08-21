@@ -89,4 +89,9 @@ test("installed export smoke is file-backed for the Windows command-length bound
   assert.ok(source.includes('const expectedFacade = ["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];'));
   assert.equal(source.includes('["--input-type=module", "--eval", smokeProgram]'), false);
   assert.ok(source.includes('startsWith("# Roadmap\\\\n")'));
+  assert.ok(
+    source.includes(
+      '["project-overview", "project-overview-projection", "project-memory-baseline", "current-synopsis", "traceability-context", "lifecycle-status", "roadmap", "roadmap-projection"]',
+    ),
+  );
 });
