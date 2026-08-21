@@ -1,17 +1,50 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
-  "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-ep-001-environment-preparation-001",
-  "version": "2.3.0",
-  "approvedCandidate": {
-    "artifactId": "requirements-change-set-ep-001-environment-preparation-v1",
-    "digest": "sha256:8a37aa7c744badc4bdf42b22bbf44eca8dd9841bdb4fc1b8c750391f3b9e6a22"
-  },
-  "supersedes": {
+  "kind": "RequirementsChangeSet",
+  "changeSetId": "requirements-change-set-ep-001-environment-preparation-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-devrelay-ep-001-environment-preparation-v1",
+        "digest": "sha256:fff7dfe4f6e0128e6c2e42facedb961b251f9286b2109eed0ef4f5b6c6b26f85"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-ep-001-environment-preparation-v1",
+        "digest": "sha256:2adc9d347e429344e89c0967fb682b09be97199cf25527553b0feb5e8277ec64"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-eb56676-ep-001",
+        "digest": "sha256:ad1ed074d918f94d371c7b980054d3ba92b743d7d36b051b657d65af3a23f65b"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-pm-001-project-memory-001",
+        "digest": "sha256:fad5cb780e38554a3c8f4adc8e34b8354b8503419debe448f1c80526dc07d658"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-pm-001-project-memory-001",
+        "digest": "sha256:370f814ce76ea79c9a05ec981a2031a77be63e9a2a3247da47b36947b6df6d22"
+      }
+    }
+  ],
+  "baseline": {
     "artifactId": "requirements-baseline-devrelay-v1-pm-001-project-memory-001",
     "digest": "sha256:fad5cb780e38554a3c8f4adc8e34b8354b8503419debe448f1c80526dc07d658"
   },
-  "requirements": {
+  "expectedRequirementsDigest": "sha256:b1e947bf7850cd2aa02646d0cf511c777e43f4a3bcfc0a2f28ce7baf92aec93c",
+  "replacement": {
     "purpose": {
       "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
       "sourceRefs": [
@@ -32520,10 +32553,110 @@
       }
     ]
   },
-  "approvalEvidence": [
+  "changedSections": [
+    "acceptanceCriteria",
+    "assumptions",
+    "businessObjectives",
+    "capabilities",
+    "constraints",
+    "currentStatus",
+    "deliverables",
+    "dependencies",
+    "nonFunctionalRequirements",
+    "nonGoals",
+    "requiredEvidence",
+    "risks",
+    "scope",
+    "sourceRefs",
+    "successMetrics",
+    "terminology",
+    "userJourneys",
+    "userStories"
+  ],
+  "reason": "Add deterministic EnvironmentPreparation and EnvironmentVerificationGate with profile-bound readiness, capability-gated effects, drift detection, redacted evidence, and progression authority before WorkExecution.",
+  "compatibilityImpact": "backward-compatible",
+  "risks": [
+    "A Godot compatibility claim can drift if engine, plug-in, test framework, adapter, or Windows versions are not pinned together.",
+    "A readiness receipt can become stale between verification and execution unless exact fingerprints and upstream identities are revalidated at the execution boundary.",
+    "Adapter performance comparisons may be invalid when inputs, policies, hosts, or circuit versions differ.",
+    "Adapter-native semantics may leak into canonical contracts unless conformance remains strict.",
+    "Automatic preparation can damage or destabilize a machine unless project-local changes, exact grants, rollback, and global-change approval are enforced.",
+    "Environment fingerprints can leak secrets or unstable host details unless they use explicit redaction and profile-scoped canonical fields.",
+    "External planning adapters can drift from the authoritative baseline unless synchronization is bounded, versioned, and conflict-aware.",
+    "Hidden adapter-selected context could violate deterministic invocation contracts.",
+    "Non-native host attestations can create false confidence unless policy constrains issuer, type, freshness, and scope.",
+    "Parallel checks can race over shared mutable state unless only independent read checks run concurrently and effects remain serialized or isolated.",
+    "Reused task adapters could blur decomposition and dependency authority.",
+    "Technology-specific adapters can create hidden Core special cases unless capability-oriented ports and conformance suites remain mandatory."
+  ],
+  "requiredEvidence": [
+    "dogfood/windows-desktop-environment-cycle",
+    "environment/drift-detection",
+    "environment/gate-promotion",
+    "environment/module-conformance",
+    "environment/mutation-receipts",
+    "environment/native-windows-inventory",
+    "environment/network-denial",
+    "environment/performance-telemetry",
+    "environment/permission-enforcement",
+    "environment/profile-validation",
+    "environment/readiness-policy",
+    "environment/remediation-plan",
+    "environment/rollback-recovery",
+    "environment/secret-redaction",
+    "environment/traceability-projection",
+    "environment/zero-call-replay"
+  ],
+  "sourceRefs": [
     {
-      "artifactId": "requirements-gate-approval-ep-001-environment-preparation-v1",
-      "digest": "sha256:633a01a4fc9b32ba652201f2ce4bf519b3fbbf36362bb91103ac963caf606d66"
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-devrelay-ep-001-environment-preparation-v1",
+        "digest": "sha256:fff7dfe4f6e0128e6c2e42facedb961b251f9286b2109eed0ef4f5b6c6b26f85"
+      }
+    },
+    {
+      "role": "owner-decision",
+      "artifact": {
+        "artifactId": "owner-decisions-ep-001-environment-preparation-v1",
+        "digest": "sha256:0f0048c3b56b823dcb4da760fcb831003b7f69049e5ddf7186dbfffb71743ed6"
+      },
+      "location": "All 24 recommendations approved in wave RQW-0FEF4753B3072E01"
+    },
+    {
+      "role": "requirements-closure",
+      "artifact": {
+        "artifactId": "requirements-closure-ep-001-environment-preparation-v1",
+        "digest": "sha256:9c550e786cde62a6cba54c747089c88f1499bff8fff94d9e38e6bfd45817d47a"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "project-context-devrelay-ep-001-environment-preparation-v1",
+        "digest": "sha256:2adc9d347e429344e89c0967fb682b09be97199cf25527553b0feb5e8277ec64"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "repository-snapshot-devrelay-eb56676-ep-001",
+        "digest": "sha256:ad1ed074d918f94d371c7b980054d3ba92b743d7d36b051b657d65af3a23f65b"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-pm-001-project-memory-001",
+        "digest": "sha256:fad5cb780e38554a3c8f4adc8e34b8354b8503419debe448f1c80526dc07d658"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-pm-001-project-memory-001",
+        "digest": "sha256:370f814ce76ea79c9a05ec981a2031a77be63e9a2a3247da47b36947b6df6d22"
+      }
     }
   ]
 }

@@ -4,9 +4,9 @@
 
 - Branch: `codex/ep-001-environment-preparation`
 - Base: PM-001 evidence commit `1c01dfb5f58dfce2600dc5f184e6224756ee4a46`
-- Current stage: RequirementsGathering adaptive clarification
-- Current outcome: `needs-clarification`
-- Architecture, contracts, planning, and implementation: blocked pending requirements closure
+- Current stage: ArchitectureDesign
+- Current outcome: RequirementsGathering and RequirementsGate passed; paired baseline version `2.3.0` promoted
+- Contracts, planning, and implementation: blocked pending ArchitectureGate promotion
 
 ## Goal
 
@@ -19,6 +19,11 @@ Define and deliver deterministic environment preparation and readiness verificat
 - `dogfood/ep-001-environment-preparation/requirements-interview-input.json`
 - `dogfood/ep-001-environment-preparation/requirements-closure-assessment.json`
 - `dogfood/ep-001-environment-preparation/requirements-clarification-wave-1.json`
+- `dogfood/ep-001-environment-preparation/requirements-clarification-responses-wave-1.json`
+- `dogfood/ep-001-environment-preparation/requirements-closure-assessment-approved.json`
+- `dogfood/ep-001-environment-preparation/requirements-change-set.json`
+- `dogfood/ep-001-environment-preparation/project-overview-change-set-draft.json`
+- `dogfood/ep-001-environment-preparation/requirements-gate-promotion-proof.json`
 
 ## Gate
 
