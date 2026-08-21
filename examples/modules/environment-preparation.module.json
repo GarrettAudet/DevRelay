@@ -1,0 +1,153 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "environment-preparation",
+    "version": "1.0.0",
+    "description": "Deterministically inventory, remediate, verify, and authorize the exact environment required by a ready work frontier before WorkExecution."
+  },
+  "operations": [
+    {
+      "id": "establish-environment",
+      "description": "Establish the first approved environment baseline for the current Windows Desktop host and project targets.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "repository", "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1", "mediaTypes": ["application/vnd.devrelay.repository-snapshot+json"], "cardinality": "one", "required": true },
+        { "name": "environment-profile-set", "schema": "https://devrelay.dev/artifacts/environment-profile-set/v1", "mediaTypes": ["application/vnd.devrelay.environment-profile-set+json"], "cardinality": "one", "required": true },
+        { "name": "ready-frontier", "schema": "https://devrelay.dev/artifacts/ready-frontier/v1", "mediaTypes": ["application/vnd.devrelay.ready-frontier+json"], "cardinality": "one", "required": true },
+        { "name": "specialist-assignment-baseline", "schema": "https://devrelay.dev/artifacts/specialist-assignment-baseline/v1", "mediaTypes": ["application/vnd.devrelay.specialist-assignment-baseline+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "environment-verification-candidate", "schema": "https://devrelay.dev/artifacts/environment-verification-candidate/v1", "mediaTypes": ["application/vnd.devrelay.environment-verification-candidate+json"], "cardinality": "one", "required": false },
+        { "name": "environment-baseline", "schema": "https://devrelay.dev/artifacts/environment-baseline/v1", "mediaTypes": ["application/vnd.devrelay.environment-baseline+json"], "cardinality": "one", "required": false },
+        { "name": "environment-readiness-receipt", "schema": "https://devrelay.dev/evidence/environment-readiness-receipt/v1", "mediaTypes": ["application/vnd.devrelay.environment-readiness-receipt+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["ready", "needs-clarification", "remediation-required", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "ready": { "status": "completed", "requiredInputs": ["repository", "environment-profile-set", "ready-frontier", "specialist-assignment-baseline"], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate", "environment-baseline", "environment-readiness-receipt"], "allowedOutputs": ["environment-verification-candidate", "environment-baseline", "environment-readiness-receipt"], "requiredEvidence": [{ "kind": "environment-preparation/readiness", "statuses": ["pass"], "artifactOutput": "environment-readiness-receipt" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "remediation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["environment-preparation/inventory", "environment-preparation/readiness", "environment-preparation/traceability-contribution"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "environment-capability", "role": "proposer", "inputSchema": "https://devrelay.dev/generated/if-ep-inventory/v1", "outputSchema": "https://devrelay.dev/artifacts/environment-inventory/v1", "required": false }],
+      "orchestrationPlan": [
+        { "id": "route", "kind": "core", "handler": "environment-preparation/router" },
+        { "id": "inventory", "kind": "extension-port", "handler": "environment-capability" },
+        { "id": "gate", "kind": "core", "handler": "environment-preparation/gate" },
+        { "id": "trace", "kind": "core", "handler": "environment-preparation/trace-contributor" },
+        { "id": "checkpoint", "kind": "core", "handler": "environment-preparation/checkpoint" }
+      ]
+    },
+    {
+      "id": "prepare-frontier",
+      "description": "Inventory and prepare the exact ready frontier, then issue one short-lived single-use readiness receipt.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "repository", "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1", "mediaTypes": ["application/vnd.devrelay.repository-snapshot+json"], "cardinality": "one", "required": true },
+        { "name": "environment-baseline", "schema": "https://devrelay.dev/artifacts/environment-baseline/v1", "mediaTypes": ["application/vnd.devrelay.environment-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "environment-profile-set", "schema": "https://devrelay.dev/artifacts/environment-profile-set/v1", "mediaTypes": ["application/vnd.devrelay.environment-profile-set+json"], "cardinality": "one", "required": true },
+        { "name": "ready-frontier", "schema": "https://devrelay.dev/artifacts/ready-frontier/v1", "mediaTypes": ["application/vnd.devrelay.ready-frontier+json"], "cardinality": "one", "required": true },
+        { "name": "specialist-assignment-baseline", "schema": "https://devrelay.dev/artifacts/specialist-assignment-baseline/v1", "mediaTypes": ["application/vnd.devrelay.specialist-assignment-baseline+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "environment-verification-candidate", "schema": "https://devrelay.dev/artifacts/environment-verification-candidate/v1", "mediaTypes": ["application/vnd.devrelay.environment-verification-candidate+json"], "cardinality": "one", "required": false },
+        { "name": "environment-readiness-receipt", "schema": "https://devrelay.dev/evidence/environment-readiness-receipt/v1", "mediaTypes": ["application/vnd.devrelay.environment-readiness-receipt+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["ready", "needs-clarification", "remediation-required", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "ready": { "status": "completed", "requiredInputs": ["repository", "environment-baseline", "environment-profile-set", "ready-frontier", "specialist-assignment-baseline"], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate", "environment-readiness-receipt"], "allowedOutputs": ["environment-verification-candidate", "environment-readiness-receipt"], "requiredEvidence": [{ "kind": "environment-preparation/readiness", "statuses": ["pass"], "artifactOutput": "environment-readiness-receipt" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "remediation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["environment-preparation/inventory", "environment-preparation/effect-receipt", "environment-preparation/readiness", "environment-preparation/traceability-contribution"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "environment-capability", "role": "proposer", "inputSchema": "https://devrelay.dev/generated/if-ep-inventory/v1", "outputSchema": "https://devrelay.dev/artifacts/environment-inventory/v1", "required": false }],
+      "orchestrationPlan": [
+        { "id": "route", "kind": "core", "handler": "environment-preparation/router" },
+        { "id": "inventory", "kind": "extension-port", "handler": "environment-capability" },
+        { "id": "remediation-review", "kind": "core", "handler": "environment-preparation/remediation-review" },
+        { "id": "gate", "kind": "core", "handler": "environment-preparation/gate" },
+        { "id": "trace", "kind": "core", "handler": "environment-preparation/trace-contributor" },
+        { "id": "checkpoint", "kind": "core", "handler": "environment-preparation/checkpoint" }
+      ]
+    },
+    {
+      "id": "revalidate-frontier",
+      "description": "Re-inventory an existing frontier and block readiness reuse whenever current facts drift.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "repository", "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1", "mediaTypes": ["application/vnd.devrelay.repository-snapshot+json"], "cardinality": "one", "required": true },
+        { "name": "environment-baseline", "schema": "https://devrelay.dev/artifacts/environment-baseline/v1", "mediaTypes": ["application/vnd.devrelay.environment-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "environment-readiness-receipt", "schema": "https://devrelay.dev/evidence/environment-readiness-receipt/v1", "mediaTypes": ["application/vnd.devrelay.environment-readiness-receipt+json"], "cardinality": "one", "required": true },
+        { "name": "ready-frontier", "schema": "https://devrelay.dev/artifacts/ready-frontier/v1", "mediaTypes": ["application/vnd.devrelay.ready-frontier+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "environment-verification-candidate", "schema": "https://devrelay.dev/artifacts/environment-verification-candidate/v1", "mediaTypes": ["application/vnd.devrelay.environment-verification-candidate+json"], "cardinality": "one", "required": false },
+        { "name": "environment-readiness-receipt", "schema": "https://devrelay.dev/evidence/environment-readiness-receipt/v1", "mediaTypes": ["application/vnd.devrelay.environment-readiness-receipt+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["ready", "needs-clarification", "remediation-required", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "ready": { "status": "completed", "requiredInputs": ["repository", "environment-baseline", "environment-readiness-receipt", "ready-frontier"], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate", "environment-readiness-receipt"], "allowedOutputs": ["environment-verification-candidate", "environment-readiness-receipt"], "requiredEvidence": [{ "kind": "environment-preparation/readiness", "statuses": ["pass"], "artifactOutput": "environment-readiness-receipt" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "remediation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": ["environment-verification-candidate"], "allowedOutputs": ["environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["environment-preparation/inventory", "environment-preparation/readiness", "environment-preparation/traceability-contribution"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "environment-capability", "role": "proposer", "inputSchema": "https://devrelay.dev/generated/if-ep-inventory/v1", "outputSchema": "https://devrelay.dev/artifacts/environment-inventory/v1", "required": false }],
+      "orchestrationPlan": [
+        { "id": "inventory", "kind": "extension-port", "handler": "environment-capability" },
+        { "id": "drift-check", "kind": "core", "handler": "environment-preparation/drift-check" },
+        { "id": "gate", "kind": "core", "handler": "environment-preparation/gate" },
+        { "id": "trace", "kind": "core", "handler": "environment-preparation/trace-contributor" },
+        { "id": "checkpoint", "kind": "core", "handler": "environment-preparation/checkpoint" }
+      ]
+    },
+    {
+      "id": "remediate-drift",
+      "description": "Apply only explicit approval-bound remediation effects, verify rollback where required, and return to the Gate.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "environment-remediation-plan", "schema": "https://devrelay.dev/artifacts/environment-remediation-plan/v1", "mediaTypes": ["application/vnd.devrelay.environment-remediation-plan+json"], "cardinality": "one", "required": true },
+        { "name": "environment-remediation-approval", "schema": "https://devrelay.dev/evidence/environment-remediation-approval/v1", "mediaTypes": ["application/vnd.devrelay.environment-remediation-approval+json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "environment-effect-receipt", "schema": "https://devrelay.dev/evidence/environment-effect-receipt/v1", "mediaTypes": ["application/vnd.devrelay.environment-effect-receipt+json"], "cardinality": "many", "required": false },
+        { "name": "environment-verification-candidate", "schema": "https://devrelay.dev/artifacts/environment-verification-candidate/v1", "mediaTypes": ["application/vnd.devrelay.environment-verification-candidate+json"], "cardinality": "one", "required": false },
+        { "name": "environment-readiness-receipt", "schema": "https://devrelay.dev/evidence/environment-readiness-receipt/v1", "mediaTypes": ["application/vnd.devrelay.environment-readiness-receipt+json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["ready", "needs-clarification", "remediation-required", "baseline-drift", "unable-to-proceed", "execution-failed"],
+      "resultContracts": {
+        "ready": { "status": "completed", "requiredInputs": ["environment-remediation-plan", "environment-remediation-approval"], "forbiddenInputs": [], "requiredOutputs": ["environment-effect-receipt", "environment-verification-candidate", "environment-readiness-receipt"], "allowedOutputs": ["environment-effect-receipt", "environment-verification-candidate", "environment-readiness-receipt"], "requiredEvidence": [{ "kind": "environment-preparation/effect-receipt", "statuses": ["pass"], "artifactOutput": "environment-effect-receipt" }, { "kind": "environment-preparation/readiness", "statuses": ["pass"], "artifactOutput": "environment-readiness-receipt" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": ["environment-effect-receipt", "environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "remediation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": ["environment-effect-receipt", "environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": ["environment-effect-receipt", "environment-verification-candidate"], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": ["environment-effect-receipt"], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["environment-preparation/effect-receipt", "environment-preparation/rollback", "environment-preparation/readiness"],
+      "optionsSchema": { "type": "object", "additionalProperties": false },
+      "extensionPorts": [{ "id": "environment-effect", "role": "proposer", "inputSchema": "https://devrelay.dev/generated/if-ep-effect/v1", "outputSchema": "https://devrelay.dev/evidence/environment-effect-receipt/v1", "required": true }],
+      "orchestrationPlan": [
+        { "id": "approval-guard", "kind": "core", "handler": "environment-preparation/approval-guard" },
+        { "id": "effect", "kind": "extension-port", "handler": "environment-effect" },
+        { "id": "inventory", "kind": "core", "handler": "environment-preparation/native-inventory" },
+        { "id": "gate", "kind": "core", "handler": "environment-preparation/gate" },
+        { "id": "checkpoint", "kind": "core", "handler": "environment-preparation/checkpoint" }
+      ]
+    }
+  ]
+}

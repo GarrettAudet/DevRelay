@@ -48,6 +48,33 @@ export {
   createInMemoryEnvironmentEffectCheckpointStore,
 } from "./environment-preparation-effects.mjs";
 export {
+  EnvironmentPreparationGateError,
+  approveEnvironmentVerificationCandidate,
+  buildEnvironmentVerificationCandidate,
+  createEnvironmentGateCheckpointController,
+  createInMemoryEnvironmentReadinessStore,
+  environmentPreparationArtifactRef,
+  promoteEnvironmentGate,
+} from "./environment-preparation-gate.mjs";
+export {
+  EnvironmentPreparationAdapterError,
+  assertEnvironmentAdapterMaturity,
+  createEnvironmentAdapterCheckpointController,
+  createEnvironmentAdapterInvocation,
+  defineEnvironmentAdapterManifest,
+  selectEnvironmentAdapter,
+} from "./environment-preparation-adapters.mjs";
+export {
+  EnvironmentPreparedDesktopError,
+  createEnvironmentPreparedDesktopCoordinator,
+  renderEnvironmentRemediationPlan,
+  summarizeEnvironmentReadiness,
+} from "./environment-preparation-desktop.mjs";
+export {
+  createEnvironmentPreparationTraceabilityContributor,
+  environmentPreparationTraceabilityContributor,
+} from "./environment-preparation-traceability-contributor.mjs";
+export {
   ProjectMemoryConcludeError,
   createInMemoryConcludeJournal,
   createProjectMemoryConclusionCoordinator,
@@ -399,15 +426,19 @@ export {
   TRACEABILITY_EDGE_KINDS_V1_4,
   TRACEABILITY_EDGE_KINDS_V1_5,
   TRACEABILITY_EDGE_KINDS_V1_6,
+  TRACEABILITY_EDGE_KINDS_V1_7,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_7,
   TRACEABILITY_NODE_KINDS_V1_4,
   TRACEABILITY_NODE_KINDS_V1_5,
   TRACEABILITY_NODE_KINDS_V1_6,
+  TRACEABILITY_NODE_KINDS_V1_7,
   TRACEABILITY_VOCABULARY_V1_4,
   TRACEABILITY_VOCABULARY_V1_5,
   TRACEABILITY_VOCABULARY_V1_6,
+  TRACEABILITY_VOCABULARY_V1_7,
 } from "./traceability-artifact-validator.mjs";
 export {
   workItemVerificationApprovedTraceabilityContributor,

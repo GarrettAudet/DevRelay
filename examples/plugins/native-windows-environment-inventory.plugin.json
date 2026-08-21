@@ -1,0 +1,17 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "native-windows-environment-inventory",
+    "version": "1.0.0",
+    "description": "Deterministic offline Windows host and project-target inventory with redacted secret-presence evidence."
+  },
+  "implements": [{
+    "module": { "id": "environment-preparation", "version": "1.0.0" },
+    "operations": [
+      { "id": "establish-environment", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false }, "capabilities": [{ "kind": "filesystem.read", "scope": "repository" }, { "kind": "process.spawn", "scope": "declared-version-commands" }] },
+      { "id": "prepare-frontier", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false }, "capabilities": [{ "kind": "filesystem.read", "scope": "repository" }, { "kind": "process.spawn", "scope": "declared-version-commands" }] },
+      { "id": "revalidate-frontier", "role": "proposer", "execution": "effect", "configSchema": { "type": "object", "additionalProperties": false }, "capabilities": [{ "kind": "filesystem.read", "scope": "repository" }, { "kind": "process.spawn", "scope": "declared-version-commands" }] }
+    ]
+  }]
+}
