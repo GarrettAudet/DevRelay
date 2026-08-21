@@ -236,6 +236,9 @@ function contextFixture({ taskId = "TASK-1", roadmapDisposition = "initialized",
   const roles = [
     "project-overview",
     "project-overview-projection",
+    "project-memory-baseline",
+    "current-synopsis",
+    "traceability-context",
     "lifecycle-status",
     "requirements-baseline",
     "architecture-baseline",
@@ -278,7 +281,18 @@ test("fresh-task bootstrap validates every digest and refreshes at a changed Mod
   assert.equal(receipt.outcome, "pass");
   assert.equal(assertSessionContextReceipt({ receipt, snapshot: initial.snapshot, currentBindings: initial.bindings, currentRepositoryRevision: REVISION }), true);
   assert.throws(() => assertSessionContextReceipt({ receipt, snapshot: initial.snapshot, currentBindings: initial.bindings, currentRepositoryRevision: "c".repeat(40) }), /stale/u);
-
+  const typedReceipt = await executeSessionBootstrap({
+    snapshot: initial.snapshot,
+    artifactResolver: async (artifact) => {
+      const loaded = await initial.artifactResolver(artifact);
+      return { bytes: new Uint8Array(loaded.bytes) };
+    },
+    expectedProjectId: "PROJECT-1",
+    expectedTaskId: "TASK-1",
+    expectedWorkspaceId: "WORKSPACE-1",
+    expectedRepositoryRevision: REVISION,
+  });
+  assert.equal(typedReceipt.outcome, "pass");
   const next = contextFixture({ createdAt: "2026-08-15T12:05:00Z" });
   const refreshed = await refreshSessionContext({
     priorReceipt: receipt,

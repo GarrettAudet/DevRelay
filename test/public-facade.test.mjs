@@ -21,6 +21,9 @@ function sessionReceipt(taskId, outcome = "pass") {
   const validatedBindings = outcome === "fail" ? [] : [
     "project-overview",
     "project-overview-projection",
+    "project-memory-baseline",
+    "current-synopsis",
+    "traceability-context",
     "lifecycle-status",
     ...(outcome === "pass" ? ["roadmap", "roadmap-projection"] : []),
   ].map((role) => ({ role, artifact: { artifactId: `CTX-${role}`, schema: "https://devrelay.dev/test/v1", mediaType: "application/json", digest, uri: `memory://devrelay/context/${role}` }, artifactVersion: "1.0.0" }));

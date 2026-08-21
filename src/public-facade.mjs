@@ -1,6 +1,7 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
 import { resolveWorkflowProfile } from "./workflow-profiles.mjs";
 import { validateRoadmapArtifact } from "./roadmap-management-artifact-validator.mjs";
+import { DEVRELAY_SESSION_REQUIRED_CONTEXT_ROLES } from "./session-bootstrap.mjs";
 
 const API_VERSION = "devrelay.dev/v1alpha1";
 const NAME = /^[a-z][a-z0-9.-]{1,127}$/u;
@@ -182,6 +183,11 @@ export function createDevRelay({ projectId, host, profile = "standard", modules 
     }
     if (receipt.outcome === "fail" || receipt.moduleExecutionAllowed !== true) {
       fail(`session context bootstrap failed: ${(receipt.diagnostics ?? []).join("; ") || "execution is not allowed"}`, "DR4742");
+    }
+    const verifiedRoles = new Set(receipt.validatedBindings.map(({ role }) => role));
+    const missingRoles = DEVRELAY_SESSION_REQUIRED_CONTEXT_ROLES.filter((role) => !verifiedRoles.has(role));
+    if (missingRoles.length > 0) {
+      fail(`host omitted mandatory session context roles: ${missingRoles.join(", ")}`, "DR4742");
     }
     sessionReceipts.set(normalized.taskId, receipt);
     return receipt;

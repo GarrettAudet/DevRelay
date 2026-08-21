@@ -14,9 +14,13 @@ test("tier manifest binds root, advanced, pack, and one-window compat policy", a
   assert.equal(verifyApiTierExports({ manifest, rootExports: Object.keys(await import("../src/root.mjs")), packageExports: pkg.exports }), true);
 });
 test("advanced and compat subpaths remain explicit", async () => {
-  assert.equal(typeof (await import("../src/index.mjs")).executeWorkItem, "function");
+  const advanced = await import("../src/index.mjs");
+  assert.equal(typeof advanced.executeWorkItem, "function");
+  assert.equal(typeof advanced.createProjectMemoryRuntime, "function");
+  assert.equal(typeof advanced.loadProjectMemoryArtifact, "function");
+  assert.equal(typeof advanced.withProjectMemoryContentDigest, "function");
   assert.equal(pkg.exports["./packs/*"], "./packs/*");
-  assert.equal(typeof (await import("../src/index.mjs")).createDesktopExecutionCoordinator, "function");
+  assert.equal(typeof advanced.createDesktopExecutionCoordinator, "function");
   const compat = await import("../src/compat-v1.mjs");
   assert.equal(compat.DEVRELAY_COMPAT_V1.supportedThrough, "0.11.x-prerelease");
   assert.equal(typeof compat.executeWorkItem, "function");
