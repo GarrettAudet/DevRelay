@@ -24,7 +24,7 @@ DevRelay `0.10.0-rc.3` is an Apache-2.0 open-source preview containing DevRelay 
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0` and `project-memory@0.1.0`, and the separate
+`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0` and `project-memory@0.1.0`, `environment-preparation@1.0.0`, and the separate
 `business-acceptance-gate@0.1.0`. Source-package
 versions and immutable Module
 versions are intentionally independent. The supported distribution is GitHub
@@ -46,7 +46,10 @@ runtime behind a proposer-only executor port. Execution-era graphs explicitly op
 into traceability vocabulary 1.6; historical circuits remain byte-identical on
 the 1.5 default. ChangeIntegration includes its bounded local Git adapter.
 SystemVerification includes fixture-conformant test and review verifier
-bindings; it creates no BusinessAcceptance fact or decision.
+bindings; it creates no BusinessAcceptance fact or decision. EnvironmentPreparation
+adds a deterministic native Windows inventory, explicit remediation review,
+single-use readiness Gate, and trusted V1.7 environment traceability for the
+supported ChatGPT/Codex Desktop on Windows lifecycle.
 
 ## Source setup and verification
 
@@ -279,12 +282,18 @@ GoalArtifact + ProjectContext + optional paired baselines
   -> WorkBreakdownBaseline
   -> WorkDependencyAnalysis owns the authoritative dependency DAG
   -> SpecialistAssignment selects a compatible executor for ready work
-  -> WorkExecution performs one authorized bounded work item
+  -> EnvironmentPreparation inventories, remediates, verifies, and issues one
+     single-use readiness receipt for the exact ready frontier
+  -> WorkExecution consumes that receipt and performs one authorized bounded work item
   -> WorkItemVerification proves that work item against its evidence plan
   -> ChangeIntegration combines individually verified changes safely
   -> SystemVerification validates the integrated system
   -> BusinessAcceptance evaluates objectives, metrics, and acceptance criteria
 ```
+
+[EnvironmentPreparation 1.0.0 Windows Desktop guide](docs/environment-preparation.md)
+documents two-layer profiles, native and optional adapter boundaries, mutation
+approval, Gate outcomes, readiness consumption, traceability, and scope limits.
 
 [WorkItemVerification 0.1.0 operator and adapter guide](docs/work-item-verification.md)
 documents the verification boundary, exact artifacts, operator routes, and
