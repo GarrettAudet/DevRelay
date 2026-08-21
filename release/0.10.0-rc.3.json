@@ -231,9 +231,56 @@
       "plugins": [
         "native-structured-roadmap-proposer"
       ]
+    },
+    {
+      "id": "project-memory",
+      "version": "0.1.0",
+      "definition": "examples/modules/project-memory.module.json",
+      "operations": [
+        {
+          "id": "conclude-session",
+          "steps": []
+        },
+        {
+          "id": "load-context",
+          "steps": []
+        },
+        {
+          "id": "propose-update",
+          "steps": []
+        },
+        {
+          "id": "refresh-context",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "mem0-project-memory"
+      ]
     }
   ],
   "plugins": [
+    {
+      "id": "mem0-project-memory",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/mem0-project-memory.plugin.json",
+      "module": {
+        "id": "project-memory",
+        "version": "0.1.0"
+      },
+      "bindings": [
+        {
+          "operation": "load-context",
+          "step": null,
+          "role": "proposer"
+        },
+        {
+          "operation": "refresh-context",
+          "step": null,
+          "role": "proposer"
+        }
+      ]
+    },
     {
       "id": "native-structured-roadmap-proposer",
       "version": "0.1.0",
@@ -890,13 +937,13 @@
       "path": "README.md",
       "role": "release-documentation",
       "packaged": true,
-      "digest": "sha256:a04792ab31c6e797036bbead9806ce26e4a2efde7ae6d26d96f111da5bad0030"
+      "digest": "sha256:364be629160a88531aa008198a3dbf718f4f1b08db7a3fe8d3231802aed209d2"
     },
     {
       "path": "RELEASE.md",
       "role": "release-documentation",
       "packaged": true,
-      "digest": "sha256:401c14fe75c891da57c03459ae719402f8e8a9c01c13b1bd09e57642a86b064e"
+      "digest": "sha256:820ea3e3047cf6a2e4fa0e3856aa10a7f837c6669c9e34dd76f8a535661d4c41"
     },
     {
       "path": "Roadmap.md",
@@ -1017,6 +1064,12 @@
       "role": "contract-schema",
       "packaged": true,
       "digest": "sha256:2beb01b0f6701c95ac3887bf2f523cd00a1f13f7be473d1d361a07c37fa6b071"
+    },
+    {
+      "path": "contracts/project-memory-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:f290f27a9e0ed768109fb3bfcdcf873d0fdc16ee9cd2ab4bffbe9b75582deda6"
     },
     {
       "path": "contracts/project-overview-artifacts.schema.json",
@@ -1143,6 +1196,12 @@
       "role": "contract-documentation",
       "packaged": true,
       "digest": "sha256:97d3a53bb92d942ecd65031817f9aca4708cc1149de5662558e7360c6c400214"
+    },
+    {
+      "path": "docs/project-memory.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:8b04a747815d6432088d639e223bee8ad958b5e2cfe9d2d4d0e4fd142233b345"
     },
     {
       "path": "docs/releases/0.10.0-rc.2.md",
@@ -1328,7 +1387,7 @@
       "path": "docs/version-policy.md",
       "role": "contract-documentation",
       "packaged": true,
-      "digest": "sha256:4572b5abdab5345f955faad7ab37fab3fc2258b1419df5d5b3ff80e3b6c07ef6"
+      "digest": "sha256:317d088d0a043c8341af359ff09d8eea1d0162d2c3d8ea52708b4278aeafc0a0"
     },
     {
       "path": "docs/work-breakdown.md",
@@ -42563,6 +42622,12 @@
       "digest": "sha256:8d868d3e2d2ee9f1f06baf4d1b7e5b93540ca16bc745437b4454eaf8b8acb29a"
     },
     {
+      "path": "examples/modules/project-memory.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:27d5c037885db3f3675071d6568701491e882f8e4e8b7a7f8a4d18c8ccb3d84f"
+    },
+    {
       "path": "examples/modules/requirements-gathering.module.json",
       "role": "module-definition",
       "packaged": true,
@@ -42723,6 +42788,12 @@
       "role": "plugin-manifest",
       "packaged": true,
       "digest": "sha256:9b6a6a5ea573e11429ecdbe8a9c30baed8bda5edef15410e7ffbd0dc8f7420ad"
+    },
+    {
+      "path": "examples/plugins/mem0-project-memory.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:7356a7b34cfb4e8e94d4687a56151023a74a2db03092239a593dbeded247145f"
     },
     {
       "path": "examples/plugins/native-architecture-discovery.plugin.json",
@@ -43370,7 +43441,7 @@
       "path": "package.json",
       "role": "package-metadata",
       "packaged": true,
-      "digest": "sha256:3ba9a26c46c119fc6e157b1c8506b96a5e7501e9df1926543b81890b3a5f25f2"
+      "digest": "sha256:46f61843f5b62dbdb520ebb4726cf22190fa63f68497d58e47a164d4ed97382f"
     },
     {
       "path": "packs/fixtures/web-service/index.mjs",
@@ -45284,7 +45355,7 @@
       "path": "scripts/release-catalog.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:4446e5c82284bf149c9632865795d91d3fbaf220fc39a9813df87e5167dd25fc"
+      "digest": "sha256:f6737ccd1e6ff5bb971c04ba6ac7a45c01e24ff41c340fdf9491f3689e29e4dd"
     },
     {
       "path": "scripts/release-check.mjs",
@@ -45296,7 +45367,7 @@
       "path": "scripts/release-tools.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:4461fa749c6cedb86c2aa1c7256c00c6301df8c65cd8cac351e78bf9fb362795"
+      "digest": "sha256:ea72500885e08a8afaf6a9dde60b1055215b23be194691855e45e93f60aae687"
     },
     {
       "path": "scripts/replay-work-breakdown-r3.mjs",
@@ -45344,7 +45415,7 @@
       "path": "src/api-tiers.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:5a316e0a38a37cc356ac32162ac05e851a7a6b0d50292fa9ee8f860bb2efe530"
+      "digest": "sha256:f51b1de2c9ea9daefdfb32548103d309ca17eab3d63e205a5f720190b2565ddf"
     },
     {
       "path": "src/architecture-artifact-validator.mjs",
@@ -45494,7 +45565,7 @@
       "path": "src/change-integration-local-git-adapter.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:87891bc91504e6ec601e13ebf0e0bfe2ce69a74bc9b58bf81647d5a95cb3d896"
+      "digest": "sha256:37966eea03a525de27c9bc20e4b7069892d4bac15895c98455e557f3bd63117f"
     },
     {
       "path": "src/change-integration-plan-builder.mjs",
@@ -45614,7 +45685,7 @@
       "path": "src/index.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:2f05a22ca6fb37cb9dc6953626b88b784ed6fbd44db3ed58afa08b173a0ed5ef"
+      "digest": "sha256:73e91ceb87cc52b53641e8e3bf613486fb7c0d1c7f9bd9c3e0125a735f2bbd83"
     },
     {
       "path": "src/lifecycle-run-report-artifact-validator.mjs",
@@ -45701,6 +45772,12 @@
       "digest": "sha256:e771ff8beb6e9b0c78bc477a280d076a5e1633907ccac19eaa6ac1b44807f2f2"
     },
     {
+      "path": "src/mem0-project-memory-adapter.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:689e06d97a2eaa09c076ded0045eb9a032d92d0a11d3405640e4c40a8c84f93c"
+    },
+    {
       "path": "src/module-execution-record-validator.mjs",
       "role": "runtime",
       "packaged": true,
@@ -45743,6 +45820,36 @@
       "digest": "sha256:a26bfd4c5d21c96c1233be26d1604bc58cbdc54ab1fdaa2c5bdad4fb59132861"
     },
     {
+      "path": "src/project-memory-artifact-validator.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:67c03e9e57ede19a93ef725bceb486b3cedc7937616acfd25069af03b51f3e9a"
+    },
+    {
+      "path": "src/project-memory-conclude.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:aaf3d8e8c31b276df78a5a4fe4120a43164cf276539fa54a93c0ace75b91cef5"
+    },
+    {
+      "path": "src/project-memory-context.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:e3732c0c9128c5867a7c19c349e77f302a965a0726d55ab59b61393b2a248111"
+    },
+    {
+      "path": "src/project-memory-traceability.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:6c284baa9605d6d5ff73981e051708ab1a37b480872fc4637572d5781fa2422b"
+    },
+    {
+      "path": "src/project-memory.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:ff969376e8cb6a8fccba6493a91040b4d0211a1e9bf88438ab17fed928a7590a"
+    },
+    {
       "path": "src/project-overview-artifact-validator.mjs",
       "role": "runtime",
       "packaged": true,
@@ -45776,7 +45883,7 @@
       "path": "src/public-facade.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:45dfcc0208ad17e48d30f30bafb9befb337b845aeb56da2448f06ee2e9f4d9df"
+      "digest": "sha256:41580f4c45a3fecd5e23c3e406e2f0594b8ef5733cc318aa320368da0d997690"
     },
     {
       "path": "src/release-evidence-assets.mjs",
@@ -45848,7 +45955,7 @@
       "path": "src/root.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:69838c52e75861cad1eea5e964882da21014557c61d71a6bb5e88b698ce530c6"
+      "digest": "sha256:6b6c14f29a0cad1e7bbc0b8485431c793340ff8d02aa8c8fce43482e6e6ff14d"
     },
     {
       "path": "src/schema-validation.mjs",
@@ -46148,7 +46255,7 @@
       "path": "test/api-tiers.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:31d32669f019bd6d96d7fc5412ba3b0cf0b0d435d088d3dc8e651dc3619d2f57"
+      "digest": "sha256:433265b24f7fa20da198264e083efa43878b718b90ceade819b3927d0065c70c"
     },
     {
       "path": "test/architecture-artifact-hardening.test.mjs",
@@ -46346,7 +46453,7 @@
       "path": "test/change-integration-local-git-adapter.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:03ca22e6fcc9f6f02d6dfef16d7749326ca8215b840b04782b606dd915537ffd"
+      "digest": "sha256:9def09236fc8e77c21e15ed473a1232964438e2daad3382c7676081734a9a94d"
     },
     {
       "path": "test/change-integration-release.test.mjs",
@@ -46577,6 +46684,12 @@
       "digest": "sha256:7fda883a30a847f86c232f23a5a7f5681f5551753cfca8dc0eaa9c265560b8d8"
     },
     {
+      "path": "test/mem0-project-memory-adapter.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:fd3b0fc09815fe220e87a2868b43070917e35a8c4ab0fac32ced89a0a5e6af5a"
+    },
+    {
       "path": "test/module-contract.test.mjs",
       "role": "verification",
       "packaged": false,
@@ -46634,13 +46747,55 @@
       "path": "test/package-export-verification.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:fe683052dc9df600265da5ed4226d36c91099dd03b563bf3d3f75e4968a776e8"
+      "digest": "sha256:c369d554ff162d9ccadca472bee34942cfbe9fd34b3b7f401324680ede00b94a"
     },
     {
       "path": "test/project-baseline.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:77cbb9dabcf362960205ecfaadd294359b10d0e6024b01fa1e0d31da42c090de"
+      "digest": "sha256:8760003e90a5ffc5d86280c935ec7bd1a1ed4f189ea47616b3a692795b41c85d"
+    },
+    {
+      "path": "test/project-memory-artifacts.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:0c1a4554b77dee95cd7f9ae4ccfeb956064c0a4c7ffa0e6b9d2e7fc5a7edec57"
+    },
+    {
+      "path": "test/project-memory-conclude.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:b8bf4c918f559da1dc2b209af364c8ca5fa2fe588e1ad3743ec15da30a38c08d"
+    },
+    {
+      "path": "test/project-memory-context.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:67c72a5c7b7961698dcd0570bcab1bf8cc8bc28a45b1684319e61f6d218ffa68"
+    },
+    {
+      "path": "test/project-memory-module.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:eb4697a477c5b2f533b184da39667f8c55e82eeefbb77af2e6413e373eef3e8c"
+    },
+    {
+      "path": "test/project-memory-performance.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:ca6eb0e88ee69a340a1a02865ec048fb75bdf2e276a24f0fb52bd58403b024e6"
+    },
+    {
+      "path": "test/project-memory-traceability.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a840d02f4785b5d125fd56efd613599eefb6107025a5c7c9e91b5adad20de17f"
+    },
+    {
+      "path": "test/project-memory.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:db9b5466fc5e68c341c12d74bb215a521642133054ffad6efcf5499094ca1524"
     },
     {
       "path": "test/project-overview-runtime.test.mjs",
@@ -46670,7 +46825,7 @@
       "path": "test/public-facade.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:4fb3444fc6cf8c37840f43fdbcc8d17095f6e6a828e0715ae6cfaebb1f95ea83"
+      "digest": "sha256:fd4ed9a2aee37fe496b4e7c5837f6d67a73aaeb4741cc2d70d36f69293c029e7"
     },
     {
       "path": "test/registry-edge-cases.test.mjs",
