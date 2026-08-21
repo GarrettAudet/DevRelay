@@ -1,0 +1,145 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "RequirementsClarificationWave",
+  "waveId": "RQW-0FEF4753B3072E01",
+  "waveNumber": 1,
+  "assessmentDigest": "sha256:0dd1b36cef49d4cbf97f181baac6a71599798c3469a0bb5e2356155c2bf3246b",
+  "questionMode": "breadth-first-waves",
+  "questions": [
+    {
+      "id": "EP-Q-005",
+      "domainId": "environment-model",
+      "prompt": "Should the contract model two layers: the DevRelay host environment and one or more project-specific named target profiles used for build, test, staging, or other work? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-003",
+      "domainId": "lifecycle-placement",
+      "prompt": "Should Core establish or update the environment baseline after SpecialistAssignmentGate, verify it before the first ready execution frontier, and revalidate its fingerprint before every later frontier? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-007",
+      "domainId": "preparation-authority",
+      "prompt": "Should preparation default to project-local, reversible changes; require explicit grants for process, network, secrets, or filesystem effects; and require separate approval for machine-global changes? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-001",
+      "domainId": "purpose-boundary",
+      "prompt": "Should EP-001 own only environment preparation plus readiness proof, while WorkExecution performs product work, SystemVerification evaluates the integrated system, and ReleasePreparation packages/promotes releases? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-009",
+      "domainId": "readiness-policy",
+      "prompt": "Should profiles classify checks as required or optional, where any failed/unknown required check blocks and optional failures produce visible warnings? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-013",
+      "domainId": "evidence-traceability",
+      "prompt": "Should evidence preserve exact command/tool identity, version, configuration digest, exit code, duration, stdout/stderr receipt or artifact digest, repository commit, profile digest, and resulting fingerprint? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-015",
+      "domainId": "security-secrets",
+      "prompt": "Should environment profiles contain secret references and required-presence metadata only, never secret values, with receipts proving access/redaction without recording the value? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-017",
+      "domainId": "drift-replay",
+      "prompt": "Should readiness bind the repository commit, all upstream baseline digests, profile version/digest, adapter/tool versions, host fingerprint, and relevant target fingerprints so any change deterministically invalidates it? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-011",
+      "domainId": "target-environments",
+      "prompt": "Should a profile be able to pin OS/architecture, shells, runtimes, package managers, SDKs, system tools, services, environment variables, filesystem prerequisites, and external capability attestations? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-019",
+      "domainId": "plugin-strategy",
+      "prompt": "Should V1 ship a deterministic native Windows inventory/verifier as the default, with acquisition/configuration and technology-specific analyzers as optional bounded adapters? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-023",
+      "domainId": "nonfunctional-acceptance",
+      "prompt": "Should deterministic equality, fail-closed behavior, zero-call replay, redaction, crash recovery, and bounded parallel check execution be mandatory release acceptance properties? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-021",
+      "domainId": "operator-experience",
+      "prompt": "Should missing requirements produce one consolidated remediation plan and clarification wave rather than prompting after each individual check? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-006",
+      "domainId": "environment-model",
+      "prompt": "Should DevRelay claim support only for its Windows Desktop host while permitting project profiles for arbitrary technologies through adapters, with no implied support until live evidence exists? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-004",
+      "domainId": "lifecycle-placement",
+      "prompt": "Should preparation be a module that proposes/prepares state and EnvironmentVerificationGate be the sole readiness authority that can unblock WorkExecution? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-008",
+      "domainId": "preparation-authority",
+      "prompt": "Must every mutation declare rollback/cleanup behavior, before/after fingerprints, and an idempotency key, with unsupported rollback blocking global changes? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-002",
+      "domainId": "purpose-boundary",
+      "prompt": "Should EP-001 produce an approved EnvironmentBaseline/EnvironmentChangeSet plus per-use readiness receipts, without claiming deployment, staging success, or release readiness? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-010",
+      "domainId": "readiness-policy",
+      "prompt": "Should the Gate accept only exact, current, policy-compliant evidence and emit ready, needs-clarification, remediation-required, baseline-drift, or unable-to-proceed? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-014",
+      "domainId": "evidence-traceability",
+      "prompt": "Should TraceabilityGraph link EnvironmentProfile -> required-by -> WorkItem and EnvironmentReadinessReceipt -> authorizes-environment-for -> execution attempt, with only forward factual edges? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-016",
+      "domainId": "security-secrets",
+      "prompt": "Should network access be denied by default and allowed only by exact destination/purpose grants, with every attempt recorded and no silent fallback to an online provider? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-018",
+      "domainId": "drift-replay",
+      "prompt": "Should exact checkpoint replay perform zero preparation effects, while expired or drifted state creates a new verification attempt rather than mutating historical evidence? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-012",
+      "domainId": "target-environments",
+      "prompt": "When ChatGPT Desktop version or another host fact cannot be read through a stable API, may a time-bounded user/host attestation satisfy the check if explicitly labeled non-native and policy permits it? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-020",
+      "domainId": "plugin-strategy",
+      "prompt": "Should adapter slots be capability-oriented (inventory, acquire, configure, service-check, target-probe) so tools such as PowerShell, winget, Scoop, Chocolatey, Docker, or mise can be swapped without becoming module special cases? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-024",
+      "domainId": "nonfunctional-acceptance",
+      "prompt": "Should V1 avoid a universal wall-clock SLA and instead record per-check/per-profile duration, cache hits, retries, and bottlenecks so later policy can set evidence-based thresholds? Recommended: yes."
+    },
+    {
+      "id": "EP-Q-022",
+      "domainId": "operator-experience",
+      "prompt": "Should ChatGPT Desktop show the proposed mutations, grants, expected impact, rollback plan, and evidence obligations before effectful preparation begins? Recommended: yes."
+    }
+  ],
+  "unresolvedDomains": [
+    "drift-replay",
+    "environment-model",
+    "evidence-traceability",
+    "lifecycle-placement",
+    "nonfunctional-acceptance",
+    "operator-experience",
+    "plugin-strategy",
+    "preparation-authority",
+    "purpose-boundary",
+    "readiness-policy",
+    "security-secrets",
+    "target-environments"
+  ],
+  "unresolvedContradictions": []
+}

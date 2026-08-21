@@ -1,0 +1,32 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-devrelay-ep-001-environment-preparation-v1",
+  "statement": "Add deterministic environment preparation and readiness verification so DevRelay can prove that the exact environment required for authorized work is safe, reproducible, correctly configured, and ready before execution proceeds.",
+  "objectives": [
+    "Prepare and verify declared execution and verification environments before authorized work runs.",
+    "Keep environment capabilities modular, provider-neutral, replaceable, and capability-gated.",
+    "Detect environment drift and block invalid downstream execution.",
+    "Preserve exact redacted environment evidence and traceability without exposing secrets.",
+    "Operate through ChatGPT/Codex Desktop on Windows as the release-defining host."
+  ],
+  "constraints": [
+    "Core owns routing, validation, gates, progression, checkpointing, and traceability authority.",
+    "Adapters cannot silently mutate global host state, expose secret values, or claim readiness authority.",
+    "Preparation effects require explicit capability grants and durable receipts.",
+    "The controlled release claims only ChatGPT/Codex Desktop on Windows.",
+    "Architecture and implementation remain blocked until adaptive requirements closure reaches 0.99."
+  ],
+  "acceptanceCriteria": [
+    "The exact environment profile and repository revision determine one reproducible readiness decision.",
+    "Missing required capabilities, stale fingerprints, or unverifiable state block execution.",
+    "Exact replay does not repeat preparation effects.",
+    "Evidence records commands, versions, digests, outcomes, durations, and redactions without secret values.",
+    "A Windows Desktop dogfood prepares, verifies, resumes, detects drift, and fails closed."
+  ],
+  "assumptions": [
+    "PM-001 ProjectMemory is the immutable upstream lifecycle baseline.",
+    "Routine in-scope gates and implementation changes have standing owner approval.",
+    "Unresolved product intent and trust-boundary choices still require explicit clarification."
+  ]
+}
