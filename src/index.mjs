@@ -41,6 +41,13 @@ export {
   routeEnvironmentPreparationOperation,
 } from "./environment-preparation-profile-inventory.mjs";
 export {
+  EnvironmentPreparationEffectError,
+  createEnvironmentEffectCoordinator,
+  createEnvironmentRemediationApproval,
+  createEnvironmentRemediationPlan,
+  createInMemoryEnvironmentEffectCheckpointStore,
+} from "./environment-preparation-effects.mjs";
+export {
   ProjectMemoryConcludeError,
   createInMemoryConcludeJournal,
   createProjectMemoryConclusionCoordinator,
