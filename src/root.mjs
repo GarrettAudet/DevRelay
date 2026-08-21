@@ -1,2 +1,2 @@
-export { createDevRelay, createLocalHost, defineModule, definePlugin, inspect, resume, run, verify } from "./public-facade.mjs";
+export { conclude, createDevRelay, createLocalHost, defineModule, definePlugin, inspect, resume, run, verify } from "./public-facade.mjs";
 

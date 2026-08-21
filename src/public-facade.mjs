@@ -6,7 +6,7 @@ const API_VERSION = "devrelay.dev/v1alpha1";
 const NAME = /^[a-z][a-z0-9.-]{1,127}$/u;
 const VERSION = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const DIGEST = /^sha256:[0-9a-f]{64}$/u;
-const OPERATIONS = Object.freeze(["run", "resume", "verify", "inspect"]);
+const OPERATIONS = Object.freeze(["run", "resume", "verify", "inspect", "conclude"]);
 const HOST_OPERATIONS = Object.freeze(["bootstrap", ...OPERATIONS]);
 
 export class DevRelayFacadeError extends Error {
@@ -123,6 +123,7 @@ function normalizeRequest(operation, request, defaults) {
     projectRiskContext: request.projectRiskContext,
   });
   if (operation === "run") requireText(request.goal, "goal");
+  else if (operation === "conclude") requireText(request.sessionId, "sessionId");
   else requireText(request.runId, "runId");
   if (operation === "resume" && !DIGEST.test(request.checkpointDigest ?? "")) fail("resume requires an exact checkpoint digest", "DR4741");
   if (operation === "verify" && request.subject === undefined) fail("verify subject is required");
@@ -213,4 +214,5 @@ export const run = (relay, request) => relay.run(request);
 export const resume = (relay, request) => relay.resume(request);
 export const verify = (relay, request) => relay.verify(request);
 export const inspect = (relay, request) => relay.inspect(request);
+export const conclude = (relay, request) => relay.conclude(request);
 

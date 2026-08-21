@@ -1,6 +1,6 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
 
-const ROOT_EXPORTS = Object.freeze(["createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"]);
+const ROOT_EXPORTS = Object.freeze(["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"]);
 export class ApiTierError extends Error {
   constructor(message, code = "DR4750") { super(`API tiers: ${message}`); this.name = "ApiTierError"; this.code = code; }
 }

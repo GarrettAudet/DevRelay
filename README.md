@@ -110,6 +110,8 @@ The installed `devrelay` command exposes versioned `init`, `run`, `resume`,
 `status`, `verify`, `inspect`, and `evidence` operations. Human output is concise
 by default; `--json` is the lossless automation surface.
 
+The Windows Desktop library facade also exposes explicit `conclude`. ProjectMemory loads its digest-bound synopsis, baseline, and trace projection before configured work and uses `/conclude` to present qualitative deltas for owner approval. See [ProjectMemory on ChatGPT Desktop](docs/project-memory.md).
+
 Low-level, provider-neutral Core contracts remain available from the explicit
 advanced tier. A host using that tier supplies its own artifact store, checkpoint
 store, capability enforcement, and adapter implementations:

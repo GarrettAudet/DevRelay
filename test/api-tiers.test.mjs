@@ -4,9 +4,9 @@ import test from "node:test";
 import { createApiTierManifest, diagnoseForbiddenImport, verifyApiTierExports } from "../src/api-tiers.mjs";
 
 const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url)));
-test("root exposes exactly the eight supported facade operations", async () => {
+test("root exposes exactly the nine supported facade operations", async () => {
   const root = await import("../src/root.mjs");
-  assert.deepEqual(Object.keys(root).sort(), ["createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"]);
+  assert.deepEqual(Object.keys(root).sort(), ["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"]);
 });
 test("tier manifest binds root, advanced, pack, and one-window compat policy", async () => {
   const manifest = createApiTierManifest({ packageExports: pkg.exports });
