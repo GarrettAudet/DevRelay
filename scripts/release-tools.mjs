@@ -531,7 +531,7 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
   const smokeProgram = [
     `const facade = await import(${JSON.stringify(packageName)});`,
     `const api = await import(${JSON.stringify(`${packageName}/advanced`)});`,
-    'const expectedFacade = ["createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];',
+    'const expectedFacade = ["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];',
     'if (JSON.stringify(Object.keys(facade).sort()) !== JSON.stringify(expectedFacade)) throw new Error("unexpected root facade exports");',
     'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
     'if (typeof api.requirementsRuntimeArtifactContracts !== "function") throw new Error("missing RequirementsGathering contracts export");',
