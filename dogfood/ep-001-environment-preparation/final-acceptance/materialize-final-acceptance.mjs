@@ -142,9 +142,9 @@ function findAppliedUpdates(head) {
 
 function restoreGraph() {
   const graphPath =
-    "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/WI-EP-WINDOWS-E2E/traceability-graph-snapshot.json";
+    "dogfood/ep-001-environment-preparation/integration-release-provenance-fix-1/WI-EP-REGRESSION-PERFORMANCE/traceability-graph-snapshot.json";
   const graphSummary = readJson(
-    "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json",
+    "dogfood/ep-001-environment-preparation/integration-release-provenance-fix-1/integration-summary.json",
   );
   const value = readJson(graphPath);
   const bytes = canonicalBytes(value);
@@ -211,10 +211,10 @@ const assignment = loadedRaw(
   "application/vnd.devrelay.specialist-assignment-baseline+json",
 );
 const integrationSummary = readJson(
-  "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json",
+  "dogfood/ep-001-environment-preparation/integration-release-provenance-fix-1/integration-summary.json",
 );
 const implementationCommit = integrationSummary.finalCommit;
-assert.equal(implementationCommit, "b9adbeaa68b24725b8d8dad611e9735bac277791");
+assert.equal(implementationCommit, "c32de4df39f0207857fe6cbe6238d88ceea28df3");
 const previousAcceptanceBytes = readBytes(
   "dogfood/pm-001-project-memory/final-acceptance/business-acceptance-record.json",
 );
@@ -277,9 +277,21 @@ const securityRepairIntegrationBytes = readBytes(
   "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json",
 );
 const securityRepairIntegration = JSON.parse(securityRepairIntegrationBytes);
-assert.equal(securityRepairIntegration.finalCommit, implementationCommit);
+assert.equal(securityRepairIntegration.finalCommit, "b9adbeaa68b24725b8d8dad611e9735bac277791");
 assert.equal(securityRepairIntegration.results[0].outcome, "integrated");
 assert.equal(securityRepairIntegration.results[0].replayAdapterCalls, 0);
+const provenanceRepairApprovalBytes = readBytes(
+  "dogfood/ep-001-environment-preparation/verification-release-provenance-fix-1/WI-EP-REGRESSION-PERFORMANCE/gate-approval.json",
+);
+const provenanceRepairApproval = JSON.parse(provenanceRepairApprovalBytes);
+assert.equal(provenanceRepairApproval.decision, "approved");
+const provenanceRepairIntegrationBytes = readBytes(
+  "dogfood/ep-001-environment-preparation/integration-release-provenance-fix-1/integration-summary.json",
+);
+const provenanceRepairIntegration = JSON.parse(provenanceRepairIntegrationBytes);
+assert.equal(provenanceRepairIntegration.finalCommit, implementationCommit);
+assert.equal(provenanceRepairIntegration.results[0].outcome, "integrated");
+assert.equal(provenanceRepairIntegration.results[0].replayAdapterCalls, 0);
 const releaseEvidenceValue = seal(
   {
     apiVersion: API,
@@ -330,6 +342,14 @@ const releaseEvidenceValue = seal(
       codeScanningRepairIntegration: ref(
         securityRepairIntegration.kind,
         sha256Digest(securityRepairIntegrationBytes),
+      ),
+      protectedMainProvenanceRepairApproval: ref(
+        provenanceRepairApproval.approvalId,
+        provenanceRepairApproval.approvalDigest,
+      ),
+      protectedMainProvenanceRepairIntegration: ref(
+        provenanceRepairIntegration.kind,
+        sha256Digest(provenanceRepairIntegrationBytes),
       ),
     },
     package: {
@@ -382,6 +402,7 @@ const integrationSources = [
   { integration: "dogfood/ep-001-environment-preparation/integration-system-fix-1", verification: "dogfood/ep-001-environment-preparation/verification-system-fix-1" },
   { integration: "dogfood/ep-001-environment-preparation/integration-system-fix-2", verification: "dogfood/ep-001-environment-preparation/verification-system-fix-2" },
   { integration: "dogfood/ep-001-environment-preparation/integration-release-security-fix-1", verification: "dogfood/ep-001-environment-preparation/verification-release-security-fix-1" },
+  { integration: "dogfood/ep-001-environment-preparation/integration-release-provenance-fix-1", verification: "dogfood/ep-001-environment-preparation/verification-release-provenance-fix-1" },
 ];
 const recordByWorkItem = new Map();
 const completionByWorkItem = new Map();

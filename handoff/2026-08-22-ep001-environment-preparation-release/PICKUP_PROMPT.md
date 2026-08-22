@@ -1,6 +1,6 @@
 # Pickup prompt
 
-Continue DevRelay EP-001 release finalization from branch `codex/ep-001-environment-preparation`.
+Continue DevRelay EP-001 release finalization from branch `codex/ep-001-main-provenance-reconciliation`.
 
 Read, in order:
 
@@ -11,4 +11,6 @@ Read, in order:
 5. `EVIDENCE_INDEX.md`
 6. `NEXT_ACTIONS.md`
 
-Do not redo completed lifecycle stages. EP-001 has passed SystemVerification, BusinessAcceptance, RoadmapManagement, and `/conclude`. The prior seal was superseded after GitHub CodeQL found a filesystem race. The correction is independently verified and integrated at `b9adbeaa68b24725b8d8dad611e9735bac277791`; acceptance and ProjectMemory are refreshed. Immutable implementation/evidence commit `1e3933f1aaa0ab1c667ad5093e1e6e35d3d4dbbc` passed the authoritative release check. Regenerate and verify the final exact-tree seal, push PR #11, and require every protected remote check to pass. Preserve the ChatGPT/Codex Desktop on Windows release boundary and all stated exclusions.
+Do not redo completed semantic gates. PR #11 already passed its remote checks and merged to protected `main` at `a9cb936f894a5ddbb86d26b31a5b3b4a61e2a9f4`. Canonical-main verification then exposed only a commit-ID portability assumption in the V0.11 two-phase evidence verifier. The repair preserves the original approved pair, uniquely proves its tree-and-subject-equivalent direct-parent pair in protected-main ancestry, and has passed the focused 17-test gate plus the released execution, verification, integration, acceptance, traceability, and `/conclude` circuit.
+
+Resume with the full exact-tree release gate, protected PR, canonical-main checks, and GitHub tag/release workflow. Preserve the ChatGPT/Codex Desktop on Windows boundary and all stated exclusions.

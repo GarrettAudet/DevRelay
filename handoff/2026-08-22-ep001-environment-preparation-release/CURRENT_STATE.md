@@ -1,21 +1,20 @@
 # Current state
 
-- Branch: `codex/ep-001-environment-preparation`
-- Superseded pre-CodeQL seal: `97ded63e90b4d21b4f2d5dc7e7e08fe408603654`
-- Verified implementation/evidence commit: `1e3933f1aaa0ab1c667ad5093e1e6e35d3d4dbbc`
+- Branch: `codex/ep-001-main-provenance-reconciliation`
 - Package: `0.10.0-rc.3`
-- Canonical verification: 1,103 tests; 1,101 passed; 0 failed; 2 intentional skips; 10,020 catalog digests; 390 package paths; 193 installed exports.
-- Installed package: 390 files; tarball `sha256:cb07c82cfa884a89d6180d9c34ae0bfe18918554cf53ad41b3c0156be4b8d460`.
-- EP work: 9/9 work items verified and integrated.
-- Verification repairs: `WI-EP-TRACEABILITY`, `WI-EP-REGRESSION-PERFORMANCE`, and `WI-EP-WINDOWS-E2E` retries verified and integrated.
-- Integrated security-repair lineage: `b9adbeaa68b24725b8d8dad611e9735bac277791`.
-- SystemVerification: verified.
-- BusinessAcceptance: accepted.
-- Traceability: acceptance horizon, revision 33, zero blocking diagnostics.
-- ProjectMemory: `/conclude` passed; baseline 1.0.2; fresh-task replay made zero provider calls.
-- Roadmap: ReleasePreparation/ReleaseVerification kept and promoted at priority `0.9275`.
-- Remote verification: prior seal passed the Node matrix, CodeQL analysis job, and dependency review but was rejected by the CodeQL security check for one filesystem race.
-- Security remediation: focused gate passed 13/13; the immutable implementation/evidence commit passed the authoritative release check; final catalog/status seal and remote checks remain.
-- Remote promotion: PR #11 is open but must receive the superseding seal and pass all checks.
+- PR #11: all checks passed; merged by protected linear history.
+- Protected-main EP-001 head: `a9cb936f894a5ddbb86d26b31a5b3b4a61e2a9f4`.
+- Canonical-main verify run `32570160277`: one failure only, the V0.11 two-phase provenance assertion after GitHub rewrote commit IDs.
+- Original implementation/evidence pair: `868c00e2dc8c0d610d919dbc68256bab9d0e6ca2` -> `3374e75e4342efde0e395855a85600ed6614b4a8`.
+- Protected-main equivalent pair: `fe8181766a9340e8a64033752d33ee76453b66d8` -> `3257e3086675581f0399c3a4603adde9e6a00255`.
+- Both corresponding trees are byte-identical; subjects and direct-parent ordering are preserved.
+- Provenance verifier repair: focused suite passed 17/17 and is independently executed, verified, and integrated.
+- EP work: 9/9 work items plus four verification repair retries are verified and integrated.
+- SystemVerification: verified; 175 acceptance criteria and 46 NFRs.
+- BusinessAcceptance: accepted; 20 objectives, 28 success metrics, and 55 business-scope identities.
+- Traceability: acceptance horizon, revision 35, zero blocking diagnostics.
+- ProjectMemory: `/conclude` passed; fresh-task replay made zero provider calls.
+- Next gate: authoritative full release check on the exact reconciliation tree.
+- Final promotion: protected PR -> canonical-main checks -> tag `v0.10.0-rc.3` -> GitHub source prerelease.
 
-Finalization found three evidence-backed issues: traceability v1.7 endpoint closure, stale exact baseline assertions, and a CodeQL check-then-read filesystem race. Each correction and regression was processed through WorkExecution, WorkItemVerification, and ChangeIntegration.
+The supported boundary is GitHub source plus an installable deterministic library operated through ChatGPT/Codex Desktop on Windows. Exclusions remain public npm publication, one-click Desktop installation, a hosted backend, and non-Windows hosts.

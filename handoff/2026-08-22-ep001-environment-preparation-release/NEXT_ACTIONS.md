@@ -1,9 +1,9 @@
 # Next actions
 
-1. Regenerate the handoff manifest, release catalog, and exact status bindings for implementation/evidence commit `1e3933f1aaa0ab1c667ad5093e1e6e35d3d4dbbc`.
-2. Run the authoritative release check against that final exact tree and commit the seal without self-reference.
-3. Push the superseding seal to PR #11 and require CodeQL, dependency review, and all four protected Node/OS checks to pass.
-4. Promote through protected `main` only after every remote check passes and all conversations are resolved.
-5. Start ReleasePreparation/ReleaseVerification by loading ProjectMemory and running RequirementsGathering; do not implement directly from the roadmap summary.
-
-If any final gate fails, route the exact failure through diagnose, fix, verification, and integration. Regenerate downstream acceptance or memory evidence only when a bound artifact changes.
+1. Stage the complete provenance-reconciliation artifact set and regenerate the tracked-source release catalog and handoff manifest.
+2. Run the authoritative `release:check` against those exact bytes; fix any failure through the released execution/verification/integration loop.
+3. Commit and push `codex/ep-001-main-provenance-reconciliation`, open the protected-main PR, and require CodeQL, dependency review, and all four Node/OS jobs to pass.
+4. Merge through protected `main`, then require canonical-main verify, CodeQL, and scorecard to pass with the rebase-equivalent provenance proof.
+5. Confirm tag `v0.10.0-rc.3` does not exist, create it at the exact green main commit, and require the GitHub source-release workflow to publish the prerelease successfully.
+6. Verify the GitHub release, source archive, package tarball, checksums, SBOM, and provenance attestations before declaring release-ready.
+7. Start ReleasePreparation/ReleaseVerification only after loading ProjectMemory and running RequirementsGathering; do not implement directly from the roadmap summary.
