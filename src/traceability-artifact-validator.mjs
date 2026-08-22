@@ -1087,7 +1087,11 @@ function validateUpdate(update) {
     if (
       edge.kind === "accepted-by" &&
       !(
-        new Set([TRACEABILITY_ENDPOINT_POLICY_VERSION, TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6]).has(vocabularyProfile.endpointPolicyVersion) &&
+        new Set([
+          TRACEABILITY_ENDPOINT_POLICY_VERSION,
+          TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
+          TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_7,
+        ]).has(vocabularyProfile.endpointPolicyVersion) &&
         (!sourceNode || new Set(["business-objective", "business-scope", "success-metric"]).has(sourceNode.kind)) &&
         targetNode?.kind === "business-acceptance-record"
       ) &&

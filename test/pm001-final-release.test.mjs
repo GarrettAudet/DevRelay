@@ -14,11 +14,12 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const bytes=(p)=>fs.readFileSync(path.join(root,p));
 const json=(p)=>JSON.parse(bytes(p));
 
-test("PM-001 accepted release persists exact ProjectMemory and first-load evidence",()=>{
+test("the accepted ProjectMemory baseline preserves PM-001 and the latest concluded release",()=>{
   const baseline=json("project/project-memory-baseline.json");
   validateProjectMemoryArtifact(baseline);
   assert.equal(baseline.kind,"ProjectMemoryBaseline");
-  assert.equal(baseline.version,"1.0.1");
+  assert.equal(baseline.version,"1.0.2");
+  assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-EP001-RELEASE-READY"&&status==="active"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-PM001-RELEASE-READY"&&status==="active"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-PM001-CANDIDATE"&&status==="superseded"),true);
   const synopsis=renderCurrentSynopsis(baseline);

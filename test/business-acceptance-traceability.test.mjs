@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
 import { businessAcceptanceTraceabilityContributor } from "../src/business-acceptance-traceability-contributor.mjs";
-import { TRACEABILITY_VOCABULARY_V1_6 } from "../src/traceability-artifact-validator.mjs";
+import { TRACEABILITY_VOCABULARY_V1_6, TRACEABILITY_VOCABULARY_V1_7 } from "../src/traceability-artifact-validator.mjs";
 import { requirementsBaselineObserverContributor } from "../src/requirements-traceability-contributor.mjs";
 import { createInMemoryTraceabilityStore, createTraceabilityGraphService, diagnoseTraceabilityGraph } from "../src/traceability-graph.mjs";
 
@@ -84,6 +84,23 @@ test("v1.6 accepts forward BusinessAcceptance edges introduced in v1.5", async (
   assert.deepEqual(merged.snapshot.edges.filter(({ kind }) => kind === "accepted-by").map(({ kind }) => kind), ["accepted-by", "accepted-by", "accepted-by"]);
 });
 
+test("v1.7 accepts forward BusinessAcceptance edges", async () => {
+  const { context } = fixture();
+  const projection = await businessAcceptanceTraceabilityContributor.project(context);
+  const seed = seedContributor(projection);
+  const service = createTraceabilityGraphService({
+    graphId: "ba-v1-7",
+    projectId: "devrelay",
+    store: createInMemoryTraceabilityStore(),
+    contributors: [seed, businessAcceptanceTraceabilityContributor],
+    vocabulary: TRACEABILITY_VOCABULARY_V1_7,
+  });
+  const seedContext = { ...context, invocation: { invocationId: "seed-v1-7", module: { id: "seed", version: "1", operation: "seed" } }, moduleResult: { ...context.moduleResult, invocationId: "seed-v1-7", outcome: "seed" } };
+  await service.mergePrepared(await service.prepare({ ...seedContext, baseGraph: service.captureBase() }));
+  const merged = await service.mergePrepared(await service.prepare({ ...context, baseGraph: service.captureBase() }));
+  assert.deepEqual(merged.snapshot.vocabulary, TRACEABILITY_VOCABULARY_V1_7);
+  assert.deepEqual(merged.snapshot.edges.filter(({ kind }) => kind === "accepted-by").map(({ kind }) => kind), ["accepted-by", "accepted-by", "accepted-by"]);
+});
 test("production baselines compose Core and real contributors with exhaustive authoritative business-scope identities", async () => {
   const requirementsBytes = await readFile(new URL("../project/requirements-baseline.json", import.meta.url));
   const overviewBytes = await readFile(new URL("../project/project-overview-baseline.json", import.meta.url));
