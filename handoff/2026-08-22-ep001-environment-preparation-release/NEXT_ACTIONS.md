@@ -1,9 +1,9 @@
 # Next actions
 
-1. Regenerate the handoff manifest and release catalog to bind immutable implementation/evidence commit `4e67574f2811c943c77facca05bccf1ed2bb671d`.
-2. Repeat the authoritative `release:check` over the exact status/catalog seal and commit it without self-reference.
-3. Push `codex/ep-001-main-provenance-reconciliation`, open the protected-main PR, and require CodeQL, dependency review, and all four Node/OS jobs to pass.
-4. Merge through protected `main`, then require canonical-main verify, CodeQL, and scorecard to pass with the rebase-equivalent provenance proof.
-5. Confirm tag `v0.10.0-rc.3` does not exist, create it at the exact green main commit, and require the GitHub source-release workflow to publish the prerelease successfully.
-6. Verify the GitHub release, source archive, package tarball, checksums, SBOM, and provenance attestations before declaring release-ready.
-7. Start ReleasePreparation/ReleaseVerification only after loading ProjectMemory and running RequirementsGathering; do not implement directly from the roadmap summary.
+1. Regenerate the handoff manifest and tracked-source release catalog around implementation commit `c4c45ceaced6012bb9631f1dd09354865e00df52`.
+2. Run the authoritative release check over the exact status/catalog seal.
+3. Push `codex/v0.10.0-rc.3-release-followup` and open a protected-main PR.
+4. Require CodeQL, dependency review, and all Node 22/24 x Ubuntu/Windows checks to pass before merge.
+5. Require canonical-main verify, CodeQL, and scorecard to pass after GitHub's linear-history rewrite.
+6. Run ProjectMemory `/conclude` to make the published release and automation closure first-load context.
+7. Begin ReleasePreparation/ReleaseVerification through RequirementsGathering and the full released circuit.
