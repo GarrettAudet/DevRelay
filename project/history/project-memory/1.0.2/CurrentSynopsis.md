@@ -1,7 +1,7 @@
 # Current Synopsis
 
 Project: devrelay
-Memory baseline: PMB-MUC-F15CBE0E2D6A077B (1.0.2)
+Memory baseline: PMB-MUC-9B80A2253EF8BAC7 (1.0.2)
 
 - [constraint] The controlled release target is GitHub source plus an installable library operated through ChatGPT/Codex Desktop on Windows; it does not claim public npm publication, one-click Desktop installation, a hosted backend, or non-Windows hosts. (MEM-DEVRELAY-PLATFORM)
 - [decision] Routine in-scope lifecycle gates and implementation changes have standing owner approval; unresolved product intent, business requirements, trust failures, or external authority boundaries still require explicit clarification. (MEM-DEVRELAY-APPROVAL)
@@ -13,5 +13,5 @@ Memory baseline: PMB-MUC-F15CBE0E2D6A077B (1.0.2)
 - [goal] DevRelay is a deterministic, spec-driven software-engineering orchestration runtime; it is not a coding agent or model wrapper. (MEM-DEVRELAY-GOAL)
 - [next-action] Prioritize ReleasePreparation through the full current DevRelay circuit, using the accepted EnvironmentPreparation readiness receipts as a mandatory pre-execution boundary. (MEM-DEVRELAY-NEXT-AFTER-EP001)
 - [pattern] Each newly built module must be produced by rerunning every already-released upstream DevRelay module, then appended to the circuit before the next module is built. (MEM-DEVRELAY-DOGFOOD)
-- [status] EP-001 EnvironmentPreparation is construction-complete and accepted by BA-RECORD-223b645c1d0ee08f6ec29ca2; SystemVerification covers 175 acceptance criteria and 46 NFRs with zero blocking traceability diagnostics. (MEM-DEVRELAY-STATUS-EP001-RELEASE-READY)
+- [status] EP-001 EnvironmentPreparation is construction-complete and accepted by BA-RECORD-4e0b7662f593a3af99aa323f; SystemVerification covers 175 acceptance criteria and 46 NFRs with zero blocking traceability diagnostics. (MEM-DEVRELAY-STATUS-EP001-RELEASE-READY)
 - [status] PM-001 ProjectMemory is construction-complete and accepted for the controlled Windows source/library release by BA-RECORD-9e631f29a752f503737a3d68; 1,038 tests completed with 1,036 passing, zero failures, and two intentional skips. (MEM-DEVRELAY-STATUS-PM001-RELEASE-READY)

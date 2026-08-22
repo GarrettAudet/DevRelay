@@ -1,21 +1,35 @@
 apiVersion: devrelay.dev/v1alpha1
 kind: HandoffPackage
 handoffId: EP001-ENVIRONMENT-PREPARATION-RELEASE-20260822
-branch: codex/ep-001-environment-preparation
+branch: codex/ep-001-main-provenance-reconciliation
 packageVersion: 0.10.0-rc.3
-status: implementation-evidence-verified-final-seal-pending
+status: protected-main-provenance-reconciliation-full-gate-pending
 completedStages:
+  - RequirementsGathering
+  - ArchitectureDesign
+  - ContractGeneration
+  - WorkBreakdown
+  - WorkDependencyAnalysis
+  - SpecialistAssignment
+  - EnvironmentPreparation
+  - WorkExecution
+  - WorkItemVerification
+  - ChangeIntegration
   - SystemVerification
   - BusinessAcceptance
   - RoadmapManagement
   - ProjectMemoryConclude
-supersededSealCommit: 97ded63e90b4d21b4f2d5dc7e7e08fe408603654
-securityRepairIntegratedCommit: b9adbeaa68b24725b8d8dad611e9735bac277791
-implementationEvidenceCommit: 1e3933f1aaa0ab1c667ad5093e1e6e35d3d4dbbc
-releaseCheck: passed-1103-tests-10020-digests-390-package-paths-193-exports
-nextStage: FinalCatalogCheckAndSeal
+protectedMainCommit: a9cb936f894a5ddbb86d26b31a5b3b4a61e2a9f4
+failedMainVerificationRun: 32570160277
+originalImplementationCommit: 868c00e2dc8c0d610d919dbc68256bab9d0e6ca2
+originalEvidenceSealCommit: 3374e75e4342efde0e395855a85600ed6614b4a8
+canonicalMainImplementationCommit: fe8181766a9340e8a64033752d33ee76453b66d8
+canonicalMainEvidenceSealCommit: 3257e3086675581f0399c3a4603adde9e6a00255
+focusedReleaseCheck: passed-17-tests-zero-failures
+nextStage: AuthoritativeReleaseCheck
 supportedHost: ChatGPT/Codex Desktop on Windows
 protectedBranch: main
+releaseTag: v0.10.0-rc.3
 exclusions:
   - public npm publication
   - one-click Desktop installation
