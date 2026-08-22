@@ -31,11 +31,12 @@ SystemVerification                                        verified
 BusinessAcceptance                                        accepted
 RoadmapManagement -> RoadmapGate                           next initiative promoted
 ProjectMemory /conclude                                   concluded
-Evidence seal and protected-main promotion                CodeQL remediation integrated; authoritative release check, reseal, and remote gates pending
+Evidence seal and protected-main promotion                implementation/evidence commit verified; final seal and remote gates pending
 
 ## Exact evidence
 
 - Superseded pre-CodeQL seal: 97ded63e90b4d21b4f2d5dc7e7e08fe408603654
+- Verified implementation/evidence commit: 1e3933f1aaa0ab1c667ad5093e1e6e35d3d4dbbc
 - Integrated security-repair lineage: b9adbeaa68b24725b8d8dad611e9735bac277791
 - Release evidence: sha256:dd056f10a2a44feb36f6f1590a3fef9f821e96b3dbf7c864fe050b4ba44e76ef
 - SystemVerification: sha256:3cc9d0abe064043c2a5bd88433420b88c8c4e889f73b42d2d3f4fe879c75baea
@@ -50,6 +51,6 @@ Evidence seal and protected-main promotion                CodeQL remediation int
 
 ## Promotion rule and next work
 
-The CodeQL repair is independently verified and integrated at `b9adbeaa68b24725b8d8dad611e9735bac277791`; focused post-repair verification passed 13/13. The complete authoritative release check, refreshed catalog, and two-phase reseal remain mandatory before pushing the superseding candidate. Protected main remains the merge authority.
+The CodeQL repair is independently verified and integrated at `b9adbeaa68b24725b8d8dad611e9735bac277791`. The exact implementation/evidence tree is committed at `1e3933f1aaa0ab1c667ad5093e1e6e35d3d4dbbc`; its authoritative release check passed 1,103 tests (1,101 passed, 0 failed, 2 intentional skips), 10,020 catalog digests, 390 package paths, and 193 installed exports. Final status/catalog sealing and the second exact-tree release check remain mandatory before push. Protected main remains the merge authority.
 
 The next product increment is ReleasePreparation and ReleaseVerification. It must begin by loading ProjectMemory, then run RequirementsGathering and the complete currently released DevRelay circuit. This candidate does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or non-Windows support.
