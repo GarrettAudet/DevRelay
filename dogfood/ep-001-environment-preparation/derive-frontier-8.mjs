@@ -1,0 +1,113 @@
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  canonicalJson,
+  canonicalJsonDigest,
+  deriveReadyFrontier,
+  validateLifecycleRunReportArtifact,
+} from "../../src/index.mjs";
+
+const root = fileURLToPath(new URL("../../", import.meta.url));
+const outputRoot = fileURLToPath(new URL("./frontier-8/", import.meta.url));
+const readJson = (relativePath) => JSON.parse(readFileSync(resolve(root, relativePath), "utf8"));
+const writeJson = (name, value) => {
+  const target = resolve(outputRoot, name);
+  mkdirSync(dirname(target), { recursive: true });
+  writeFileSync(target, `${canonicalJson(value)}\n`, "utf8");
+};
+const compact = ({ artifactId, digest }) => ({ artifactId, digest });
+const seal = (value, field) => ({
+  ...value,
+  [field]: canonicalJsonDigest(
+    Object.fromEntries(
+      Object.entries(value).filter(([key]) => !["apiVersion", "kind", field].includes(key)),
+    ),
+  ),
+});
+
+const baseline = readJson("project/work-dependency-baseline.json");
+const breakdown = readJson("project/work-breakdown-baseline.json");
+const priorFacts = [
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-ARTIFACT-CONTRACTS-001.json",
+  ),
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-PROFILE-INVENTORY-001.json",
+  ),
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-PREPARATION-EFFECTS-001.json",
+  ),  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-GATE-READINESS-001.json",
+  ),
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-OPTIONAL-ADAPTERS-001.json",
+  ),
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-DESKTOP-INTEGRATION-001.json",
+  ),
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-TRACEABILITY-001.json",
+  ),
+  readJson(
+    "dogfood/ep-001-environment-preparation/frontier-7/COMPLETION-WI-EP-REGRESSION-PERFORMANCE-001.json",
+  ),
+];
+const execution = readJson(
+  "dogfood/ep-001-environment-preparation/execution-frontier-7/execution-summary.json",
+);
+const verification = readJson(
+  "dogfood/ep-001-environment-preparation/verification-frontier-7/verification-summary.json",
+);
+const integration = readJson(
+  "dogfood/ep-001-environment-preparation/integration-frontier-7/integration-summary.json",
+);
+const integratedRefs = new Map(
+  integration.results.map((entry) => [entry.workItemId, entry.integratedChange]),
+);
+const newFacts = [...integratedRefs].map(([workItemId, integratedChange]) => {
+  const workItem = breakdown.workItems.find(({ id }) => id === workItemId);
+  const executed = execution.executions.find((entry) => entry.workItemId === workItemId);
+  const verified = verification.results.find((entry) => entry.workItemId === workItemId);
+  if (!workItem || !executed || !verified) throw new Error(`incomplete closure for ${workItemId}`);
+  const fact = seal(
+    {
+      apiVersion: "devrelay.dev/v1alpha1",
+      kind: "IntegratedCompletionFact",
+      completionId: `COMPLETION-${workItemId}-001`,
+      workItem: { artifactId: workItem.id, digest: canonicalJsonDigest(workItem) },
+      changeSet: compact(executed.changeSet),
+      verification: compact(verified.gateApproval),
+      integration: compact(integratedChange),
+      status: "verified-and-integrated",
+      authority: "factual-completion",
+    },
+    "completionDigest",
+  );
+  validateLifecycleRunReportArtifact(fact);
+  return fact;
+});
+const completionFacts = [...priorFacts, ...newFacts].sort((left, right) =>
+  left.completionId.localeCompare(right.completionId, "en"),
+);
+const readyFrontier = deriveReadyFrontier({
+  baseline,
+  completionFacts,
+  frontierId: "FRONTIER-EP-001-008",
+});
+const executionFacts = completionFacts.map((fact) => ({
+  workItemId: fact.workItem.artifactId,
+  authority: "approved",
+  integrationRef: fact.integration,
+  evidence: [fact.verification],
+}));
+const executionFactSet = {
+  apiVersion: "devrelay.dev/v1alpha1",
+  kind: "IntegratedCompletionFactSet",
+  facts: executionFacts,
+  factsDigest: canonicalJsonDigest(executionFacts),
+};
+for (const fact of completionFacts) writeJson(`${fact.completionId}.json`, fact);
+writeJson("integrated-completion-fact-set.json", executionFactSet);
+writeJson("ready-frontier.json", readyFrontier);
+process.stdout.write(`${JSON.stringify(readyFrontier, null, 2)}\n`);
