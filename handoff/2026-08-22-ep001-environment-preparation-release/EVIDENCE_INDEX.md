@@ -1,14 +1,16 @@
 # Evidence index
 
 - Public release: `https://github.com/GarrettAudet/DevRelay/releases/tag/v0.10.0-rc.3`.
-- Protected-main release commit: `dc0f4094ce0e178757984e363836d05cfcc0037d`.
-- Protected promotion: PR #12.
-- Canonical-main verification: run `32573106461`.
+- Protected-main release tag commit: `dc0f4094ce0e178757984e363836d05cfcc0037d`.
 - Tagged release build/evidence: run `32573676370`, job `97032764058` passed.
 - Tagged publication failure: job `97033498528`; exact error was repository inference without `.git`.
+- Exact-asset recovery: published without rebuilding or substituting any workflow asset.
 - Workflow-fix implementation: `c4c45ceaced6012bb9631f1dd09354865e00df52`.
-- Focused regression: `test/release-automation.test.mjs`, 2/2 passed.
-- Canonical local verification: 1,103 tests; 1,101 passed; 0 failed; 2 skipped.
+- Protected promotion: PR #13, main commit `d17bc7dada964c3b669c29407cdabfbfe37c2651`.
+- Canonical-main verify / CodeQL / scorecard: `32592205364` / `32592205360` / `32592205344`, all passed.
+- ProjectMemory result baseline: `sha256:adf6829dce8a18b27bad2b30c7d4c18f3c557d052a103c96d408847ff0cae6ac`.
+- ProjectMemory conclude receipt: `sha256:83e841b9b966fdddce30d6d1534f3b3cfde64f87480ce3d03e287d550567e209`.
+- Fresh-task replay: passed with zero provider calls.
 
 Published asset digests:
 

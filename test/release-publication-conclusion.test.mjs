@@ -1,0 +1,55 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import { fileURLToPath } from "node:url";
+import * as api from "../src/index.mjs";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const read = (relativePath) => fs.readFileSync(path.join(root, relativePath));
+const json = (relativePath) => JSON.parse(read(relativePath));
+const conclusionRoot = "dogfood/ep-001-environment-preparation/release-publication-conclusion";
+
+test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () => {
+  const summary = json(`${conclusionRoot}/release-publication-conclusion-summary.json`);
+  const evidence = json(`${conclusionRoot}/00-release-publication-evidence.json`);
+  const concludedBaseline = json(`${conclusionRoot}/07-project-memory-baseline.json`);
+  const currentBaseline = json("project/project-memory-baseline.json");
+  const receipt = json(`${conclusionRoot}/09-conclude-receipt.json`);
+  const replay = json(`${conclusionRoot}/14-fresh-task-replay-proof.json`);
+
+  assert.equal(summary.outcome, "pass");
+  assert.equal(summary.protectedMainCommit, "d17bc7dada964c3b669c29407cdabfbfe37c2651");
+  assert.equal(evidence.release.tag, "v0.10.0-rc.3");
+  assert.equal(evidence.release.tagCommit, "dc0f4094ce0e178757984e363836d05cfcc0037d");
+  assert.deepEqual(evidence.automationFollowup.canonicalRuns, {
+    codeql: 32592205360,
+    scorecard: 32592205344,
+    verify: 32592205364,
+  });
+  assert.deepEqual(currentBaseline, concludedBaseline);
+  assert.equal(currentBaseline.version, "1.0.3");
+  assert.equal(api.loadProjectMemoryArtifact(currentBaseline).ref.digest, summary.resultBaseline.digest);
+  assert.equal(receipt.outcome, "concluded");
+  assert.equal(receipt.resultBaseline.digest, summary.resultBaseline.digest);
+  assert.equal(replay.replayed, true);
+  assert.equal(replay.replayProviderCalls, 0);
+  assert.deepEqual(replay.loadOrder, [
+    "current-synopsis",
+    "project-memory-baseline",
+    "traceability-context",
+  ]);
+  assert.equal(
+    currentBaseline.records.some(
+      ({ id, status }) => id === "MEM-DEVRELAY-RELEASE-V0.10.0-RC3" && status === "active",
+    ),
+    true,
+  );
+  assert.equal(
+    currentBaseline.records.some(
+      ({ id, status }) => id === "MEM-DEVRELAY-NEXT-AFTER-EP001" && status === "active",
+    ),
+    true,
+  );
+  assert.deepEqual(read("project/CurrentSynopsis.md"), read(`${conclusionRoot}/CurrentSynopsis.md`));
+});

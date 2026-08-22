@@ -18,10 +18,11 @@ test("the accepted ProjectMemory baseline preserves PM-001 and the latest conclu
   const baseline=json("project/project-memory-baseline.json");
   validateProjectMemoryArtifact(baseline);
   assert.equal(baseline.kind,"ProjectMemoryBaseline");
-  assert.equal(baseline.version,"1.0.2");
+  assert.equal(baseline.version,"1.0.3");
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-EP001-RELEASE-READY"&&status==="active"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-PM001-RELEASE-READY"&&status==="active"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-PM001-CANDIDATE"&&status==="superseded"),true);
+  assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-RELEASE-V0.10.0-RC3"&&status==="active"),true);
   const synopsis=renderCurrentSynopsis(baseline);
   assert.equal(sha256Digest(bytes("project/CurrentSynopsis.md")),synopsis.ref.digest);
   assert.equal(bytes("project/CurrentSynopsis.md").equals(synopsis.bytes),true);
@@ -45,4 +46,11 @@ test("the accepted ProjectMemory baseline preserves PM-001 and the latest conclu
   const installed=json("dogfood/pm-001-project-memory/windows-e2e/installed-package-verification-receipt.json");
   assert.equal(installed.scenario.provider.maturity,"live-conformant");
   assert.equal(installed.scenario.restart.zeroCallReplay,true);
+
+  const releaseConclusion=json("dogfood/ep-001-environment-preparation/release-publication-conclusion/release-publication-conclusion-summary.json");
+  const {summaryDigest:releaseSummaryDigest,...releaseMaterial}=releaseConclusion;
+  assert.equal(releaseSummaryDigest,canonicalJsonDigest(releaseMaterial));
+  assert.equal(releaseConclusion.outcome,"pass");
+  assert.equal(releaseConclusion.protectedMainCommit,"d17bc7dada964c3b669c29407cdabfbfe37c2651");
+  assert.equal(releaseConclusion.nextActionRetained,"MEM-DEVRELAY-NEXT-AFTER-EP001");
 });

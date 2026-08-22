@@ -1,15 +1,15 @@
 # Current state
 
 - Public prerelease: `v0.10.0-rc.3` at `https://github.com/GarrettAudet/DevRelay/releases/tag/v0.10.0-rc.3`.
-- Protected-main release commit: `dc0f4094ce0e178757984e363836d05cfcc0037d`.
-- PR #12, canonical-main verify, CodeQL, dependency review, and scorecard: passed.
-- Release gates: 1,103 tests; 1,101 passed; 0 failed; 2 skipped; 10,075 source digests; 390 package files; 193 installed exports.
-- Exact published assets were produced and attested by run `32573676370`, then independently reverified before explicit-repository publication.
-- Publication-only root cause: no-checkout job made `gh release create --verify-tag` unable to infer the repository.
-- Follow-up branch: `codex/v0.10.0-rc.3-release-followup`.
-- Workflow-fix implementation commit: `c4c45ceaced6012bb9631f1dd09354865e00df52`.
-- Fix: publisher passes `--repo "${GITHUB_REPOSITORY}"`; regression test requires it.
-- Verification: focused 2/2 and canonical 1,103/1,101/0/2 passed.
-- Next gate: catalog/handoff seal, protected PR, canonical-main verification, then `/conclude`.
+- Protected-main tag commit: `dc0f4094ce0e178757984e363836d05cfcc0037d`.
+- Exact published assets remain independently verified and were not rebuilt or substituted.
+- Publication automation repair: PR #13 merged at `d17bc7dada964c3b669c29407cdabfbfe37c2651`.
+- Canonical-main verify `32592205364`, CodeQL `32592205360`, and scorecard `32592205344`: passed.
+- ProjectMemory `/conclude`: passed and promoted baseline 1.0.3.
+- Result baseline: `sha256:adf6829dce8a18b27bad2b30c7d4c18f3c557d052a103c96d408847ff0cae6ac`.
+- CurrentSynopsis: `sha256:e2cf40d9bc18ef8f057decf3e633364a792f3622a4aafdccc4957a3668170520`.
+- Fresh-task load order: synopsis, baseline, traceability context; replay provider calls: zero.
+- Active branch: `codex/v0.10.0-rc.3-release-conclusion`.
+- Next gate: seal and promote the conclusion artifacts, then start ReleasePreparation through RequirementsGathering.
 
 Supported scope remains GitHub source plus an installable deterministic library operated through ChatGPT/Codex Desktop on Windows.
