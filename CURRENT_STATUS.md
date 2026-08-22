@@ -34,12 +34,13 @@ SystemVerification                                        verified
 BusinessAcceptance                                        accepted
 RoadmapManagement -> RoadmapGate                           next initiative promoted
 ProjectMemory /conclude                                   concluded
-Protected-main provenance reconciliation                  focused verification passed; full release gates pending
+Protected-main provenance reconciliation                  authoritative local release check passed; remote promotion pending
 GitHub source prerelease                                   pending protected-main promotion and tag
 
 ## Exact evidence
 
 - Protected-main EP-001 promotion: `a9cb936f894a5ddbb86d26b31a5b3b4a61e2a9f4`
+- Provenance repair implementation/evidence commit: `4e67574f2811c943c77facca05bccf1ed2bb671d`
 - Provenance repair approval: `sha256:a10e707a22371ad39ba6ffd0d1099e7df2fb7434187bd1df6040d70f7770df58`
 - Provenance repair integration: `sha256:9933489fe89d7c3438fee2bc407b6fa62c57a89bce5657a4fa8a485dc4d2d6cf`
 - Release evidence: `sha256:b3b761206b392858373d2e29ac14334f0ae0703fe5cb6c7661799f4dfdc6281e`
@@ -55,6 +56,6 @@ GitHub source prerelease                                   pending protected-mai
 
 ## Promotion rule and next work
 
-The reconciliation candidate must pass the authoritative local release check, protected PR checks, and the canonical-main matrix. Only then may exact tag `v0.10.0-rc.3` trigger the GitHub source prerelease. A failure returns to diagnose -> fix -> verify -> integrate; it is never waived.
+The immutable reconciliation implementation/evidence commit `4e67574f2811c943c77facca05bccf1ed2bb671d` passed the authoritative local release check: 1,103 tests (1,101 passed, 0 failed, 2 intentional skips), 10,075 exact repository digests, 390 package paths, and 193 installed exports. The status/catalog seal must repeat that gate over its exact final tree; protected PR and canonical-main checks remain mandatory before exact tag `v0.10.0-rc.3` may trigger the GitHub source prerelease. A failure returns to diagnose -> fix -> verify -> integrate; it is never waived.
 
 The next product increment is ReleasePreparation and ReleaseVerification. It must begin by loading ProjectMemory, then run RequirementsGathering and the complete released DevRelay circuit. This candidate does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or non-Windows support.
