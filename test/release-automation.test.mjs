@@ -59,5 +59,9 @@ test("automation has bounded permissions and never publishes to npm", () => {
   assert.match(release, /sha256sum/u);
   assert.match(release, /attest-build-provenance/u);
   assert.match(release, /gh release create/u);
+  assert.match(
+    release,
+    /gh release create[^\n]+--repo "\$\{GITHUB_REPOSITORY\}"/u,
+  );
   assert.doesNotMatch(release, /registry-url/u);
 });

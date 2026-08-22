@@ -100,4 +100,4 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" release-assets/* --verify-tag --prerelease --generate-notes --title "DevRelay v${{ needs.build-verify-release.outputs.package-version }}"
+        run: gh release create "${GITHUB_REF_NAME}" release-assets/* --repo "${GITHUB_REPOSITORY}" --verify-tag --prerelease --generate-notes --title "DevRelay v${{ needs.build-verify-release.outputs.package-version }}"
