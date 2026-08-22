@@ -2,7 +2,7 @@
 
 Outcome: **pass**
 Package: `devrelay@0.10.0-rc.3`
-Tarball: `sha256:f6a11a5d2ee26990211d10475c8e8ad5d779c6796e0e7f3370299675879d1338`
+Tarball: `sha256:cb07c82cfa884a89d6180d9c34ae0bfe18918554cf53ad41b3c0156be4b8d460`
 
 The clean consumer installed the packed DevRelay library offline, imported `devrelay/advanced`, observed a real Windows and Node host, remediated a controlled project-local gap under exact approval, consumed one single-use readiness receipt, detected induced drift, blocked execution, recovered, reverified, and resumed.
 

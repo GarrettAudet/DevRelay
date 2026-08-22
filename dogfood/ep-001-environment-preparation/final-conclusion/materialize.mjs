@@ -25,7 +25,7 @@ const sv = raw("dogfood/ep-001-environment-preparation/final-acceptance/12-syste
 const ba = raw("dogfood/ep-001-environment-preparation/final-acceptance/26-business-acceptance-record.json", final.businessAcceptance.artifactId, "https://devrelay.dev/artifacts/business-acceptance-record/v1");
 const proof = raw("dogfood/ep-001-environment-preparation/final-acceptance/30-final-acceptance-proof.json", "DEVRELAY-EP001-SOURCE-RELEASE-ACCEPTANCE-001", "https://devrelay.dev/evidence/source-release-acceptance/v1");
 const installed = raw("dogfood/ep-001-environment-preparation/windows-e2e/installed-package-verification-receipt.json", "EP001-WINDOWS-INSTALLED-PACKAGE-VERIFICATION", "https://devrelay.dev/evidence/windows-installed-package/v1");
-const repair = raw("dogfood/ep-001-environment-preparation/integration-system-fix-2/integration-summary.json", "EP001-BASELINE-ASSERTION-REPAIR-INTEGRATION", "https://devrelay.dev/evidence/change-integration/v1");
+const repair = raw("dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json", "EP001-CODEQL-REPAIR-INTEGRATION", "https://devrelay.dev/evidence/change-integration/v1");
 const roadmapSummary = json("dogfood/ep-001-environment-preparation/roadmap-resolution/roadmap-resolution-summary.json");
 assert.equal(roadmapSummary.outcome, "promoted");
 const roadmapProof = raw("dogfood/ep-001-environment-preparation/roadmap-resolution/roadmap-gate-promotion-proof.json", roadmapSummary.gateProof.artifactId, "https://devrelay.dev/evidence/roadmap-gate-promotion/v1");

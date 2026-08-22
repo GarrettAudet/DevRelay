@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 import {
@@ -145,7 +145,12 @@ const effectAdapter = {
   version: "1.0.0",
   async apply(_effect, { currentFingerprint }) {
     effectCalls += 1;
-    const before = existsSync(configurationPath) ? readFileSync(configurationPath) : undefined;
+    let before;
+    try {
+      before = readFileSync(configurationPath);
+    } catch (error) {
+      if (error?.code !== 'ENOENT') throw error;
+    }
     const bytes = Buffer.from(`${canonicalJson({ prepared: true, profileSet: profileSet.contentDigest })}\n`, "utf8");
     mkdirSync(dirname(configurationPath), { recursive: true });
     writeFileSync(configurationPath, bytes);

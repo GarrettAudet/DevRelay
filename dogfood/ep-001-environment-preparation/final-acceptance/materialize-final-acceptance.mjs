@@ -142,9 +142,9 @@ function findAppliedUpdates(head) {
 
 function restoreGraph() {
   const graphPath =
-    "dogfood/ep-001-environment-preparation/integration-system-fix-2/WI-EP-REGRESSION-PERFORMANCE/traceability-graph-snapshot.json";
+    "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/WI-EP-WINDOWS-E2E/traceability-graph-snapshot.json";
   const graphSummary = readJson(
-    "dogfood/ep-001-environment-preparation/integration-system-fix-2/integration-summary.json",
+    "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json",
   );
   const value = readJson(graphPath);
   const bytes = canonicalBytes(value);
@@ -211,10 +211,10 @@ const assignment = loadedRaw(
   "application/vnd.devrelay.specialist-assignment-baseline+json",
 );
 const integrationSummary = readJson(
-  "dogfood/ep-001-environment-preparation/integration-system-fix-2/integration-summary.json",
+  "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json",
 );
 const implementationCommit = integrationSummary.finalCommit;
-assert.equal(implementationCommit, "2fd80f996fe187182c622b38f1d769f18506b7fc");
+assert.equal(implementationCommit, "b9adbeaa68b24725b8d8dad611e9735bac277791");
 const previousAcceptanceBytes = readBytes(
   "dogfood/pm-001-project-memory/final-acceptance/business-acceptance-record.json",
 );
@@ -265,9 +265,21 @@ const baselineRepairIntegrationBytes = readBytes(
   "dogfood/ep-001-environment-preparation/integration-system-fix-2/integration-summary.json",
 );
 const baselineRepairIntegration = JSON.parse(baselineRepairIntegrationBytes);
-assert.equal(baselineRepairIntegration.finalCommit, implementationCommit);
+assert.equal(baselineRepairIntegration.finalCommit, "2fd80f996fe187182c622b38f1d769f18506b7fc");
 assert.equal(baselineRepairIntegration.results[0].outcome, "integrated");
 assert.equal(baselineRepairIntegration.results[0].replayAdapterCalls, 0);
+const securityRepairApprovalBytes = readBytes(
+  "dogfood/ep-001-environment-preparation/verification-release-security-fix-1/WI-EP-WINDOWS-E2E/gate-approval.json",
+);
+const securityRepairApproval = JSON.parse(securityRepairApprovalBytes);
+assert.equal(securityRepairApproval.decision, "approved");
+const securityRepairIntegrationBytes = readBytes(
+  "dogfood/ep-001-environment-preparation/integration-release-security-fix-1/integration-summary.json",
+);
+const securityRepairIntegration = JSON.parse(securityRepairIntegrationBytes);
+assert.equal(securityRepairIntegration.finalCommit, implementationCommit);
+assert.equal(securityRepairIntegration.results[0].outcome, "integrated");
+assert.equal(securityRepairIntegration.results[0].replayAdapterCalls, 0);
 const releaseEvidenceValue = seal(
   {
     apiVersion: API,
@@ -310,6 +322,14 @@ const releaseEvidenceValue = seal(
       baselineAssertionRepairIntegration: ref(
         baselineRepairIntegration.kind,
         sha256Digest(baselineRepairIntegrationBytes),
+      ),
+      codeScanningRepairApproval: ref(
+        securityRepairApproval.approvalId,
+        securityRepairApproval.approvalDigest,
+      ),
+      codeScanningRepairIntegration: ref(
+        securityRepairIntegration.kind,
+        sha256Digest(securityRepairIntegrationBytes),
       ),
     },
     package: {
@@ -361,6 +381,7 @@ const integrationSources = [
   { integration: "dogfood/ep-001-environment-preparation/integration-frontier-7", verification: "dogfood/ep-001-environment-preparation/verification-frontier-7" },
   { integration: "dogfood/ep-001-environment-preparation/integration-system-fix-1", verification: "dogfood/ep-001-environment-preparation/verification-system-fix-1" },
   { integration: "dogfood/ep-001-environment-preparation/integration-system-fix-2", verification: "dogfood/ep-001-environment-preparation/verification-system-fix-2" },
+  { integration: "dogfood/ep-001-environment-preparation/integration-release-security-fix-1", verification: "dogfood/ep-001-environment-preparation/verification-release-security-fix-1" },
 ];
 const recordByWorkItem = new Map();
 const completionByWorkItem = new Map();
