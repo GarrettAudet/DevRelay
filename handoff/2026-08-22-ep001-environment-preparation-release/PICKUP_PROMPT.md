@@ -1,7 +1,9 @@
 # Pickup prompt
 
-Continue the DevRelay `v0.10.0-rc.3` release-automation follow-up from `codex/v0.10.0-rc.3-release-followup`.
+Continue DevRelay from `codex/v0.10.0-rc.3-release-conclusion`.
 
-Read `project/CurrentSynopsis.md`, `project/project-memory-baseline.json`, `CURRENT_STATUS.md`, then this handoff's `CURRENT_STATE.md`, `EVIDENCE_INDEX.md`, and `NEXT_ACTIONS.md`.
+Read `project/CurrentSynopsis.md` first, then `project/project-memory-baseline.json`, `CURRENT_STATUS.md`, and this handoff package.
 
-The public prerelease already exists and its exact workflow-produced assets are independently verified. Do not rebuild or replace them. The remaining bounded work is to promote implementation commit `c4c45ceaced6012bb9631f1dd09354865e00df52`, which makes repository identity explicit in the no-checkout publication job and locks that behavior with a regression assertion. Resume with catalog sealing, protected remote checks, canonical-main verification, and `/conclude`.
+The public `v0.10.0-rc.3` release exists, its exact assets are verified, the publication automation fix is integrated at protected-main commit `d17bc7dada964c3b669c29407cdabfbfe37c2651`, and canonical verify, CodeQL, and scorecard all passed. ProjectMemory `/conclude` promoted baseline 1.0.3 and retained ReleasePreparation as the next action.
+
+Resume by sealing and promoting the conclusion artifacts. After canonical main is green, start ReleasePreparation through RequirementsGathering and the full released DevRelay circuit. Do not rebuild or replace the published release assets.
