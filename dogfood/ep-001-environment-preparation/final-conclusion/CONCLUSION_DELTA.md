@@ -5,8 +5,8 @@
 - Replace: `MEM-DEVRELAY-NEXT` -> `MEM-DEVRELAY-NEXT-AFTER-EP001`
 - Retain: all other active project-memory records
 - Reject: none
-- Result baseline: `sha256:b4638fec23bfa2ed16b494206c9582e940e6ba28ef988f5323510a2499f09fa3`
-- Synopsis: `sha256:24b88f71d88361f5f0f15e7c4501f4733ef94b3e6d4bf776ef5690d7da91a43d`
-- Graph checkpoint: `sha256:84752230dc60146a70f17b86aba62306040bf670e16a776ae0ec559cb8cc2796`
+- Result baseline: `sha256:cdf7f3672a461a736773f7e82c554d532ab2209ab466e8dba65ee6061cdb2546`
+- Synopsis: `sha256:2ea64c1be6a86093c691f5fe248f2732788597de206a1725f073168a1b47bb95`
+- Graph checkpoint: `sha256:78ebf1ae09669400a7441c5b0e2b0ddabfc24780f3103083bf1af31cdd90582f`
 - Fresh-task load order: current-synopsis -> project-memory-baseline -> traceability-context
 - Replay provider calls: 0

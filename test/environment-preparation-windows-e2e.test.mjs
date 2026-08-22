@@ -15,7 +15,14 @@ const bytes = (name) => readFileSync(resolve(root, name));
 const json = (name) => JSON.parse(bytes(name));
 const summary = json("windows-e2e-summary.json");
 const receipt = json("installed-package-verification-receipt.json");
-const scenario = json("installed-scenario-receipt.json");
+const scenario = json('installed-scenario-receipt.json');
+const installedScenarioSource = bytes('installed-scenario.mjs').toString('utf8');
+
+test('EP-001 optional configuration read is race-safe and fails closed on non-ENOENT errors', () => {
+  assert.equal(installedScenarioSource.includes('existsSync(configurationPath)'), false);
+  assert.equal(installedScenarioSource.includes("before = readFileSync(configurationPath);"), true);
+  assert.equal(installedScenarioSource.includes("error?.code !== 'ENOENT'"), true);
+});
 
 test("EP-001 clean Windows consumer imports the packed library and completes the environment circuit", () => {
   assert.equal(summary.kind, "Ep001InstalledPackageVerificationReceipt");
