@@ -25,16 +25,17 @@ ContractGeneration -> ContractGate                        complete
 WorkBreakdown -> WorkBreakdownGate                        complete
 WorkDependencyAnalysis -> WorkDependencyGate              complete
 SpecialistAssignment -> SpecialistAssignmentGate          complete
-EnvironmentPreparation / EnvironmentVerificationGate      ready
+EnvironmentPreparation / EnvironmentVerificationGate      complete
 WorkExecution / WorkItemVerification / ChangeIntegration  complete (9 items + 2 repair retries)
 SystemVerification                                        verified
 BusinessAcceptance                                        accepted
 RoadmapManagement -> RoadmapGate                           next initiative promoted
 ProjectMemory /conclude                                   concluded
-Evidence seal and protected-main promotion                release catalog/check and remote gates pending
+Evidence seal and protected-main promotion                implementation/evidence commit sealed; final catalog seal and remote gates pending
 
 ## Exact evidence
 
+- Verified implementation/evidence commit: dba17c64249cc315bd0387acb95c3d2ce44125e9
 - Integrated implementation lineage: 2fd80f996fe187182c622b38f1d769f18506b7fc
 - Release evidence: sha256:b0f7113aa77a8b164142a483c6fd1d12de315e03ee6992b34a4dc0d6aa30d366
 - SystemVerification: sha256:445c88ff354ae790c985e516ffb254df468d5eb94b809aa93dd9bf898144644b
@@ -49,6 +50,6 @@ Evidence seal and protected-main promotion                release catalog/check 
 
 ## Promotion rule and next work
 
-Canonical branch-tip verification is green: 1,102 tests, 1,100 passed, zero failed, and two intentional skips. The clean installed-package scenario was regenerated from those exact bytes. Regenerate the release catalog, run the release check, then create the evidence-sealing commit and push the branch. Protected main remains the merge authority.
+Implementation/evidence commit `dba17c64249cc315bd0387acb95c3d2ce44125e9` passed the authoritative release check: static verification, 1,102 tests (1,100 passed, zero failed, two intentional skips), exact validation of 9,966 repository digests and 390 npm paths, and clean installed-package verification of 193 export targets. Regenerate the catalog for these status-bound sealing bytes, rerun the release check, create the final seal commit, and push the branch. Protected main remains the merge authority.
 
 The next product increment is ReleasePreparation and ReleaseVerification. It must begin by loading ProjectMemory, then run RequirementsGathering and the complete currently released DevRelay circuit. This candidate does not claim public npm publication, a one-click Desktop plug-in, a hosted backend, or non-Windows support.
