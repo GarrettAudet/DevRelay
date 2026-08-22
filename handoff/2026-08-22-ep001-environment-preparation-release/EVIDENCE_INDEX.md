@@ -1,6 +1,8 @@
 # Evidence index
 
 - Protected-main promotion: commit `a9cb936f894a5ddbb86d26b31a5b3b4a61e2a9f4`; PR #11.
+- Provenance repair implementation/evidence commit: `4e67574f2811c943c77facca05bccf1ed2bb671d`.
+- Local release check: 1,103 tests; 1,101 passed; 0 failed; 2 skipped; 10,075 catalog digests; 390 package paths; 193 exports.
 - Canonical-main failed verification: GitHub Actions run `32570160277`.
 - Provenance repair execution: `dogfood/ep-001-environment-preparation/execution-release-provenance-fix-1/`.
 - Provenance repair verification: `dogfood/ep-001-environment-preparation/verification-release-provenance-fix-1/`.

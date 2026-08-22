@@ -14,7 +14,9 @@
 - BusinessAcceptance: accepted; 20 objectives, 28 success metrics, and 55 business-scope identities.
 - Traceability: acceptance horizon, revision 35, zero blocking diagnostics.
 - ProjectMemory: `/conclude` passed; fresh-task replay made zero provider calls.
-- Next gate: authoritative full release check on the exact reconciliation tree.
+- Immutable implementation/evidence commit: `4e67574f2811c943c77facca05bccf1ed2bb671d`.
+- Authoritative local release check: 1,103 tests; 1,101 passed; 0 failed; 2 intentional skips; 10,075 catalog digests; 390 package paths; 193 installed exports.
+- Next gate: exact status/catalog reseal and repeated release check.
 - Final promotion: protected PR -> canonical-main checks -> tag `v0.10.0-rc.3` -> GitHub source prerelease.
 
 The supported boundary is GitHub source plus an installable deterministic library operated through ChatGPT/Codex Desktop on Windows. Exclusions remain public npm publication, one-click Desktop installation, a hosted backend, and non-Windows hosts.
