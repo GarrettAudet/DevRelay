@@ -3,7 +3,7 @@
 Last reconciled: 2026-08-22 MDT
 Protected branch: main
 Released version: 0.10.0-rc.3
-Active branch: codex/v0.10.0-rc.3-release-conclusion
+Canonical handoff baseline: main @ 57459b6d10da277c85e1396343cdb989fd5a9e54
 Release boundary: GitHub source/installable library operated end-to-end through ChatGPT/Codex Desktop on Windows
 
 ## Status
@@ -13,6 +13,8 @@ DevRelay `v0.10.0-rc.3` is published as a public GitHub prerelease from protecte
 The publication automation defect is fixed and integrated through PR #13 at protected-main commit `d17bc7dada964c3b669c29407cdabfbfe37c2651`. Canonical-main verify run `32592205364`, CodeQL run `32592205360`, and scorecard run `32592205344` all passed. The publisher now supplies explicit repository identity in the no-checkout job, with regression coverage preventing ambient-Git inference from returning.
 
 ProjectMemory `/conclude` promoted baseline 1.0.3 (`sha256:adf6829dce8a18b27bad2b30c7d4c18f3c557d052a103c96d408847ff0cae6ac`), added the exact published-release status, retained ReleasePreparation as the approved next action, regenerated `CurrentSynopsis.md`, and proved fresh-task first-load plus zero-call replay.
+
+The conclusion package was integrated through PR #14 at protected-main commit `57459b6d10da277c85e1396343cdb989fd5a9e54`. Canonical-main verify run `32594735309`, CodeQL run `32594735306`, and scorecard run `32594735329` all passed. There are no remaining blockers for the scoped `v0.10.0-rc.3` GitHub source/library release.
 
 ## Lifecycle
 
@@ -26,6 +28,8 @@ ChangeIntegration                                         PR #13 merged at d17bc
 SystemVerification                                        canonical main verify, CodeQL, and scorecard passed
 BusinessAcceptance                                        controlled release remains accepted
 ProjectMemory /conclude                                   passed; baseline 1.0.3 and fresh-task replay verified
+Conclusion integration                                   PR #14 merged at 57459b6d10da277c85e1396343cdb989fd5a9e54
+Canonical conclusion verification                        verify, CodeQL, and scorecard passed
 
 ## Published evidence
 
@@ -39,9 +43,11 @@ ProjectMemory /conclude                                   passed; baseline 1.0.3
 - CycloneDX SBOM: `sha256:465aa7a123569cea58a772029b03e0e53b8f0ecc21f7627950e791345cf5dc66`
 - SHA-256 ledger: `sha256:ce59ca6e6a4a7b02c1d6b245e967e3b9993e4075e99cd0168ac73d4887d8fb73`
 - ProjectMemory conclude receipt: `sha256:83e841b9b966fdddce30d6d1534f3b3cfde64f87480ce3d03e287d550567e209`
+- Conclusion promotion: PR #14, protected-main commit `57459b6d10da277c85e1396343cdb989fd5a9e54`
+- Conclusion canonical-main verify / CodeQL / scorecard: `32594735309` / `32594735306` / `32594735329`
 
-## Next gate
+## Next product increment
 
-Seal and promote the ProjectMemory 1.0.3 conclusion through protected main. After canonical verification, begin ReleasePreparation and ReleaseVerification through RequirementsGathering and the full released circuit.
+Begin the kept `ReleasePreparation and ReleaseVerification` roadmap initiative (`RI-98EA0256A27DEFF2`) through a visible RequirementsGathering interview. The roadmap decision prioritizes the initiative but does not replace RequirementsGate closure or authorize implementation by itself. After requirements promotion, run the full released DevRelay circuit and require accepted EnvironmentPreparation readiness receipts before execution.
 
 This release does not claim public npm publication, one-click Desktop installation, a hosted backend, or non-Windows support.
