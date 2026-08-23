@@ -11,6 +11,10 @@
 - ProjectMemory result baseline: `sha256:adf6829dce8a18b27bad2b30c7d4c18f3c557d052a103c96d408847ff0cae6ac`.
 - ProjectMemory conclude receipt: `sha256:83e841b9b966fdddce30d6d1534f3b3cfde64f87480ce3d03e287d550567e209`.
 - Fresh-task replay: passed with zero provider calls.
+- ProjectMemory conclusion promotion: PR #14, protected-main commit `57459b6d10da277c85e1396343cdb989fd5a9e54`.
+- Conclusion canonical-main verify: run `32594735309`, passed.
+- Conclusion canonical-main CodeQL: run `32594735306`, passed.
+- Conclusion canonical-main scorecard: run `32594735329`, passed.
 
 Published asset digests:
 
