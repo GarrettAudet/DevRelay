@@ -3,12 +3,16 @@
 DevRelay is a small deterministic runner for composable software-engineering
 Modules with a Core-owned lifecycle traceability sidecar.
 
-For the reconciled working-tree checkpoint, active Gate, module maturity,
-promotion blockers, and next action, see [CURRENT_STATUS.md](CURRENT_STATUS.md).
-The ordered release, durable-host, and ChatGPT Desktop integration work is in
-[Roadmap.md](Roadmap.md).
-For a self-contained implementation-owner pickup, see
-[handoff/2026-08-22-ep001-environment-preparation-release/README.md](handoff/2026-08-22-ep001-environment-preparation-release/README.md).
+## Current status and pickup
+
+Use these documents in order when inspecting or resuming DevRelay:
+
+- **Current status:** [CURRENT_STATUS.md](CURRENT_STATUS.md) records the canonical release state, lifecycle position, evidence, blockers, and next product increment.
+- **Handoff overview:** [handoff/2026-08-22-ep001-environment-preparation-release/README.md](handoff/2026-08-22-ep001-environment-preparation-release/README.md) summarizes the completed release and the exact pickup boundary.
+- **Exact next actions:** [handoff/2026-08-22-ep001-environment-preparation-release/NEXT_ACTIONS.md](handoff/2026-08-22-ep001-environment-preparation-release/NEXT_ACTIONS.md) gives the ordered, gate-by-gate work required next.
+- **Pickup prompt:** [handoff/2026-08-22-ep001-environment-preparation-release/PICKUP_PROMPT.md](handoff/2026-08-22-ep001-environment-preparation-release/PICKUP_PROMPT.md) is the self-contained prompt to give the next ChatGPT/Codex Desktop task.
+- **Roadmap:** [Roadmap.md](Roadmap.md) contains the approved, prioritized product initiatives.
+
 This status page is a human-readable projection; digest-bound lifecycle
 artifacts and Gate records remain authoritative.
 
