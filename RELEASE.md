@@ -10,7 +10,7 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting
 `roadmap-management@0.1.0`, `project-memory@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
-open-source preview, version `0.10.0-rc.3`. The source package retains `1.5.0` as the compatibility default and adds
+open-source release candidate, version `0.11.0-rc.1`. The source package retains `1.5.0` as the compatibility default and adds
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
@@ -69,6 +69,7 @@ exact accepted GitHub source.
   verification traceability without BusinessAcceptance authority.
 - RoadmapManagement deterministic triage, review, reprioritization, exact weighted scoring, a human-owned Gate, structured baseline, concise projection, and trusted containment traceability.
 - Mandatory DevRelaySessionBootstrap for every fresh configured ChatGPT Desktop task on Windows, with exact context receipts and next-Module-boundary refresh.
+- A validated, deliberately installed `devrelay-desktop` plug-in with isolated dependency-frontier task orchestration, durable worktree leases, independent adversarial review policy, restart recovery, operator projection, and repository-scoped ProjectMemory lifecycle hooks. Hook trust remains an explicit user action and the plug-in has no lifecycle authority.
 - BusinessAcceptance exhaustive technical coverage, business objective/metric/scope
   evaluation, exact owner approval, zero-call replay, accepted-record authority,
   and forward-only acceptance traceability.

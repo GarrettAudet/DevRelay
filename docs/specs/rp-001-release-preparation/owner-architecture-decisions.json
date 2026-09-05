@@ -1,0 +1,42 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "OwnerArchitectureDecisionSet",
+  "decisionSetId": "owner-architecture-decisions-rp-001-release-preparation-v1",
+  "scope": "RP-001 ReleasePreparation and ReleaseVerification",
+  "status": "approved",
+  "decisions": [
+    {
+      "decisionId": "RP-ARCH-001",
+      "decision": "ReleasePreparation is conditional after SystemVerification, while ReleaseVerificationGate remains Core-owned and separate before BusinessAcceptance."
+    },
+    {
+      "decisionId": "RP-ARCH-002",
+      "decision": "One immutable candidate identity binds exact source, approved baselines, version, policy, toolchain, configuration, owner intent, and current environment readiness."
+    },
+    {
+      "decisionId": "RP-ARCH-003",
+      "decision": "Native Node and Windows candidate capabilities ship behind provider-neutral materialize, inspect, verify, attest, and prerequisite-probe ports; optional adapters remain bounded by proven maturity."
+    },
+    {
+      "decisionId": "RP-ARCH-004",
+      "decision": "Core checkpoints exact prepared candidate bytes before progression, and exact replay reuses them with zero packaging, download, signing, upload, tag, publication, or branch effects."
+    },
+    {
+      "decisionId": "RP-ARCH-005",
+      "decision": "Verification reloads stored candidate bytes and evaluates every obligation under one versioned release and supply-chain policy; rebuilds and adapter self-certification are invalid."
+    },
+    {
+      "decisionId": "RP-ARCH-006",
+      "decision": "Release execution is offline and project-local by default and has no implicit credential, tag, publication, deployment, hosted-release, or protected-main authority."
+    },
+    {
+      "decisionId": "RP-ARCH-007",
+      "decision": "Trusted contributors derive forward-only candidate and approved release traceability from validated artifacts; adapters remain graph-blind."
+    }
+  ],
+  "approval": {
+    "actor": "Garrett Audet",
+    "statement": "Approve all",
+    "recordedIn": "DevRelay ChatGPT Desktop task"
+  }
+}

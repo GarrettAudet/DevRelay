@@ -39,9 +39,10 @@ Adapter maturity must be stated precisely:
   a specific live execution record proves otherwise;
 - no implicit model, provider, command, adapter, or network operation exists.
 
-The supported `0.10.0-rc.3` release boundary is GitHub source plus a
-deterministic installable tarball operated through ChatGPT Desktop on Windows.
-Do not claim public npm publication, a one-click Desktop plug-in, a hosted
+The supported `0.11.0-rc.1` candidate boundary is GitHub source plus a
+deterministic installable tarball and a deliberately installed, validated
+Desktop plug-in operated through ChatGPT Desktop on Windows. Do not claim
+public npm publication, one-click managed plug-in distribution, a hosted
 backend, or live upstream interoperability from fixture evidence.
 
 ## Invariants

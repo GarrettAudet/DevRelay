@@ -9,6 +9,7 @@ import {
   TRACEABILITY_EDGE_KINDS_V1_1,
   TRACEABILITY_EDGE_KINDS_V1_6,
   TRACEABILITY_EDGE_KINDS_V1_7,
+  TRACEABILITY_EDGE_KINDS_V1_8,
   TRACEABILITY_GRAPH_MEDIA_TYPE,
   TRACEABILITY_GRAPH_SCHEMA,
   TRACEABILITY_HORIZONS,
@@ -20,10 +21,12 @@ import {
   TRACEABILITY_NODE_KINDS,
   TRACEABILITY_NODE_KINDS_V1_6,
   TRACEABILITY_NODE_KINDS_V1_7,
+  TRACEABILITY_NODE_KINDS_V1_8,
   TRACEABILITY_VOCABULARY,
   TRACEABILITY_VOCABULARY_V1_1,
   TRACEABILITY_VOCABULARY_V1_6,
   TRACEABILITY_VOCABULARY_V1_7,
+  TRACEABILITY_VOCABULARY_V1_8,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityDiagnosticId,
@@ -1768,14 +1771,18 @@ export function createTraceabilityGraphService({
     vocabulary.id === TRACEABILITY_VOCABULARY_V1_7.id &&
     vocabulary.version === TRACEABILITY_VOCABULARY_V1_7.version &&
     vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_7.contractDigest;
+  const usesVocabularyV1_8 =
+    vocabulary.id === TRACEABILITY_VOCABULARY_V1_8.id &&
+    vocabulary.version === TRACEABILITY_VOCABULARY_V1_8.version &&
+    vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_8.contractDigest;
   const usesVocabularyV1_6 =
     vocabulary.id === TRACEABILITY_VOCABULARY_V1_6.id &&
     vocabulary.version === TRACEABILITY_VOCABULARY_V1_6.version &&
     vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_6.contractDigest;
   const registered = normalizeContributors(
     contributors,
-    new Set(usesVocabularyV1_7 ? TRACEABILITY_NODE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_NODE_KINDS_V1_6 : TRACEABILITY_NODE_KINDS),
-    new Set(usesVocabularyV1_7 ? TRACEABILITY_EDGE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_EDGE_KINDS_V1_6 : TRACEABILITY_EDGE_KINDS),
+    new Set(usesVocabularyV1_8 ? TRACEABILITY_NODE_KINDS_V1_8 : usesVocabularyV1_7 ? TRACEABILITY_NODE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_NODE_KINDS_V1_6 : TRACEABILITY_NODE_KINDS),
+    new Set(usesVocabularyV1_8 ? TRACEABILITY_EDGE_KINDS_V1_8 : usesVocabularyV1_7 ? TRACEABILITY_EDGE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_EDGE_KINDS_V1_6 : TRACEABILITY_EDGE_KINDS),
   );
   const initialSnapshot = {
     apiVersion: "devrelay.dev/v1alpha1",

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.0-rc.1 - 2026-09-06
+
+### Added
+
+- Added deterministic Desktop frontier orchestration, exact provider-neutral task plans and receipts, durable restart-safe Git worktree leases, policy-driven independent adversarial review, merge-readiness evaluation, and a read-only operator snapshot.
+- Added the validated `devrelay-desktop` ChatGPT Desktop plug-in with an orchestration skill and trusted `SessionStart`, `Stop`, `Interrupt`, and `SessionEnd` ProjectMemory hooks.
+- Added automatic repository-scoped ProjectMemory bootstrap, checkpoint, candidate conclusion, fresh-task recovery, and exact `ConcludeReceipt` closure without granting hooks semantic-memory promotion authority.
+- Added explicit `devrelay/desktop/*` exports and the `desktop-orchestration-artifacts` JSON Schema contract.
+
+### Verification
+
+- Added focused conformance for dependency and concurrency safety, transition and identity substitution, restart recovery, worktree isolation and cleanup, reviewer independence, conflict escalation, operator determinism, plug-in validation, unrelated-chat isolation, and cross-task memory recovery.
+
 ## 0.10.0-rc.3 - 2026-08-15
 
 ### Added
@@ -54,7 +67,7 @@ All notable DevRelay source releases are recorded here. Module versions are
 immutable once released; a semantic contract change requires a new module
 version.
 
-## Unreleased
+## Earlier unreleased changes
 
 - Added `specialist-assignment@2.0.0` with checkpoint-only replay authority at
   promotion, exact content-addressed owner approval, and adversarial rejection

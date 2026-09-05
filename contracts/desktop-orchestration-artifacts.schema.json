@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/desktop-orchestration-artifacts.schema.json",
+  "title": "DevRelay Desktop orchestration artifacts",
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "identity": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "workItem": {
+      "type": "object",
+      "required": ["id", "dependencies"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identity" },
+        "dependencies": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identity" } }
+      },
+      "additionalProperties": true
+    },
+    "DesktopOrchestrationPlan": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "runId", "projectId", "horizonDigest", "startingRevision", "maxConcurrency", "workItems", "readinessAuthority", "planDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopOrchestrationPlan" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "projectId": { "$ref": "#/$defs/identity" },
+        "horizonDigest": { "$ref": "#/$defs/digest" },
+        "startingRevision": { "$ref": "#/$defs/identity" },
+        "maxConcurrency": { "type": "integer", "minimum": 1, "maximum": 8 },
+        "workItems": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/workItem" } },
+        "readinessAuthority": { "const": "core-derived" },
+        "planDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopTaskReceipt": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "provider", "operation", "runId", "workItemId", "attemptId", "planDigest", "idempotencyKey", "taskId", "status", "observation", "authority", "receiptDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopTaskReceipt" },
+        "provider": {
+          "type": "object",
+          "required": ["id", "version"],
+          "properties": {
+            "id": { "$ref": "#/$defs/identity" },
+            "version": { "$ref": "#/$defs/identity" }
+          },
+          "additionalProperties": false
+        },
+        "operation": { "enum": ["create", "inspect", "wait", "message", "handoff"] },
+        "runId": { "$ref": "#/$defs/identity" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "attemptId": { "$ref": "#/$defs/identity" },
+        "planDigest": { "$ref": "#/$defs/digest" },
+        "idempotencyKey": { "$ref": "#/$defs/digest" },
+        "taskId": { "$ref": "#/$defs/identity" },
+        "status": { "$ref": "#/$defs/identity" },
+        "observation": { "type": "object" },
+        "authority": { "const": "observation-only" },
+        "receiptDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "WorktreeLease": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "attemptId", "runId", "workItemId", "revision", "workspace", "status", "cleanupDisposition"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "WorktreeLease" },
+        "attemptId": { "$ref": "#/$defs/identity" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "revision": { "$ref": "#/$defs/identity" },
+        "workspace": { "$ref": "#/$defs/identity" },
+        "taskId": { "type": ["string", "null"] },
+        "status": { "enum": ["prepared", "active", "quarantined", "disposed"] },
+        "cleanupDisposition": { "enum": ["retain", "completed", "abandoned", "quarantined"] }
+      },
+      "additionalProperties": true
+    },
+    "DesktopOperatorSnapshot": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "runId", "planDigest", "stateVersion", "lifecycleAuthority", "work", "statusCounts", "worktrees", "memory", "blockers", "recovery", "snapshotDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopOperatorSnapshot" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "planDigest": { "$ref": "#/$defs/digest" },
+        "stateVersion": { "type": "integer", "minimum": 0 },
+        "lifecycleAuthority": { "const": "read-only-projection" },
+        "work": { "type": "array" },
+        "statusCounts": { "type": "object" },
+        "worktrees": { "type": "array" },
+        "memory": { "type": "array" },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "recovery": { "type": "string" },
+        "snapshotDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/DesktopOrchestrationPlan" },
+    { "$ref": "#/$defs/DesktopTaskReceipt" },
+    { "$ref": "#/$defs/WorktreeLease" },
+    { "$ref": "#/$defs/DesktopOperatorSnapshot" }
+  ]
+}

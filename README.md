@@ -23,7 +23,7 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.10.0-rc.3` is an Apache-2.0 open-source preview containing DevRelay Core,
+DevRelay `0.11.0-rc.1` is an Apache-2.0 open-source release candidate built on the published `0.10.0-rc.3` preview and containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
@@ -38,7 +38,9 @@ claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 The release contains Core, schemas, versioned manifests, fixtures, bounded
 adapter contracts, a small nine-operation facade, workflow profiles, a
 filesystem-backed local Windows host boundary, and a deterministic operator CLI.
-It does not contain a one-click ChatGPT Desktop plug-in or a hosted backend. The
+The next release candidate also includes a validated, deliberately installed
+ChatGPT Desktop orchestration plug-in; it is not a one-click managed distribution
+or a hosted backend. See [Desktop orchestration](docs/desktop-orchestration.md). The
 Windows Desktop facade requires a trusted fresh-task session bootstrap and passes
 its exact receipt into every public operation. Provider maturity is evidence-bound: manifests and contract conformance never imply live execution, while validated host-observed provider receipts may raise an exact binding to live-conformant maturity.
 ArchitectureDiscovery includes its deterministic offline native inventory plug-in; optional analyzers remain bounded adapter ports.
@@ -75,6 +77,10 @@ For the dynamic, human-readable run projection available to Desktop hosts, see
 [LifecycleRunReport](docs/lifecycle-run-report.md). Its ledger, ready-frontier,
 snapshot, content-policy, and Markdown renderer APIs are available from
 `devrelay/advanced`; the report remains read-only and never controls a Gate.
+
+For isolated worktree scheduling, bounded Desktop task receipts, adversarial
+review policy, restart recovery, and automatic ProjectMemory hooks, see
+[DevRelay Desktop orchestration](docs/desktop-orchestration.md).
 
 ## Library quickstart
 

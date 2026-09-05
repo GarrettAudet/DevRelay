@@ -362,6 +362,15 @@ export function createLocalHostStorage({
 
     readRun,
 
+    listRuns({ prefix = "" } = {}) {
+      ensureOpen();
+      if (typeof prefix !== "string") fail("run prefix must be a string", "DR4911");
+      const rows = prefix
+        ? database.prepare("SELECT run_id FROM runs WHERE run_id LIKE ? ORDER BY run_id").all(`${prefix}%`)
+        : database.prepare("SELECT run_id FROM runs ORDER BY run_id").all();
+      return immutable(rows.map(({ run_id: runId }) => readRun(runId)));
+    },
+
     acquireLease({ runId, owner, expectedVersion, durationMilliseconds = 30_000 } = {}) {
       ensureOpen();
       requiredText(runId, "runId");

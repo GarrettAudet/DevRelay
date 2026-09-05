@@ -1,0 +1,25 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkDependencyBaseline",
+  "baselineId": "work-dependency-do-001-v1",
+  "dependencies": {
+    "WI-DO-CONTRACTS": [],
+    "WI-DO-SCHEDULER": ["WI-DO-CONTRACTS"],
+    "WI-DO-WORKTREES": ["WI-DO-CONTRACTS"],
+    "WI-DO-TASK-ADAPTER": ["WI-DO-CONTRACTS"],
+    "WI-DO-REVIEW": ["WI-DO-CONTRACTS"],
+    "WI-DO-MEMORY": ["WI-DO-CONTRACTS"],
+    "WI-DO-PLUGIN": ["WI-DO-MEMORY", "WI-DO-TASK-ADAPTER"],
+    "WI-DO-OPERATOR-E2E": ["WI-DO-SCHEDULER", "WI-DO-WORKTREES", "WI-DO-REVIEW", "WI-DO-PLUGIN"],
+    "WI-DO-DOCS": ["WI-DO-OPERATOR-E2E"]
+  },
+  "frontiers": [
+    ["WI-DO-CONTRACTS"],
+    ["WI-DO-MEMORY", "WI-DO-REVIEW", "WI-DO-SCHEDULER", "WI-DO-TASK-ADAPTER", "WI-DO-WORKTREES"],
+    ["WI-DO-PLUGIN"],
+    ["WI-DO-OPERATOR-E2E"],
+    ["WI-DO-DOCS"]
+  ],
+  "cycleCheck": "pass",
+  "gateDecision": "approve"
+}

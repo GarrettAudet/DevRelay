@@ -1,0 +1,13 @@
+# DevRelay RP-001 ReleasePreparation and ReleaseVerification Requirements Gate approval
+
+Status: **pass**
+
+The standing owner approval was applied after exact candidate, checkpoint replay, closure, and atomic pair validation.
+
+- RequirementsGateCandidate: sha256:517db7548494989a275ddd3fb0db13008fd50a0490b0eacce0a542555bc727dd
+- RequirementsChangeSet: sha256:310ad9211e36401455f29c359e6e2603436a906a7ae35bcc93914fc0db7c8b2e
+- ProjectOverviewChangeSetDraft: sha256:f17796cc7f387d811bfdfeb96564c582296573c3be1bd2850e4ff08f13aabf16
+- Candidate ProjectOverview.md: sha256:91dc7e142cf6f6611d4e4dbb33f845fc3cf55d8ff51a91fffef7894f8a3dc8f4
+- RequirementsClosureAssessment: sha256:b46b598e7f6c78801fad16648825b0717b2840fae13bd33e27a6b4aee6b293a7
+- Terminal checkpoint: sha256:641aa1f8228e6c47f3c50b1873238822ccb7ff831d3ed7b1bb5b5964e3a47ca1
+- Approval artifact: sha256:b4d432a1899a2648a75d20eca57501ea34508b9c86f9c26fd74f8e176b26e221

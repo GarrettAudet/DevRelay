@@ -6,6 +6,7 @@ import {
   TRACEABILITY_VOCABULARY,
   TRACEABILITY_VOCABULARY_V1_5,
   TRACEABILITY_VOCABULARY_V1_6,
+  TRACEABILITY_VOCABULARY_V1_8,
 } from "../src/traceability-artifact-validator.mjs";
 import {
   createInMemoryTraceabilityStore,
@@ -251,6 +252,20 @@ test("v1.6 projects and atomically merges only forward planned-to-factual execut
   assert.equal(first.snapshot.revision, 1);
   assert.deepEqual(replay.receipt, first.receipt);
   assert.deepEqual(replay.snapshot, first.snapshot);
+
+  const upgraded = createTraceabilityGraphService({
+    graphId: "we-trace-v18",
+    projectId: "devrelay",
+    store: createInMemoryTraceabilityStore(),
+    contributors: [seedContributor(sourceLocator), workExecutionTraceabilityContributor],
+    vocabulary: TRACEABILITY_VOCABULARY_V1_8,
+  });
+  const upgradedPrepared = await upgraded.prepare({
+    ...context,
+    baseGraph: upgraded.captureBase(),
+  });
+  const upgradedMerge = await upgraded.mergePrepared(upgradedPrepared);
+  assert.equal(upgradedMerge.receipt.disposition, "merged");
 });
 
 test("substituted outputs, adapter graph claims, extra result ports, and inverse edges fail closed", async () => {

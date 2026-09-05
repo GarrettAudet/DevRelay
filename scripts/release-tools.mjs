@@ -516,6 +516,10 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
   // offline without relying on incidental registry-cache entries.
   cpSync(join(repositoryRoot, "node_modules"), join(consumer, "node_modules"), {
     recursive: true,
+    // npm creates a flat tree while pnpm links packages into its content-addressed
+    // store. Copy package contents rather than host-specific link objects so the
+    // offline consumer check works on Windows without Developer Mode privileges.
+    dereference: true,
     filter: (source) => basename(source) !== ".package-lock.json",
   });
   const install = npmInvocation([

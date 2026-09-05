@@ -1,0 +1,24 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ContractGateRecord",
+  "recordId": "contract-gate-do-001-v1",
+  "candidate": {
+    "path": "contracts/desktop-orchestration-artifacts.schema.json",
+    "contractId": "https://devrelay.dev/contracts/desktop-orchestration-artifacts.schema.json",
+    "kinds": [
+      "DesktopOrchestrationPlan",
+      "DesktopTaskReceipt",
+      "WorktreeLease",
+      "DesktopOperatorSnapshot"
+    ]
+  },
+  "compatibility": "backward-compatible",
+  "validation": {
+    "schemaCompiler": "Ajv strict draft-2020-12",
+    "canonicalDigestValidation": true,
+    "positiveAndNegativeFixtures": "test/desktop-orchestration.test.mjs"
+  },
+  "authority": "contract-gate",
+  "decision": "approve",
+  "progression": "work-breakdown"
+}
