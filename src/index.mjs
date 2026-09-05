@@ -32,6 +32,56 @@ export {
   withEnvironmentPreparationContentDigest,
 } from "./environment-preparation-artifact-validator.mjs";
 export {
+  RELEASE_PREPARATION_ARTIFACT_CONTRACTS,
+  ReleasePreparationArtifactValidationError,
+  validateReleasePreparationArtifact,
+  withReleasePreparationContentDigest,
+} from "./release-preparation-artifact-validator.mjs";
+export {
+  ReleasePreparationIdentityError,
+  deriveReleasePreparationRoute,
+  detectReleasePreparationIdentityDrift,
+  resolveReleasePreparationAttempt,
+} from "./release-preparation-identity-routing.mjs";
+export {
+  ReleasePreparationMaterializationError,
+  createDeterministicNpmTarball,
+  createInMemoryReleaseArtifactStore,
+  createInMemoryReleaseMaterializationCheckpointStore,
+  createNativeNodeWindowsReleaseHost,
+  materializeNativeReleaseCandidate,
+} from "./release-preparation-native-materializer.mjs";
+export {
+  ReleasePreparationAdapterError,
+  approveReleaseEffects,
+  assertReleaseAdapterMaturity,
+  createInMemoryReleaseAdapterCheckpointStore,
+  createReleaseAdapterCheckpointController,
+  createReleaseAdapterInvocation,
+  createReleaseEffectReview,
+  defineReleaseAdapterManifest,
+  selectReleaseAdapter,
+} from "./release-preparation-adapters.mjs";
+export {
+  RELEASE_VERIFICATION_FAMILIES,
+  ReleasePreparationVerificationError,
+  createReleaseVerificationPolicy,
+  verifyStoredReleaseCandidate,
+} from "./release-preparation-verification.mjs";
+export {
+  ReleasePreparationGateError,
+  evaluateReleaseVerificationGate,
+  renderReleaseReadinessSummary,
+} from "./release-preparation-gate.mjs";
+export {
+  createReleasePreparationCandidateTraceabilityContributor,
+  createReleaseReadinessTraceabilityContributor,
+  createReleaseTraceabilityQueryService,
+  releasePreparationCandidateTraceabilityContributor,
+  releasePreparationTraceabilityContributors,
+  releaseReadinessTraceabilityContributor,
+} from "./release-preparation-traceability-contributor.mjs";
+export {
   EnvironmentPreparationInventoryError,
   createEnvironmentInventoryCheckpointController,
   createNativeWindowsEnvironmentHost,
@@ -427,18 +477,22 @@ export {
   TRACEABILITY_EDGE_KINDS_V1_5,
   TRACEABILITY_EDGE_KINDS_V1_6,
   TRACEABILITY_EDGE_KINDS_V1_7,
+  TRACEABILITY_EDGE_KINDS_V1_8,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
   TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_7,
+  TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_8,
   TRACEABILITY_NODE_KINDS_V1_4,
   TRACEABILITY_NODE_KINDS_V1_5,
   TRACEABILITY_NODE_KINDS_V1_6,
   TRACEABILITY_NODE_KINDS_V1_7,
+  TRACEABILITY_NODE_KINDS_V1_8,
   TRACEABILITY_VOCABULARY_V1_4,
   TRACEABILITY_VOCABULARY_V1_5,
   TRACEABILITY_VOCABULARY_V1_6,
   TRACEABILITY_VOCABULARY_V1_7,
+  TRACEABILITY_VOCABULARY_V1_8,
 } from "./traceability-artifact-validator.mjs";
 export {
   workItemVerificationApprovedTraceabilityContributor,
@@ -814,6 +868,39 @@ export {
   DesktopExecutionCoordinatorError,
   createDesktopExecutionCoordinator,
 } from "./desktop-execution-coordinator.mjs";
+export {
+  DesktopOrchestrationError,
+  createDesktopOrchestrationPlan,
+  createDesktopOrchestrationRuntime,
+  deriveDesktopReadyFrontier,
+} from "./desktop-orchestration.mjs";
+export {
+  DesktopTaskAdapterError,
+  createDesktopTaskAdapter,
+  createDesktopTaskPlan,
+} from "./desktop-task-adapter.mjs";
+export {
+  DESKTOP_REVIEW_POLICY_VERSION,
+  DesktopReviewPolicyError,
+  evaluateDesktopMergeReadiness,
+  resolveDesktopReviewRequirement,
+} from "./desktop-review-policy.mjs";
+export {
+  DurableWorktreeError,
+  createDurableGitWorktreeManager,
+} from "./durable-worktree-manager.mjs";
+export {
+  createDesktopOperatorSnapshot,
+  renderDesktopOperatorSnapshot,
+} from "./desktop-operator-view.mjs";
+export {
+  DesktopMemoryJournalError,
+  createDesktopMemoryJournal,
+} from "./desktop-memory-journal.mjs";
+export {
+  DesktopOrchestrationArtifactValidationError,
+  validateDesktopOrchestrationArtifact,
+} from "./desktop-orchestration-artifact-validator.mjs";
 
 export {
   OperatorCliError,

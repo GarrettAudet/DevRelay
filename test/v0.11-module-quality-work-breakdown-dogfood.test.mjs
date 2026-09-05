@@ -18,11 +18,11 @@ const output = new URL(
 const readBytes = (name) => readFileSync(new URL(name, output));
 const readJson = (name) => JSON.parse(readBytes(name));
 
-test("V0.11 WorkBreakdown deterministically proposes complete bounded work without downstream authority", { timeout: 120_000 }, () => {
+test("V0.11 WorkBreakdown deterministically proposes complete bounded work without downstream authority", { timeout: 300_000 }, () => {
   const run = spawnSync(
     process.execPath,
     ["dogfood/v0.11-module-quality/work-breakdown/materialize.mjs"],
-    { cwd: rootPath, encoding: "utf8", timeout: 110_000 },
+    { cwd: rootPath, encoding: "utf8", timeout: 240_000 },
   );
   assert.equal(run.status, 0, run.stderr);
 

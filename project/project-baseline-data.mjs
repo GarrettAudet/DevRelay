@@ -136,6 +136,22 @@ export const V1_LIFECYCLE = Object.freeze([
       "SystemVerification validates the integrated system across functional, security, performance, operational, documentation, and other configured quality policies.",
   }),
   Object.freeze({
+    id: "SCOPE-DEV-V1-135-RELEASE-PREPARATION",
+    name: "ReleasePreparation",
+    kind: "module",
+    conditional: true,
+    statement:
+      "ReleasePreparation materializes and verifies one exact source/library candidate after SystemVerification without publication, deployment, tag, or protected-branch authority.",
+  }),
+  Object.freeze({
+    id: "SCOPE-DEV-V1-137-RELEASE-VERIFICATION-GATE",
+    name: "ReleaseVerificationGate",
+    kind: "gate",
+    conditional: false,
+    statement:
+      "ReleaseVerificationGate validates exact candidate bytes, required verification and supply-chain policy, owner release intent, and promotion evidence before BusinessAcceptance.",
+  }),
+  Object.freeze({
     id: "SCOPE-DEV-V1-140-BUSINESS-ACCEPTANCE",
     name: "BusinessAcceptanceGate",
     kind: "gate",
@@ -167,7 +183,7 @@ export const goal = Object.freeze({
     "TraceabilityGraph remains a cross-cutting Core service rather than a lifecycle stage.",
   ],
   acceptanceCriteria: [
-    "The project overview lists exactly the eighteen owner-approved V1 lifecycle components in their approved order.",
+    "The project overview lists exactly the twenty owner-approved V1 lifecycle components in their approved order.",
     "ArchitectureDiscovery and ContractGeneration are explicitly marked conditional with deterministic invocation conditions.",
     "The project overview is derived from a validated requirements candidate and promoted as an atomic RequirementsBaseline and ProjectOverviewBaseline pair.",
     "Every future downstream module invocation can receive the exact global ProjectOverviewBaseline through a declared input.",
@@ -175,7 +191,7 @@ export const goal = Object.freeze({
   ],
   assumptions: [
     "The owner-approved V1 lifecycle inventory is complete for V1.",
-    "RequirementsGate, ArchitectureGate, ContractGate, WorkBreakdownGate, WorkDependencyGate, SpecialistAssignmentGate, and BusinessAcceptanceGate are explicit owner-approved lifecycle components.",
+    "RequirementsGate, ArchitectureGate, ContractGate, WorkBreakdownGate, WorkDependencyGate, SpecialistAssignmentGate, ReleaseVerificationGate, and BusinessAcceptanceGate are explicit owner-approved lifecycle components.",
   ],
 });
 

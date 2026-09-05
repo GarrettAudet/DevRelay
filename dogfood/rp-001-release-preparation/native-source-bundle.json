@@ -1,0 +1,64 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "NativeSourceBundle",
+  "plugin": {
+    "id": "openspec",
+    "version": "0.1.0"
+  },
+  "tool": {
+    "name": "OpenSpec",
+    "version": "conversation-contract-v1"
+  },
+  "operation": "requirements.gather",
+  "sources": [
+    {
+      "role": "requirements-closure",
+      "path": "dogfood/rp-001-release-preparation/requirements-closure-assessment-approved.json",
+      "artifact": {
+        "artifactId": "requirements-closure-rp-001-release-preparation-v1",
+        "digest": "sha256:b46b598e7f6c78801fad16648825b0717b2840fae13bd33e27a6b4aee6b293a7"
+      }
+    },
+    {
+      "role": "owner-decision",
+      "path": "dogfood/rp-001-release-preparation/owner-decisions.json",
+      "artifact": {
+        "artifactId": "owner-decisions-rp-001-release-preparation-v1",
+        "digest": "sha256:112beca4fa560e32d489ca7b7065b836004a86b0badb7179880006cc01963347"
+      }
+    },
+    {
+      "role": "proposal",
+      "path": "dogfood/rp-001-release-preparation/native/openspec/proposal.md",
+      "artifact": {
+        "artifactId": "openspec-proposal-rp-001-release-preparation-v1",
+        "digest": "sha256:a4198bb5f89269ec74a0299dbf40b37bbad3d86852d4f9e7d0eef29cdc437660"
+      }
+    },
+    {
+      "role": "specification",
+      "path": "dogfood/rp-001-release-preparation/native/openspec/specs/rp-001-release-preparation/spec.md",
+      "artifact": {
+        "artifactId": "openspec-spec-rp-001-release-preparation-v1",
+        "digest": "sha256:8667ce34f841ee42d5127c0da1fb7212012bd3cdea247b2c101455e8356e8670"
+      }
+    }
+  ],
+  "canonicalOutputs": [
+    {
+      "artifactId": "requirements-change-set-rp-001-release-preparation-v1",
+      "digest": "sha256:310ad9211e36401455f29c359e6e2603436a906a7ae35bcc93914fc0db7c8b2e"
+    },
+    {
+      "artifactId": "project-overview-change-set-rp-001-release-preparation-v1",
+      "digest": "sha256:f17796cc7f387d811bfdfeb96564c582296573c3be1bd2850e4ff08f13aabf16"
+    }
+  ],
+  "normalization": {
+    "warnings": [
+      "This invocation uses the bounded OpenSpec conversation contract; no upstream OpenSpec CLI interoperability is claimed."
+    ],
+    "unmappedContent": []
+  },
+  "schema": "devrelay-requirements"
+}

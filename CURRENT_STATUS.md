@@ -1,12 +1,17 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-08-22 MDT
+Last reconciled: 2026-09-06 CST
 Protected branch: main
 Released version: 0.10.0-rc.3
+Candidate version: 0.11.0-rc.1
 Canonical handoff baseline: main @ 57459b6d10da277c85e1396343cdb989fd5a9e54
 Release boundary: GitHub source/installable library operated end-to-end through ChatGPT/Codex Desktop on Windows
 
 ## Status
+
+DO-001 is the active release-candidate increment. Its paired RequirementsBaseline and ProjectOverviewBaseline are promoted at version 2.5.0. The implementation includes deterministic dependency-frontier scheduling, provider-neutral Desktop task bindings, durable SQLite-backed Git worktree leases, fail-closed restart reconciliation, policy-driven independent adversarial review, merge-readiness conflict escalation, a deterministic operator snapshot, and a validated ChatGPT Desktop plug-in with automatic ProjectMemory lifecycle hooks.
+
+The implementation remains a host/plug-in layer above the released lifecycle. Hooks and task adapters cannot select readiness, approve Gates, verify their own work, integrate changes, mutate TraceabilityGraph, or promote semantic memory. New or changed unmanaged hooks require explicit trust in the Desktop `/hooks` interface.
 
 DevRelay `v0.10.0-rc.3` is published as a public GitHub prerelease from protected-main tag commit `dc0f4094ce0e178757984e363836d05cfcc0037d`. Its exact workflow-produced catalog, tarball, CycloneDX SBOM, and checksum ledger were independently hash-verified before publication; no asset was rebuilt or substituted.
 

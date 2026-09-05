@@ -1,0 +1,156 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "OwnerDecisionSet",
+  "decisionSetId": "owner-decisions-rp-001-release-preparation-v1",
+  "sourceResponseSet": {
+    "responseSetId": "RCRS-RP-001-WAVE-1",
+    "digest": "sha256:1c61ee348f7077c61f246437c93b0285241535f2d47eb1ee21225dbb06d6ff8e"
+  },
+  "decisions": [
+    {
+      "questionId": "RP-Q-005",
+      "domainId": "candidate-identity",
+      "decision": "Should one ReleaseCandidate bind the exact source commit/tree, approved project baselines, package version, release configuration, toolchain identities, and EnvironmentReadinessReceipt?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-003",
+      "domainId": "lifecycle-authority",
+      "decision": "Should ReleasePreparation be one conditional semantic module after SystemVerification, with a separate ReleaseVerificationGate deciding candidate readiness before BusinessAcceptance?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-007",
+      "domainId": "packaging-artifacts",
+      "decision": "Should the required candidate set contain a deterministic installable tarball, release catalog/manifest, CycloneDX SBOM, SHA-256 ledger, release notes, license/notice material, and a compact evidence index?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-001",
+      "domainId": "purpose-boundary",
+      "decision": "Should RP-001 own preparation and verification of an exact release candidate only, while publication, deployment, protected-main promotion, and release approval remain outside its authority?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-009",
+      "domainId": "verification-policy",
+      "decision": "Should ReleaseVerification require static verification, the complete deterministic test suite, package/export enumeration, isolated install/import checks, SBOM and checksum verification, documentation/link checks, secret scanning, and a clean Windows Desktop consumer run?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-013",
+      "domainId": "evidence-traceability",
+      "decision": "Should evidence preserve exact commands, tool/adapter versions, configuration and input digests, exit codes, durations, stdout/stderr or artifact digests, candidate bytes, and checkpoint identities?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-011",
+      "domainId": "promotion-boundary",
+      "decision": "Should the successful Gate output be a ReleaseReadinessBaseline/record that authorizes only downstream human-controlled publication consideration and never performs publication or branch/tag mutation?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-017",
+      "domainId": "drift-replay",
+      "decision": "Should candidate materialization checkpoint exact prepared outputs before any merge or external effect, with exact replay performing zero packaging, download, signing, upload, tagging, or publication calls?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-015",
+      "domainId": "security-supply-chain",
+      "decision": "Should release execution be offline by default, allow only exact destination/purpose network grants, reject secret-bearing artifacts or logs, and require checksum-pinned project-local tools?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-019",
+      "domainId": "adapter-strategy",
+      "decision": "Should V1 ship deterministic native Node/Windows implementations for cataloging, packing, checksum/SBOM validation, and installed-package verification, with hosted release systems represented only by optional bounded adapters?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-023",
+      "domainId": "nonfunctional-acceptance",
+      "decision": "Should deterministic byte equality, fail-closed validation, zero-call replay, crash recovery, redaction, isolated clean-install verification, and honest adapter maturity be mandatory release acceptance properties?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-021",
+      "domainId": "operator-experience",
+      "decision": "Should Desktop present one compact candidate/readiness summary containing blockers, warnings, version/source identity, artifact digests, verification coverage, and direct evidence links?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-006",
+      "domainId": "candidate-identity",
+      "decision": "Should any source, configuration, version, tool, baseline, or environment drift create a new immutable candidate attempt instead of updating historical candidate evidence?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-004",
+      "domainId": "lifecycle-authority",
+      "decision": "Should RP-001 require an accepted current EnvironmentReadinessReceipt before candidate materialization and revalidate it before every effectful release step?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-008",
+      "domainId": "packaging-artifacts",
+      "decision": "Should source archives generated by GitHub remain externally produced publication artifacts, while RP-001 verifies their expected source identity but never predicts or self-certifies their final bytes?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-002",
+      "domainId": "purpose-boundary",
+      "decision": "Should RP-001 cover GitHub source plus an installable library tarball for ChatGPT/Codex Desktop on Windows, while public npm, one-click Desktop installation, hosted operation, and non-Windows claims remain excluded?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-010",
+      "domainId": "verification-policy",
+      "decision": "Should every verification family be required unless ReleaseVerificationGate records an explicit policy-backed ApprovedNotApplicable disposition, with failed, missing, stale, or unknown required evidence blocking readiness?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-014",
+      "domainId": "evidence-traceability",
+      "decision": "Should trusted contributors project only forward factual links from approved source and environment state through candidate artifacts and verification evidence, while adapters receive no graph access?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-012",
+      "domainId": "promotion-boundary",
+      "decision": "Should version selection, changelog approval, prerelease versus stable designation, and final publication approval remain explicit owner decisions rather than adapter- or Core-inferred values?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-018",
+      "domainId": "drift-replay",
+      "decision": "Should verification re-load candidate bytes from content-addressed storage and reject rebuilt, substituted, partially retrieved, or digest-mismatched artifacts?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-016",
+      "domainId": "security-supply-chain",
+      "decision": "Should RP-001 fail closed on dependency, action-pin, license, provenance, SBOM, checksum, signature/attestation, or secret-scan findings according to one versioned release policy?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-020",
+      "domainId": "adapter-strategy",
+      "decision": "Should adapter slots be capability-oriented—materialize, inspect, verify, attest, and publication-prerequisite probe—with no product-specific routing in Generic Core and no silent fallback?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-024",
+      "domainId": "nonfunctional-acceptance",
+      "decision": "Should V1 record materialization and verification duration, cache hits, retries, artifact sizes, and bottlenecks without imposing a universal wall-clock SLA until Windows reference-host measurements establish one?.",
+      "answer": "Approve exactly as recommended"
+    },
+    {
+      "questionId": "RP-Q-022",
+      "domainId": "operator-experience",
+      "decision": "Should all proposed network, signing, credential, filesystem, process, tag, or remote-repository effects be consolidated and shown for explicit approval before execution?.",
+      "answer": "Approve exactly as recommended"
+    }
+  ],
+  "contentDigest": "sha256:b1fffe94c1271d164faf4c8d32393897fc46539b060671b6c80e80c65fde9297"
+}

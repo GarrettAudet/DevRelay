@@ -1,0 +1,1085 @@
+# Project Overview
+
+## Purpose
+
+Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.
+
+## Business Objectives
+
+- **`BO-DEV-ADOPTION-001`** [must] Make DevRelay straightforward to adopt and operate without weakening deterministic lifecycle authority, evidence, or traceability.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-DETERMINISM-001`** [must] Make software-engineering progression reproducible and fail closed when required inputs, evidence, or approvals are invalid.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-DOMAIN-PACK-001`** [must] Support production-quality domain workflows through optional packs without placing domain behavior in Generic Core.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-DURABLE-HOST-001`** [must] Provide a recoverable local Windows host that turns the verified library into a practical ChatGPT Desktop engineering runtime.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-ENVIRONMENT-READINESS-001`** [must] Prevent authorized work from beginning until its exact host and project environment requirements are demonstrably ready.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-ENVIRONMENT-SAFETY-001`** [must] Make environment preparation reproducible, reversible, least-privilege, secret-safe, and replaceable across technology-specific adapters.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-LIVE-INTEGRATION-001`** [must] Replace ambiguous contract-only integration claims with version-pinned, receipt-backed live provider conformance while preserving Core authority.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-MODULARITY-001`** [must] Allow best-in-class engineering capabilities to be replaced without changing canonical workflow semantics or generic Core.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-OBSERVABILITY-001`** [must] Make every DevRelay run understandable and measurable to a human across any configured number of modules, Gates, adapters, retries, and parallel frontiers.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-OSS-001`** [must] Release DevRelay as a trustworthy open-source source/library distribution that supports deterministic end-to-end software engineering from ChatGPT Desktop on Windows.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-PROJECT-MEMORY-001`** [must] Preserve accurate project direction, decisions, rationale, state, and lessons across every DevRelay task without relying on conversational memory.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-QUALITY-001`** [must] Require scoped verification and evidence before work, changes, systems, or business outcomes advance.
+  - Stakeholders: `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-RELEASE-INTEGRITY-001`** [must] Make release-candidate materialization deterministic, supply-chain aware, replay-safe, and separate from publication, deployment, and protected-branch authority.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-RELEASE-READINESS-001`** [must] Prevent a source/library candidate from reaching publication consideration until its exact bytes, prerequisites, and required verification evidence are complete and approved.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-REQ-QUALITY-001`** [must] Elicit sufficiently complete, testable requirements through adaptive interview depth and deterministic mandatory closure.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-ROADMAP-001`** [must] Make potential DevRelay initiatives visible, comparable, auditable, and human-controlled before they alter approved engineering scope.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-SESSION-CONTEXT-001`** [must] Ensure every fresh DevRelay task begins from the same exact approved project, roadmap, lifecycle, Gate, frontier, and blocker context.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-SESSION-CONTINUITY-001`** [must] Make every completed worker frontier and task produce a reviewable, traceable synopsis that a fresh ChatGPT Desktop task can safely resume.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-TRACEABILITY-001`** [must] Trace every approved business objective through requirements, design, planned work, implementation, verification, integration, and acceptance.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-WDA-CORRECTNESS-001`** [must] Prevent invalid, cyclic, incomplete, or impossible dependency plans from reaching assignment and execution.
+  - Stakeholders: `STK-WDA-MAINTAINER-001`, `STK-WDA-WORKFLOW-AUTHOR-001`
+- **`BO-WDA-MODULARITY-001`** [must] Replace dependency-analysis capabilities without changing canonical semantics or generic Core.
+  - Stakeholders: `STK-WDA-ADAPTER-AUTHOR-001`, `STK-WDA-MAINTAINER-001`
+- **`BO-WDA-PARALLEL-SAFETY-001`** [must] Provide authoritative ordering sufficient for downstream systems to identify safely runnable work.
+  - Stakeholders: `STK-WDA-EXECUTION-HOST-001`, `STK-WDA-WORKFLOW-AUTHOR-001`
+
+## Users
+
+- **Engineering workflow author** (`USR-DEV-WORKFLOW-AUTHOR-001`): A maintainer or engineering lead who configures and operates DevRelay from a goal through business acceptance.
+  - Needs: Gauge lifecycle and adapter performance without inspecting raw JSON or inventing unavailable metrics.; Inspect exact artifacts, decisions, evidence, and progression state.; Install a complete DevRelay source/library artifact from GitHub without relying on public npm publication.; Read one concise report of what happened, why progression changed, and where the evidence lives.; Run a complete engineering lifecycle without relying on model memory.; Run the full deterministic lifecycle from ChatGPT Desktop on Windows with human-readable evidence.; Swap compatible adapters without redesigning the workflow.
+  - Stakeholders: `STK-DEV-WORKFLOW-AUTHOR-001`
+- **Dependency-planning workflow author** (`USR-WDA-WORKFLOW-AUTHOR-001`): A maintainer or host operator who runs and reviews dependency analysis before assignment.
+  - Needs: Approve only a valid and reviewed DAG.; Obtain an evidence-backed dependency proposal.; Resolve blocking dependency findings.
+  - Stakeholders: `STK-WDA-WORKFLOW-AUTHOR-001`
+
+## Key Capabilities
+
+- **Explicit API tiers** (`CAP-DEV-API-TIERS-001`): Separate ordinary facade APIs, advanced subpaths, compatibility surfaces, and optional domain packs.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ADOPTION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Evidence-bound current architecture discovery** (`CAP-DEV-ARCHITECTURE-DISCOVERY-001`): Discover an existing repository's implemented architecture through a deterministic local inventory and replaceable bounded analyzers, producing one observational CurrentArchitectureSnapshot.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Verified local change integration** (`CAP-DEV-CHANGE-INTEGRATION-001`): Safely incorporate one exactly verified work-item change into one configured local Git target using Core-owned compare-and-swap, immutable effect evidence, and explicit conflict routing.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-QUALITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Deterministic contract generation** (`CAP-DEV-CONTRACT-GENERATION-001`): Turn approved architecture interface intent into complete machine-valid contract candidates through replaceable generators and trusted validation boundaries.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Repository-scoped DevRelay skills** (`CAP-DEV-DESKTOP-SKILLS-001`): Expose cycle, Godot release, provider conformance, and trace query workflows to ChatGPT Desktop without duplicating Core policy.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DOMAIN-PACK-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Environment evidence and traceability** (`CAP-DEV-ENVIRONMENT-EVIDENCE-001`): Preserve redacted receipts, remediation diagnostics, performance telemetry, and forward links from profiles through readiness to execution.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ENVIRONMENT-SAFETY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Environment preparation** (`CAP-DEV-ENVIRONMENT-PREPARE-001`): Propose and perform explicitly granted, project-local, reversible, idempotent environment changes with rollback and mutation receipts.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ENVIRONMENT-SAFETY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Environment profiles** (`CAP-DEV-ENVIRONMENT-PROFILE-001`): Declare versioned host and project-specific build, test, staging, and work-target requirements without implying unsupported interoperability.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ENVIRONMENT-READINESS-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Environment readiness verification** (`CAP-DEV-ENVIRONMENT-VERIFY-001`): Evaluate required and optional checks against exact current fingerprints and block WorkExecution on invalid state.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ENVIRONMENT-READINESS-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Externalized verifiable evidence** (`CAP-DEV-EVIDENCE-DISTRIBUTION-001`): Keep Git compact while preserving checksum-bound full lifecycle evidence in release assets.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ADOPTION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Two-phase Git evidence sealing** (`CAP-DEV-EVIDENCE-SEAL-001`): Separate the implementation commit from an evidence-seal commit without self-referential commit claims.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-LIVE-INTEGRATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Automatic execution receipts and metrics** (`CAP-DEV-EXECUTION-RECEIPT-001`): Capture raw provider observations, redacted evidence views, deterministic fingerprints, and local performance metrics.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-LIVE-INTEGRATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Replaceable engineering capabilities** (`CAP-DEV-EXTENSIBILITY-001`): Bind interchangeable bounded adapters to stable provider-neutral module operations.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-MODULARITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Optional Godot engineering pack** (`CAP-DEV-GODOT-PACK-001`): Bind Godot AI and GdUnit4 inspection, execution, verification, screenshots, inputs, exports, and compatibility evidence to existing Module ports.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DOMAIN-PACK-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Deterministic lifecycle orchestration** (`CAP-DEV-LIFECYCLE-001`): Route exact state through the approved V1 lifecycle and stop invalid work before it propagates.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-QUALITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Live provider attestation** (`CAP-DEV-LIVE-PROVIDER-001`): Invoke version-pinned bounded providers and preserve exact execution, normalization, and conformance evidence.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-LIVE-INTEGRATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Durable Windows local host** (`CAP-DEV-LOCAL-HOST-001`): Persist state and artifacts, isolate work, enforce grants, recover crashes, and bind one Desktop executor.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DURABLE-HOST-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Bounded Mem0 retrieval** (`CAP-DEV-MEM0-001`): Index and retrieve approved project and session memory through a local, version-pinned, proposer-only Mem0 adapter.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Session conclusion and handoff** (`CAP-DEV-MEMORY-CONCLUDE-001`): Conclude workers, frontiers, and main tasks through reviewed deltas, synopsis projection, provider synchronization, and exact receipts.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-SESSION-CONTINUITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Deterministic memory context** (`CAP-DEV-MEMORY-CONTEXT-001`): Assemble a bounded digest-bound context bundle from project invariants, relevant memory, session state, and traceability context.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Traceability-aware memory** (`CAP-DEV-MEMORY-TRACE-001`): Expose approved lifecycle paths and diagnostics through trusted digest-bound TraceabilityContextProjection artifacts.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Deterministic operator CLI** (`CAP-DEV-OPERATOR-CLI-001`): Provide profile-aware run, resume, verify, inspect, and evidence commands beneath ChatGPT Desktop.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DURABLE-HOST-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Verified open-source source/library release** (`CAP-DEV-OSS-RELEASE-001`): Materialize, validate, and publish an Apache-2.0/DCO GitHub source and tarball release with complete package exports and Windows Desktop dogfood evidence.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-OSS-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Authoritative project memory** (`CAP-DEV-PROJECT-MEMORY-001`): Maintain versioned project direction, decisions, rationale, status, lessons, conflicts, and supersession history.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Release evidence and traceability** (`CAP-DEV-RELEASE-EVIDENCE-001`): Preserve compact, redacted, content-addressed preparation and verification evidence with exact forward lifecycle provenance.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-RELEASE-INTEGRITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Deterministic release preparation** (`CAP-DEV-RELEASE-PREPARE-001`): Materialize one exact source/library candidate and its release-supporting artifacts from approved state without publishing or promoting it.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-RELEASE-INTEGRITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Release verification** (`CAP-DEV-RELEASE-VERIFY-001`): Evaluate packaging, exports, installation, documentation, supply-chain, evidence, and supported-host obligations against the exact candidate bytes.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-RELEASE-READINESS-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Adaptive requirements interview** (`CAP-DEV-REQ-INTERVIEW-001`): Run native or configured strategy chains in breadth-first waves and produce a deterministic closure proof.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-REQ-QUALITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Roadmap review and prioritization** (`CAP-DEV-ROADMAP-MANAGEMENT-001`): Review and reprioritize approved roadmap initiatives using explicit weighted criteria without scheduling or execution authority.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ROADMAP-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Initiative intake triage** (`CAP-DEV-ROADMAP-TRIAGE-001`): Evaluate a requirements-closed RoadmapIntakeCandidate and recommend one keep, defer, merge, or discard disposition.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ROADMAP-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Human-readable lifecycle run reporting** (`CAP-DEV-RUN-REPORTING-001`): Project standardized execution, Gate, observation, artifact, adapter-maturity, and traceability records into one dynamic human-readable run report.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-OBSERVABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Mandatory fresh-task context bootstrap** (`CAP-DEV-SESSION-BOOTSTRAP-001`): Load, validate, digest-bind, and receipt current project and roadmap context before any fresh DevRelay task executes modules.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-SESSION-CONTEXT-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Simple DevRelay facade** (`CAP-DEV-SIMPLE-FACADE-001`): Expose ordinary configuration, execution, recovery, verification, and inspection through a small stable API.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ADOPTION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Structured engineering contracts** (`CAP-DEV-SPECIFICATION-001`): Represent requirements, architecture, contracts, work, changes, evidence, and acceptance as versioned artifacts.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Queryable traceability** (`CAP-DEV-TRACE-QUERY-001`): Answer read-only provenance, coverage, evidence, impact, and orphan questions with compact results by default.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-LIVE-INTEGRATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Evidence-based verification and acceptance** (`CAP-DEV-VERIFICATION-001`): Require scoped evidence at work-item, integrated-system, and business-acceptance boundaries.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-QUALITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Isolated deterministic work execution** (`CAP-DEV-WORK-EXECUTION-001`): Execute one Core-selected runnable work item through a provider-neutral binding in an isolated host-enforced workspace and return proposed changes with raw evidence.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-MODULARITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Evidence-bound work-item verification** (`CAP-DEV-WORK-ITEM-VERIFICATION-001`): Evaluate one exact execution attempt and proposed change set against its approved work-item verification plan, acceptance criteria, architecture and contract obligations, and required evidence before integration.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-QUALITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Risk-scaled workflow profiles** (`CAP-DEV-WORKFLOW-PROFILES-001`): Select deterministic quick, standard, assurance, or inspect policies without bypassing Core or required Gates.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-ADOPTION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Work dependency analysis** (`CAP-WDA-ANALYZE-001`): Analyze an approved work breakdown and propose directed dependencies and dispositions.
+  - Priority: must
+  - Audience: internal
+  - Business objectives: `BO-WDA-CORRECTNESS-001`, `BO-WDA-MODULARITY-001`, `BO-WDA-PARALLEL-SAFETY-001`
+  - Users: `USR-WDA-WORKFLOW-AUTHOR-001`
+- **Dependency Gate verification** (`CAP-WDA-GATE-001`): Validate graph mechanics and semantic policy before authoritative promotion.
+  - Priority: must
+  - Audience: internal
+  - Business objectives: `BO-WDA-CORRECTNESS-001`, `BO-WDA-PARALLEL-SAFETY-001`
+  - Users: `USR-WDA-WORKFLOW-AUTHOR-001`
+
+## Success Metrics
+
+- **Deterministic progression** (`SM-DEV-DETERMINISM-001`)
+  - Measure: Repeated Core-owned routing, validation, replay, and gate decisions for identical content-addressed inputs.
+  - Target: 100 percent identical outcomes and digests.
+  - Measurement method: Run positive, negative, drift, checkpoint, replay, and gate conformance suites.
+  - Business objectives: `BO-DEV-DETERMINISM-001`
+- **Complete redacted environment evidence** (`SM-DEV-ENVIRONMENT-EVIDENCE-001`)
+  - Measure: Readiness decisions with complete source-resolving receipts and zero secret values.
+  - Target: 100 percent evidence completeness and zero secret disclosure or undeclared network effects.
+  - Measurement method: Validate command, version, digest, duration, output, redaction, grant, fingerprint, and traceability coverage.
+  - Business objectives: `BO-DEV-ENVIRONMENT-READINESS-001`, `BO-DEV-ENVIRONMENT-SAFETY-001`
+- **Verified execution readiness** (`SM-DEV-ENVIRONMENT-READINESS-001`)
+  - Measure: Authorized execution attempts preceded by an exact current EnvironmentReadinessReceipt.
+  - Target: 100 percent; missing, failed, unknown, expired, or drifted required checks block execution.
+  - Measurement method: Reconcile every WorkExecution attempt against the approved profile, baseline, fingerprints, Gate decision, and graph path.
+  - Business objectives: `BO-DEV-ENVIRONMENT-READINESS-001`
+- **Effect-safe replay** (`SM-DEV-ENVIRONMENT-REPLAY-001`)
+  - Measure: Exact checkpoint replays that repeat no preparation effects.
+  - Target: 100 percent zero-call replay with byte-identical results.
+  - Measurement method: Repeat preparation and verification invocations across restart, crash, retry, and checkpoint recovery fixtures.
+  - Business objectives: `BO-DEV-ENVIRONMENT-SAFETY-001`
+- **Compact source evidence** (`SM-DEV-EVIDENCE-WEIGHT-001`)
+  - Measure: Full raw lifecycle evidence retained directly in Git after externalization.
+  - Target: Only minimal fixtures, compact summaries, manifests, and checksums remain in Git; full evidence is independently retrievable and checksum-verifiable.
+  - Measurement method: Compare tracked evidence inventory with the release-asset manifest and verify every external digest.
+  - Business objectives: `BO-DEV-ADOPTION-001`
+- **Successful first run** (`SM-DEV-FIRST-RUN-001`)
+  - Measure: A new user completes a standard-profile deterministic run from a clean GitHub checkout on ChatGPT Desktop for Windows.
+  - Target: One documented setup path, no internal artifact construction by the user, and a passing compact run summary.
+  - Measurement method: Execute the clean-checkout Windows Desktop acceptance fixture and review the operator transcript.
+  - Business objectives: `BO-DEV-ADOPTION-001`
+- **Accepted Godot domain dogfood** (`SM-DEV-GODOT-E2E-001`)
+  - Measure: Applicable lifecycle stages completed for a small Godot change from a clean Windows Desktop checkout.
+  - Target: 100 percent of applicable Modules and Gates pass with exact evidence and compatibility bindings.
+  - Measurement method: Reconcile the LifecycleRunReport, GdUnit4 evidence, screenshots and input receipts, export smoke test, trace queries, Git seals, and BusinessAcceptance.
+  - Business objectives: `BO-DEV-DOMAIN-PACK-001`
+- **Honest live provider maturity** (`SM-DEV-LIVE-INTEGRATION-001`)
+  - Measure: Priority provider bindings backed by exact live execution attestations and negative conformance evidence.
+  - Target: 100 percent of OpenSpec, Spec Kit, current Structurizr, MADR conformance, Godot AI, and GdUnit4 release claims are live-attested or explicitly unavailable.
+  - Measurement method: Validate provider versions, configuration, permissions, raw receipts, normalized outputs, replay behavior, and maturity records.
+  - Business objectives: `BO-DEV-LIVE-INTEGRATION-001`
+- **Accurate memory bootstrap** (`SM-DEV-MEMORY-BOOTSTRAP-001`)
+  - Measure: Configured DevRelay tasks beginning with a verified current ProjectMemory context bundle.
+  - Target: 100 percent; inaccurate or unverifiable memory blocks execution.
+  - Measurement method: Run fresh-task, stale, substitution, drift, provider-failure, native-recovery, and replay fixtures.
+  - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+- **Concluded task continuity** (`SM-DEV-MEMORY-CONCLUSION-001`)
+  - Measure: Completed frontiers, worker tasks, and main tasks with a verified ConcludeReceipt.
+  - Target: 100 percent before completion or handoff acceptance.
+  - Measurement method: Reconcile session checkpoints, delta review, Gate approval, synopsis projection, provider synchronization, and handoff acceptance.
+  - Business objectives: `BO-DEV-SESSION-CONTINUITY-001`
+- **Synopsis parity** (`SM-DEV-MEMORY-SYNOPSIS-001`)
+  - Measure: CurrentSynopsis.md projections matching the approved ProjectMemoryBaseline.
+  - Target: 100 percent deterministic UTF-8 NFC LF byte parity with complete active-memory dispositions.
+  - Measurement method: Regenerate the synopsis and compare bytes, coverage manifest, references, and digest.
+  - Business objectives: `BO-DEV-SESSION-CONTINUITY-001`
+- **Traceable memory claims** (`SM-DEV-MEMORY-TRACEABILITY-001`)
+  - Measure: Active memory records resolving to exact artifacts, decisions, graph nodes, graph edges, or session receipts.
+  - Target: 100 percent source resolution and zero provider-authored authority facts.
+  - Measurement method: Validate every active record against the pinned ProjectMemory and TraceabilityGraph checkpoints.
+  - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+- **Adapter-independent semantics** (`SM-DEV-MODULARITY-001`)
+  - Measure: Compatible adapter replacements requiring a product-specific behavioral branch in generic Core.
+  - Target: Zero branches.
+  - Measurement method: Execute adapter replacement fixtures and scan generic Core for product identifiers.
+  - Business objectives: `BO-DEV-MODULARITY-001`
+- **Accepted Windows Desktop dogfood** (`SM-DEV-OSS-DOGFOOD-001`)
+  - Measure: Applicable DevRelay lifecycle stages and required Gates completed for both the release hardening change and one minimal software project.
+  - Target: 100 percent, with explicit not-applicable dispositions for conditional stages.
+  - Measurement method: Reconcile lifecycle run records, traceability updates, verification evidence, integration receipts, and BusinessAcceptance decisions.
+  - Business objectives: `BO-DEV-OSS-001`
+- **Installed package export completeness** (`SM-DEV-OSS-EXPORTS-001`)
+  - Measure: Declared package exports that resolve from a clean install of the generated release tarball.
+  - Target: 100 percent, including every fixed and wildcard export.
+  - Measurement method: Enumerate package.json exports, pack and install the tarball in an isolated consumer, then resolve or import every expanded subpath.
+  - Business objectives: `BO-DEV-OSS-001`
+- **Small public surface** (`SM-DEV-PUBLIC-SURFACE-001`)
+  - Measure: Top-level supported facade operations required for ordinary use.
+  - Target: No more than eight primary facade operations; advanced contracts remain under explicit subpaths.
+  - Measurement method: Inspect generated API inventory and execute public-surface conformance tests.
+  - Business objectives: `BO-DEV-ADOPTION-001`
+- **Verified progression** (`SM-DEV-QUALITY-001`)
+  - Measure: Lifecycle transitions occurring without the configured passing evidence and approval record.
+  - Target: Zero transitions.
+  - Measurement method: Audit module execution records, gate decisions, verification evidence, and acceptance receipts.
+  - Business objectives: `BO-DEV-QUALITY-001`
+- **Durable recovery** (`SM-DEV-RECOVERY-001`)
+  - Measure: Interrupted local runs resumed without repeating checkpointed effects or losing approvals and evidence.
+  - Target: 100 percent of crash-window fixtures recover deterministically with zero duplicate completed effects.
+  - Measurement method: Run SQLite, artifact-store, worktree, and executor crash-recovery tests on Windows.
+  - Business objectives: `BO-DEV-DURABLE-HOST-001`
+- **Complete release evidence** (`SM-DEV-RELEASE-EVIDENCE-001`)
+  - Measure: Gate decisions with complete source-resolving release evidence and zero secret values or unapproved effects.
+  - Target: 100 percent evidence coverage and zero rebuilt, substituted, secret-bearing, or authority-overreaching artifacts.
+  - Measurement method: Validate commands, versions, digests, candidate bytes, policy dispositions, redaction, grants, checkpoints, and traceability coverage.
+  - Business objectives: `BO-DEV-RELEASE-INTEGRITY-001`, `BO-DEV-RELEASE-READINESS-001`
+- **Verified release readiness** (`SM-DEV-RELEASE-READINESS-001`)
+  - Measure: Release candidates with every required preparation and verification obligation satisfied by exact current evidence or an approved not-applicable disposition.
+  - Target: 100 percent; failed, missing, stale, unknown, or substituted required evidence blocks readiness.
+  - Measurement method: Reconcile every candidate and Gate record against source state, approved baselines, readiness, policy, artifact bytes, and verification evidence.
+  - Business objectives: `BO-DEV-RELEASE-READINESS-001`
+- **Effect-safe release replay** (`SM-DEV-RELEASE-REPLAY-001`)
+  - Measure: Exact checkpoint replays that repeat no materialization, download, signing, upload, tag, publication, or branch effects.
+  - Target: 100 percent zero-call replay with byte-identical results.
+  - Measurement method: Repeat candidate preparation and verification across success, failure, crash, retry, restart, and drift fixtures.
+  - Business objectives: `BO-DEV-RELEASE-INTEGRITY-001`
+- **Deterministic requirements closure** (`SM-DEV-REQ-CLOSURE-001`)
+  - Measure: Applicable decision-domain weight resolved with zero blocking unknowns or contradictions.
+  - Target: At least 0.99 weighted coverage and exactly zero blocking unresolved decisions for every promoted candidate.
+  - Measurement method: Recompute the version-pinned RequirementsClosureAssessment from question waves, responses, dispositions, weights, and source artifacts.
+  - Business objectives: `BO-DEV-REQ-QUALITY-001`
+- **Roadmap intake accountability** (`SM-DEV-ROADMAP-COVERAGE-001`)
+  - Measure: Confirmed net-new initiative candidates with an exact audited disposition.
+  - Target: 100 percent are kept, deferred, merged, or discarded through RoadmapGate with no silent roadmap mutation.
+  - Measurement method: Reconcile candidate, requirements closure, recommendation, Gate approval, baseline change, and traceability records.
+  - Business objectives: `BO-DEV-ROADMAP-001`
+- **Readable roadmap parity** (`SM-DEV-ROADMAP-PROJECTION-001`)
+  - Measure: Roadmap.md projections byte-identical to the approved RoadmapBaseline projection.
+  - Target: 100 percent parity with UTF-8 NFC LF bytes.
+  - Measurement method: Regenerate and compare exact bytes for every RoadmapGate promotion.
+  - Business objectives: `BO-DEV-ROADMAP-001`
+- **Complete human-readable run coverage** (`SM-DEV-RUN-COVERAGE-001`)
+  - Measure: Attempted and completed circuit components, outcomes, adapter bindings, artifacts, Gates, and rework represented in the generated report.
+  - Target: 100 percent of standardized run records represented without a hard-coded module inventory.
+  - Measurement method: Generate reports for serial, conditional, skipped, failed, resumed, parallel, and repeating-frontier fixtures and reconcile every source record.
+  - Business objectives: `BO-DEV-OBSERVABILITY-001`
+- **Observable engineering efficiency** (`SM-DEV-RUN-EFFICIENCY-001`)
+  - Measure: Captured execution time, human wait, adapter calls, retries, checkpoint hits, replay savings, tokens, cost, Gate rework, and coverage metrics.
+  - Target: Every configured metric has an exact value or an explicit captured, not-reported, or not-applicable disposition.
+  - Measurement method: Compare the structured run snapshot with host observations, checkpoint records, Gate proofs, and the rendered Markdown report.
+  - Business objectives: `BO-DEV-OBSERVABILITY-001`
+- **Fresh-task context integrity** (`SM-DEV-SESSION-CONTEXT-001`)
+  - Measure: Fresh DevRelay tasks with a valid exact SessionContextReceipt before module execution.
+  - Target: 100 percent; missing, stale, substituted, malformed, or digest-mismatched context fails closed.
+  - Measurement method: Run fresh-tab, new-day, workspace, drift, substitution, and restart conformance fixtures.
+  - Business objectives: `BO-DEV-SESSION-CONTEXT-001`
+- **Lifecycle trace coverage** (`SM-DEV-TRACEABILITY-001`)
+  - Measure: Approved business objectives with a complete trace to implementation and passing verification evidence by BusinessAcceptance.
+  - Target: 100 percent or an explicit approved disposition.
+  - Measurement method: Run TraceabilityGraph coverage and orphan diagnostics at each lifecycle horizon.
+  - Business objectives: `BO-DEV-TRACEABILITY-001`
+- **Generic Core product branches** (`SM-WDA-CORE-SPECIAL-CASES-001`)
+  - Measure: WorkDependencyAnalysis, Spec Kit, or OpenSpec identifier branches in generic Core.
+  - Target: Zero branches.
+  - Measurement method: Run static special-case scans and adapter-replacement conformance tests.
+  - Business objectives: `BO-WDA-MODULARITY-001`
+- **Unsafe runnable frontier** (`SM-WDA-FRONTIER-SAFETY-001`)
+  - Measure: Work items exposed as runnable while an authoritative predecessor remains incomplete.
+  - Target: Zero items across graph fixtures.
+  - Measurement method: Derive runnable frontiers from approved DAG fixtures and predecessor completion state.
+  - Business objectives: `BO-WDA-PARALLEL-SAFETY-001`
+- **Invalid dependency progression** (`SM-WDA-INVALID-PROGRESSION-001`)
+  - Measure: Invalid endpoint, duplicate or self edge, cycle, unresolved missing dependency, or impossible ordering cases reaching an approved baseline.
+  - Target: Zero cases.
+  - Measurement method: Run positive and negative WorkDependency Gate fixtures and inspect exact promotion receipts.
+  - Business objectives: `BO-WDA-CORRECTNESS-001`
+
+## Scope
+
+- **`SCOPE-DEV-ARCHITECTURE-DISCOVERY-DETAIL-001`** One conditional ArchitectureDiscovery module covering deterministic state routing, native local inventory, optional bounded analyzers, observational normalization, confidence and material-gap policy, privacy controls, checkpoint replay, and current-snapshot traceability.
+- **`SCOPE-DEV-CHANGE-INTEGRATION-DETAIL-001`** One ChangeIntegration module covering exact verified-subject binding, configured local Git target integration, Core-owned compare-and-swap, immutable conflicts and effect receipts, checkpoint recovery, factual traceability, and progression to SystemVerification without system or business acceptance authority.
+- **`SCOPE-DEV-CONTRACT-GENERATION-DETAIL-001`** One ContractGeneration module with establish-contracts and generate-contract-change operations, typed draft outputs, a live JSON Schema 2020-12 path, extensible optional format adapters, and a separate ContractGate/ApprovedNotApplicable authority boundary.
+- **`SCOPE-DEV-MQ-GODOT-001`** An optional Godot pack with least-privilege inspection, execution, structured verification, screenshots, input receipts, exports, smoke tests, and tested compatibility.
+- **`SCOPE-DEV-MQ-INFRASTRUCTURE-001`** Automatic raw receipt capture, redaction, local performance metrics, two-phase Git sealing, and read-only compact traceability MCP queries.
+- **`SCOPE-DEV-MQ-LIVE-ADAPTERS-001`** Live provider conformance for OpenSpec, Spec Kit, current Structurizr tooling, MADR format rendering and validation, Godot AI, and GdUnit4.
+- **`SCOPE-DEV-MQ-REQUIREMENTS-001`** Adaptive breadth-first requirements interviewing, native and optional strategy composition, persistent waves, conflicts, coverage, and deterministic closure.
+- **`SCOPE-DEV-MQ-SKILLS-001`** Repository-scoped devrelay-cycle, devrelay-godot-release, devrelay-plugin-conformance, and devrelay-trace-query skills for ChatGPT Desktop on Windows.
+- **`SCOPE-DEV-OSS-DOGFOOD-001`** A production-like ChatGPT Desktop on Windows run of the complete applicable DevRelay lifecycle for the release change plus a separate minimal software project.
+- **`SCOPE-DEV-OSS-PREVIEW-001`** A public Apache-2.0/DCO GitHub source/library preview with a deterministic installable tarball, complete package exports, community and security controls, supported Node verification, and protected-main promotion evidence.
+- **`SCOPE-DEV-RUN-REPORTING-001`** Cross-cutting RunLedger and LifecycleRunReport projection that dynamically records what happened, renders a primary human-readable Markdown report, joins exact traceability, and exposes sourced performance evidence without controlling the lifecycle.
+- **`SCOPE-DEV-V1-010-REQUIREMENTS-GATHERING`** RequirementsGathering \[module\]: RequirementsGathering converts an explicit goal and project context into a canonical requirements candidate and deterministic ProjectOverview candidate.
+- **`SCOPE-DEV-V1-020-REQUIREMENTS-GATE`** RequirementsGate \[gate\]: RequirementsGate validates and approves one exact RequirementsBaseline and ProjectOverviewBaseline pair before architecture progression.
+- **`SCOPE-DEV-V1-030-ARCHITECTURE-DISCOVERY`** ArchitectureDiscovery \[module; conditional\]: ArchitectureDiscovery conditionally establishes a validated current-architecture snapshot for an existing repository that has no architecture baseline.
+- **`SCOPE-DEV-V1-040-ARCHITECTURE-DESIGN`** ArchitectureDesign \[module\]: ArchitectureDesign converts approved requirements into a new architecture candidate or a proposed architecture change.
+- **`SCOPE-DEV-V1-050-ARCHITECTURE-GATE`** ArchitectureGate \[gate\]: ArchitectureGate validates architectural fitness, evidence, and approval before establishing or updating the ArchitectureBaseline.
+- **`SCOPE-DEV-V1-060-CONTRACT-GENERATION`** ContractGeneration \[module; conditional\]: ContractGeneration produces candidate machine-readable API, schema, event, protocol, data, or other interface contracts only when approved architecture intent requires them.
+- **`SCOPE-DEV-V1-065-CONTRACT-GATE`** ContractGate \[gate\]: ContractGate validates exact generated contracts or authorizes an explicit ApprovedNotApplicable disposition before work planning.
+- **`SCOPE-DEV-V1-070-WORK-BREAKDOWN`** WorkBreakdown \[module\]: WorkBreakdown converts approved scope into a complete set of bounded, traceable, independently executable and verifiable work items without executing them.
+- **`SCOPE-DEV-V1-075-WORK-BREAKDOWN-GATE`** WorkBreakdownGate \[gate\]: WorkBreakdownGate validates complete approved-scope coverage and promotes the exact WorkBreakdownBaseline without deciding dependency order.
+- **`SCOPE-DEV-V1-080-WORK-DEPENDENCY-ANALYSIS`** WorkDependencyAnalysis \[module\]: WorkDependencyAnalysis validates authoritative ordering and dependencies between approved work items before assignment or execution.
+- **`SCOPE-DEV-V1-085-WORK-DEPENDENCY-GATE`** WorkDependencyGate \[gate\]: WorkDependencyGate validates graph mechanics, policy, consistency evidence, semantic completeness, and exact approval before promoting the static WorkDependencyBaseline.
+- **`SCOPE-DEV-V1-090-SPECIALIST-ASSIGNMENT`** SpecialistAssignment \[module\]: SpecialistAssignment matches every approved work item to a provider-neutral specialist profile satisfying required capabilities without selecting readiness, scheduling, or binding a concrete executor.
+- **`SCOPE-DEV-V1-095-SPECIALIST-ASSIGNMENT-GATE`** SpecialistAssignmentGate \[gate\]: SpecialistAssignmentGate validates complete work-item assignment coverage, capability satisfaction, policy, grants, rationale, and approval before runtime executor binding.
+- **`SCOPE-DEV-V1-100-WORK-EXECUTION`** WorkExecution \[module; repeating frontier\]: WorkExecution binds an authorized ready work item and approved specialist profile to an exact runtime executor, performs only that bounded work, and returns a candidate ChangeSet without owning verification or integration.
+- **`SCOPE-DEV-V1-110-WORK-ITEM-VERIFICATION`** WorkItemVerification \[module; repeating frontier\]: WorkItemVerification evaluates each executed work item against its verification plan, acceptance criteria, and required evidence before integration.
+- **`SCOPE-DEV-V1-120-CHANGE-INTEGRATION`** ChangeIntegration \[module; repeating frontier\]: ChangeIntegration incorporates verified ChangeSets under dependency-safe policy, records factual integrated completion, and enables Core to derive the next ready frontier.
+- **`SCOPE-DEV-V1-130-SYSTEM-VERIFICATION`** SystemVerification \[module\]: SystemVerification validates the integrated system across functional, security, performance, operational, documentation, and other configured quality policies.
+- **`SCOPE-DEV-V1-135-RELEASE-PREPARATION`** ReleasePreparation \[module; conditional\]: ReleasePreparation materializes and verifies one exact source/library candidate after SystemVerification without publication, deployment, tag, or protected-branch authority.
+- **`SCOPE-DEV-V1-137-RELEASE-VERIFICATION-GATE`** ReleaseVerificationGate \[gate\]: ReleaseVerificationGate validates exact candidate bytes, required verification and supply-chain policy, owner release intent, and promotion evidence before BusinessAcceptance.
+- **`SCOPE-DEV-V1-140-BUSINESS-ACCEPTANCE`** BusinessAcceptanceGate \[gate\]: BusinessAcceptanceGate evaluates the exact SystemVerification result against approved business objectives, success metrics, scope, acceptance criteria, and required evidence and records the final disposition.
+- **`SCOPE-DEV-WORK-EXECUTION-DETAIL-001`** One WorkExecution module covering Core readiness proof, version-pinned runtime binding, isolated one-item attempts, replaceable executors, immutable retries, proposed changes, raw evidence, checkpoint replay, and candidate traceability.
+- **`SCOPE-DEV-WORK-ITEM-VERIFICATION-DETAIL-001`** One WorkItemVerification module covering exact per-item verification inputs, policy-selected evidence producers, immutable verification attempts, evidence closure, independence policy, checkpoint replay, separate Gate approval, and candidate-to-approved traceability without integration authority.
+- **`SCOPE-EP-ADAPTERS-001`** Capability-oriented inventory, acquire, configure, service-check, and target-probe adapter contracts with exact maturity and live-attestation reporting.
+- **`SCOPE-EP-DOGFOOD-001`** Full released-circuit dogfood and installed-package Windows Desktop preparation, readiness, execution, induced-drift, remediation, re-verification, and replay acceptance.
+- **`SCOPE-EP-MODULE-001`** EnvironmentPreparation module, EnvironmentVerificationGate, profile and baseline contracts, deterministic routing, checkpoints, remediation, receipts, and trusted traceability contributors.
+- **`SCOPE-EP-NATIVE-WINDOWS-001`** Deterministic native Windows host/project inventory and readiness verifier for the controlled Desktop release.
+- **`SCOPE-PM-CONCLUDE-001`** Worker, frontier, and main-task conclusion; /conclude Desktop UX; delta review; cross-domain routing; CurrentSynopsis.md; open-session recovery; and ConcludeReceipt.
+- **`SCOPE-PM-DOGFOOD-001`** Complete released-circuit dogfood plus installed-package ChatGPT/Codex Desktop Windows fresh-task, worker, conclusion, and resume acceptance.
+- **`SCOPE-PM-MEM0-001`** Version-pinned local Mem0 adapter with live execution attestation, project/session/module-attribution namespaces, synchronization verification, deterministic retrieval receipts, and native equivalence fallback.
+- **`SCOPE-PM-MODULE-001`** ProjectMemory cross-cutting module, ProjectMemoryGate, canonical baseline, update candidates, authority and precedence policy, checkpoints, receipts, and native recovery.
+- **`SCOPE-PM-TRACE-001`** Trusted TraceabilityContextProjection and source-resolving current-state, rationale, provenance, coverage, evidence-gap, orphan, and impact queries.
+- **`SCOPE-RM-BOOTSTRAP-001`** Mandatory DevRelaySessionBootstrap, SessionContextSnapshot, SessionContextReceipt, drift detection, RoadmapNotInitialized routing, and next-boundary refresh.
+- **`SCOPE-RM-DOGFOOD-001`** Complete released-circuit dogfood and installed-package ChatGPT Desktop Windows acceptance for roadmap intake and fresh-task context.
+- **`SCOPE-RM-MODULE-001`** RoadmapManagement module, RoadmapGate, RoadmapBaseline, Roadmap.md projection, candidate dispositions, priority configuration, and trusted traceability contribution.
+- **`SCOPE-RP-ADAPTERS-001`** Capability-oriented materialize, inspect, verify, attest, and publication-prerequisite probe adapter contracts with exact maturity and live-attestation reporting.
+- **`SCOPE-RP-DOGFOOD-001`** Full released-circuit dogfood and clean-checkout Windows Desktop candidate preparation, verification, drift, substitution, recovery, replay, and no-publication acceptance.
+- **`SCOPE-RP-MODULE-001`** ReleasePreparation module, ReleaseVerificationGate, candidate and readiness contracts, deterministic routing, checkpoints, policies, receipts, and trusted traceability contributors.
+- **`SCOPE-RP-NATIVE-WINDOWS-001`** Deterministic native Node and Windows cataloging, packing, checksum, SBOM, export, installed-package, and consumer verification for the controlled Desktop release.
+- **`SCOPE-SIM-DELIVERY-001`** Bounded stacked pull requests, 0.10.0-rc.2 preview identity, independent stable-review policy, and superseded pull-request disposition.
+- **`SCOPE-SIM-EVIDENCE-001`** Compact in-repository evidence plus checksum-bound GitHub Release evidence assets and retrieval verification.
+- **`SCOPE-SIM-FACADE-001`** Small root facade, explicit advanced subpaths, workflow profiles, compatibility window, compact operator reporting, and migration guidance.
+- **`SCOPE-SIM-HOST-001`** Durable Windows local host with SQLite, content-addressed artifacts, isolated worktrees, explicit grants, one Desktop executor, recovery, CLI, and performance budgets.
+- **`SCOPE-WDA-ADAPTERS-001`** Bounded replaceable analysis manifests and conformance fixtures.
+- **`SCOPE-WDA-ANALYSIS-001`** Provider-neutral dependency analysis bound to exact WorkBreakdown and upstream context.
+- **`SCOPE-WDA-ARTIFACTS-001`** Dependency state, policy, hint-disposition, edge, finding, candidate, baseline, clarification, diagnostic, and Gate evidence artifacts.
+- **`SCOPE-WDA-CONTEXT-SLICES-001`** Version-pinned relevant context slicing and pre-proposer coherence validation.
+- **`SCOPE-WDA-GATE-001`** A separate Gate for graph mechanics, semantic policy, approval, and exact promotion.
+- **`SCOPE-WDA-OPA-001`** Pinned OPA policy bundle evaluation and normalized decision evidence.
+- **`SCOPE-WDA-REVIEW-001`** A bounded post-proposal consistency-review slot with Spec Kit as the V1 binding.
+- **`SCOPE-WDA-TRACEABILITY-001`** A trusted contributor and candidate-to-approved authority transition.
+
+## Non-Goals
+
+- **`NG-DEV-AI-WRAPPER-001`** Build another monolithic coding agent or AI-provider wrapper.
+  - Rationale: DevRelay standardizes deterministic engineering workflow rather than code generation.
+- **`NG-DEV-IMPLICIT-AUTHORITY-001`** Treat model confidence, adapter output, chat history, or successful execution as implicit approval.
+  - Rationale: Only explicit validated gates and evidence authorize progression.
+- **`NG-DEV-METRIC-FABRICATION-001`** Infer missing duration, token, cost, wait, success, or maturity values from absent or incomplete host observations.
+  - Rationale: Explicit absence dispositions are more trustworthy than fabricated precision.
+- **`NG-DEV-MQ-CORE-GODOT-001`** Add Godot-specific branches or contracts to Generic Core.
+  - Rationale: Godot is an optional domain pack.
+- **`NG-DEV-MQ-FORCED-UPSTREAM-001`** Require every external interviewing framework to execute live when it lacks a bounded deterministic integration surface.
+  - Rationale: DevRelay adopts useful practices natively and labels external maturity honestly.
+- **`NG-DEV-MQ-PRODUCTION-FEEDBACK-001`** Integrate Sentry or PostHog in V0.11.
+  - Rationale: Production feedback is deferred pending privacy requirements.
+- **`NG-DEV-MQ-REMOTE-TELEMETRY-001`** Send performance, source, test, screenshot, or usage telemetry to a remote service by default.
+  - Rationale: V0.11 telemetry is local-only.
+- **`NG-DEV-MQ-UNTESTED-COMPAT-001`** Claim support for an untested Godot or provider version.
+  - Rationale: Compatibility is live-attested, not inferred.
+- **`NG-DEV-OSS-HOSTED-001`** Operate a hosted DevRelay backend or service in V0.10.
+  - Rationale: Hosted operations are outside the source/library preview boundary.
+- **`NG-DEV-OSS-NPM-001`** Publish DevRelay to the public npm registry in V0.10.
+  - Rationale: GitHub source and an installable release tarball are the approved distribution channels.
+- **`NG-DEV-OSS-PLUGIN-001`** Ship a one-click ChatGPT Desktop plug-in in V0.10.
+  - Rationale: The approved deliverable is a deterministic source/library used through the Desktop host.
+- **`NG-DEV-RUN-REPORT-AUTHORITY-001`** Turn the run report, operational telemetry, or performance score into a workflow controller or approval authority.
+  - Rationale: Reporting observes trusted workflow facts; it does not create or promote them.
+- **`NG-DEV-UPSTREAM-REIMPLEMENTATION-001`** Reimplement full upstream tools such as OpenSpec, Spec Kit, Structurizr, or MADR inside Core.
+  - Rationale: DevRelay invokes only bounded replaceable capabilities.
+- **`NG-DEV-V1-SCOPE-EXPANSION-001`** Add lifecycle modules outside the approved V1 inventory without a new requirements change and overview baseline.
+  - Rationale: V1 scope must remain deliberate and auditable.
+- **`NG-EP-EXECUTION-001`** Execute product work, select ready DAG items, or modify work dependencies and assignments.
+  - Rationale: Those authorities remain in Core, WorkDependencyAnalysis, SpecialistAssignment, and WorkExecution.
+- **`NG-EP-GLOBAL-MANAGER-001`** Become a universal machine package manager or silently modify global host state.
+  - Rationale: Preparation is bounded by approved profiles, grants, rollback, and host policy.
+- **`NG-EP-RELEASE-001`** Package, publish, deploy, promote, or claim release readiness.
+  - Rationale: ReleasePreparation and later deployment lifecycle extensions own those outcomes.
+- **`NG-EP-SECRET-STORAGE-001`** Store, synchronize, transform, or expose secret values.
+  - Rationale: EP-001 verifies references and presence without becoming a secret manager.
+- **`NG-EP-UNPROVEN-SUPPORT-001`** Claim non-Windows DevRelay host or arbitrary technology interoperability from contract-only or fixture evidence.
+  - Rationale: Support claims require exact live evidence.
+- **`NG-PM-CROSS-PROJECT-001`** Share project memory or personal preferences across repositories by default.
+  - Rationale: Cross-project memory is a separate opt-in privacy and authority decision.
+- **`NG-PM-DOMAIN-BYPASS-001`** Use /conclude or ProjectMemoryGate to bypass RequirementsGate, ArchitectureGate, ContractGate, RoadmapGate, or another domain Gate.
+  - Rationale: Memory records approved state; it does not create unapproved domain truth.
+- **`NG-PM-MEM0-AUTHORITY-001`** Allow Mem0 to select lifecycle stages, approve decisions, mutate baselines, write graph edges, or become required canonical storage.
+  - Rationale: Provider replacement and deterministic recovery require Core-owned authority.
+- **`NG-PM-MODULE-AGENTS-001`** Turn deterministic lifecycle modules into autonomous agents with independent durable memories.
+  - Rationale: Module attribution is a namespace, not an authority boundary.
+- **`NG-PM-RAW-CHAT-001`** Store every raw conversation by default or treat chat history as authoritative project memory.
+  - Rationale: Durable memory is normalized, source-linked, minimized, and explicitly governed.
+- **`NG-RM-ALL-CHATS-001`** Run DevRelay bootstrap for unrelated ChatGPT conversations outside a configured DevRelay workspace.
+  - Rationale: Mandatory context applies only when the user is using DevRelay.
+- **`NG-RM-CHAT-MEMORY-001`** Treat conversational memory as authoritative project or roadmap context.
+  - Rationale: All authority-bearing context remains explicit and content addressed.
+- **`NG-RM-EXTERNAL-REQUIRED-001`** Require GitHub Projects, Linear, Productboard, or another hosted planning system.
+  - Rationale: The native structured file contract is authoritative and provider neutral.
+- **`NG-RM-SCHEDULING-001`** Own release dates, staffing, scheduling, execution order, work-item status, or delivery commitments.
+  - Rationale: Those responsibilities belong to separate planning and execution systems.
+- **`NG-RP-DEPLOY-001`** Deploy software, operate a hosted service, or verify a production environment.
+  - Rationale: Deployment and operations require separately approved lifecycle extensions.
+- **`NG-RP-NPM-001`** Publish DevRelay to the public npm registry.
+  - Rationale: The controlled distribution remains GitHub source plus an installable release tarball.
+- **`NG-RP-PUBLISH-001`** Publish packages, create or push tags, create hosted releases, mutate protected main, or approve a final release.
+  - Rationale: RP-001 stops at Gate-owned readiness for separate human-controlled publication consideration.
+- **`NG-RP-SOURCE-ARCHIVE-001`** Predict or self-certify the final bytes of source archives produced later by a hosted publication provider.
+  - Rationale: Provider-produced bytes require provider receipts after publication.
+- **`NG-RP-UNPROVEN-SUPPORT-001`** Claim one-click Desktop installation, hosted operation, non-Windows support, signing, attestation, or provider interoperability without exact approved evidence.
+  - Rationale: Release claims follow evidence and explicit scope rather than schemas or intent.
+- **`NG-SIM-CORE-REWRITE-001`** Rewrite or weaken the deterministic Module, Gate, checkpoint, traceability, or evidence model.
+  - Rationale: The increment simplifies the product surface, not the trust architecture.
+- **`NG-SIM-GODOT-CORE-001`** Move Godot, GdUnit4, or future web-service behavior into Generic Core.
+  - Rationale: Domain behavior remains optional and replaceable.
+- **`NG-SIM-MULTIPLATFORM-001`** Claim release readiness for macOS, Linux, hosted execution, or a browser-only host.
+  - Rationale: ChatGPT Desktop on Windows is the approved release boundary.
+- **`NG-SIM-PACKAGE-SPLIT-001`** Immediately split the repository into multiple physical workspace packages.
+  - Rationale: Subpath conformance must prove boundaries before a physical split.
+- **`NG-SIM-STABLE-WITHOUT-REVIEW-001`** Call a candidate stable without independent human review.
+  - Rationale: Unreviewed artifacts remain previews.
+- **`NG-WDA-ASSIGNMENT-001`** Choose a specialist, model, agent, or human.
+  - Rationale: SpecialistAssignment owns executor selection.
+- **`NG-WDA-CONTROL-PLANE-001`** Introduce a distributed scheduler, agent framework, provider wrapper, or general control plane.
+  - Rationale: This release is an incremental module slice.
+- **`NG-WDA-EXECUTION-001`** Execute, implement, test, or verify a work item.
+  - Rationale: Those effects belong downstream.
+- **`NG-WDA-SCHEDULING-001`** Persist schedules, estimates, capacity, or runtime execution waves.
+  - Rationale: Scheduling depends on changing runtime state.
+
+## Constraints
+
+- **`CON-DEV-AD-AUTHORITY-001`** [business; project] Core owns routing, exact input and adapter validation, checkpoints, canonical result validation, and Gate progression; adapters own only bounded repository observations.
+  - Rationale: Discovery tools cannot safely certify their own completeness, authority, or downstream readiness.
+  - Acceptance criteria: `AC-DEV-AD-BOUNDARY-001`, `AC-DEV-AD-ROUTING-001`
+- **`CON-DEV-AD-LOCAL-FIRST-001`** [security; project] Default discovery is local and offline over tracked or explicitly declared inputs; external transmission requires explicit policy and grants.
+  - Rationale: Repository discovery routinely encounters proprietary source and secret-bearing files.
+  - Acceptance criteria: `AC-DEV-AD-PRIVACY-001`
+- **`CON-DEV-AD-OBSERVATIONAL-001`** [business; project] The snapshot records current implementation evidence and uncertainty; ArchitectureDesign alone converts approved requirements and current context into intended architecture.
+  - Rationale: Mixing observation and design would allow inferred current state to become an unreviewed architecture decision.
+  - Acceptance criteria: `AC-DEV-AD-BOUNDARY-001`
+- **`CON-DEV-ARTIFACT-CONTRACTS-001`** [technical; project] Every stage must exchange canonical structured artifacts and cannot rely on conversational memory as authority.
+  - Rationale: Explicit artifacts make lifecycle state reproducible and verifiable.
+  - Acceptance criteria: `AC-DEV-ARTIFACT-HANDOFF-001`
+- **`CON-DEV-CI-CAS-001`** [technical; project] Only Core may authorize an integration attempt after an exact target-ref compare-and-swap check; an adapter cannot override target drift or choose another target.
+  - Rationale: Optimistic concurrency is required to prevent verified work from applying to unverified target bytes.
+  - Acceptance criteria: `AC-DEV-CI-ATOMICITY-001`, `AC-DEV-CI-CAS-001`
+- **`CON-DEV-CI-HOST-ENFORCEMENT-001`** [security; project] The host enforces repository workspace, process, credential, and ref-update permissions; DevRelay declarations remain capability demands rather than claims of operating-system enforcement.
+  - Rationale: Provider-neutral Core cannot truthfully claim external isolation effects it does not perform.
+  - Acceptance criteria: `AC-DEV-CI-ATOMICITY-001`, `AC-DEV-CI-INPUTS-001`
+- **`CON-DEV-CI-LOCAL-GIT-001`** [technical; project] V1 integration targets one configured local Git ref; remote pull-request, hosted merge, release, and deployment systems may bind later through replaceable adapters without changing the canonical module contract.
+  - Rationale: A bounded local effect proves the orchestration boundary without coupling Core to a repository vendor.
+  - Acceptance criteria: `AC-DEV-CI-INPUTS-001`, `AC-DEV-CI-SUCCESS-001`
+- **`CON-DEV-CI-NO-AUTO-RESOLVE-001`** [business; project] Neither Core nor a V1 adapter may automatically resolve an integration conflict; resolution requires a newly authorized execution and verification attempt.
+  - Rationale: Conflict resolution changes implementation bytes and invalidates prior verification evidence.
+  - Acceptance criteria: `AC-DEV-CI-CONFLICT-001`
+- **`CON-DEV-CI-NO-SYSTEM-ACCEPTANCE-001`** [business; project] An IntegratedChangeRecord proves repository incorporation only; SystemVerification and BusinessAcceptance remain independent downstream authorities.
+  - Rationale: A merged change is not proof that the complete system or business objective is satisfied.
+  - Acceptance criteria: `AC-DEV-CI-BOUNDARY-001`, `AC-DEV-CI-OUTCOMES-001`
+- **`CON-DEV-CONTRACT-AUTHORITY-001`** [business; project] Generators propose native contract bytes only; Core owns pinned format validation and canonical diff, while ContractGate owns semantic completeness, compatibility policy, approval, and progression.
+  - Rationale: A generator cannot safely certify its own completeness or authority.
+  - Acceptance criteria: `AC-DEV-CONTRACT-GATE-001`, `AC-DEV-CONTRACT-VALIDATION-001`
+- **`CON-DEV-CONTRACT-FORMAT-EXTENSION-001`** [technical; project] Canonical contract kinds include JSON Schema, OpenAPI, AsyncAPI, Protobuf, and versioned extensions; binding selection cannot branch on interface IDs in generic Core.
+  - Rationale: Contract formats and best-in-class tooling must remain replaceable.
+  - Acceptance criteria: `AC-DEV-CONTRACT-PLUGIN-001`
+- **`CON-DEV-CONTRACT-WORK-BREAKDOWN-BARRIER-001`** [business; project] WorkBreakdown cannot progress without an exact approved ContractBaseline or ContractGate-owned ApprovedNotApplicable disposition.
+  - Rationale: Work must not be planned against missing or unapproved interface truth.
+  - Acceptance criteria: `AC-DEV-CONTRACT-GATE-001`
+- **`CON-DEV-GATE-SEPARATION-001`** [business; project] Producing modules cannot approve or promote their own candidates; configured gates own progression decisions.
+  - Rationale: Separate authority prevents production from becoming self-approval.
+  - Acceptance criteria: `AC-DEV-GATE-PROGRESSION-001`
+- **`CON-DEV-MODULE-INVENTORY-001`** [business; project] V1 lifecycle scope is limited to the twenty owner-approved components and repeating execution-frontier rule recorded in the project overview; TraceabilityGraph and LifecycleRunReport remain cross-cutting infrastructure rather than additional stages.
+  - Rationale: The approved RP-001 change adds conditional ReleasePreparation and ReleaseVerificationGate between SystemVerification and BusinessAcceptance without adding deployment or publication stages.
+  - Acceptance criteria: `AC-DEV-FULL-V1-SCOPE-001`
+- **`CON-DEV-MQ-CORE-001`** [technical; project] Generic Core and semantic Module contracts remain provider-neutral and domain-neutral; Godot behavior resides in an optional pack.
+  - Rationale: Best-in-class capability swapping must not create product-specific routing or lifecycle authority.
+  - Acceptance criteria: `AC-DEV-GODOT-GRANTS-001`, `AC-DEV-REQ-STRATEGIES-001`
+- **`CON-DEV-MQ-EVIDENCE-001`** [security; project] Raw receipts remain local and Git receives only digest-bound redacted views that pass secret and unsafe-content checks.
+  - Rationale: Exact evidence and open-source safety must coexist.
+  - Acceptance criteria: `AC-DEV-RECEIPTS-001`
+- **`CON-DEV-MQ-FEEDBACK-001`** [data; project] Sentry and PostHog remain disabled, uninstalled, and outside V0.11.
+  - Rationale: Production feedback requires a separate consent, retention, and privacy design.
+  - Acceptance criteria: `AC-DEV-METRICS-001`
+- **`CON-DEV-MQ-HOST-001`** [platform; project] ChatGPT Desktop on Windows is the release-defining V0.11 host.
+  - Rationale: Release evidence must match the owner-supported product environment.
+  - Acceptance criteria: `AC-DEV-DESKTOP-SKILLS-001`, `AC-DEV-MODULE-QUALITY-E2E-001`
+- **`CON-DEV-MQ-PROVIDER-001`** [security; project] Provider acquisition and execution are project-local, checksum-pinned, explicitly approved, offline by default, and never silently substituted.
+  - Rationale: Live integration must not weaken reproducibility or trust boundaries.
+  - Acceptance criteria: `AC-DEV-PROVIDER-ACQUISITION-001`, `AC-DEV-PROVIDER-FAILURE-001`
+- **`CON-DEV-OSS-BRANCH-001`** [security; project] main is the protected default branch and release promotion requires verified evidence.
+  - Rationale: Public source distribution needs an owner-controlled, auditable promotion boundary.
+  - Acceptance criteria: `AC-DEV-OSS-MAIN-001`
+- **`CON-DEV-OSS-DISTRIBUTION-001`** [business; project] V0.10 uses GitHub source and release tarballs only and is not published to the public npm registry.
+  - Rationale: The owner selected a controlled public source/library preview before registry distribution.
+  - Acceptance criteria: `AC-DEV-OSS-DISTRIBUTION-001`
+- **`CON-DEV-OSS-LICENSE-001`** [legal; project] Source and packaged artifacts use Apache-2.0 licensing and contributions use DCO sign-off.
+  - Rationale: The owner selected a permissive open-source license and lightweight provenance model.
+  - Acceptance criteria: `AC-DEV-OSS-GOVERNANCE-001`
+- **`CON-DEV-OSS-PLATFORM-001`** [platform; project] ChatGPT Desktop on Windows is the supported V0.10 product host; other desktop hosts and a hosted service are not release claims.
+  - Rationale: The release scope is intentionally narrow and evidence must match the supported environment.
+  - Acceptance criteria: `AC-DEV-OSS-DOGFOOD-001`, `AC-DEV-OSS-WINDOWS-001`
+- **`CON-DEV-PROVIDER-NEUTRAL-001`** [technical; project] Canonical Core and module contracts cannot depend on one AI model, provider, IDE, or external engineering product.
+  - Rationale: The workflow owns engineering semantics; tools only perform bounded capabilities.
+  - Acceptance criteria: `AC-DEV-ADAPTER-BOUNDARY-001`, `AC-DEV-MODEL-INDEPENDENCE-001`
+- **`CON-DEV-RUN-REPORT-NON-AUTHORITY-001`** [technical; project] Run observations and reports cannot participate in semantic artifact identity, Gate authority, evidence satisfaction, routing, or progression.
+  - Rationale: Operational telemetry may be incomplete or host-dependent and must not change deterministic engineering outcomes.
+  - Acceptance criteria: `AC-DEV-RUN-NON-AUTHORITY-001`
+- **`CON-DEV-WE-AUTHORITY-001`** [business; project] Core owns readiness, input validation, binding validation, canonical output validation, checkpointing, and progression; executor adapters own only bounded work performance.
+  - Rationale: An executor cannot safely certify its own authority or downstream completion.
+  - Acceptance criteria: `AC-DEV-WE-BOUNDARY-001`, `AC-DEV-WE-READINESS-001`
+- **`CON-DEV-WE-HOST-ENFORCEMENT-001`** [security; project] External hosts enforce workspaces and permissions; declarative grants in DevRelay are demands, not claims that Core enforced operating-system isolation.
+  - Rationale: Provider-neutral Core cannot truthfully claim host effects it does not perform.
+  - Acceptance criteria: `AC-DEV-WE-ISOLATION-001`
+- **`CON-DEV-WE-IMMUTABLE-ATTEMPT-001`** [business; project] ExecutionAttempt records are immutable; every retry has a new identity and exact predecessor reference.
+  - Rationale: Overwriting attempts destroys auditability and makes replay ambiguous.
+  - Acceptance criteria: `AC-DEV-WE-RETRY-001`
+- **`CON-DEV-WE-ONE-ITEM-001`** [business; project] V1 executes exactly one runnable WorkItem per invocation and represents frontier parallelism as multiple independent invocations.
+  - Rationale: Per-item isolation preserves retry, permission, evidence, and failure boundaries.
+  - Acceptance criteria: `AC-DEV-WE-ONE-ITEM-001`
+- **`CON-DEV-WE-VERIFICATION-BARRIER-001`** [business; project] Only WorkItemVerification may determine whether a ChangeSetDraft and evidence satisfy the work item; WorkExecution cannot advance directly to integration.
+  - Rationale: Producing changes is distinct from proving them correct.
+  - Acceptance criteria: `AC-DEV-WE-BOUNDARY-001`, `AC-DEV-WE-OUTPUT-001`
+- **`CON-DEV-WIV-AUTHORITY-001`** [business; project] Verifier adapters produce observations and evidence only; Core owns canonical validation and policy evaluation, while WorkItemVerificationGate alone owns approval and progression to ChangeIntegration.
+  - Rationale: No evidence producer can safely certify its own completeness or authority.
+  - Acceptance criteria: `AC-DEV-WIV-BOUNDARY-001`, `AC-DEV-WIV-GATE-001`
+- **`CON-DEV-WIV-EXACT-SUBJECT-001`** [technical; project] Verification evidence must be bound to one exact work item, execution attempt, change set, repository base, and candidate workspace; evidence from another subject cannot be reused implicitly.
+  - Rationale: Tests or reviews over different bytes do not prove the candidate under consideration.
+  - Acceptance criteria: `AC-DEV-WIV-EVIDENCE-001`, `AC-DEV-WIV-INPUTS-001`
+- **`CON-DEV-WIV-HOST-ENFORCEMENT-001`** [security; project] External hosts enforce verifier workspace, process, network, secret, and read/write permissions; DevRelay permission declarations remain demands rather than claims of operating-system enforcement.
+  - Rationale: Provider-neutral Core cannot truthfully claim host isolation effects it does not perform.
+  - Acceptance criteria: `AC-DEV-WIV-EVIDENCE-001`
+- **`CON-DEV-WIV-IMMUTABLE-ATTEMPT-001`** [business; project] VerificationAttempt and accepted evidence records are immutable; every retry or continuation receives a new identity and exact predecessor reference.
+  - Rationale: Overwriting verification destroys the audit trail and can silently replace failing evidence.
+  - Acceptance criteria: `AC-DEV-WIV-RETRY-001`
+- **`CON-DEV-WIV-NO-INTEGRATION-001`** [business; project] A verified result authorizes ChangeIntegration consideration only; WorkItemVerification cannot mutate the shared baseline or create an integrated-completion fact.
+  - Rationale: Proof of a candidate and incorporation of that candidate are separate lifecycle authorities.
+  - Acceptance criteria: `AC-DEV-WIV-BOUNDARY-001`, `AC-DEV-WIV-OUTCOMES-001`
+- **`CON-EP-AUTHORITY-001`** [technical; project] EnvironmentVerificationGate alone activates ready state; adapters, executors, models, callers, and WorkExecution cannot self-authorize.
+  - Rationale: Preparation evidence cannot also own progression authority.
+  - Acceptance criteria: `AC-EP-GATE-001`
+- **`CON-EP-EFFECTS-001`** [security; project] All environment effects use exact canonical grants; project-local reversible preparation is the default and machine-global mutation requires separate approval and rollback support.
+  - Rationale: Environment automation has high host-impact potential.
+  - Acceptance criteria: `AC-EP-MUTATION-001`, `AC-EP-ROLLBACK-001`
+- **`CON-EP-HOST-001`** [platform; project] ChatGPT/Codex Desktop on Windows is the only release-defining DevRelay host; arbitrary project profiles do not create additional host support claims.
+  - Rationale: Product claims must match live release evidence.
+  - Acceptance criteria: `AC-EP-E2E-001`, `AC-EP-SUPPORT-001`
+- **`CON-EP-NETWORK-001`** [security; project] Network access is denied by default and requires exact destination and purpose grants with attempt receipts.
+  - Rationale: Preparation must not silently acquire tools or transmit project data.
+  - Acceptance criteria: `AC-EP-NETWORK-001`
+- **`CON-EP-SECRETS-001`** [security; project] Only secret references and presence metadata may enter EP-001 artifacts; secret values are prohibited from persistence, logs, graph facts, and evidence.
+  - Rationale: Readiness proof does not require disclosure.
+  - Acceptance criteria: `AC-EP-SECRETS-001`
+- **`CON-EP-TRACE-001`** [technical; project] Adapters cannot access TraceabilityGraph; trusted contributors derive only approved forward readiness relationships from validated artifacts.
+  - Rationale: Environment plug-ins remain untrusted and graph authority remains Core-owned.
+  - Acceptance criteria: `AC-EP-TRACE-001`
+- **`CON-PM-AUTHORITY-001`** [technical; project] Core and ProjectMemoryGate own canonical memory authority; Mem0, modules, models, sessions, and adapters remain proposer-only.
+  - Rationale: Retrieval convenience cannot become project truth or workflow authority.
+  - Acceptance criteria: `AC-PM-AUTHORITY-001`, `AC-PM-PROMOTION-001`
+- **`CON-PM-DOMAIN-001`** [technical; project] ProjectMemory cannot activate a change to another authoritative baseline until that domain's module and Gate approve the exact delta.
+  - Rationale: Memory must reflect approved engineering truth rather than bypass lifecycle authority.
+  - Acceptance criteria: `AC-PM-DOMAIN-ROUTING-001`
+- **`CON-PM-HOST-001`** [platform; project] ChatGPT/Codex Desktop on Windows is the release-defining interactive host; closeout cannot rely on an undocumented tab-close callback.
+  - Rationale: The supported behavior must be enforceable through DevRelay contracts, skills, plug-in surfaces, MCP, checkpoints, and next-task recovery.
+  - Acceptance criteria: `AC-PM-CONCLUDE-001`, `AC-PM-E2E-001`
+- **`CON-PM-TRACE-001`** [technical; project] Mem0 receives only trusted digest-bound TraceabilityContextProjection artifacts and cannot access or mutate TraceabilityGraph directly.
+  - Rationale: The graph remains the authoritative lifecycle relationship service.
+  - Acceptance criteria: `AC-PM-TRACE-PROJECTION-001`, `AC-PM-TRACE-QUERY-001`
+- **`CON-RM-AUTHORITY-001`** [technical; project] Candidate detection and adapters are proposer-only; RoadmapGate alone promotes RoadmapBaseline and Generic Core retains validation, checkpoint, and progression authority.
+  - Rationale: Roadmap convenience cannot become scope or workflow authority.
+  - Acceptance criteria: `AC-RM-DISPOSITION-001`, `AC-RM-GATE-001`
+- **`CON-RM-CONTEXT-001`** [technical; project] SessionContextSnapshot is mandatory orientation context for fresh DevRelay tasks but never an implicit substitute for ModuleInvocation ports.
+  - Rationale: Fresh-task usability must preserve explicit dataflow and replay identity.
+  - Acceptance criteria: `AC-RM-EXPLICIT-INPUTS-001`, `AC-RM-SESSION-BOOTSTRAP-001`
+- **`CON-RM-PLATFORM-001`** [platform; project] ChatGPT Desktop on Windows is the release-defining interactive host for RM-001.
+  - Rationale: Verification must match the supported product surface.
+  - Acceptance criteria: `AC-RM-E2E-001`
+- **`CON-RM-SCOPE-001`** [business; project] V1 RoadmapManagement owns prioritization and disposition only, not dates, staffing, scheduling, execution, or work-item status.
+  - Rationale: Keep the module bounded and avoid duplicating downstream lifecycle authority.
+  - Acceptance criteria: `AC-RM-MODULE-001`
+- **`CON-RP-AUTHORITY-001`** [business; project] ReleaseVerificationGate alone activates release readiness; modules, adapters, models, callers, and publication systems cannot self-authorize.
+  - Rationale: Candidate production and verification cannot also own readiness authority.
+  - Acceptance criteria: `AC-RP-GATE-001`, `AC-RP-OWNER-AUTHORITY-001`
+- **`CON-RP-EFFECTS-001`** [security; project] Release preparation is local and offline by default; network, credentials, signing, tags, remote repositories, and publication require separate exact approval and never follow from release readiness alone.
+  - Rationale: Preparation evidence must not become implicit external authority.
+  - Acceptance criteria: `AC-RP-BOUNDARY-001`, `AC-RP-EFFECT-APPROVAL-001`, `AC-RP-SUPPLY-CHAIN-001`
+- **`CON-RP-HOST-001`** [platform; project] ChatGPT/Codex Desktop on Windows is the only release-defining RP-001 host.
+  - Rationale: Release claims must match exact live acceptance evidence.
+  - Acceptance criteria: `AC-RP-E2E-001`, `AC-RP-SCOPE-001`
+- **`CON-RP-POLICY-001`** [security; project] One versioned release policy owns required verification and supply-chain dispositions; adapters may only return observations and native evidence.
+  - Rationale: Evidence producers cannot certify their own completeness or exemptions.
+  - Acceptance criteria: `AC-RP-NOT-APPLICABLE-001`, `AC-RP-POLICY-001`
+- **`CON-RP-STORED-BYTES-001`** [technical; project] Verification and Gate promotion operate on exact content-addressed candidate bytes and cannot substitute rebuilt or parsed-value-equivalent artifacts.
+  - Rationale: Release evidence proves bytes, not intent or semantic similarity.
+  - Acceptance criteria: `AC-RP-IDENTITY-001`, `AC-RP-STORED-BYTES-001`
+- **`CON-RP-TRACE-001`** [technical; project] Adapters cannot access TraceabilityGraph; trusted contributors derive only validated forward release relationships within declared candidate or approved scopes.
+  - Rationale: Release plug-ins remain untrusted and graph authority remains Core-owned.
+  - Acceptance criteria: `AC-RP-TRACE-001`
+- **`CON-SIM-AUTHORITY-001`** [technical; project] Facade and profiles may simplify configuration and presentation but cannot move routing, validation, Gate, checkpoint, traceability, or progression authority out of Core.
+  - Rationale: Product simplicity must not weaken DevRelay's trust model.
+  - Acceptance criteria: `AC-SIM-FACADE-001`, `AC-SIM-PROFILES-001`
+- **`CON-SIM-EVIDENCE-001`** [data; project] Evidence externalization must preserve immutable content digests, media types, provenance, availability checks, and offline-verifiable manifests.
+  - Rationale: Repository reduction cannot sacrifice reproducibility.
+  - Acceptance criteria: `AC-SIM-EVIDENCE-001`
+- **`CON-SIM-HISTORY-001`** [schedule; project] The simplification increment must not rewrite published Git history or mutate the verified V0.11 implementation/evidence pair.
+  - Rationale: Existing release evidence is an immutable trust input.
+  - Acceptance criteria: `AC-SIM-EVIDENCE-001`, `AC-SIM-PR-DECOMPOSITION-001`
+- **`CON-SIM-PLATFORM-001`** [platform; project] ChatGPT Desktop on Windows is the only release-defining interactive host for this increment.
+  - Rationale: Verification must match the owner-supported product surface.
+  - Acceptance criteria: `AC-SIM-WINDOWS-E2E-001`
+- **`CON-WDA-NO-EXECUTION-001`** [technical; capabilities `CAP-WDA-ANALYZE-001`, `CAP-WDA-GATE-001`] WorkDependencyAnalysis is analysis and approval, not assignment, scheduling, or execution.
+  - Rationale: Separate lifecycle authority prevents planned ordering from becoming an execution claim.
+  - Acceptance criteria: `AC-WDA-NO-EXECUTION-001`
+- **`CON-WDA-PROVIDER-NEUTRAL-001`** [technical; capabilities `CAP-WDA-ANALYZE-001`] Canonical contracts and Core cannot depend on a model, Spec Kit, OpenSpec, or another analyzer product.
+  - Rationale: Analysis tools must remain replaceable.
+  - Acceptance criteria: `AC-WDA-PLUGIN-BOUNDARY-001`
+- **`CON-WDA-TRACE-DIRECTION-001`** [technical; capabilities `CAP-WDA-ANALYZE-001`, `CAP-WDA-GATE-001`] Traceability stores forward dependency assertions only and derives reverse traversal at query time.
+  - Rationale: One direction avoids duplicated inconsistent facts.
+  - Acceptance criteria: `AC-WDA-TRACEABILITY-001`
+
+## Non-Functional Requirements
+
+- **`NFR-DEV-AD-DETERMINISM-001`** [reliability; must; project] Routing, inventory projection, observation normalization, confidence and gap evaluation, diagnostics, and checkpoint replay must be deterministic for exact version-pinned inputs.
+  - Measure: Canonical digest equality and zero-call replay.
+  - Target: 100 percent equality for Core-owned artifacts.
+  - Acceptance criteria: `AC-DEV-AD-DETERMINISM-001`, `AC-DEV-AD-REPLAY-001`
+- **`NFR-DEV-AD-PRIVACY-001`** [security; must; project] Discovery must not inspect excluded files or transmit source content without exact policy-bound authorization.
+  - Measure: Denied-access and external-transmission conformance cases across all configured adapter bindings.
+  - Target: No undeclared inspection or transmission succeeds.
+  - Acceptance criteria: `AC-DEV-AD-PRIVACY-001`
+- **`NFR-DEV-CI-ATOMICITY-001`** [reliability; must; project] Integration must preserve one observable target-ref transition or no target-ref transition for every invocation outcome.
+  - Measure: Invocations with partial or unaccounted target-ref mutation.
+  - Target: Zero.
+  - Acceptance criteria: `AC-DEV-CI-ATOMICITY-001`, `AC-DEV-CI-REPLAY-001`
+- **`NFR-DEV-CI-AUDITABILITY-001`** [observability; must; project] Every integration attempt must preserve exact input refs, pre-state observation, adapter identity, native Git operation evidence, post-state observation, checkpoint, outcome, and traceability merge proof where applicable.
+  - Measure: Integration attempts missing required exact evidence.
+  - Target: Zero.
+  - Acceptance criteria: `AC-DEV-CI-SUCCESS-001`, `AC-DEV-CI-TRACEABILITY-001`
+- **`NFR-DEV-CI-IDEMPOTENCY-001`** [reliability; must; project] Exact replay and recovery must never apply one verified change more than once.
+  - Measure: Duplicate target commits or effects for one integration identity.
+  - Target: Zero.
+  - Acceptance criteria: `AC-DEV-CI-REPLAY-001`
+- **`NFR-DEV-CONTRACT-DETERMINISM-001`** [reliability; must; project] Exact architecture, baseline, binding, validator, policy, and native bytes must produce byte-identical canonical contract candidates, diffs, diagnostics, and Gate inputs.
+  - Measure: Canonical digest equality across replay, insertion order, process restart, and equivalent artifact relocation.
+  - Target: 100 percent equality for deterministic Core-owned outputs.
+  - Acceptance criteria: `AC-DEV-CONTRACT-COMPATIBILITY-001`, `AC-DEV-CONTRACT-REPLAY-001`, `AC-DEV-CONTRACT-VALIDATION-001`
+- **`NFR-DEV-DETERMINISM-001`** [reliability; must; project] Core-owned routing, validation, checkpoint replay, traceability projection, and gate preparation must be deterministic for exact inputs.
+  - Measure: Canonical route, result, diagnostic, update, and receipt digest equality.
+  - Target: 100 percent equality for deterministic Core-owned behavior.
+  - Acceptance criteria: `AC-DEV-RESUME-001`
+- **`NFR-DEV-MQ-COMPATIBILITY-001`** [compatibility; must; project] Live support claims must bind exact DevRelay, provider, runtime, engine, operating-system, and adapter versions.
+  - Measure: Execute every supported compatibility row and negative mismatched rows.
+  - Target: 100 percent of claimed rows pass; untested rows are unavailable.
+  - Acceptance criteria: `AC-DEV-GODOT-COMPAT-001`, `AC-DEV-LIVE-ARCH-001`, `AC-DEV-LIVE-SPEC-001`
+- **`NFR-DEV-MQ-DETERMINISM-001`** [reliability; must; project] Question waves, closure, provider selection, receipt canonicalization, queries, metrics, compatibility evaluation, and sealing must be deterministic for exact inputs.
+  - Measure: Digest equality and zero-call replay across repeated runs.
+  - Target: 100 percent equality with zero unexplained drift.
+  - Acceptance criteria: `AC-DEV-GIT-SEAL-001`, `AC-DEV-RECEIPTS-001`, `AC-DEV-REQ-CLOSURE-001`
+- **`NFR-DEV-MQ-PERFORMANCE-001`** [performance; must; project] Instrumentation and compact reporting must expose their own overhead and avoid materially dominating bounded provider execution.
+  - Measure: Compare instrumented and baseline run durations and receipt sizes on the Windows reference host.
+  - Target: Measured overhead is reported and remains within the approved performance policy established during ArchitectureDesign.
+  - Acceptance criteria: `AC-DEV-METRICS-001`
+- **`NFR-DEV-MQ-PRIVACY-001`** [privacy; must; project] Raw execution evidence and telemetry remain local unless a separately approved export explicitly grants disclosure.
+  - Measure: Inspect network activity, persisted paths, redacted views, and optional-provider configuration.
+  - Target: Zero default external telemetry or source transmission.
+  - Acceptance criteria: `AC-DEV-METRICS-001`, `AC-DEV-PROVIDER-ACQUISITION-001`
+- **`NFR-DEV-MQ-SECURITY-001`** [security; must; project] External providers and Godot effects must be least-privilege, offline by default, explicitly granted, secret-safe, and fail closed.
+  - Measure: Denied-operation, checksum, redaction, secret, and network-isolation conformance cases.
+  - Target: Zero undeclared effects, silent downloads, secret-bearing committed receipts, or implicit network calls.
+  - Acceptance criteria: `AC-DEV-GODOT-GRANTS-001`, `AC-DEV-PROVIDER-ACQUISITION-001`, `AC-DEV-RECEIPTS-001`
+- **`NFR-DEV-MQ-USABILITY-001`** [usability; must; project] Requirements and trace reporting must remain compact, resumable, and human-readable while preserving expandable exact evidence.
+  - Measure: Review breadth-first wave summaries and compact query/report output for representative small and complex changes.
+  - Target: Every run exposes status, blockers, coverage, next action, and evidence links without requiring a full edge dump.
+  - Acceptance criteria: `AC-DEV-REQ-WAVES-001`, `AC-DEV-TRACE-QUERY-001`
+- **`NFR-DEV-OSS-COMPATIBILITY-001`** [compatibility; must; project] The V0.10 public source/library preview must remain usable from ChatGPT Desktop on Windows with supported Node LTS releases.
+  - Measure: Passing Windows canonical gate and installed-package consumer runs for every supported Node major.
+  - Target: 100 percent of the declared Windows and Node matrix.
+  - Acceptance criteria: `AC-DEV-OSS-WINDOWS-001`
+- **`NFR-DEV-OSS-DETERMINISM-001`** [reliability; must; project] Release catalog generation, export enumeration, tarball validation, installed-package verification, and lifecycle replay must be deterministic for exact source and configuration inputs.
+  - Measure: Digest equality and zero-call replay across repeated candidate materialization and verification.
+  - Target: 100 percent equality for canonical artifacts and zero unexplained drift.
+  - Acceptance criteria: `AC-DEV-OSS-DOGFOOD-001`, `AC-DEV-OSS-EXPORTS-001`
+- **`NFR-DEV-PORTABILITY-001`** [compatibility; must; project] Canonical lifecycle contracts must remain independent of IDE, AI provider, model, operating host, and bounded external tool.
+  - Measure: Compatible host and adapter substitutions requiring canonical contract changes.
+  - Target: Zero substitutions.
+  - Acceptance criteria: `AC-DEV-MODEL-INDEPENDENCE-001`
+- **`NFR-DEV-RUN-REPORT-DETERMINISM-001`** [reliability; must; project] Given the same standardized run records, graph snapshot, maturity records, and rendering contract, Core must produce byte-identical structured and Markdown run reports.
+  - Measure: Canonical snapshot digest and raw LifecycleRunReport.md digest equality across insertion orders and replays.
+  - Target: 100 percent equality for identical report inputs.
+  - Acceptance criteria: `AC-DEV-RUN-DYNAMIC-001`, `AC-DEV-RUN-HUMAN-READABLE-001`
+- **`NFR-DEV-RUN-REPORT-OBSERVABILITY-001`** [observability; must; project] The run-reporting surface must preserve enough sourced operational evidence to separate active work, queueing, human approval wait, retries, replay, rework, and unavailable measurements.
+  - Measure: Percentage of configured report metrics carrying exact provenance or an explicit absence disposition.
+  - Target: 100 percent.
+  - Acceptance criteria: `AC-DEV-RUN-METRICS-001`
+- **`NFR-DEV-RUN-REPORT-PRIVACY-001`** [privacy; must; project] Human-readable reports must minimize sensitive content while preserving content-addressed audit links and explicit redaction or omission dispositions.
+  - Measure: Secret-scanning and redaction-policy conformance over structured and Markdown report fixtures.
+  - Target: Zero unapproved secret or credential disclosures.
+  - Acceptance criteria: `AC-DEV-RUN-SECURITY-001`
+- **`NFR-DEV-TRACEABILITY-001`** [observability; must; project] Every accepted lifecycle assertion must retain exact artifact, contributor, execution, authority, and graph-version provenance.
+  - Measure: Accepted graph assertions lacking complete resolvable provenance.
+  - Target: Zero assertions.
+  - Acceptance criteria: `AC-DEV-TRACEABILITY-001`
+- **`NFR-DEV-WE-DETERMINISM-001`** [reliability; must; project] Readiness proof, binding validation, attempt identity, canonical output, diagnostics, and checkpoint replay must be deterministic for exact version-pinned inputs.
+  - Measure: Canonical digest equality and zero-call replay.
+  - Target: 100 percent equality for Core-owned artifacts.
+  - Acceptance criteria: `AC-DEV-WE-DETERMINISM-001`, `AC-DEV-WE-RETRY-001`
+- **`NFR-DEV-WE-ISOLATION-001`** [security; must; project] Execution permissions must be least-privilege, explicit, host-enforced, and bound to one attempt and workspace.
+  - Measure: Host conformance tests for every declared permission kind and denial path.
+  - Target: No undeclared access succeeds.
+  - Acceptance criteria: `AC-DEV-WE-ISOLATION-001`
+- **`NFR-DEV-WIV-DETERMINISM-001`** [reliability; must; project] Input binding, obligation expansion, evidence normalization, policy evaluation, diagnostics, checkpoint replay, and Gate preparation must be deterministic for exact version-pinned inputs.
+  - Measure: Canonical digest equality and zero-call checkpoint replay.
+  - Target: 100 percent equality for Core-owned artifacts.
+  - Acceptance criteria: `AC-DEV-WIV-DETERMINISM-001`, `AC-DEV-WIV-RETRY-001`
+- **`NFR-DEV-WIV-EVIDENCE-CLOSURE-001`** [observability; must; project] Every approved verification result must carry complete, resolvable, subject-bound evidence and an explicit disposition for every required verification obligation.
+  - Measure: Approved obligations lacking exact evidence or an approved not-applicable disposition.
+  - Target: Zero.
+  - Acceptance criteria: `AC-DEV-WIV-EVIDENCE-001`, `AC-DEV-WIV-PLAN-001`
+- **`NFR-DEV-WIV-ISOLATION-001`** [security; must; project] Verifier adapters must receive least-privilege, explicit, host-enforced permissions bound to one immutable verification attempt and candidate workspace.
+  - Measure: Host conformance checks for allowed and denied verifier operations.
+  - Target: No undeclared access succeeds.
+  - Acceptance criteria: `AC-DEV-WIV-EVIDENCE-001`, `AC-DEV-WIV-INDEPENDENCE-001`
+- **`NFR-EP-DETERMINISM-001`** [reliability; must; project] Environment profiles, plans, fingerprints, readiness decisions, remediation, evidence, graph updates, and replay are byte-stable for exact inputs.
+  - Measure: Repeat and reorder exact inputs across process restart and compare bytes, digests, ordering, and effect counts.
+  - Target: 100 percent equality and zero repeated effects on replay.
+  - Acceptance criteria: `AC-EP-DRIFT-001`, `AC-EP-NFR-001`, `AC-EP-REPLAY-001`
+- **`NFR-EP-PERFORMANCE-001`** [performance; must; project] Checks run with bounded safe parallelism and record timings, retries, cache hits, and bottlenecks without inventing unavailable measurements.
+  - Measure: Measure cold, warm, cached, parallel, serialized, failed, and unavailable paths on the Windows reference host.
+  - Target: Complete honest telemetry and no readiness decision delayed by an unbounded check.
+  - Acceptance criteria: `AC-EP-NFR-001`, `AC-EP-TELEMETRY-001`
+- **`NFR-EP-RELIABILITY-001`** [reliability; must; project] Partial preparation, crash, stale state, cleanup failure, and concurrent attempts recover without false readiness or historical mutation.
+  - Measure: Inject failures before and after every checkpoint and mutation boundary.
+  - Target: Zero false-ready outcomes and exact restart-safe recovery.
+  - Acceptance criteria: `AC-EP-GATE-001`, `AC-EP-REPLAY-001`, `AC-EP-ROLLBACK-001`
+- **`NFR-EP-SECURITY-001`** [security; must; project] Preparation and verification enforce least privilege, secret non-disclosure, network deny-by-default, safe paths, and explicit global-change approval.
+  - Measure: Run permission, path, process, network, secret, injection, redaction, and global-mutation matrices.
+  - Target: Zero unauthorized effects, disclosures, silent fallbacks, or unrecorded attempts.
+  - Acceptance criteria: `AC-EP-MUTATION-001`, `AC-EP-NETWORK-001`, `AC-EP-SECRETS-001`
+- **`NFR-EP-USABILITY-001`** [usability; must; project] Desktop presents one compact readiness summary, consolidated remediation plan, and expandable exact evidence rather than fragmented prompts.
+  - Measure: Review standard, warning, blocked, global-effect, drift, and recovery transcripts.
+  - Target: One consolidated interaction per preparation wave with direct exact-artifact references.
+  - Acceptance criteria: `AC-EP-REMEDIATION-001`, `AC-EP-UX-001`
+- **`NFR-PM-ACCURACY-001`** [reliability; must; project] DevRelay must not execute from missing, stale, conflicting, unsupported, or unverifiable project memory.
+  - Measure: Run the complete corruption, drift, conflict, provider, and native-equivalence matrices.
+  - Target: Zero module executions from an inaccurate context bundle.
+  - Acceptance criteria: `AC-PM-BOOTSTRAP-001`, `AC-PM-DOMAIN-ROUTING-001`, `AC-PM-FALLBACK-001`
+- **`NFR-PM-DETERMINISM-001`** [reliability; must; project] Memory normalization, authority ordering, context assembly, delta classification, synopsis projection, receipts, checkpoints, and replay must be byte-stable for exact inputs.
+  - Measure: Compare canonical bytes, digests, order, and provider call counts across repeats and restarts.
+  - Target: 100 percent equality and zero duplicate provider calls on replay.
+  - Acceptance criteria: `AC-PM-PRECEDENCE-001`, `AC-PM-RETRIEVAL-001`, `AC-PM-SYNOPSIS-001`
+- **`NFR-PM-PERFORMANCE-001`** [performance; must; project] Mandatory memory bootstrap, retrieval, frontier reconciliation, and conclusion must remain fast enough for use at every task and frontier boundary and report measured latency and cache behavior.
+  - Measure: Measure cold and warm native and Mem0 paths on the Windows reference host.
+  - Target: ArchitectureDesign defines release budgets and SystemVerification rejects regressions.
+  - Acceptance criteria: `AC-PM-BOOTSTRAP-001`, `AC-PM-CONCLUDE-001`, `AC-PM-E2E-001`
+- **`NFR-PM-SECURITY-001`** [security; must; project] Memory capture, projection, retrieval, and synchronization must reject secrets, unsafe controls, path escapes, unauthorized provider access, and undeclared external transmission.
+  - Measure: Run secret, injection, path, permission, network, redaction, and sensitive-deletion fixtures.
+  - Target: Zero unauthorized disclosures, writes, graph mutations, or provider transmissions.
+  - Acceptance criteria: `AC-PM-HISTORY-001`, `AC-PM-MEM0-001`, `AC-PM-TRACE-PROJECTION-001`
+- **`NFR-PM-USABILITY-001`** [usability; must; project] Task startup and conclusion must present compact human-readable state and deltas while keeping exact evidence expandable.
+  - Measure: Review standard Windows Desktop startup, worker handoff, conflict, recovery, and conclusion transcripts.
+  - Target: One concise briefing and one concise conclusion diff, with direct exact-artifact references.
+  - Acceptance criteria: `AC-PM-BRIEFING-001`, `AC-PM-DELTA-REVIEW-001`, `AC-PM-E2E-001`
+- **`NFR-RM-DETERMINISM-001`** [reliability; must; project] Roadmap routing, scoring, ordering, projection, session snapshots, receipts, refresh, and replay must be byte-stable for exact inputs.
+  - Measure: Compare canonical bytes, digests, order, and adapter call counts across repeats and restarts.
+  - Target: 100 percent equality and zero duplicate adapter calls on replay.
+  - Acceptance criteria: `AC-RM-BASELINE-001`, `AC-RM-CONTEXT-REFRESH-001`, `AC-RM-PRIORITY-001`
+- **`NFR-RM-FAIL-CLOSED-001`** [security; must; project] Missing, stale, malformed, substituted, or digest-mismatched authority-bearing roadmap or session context must stop before module execution or baseline mutation.
+  - Measure: Run mutation matrices across every required artifact, receipt, checkpoint, and Gate approval.
+  - Target: Zero unauthorized executions, projections, promotions, or graph facts.
+  - Acceptance criteria: `AC-RM-EXPLICIT-INPUTS-001`, `AC-RM-GATE-001`, `AC-RM-SESSION-RECEIPT-001`
+- **`NFR-RM-PERFORMANCE-001`** [performance; must; project] Session bootstrap and native roadmap review must remain fast enough for every fresh Desktop task and record measured duration and cache behavior.
+  - Measure: Measure cold and warm bootstrap, baseline load, validation, projection, and receipt persistence on the Windows reference host.
+  - Target: ArchitectureDesign defines release budgets and SystemVerification rejects regressions.
+  - Acceptance criteria: `AC-RM-E2E-001`, `AC-RM-SESSION-BOOTSTRAP-001`
+- **`NFR-RM-USABILITY-001`** [usability; must; project] Fresh-task context and roadmap review must be concise by default with expandable exact evidence and no requirement to inspect internal artifact construction.
+  - Measure: Review standard Desktop transcripts and compact report output.
+  - Target: One startup summary, one roadmap summary, explicit blockers, and direct evidence links without full graph dumps.
+  - Acceptance criteria: `AC-RM-BASELINE-001`, `AC-RM-E2E-001`, `AC-RM-SESSION-BOOTSTRAP-001`
+- **`NFR-RP-DETERMINISM-001`** [reliability; must; project] Candidate identity, materialization, catalogs, checksums, verification decisions, diagnostics, evidence, graph updates, and replay are byte-stable for exact inputs.
+  - Measure: Repeat and reorder exact inputs across process restart and compare bytes, digests, ordering, and effect counts.
+  - Target: 100 percent equality and zero repeated effects on replay.
+  - Acceptance criteria: `AC-RP-IDENTITY-001`, `AC-RP-NFR-001`, `AC-RP-REPLAY-001`
+- **`NFR-RP-PERFORMANCE-001`** [performance; must; project] Materialization and verification record honest timings, cache behavior, retries, artifact sizes, and bottlenecks without inventing unavailable measurements or imposing an unevidenced universal SLA.
+  - Measure: Measure cold, warm, cached, failed, replayed, and unavailable paths on the Windows reference host.
+  - Target: Complete sourced telemetry with no unbounded release check.
+  - Acceptance criteria: `AC-RP-NFR-001`, `AC-RP-TELEMETRY-001`
+- **`NFR-RP-RELIABILITY-001`** [reliability; must; project] Partial materialization, crash, stale state, retrieval failure, cleanup failure, and concurrent attempts recover without false readiness or historical mutation.
+  - Measure: Inject failures before and after every checkpoint, artifact, verification, and Gate boundary.
+  - Target: Zero false-ready outcomes and exact restart-safe recovery.
+  - Acceptance criteria: `AC-RP-DRIFT-001`, `AC-RP-REPLAY-001`, `AC-RP-STORED-BYTES-001`
+- **`NFR-RP-SECURITY-001`** [security; must; project] Preparation and verification enforce least privilege, secret non-disclosure, offline-by-default execution, safe paths, checksum-pinned tools, and explicit external-effect approval.
+  - Measure: Run permission, path, process, network, credential, secret, checksum, provenance, redaction, and remote-effect matrices.
+  - Target: Zero unauthorized effects, disclosures, silent fallbacks, or accepted unsafe artifacts.
+  - Acceptance criteria: `AC-RP-EFFECT-APPROVAL-001`, `AC-RP-POLICY-001`, `AC-RP-SUPPLY-CHAIN-001`
+- **`NFR-RP-USABILITY-001`** [usability; must; project] Desktop presents one compact readiness summary and consolidated effect proposal with expandable exact evidence.
+  - Measure: Review standard, warning, blocked, drift, recovery, network, credential, and replay transcripts.
+  - Target: One concise summary and one consolidated approval interaction per candidate attempt.
+  - Acceptance criteria: `AC-RP-EFFECT-APPROVAL-001`, `AC-RP-SUMMARY-001`
+- **`NFR-SIM-COMPATIBILITY-001`** [compatibility; must; project] 0.10.0-rc.2 must preserve the declared compat/v1 window and support the release-defined Node versions on ChatGPT Desktop for Windows.
+  - Measure: Run installed-package and migration matrices on supported Windows and Node combinations.
+  - Target: 100 percent of claimed combinations and compat examples pass.
+  - Acceptance criteria: `AC-SIM-COMPAT-001`, `AC-SIM-WINDOWS-E2E-001`
+- **`NFR-SIM-DETERMINISM-001`** [reliability; must; project] Facade calls, profile resolution, CLI commands, durable recovery, and evidence retrieval must be deterministic for exact content-addressed inputs.
+  - Measure: Compare outputs, digests, transition histories, and effect counts across repeated and recovered runs.
+  - Target: 100 percent equality with zero duplicate completed effects.
+  - Acceptance criteria: `AC-SIM-CLI-001`, `AC-SIM-CRASH-RECOVERY-001`, `AC-SIM-PROFILES-001`
+- **`NFR-SIM-MAINTAINABILITY-001`** [maintainability; must; project] Facade, advanced APIs, host services, and domain packs must have enforceable import boundaries and independently reviewable changes.
+  - Measure: Run architecture boundary checks and inspect stacked pull-request scopes.
+  - Target: Zero forbidden imports and every replacement pull request stays within its approved work-item scope.
+  - Acceptance criteria: `AC-SIM-API-TIERS-001`, `AC-SIM-DOMAIN-PACK-001`, `AC-SIM-PR-DECOMPOSITION-001`
+- **`NFR-SIM-PERFORMANCE-001`** [performance; must; project] Profile-specific latency and storage budgets must be measured on the Windows reference host and regressions must fail the applicable release lane.
+  - Measure: Record cold and warm run duration, checkpoint reuse, database size, evidence size, and command latency.
+  - Target: Budgets are defined during ArchitectureDesign and all release-defining measurements meet them.
+  - Acceptance criteria: `AC-SIM-DURABLE-HOST-001`, `AC-SIM-FAST-LANE-001`
+- **`NFR-SIM-SECURITY-001`** [security; must; project] The local host must fail closed on undeclared filesystem, process, network, secret, worktree, database, or artifact access.
+  - Measure: Exercise capability denial, path escape, SQL migration, artifact tamper, and executor substitution fixtures.
+  - Target: Zero undeclared effects or accepted tampered state.
+  - Acceptance criteria: `AC-SIM-CRASH-RECOVERY-001`, `AC-SIM-DURABLE-HOST-001`
+- **`NFR-SIM-USABILITY-001`** [usability; must; project] Ordinary users must operate DevRelay through a compact facade, profile choice, concise status, and expandable evidence rather than internal artifact construction.
+  - Measure: Run clean-checkout operator studies and API inventory checks.
+  - Target: At most eight primary facade operations and one documented standard path.
+  - Acceptance criteria: `AC-SIM-FACADE-001`, `AC-SIM-WINDOWS-E2E-001`
+- **`NFR-WDA-DETERMINISM-001`** [reliability; must; capabilities `CAP-WDA-ANALYZE-001`, `CAP-WDA-GATE-001`] Routing, mechanical validation, canonical ordering, replay, and Gate commit preparation must be deterministic for exact inputs.
+  - Measure: Canonical output, diagnostic, route, and replay digest equality.
+  - Target: 100 percent equality for deterministic Core-owned behavior.
+  - Acceptance criteria: `AC-WDA-DETERMINISM-001`
+
+## Terminology
+
+- **Adapter binding maturity** (`TERM-DEV-ADAPTER-MATURITY-001`): The evidence-backed implementation state of one exact adapter binding: contract-defined, fixture-conformant, live-conformant, or release-ready.
+  - Aliases: Adapter maturity
+- **Conditional module** (`TERM-DEV-CONDITIONAL-MODULE-001`): A lifecycle module invoked only when exact Core-owned state and approved policy satisfy its declared condition.
+- **Contract draft** (`TERM-DEV-CONTRACT-DRAFT-001`): One typed candidate contract entry bound to an approved architecture InterfaceIntent, exact native bytes, validation evidence, compatibility disposition, and source provenance; it has no approved authority until ContractGate promotion.
+  - Aliases: ContractDraft, ContractDraftSet entry
+- **Current architecture snapshot** (`TERM-DEV-CURRENT-ARCHITECTURE-SNAPSHOT-001`): A version-pinned observational artifact describing discovered implemented architecture, evidence provenance, confidence, gaps, and native attachments without approving intended design.
+  - Aliases: CurrentArchitectureSnapshot
+- **Engineering gate** (`TERM-DEV-ENGINEERING-GATE-001`): A separate validation and approval boundary that decides whether an exact candidate may become an approved baseline or progress downstream.
+  - Aliases: Gate
+- **Execution attempt** (`TERM-DEV-EXECUTION-ATTEMPT-001`): One immutable, content-addressed invocation of a concrete executor for one exact runnable work item in one isolated workspace.
+  - Aliases: ExecutionAttempt
+- **Execution binding** (`TERM-DEV-EXECUTION-BINDING-001`): A version-pinned mapping from an approved provider-neutral specialist profile to a configured concrete executor adapter and its host policy.
+  - Aliases: ExecutionBinding
+- **Integrated change** (`TERM-DEV-INTEGRATED-CHANGE-001`): One exactly verified work-item change proven to have advanced one configured target ref from an expected pre-state commit to an exact post-state commit.
+  - Aliases: IntegratedChangeRecord
+- **Integration conflict** (`TERM-DEV-INTEGRATION-CONFLICT-001`): An immutable finding that the verified change cannot be incorporated under the approved target and policy without producing new implementation bytes; it never authorizes automatic resolution.
+  - Aliases: IntegrationConflictSet
+- **Lifecycle run report** (`TERM-DEV-LIFECYCLE-RUN-REPORT-001`): The deterministic human-readable projection of one exact circuit run, its operational records, important artifacts, Gate decisions, performance observations, and traceability snapshot.
+  - Aliases: Run report
+- **Material discovery gap** (`TERM-DEV-MATERIAL-DISCOVERY-GAP-001`): A declared missing, contradictory, or insufficiently supported current-state fact whose absence could materially change ArchitectureDesign and therefore blocks progression.
+  - Aliases: blocking discovery gap
+- **Module** (`TERM-DEV-MODULE-001`): A provider-neutral lifecycle contract defining exact inputs, action, outputs, outcomes, evidence, and progression boundary.
+  - Aliases: Engineering module
+- **Requirements closure** (`TERM-DEV-MQ-CLOSURE-001`): A reproducible assessment in which all blocking decisions are closed, contradictions are absent, and weighted applicable-domain coverage meets policy.
+  - Aliases: Closure proof
+- **Godot engineering pack** (`TERM-DEV-MQ-GODOT-PACK-001`): The optional versioned DevRelay adapter bundle that maps Godot AI and GdUnit4 capabilities into existing provider-neutral lifecycle ports.
+  - Aliases: Godot pack
+- **Live provider attestation** (`TERM-DEV-MQ-LIVE-ATTESTATION-001`): Digest-bound evidence of an exact provider version executing an exact bounded operation with pinned inputs, configuration, permissions, native outputs, and result.
+  - Aliases: Live conformance receipt
+- **Evidence seal commit** (`TERM-DEV-MQ-SEAL-001`): A commit created after the implementation commit that contains immutable evidence referencing the implementation identity without attempting to reference its own commit hash.
+  - Aliases: Seal commit
+- **Open-source preview** (`TERM-DEV-OSS-PREVIEW-001`): The public Apache-2.0/DCO GitHub source and installable tarball release that has passed the scoped V0.10 evidence gates without claiming npm publication or hosted operation.
+  - Aliases: OSS preview
+- **ProjectOverviewBaseline** (`TERM-DEV-PROJECT-OVERVIEW-001`): The compact approved project-wide context deterministically projected from the paired RequirementsBaseline and explicitly supplied to downstream modules.
+  - Aliases: Project overview
+- **Release-defining host** (`TERM-DEV-RELEASE-DEFINING-HOST-001`): The environment whose passing end-to-end evidence is required for the release claim; for V0.10 this is ChatGPT Desktop on Windows.
+  - Aliases: Supported host
+- **Run ledger** (`TERM-DEV-RUN-LEDGER-001`): An append-only, content-addressed sequence of standardized module, Gate, adapter, checkpoint, approval, observation, and progression records for one run.
+  - Aliases: Execution ledger
+- **Run observation** (`TERM-DEV-RUN-OBSERVATION-001`): A non-authoritative host-recorded measurement such as duration, calls, tokens, cost, wait, retry, or checkpoint use, bound to an exact execution identity and explicit availability disposition.
+  - Aliases: Execution observation
+- **TraceabilityGraph** (`TERM-DEV-TRACEABILITY-GRAPH-001`): A Core-owned cross-cutting lifecycle index that records validated artifact relationships beside the module sequence without becoming a workflow stage.
+  - Aliases: Traceability graph
+- **Verification attempt** (`TERM-DEV-VERIFICATION-ATTEMPT-001`): One immutable evaluation of one exact work item, execution attempt, proposed change set, candidate workspace, verification policy, and evidence closure.
+  - Aliases: VerificationAttempt
+- **Verification evidence** (`TERM-DEV-VERIFICATION-EVIDENCE-001`): Content-addressed producer output bound to the exact verification subject, producer identity and version, invocation, observed result, and raw bytes.
+  - Aliases: VerificationEvidence
+- **EnvironmentBaseline** (`TERM-EP-BASELINE-001`): The approved environment profile set and preparation policy against which current state and readiness evidence are evaluated.
+  - Aliases: Environment baseline
+- **EnvironmentFingerprint** (`TERM-EP-FINGERPRINT-001`): A deterministic redacted identity of the exact environment facts relevant to a profile and execution attempt.
+  - Aliases: Environment fingerprint
+- **EnvironmentProfile** (`TERM-EP-PROFILE-001`): A versioned provider-neutral declaration of required and optional host or project environment facts and capabilities.
+  - Aliases: Environment profile
+- **EnvironmentReadinessReceipt** (`TERM-EP-READINESS-001`): Gate-owned proof that exact current evidence satisfies an approved profile and authorizes one bound execution attempt or frontier.
+  - Aliases: Readiness receipt
+- **EnvironmentRemediationPlan** (`TERM-EP-REMEDIATION-001`): A deterministic consolidated proposal for resolving all current required environment gaps, including effects, grants, impact, rollback, and evidence obligations.
+  - Aliases: Remediation plan
+- **ProjectMemoryBaseline** (`TERM-PM-BASELINE-001`): The authoritative content-addressed project-scoped memory state containing active, pending, superseded, and historical records plus exact source identities.
+  - Aliases: Project memory
+- **ConcludeReceipt** (`TERM-PM-CONCLUDE-RECEIPT-001`): Proof that an exact session or frontier was reconciled against pinned memory and graph checkpoints, its delta was governed, its synopsis rendered, and provider synchronization verified.
+  - Aliases: Conclusion receipt
+- **SessionConclusion** (`TERM-PM-CONCLUSION-001`): An immutable session or frontier closeout describing accomplished work, decisions, deltas, blockers, open questions, next action, and exact supporting artifacts.
+  - Aliases: Conclusion
+- **MemoryContextBundle** (`TERM-PM-CONTEXT-001`): The validated bounded task or module input containing mandatory project invariants, relevant approved memory, session context, lifecycle state, and retrieval receipts.
+  - Aliases: Memory context
+- **CurrentSynopsis.md** (`TERM-PM-SYNOPSIS-001`): The deterministic compact handoff projection of complete active ProjectMemory coverage through included content or exact references.
+  - Aliases: Project synopsis
+- **TraceabilityContextProjection** (`TERM-PM-TRACE-PROJECTION-001`): A trusted digest-bound read-only memory view of selected approved TraceabilityGraph nodes, forward edges, diagnostics, paths, lifecycle state, and graph checkpoint.
+  - Aliases: Trace memory view
+- **RoadmapBaseline** (`TERM-RM-BASELINE-001`): The authoritative structured, content-addressed set of approved roadmap initiatives, priorities, and disposition history.
+  - Aliases: Roadmap
+- **RoadmapIntakeCandidate** (`TERM-RM-CANDIDATE-001`): A confirmed possible net-new initiative awaiting requirements closure, deterministic triage, and RoadmapGate disposition.
+  - Aliases: Roadmap candidate
+- **SessionContextReceipt** (`TERM-RM-SESSION-RECEIPT-001`): The fail-closed proof binding exact project, task, repository, artifact versions, digests, load time, and bootstrap outcome.
+  - Aliases: Bootstrap receipt
+- **SessionContextSnapshot** (`TERM-RM-SESSION-SNAPSHOT-001`): A compact digest-bound orientation bundle loaded at the start of a fresh DevRelay task and refreshed after baseline changes.
+  - Aliases: Session context
+- **ReleasePreparationAttempt** (`TERM-RP-ATTEMPT-001`): One immutable invocation that prepares or verifies one exact candidate identity under explicit policy, configuration, grants, and checkpoints.
+  - Aliases: Release attempt
+- **ReleaseCandidate** (`TERM-RP-CANDIDATE-001`): An immutable content-addressed set of exact source/library artifacts and preparation evidence bound to one approved source state, configuration, toolchain, and environment readiness identity.
+  - Aliases: Release candidate
+- **ReleaseVerificationObligation** (`TERM-RP-OBLIGATION-001`): One versioned required release check with exact subject, evidence, disposition, policy, and not-applicable rules.
+  - Aliases: Release obligation
+- **ReleaseReadinessBaseline** (`TERM-RP-READINESS-001`): Gate-owned proof that one exact candidate satisfies the approved release verification policy and may be considered for separate human-controlled publication.
+  - Aliases: Release readiness
+- **Evidence asset** (`TERM-SIM-EVIDENCE-ASSET-001`): An immutable GitHub Release attachment bound by a committed manifest containing its digest, media type, size, provenance, and retrieval identity.
+  - Aliases: External evidence bundle
+- **DevRelay facade** (`TERM-SIM-FACADE-001`): The small supported root API used for ordinary project configuration, execution, recovery, verification, and inspection.
+  - Aliases: Simple API
+- **Local reference host** (`TERM-SIM-LOCAL-HOST-001`): The Windows process and CLI that durably persists DevRelay state and artifacts, enforces capabilities, manages isolated worktrees, and binds Desktop execution.
+  - Aliases: Durable host
+- **Workflow profile** (`TERM-SIM-PROFILE-001`): A versioned immutable policy selection that scales workflow depth and verification cost without bypassing Core validation or applicable Gates.
+  - Aliases: Profile
+- **WorkBreakdown analysis snapshot** (`TERM-WDA-ANALYSIS-SNAPSHOT-001`): The complete immutable projection of one exact approved WorkBreakdownBaseline used as the work-item universe for a single full dependency analysis.
+  - Aliases: Candidate work-breakdown snapshot
+- **Context slice** (`TERM-WDA-CONTEXT-SLICE-001`): A deterministic, relevance-declared extraction from one immutable version-pinned source artifact, supplied as explicit analyzer input with its own content digest.
+- **Work dependency DAG** (`TERM-WDA-DEPENDENCY-DAG-001`): A directed acyclic graph where each forward edge says one predecessor must complete before one successor may start.
+  - Aliases: Dependency graph
+- **Dependency hint disposition** (`TERM-WDA-HINT-DISPOSITION-001`): The evidence-backed treatment of one non-authoritative WorkBreakdown dependency hint.
+- **Impossible ordering** (`TERM-WDA-IMPOSSIBLE-ORDERING-001`): A dependency forbidden by exact domain, architecture, contract, repository, or policy evidence even when acyclic.
+- **Runnable frontier** (`TERM-WDA-RUNNABLE-FRONTIER-001`): Work items whose authoritative predecessors are complete under current runtime state.
+  - Aliases: Ready set
+
+## Current Status
+
+- Lifecycle: existing
+- Phase: planning
+- Summary: RP-001 requirements are closed for deterministic release-candidate preparation, verification, readiness gating, immutable evidence, and human-controlled publication consideration after SystemVerification.

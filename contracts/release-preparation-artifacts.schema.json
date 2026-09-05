@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/release-preparation-artifacts.schema.json",
+  "title": "DevRelay ReleasePreparation artifacts",
+  "oneOf": [
+    { "$ref": "#/$defs/attempt" },
+    { "$ref": "#/$defs/materializationReceipt" },
+    { "$ref": "#/$defs/candidate" },
+    { "$ref": "#/$defs/policy" },
+    { "$ref": "#/$defs/resultSet" },
+    { "$ref": "#/$defs/verificationCandidate" },
+    { "$ref": "#/$defs/gateApproval" },
+    { "$ref": "#/$defs/readinessBaseline" },
+    { "$ref": "#/$defs/promotionProof" }
+  ],
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+    "ref": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifactId", "schema", "mediaType", "digest", "uri"],
+      "properties": {
+        "artifactId": { "$ref": "#/$defs/id" }, "schema": { "type": "string", "format": "uri" },
+        "mediaType": { "type": "string", "minLength": 1 }, "digest": { "$ref": "#/$defs/digest" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "sourceRef": {
+      "type": "object", "additionalProperties": false, "required": ["role", "artifact"],
+      "properties": { "role": { "$ref": "#/$defs/id" }, "artifact": { "$ref": "#/$defs/ref" }, "jsonPointer": { "type": "string" } }
+    },
+    "diagnostic": {
+      "type": "object", "additionalProperties": false, "required": ["code", "severity", "message"],
+      "properties": { "code": { "$ref": "#/$defs/id" }, "severity": { "enum": ["info", "warning", "error"] }, "message": { "type": "string", "minLength": 1 }, "obligationId": { "$ref": "#/$defs/id" } }
+    },
+    "sourceIdentity": {
+      "type": "object", "additionalProperties": false, "required": ["commit", "tree"],
+      "properties": { "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" }, "tree": { "$ref": "#/$defs/digest" } }
+    },
+    "adapter": {
+      "type": "object", "additionalProperties": false, "required": ["id", "version", "maturity"],
+      "properties": { "id": { "$ref": "#/$defs/id" }, "version": { "type": "string", "minLength": 1 }, "maturity": { "enum": ["contract-defined", "fixture-conformant", "live-conformant", "release-ready"] } }
+    },
+    "grant": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "scope", "purpose"],
+      "properties": { "kind": { "enum": ["filesystem.read", "filesystem.write", "network.connect", "process.spawn"] }, "scope": { "type": "string", "minLength": 1 }, "purpose": { "type": "string", "minLength": 1 } }
+    },
+    "attempt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "attemptId", "source", "baselines", "packageVersion", "releaseConfigurationDigest", "toolchain", "environmentReadinessReceipt", "ownerIntent", "fingerprint", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleasePreparationAttempt" }, "attemptId": { "$ref": "#/$defs/id" },
+        "source": { "$ref": "#/$defs/sourceIdentity" }, "baselines": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } },
+        "packageVersion": { "$ref": "#/$defs/version" }, "releaseConfigurationDigest": { "$ref": "#/$defs/digest" },
+        "toolchain": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["id", "version", "digest"], "properties": { "id": { "$ref": "#/$defs/id" }, "version": { "type": "string", "minLength": 1 }, "digest": { "$ref": "#/$defs/digest" } } } },
+        "environmentReadinessReceipt": { "$ref": "#/$defs/ref" }, "ownerIntent": { "$ref": "#/$defs/ref" }, "fingerprint": { "$ref": "#/$defs/digest" },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }, "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "materializationReceipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "receiptId", "attempt", "adapter", "grants", "commands", "artifacts", "publicationEffects", "replayed", "checkpointKey", "durationMs", "evidence", "diagnostics", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseMaterializationReceipt" }, "receiptId": { "$ref": "#/$defs/id" },
+        "attempt": { "$ref": "#/$defs/ref" }, "adapter": { "$ref": "#/$defs/adapter" }, "grants": { "type": "array", "items": { "$ref": "#/$defs/grant" } },
+        "commands": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["fingerprint", "exitCode", "durationMs", "stdoutDigest", "stderrDigest"], "properties": { "fingerprint": { "$ref": "#/$defs/digest" }, "exitCode": { "type": "integer" }, "durationMs": { "type": "number", "minimum": 0 }, "stdoutDigest": { "$ref": "#/$defs/digest" }, "stderrDigest": { "$ref": "#/$defs/digest" } } } },
+        "artifacts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } }, "publicationEffects": { "type": "array", "maxItems": 0 },
+        "replayed": { "type": "boolean" }, "checkpointKey": { "$ref": "#/$defs/id" }, "durationMs": { "type": "number", "minimum": 0 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } }, "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }, "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "candidateArtifact": {
+      "type": "object", "additionalProperties": false, "required": ["id", "kind", "artifact"],
+      "properties": { "id": { "$ref": "#/$defs/id" }, "kind": { "enum": ["installable-tarball", "release-catalog", "cyclonedx-sbom", "sha256-ledger", "release-notes", "license-notice", "evidence-index"] }, "artifact": { "$ref": "#/$defs/ref" } }
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "candidateId", "attempt", "source", "packageVersion", "artifacts", "materializationReceipts", "checkpointDigest", "sourceRefs", "contentDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseCandidate" }, "candidateId": { "$ref": "#/$defs/id" }, "attempt": { "$ref": "#/$defs/ref" },
+        "source": { "$ref": "#/$defs/sourceIdentity" }, "packageVersion": { "$ref": "#/$defs/version" }, "artifacts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/candidateArtifact" } },
+        "materializationReceipts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } }, "checkpointDigest": { "$ref": "#/$defs/digest" },
+        "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }, "contentDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "obligation": {
+      "type": "object", "additionalProperties": false, "required": ["id", "family", "required"],
+      "properties": { "id": { "$ref": "#/$defs/id" }, "family": { "enum": ["static", "tests", "exports", "isolated-install", "sbom", "checksums", "documentation", "secrets", "windows-consumer", "dependency", "action-pins", "license", "provenance", "attestation"] }, "required": { "type": "boolean" }, "notApplicableRule": { "$ref": "#/$defs/id" } }
+    },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "policyId", "version", "obligations", "offlineByDefault", "failClosed", "sourceRefs", "contentDigest"],
+      "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseVerificationPolicy" }, "policyId": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/version" }, "obligations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/obligation" } }, "offlineByDefault": { "const": true }, "failClosed": { "const": true }, "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }, "contentDigest": { "$ref": "#/$defs/digest" } }
+    },
+    "result": {
+      "type": "object", "additionalProperties": false, "required": ["obligationId", "status", "subjectDigest", "evidence"],
+      "properties": { "obligationId": { "$ref": "#/$defs/id" }, "status": { "enum": ["pass", "fail", "unknown", "not-applicable"] }, "subjectDigest": { "$ref": "#/$defs/digest" }, "notApplicableRule": { "$ref": "#/$defs/id" }, "evidence": { "type": "array", "items": { "$ref": "#/$defs/ref" } } }
+    },
+    "resultSet": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "resultSetId", "candidate", "candidateDigest", "policy", "adapter", "results", "durationMs", "cacheHits", "retries", "diagnostics", "contentDigest"],
+      "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseVerificationResultSet" }, "resultSetId": { "$ref": "#/$defs/id" }, "candidate": { "$ref": "#/$defs/ref" }, "candidateDigest": { "$ref": "#/$defs/digest" }, "policy": { "$ref": "#/$defs/ref" }, "adapter": { "$ref": "#/$defs/adapter" }, "results": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/result" } }, "durationMs": { "type": "number", "minimum": 0 }, "cacheHits": { "type": "integer", "minimum": 0 }, "retries": { "type": "integer", "minimum": 0 }, "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }, "contentDigest": { "$ref": "#/$defs/digest" } }
+    },
+    "verificationCandidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "verificationCandidateId", "candidate", "resultSet", "environmentReadinessReceipt", "ownerIntent", "proposedOutcome", "blockers", "warnings", "diagnostics", "sourceRefs", "contentDigest"],
+      "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseVerificationCandidate" }, "verificationCandidateId": { "$ref": "#/$defs/id" }, "candidate": { "$ref": "#/$defs/ref" }, "resultSet": { "$ref": "#/$defs/ref" }, "environmentReadinessReceipt": { "$ref": "#/$defs/ref" }, "ownerIntent": { "$ref": "#/$defs/ref" }, "proposedOutcome": { "enum": ["ready", "needs-clarification", "remediation-required", "candidate-drift", "rejected", "unable-to-proceed"] }, "blockers": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true }, "warnings": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true }, "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }, "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }, "contentDigest": { "$ref": "#/$defs/digest" } }
+    },
+    "gateApproval": {
+      "type": "object", "additionalProperties": false, "required": ["apiVersion", "kind", "approvalId", "authority", "decision", "candidate", "terminalCheckpointDigest", "policyVersion", "contentDigest"],
+      "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseGateApproval" }, "approvalId": { "$ref": "#/$defs/id" }, "authority": { "const": "devrelay-core" }, "decision": { "enum": ["ready", "needs-clarification", "remediation-required", "candidate-drift", "rejected", "unable-to-proceed"] }, "candidate": { "$ref": "#/$defs/ref" }, "terminalCheckpointDigest": { "$ref": "#/$defs/digest" }, "policyVersion": { "type": "string", "minLength": 1 }, "contentDigest": { "$ref": "#/$defs/digest" } }
+    },
+    "readinessBaseline": {
+      "type": "object", "additionalProperties": false, "required": ["apiVersion", "kind", "baselineId", "version", "candidate", "verificationCandidate", "gateApproval", "publicationAuthorized", "approvalEvidence", "sourceRefs", "contentDigest"],
+      "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseReadinessBaseline" }, "baselineId": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/version" }, "candidate": { "$ref": "#/$defs/ref" }, "verificationCandidate": { "$ref": "#/$defs/ref" }, "gateApproval": { "$ref": "#/$defs/ref" }, "publicationAuthorized": { "const": false }, "approvalEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ref" } }, "sourceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } }, "contentDigest": { "$ref": "#/$defs/digest" } }
+    },
+    "promotionProof": {
+      "type": "object", "additionalProperties": false, "required": ["apiVersion", "kind", "proofId", "status", "candidate", "approval", "readinessBaseline", "graphCheckpoint", "checkpointDigest", "nextModule", "contentDigest"],
+      "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "ReleaseGatePromotionProof" }, "proofId": { "$ref": "#/$defs/id" }, "status": { "const": "promoted" }, "candidate": { "$ref": "#/$defs/ref" }, "approval": { "$ref": "#/$defs/ref" }, "readinessBaseline": { "$ref": "#/$defs/ref" }, "graphCheckpoint": { "$ref": "#/$defs/ref" }, "checkpointDigest": { "$ref": "#/$defs/digest" }, "nextModule": { "const": "business-acceptance" }, "contentDigest": { "$ref": "#/$defs/digest" } }
+    }
+  }
+}
