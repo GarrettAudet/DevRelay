@@ -18,11 +18,15 @@ test("the accepted ProjectMemory baseline preserves PM-001 and the latest conclu
   const baseline=json("project/project-memory-baseline.json");
   validateProjectMemoryArtifact(baseline);
   assert.equal(baseline.kind,"ProjectMemoryBaseline");
-  assert.equal(baseline.version,"1.0.3");
+  assert.equal(baseline.version,"1.0.4");
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-EP001-RELEASE-READY"&&status==="active"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-PM001-RELEASE-READY"&&status==="active"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-PM001-CANDIDATE"&&status==="superseded"),true);
   assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-RELEASE-V0.10.0-RC3"&&status==="active"),true);
+  assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-DESKTOP-ORCHESTRATION"&&status==="active"),true);
+  assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-STATUS-DO001-RELEASE-READY"&&status==="active"),true);
+  assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-NEXT-AFTER-DO001"&&status==="active"),true);
+  assert.equal(baseline.records.some(({id,status})=>id==="MEM-DEVRELAY-NEXT-AFTER-EP001"&&status==="superseded"),true);
   const synopsis=renderCurrentSynopsis(baseline);
   assert.equal(sha256Digest(bytes("project/CurrentSynopsis.md")),synopsis.ref.digest);
   assert.equal(bytes("project/CurrentSynopsis.md").equals(synopsis.bytes),true);
