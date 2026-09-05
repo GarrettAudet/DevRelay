@@ -4,37 +4,39 @@ Last reconciled: 2026-09-06 CST
 Protected branch: main
 Released version: 0.10.0-rc.3
 Candidate version: 0.11.0-rc.1
-Canonical handoff baseline: main @ 57459b6d10da277c85e1396343cdb989fd5a9e54
+Candidate implementation seal: d75933d50f99368cbfc3eff3a0c4d4bcaa30feb3
 Release boundary: GitHub source/installable library operated end-to-end through ChatGPT/Codex Desktop on Windows
 
 ## Status
 
-DO-001 is the active release-candidate increment. Its paired RequirementsBaseline and ProjectOverviewBaseline are promoted at version 2.5.0. The implementation includes deterministic dependency-frontier scheduling, provider-neutral Desktop task bindings, durable SQLite-backed Git worktree leases, fail-closed restart reconciliation, policy-driven independent adversarial review, merge-readiness conflict escalation, a deterministic operator snapshot, and a validated ChatGPT Desktop plug-in with automatic ProjectMemory lifecycle hooks.
+DO-001 is construction-complete and owner-accepted for the controlled `0.11.0-rc.1` release-candidate boundary. Its paired RequirementsBaseline and ProjectOverviewBaseline are promoted at version 2.5.0. The implementation includes deterministic dependency-frontier scheduling, provider-neutral Desktop task bindings, durable SQLite-backed Git worktree leases, fail-closed restart reconciliation, policy-driven independent adversarial review, merge-readiness conflict escalation, a deterministic operator snapshot, and a validated ChatGPT Desktop plug-in with automatic ProjectMemory lifecycle hooks.
 
-The implementation remains a host/plug-in layer above the released lifecycle. Hooks and task adapters cannot select readiness, approve Gates, verify their own work, integrate changes, mutate TraceabilityGraph, or promote semantic memory. New or changed unmanaged hooks require explicit trust in the Desktop `/hooks` interface.
+The implementation remains a host/plug-in layer above the released lifecycle. Hooks and task adapters cannot select readiness, approve Gates, verify their own work, integrate changes, mutate TraceabilityGraph, or promote semantic memory. The personal `devrelay-desktop@personal` plug-in is installed and enabled at `0.1.0`; new or changed unmanaged hooks still require explicit trust in the Desktop `/hooks` interface.
+
+Canonical verification passed 1,163 tests with 1,161 passing, zero failures, and two intentional skips. The release catalog verified 11,291 exact repository digests and 413 exact package paths; the isolated tarball consumer imported all 202 export targets. Installed hook execution proved startup context injection, durable checkpointing, candidate-only conclusion, restart recovery, and post-conclusion bootstrap from ProjectMemory 1.0.4.
 
 DevRelay `v0.10.0-rc.3` is published as a public GitHub prerelease from protected-main tag commit `dc0f4094ce0e178757984e363836d05cfcc0037d`. Its exact workflow-produced catalog, tarball, CycloneDX SBOM, and checksum ledger were independently hash-verified before publication; no asset was rebuilt or substituted.
 
 The publication automation defect is fixed and integrated through PR #13 at protected-main commit `d17bc7dada964c3b669c29407cdabfbfe37c2651`. Canonical-main verify run `32592205364`, CodeQL run `32592205360`, and scorecard run `32592205344` all passed. The publisher now supplies explicit repository identity in the no-checkout job, with regression coverage preventing ambient-Git inference from returning.
 
-ProjectMemory `/conclude` promoted baseline 1.0.3 (`sha256:adf6829dce8a18b27bad2b30c7d4c18f3c557d052a103c96d408847ff0cae6ac`), added the exact published-release status, retained ReleasePreparation as the approved next action, regenerated `CurrentSynopsis.md`, and proved fresh-task first-load plus zero-call replay.
+ProjectMemory `/conclude` has now promoted baseline 1.0.4 (`sha256:d539f7aa8abe10b10b586a5071d07507bc5d1ff7860fceb7e87864ac70d5261d`), added the accepted Desktop orchestration boundary and exact DO-001 release-ready status, superseded the completed ReleasePreparation next action, regenerated `CurrentSynopsis.md`, and proved fresh-task recovery through both the runtime and installed Desktop hook.
 
 The conclusion package was integrated through PR #14 at protected-main commit `57459b6d10da277c85e1396343cdb989fd5a9e54`. Canonical-main verify run `32594735309`, CodeQL run `32594735306`, and scorecard run `32594735329` all passed. There are no remaining blockers for the scoped `v0.10.0-rc.3` GitHub source/library release.
 
 ## Lifecycle
 
-RequirementsGathering / RequirementsGate                  no-change continuation; existing release requirement applies
-Architecture / Contract checks                            no change required
-WorkBreakdown / WorkDependencyAnalysis                    one configuration change + one test change; acyclic
-SpecialistAssignment                                      release-automation maintainer profile
-WorkExecution                                             implemented at c4c45ceaced6012bb9631f1dd09354865e00df52
-WorkItemVerification                                      focused 2/2 and pre-integration system 1,103/1,101/0/2 passed
-ChangeIntegration                                         PR #13 merged at d17bc7dada964c3b669c29407cdabfbfe37c2651
-SystemVerification                                        canonical main verify, CodeQL, and scorecard passed
-BusinessAcceptance                                        controlled release remains accepted
-ProjectMemory /conclude                                   passed; baseline 1.0.3 and fresh-task replay verified
-Conclusion integration                                   PR #14 merged at 57459b6d10da277c85e1396343cdb989fd5a9e54
-Canonical conclusion verification                        verify, CodeQL, and scorecard passed
+RequirementsGathering / RequirementsGate                  promoted paired project baseline 2.5.0
+ArchitectureDiscovery                                     deterministic skip; current repository inventory sufficient
+ArchitectureDesign / ArchitectureGate                     cross-cutting host layer approved without Core authority changes
+ContractGeneration / ContractGate                         Desktop artifact contract generated and approved
+WorkBreakdown / WorkDependencyAnalysis                    nine deliverables in five acyclic frontiers
+SpecialistAssignment                                      bounded implementation, verification, release, and documentation roles
+WorkExecution                                             sealed at d75933d50f99368cbfc3eff3a0c4d4bcaa30feb3
+WorkItemVerification                                      independent adversarial policy plus focused and canonical tests passed
+ChangeIntegration                                         two-phase Git seal; no ambiguous conflicts
+SystemVerification                                        18/18 acceptance criteria and 5/5 NFRs passed
+BusinessAcceptance                                        owner-approved for controlled 0.11.0-rc.1 boundary
+ProjectMemory /conclude                                   passed; baseline 1.0.4 and installed-hook fresh-task recovery verified
 
 ## Published evidence
 
@@ -53,6 +55,6 @@ Canonical conclusion verification                        verify, CodeQL, and sco
 
 ## Next product increment
 
-Begin the kept `ReleasePreparation and ReleaseVerification` roadmap initiative (`RI-98EA0256A27DEFF2`) through a visible RequirementsGathering interview. The roadmap decision prioritizes the initiative but does not replace RequirementsGate closure or authorize implementation by itself. After requirements promotion, run the full released DevRelay circuit and require accepted EnvironmentPreparation readiness receipts before execution.
+Merge the two-phase DO-001 seal and publish `0.11.0-rc.1` as the controlled GitHub source/installable-tarball prerelease. Public npm publication and managed one-click plug-in distribution remain outside this release boundary.
 
 This release does not claim public npm publication, one-click Desktop installation, a hosted backend, or non-Windows support.

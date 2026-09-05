@@ -15,6 +15,7 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
   const evidence = json(`${conclusionRoot}/00-release-publication-evidence.json`);
   const concludedBaseline = json(`${conclusionRoot}/07-project-memory-baseline.json`);
   const currentBaseline = json("project/project-memory-baseline.json");
+  const historicalBaseline = json("project/history/project-memory/1.0.3/project-memory-baseline.json");
   const receipt = json(`${conclusionRoot}/09-conclude-receipt.json`);
   const replay = json(`${conclusionRoot}/14-fresh-task-replay-proof.json`);
 
@@ -27,9 +28,11 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
     scorecard: 32592205344,
     verify: 32592205364,
   });
-  assert.deepEqual(currentBaseline, concludedBaseline);
-  assert.equal(currentBaseline.version, "1.0.3");
-  assert.equal(api.loadProjectMemoryArtifact(currentBaseline).ref.digest, summary.resultBaseline.digest);
+  assert.deepEqual(historicalBaseline, concludedBaseline);
+  assert.equal(historicalBaseline.version, "1.0.3");
+  assert.equal(api.loadProjectMemoryArtifact(historicalBaseline).ref.digest, summary.resultBaseline.digest);
+  assert.equal(currentBaseline.version, "1.0.4");
+  assert.equal(currentBaseline.supersedes.digest, summary.resultBaseline.digest);
   assert.equal(receipt.outcome, "concluded");
   assert.equal(receipt.resultBaseline.digest, summary.resultBaseline.digest);
   assert.equal(replay.replayed, true);
@@ -47,9 +50,12 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
   );
   assert.equal(
     currentBaseline.records.some(
-      ({ id, status }) => id === "MEM-DEVRELAY-NEXT-AFTER-EP001" && status === "active",
+      ({ id, status }) => id === "MEM-DEVRELAY-NEXT-AFTER-EP001" && status === "superseded",
     ),
     true,
   );
-  assert.deepEqual(read("project/CurrentSynopsis.md"), read(`${conclusionRoot}/CurrentSynopsis.md`));
+  assert.deepEqual(
+    read("project/history/project-memory/1.0.3/CurrentSynopsis.md"),
+    read(`${conclusionRoot}/CurrentSynopsis.md`),
+  );
 });

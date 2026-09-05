@@ -12,6 +12,8 @@
 ### Verification
 
 - Added focused conformance for dependency and concurrency safety, transition and identity substitution, restart recovery, worktree isolation and cleanup, reviewer independence, conflict escalation, operator determinism, plug-in validation, unrelated-chat isolation, and cross-task memory recovery.
+- Passed the complete 1,163-test canonical suite with 1,161 passing, zero failures, and two intentional skips.
+- Verified 11,291 exact source digests, 413 packaged files, 202 installed export targets, an enabled personal Desktop plug-in, and installed-hook bootstrap from the concluded ProjectMemory 1.0.4 baseline.
 
 ## 0.10.0-rc.3 - 2026-08-15
 
