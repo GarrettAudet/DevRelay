@@ -23,7 +23,7 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.11.0-rc.1` is an Apache-2.0 open-source release candidate built on the published `0.10.0-rc.3` preview and containing DevRelay Core,
+DevRelay `0.11.0-rc.1` is a published Apache-2.0 open-source release candidate ([GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1)) containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,

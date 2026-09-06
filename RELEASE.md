@@ -14,6 +14,8 @@ open-source release candidate, version `0.11.0-rc.1`. The source package retains
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
+The controlled prerelease is published at [v0.11.0-rc.1](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1) from protected-main commit `08be8385966223d16a20150ac804505b5fe40153`. GitHub workflow `34034582831` verified and published the exact catalog, installable tarball, CycloneDX SBOM, and SHA-256 ledger.
+
 `package.json` declares `"private": false` and `"license": "Apache-2.0"` so
 the GitHub-source tarball has accurate package metadata. This release does not
 publish to the public npm registry; the installable tarball is derived from the
