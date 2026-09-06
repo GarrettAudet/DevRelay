@@ -14,8 +14,9 @@ const ADVERSARIAL_TAGS = Object.freeze(["cross-cutting", "integration", "migrati
 
 export const DESKTOP_REVIEW_POLICY_VERSION = "1.0.0";
 
-export function resolveDesktopReviewRequirement({ workItemId, risk = "standard", tags = [], policyVersion = DESKTOP_REVIEW_POLICY_VERSION } = {}) {
+export function resolveDesktopReviewRequirement({ workItemId, subjectDigest, risk = "standard", tags = [], policyVersion = DESKTOP_REVIEW_POLICY_VERSION } = {}) {
   if (typeof workItemId !== "string" || !workItemId) fail("workItemId is required");
+  if (!/^sha256:[0-9a-f]{64}$/u.test(subjectDigest ?? "")) fail("subjectDigest is required");
   if (policyVersion !== DESKTOP_REVIEW_POLICY_VERSION) fail("unsupported or drifted policy version", "DR6101");
   if (!RISK_CLASSES.includes(risk)) fail("risk classification is invalid");
   if (!Array.isArray(tags) || tags.some((tag) => typeof tag !== "string" || !tag)) fail("tags are invalid");
@@ -26,6 +27,7 @@ export function resolveDesktopReviewRequirement({ workItemId, risk = "standard",
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "AdversarialReviewRequirement",
     workItemId,
+    subjectDigest,
     policy: { id: "desktop-review", version: policyVersion },
     risk,
     tags: normalizedTags,
@@ -58,7 +60,7 @@ export function evaluateDesktopMergeReadiness({
     if (!adversarialReview) blockers.push("adversarial-review:missing");
     else {
       if (adversarialReview.reviewerTaskId === implementerTaskId) blockers.push("adversarial-review:self-review");
-      if (adversarialReview.subjectDigest !== requirement.subjectDigest && requirement.subjectDigest !== undefined) blockers.push("adversarial-review:subject-drift");
+      if (adversarialReview.subjectDigest !== requirement.subjectDigest) blockers.push("adversarial-review:subject-drift");
       if (adversarialReview.disposition !== "pass") blockers.push(`adversarial-review:${adversarialReview.disposition ?? "invalid"}`);
     }
   }

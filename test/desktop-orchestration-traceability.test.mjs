@@ -4,6 +4,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
+import { loadDesktopProjectMemoryBootstrap } from "../src/desktop-project-memory-bootstrap.mjs";
 import { desktopOrchestrationApprovedTraceabilityContributor, desktopOrchestrationCandidateTraceabilityContributor } from "../src/desktop-orchestration-traceability-contributor.mjs";
 import { validateDesktopOrchestrationArtifact } from "../src/desktop-orchestration-artifact-validator.mjs";
 import { createDesktopOrchestrationPlan } from "../src/desktop-orchestration.mjs";
@@ -20,7 +21,6 @@ const loaded = (value, artifactId = value.runId ?? value.attemptId ?? value.rece
   return { value, bytes, ref: fullRef(artifactId, sha256Digest(bytes), schema) };
 };
 const seal = (body, field) => ({ ...body, [field]: canonicalJsonDigest(body) });
-const memoryContext = () => ({ bootstrapReceipt: fullRef("BOOTSTRAP", canonicalJsonDigest({ bootstrap: true })), projectMemoryBaseline: fullRef("MEMORY", canonicalJsonDigest({ memory: true })), synopsisProjection: fullRef("SYNOPSIS", canonicalJsonDigest({ synopsis: true })), graphCheckpoint: fullRef("GRAPH", canonicalJsonDigest({ graph: true })) });
 
 function requirementsPair() {
   const requirementBytes = fs.readFileSync(path.join(root, "project", "requirements-baseline.json"));
@@ -47,11 +47,12 @@ async function fixture() {
   const planValue = createDesktopOrchestrationPlan({ runId: "RUN-LIVE-MEMORY", projectId: "devrelay", horizonDigest: canonicalJsonDigest({ horizon: "approved-do-001" }), startingRevision: REVISION, maxConcurrency: 1, workItems: [{ id: "WI-DO-LIVE-MEMORY", dependencies: [], acceptanceCriteria: ["AC-DO-DESKTOP-E2E-001", "AC-DO-TRACEABILITY-001"] }] });
   const leaseValue = { apiVersion: "devrelay.dev/v1alpha1", kind: "WorktreeLease", attemptId: "ATT-LIVE-MEMORY", runId: planValue.runId, workItemId: "WI-DO-LIVE-MEMORY", revision: REVISION, workspace: "C:/worktrees/ATT-LIVE-MEMORY", taskId: "TASK-LIVE-MEMORY", status: "active", cleanupDisposition: "retain" };
   const prompt = fullRef("PROMPT-LIVE-MEMORY", canonicalJsonDigest({ prompt: "verify injected memory" }));
-  const taskPlanValue = createDesktopTaskPlan({ runId: planValue.runId, workItem: { id: "WI-DO-LIVE-MEMORY" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: leaseValue, assignment: { profile: "independent-memory-verifier" }, executor: { id: "chatgpt.desktop", version: "1.0.0" }, grants: [], promptArtifact: prompt, memoryContext: memoryContext() });
+  const memoryBootstrap = loadDesktopProjectMemoryBootstrap({ projectRoot: root, taskId: "ATT-LIVE-MEMORY", repositoryRevision: REVISION });
+  const taskPlanValue = createDesktopTaskPlan({ runId: planValue.runId, workItem: { id: "WI-DO-LIVE-MEMORY" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: leaseValue, assignment: { profile: "independent-memory-verifier" }, executor: { id: "chatgpt.desktop", version: "1.0.0" }, grants: [], promptArtifact: prompt, memoryBootstrap });
   validateDesktopOrchestrationArtifact(taskPlanValue);
   const adapter = createDesktopTaskAdapter({ providerId: "chatgpt.desktop", providerVersion: "1.0.0", handlers: Object.fromEntries(["create", "inspect", "wait", "message", "handoff"].map((operation) => [operation, async () => ({ taskId: "TASK-LIVE-MEMORY", status: operation === "create" ? "ready" : "completed", observation: { operation } })])) });
   const receiptValue = await adapter.invoke("create", { plan: taskPlanValue });
-  const requirementValue = resolveDesktopReviewRequirement({ workItemId: "WI-DO-LIVE-MEMORY", risk: "high", tags: ["release"] });
+  const requirementValue = resolveDesktopReviewRequirement({ workItemId: "WI-DO-LIVE-MEMORY", subjectDigest: taskPlanValue.planDigest, risk: "high", tags: ["release"] });
   const recoveryValue = seal({ apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopOrchestrationRecovery", runId: planValue.runId, outcome: "recovered", uncertainWorkItemIds: [], duplicateEffectsAllowed: false, stateVersion: 8 }, "recoveryDigest");
   const conclusionValue = seal({ apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopSessionConclusionCandidate", projectId: "devrelay", sessionId: "SESSION-LIVE-MEMORY", taskId: "TASK-LIVE-MEMORY", startingBaseline: { baselineId: "PMB-TEST", digest: canonicalJsonDigest({ baseline: 1 }) }, transcriptDigest: null, reason: "session-end", checkpointDigests: [], authority: "candidate-only" }, "conclusionDigest");
   const artifacts = { plan: loaded(planValue, "PLAN-LIVE-MEMORY"), taskPlan: loaded(taskPlanValue, "TASK-PLAN-LIVE-MEMORY"), lease: loaded(leaseValue, "LEASE-LIVE-MEMORY"), receipt: loaded(receiptValue, "TASK-RECEIPT-LIVE-MEMORY"), requirement: loaded(requirementValue, "REVIEW-REQUIREMENT-LIVE-MEMORY"), recovery: loaded(recoveryValue, "RECOVERY-LIVE-MEMORY"), conclusion: loaded(conclusionValue, "CONCLUSION-LIVE-MEMORY") };
@@ -70,7 +71,7 @@ test("Desktop orchestration contributors preserve candidate and approved lifecyc
   const integrationValue = seal({ apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopChangeIntegrationRecord", integrationId: "INTEGRATION-LIVE-MEMORY", runId: fx.values.planValue.runId, workItemId: "WI-DO-LIVE-MEMORY", taskPlan: fx.artifacts.taskPlan.ref, mergeReadiness: readiness.ref, implementationCommit: REVISION, targetBranch: "codex/test", conflicts: [], outcome: "integrated" }, "integrationDigest");
   const integration = loaded(integrationValue, integrationValue.integrationId);
   const invocation = { invocationId: "DESKTOP-APPROVED", module: { id: "desktop-orchestration", version: "0.1.0", operation: "project-run" } };
-  const prepared = await fx.graph.prepare({ projectId: "devrelay", invocation, invocationFingerprint: canonicalJsonDigest(invocation), moduleResult: { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleResult", invocationId: invocation.invocationId, status: "completed", outcome: "integrated", outputs: {}, evidence: [], diagnostics: [] }, loadedInputs: { taskPlan: [fx.artifacts.taskPlan], requirement: [fx.artifacts.requirement], review: [review], readiness: [readiness], recovery: [fx.artifacts.recovery], integration: [integration] }, baseGraph: fx.graph.captureBase() });
+  const prepared = await fx.graph.prepare({ projectId: "devrelay", invocation, invocationFingerprint: canonicalJsonDigest(invocation), moduleResult: { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleResult", invocationId: invocation.invocationId, status: "completed", outcome: "integrated", outputs: {}, evidence: [], diagnostics: [] }, loadedInputs: { taskPlan: [fx.artifacts.taskPlan], taskReceipt: [fx.artifacts.receipt], requirement: [fx.artifacts.requirement], review: [review], readiness: [readiness], recovery: [fx.artifacts.recovery], integration: [integration] }, baseGraph: fx.graph.captureBase() });
   const merged = await fx.graph.mergePrepared(prepared);
   assert.equal(merged.snapshot.nodes.some(({ scope, kind, stableId }) => scope === "desktop-orchestration/candidate" && kind === "work-item" && stableId === "WI-DO-LIVE-MEMORY"), true);
   assert.equal(merged.snapshot.nodes.some(({ scope, kind, stableId }) => scope === "desktop-orchestration/approved" && kind === "integrated-change-record" && stableId === integrationValue.integrationId), true);
@@ -91,6 +92,20 @@ test("Desktop orchestration traceability rejects stale, self-reviewed, and adapt
   await assert.rejects(() => fx.graph.prepare({ projectId: "devrelay", invocation, invocationFingerprint: canonicalJsonDigest(invocation), moduleResult: { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleResult", invocationId: invocation.invocationId, status: "completed", outcome: "planned", outputs: {}, evidence: [], diagnostics: [] }, loadedInputs: { plan: [fx.artifacts.plan], taskPlans: [fx.artifacts.taskPlan], leases: [fx.artifacts.lease], receipts: [staleLoaded], requirements: [fx.artifacts.requirement], recovery: [fx.artifacts.recovery], conclusions: [fx.artifacts.conclusion] }, baseGraph: fx.graph.captureBase() }), /stale task-plan lineage/u);
   const selfReview = seal({ apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopReviewReceipt", runId: fx.values.planValue.runId, workItemId: "WI-DO-LIVE-MEMORY", implementerTaskId: "TASK-LIVE-MEMORY", reviewerTaskId: "TASK-LIVE-MEMORY", subjectDigest: fx.values.taskPlanValue.planDigest, requirementDigest: fx.values.requirementValue.requirementDigest, adversarial: true, disposition: "pass", evidence: [fx.artifacts.receipt.ref], authority: "verification-observation-only" }, "receiptDigest");
   assert.throws(() => validateDesktopOrchestrationArtifact(selfReview), /self-review/u);
+  const readinessValue = evaluateDesktopMergeReadiness({ requirement: fx.values.requirementValue, implementerTaskId: "TASK-LIVE-MEMORY", testDisposition: "pass", reviewDisposition: "pass", adversarialReview: { reviewerTaskId: "TASK-INDEPENDENT-REVIEW", subjectDigest: fx.values.taskPlanValue.planDigest, disposition: "pass" } });
+  const readiness = loaded(readinessValue, "MERGE-READINESS-NEGATIVE");
+  const integrationValue = seal({ apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopChangeIntegrationRecord", integrationId: "INTEGRATION-NEGATIVE", runId: fx.values.planValue.runId, workItemId: "WI-DO-LIVE-MEMORY", taskPlan: fx.artifacts.taskPlan.ref, mergeReadiness: readiness.ref, implementationCommit: REVISION, targetBranch: "codex/test", conflicts: [], outcome: "integrated" }, "integrationDigest");
+  const integration = loaded(integrationValue, integrationValue.integrationId);
+  for (const mutation of [
+    { subjectDigest: canonicalJsonDigest({ unrelated: true }) },
+    { implementerTaskId: "TASK-UNRELATED" },
+    { runId: "RUN-UNRELATED" },
+  ]) {
+    const reviewBody = { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopReviewReceipt", runId: fx.values.planValue.runId, workItemId: "WI-DO-LIVE-MEMORY", implementerTaskId: "TASK-LIVE-MEMORY", reviewerTaskId: "TASK-INDEPENDENT-REVIEW", subjectDigest: fx.values.taskPlanValue.planDigest, requirementDigest: fx.values.requirementValue.requirementDigest, adversarial: true, disposition: "pass", evidence: [fx.artifacts.receipt.ref], authority: "verification-observation-only", ...mutation };
+    const forged = loaded(seal(reviewBody, "receiptDigest"), `FORGED-${Object.keys(mutation)[0]}`);
+    const approvedInvocation = { invocationId: `DESKTOP-FORGED-${Object.keys(mutation)[0]}`, module: { id: "desktop-orchestration", version: "0.1.0", operation: "project-run" } };
+    await assert.rejects(() => fx.graph.prepare({ projectId: "devrelay", invocation: approvedInvocation, invocationFingerprint: canonicalJsonDigest(approvedInvocation), moduleResult: { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleResult", invocationId: approvedInvocation.invocationId, status: "completed", outcome: "integrated", outputs: {}, evidence: [], diagnostics: [] }, loadedInputs: { taskPlan: [fx.artifacts.taskPlan], taskReceipt: [fx.artifacts.receipt], requirement: [fx.artifacts.requirement], review: [forged], readiness: [readiness], recovery: [fx.artifacts.recovery], integration: [integration] }, baseGraph: fx.graph.captureBase() }), /review receipt is not an independent pass/u);
+  }
   const adapterInvocation = { invocationId: "ADAPTER-AUTHORED", module: { id: "chatgpt.desktop-adapter", version: "1.0.0", operation: "project-run" } };
   await assert.rejects(() => fx.graph.prepare({ projectId: "devrelay", invocation: adapterInvocation, invocationFingerprint: canonicalJsonDigest(adapterInvocation), moduleResult: { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleResult", invocationId: adapterInvocation.invocationId, status: "completed", outcome: "planned", outputs: { evidence: [fx.artifacts.receipt.ref] }, evidence: [], diagnostics: [] }, loadedOutputs: { evidence: [fx.artifacts.receipt] }, baseGraph: fx.graph.captureBase() }), /no traceability contributor matches/u);
 });
