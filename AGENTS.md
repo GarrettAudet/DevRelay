@@ -1,5 +1,27 @@
 # AGENTS.md
 
+## Mandatory ProjectMemory bootstrap
+
+Before any substantive action in every fresh DevRelay task, including a task
+created in a ChatGPT Desktop worktree, run the repository bootstrap command:
+
+```text
+node plugins/devrelay-desktop/scripts/memory-bootstrap.mjs --task-id <stable-task-or-attempt-id>
+```
+
+Treat its JSON output as derived orientation, not authority. Confirm that the
+receipt outcome is `pass`, report its exact ProjectMemory baseline ID and
+digest, synopsis digest, and graph-checkpoint digest, and resolve any pending
+or open prior session before lifecycle progression. A failed bootstrap stops
+all non-diagnostic work. The task or its parent must bind the receipt and its
+memory-context digest into the exact `DesktopTaskPlan`; do not construct or
+dispatch a managed task without those bindings.
+
+Codex project instructions and the managed task prompt are the supported
+ChatGPT Desktop startup boundary. Do not claim that an undeclared plug-in
+lifecycle hook ran. Before a managed task ends, return a candidate-only
+session conclusion to the parent; only the ProjectMemory Gate may promote it.
+
 ## Purpose
 
 DevRelay is a small deterministic runner for composable

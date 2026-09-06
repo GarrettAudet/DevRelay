@@ -17,8 +17,16 @@ export class DesktopOrchestrationArtifactValidationError extends Error {
 const fail = (message) => { throw new DesktopOrchestrationArtifactValidationError(message); };
 const digestField = Object.freeze({
   DesktopOrchestrationPlan: "planDigest",
+  DesktopProjectMemoryBootstrapReceipt: "receiptDigest",
+  DesktopTaskPlan: "planDigest",
   DesktopTaskReceipt: "receiptDigest",
   DesktopOperatorSnapshot: "snapshotDigest",
+  AdversarialReviewRequirement: "requirementDigest",
+  DesktopReviewReceipt: "receiptDigest",
+  DesktopMergeReadiness: "readinessDigest",
+  DesktopOrchestrationRecovery: "recoveryDigest",
+  DesktopSessionConclusionCandidate: "conclusionDigest",
+  DesktopChangeIntegrationRecord: "integrationDigest",
 });
 
 export function validateDesktopOrchestrationArtifact(value) {
@@ -32,6 +40,25 @@ export function validateDesktopOrchestrationArtifact(value) {
     const ids = new Set(value.workItems.map(({ id }) => id));
     if (ids.size !== value.workItems.length) fail("work item identities repeat");
     for (const item of value.workItems) for (const dependency of item.dependencies) if (!ids.has(dependency)) fail(`dependency ${dependency} is unresolved`);
+  }
+  if (value.kind === "DesktopTaskPlan") {
+    if (value.worktreeLease.attemptId !== value.attemptId || value.worktreeLease.runId !== value.runId || value.worktreeLease.workItemId !== value.workItemId) fail("task plan and worktree lease identities disagree");
+    if (value.worktreeLease.revision !== value.startingRevision) fail("task plan and worktree revision disagree");
+    if (value.promptArtifact.digest !== value.promptDigest) fail("task plan prompt digest disagrees with its artifact");
+    if (canonicalJsonDigest(value.memoryContext) !== value.memoryContextDigest) fail("task plan memory context drifted");
+  }
+  if (value.kind === "DesktopMergeReadiness") {
+    if ((value.outcome === "merge-ready") !== (value.blockers.length === 0 && value.conflictDisposition === "none")) fail("merge readiness outcome contradicts its blockers");
+  }
+  if (value.kind === "DesktopReviewReceipt") {
+    if (value.implementerTaskId === value.reviewerTaskId) fail("review receipt records self-review");
+    if (value.adversarial !== true) fail("Desktop review receipt must record adversarial review");
+  }
+  if (value.kind === "DesktopOrchestrationRecovery") {
+    if ((value.outcome === "recovered") !== (value.uncertainWorkItemIds.length === 0)) fail("recovery outcome contradicts uncertain work");
+  }
+  if (value.kind === "DesktopChangeIntegrationRecord") {
+    if ((value.outcome === "integrated") !== (value.conflicts.length === 0)) fail("integration outcome contradicts conflicts");
   }
   return value;
 }

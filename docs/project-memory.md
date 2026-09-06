@@ -6,4 +6,11 @@ The stable facade exposes `conclude(relay, { taskId, sessionId, ... })`. `/concl
 
 Mem0 is optional, local-first, and derived. The adapter denies network and source transmission by default and accepts live maturity only from a digest-bound host-observed execution attestation. Provider failure blocks unless Core proves a complete native-equivalent context. Mem0 never receives baseline, Gate, filesystem-wide, or graph mutation authority.
 
+For a repository task, `AGENTS.md` requires the deterministic
+`plugins/devrelay-desktop/scripts/memory-bootstrap.mjs` command before
+substantive work. Managed task prompts carry the resulting receipt and every
+`DesktopTaskPlan` pins its memory-context digest, so baseline drift changes the
+plan identity and fails closed. The plug-in packages the orchestration skill;
+Codex plug-in lifecycle hooks are not claimed or relied upon.
+
 This release supports GitHub source operated from ChatGPT/Codex Desktop on Windows. It does not claim automatic tab-close interception, a one-click Desktop plug-in, a hosted memory backend, public npm publication, or access to unrelated chats.

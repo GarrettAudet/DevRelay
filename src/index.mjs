@@ -901,6 +901,15 @@ export {
   DesktopOrchestrationArtifactValidationError,
   validateDesktopOrchestrationArtifact,
 } from "./desktop-orchestration-artifact-validator.mjs";
+export {
+  desktopOrchestrationApprovedTraceabilityContributor,
+  desktopOrchestrationCandidateTraceabilityContributor,
+  desktopOrchestrationTraceabilityContributors,
+} from "./desktop-orchestration-traceability-contributor.mjs";
+export {
+  DesktopProjectMemoryBootstrapError,
+  loadDesktopProjectMemoryBootstrap,
+} from "./desktop-project-memory-bootstrap.mjs";
 
 export {
   OperatorCliError,

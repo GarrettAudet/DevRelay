@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { sha256Digest } from "../src/content-digest.mjs";
+import { canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
 import { createDesktopMemoryJournal } from "../src/desktop-memory-journal.mjs";
 import { validateDesktopOrchestrationArtifact } from "../src/desktop-orchestration-artifact-validator.mjs";
 import { createDesktopOperatorSnapshot, renderDesktopOperatorSnapshot } from "../src/desktop-operator-view.mjs";
@@ -17,6 +17,8 @@ import { createLocalHostStorage } from "../src/local-host-storage.mjs";
 
 const REVISION = "a".repeat(40);
 const DIGEST = `sha256:${"b".repeat(64)}`;
+const ref = (artifactId, digest = DIGEST) => ({ artifactId, digest, schema: "https://devrelay.dev/test/v1", mediaType: "application/json", uri: `memory://test/${artifactId}` });
+const memoryContext = () => ({ bootstrapReceipt: ref("BOOTSTRAP"), projectMemoryBaseline: ref("MEMORY"), synopsisProjection: ref("SYNOPSIS"), graphCheckpoint: ref("GRAPH") });
 const orchestrationPlan = () => createDesktopOrchestrationPlan({
   runId: "RUN-DO-1",
   projectId: "devrelay",
@@ -66,18 +68,22 @@ test("orchestration state survives restart and quarantines uncertain external wo
   reopened.close();
 });
 
-test("Desktop task adapter binds every observation to one immutable plan and no authority", async () => {
-  const lease = { kind: "WorktreeLease", attemptId: "ATT-A", workItemId: "WI-A", workspace: "C:/worktrees/ATT-A" };
+test("Desktop task adapter binds every observation and exact memory context to one immutable plan with no authority", async () => {
+  const lease = { apiVersion: "devrelay.dev/v1alpha1", kind: "WorktreeLease", attemptId: "ATT-A", runId: "RUN-DO-1", workItemId: "WI-A", revision: REVISION, workspace: "C:/worktrees/ATT-A", status: "active", cleanupDisposition: "retain" };
   const plan = createDesktopTaskPlan({
     runId: "RUN-DO-1", workItem: { id: "WI-A" }, projectId: "devrelay", startingRevision: REVISION,
     worktreeLease: lease, assignment: { specialistId: "implementation" }, executor: { id: "chatgpt.desktop" },
-    grants: [{ kind: "filesystem.write", scope: "C:/worktrees/ATT-A" }], promptArtifact: { artifactId: "PROMPT-A", digest: DIGEST },
+    grants: [{ kind: "filesystem.write", scope: "C:/worktrees/ATT-A" }], promptArtifact: ref("PROMPT-A"), memoryContext: memoryContext(),
   });
   const handlers = Object.fromEntries(["create", "inspect", "wait", "message", "handoff"].map((name) => [name, async ({ taskId }) => ({ taskId: name === "inspect" ? "TASK-OTHER" : taskId ?? "TASK-A", status: name === "create" ? "ready" : "running" })]));
   const adapter = createDesktopTaskAdapter({ providerId: "chatgpt.desktop", providerVersion: "1.0.0", handlers });
   const receipt = await adapter.invoke("create", { plan });
   assert.equal(receipt.taskId, "TASK-A");
   assert.equal(receipt.authority, "observation-only");
+  assert.equal(plan.memoryContext.projectMemoryBaseline.artifactId, "MEMORY");
+  const staleBody = { ...plan, memoryContext: { ...plan.memoryContext, projectMemoryBaseline: ref("STALE") } };
+  delete staleBody.planDigest;
+  assert.throws(() => validateDesktopOrchestrationArtifact({ ...staleBody, planDigest: canonicalJsonDigest(staleBody) }), /memory context drifted/u);
   assert.deepEqual(adapter.authority, { gates: false, readiness: false, graph: false, verification: false, integration: false });
   await assert.rejects(() => adapter.invoke("inspect", { plan, taskId: "TASK-X" }), /substituted/u);
 });

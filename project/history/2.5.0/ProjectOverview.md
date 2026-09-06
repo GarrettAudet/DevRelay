@@ -518,8 +518,8 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`SCOPE-DO-ADAPTER-001`** A bounded ChatGPT Desktop task adapter contract and receipts for task creation, status, waiting, messaging, handoff, and exact task identity.
 - **`SCOPE-DO-DOGFOOD-001`** Full released-circuit dogfood and clean Windows Desktop installed-plugin evidence for parallel worktrees, recovery, review, integration, memory conclusion, and fresh-task resume.
 - **`SCOPE-DO-HOST-001`** A durable Desktop frontier scheduler, task/worktree lease state machine, restart recovery coordinator, and deterministic operator projection over existing DevRelay lifecycle artifacts.
-- **`SCOPE-DO-MEMORY-001`** Deterministic repository-triggered bootstrap, conclusion enforcement, worker-parent memory handoff, interruption quarantine, and fresh-task restart recovery for DevRelay-managed tasks.
-- **`SCOPE-DO-PLUGIN-001`** An installable ChatGPT/Codex Desktop plugin containing the orchestration skill, bounded local scripts, documentation, and validation evidence; lifecycle hooks are not claimed.
+- **`SCOPE-DO-MEMORY-001`** Automatic bootstrap, conclusion enforcement, worker-parent memory handoff, interruption quarantine, and fresh-task restart recovery for DevRelay-managed tasks.
+- **`SCOPE-DO-PLUGIN-001`** An installable ChatGPT/Codex Desktop plugin containing the orchestration skill, trusted lifecycle hooks, local scripts, documentation, and validation evidence.
 - **`SCOPE-DO-REVIEW-001`** Versioned merge-readiness and risk-based adversarial-review policy using existing WorkItemVerification and ChangeIntegration authority boundaries.
 - **`SCOPE-EP-ADAPTERS-001`** Capability-oriented inventory, acquire, configure, service-check, and target-probe adapter contracts with exact maturity and live-attestation reporting.
 - **`SCOPE-EP-DOGFOOD-001`** Full released-circuit dogfood and installed-package Windows Desktop preparation, readiness, execution, induced-drift, remediation, re-verification, and replay acceptance.
@@ -766,7 +766,7 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`CON-DO-MAIN-001`** [technical; project] Harness-managed implementation never works directly on protected main; every work item uses an exact isolated worktree and reaches main only through verified ChangeIntegration.
   - Rationale: Parallel agents must not interfere with the trusted target checkout.
   - Acceptance criteria: `AC-DO-MERGE-READINESS-001`, `AC-DO-WORKTREE-LEASE-001`
-- **`CON-DO-MEMORY-AUTHORITY-001`** [technical; project] Repository-backed ProjectMemoryBaseline and Gate-approved conclusions remain authoritative; bootstrap context, task transcripts, cached provider memory, and operator projections are derived evidence only.
+- **`CON-DO-MEMORY-AUTHORITY-001`** [technical; project] Repository-backed ProjectMemoryBaseline and Gate-approved conclusions remain authoritative; hook context, task transcripts, cached provider memory, and operator projections are derived evidence only.
   - Rationale: Automation cannot turn conversational or provider state into project authority.
   - Acceptance criteria: `AC-DO-HOOKS-001`, `AC-DO-MEMORY-BOOTSTRAP-001`, `AC-DO-MEMORY-CONCLUDE-001`
 - **`CON-EP-AUTHORITY-001`** [technical; project] EnvironmentVerificationGate alone activates ready state; adapters, executors, models, callers, and WorkExecution cannot self-authorize.
@@ -965,8 +965,8 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Measure: Inject failures at every durable state boundary and reconcile from a fresh process.
   - Target: Zero false-complete outcomes; all uncertainty is explicit and recoverable.
   - Acceptance criteria: `AC-DO-MEMORY-CONCLUDE-001`, `AC-DO-RECOVERY-001`, `AC-DO-WORKTREE-LEASE-001`
-- **`NFR-DO-SECURITY-001`** [security; must; project] Desktop task and bootstrap-helper execution is least-privilege, workspace-scoped, secret-safe, local-first, and deny-by-default for network or external side effects.
-  - Measure: Run grant, path, task, transcript, secret, network, project-startup, and redaction matrices.
+- **`NFR-DO-SECURITY-001`** [security; must; project] Desktop task and hook execution is least-privilege, workspace-scoped, secret-safe, local-first, and deny-by-default for network or external side effects.
+  - Measure: Run grant, path, task, transcript, secret, network, hook-trust, and redaction matrices.
   - Target: Zero unauthorized effects or persisted secrets.
   - Acceptance criteria: `AC-DO-HOOKS-001`, `AC-DO-PERMISSIONS-001`
 - **`NFR-DO-USABILITY-001`** [usability; must; project] Routine orchestration requires one goal-level interaction while exposing only material product decisions, blockers, conflicts, and acceptance evidence to the owner.
@@ -1199,4 +1199,4 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 - Lifecycle: existing
 - Phase: planning
-- Summary: DO-001 gap remediation is in verification for a restart-safe ChatGPT Desktop worktree harness with Core-derived scheduling, policy-driven review, supported repository-triggered ProjectMemory bootstrap, and exact memory-bound task plans.
+- Summary: DO-001 requirements are closed for a restart-safe ChatGPT Desktop worktree and task harness with Core-derived frontier scheduling, policy-driven review, operator visibility, and automatic authoritative ProjectMemory continuity.

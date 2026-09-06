@@ -1,15 +1,15 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
-  "version": "2.6.0",
+  "baselineId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
+  "version": "2.5.0",
   "approvedCandidate": {
-    "artifactId": "requirements-change-set-do-001-gap-remediation-v1",
-    "digest": "sha256:4c18f3200a6243528a689f0291a082354a5cb13ff94952cd3178a7abff92c9e9"
+    "artifactId": "requirements-change-set-do-001-desktop-orchestration-v1",
+    "digest": "sha256:515b5f13e68c85e4524fdbe3027270ec3a9fe8f61a0a52cdd60df8e15815ad63"
   },
   "supersedes": {
-    "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-    "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
+    "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
+    "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
   },
   "requirements": {
     "purpose": {
@@ -15266,7 +15266,7 @@
       {
         "id": "AC-DO-DESKTOP-E2E-001",
         "statement": "A clean ChatGPT Desktop on Windows installation can bootstrap memory, schedule a parallel frontier into worktrees, recover one interrupted task, verify and adversarially review required work, integrate safely, conclude memory, and resume in a fresh task.",
-        "verification": "Run an installed-package and plugin end-to-end scenario using exact host-observed task, bootstrap, Git, SQLite, memory, and verification receipts.",
+        "verification": "Run an installed-package and plugin end-to-end scenario using exact host-observed task, hook, Git, SQLite, memory, and verification receipts.",
         "sourceRefs": [
           {
             "role": "goal",
@@ -15276,31 +15276,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -15313,22 +15292,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -15341,22 +15306,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -15426,8 +15377,8 @@
       },
       {
         "id": "AC-DO-HOOKS-001",
-        "statement": "Every configured DevRelay Desktop project uses repository instructions and the exact managed task prompt to run a deterministic bootstrap helper that validates and injects current ProjectMemory context before substantive work, while interruption and conclusion artifacts prevent silent loss without accessing unrelated chats.",
-        "verification": "Run command and live Desktop task cases for startup, changed baseline, corrupted synopsis, missing graph checkpoint, interruption, explicit conclusion, unrelated directories, and malformed input.",
+        "statement": "The installable Desktop plugin uses trusted lifecycle hooks to inject verified startup context and prevent silent loss at stop, interrupt, or session end without claiming access to unrelated chats.",
+        "verification": "Run hook JSON fixtures for startup, resume, compact, stop, interrupt, session end, unrelated directories, malformed input, and missing trust.",
         "sourceRefs": [
           {
             "role": "goal",
@@ -15437,31 +15388,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -15474,22 +15404,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -15502,22 +15418,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -15811,8 +15713,8 @@
       },
       {
         "id": "AC-DO-PLUGIN-001",
-        "statement": "A validated installable DevRelay Desktop plugin packages the orchestration skill and bounded scripts without claiming unsupported lifecycle hooks or embedding product-specific routing in Generic Core.",
-        "verification": "Validate the Codex plugin manifest, skill metadata, bounded scripts, package contents, installation path, fresh-task pickup, and Generic Core identifier scan.",
+        "statement": "A validated installable DevRelay Desktop plugin packages the orchestration skill, lifecycle hooks, and bounded scripts without embedding product-specific routing in Generic Core.",
+        "verification": "Validate the plugin manifest, hook configuration, skill metadata, package contents, installation path, and Generic Core identifier scan.",
         "sourceRefs": [
           {
             "role": "goal",
@@ -15822,31 +15724,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -15859,22 +15740,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -15887,22 +15754,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -16140,7 +15993,7 @@
       },
       {
         "id": "AC-DO-TRACEABILITY-001",
-        "statement": "Trusted contributors project only validated forward facts for task plans, memory bootstrap receipts, leases, reviews, integration, recovery, and conclusions while adapters, bootstrap helpers, and task prompts receive no graph mutation authority.",
+        "statement": "Trusted contributors project only validated forward facts for task plans, leases, reviews, integration, recovery, and conclusions while adapters and hooks receive no graph mutation authority.",
         "verification": "Merge candidate and approved scopes, run provenance and impact queries, and reject inverse, orphaned, adapter-authored, or stale facts.",
         "sourceRefs": [
           {
@@ -16151,31 +16004,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -16188,22 +16020,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -16216,22 +16034,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -24068,11 +23872,11 @@
       {
         "id": "NFR-DO-SECURITY-001",
         "category": "security",
-        "statement": "Desktop task and bootstrap-helper execution is least-privilege, workspace-scoped, secret-safe, local-first, and deny-by-default for network or external side effects.",
+        "statement": "Desktop task and hook execution is least-privilege, workspace-scoped, secret-safe, local-first, and deny-by-default for network or external side effects.",
         "applicability": {
           "level": "project"
         },
-        "measure": "Run grant, path, task, transcript, secret, network, project-startup, and redaction matrices.",
+        "measure": "Run grant, path, task, transcript, secret, network, hook-trust, and redaction matrices.",
         "target": "Zero unauthorized effects or persisted secrets.",
         "priority": "must",
         "acceptanceCriterionIds": [
@@ -24088,31 +23892,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -24125,22 +23908,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -24153,22 +23922,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -28043,7 +27798,7 @@
       {
         "id": "CON-DO-MEMORY-AUTHORITY-001",
         "category": "technical",
-        "statement": "Repository-backed ProjectMemoryBaseline and Gate-approved conclusions remain authoritative; bootstrap context, task transcripts, cached provider memory, and operator projections are derived evidence only.",
+        "statement": "Repository-backed ProjectMemoryBaseline and Gate-approved conclusions remain authoritative; hook context, task transcripts, cached provider memory, and operator projections are derived evidence only.",
         "rationale": "Automation cannot turn conversational or provider state into project authority.",
         "applicability": {
           "level": "project"
@@ -28062,31 +27817,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -28099,22 +27833,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -28127,22 +27847,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -31476,7 +31182,7 @@
       },
       {
         "id": "SCOPE-DO-MEMORY-001",
-        "statement": "Deterministic repository-triggered bootstrap, conclusion enforcement, worker-parent memory handoff, interruption quarantine, and fresh-task restart recovery for DevRelay-managed tasks.",
+        "statement": "Automatic bootstrap, conclusion enforcement, worker-parent memory handoff, interruption quarantine, and fresh-task restart recovery for DevRelay-managed tasks.",
         "sourceRefs": [
           {
             "role": "goal",
@@ -31486,31 +31192,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -31523,22 +31208,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -31551,22 +31222,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -31580,7 +31237,7 @@
       },
       {
         "id": "SCOPE-DO-PLUGIN-001",
-        "statement": "An installable ChatGPT/Codex Desktop plugin containing the orchestration skill, bounded local scripts, documentation, and validation evidence; lifecycle hooks are not claimed.",
+        "statement": "An installable ChatGPT/Codex Desktop plugin containing the orchestration skill, trusted lifecycle hooks, local scripts, documentation, and validation evidence.",
         "sourceRefs": [
           {
             "role": "goal",
@@ -31590,31 +31247,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -31627,22 +31263,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -31655,22 +31277,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -38822,7 +38430,7 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "planning",
-      "summary": "DO-001 gap remediation is in verification for a restart-safe ChatGPT Desktop worktree harness with Core-derived scheduling, policy-driven review, supported repository-triggered ProjectMemory bootstrap, and exact memory-bound task plans.",
+      "summary": "DO-001 requirements are closed for a restart-safe ChatGPT Desktop worktree and task harness with Core-derived frontier scheduling, policy-driven review, operator visibility, and automatic authoritative ProjectMemory continuity.",
       "sourceRefs": [
         {
           "role": "goal",
@@ -38832,31 +38440,10 @@
           }
         },
         {
-          "role": "goal",
-          "artifact": {
-            "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-            "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-          }
-        },
-        {
           "role": "owner-decision",
           "artifact": {
             "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
             "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-          }
-        },
-        {
-          "role": "owner-decision",
-          "artifact": {
-            "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-            "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-          }
-        },
-        {
-          "role": "project-context",
-          "artifact": {
-            "artifactId": "devrelay",
-            "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
           }
         },
         {
@@ -38869,22 +38456,8 @@
         {
           "role": "project-overview-baseline",
           "artifact": {
-            "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-            "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-          }
-        },
-        {
-          "role": "project-overview-baseline",
-          "artifact": {
             "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
             "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-          }
-        },
-        {
-          "role": "repository-snapshot",
-          "artifact": {
-            "artifactId": "RepositorySnapshot",
-            "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
           }
         },
         {
@@ -38897,22 +38470,8 @@
         {
           "role": "requirements-baseline",
           "artifact": {
-            "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-            "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-          }
-        },
-        {
-          "role": "requirements-baseline",
-          "artifact": {
             "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
             "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-          }
-        },
-        {
-          "role": "requirements-closure",
-          "artifact": {
-            "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-            "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
           }
         },
         {
@@ -39652,7 +39211,7 @@
       },
       {
         "id": "ASM-DO-BOUNDARY-001",
-        "statement": "Managed-task memory lifecycle applies only inside configured DevRelay projects; unrelated chats remain inaccessible and manually created project tasks enter through the repository bootstrap boundary.",
+        "statement": "Automatic memory lifecycle applies to DevRelay-managed tasks; unrelated chats remain inaccessible and manually created project tasks must enter through the plugin bootstrap boundary.",
         "status": "confirmed",
         "blocking": false,
         "sourceRefs": [
@@ -39664,31 +39223,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -39701,22 +39239,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -39729,22 +39253,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -39758,7 +39268,7 @@
       },
       {
         "id": "ASM-DO-DESKTOP-001",
-        "statement": "ChatGPT Desktop provides project-scoped Codex tasks, Git worktree creation, task waiting and messaging, handoff, plugins, skills, and repository AGENTS.md instructions on the Windows release-defining host.",
+        "statement": "ChatGPT Desktop provides project-scoped Codex tasks, Git worktree creation, task waiting and messaging, handoff, plugins, skills, and trusted lifecycle hooks on the Windows release-defining host.",
         "status": "confirmed",
         "blocking": false,
         "sourceRefs": [
@@ -39770,31 +39280,10 @@
             }
           },
           {
-            "role": "goal",
-            "artifact": {
-              "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-              "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
-            }
-          },
-          {
             "role": "owner-decision",
             "artifact": {
               "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
               "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
-            }
-          },
-          {
-            "role": "owner-decision",
-            "artifact": {
-              "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-              "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
-            }
-          },
-          {
-            "role": "project-context",
-            "artifact": {
-              "artifactId": "devrelay",
-              "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
             }
           },
           {
@@ -39807,22 +39296,8 @@
           {
             "role": "project-overview-baseline",
             "artifact": {
-              "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
-            }
-          },
-          {
-            "role": "project-overview-baseline",
-            "artifact": {
               "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
-            }
-          },
-          {
-            "role": "repository-snapshot",
-            "artifact": {
-              "artifactId": "RepositorySnapshot",
-              "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
             }
           },
           {
@@ -39835,22 +39310,8 @@
           {
             "role": "requirements-baseline",
             "artifact": {
-              "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-              "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
-            }
-          },
-          {
-            "role": "requirements-baseline",
-            "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
               "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
-            }
-          },
-          {
-            "role": "requirements-closure",
-            "artifact": {
-              "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-              "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
             }
           },
           {
@@ -40903,7 +40364,7 @@
       "Bounded adapters or compatible implementations for configured module capabilities.",
       "Canonical DevRelay artifact registry, checkpoint store, graph service, local Git integration, package tooling, verification, and release policy contracts.",
       "Canonical DevRelay permission demands, artifact registry, checkpoint store, graph service, local Git integration, execution, and verification contracts.",
-      "ChatGPT Desktop task/worktree, plugin, skill, project-instruction, and managed-prompt surfaces on the Windows release-defining host.",
+      "ChatGPT Desktop task/worktree, plugin, skill, and lifecycle-hook surfaces on the Windows release-defining host.",
       "ChatGPT/Codex Desktop on Windows host surfaces for displaying candidate identity, proposed effects, blockers, verification coverage, and exact evidence.",
       "ChatGPT/Codex Desktop on Windows host surfaces for displaying effects, grants, remediation, readiness, and exact evidence.",
       "ChatGPT/Codex Desktop skill, plug-in, and MCP host surfaces for bootstrap, query, conclusion, recovery, and receipts.",
@@ -40966,6 +40427,7 @@
       "Analyzer silence could be mistaken for proof that an architecture element or relationship does not exist.",
       "Analyzer silence could be mistaken for proof that no dependency is missing.",
       "Automated memory extraction can convert inference into false project truth unless every record carries authority, source, confidence, and approval state.",
+      "Automatic hooks can leak transcript or secret content, run outside the intended project, or block unrelated chats unless inputs and scope fail closed.",
       "Automatic idea detection can become noisy or silently expand scope unless user confirmation and RoadmapGate authority remain explicit.",
       "Automatic preparation can damage or destabilize a machine unless project-local changes, exact grants, rollback, and global-change approval are enforced.",
       "Candidate evidence can become invalid when source, version, configuration, policy, toolchain, baseline, or environment identity drifts after preparation.",
@@ -41004,7 +40466,6 @@
       "Parallel changes can conflict or invalidate target state after verification, requiring explicit merge-readiness and ChangeIntegration checks.",
       "Parallel checks can race over shared mutable state unless only independent read checks run concurrently and effects remain serialized or isolated.",
       "Priority scores can imply false objectivity unless weights, inputs, confidence, rationale, and ties remain visible.",
-      "Project startup instructions or managed prompts can load stale or out-of-scope context unless the repository bootstrap validates exact paths, bytes, project identity, and digests before work.",
       "Provider-specific binding details could leak into generic workflow semantics.",
       "Raw provider output, logs, screenshots, or test receipts can contain secrets, personal information, or unsafe repository content.",
       "Rebuilding or semantically normalizing candidate artifacts during verification can substitute bytes that were never prepared or approved.",
@@ -41062,7 +40523,7 @@
       "Fixture-conformant optional OpenAPI, AsyncAPI, and Protobuf bindings",
       "Four repository-scoped DevRelay skills and a clean-checkout Windows Desktop end-to-end acceptance package.",
       "GitHub source and installable V0.10 release tarball with exact catalog, checksums, and provenance evidence.",
-      "Installable DevRelay Desktop plugin with orchestration skill, bounded bootstrap scripts, validation, and local installation documentation.",
+      "Installable DevRelay Desktop plugin with orchestration skill, lifecycle hooks, bounded scripts, validation, and local installation documentation.",
       "Installed-package ChatGPT/Codex Desktop Windows end-to-end evidence covering preparation, verification, execution, drift, remediation, recovery, and replay.",
       "IntegratedChangeRecord, IntegrationConflictSet, IntegrationAttempt, and updated RepositorySnapshot contracts",
       "LifecycleRunSnapshot and RunLedger artifact contracts.",
@@ -41119,11 +40580,11 @@
       "dependency/spec-kit-consistency-review",
       "desktop-orchestration/adversarial-review",
       "desktop-orchestration/frontier-scheduling",
+      "desktop-orchestration/hook-lifecycle",
       "desktop-orchestration/merge-readiness",
       "desktop-orchestration/operator-projection",
       "desktop-orchestration/permission-enforcement",
       "desktop-orchestration/plugin-validation",
-      "desktop-orchestration/repository-bootstrap-lifecycle",
       "desktop-orchestration/review-policy",
       "desktop-orchestration/sqlite-restart-recovery",
       "desktop-orchestration/task-adapter-conformance",
@@ -41279,58 +40740,58 @@
       {
         "role": "goal",
         "artifact": {
-          "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
-          "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
+          "artifactId": "goal-devrelay-do-001-desktop-orchestration-v1",
+          "digest": "sha256:d31c89ed350739bb214b83d58916e7259a855cd61421ce60be78f227c69af2f5"
         }
       },
       {
         "role": "owner-decision",
         "artifact": {
-          "artifactId": "owner-decisions-do-001-gap-remediation-v1",
-          "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
+          "artifactId": "owner-decisions-do-001-desktop-orchestration-v1",
+          "digest": "sha256:4b523884fc921e2457b49ec6e88d1462d4294165d4408068ea3d5b2ed21d61b6"
         }
       },
       {
         "role": "project-context",
         "artifact": {
-          "artifactId": "devrelay",
+          "artifactId": "project-context-devrelay-do-001-v1",
           "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
         }
       },
       {
         "role": "project-overview-baseline",
         "artifact": {
-          "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-          "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
+          "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
+          "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
         }
       },
       {
         "role": "repository-snapshot",
         "artifact": {
-          "artifactId": "RepositorySnapshot",
+          "artifactId": "repository-snapshot-devrelay-do-001-v1",
           "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
         }
       },
       {
         "role": "requirements-baseline",
         "artifact": {
-          "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-          "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
+          "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
+          "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
         }
       },
       {
         "role": "requirements-closure",
         "artifact": {
-          "artifactId": "requirements-closure-do-001-gap-remediation-v1",
-          "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
+          "artifactId": "requirements-closure-do-001-v1",
+          "digest": "sha256:16e13baaeabfcdff0def372696d191f9c914a8882b2abef1d0ed50e8e92a57d5"
         }
       }
     ]
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-do-001-gap-remediation-v1",
-      "digest": "sha256:5e14f8527ae3162bb67a4cdc289c747e886b44d3103ad3b0b6e72fc7ec22b097"
+      "artifactId": "requirements-gate-approval-do-001-desktop-orchestration-v1",
+      "digest": "sha256:f8a97f35132382d6f040d82140b0f43c09ca6d613c85e716f8dad1b8fcd7168e"
     }
   ]
 }
