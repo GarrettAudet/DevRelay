@@ -41,8 +41,9 @@ test("explicit host lifecycle bridge ignores unrelated projects", (t) => {
 test("repository bootstrap command validates the exact persistent memory chain", () => {
   const output = execFileSync(process.execPath, [bootstrapScript, "--task-id", "TASK-BOOTSTRAP-1", "--repository-revision", "a".repeat(40)], { cwd: root, encoding: "utf8", windowsHide: true });
   const result = JSON.parse(output);
+  const currentBaseline = JSON.parse(readFileSync(path.join(root, "project", "project-memory-baseline.json"), "utf8"));
   assert.equal(result.receipt.outcome, "pass");
-  assert.equal(result.receipt.projectMemoryBaseline.artifactId, "PMB-MUC-405C2614B0D0DF42");
+  assert.equal(result.receipt.projectMemoryBaseline.artifactId, currentBaseline.baselineId);
   assert.equal(result.memoryContext.bootstrapReceipt.digest, result.receiptRef.digest);
   assert.match(result.synopsis, /MEM-DEVRELAY-DESKTOP-ORCHESTRATION/u);
   assert.doesNotMatch(readFileSync(bootstrapScript, "utf8"), /\.\.\/\.\.\/\.\.\/src\//u);
