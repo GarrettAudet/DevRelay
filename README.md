@@ -79,7 +79,7 @@ snapshot, content-policy, and Markdown renderer APIs are available from
 `devrelay/advanced`; the report remains read-only and never controls a Gate.
 
 For isolated worktree scheduling, bounded Desktop task receipts, adversarial
-review policy, restart recovery, and automatic ProjectMemory hooks, see
+review policy, restart recovery, and repository-triggered ProjectMemory bootstrap, see
 [DevRelay Desktop orchestration](docs/desktop-orchestration.md).
 
 ## Library quickstart

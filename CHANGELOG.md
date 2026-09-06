@@ -5,15 +5,15 @@
 ### Added
 
 - Added deterministic Desktop frontier orchestration, exact provider-neutral task plans and receipts, durable restart-safe Git worktree leases, policy-driven independent adversarial review, merge-readiness evaluation, and a read-only operator snapshot.
-- Added the validated `devrelay-desktop` ChatGPT Desktop plug-in with an orchestration skill and trusted `SessionStart`, `Stop`, `Interrupt`, and `SessionEnd` ProjectMemory hooks.
-- Added automatic repository-scoped ProjectMemory bootstrap, checkpoint, candidate conclusion, fresh-task recovery, and exact `ConcludeReceipt` closure without granting hooks semantic-memory promotion authority.
+- Added the validated `devrelay-desktop` ChatGPT Desktop plug-in with an orchestration skill, dependency-free repository bootstrap, and an explicit compatibility lifecycle bridge for deliberately configured hosts.
+- Added mandatory repository-scoped ProjectMemory bootstrap through ChatGPT Desktop project instructions and the managed task prompt, exact task-plan memory binding, candidate-only conclusion, fresh-task recovery, and exact `ConcludeReceipt` closure without granting the plug-in semantic-memory promotion authority.
 - Added explicit `devrelay/desktop/*` exports and the `desktop-orchestration-artifacts` JSON Schema contract.
 
 ### Verification
 
 - Added focused conformance for dependency and concurrency safety, transition and identity substitution, restart recovery, worktree isolation and cleanup, reviewer independence, conflict escalation, operator determinism, plug-in validation, unrelated-chat isolation, and cross-task memory recovery.
-- Passed the complete 1,163-test canonical suite with 1,161 passing, zero failures, and two intentional skips.
-- Verified 11,291 exact source digests, 413 packaged files, 202 installed export targets, an enabled personal Desktop plug-in, and installed-hook bootstrap from the concluded ProjectMemory 1.0.4 baseline.
+- Passed the final complete 1,169-test canonical suite with 1,167 passing, zero failures, and two intentional skips; independent adversarial review closed the memory-plan provenance and review-subject lineage findings with no remaining P0/P1 issue.
+- Verified the enabled `devrelay-desktop@personal` plug-in at `0.1.1+codex.20260906044519` and proved first-command recovery of ProjectMemory 1.0.6 from a pristine ChatGPT Desktop worktree with no `node_modules`, without disclosing the recovered marker in the task prompt.
 
 ## 0.10.0-rc.3 - 2026-08-15
 
