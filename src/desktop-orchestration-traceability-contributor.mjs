@@ -93,12 +93,15 @@ function candidateProjection(context) {
 
 function approvedProjection(context) {
   const taskPlan = exactLoaded(context, "DesktopTaskPlan");
+  const taskReceipt = exactLoaded(context, "DesktopTaskReceipt");
   const requirement = exactLoaded(context, "AdversarialReviewRequirement");
   const review = exactLoaded(context, "DesktopReviewReceipt");
   const readiness = exactLoaded(context, "DesktopMergeReadiness");
   const recovery = exactLoaded(context, "DesktopOrchestrationRecovery");
   const integration = exactLoaded(context, "DesktopChangeIntegrationRecord");
-  if (review.value.workItemId !== taskPlan.value.workItemId || review.value.requirementDigest !== requirement.value.requirementDigest || review.value.disposition !== "pass") fail("review receipt is not passing for the exact task requirement");
+  if (taskReceipt.value.runId !== taskPlan.value.runId || taskReceipt.value.workItemId !== taskPlan.value.workItemId || taskReceipt.value.attemptId !== taskPlan.value.attemptId || taskReceipt.value.planDigest !== taskPlan.value.planDigest || taskReceipt.value.idempotencyKey !== taskPlan.value.idempotencyKey) fail("implementer task receipt does not bind the exact task plan");
+  if (requirement.value.workItemId !== taskPlan.value.workItemId || requirement.value.subjectDigest !== taskPlan.value.planDigest) fail("review requirement does not bind the exact task-plan subject");
+  if (review.value.runId !== taskPlan.value.runId || review.value.workItemId !== taskPlan.value.workItemId || review.value.requirementDigest !== requirement.value.requirementDigest || review.value.subjectDigest !== taskPlan.value.planDigest || review.value.implementerTaskId !== taskReceipt.value.taskId || review.value.reviewerTaskId === taskReceipt.value.taskId || review.value.disposition !== "pass") fail("review receipt is not an independent pass for the exact task-plan subject and implementer");
   if (readiness.value.workItemId !== taskPlan.value.workItemId || readiness.value.requirementDigest !== requirement.value.requirementDigest || readiness.value.outcome !== "merge-ready") fail("merge readiness is not approved for the exact task requirement");
   if (integration.value.runId !== taskPlan.value.runId || integration.value.workItemId !== taskPlan.value.workItemId || !sameRef(integration.value.taskPlan, taskPlan.ref) || !sameRef(integration.value.mergeReadiness, readiness.ref) || integration.value.outcome !== "integrated") fail("integration record lineage is stale or incomplete");
   if (recovery.value.runId !== taskPlan.value.runId || recovery.value.outcome !== "recovered") fail("approved projection requires clean recovery");

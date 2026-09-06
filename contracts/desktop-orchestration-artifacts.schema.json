@@ -169,11 +169,12 @@
     },
     "AdversarialReviewRequirement": {
       "type": "object",
-      "required": ["apiVersion", "kind", "workItemId", "policy", "risk", "tags", "requiredEvidence", "adversarialRequired", "rationale", "requirementDigest"],
+      "required": ["apiVersion", "kind", "workItemId", "subjectDigest", "policy", "risk", "tags", "requiredEvidence", "adversarialRequired", "rationale", "requirementDigest"],
       "properties": {
         "apiVersion": { "const": "devrelay.dev/v1alpha1" },
         "kind": { "const": "AdversarialReviewRequirement" },
         "workItemId": { "$ref": "#/$defs/identity" },
+        "subjectDigest": { "$ref": "#/$defs/digest" },
         "policy": {
           "type": "object",
           "required": ["id", "version"],

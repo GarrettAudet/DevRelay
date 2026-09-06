@@ -1,5 +1,6 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
 import { validateDesktopOrchestrationArtifact } from "./desktop-orchestration-artifact-validator.mjs";
+import { bindPreparedDesktopProjectMemoryBootstrap } from "./desktop-project-memory-bootstrap.mjs";
 
 export class DesktopTaskAdapterError extends Error {
   constructor(message, code = "DR6110") {
@@ -11,9 +12,10 @@ export class DesktopTaskAdapterError extends Error {
 
 const fail = (message, code) => { throw new DesktopTaskAdapterError(message, code); };
 const OPERATIONS = Object.freeze(["create", "inspect", "wait", "message", "handoff"]);
+const preparedTaskPlans = new WeakSet();
 
 function assertPlan(plan) {
-  if (!plan || plan.kind !== "DesktopTaskPlan") fail("validated DesktopTaskPlan is required");
+  if (!preparedTaskPlans.has(plan)) fail("DesktopTaskPlan must be prepared or revalidated against its exact bootstrap receipt", "DR6111");
   try { validateDesktopOrchestrationArtifact(plan); } catch (error) { fail(error.message, "DR6111"); }
   for (const key of ["runId", "workItemId", "attemptId", "projectId", "startingRevision", "promptDigest", "idempotencyKey"] ) {
     if (typeof plan[key] !== "string" || !plan[key]) fail(`plan ${key} is required`);
@@ -24,11 +26,19 @@ function assertPlan(plan) {
   return plan;
 }
 
-export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact, memoryContext } = {}) {
+function preparePlan(plan, memoryBootstrap) {
+  const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId: plan.projectId, repositoryRevision: plan.startingRevision });
+  if (canonicalJsonDigest(memoryContext) !== plan.memoryContextDigest || canonicalJsonDigest(plan.memoryContext) !== plan.memoryContextDigest) fail("task plan does not bind the exact prepared ProjectMemory bootstrap", "DR6111");
+  const prepared = Object.freeze(structuredClone(validateDesktopOrchestrationArtifact(plan)));
+  preparedTaskPlans.add(prepared);
+  return prepared;
+}
+
+export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact, memoryBootstrap } = {}) {
   if (!workItem || typeof workItem.id !== "string") fail("work item is required");
   if (!worktreeLease || worktreeLease.workItemId !== workItem.id) fail("exact worktree lease is required");
   if (!promptArtifact || typeof promptArtifact.digest !== "string") fail("prompt artifact is required");
-  if (!memoryContext?.bootstrapReceipt || !memoryContext?.projectMemoryBaseline || !memoryContext?.synopsisProjection || !memoryContext?.graphCheckpoint) fail("exact ProjectMemory context is required");
+  const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId, repositoryRevision: startingRevision });
   const attemptId = worktreeLease.attemptId;
   const memoryContextDigest = canonicalJsonDigest(memoryContext);
   const idempotencyKey = canonicalJsonDigest({ runId, workItemId: workItem.id, attemptId, startingRevision, promptDigest: promptArtifact.digest, memoryContextDigest });
@@ -50,7 +60,14 @@ export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevi
     memoryContextDigest,
     idempotencyKey,
   };
-  return Object.freeze(validateDesktopOrchestrationArtifact({ ...body, planDigest: canonicalJsonDigest(body) }));
+  const prepared = Object.freeze(validateDesktopOrchestrationArtifact({ ...body, planDigest: canonicalJsonDigest(body) }));
+  preparedTaskPlans.add(prepared);
+  return prepared;
+}
+
+export function revalidateDesktopTaskPlan({ plan, memoryBootstrap } = {}) {
+  if (!plan || plan.kind !== "DesktopTaskPlan") fail("DesktopTaskPlan is required for revalidation", "DR6111");
+  return preparePlan(plan, memoryBootstrap);
 }
 
 export function createDesktopTaskAdapter({ providerId, providerVersion, handlers = {} } = {}) {

@@ -7,6 +7,8 @@ import { loadProjectMemoryArtifact } from "./project-memory.mjs";
 import { validateProjectMemoryArtifact } from "./project-memory-artifact-validator.mjs";
 import { renderCurrentSynopsis } from "./project-memory-conclude.mjs";
 
+const preparedBootstraps = new WeakSet();
+
 export class DesktopProjectMemoryBootstrapError extends Error {
   constructor(message, code = "DR6150") {
     super(`desktop project memory bootstrap: ${message}`);
@@ -79,10 +81,22 @@ export function loadDesktopProjectMemoryBootstrap({ projectRoot, taskId, reposit
   const receipt = validateDesktopOrchestrationArtifact({ ...body, receiptDigest: canonicalJsonDigest(body) });
   const receiptBytes = Buffer.from(canonicalJson(receipt), "utf8");
   const receiptRef = Object.freeze({ artifactId: receipt.receiptId, digest: sha256Digest(receiptBytes), schema: "https://devrelay.dev/evidence/desktop-project-memory-bootstrap/v1", mediaType: "application/json", uri: `memory://devrelay/desktop-bootstrap/${receipt.receiptId}/${sha256Digest(receiptBytes).slice(7)}.json` });
-  return Object.freeze({
+  const result = Object.freeze({
     receipt: Object.freeze(receipt),
     receiptRef,
     memoryContext: Object.freeze({ bootstrapReceipt: receiptRef, projectMemoryBaseline: baseline.ref, synopsisProjection: rendered.ref, graphCheckpoint: graphRef }),
     synopsis: synopsisBytes.toString("utf8"),
   });
+  preparedBootstraps.add(result);
+  return result;
+}
+
+export function bindPreparedDesktopProjectMemoryBootstrap(bootstrap, { projectId, repositoryRevision } = {}) {
+  if (!preparedBootstraps.has(bootstrap)) fail("bootstrap result was not prepared by the exact loader", "DR6153");
+  const { receipt, receiptRef, memoryContext } = bootstrap;
+  if (receipt.projectId !== projectId || receipt.repositoryRevision !== repositoryRevision || receipt.outcome !== "pass") fail("bootstrap project or repository revision drifted", "DR6153");
+  const exactReceiptDigest = sha256Digest(Buffer.from(canonicalJson(receipt), "utf8"));
+  if (receiptRef.artifactId !== receipt.receiptId || receiptRef.digest !== exactReceiptDigest) fail("bootstrap receipt reference drifted", "DR6153");
+  if (!sameRef(memoryContext.bootstrapReceipt, receiptRef) || !sameRef(memoryContext.projectMemoryBaseline, receipt.projectMemoryBaseline) || !sameRef(memoryContext.synopsisProjection, receipt.synopsisProjection) || !sameRef(memoryContext.graphCheckpoint, receipt.graphCheckpoint)) fail("bootstrap memory context does not match its exact receipt", "DR6153");
+  return Object.freeze(structuredClone(memoryContext));
 }

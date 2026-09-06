@@ -878,6 +878,7 @@ export {
   DesktopTaskAdapterError,
   createDesktopTaskAdapter,
   createDesktopTaskPlan,
+  revalidateDesktopTaskPlan,
 } from "./desktop-task-adapter.mjs";
 export {
   DESKTOP_REVIEW_POLICY_VERSION,
