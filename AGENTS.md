@@ -6,8 +6,12 @@ Before any substantive action in every fresh DevRelay task, including a task
 created in a ChatGPT Desktop worktree, run the repository bootstrap command:
 
 ```text
-node plugins/devrelay-desktop/scripts/memory-bootstrap.mjs --task-id <stable-task-or-attempt-id>
+& "$env:USERPROFILE\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe" plugins/devrelay-desktop/scripts/memory-bootstrap.mjs --task-id <stable-task-or-attempt-id>
 ```
+
+The bootstrap entry point is dependency-free so it works in a brand-new
+worktree before package installation. The command must run from that worktree
+and must not substitute a script or project root from another checkout.
 
 Treat its JSON output as derived orientation, not authority. Confirm that the
 receipt outcome is `pass`, report its exact ProjectMemory baseline ID and

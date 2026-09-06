@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { copyFileSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -45,6 +45,16 @@ test("repository bootstrap command validates the exact persistent memory chain",
   assert.equal(result.receipt.projectMemoryBaseline.artifactId, "PMB-MUC-405C2614B0D0DF42");
   assert.equal(result.memoryContext.bootstrapReceipt.digest, result.receiptRef.digest);
   assert.match(result.synopsis, /MEM-DEVRELAY-DESKTOP-ORCHESTRATION/u);
+  assert.doesNotMatch(readFileSync(bootstrapScript, "utf8"), /\.\.\/\.\.\/\.\.\/src\//u);
+});
+
+test("dependency-free bootstrap is byte-equivalent to the schema-validated Core result", async () => {
+  const taskId = "TASK-BOOTSTRAP-EQUIVALENCE";
+  const revision = "b".repeat(40);
+  const actual = JSON.parse(execFileSync(process.execPath, [bootstrapScript, "--task-id", taskId, "--repository-revision", revision], { cwd: root, encoding: "utf8", windowsHide: true }));
+  const { loadDesktopProjectMemoryBootstrap } = await import("../src/desktop-project-memory-bootstrap.mjs");
+  const expected = loadDesktopProjectMemoryBootstrap({ projectRoot: root, taskId, repositoryRevision: revision });
+  assert.deepEqual(actual, expected);
 });
 
 test("repository bootstrap command fails closed on synopsis drift", (t) => {
