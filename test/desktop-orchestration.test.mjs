@@ -21,6 +21,7 @@ const DIGEST = `sha256:${"b".repeat(64)}`;
 const ref = (artifactId, digest = DIGEST) => ({ artifactId, digest, schema: "https://devrelay.dev/test/v1", mediaType: "application/json", uri: `memory://test/${artifactId}` });
 const sourceRoot = path.resolve(new URL("../", import.meta.url).pathname.replace(/^\/(?:[A-Za-z]:)/u, (value) => value.slice(1)));
 const memoryBootstrap = (taskId = "ATT-A", revision = REVISION) => loadDesktopProjectMemoryBootstrap({ projectRoot: sourceRoot, taskId, repositoryRevision: revision });
+const currentMemoryBaselineId = JSON.parse(readFileSync(path.join(sourceRoot, "project", "project-memory-baseline.json"), "utf8")).baselineId;
 const orchestrationPlan = () => createDesktopOrchestrationPlan({
   runId: "RUN-DO-1",
   projectId: "devrelay",
@@ -82,7 +83,7 @@ test("Desktop task adapter binds every observation and exact memory context to o
   const receipt = await adapter.invoke("create", { plan });
   assert.equal(receipt.taskId, "TASK-A");
   assert.equal(receipt.authority, "observation-only");
-  assert.equal(plan.memoryContext.projectMemoryBaseline.artifactId, "PMB-MUC-72494822F54536E5");
+  assert.equal(plan.memoryContext.projectMemoryBaseline.artifactId, currentMemoryBaselineId);
   const staleBody = { ...structuredClone(plan), memoryContext: { ...plan.memoryContext, projectMemoryBaseline: ref("STALE") } };
   staleBody.memoryContextDigest = canonicalJsonDigest(staleBody.memoryContext);
   delete staleBody.planDigest;
