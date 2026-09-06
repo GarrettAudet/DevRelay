@@ -17,6 +17,7 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
   const currentBaseline = json("project/project-memory-baseline.json");
   const historicalBaseline = json("project/history/project-memory/1.0.3/project-memory-baseline.json");
   const priorCurrentBaseline = json("project/history/project-memory/1.0.4/project-memory-baseline.json");
+  const desktopAcceptanceBaseline = json("project/history/project-memory/1.0.5/project-memory-baseline.json");
   const receipt = json(`${conclusionRoot}/09-conclude-receipt.json`);
   const replay = json(`${conclusionRoot}/14-fresh-task-replay-proof.json`);
 
@@ -32,9 +33,10 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
   assert.deepEqual(historicalBaseline, concludedBaseline);
   assert.equal(historicalBaseline.version, "1.0.3");
   assert.equal(api.loadProjectMemoryArtifact(historicalBaseline).ref.digest, summary.resultBaseline.digest);
-  assert.equal(currentBaseline.version, "1.0.5");
+  assert.equal(currentBaseline.version, "1.0.6");
   assert.equal(priorCurrentBaseline.supersedes.digest, summary.resultBaseline.digest);
-  assert.equal(currentBaseline.supersedes.digest, api.loadProjectMemoryArtifact(priorCurrentBaseline).ref.digest);
+  assert.equal(desktopAcceptanceBaseline.supersedes.digest, api.loadProjectMemoryArtifact(priorCurrentBaseline).ref.digest);
+  assert.equal(currentBaseline.supersedes.digest, api.loadProjectMemoryArtifact(desktopAcceptanceBaseline).ref.digest);
   assert.equal(receipt.outcome, "concluded");
   assert.equal(receipt.resultBaseline.digest, summary.resultBaseline.digest);
   assert.equal(replay.replayed, true);
