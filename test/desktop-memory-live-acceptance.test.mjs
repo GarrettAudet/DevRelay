@@ -16,6 +16,7 @@ test("final Desktop proof is concluded into a fresh-task-readable memory baselin
   const live = json("dogfood/do-001-desktop-orchestration/gap-remediation/final-acceptance/03-live-desktop-memory-acceptance-receipt.json");
   const verification = json("dogfood/do-001-desktop-orchestration/gap-remediation/final-remediation/01-canonical-verification-receipt.json");
   const review = json("dogfood/do-001-desktop-orchestration/gap-remediation/final-remediation/02-independent-adversarial-review-receipt.json");
+  const finalLiveRead = json("dogfood/do-001-desktop-orchestration/gap-remediation/final-remediation/11-final-live-read-proof.json");
   validateProjectMemoryArtifact(baseline);
   validateProjectMemoryArtifact(proof);
   assert.equal(baseline.version, "1.0.6");
@@ -26,6 +27,16 @@ test("final Desktop proof is concluded into a fresh-task-readable memory baselin
   assert.equal(review.disposition, "pass");
   assert.equal(review.blockingFindings, 0);
   assert.equal(review.priorFindings.every(({ disposition }) => disposition === "closed"), true);
+  assert.equal(finalLiveRead.outcome, "pass");
+  assert.equal(finalLiveRead.firstCommandWasBootstrap, true);
+  assert.equal(finalLiveRead.promptDisclosedMarkerOrStatement, false);
+  assert.equal(finalLiveRead.nodeModulesPresent, false);
+  assert.equal(finalLiveRead.projectMemoryBaseline.digest, loadProjectMemoryArtifact(baseline).ref.digest);
+  assert.match(finalLiveRead.recoveredMemory.statement, /MEMORY-PROBE-20260906-B/u);
+  assert.deepEqual(finalLiveRead.statusChecks, {
+    "MEM-DEVRELAY-STATUS-DO001-RELEASE-READY-V2": "superseded",
+    "MEM-DEVRELAY-STATUS-DO001-RELEASE-READY-V3": "active",
+  });
   assert.equal(live.firstToolWasBootstrap, true);
   assert.equal(live.nodeModulesPresent, false);
   assert.equal(live.alternateCheckoutUsed, false);
