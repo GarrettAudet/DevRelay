@@ -82,7 +82,7 @@ test("Desktop task adapter binds every observation and exact memory context to o
   const receipt = await adapter.invoke("create", { plan });
   assert.equal(receipt.taskId, "TASK-A");
   assert.equal(receipt.authority, "observation-only");
-  assert.equal(plan.memoryContext.projectMemoryBaseline.artifactId, "PMB-MUC-5B2898DB5AA2CF43");
+  assert.equal(plan.memoryContext.projectMemoryBaseline.artifactId, "PMB-MUC-72494822F54536E5");
   const staleBody = { ...structuredClone(plan), memoryContext: { ...plan.memoryContext, projectMemoryBaseline: ref("STALE") } };
   staleBody.memoryContextDigest = canonicalJsonDigest(staleBody.memoryContext);
   delete staleBody.planDigest;
