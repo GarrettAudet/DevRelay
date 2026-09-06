@@ -69,7 +69,7 @@ exact accepted GitHub source.
   verification traceability without BusinessAcceptance authority.
 - RoadmapManagement deterministic triage, review, reprioritization, exact weighted scoring, a human-owned Gate, structured baseline, concise projection, and trusted containment traceability.
 - Mandatory DevRelaySessionBootstrap for every fresh configured ChatGPT Desktop task on Windows, with exact context receipts and next-Module-boundary refresh.
-- A validated, deliberately installed `devrelay-desktop` plug-in with isolated dependency-frontier task orchestration, durable worktree leases, independent adversarial review policy, restart recovery, operator projection, and repository-scoped ProjectMemory lifecycle hooks. Hook trust remains an explicit user action and the plug-in has no lifecycle authority.
+- A validated, deliberately installed `devrelay-desktop` plug-in with isolated dependency-frontier task orchestration, durable worktree leases, independent adversarial review policy, restart recovery, operator projection, and dependency-free repository-scoped ProjectMemory bootstrap. ChatGPT Desktop project instructions plus the managed task prompt are the supported startup boundary; no undeclared automatic hook is claimed, and the plug-in has no lifecycle authority.
 - BusinessAcceptance exhaustive technical coverage, business objective/metric/scope
   evaluation, exact owner approval, zero-call replay, accepted-record authority,
   and forward-only acceptance traceability.
