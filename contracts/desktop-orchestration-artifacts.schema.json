@@ -5,6 +5,29 @@
   "$defs": {
     "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
     "identity": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "artifactRef": {
+      "type": "object",
+      "required": ["artifactId", "digest"],
+      "properties": {
+        "artifactId": { "$ref": "#/$defs/identity" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "schema": { "type": "string", "minLength": 1 },
+        "mediaType": { "type": "string", "minLength": 1 },
+        "uri": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "memoryContext": {
+      "type": "object",
+      "required": ["bootstrapReceipt", "projectMemoryBaseline", "synopsisProjection", "graphCheckpoint"],
+      "properties": {
+        "bootstrapReceipt": { "$ref": "#/$defs/artifactRef" },
+        "projectMemoryBaseline": { "$ref": "#/$defs/artifactRef" },
+        "synopsisProjection": { "$ref": "#/$defs/artifactRef" },
+        "graphCheckpoint": { "$ref": "#/$defs/artifactRef" }
+      },
+      "additionalProperties": false
+    },
     "workItem": {
       "type": "object",
       "required": ["id", "dependencies"],
@@ -60,6 +83,53 @@
       },
       "additionalProperties": false
     },
+    "DesktopTaskPlan": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "runId", "workItemId", "attemptId", "projectId", "startingRevision", "worktreeLease", "assignment", "executor", "grants", "promptArtifact", "promptDigest", "memoryContext", "memoryContextDigest", "idempotencyKey", "planDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopTaskPlan" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "attemptId": { "$ref": "#/$defs/identity" },
+        "projectId": { "$ref": "#/$defs/identity" },
+        "startingRevision": { "$ref": "#/$defs/identity" },
+        "worktreeLease": { "$ref": "#/$defs/WorktreeLease" },
+        "assignment": { "type": "object" },
+        "executor": { "type": "object" },
+        "grants": { "type": "array", "items": { "type": "object" } },
+        "promptArtifact": { "$ref": "#/$defs/artifactRef" },
+        "promptDigest": { "$ref": "#/$defs/digest" },
+        "memoryContext": { "$ref": "#/$defs/memoryContext" },
+        "memoryContextDigest": { "$ref": "#/$defs/digest" },
+        "idempotencyKey": { "$ref": "#/$defs/digest" },
+        "planDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopProjectMemoryBootstrapReceipt": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "receiptId", "projectId", "taskId", "repositoryRevision", "loadOrder", "projectMemoryBaseline", "synopsisProjection", "graphCheckpoint", "promotionProof", "activeMemoryIds", "outcome", "receiptDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopProjectMemoryBootstrapReceipt" },
+        "receiptId": { "$ref": "#/$defs/identity" },
+        "projectId": { "$ref": "#/$defs/identity" },
+        "taskId": { "$ref": "#/$defs/identity" },
+        "repositoryRevision": { "$ref": "#/$defs/identity" },
+        "loadOrder": {
+          "const": ["current-synopsis", "project-memory-baseline", "promotion-proof", "traceability-graph"]
+        },
+        "projectMemoryBaseline": { "$ref": "#/$defs/artifactRef" },
+        "synopsisProjection": { "$ref": "#/$defs/artifactRef" },
+        "graphCheckpoint": { "$ref": "#/$defs/artifactRef" },
+        "promotionProof": { "$ref": "#/$defs/artifactRef" },
+        "activeMemoryIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identity" } },
+        "outcome": { "const": "pass" },
+        "receiptDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
     "WorktreeLease": {
       "type": "object",
       "required": ["apiVersion", "kind", "attemptId", "runId", "workItemId", "revision", "workspace", "status", "cleanupDisposition"],
@@ -96,12 +166,134 @@
         "snapshotDigest": { "$ref": "#/$defs/digest" }
       },
       "additionalProperties": false
+    },
+    "AdversarialReviewRequirement": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "workItemId", "policy", "risk", "tags", "requiredEvidence", "adversarialRequired", "rationale", "requirementDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "AdversarialReviewRequirement" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "policy": {
+          "type": "object",
+          "required": ["id", "version"],
+          "properties": { "id": { "$ref": "#/$defs/identity" }, "version": { "$ref": "#/$defs/identity" } },
+          "additionalProperties": false
+        },
+        "risk": { "enum": ["low", "standard", "high", "critical"] },
+        "tags": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identity" } },
+        "requiredEvidence": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/identity" } },
+        "adversarialRequired": { "type": "boolean" },
+        "rationale": { "type": "string", "minLength": 1 },
+        "requirementDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopMergeReadiness": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "workItemId", "requirementDigest", "outcome", "blockers", "conflictDisposition", "readinessDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopMergeReadiness" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "requirementDigest": { "$ref": "#/$defs/digest" },
+        "outcome": { "enum": ["merge-ready", "blocked"] },
+        "blockers": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "conflictDisposition": { "enum": ["none", "owner-review-required"] },
+        "readinessDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopReviewReceipt": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "runId", "workItemId", "implementerTaskId", "reviewerTaskId", "subjectDigest", "requirementDigest", "adversarial", "disposition", "evidence", "authority", "receiptDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopReviewReceipt" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "implementerTaskId": { "$ref": "#/$defs/identity" },
+        "reviewerTaskId": { "$ref": "#/$defs/identity" },
+        "subjectDigest": { "$ref": "#/$defs/digest" },
+        "requirementDigest": { "$ref": "#/$defs/digest" },
+        "adversarial": { "type": "boolean" },
+        "disposition": { "enum": ["pass", "fail", "inconclusive"] },
+        "evidence": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/artifactRef" } },
+        "authority": { "const": "verification-observation-only" },
+        "receiptDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopOrchestrationRecovery": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "runId", "outcome", "uncertainWorkItemIds", "duplicateEffectsAllowed", "stateVersion", "recoveryDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopOrchestrationRecovery" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "outcome": { "enum": ["recovered", "reconciliation-required"] },
+        "uncertainWorkItemIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identity" } },
+        "duplicateEffectsAllowed": { "const": false },
+        "stateVersion": { "type": "integer", "minimum": 0 },
+        "recoveryDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopSessionConclusionCandidate": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "projectId", "sessionId", "taskId", "startingBaseline", "transcriptDigest", "reason", "checkpointDigests", "authority", "conclusionDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopSessionConclusionCandidate" },
+        "projectId": { "$ref": "#/$defs/identity" },
+        "sessionId": { "$ref": "#/$defs/identity" },
+        "taskId": { "$ref": "#/$defs/identity" },
+        "startingBaseline": {
+          "type": "object",
+          "required": ["baselineId", "digest"],
+          "properties": { "baselineId": { "$ref": "#/$defs/identity" }, "digest": { "$ref": "#/$defs/digest" } },
+          "additionalProperties": false
+        },
+        "transcriptDigest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] },
+        "reason": { "type": "string", "minLength": 1 },
+        "checkpointDigests": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/digest" } },
+        "authority": { "const": "candidate-only" },
+        "conclusionDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "DesktopChangeIntegrationRecord": {
+      "type": "object",
+      "required": ["apiVersion", "kind", "integrationId", "runId", "workItemId", "taskPlan", "mergeReadiness", "implementationCommit", "targetBranch", "conflicts", "outcome", "integrationDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopChangeIntegrationRecord" },
+        "integrationId": { "$ref": "#/$defs/identity" },
+        "runId": { "$ref": "#/$defs/identity" },
+        "workItemId": { "$ref": "#/$defs/identity" },
+        "taskPlan": { "$ref": "#/$defs/artifactRef" },
+        "mergeReadiness": { "$ref": "#/$defs/artifactRef" },
+        "implementationCommit": { "$ref": "#/$defs/identity" },
+        "targetBranch": { "$ref": "#/$defs/identity" },
+        "conflicts": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "outcome": { "enum": ["integrated", "blocked"] },
+        "integrationDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
     }
   },
   "oneOf": [
     { "$ref": "#/$defs/DesktopOrchestrationPlan" },
+    { "$ref": "#/$defs/DesktopProjectMemoryBootstrapReceipt" },
+    { "$ref": "#/$defs/DesktopTaskPlan" },
     { "$ref": "#/$defs/DesktopTaskReceipt" },
     { "$ref": "#/$defs/WorktreeLease" },
-    { "$ref": "#/$defs/DesktopOperatorSnapshot" }
+    { "$ref": "#/$defs/DesktopOperatorSnapshot" },
+    { "$ref": "#/$defs/AdversarialReviewRequirement" },
+    { "$ref": "#/$defs/DesktopReviewReceipt" },
+    { "$ref": "#/$defs/DesktopMergeReadiness" },
+    { "$ref": "#/$defs/DesktopOrchestrationRecovery" },
+    { "$ref": "#/$defs/DesktopSessionConclusionCandidate" },
+    { "$ref": "#/$defs/DesktopChangeIntegrationRecord" }
   ]
 }

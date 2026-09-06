@@ -1,17 +1,50 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
-  "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
-  "version": "2.6.0",
-  "approvedCandidate": {
-    "artifactId": "requirements-change-set-do-001-gap-remediation-v1",
-    "digest": "sha256:4c18f3200a6243528a689f0291a082354a5cb13ff94952cd3178a7abff92c9e9"
-  },
-  "supersedes": {
+  "kind": "RequirementsChangeSet",
+  "changeSetId": "requirements-change-set-do-001-gap-remediation-v1",
+  "baseInputs": [
+    {
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
+        "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "devrelay",
+        "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "RepositorySnapshot",
+        "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
+        "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
+        "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
+      }
+    }
+  ],
+  "baseline": {
     "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
     "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
   },
-  "requirements": {
+  "expectedRequirementsDigest": "sha256:1ded96ab5882a2a092eccba6b71948e1696b7cbb3d0cda3027b87d046d479017",
+  "replacement": {
     "purpose": {
       "statement": "Provide a deterministic, provider-neutral orchestration runtime that turns approved goals into accepted software through explicit modular engineering contracts, evidence, gates, and traceable lifecycle progression.",
       "sourceRefs": [
@@ -41327,10 +41360,102 @@
       }
     ]
   },
-  "approvalEvidence": [
+  "changedSections": [
+    "acceptanceCriteria",
+    "assumptions",
+    "constraints",
+    "currentStatus",
+    "deliverables",
+    "dependencies",
+    "nonFunctionalRequirements",
+    "requiredEvidence",
+    "risks",
+    "scope",
+    "sourceRefs"
+  ],
+  "reason": "Correct the unsupported Codex lifecycle-hook claim and require a supported, receipt-bound repository bootstrap for managed Desktop tasks.",
+  "compatibilityImpact": "backward-compatible",
+  "risks": [
+    "A scheduler can accidentally become a second source of readiness or completion authority unless every task plan is derived from exact Core artifacts.",
+    "A task can terminate before memory conclusion, requiring durable pending-conclusion state that blocks unsafe fresh-task progression.",
+    "A user can close a Desktop task without a host callback unless open-session checkpoints and next-task recovery fail closed.",
+    "Automated memory extraction can convert inference into false project truth unless every record carries authority, source, confidence, and approval state.",
+    "Desktop task creation can succeed before its receipt is durably recorded, requiring quarantine and exact host reconciliation rather than blind recreation.",
+    "Duplicating TraceabilityGraph into provider memory can drift or create inverse authority unless only trusted checkpointed projections are indexed.",
+    "Project startup instructions or managed prompts can load stale or out-of-scope context unless the repository bootstrap validates exact paths, bytes, project identity, and digests before work.",
+    "Reused task adapters could blur decomposition and dependency authority.",
+    "Worktree paths and task identities can drift across restart or handoff and must remain lease- and digest-bound."
+  ],
+  "requiredEvidence": [
+    "desktop-orchestration/adversarial-review",
+    "desktop-orchestration/frontier-scheduling",
+    "desktop-orchestration/merge-readiness",
+    "desktop-orchestration/operator-projection",
+    "desktop-orchestration/permission-enforcement",
+    "desktop-orchestration/plugin-validation",
+    "desktop-orchestration/repository-bootstrap-lifecycle",
+    "desktop-orchestration/review-policy",
+    "desktop-orchestration/sqlite-restart-recovery",
+    "desktop-orchestration/task-adapter-conformance",
+    "desktop-orchestration/task-binding",
+    "desktop-orchestration/traceability-projection",
+    "desktop-orchestration/worktree-lease-recovery",
+    "desktop-orchestration/zero-duplicate-effects",
+    "dogfood/windows-desktop-orchestration-cycle",
+    "dogfood/windows-desktop-project-memory-cycle",
+    "project-memory/automatic-bootstrap",
+    "project-memory/automatic-conclusion",
+    "project-memory/fresh-task-recovery"
+  ],
+  "sourceRefs": [
     {
-      "artifactId": "requirements-gate-approval-do-001-gap-remediation-v1",
-      "digest": "sha256:5e14f8527ae3162bb67a4cdc289c747e886b44d3103ad3b0b6e72fc7ec22b097"
+      "role": "goal",
+      "artifact": {
+        "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
+        "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
+      }
+    },
+    {
+      "role": "project-context",
+      "artifact": {
+        "artifactId": "devrelay",
+        "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
+      }
+    },
+    {
+      "role": "repository-snapshot",
+      "artifact": {
+        "artifactId": "RepositorySnapshot",
+        "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
+      }
+    },
+    {
+      "role": "owner-decision",
+      "artifact": {
+        "artifactId": "owner-decisions-do-001-gap-remediation-v1",
+        "digest": "sha256:126b26dca5ec06a13fbc91fb183cadeb79279400b8efa5d3af73c9e92c538ab6"
+      }
+    },
+    {
+      "role": "requirements-closure",
+      "artifact": {
+        "artifactId": "requirements-closure-do-001-gap-remediation-v1",
+        "digest": "sha256:943dc34aacc6a00e450e3555e678472aafe07a1f39119a5f495934ea529deb00"
+      }
+    },
+    {
+      "role": "requirements-baseline",
+      "artifact": {
+        "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
+        "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
+      }
+    },
+    {
+      "role": "project-overview-baseline",
+      "artifact": {
+        "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
+        "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
+      }
     }
   ]
 }

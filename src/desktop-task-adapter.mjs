@@ -1,4 +1,5 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
+import { validateDesktopOrchestrationArtifact } from "./desktop-orchestration-artifact-validator.mjs";
 
 export class DesktopTaskAdapterError extends Error {
   constructor(message, code = "DR6110") {
@@ -13,6 +14,7 @@ const OPERATIONS = Object.freeze(["create", "inspect", "wait", "message", "hando
 
 function assertPlan(plan) {
   if (!plan || plan.kind !== "DesktopTaskPlan") fail("validated DesktopTaskPlan is required");
+  try { validateDesktopOrchestrationArtifact(plan); } catch (error) { fail(error.message, "DR6111"); }
   for (const key of ["runId", "workItemId", "attemptId", "projectId", "startingRevision", "promptDigest", "idempotencyKey"] ) {
     if (typeof plan[key] !== "string" || !plan[key]) fail(`plan ${key} is required`);
   }
@@ -22,12 +24,14 @@ function assertPlan(plan) {
   return plan;
 }
 
-export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact } = {}) {
+export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact, memoryContext } = {}) {
   if (!workItem || typeof workItem.id !== "string") fail("work item is required");
   if (!worktreeLease || worktreeLease.workItemId !== workItem.id) fail("exact worktree lease is required");
   if (!promptArtifact || typeof promptArtifact.digest !== "string") fail("prompt artifact is required");
+  if (!memoryContext?.bootstrapReceipt || !memoryContext?.projectMemoryBaseline || !memoryContext?.synopsisProjection || !memoryContext?.graphCheckpoint) fail("exact ProjectMemory context is required");
   const attemptId = worktreeLease.attemptId;
-  const idempotencyKey = canonicalJsonDigest({ runId, workItemId: workItem.id, attemptId, startingRevision, promptDigest: promptArtifact.digest });
+  const memoryContextDigest = canonicalJsonDigest(memoryContext);
+  const idempotencyKey = canonicalJsonDigest({ runId, workItemId: workItem.id, attemptId, startingRevision, promptDigest: promptArtifact.digest, memoryContextDigest });
   const body = {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "DesktopTaskPlan",
@@ -42,9 +46,11 @@ export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevi
     grants: structuredClone(grants).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
     promptArtifact: structuredClone(promptArtifact),
     promptDigest: promptArtifact.digest,
+    memoryContext: structuredClone(memoryContext),
+    memoryContextDigest,
     idempotencyKey,
   };
-  return Object.freeze({ ...body, planDigest: canonicalJsonDigest(body) });
+  return Object.freeze(validateDesktopOrchestrationArtifact({ ...body, planDigest: canonicalJsonDigest(body) }));
 }
 
 export function createDesktopTaskAdapter({ providerId, providerVersion, handlers = {} } = {}) {
