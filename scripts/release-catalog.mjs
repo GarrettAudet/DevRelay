@@ -182,8 +182,8 @@ export const canonicalModules = Object.freeze([
     version: "0.1.0",
     definition: "examples/modules/project-control.module.json",
     operations: [
-      { id: "project-snapshot", steps: [] },
       { id: "assess-productivity", steps: [] },
+      { id: "project-snapshot", steps: [] },
     ],
     plugins: [],
   },
