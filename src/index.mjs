@@ -925,3 +925,47 @@ export {
   evaluatePackConformance,
   scanGenericCoreIdentifiers,
 } from "./pack-conformance.mjs";
+
+export {
+  CROSS_CUTTING_BOUNDARIES,
+  CrossCuttingCompositionError,
+  createCrossCuttingCompositionPlan,
+  executeCrossCuttingBoundary,
+  verifyCrossCuttingCompositionPlan,
+} from "./cross-cutting-composition.mjs";
+export {
+  QualityPolicyError,
+  createQualityPolicyContext,
+  createQualityPolicyCandidate,
+  evaluateQualityEvidence,
+  promoteQualityPolicyBaseline,
+  resolveQualityObligations,
+} from "./quality-policy.mjs";
+export {
+  WorkContinuityError,
+  claimWorkAttempt,
+  createDurableWorkContinuityStore,
+  createWorkContinuityIndex,
+  createWorkFingerprintInput,
+  deriveWorkFingerprint,
+  findExactWorkReuse,
+  findSimilarWorkCandidates,
+  reconcileWorkContinuity,
+  transitionWorkAttempt,
+} from "./work-continuity.mjs";
+export {
+  ProjectControlError,
+  assessProjectProductivity,
+  createProjectControlSourceBundle,
+  createProjectControlSnapshot,
+  verifyProjectControlSnapshot,
+} from "./project-control.mjs";
+export {
+  QualityContinuityArtifactValidationError,
+  validateQualityContinuityArtifact,
+} from "./quality-continuity-artifact-validator.mjs";
+export {
+  qualityContinuityApprovedTraceabilityContributor,
+  qualityContinuityCandidateTraceabilityContributor,
+  qualityContinuityTraceabilityContributors,
+} from "./quality-continuity-traceability-contributor.mjs";

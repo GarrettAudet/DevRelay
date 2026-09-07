@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json",
+  "title": "DevRelay WorkContinuity artifacts",
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "fingerprintMaterial": {
+      "type": "object",
+      "required": ["projectId", "requirementsBaselineDigest", "projectOverviewBaselineDigest", "workItem", "targetRevision", "dependencyClosure", "assignment", "qualityResolutionDigest", "inputs", "implementationConfigurationDigest"],
+      "properties": {
+        "projectId": { "type": "string", "minLength": 1 },
+        "requirementsBaselineDigest": { "$ref": "#/$defs/digest" },
+        "projectOverviewBaselineDigest": { "$ref": "#/$defs/digest" },
+        "workItem": { "type": "object", "required": ["id"], "properties": { "id": { "type": "string", "minLength": 1 } } },
+        "targetRevision": { "type": "string", "minLength": 1 },
+        "dependencyClosure": { "type": "array", "items": { "type": "object" } },
+        "assignment": { "type": "object", "minProperties": 1 },
+        "qualityResolutionDigest": { "$ref": "#/$defs/digest" },
+        "inputs": { "type": "array", "items": { "type": "object" } },
+        "implementationConfigurationDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "record": { "type": "object", "required": ["attemptId", "owner", "fingerprint", "workItemId", "workItemType", "targetRevision", "qualityResolutionDigest", "leaseExpiresAt", "status", "receiptDigest", "resultDigest", "evidenceDigest", "supersedesAttemptId"], "properties": { "attemptId": { "type": "string" }, "owner": { "type": "string" }, "fingerprint": { "$ref": "#/$defs/digest" }, "workItemId": { "type": "string" }, "workItemType": { "type": "string" }, "targetRevision": { "type": "string" }, "qualityResolutionDigest": { "$ref": "#/$defs/digest" }, "leaseExpiresAt": { "type": "integer" }, "status": { "enum": ["prepared", "dispatched", "running", "completed", "failed", "quarantined"] }, "receiptDigest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "resultDigest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "evidenceDigest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "supersedesAttemptId": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false }
+  },
+  "oneOf": [
+    { "type": "object", "required": ["apiVersion", "kind", "material", "inputDigest"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkFingerprintInput" }, "material": { "$ref": "#/$defs/fingerprintMaterial" }, "inputDigest": { "$ref": "#/$defs/digest" } }, "additionalProperties": false },
+    { "type": "object", "required": ["apiVersion", "kind", "material", "fingerprint"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkFingerprint" }, "material": { "$ref": "#/$defs/fingerprintMaterial" }, "fingerprint": { "$ref": "#/$defs/digest" } }, "additionalProperties": false },
+    { "type": "object", "required": ["apiVersion", "kind", "revision", "records", "indexDigest"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkContinuityIndex" }, "revision": { "type": "integer", "minimum": 0 }, "records": { "type": "array", "items": { "$ref": "#/$defs/record" } }, "indexDigest": { "$ref": "#/$defs/digest" } }, "additionalProperties": false },
+    { "type": "object", "required": ["apiVersion", "kind", "fingerprint", "targetRevision", "qualityResolutionDigest", "verifiedArtifactDigests", "decision", "record", "requiresOwnerReview", "completionAuthority", "decisionDigest"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkReuseDecision" }, "fingerprint": { "$ref": "#/$defs/digest" }, "targetRevision": { "type": "string", "minLength": 1 }, "qualityResolutionDigest": { "$ref": "#/$defs/digest" }, "verifiedArtifactDigests": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/digest" } }, "decision": { "enum": ["reuse-exact", "execute"] }, "record": { "anyOf": [{ "$ref": "#/$defs/record" }, { "type": "null" }] }, "requiresOwnerReview": { "const": false }, "completionAuthority": { "const": false }, "decisionDigest": { "$ref": "#/$defs/digest" } }, "additionalProperties": false },
+    { "type": "object", "required": ["apiVersion", "kind", "fingerprint", "candidates", "requiresOwnerReview", "automaticReuseAllowed", "candidateDigest"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkSimilarityCandidates" }, "fingerprint": { "$ref": "#/$defs/digest" }, "candidates": { "type": "array" }, "requiresOwnerReview": { "type": "boolean" }, "automaticReuseAllowed": { "const": false }, "candidateDigest": { "$ref": "#/$defs/digest" } }, "additionalProperties": false },
+    { "type": "object", "required": ["apiVersion", "kind", "attemptId", "owner", "fingerprint", "leaseExpiresAt", "indexRevision", "leaseDigest"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkContinuityLease" }, "attemptId": { "type": "string" }, "owner": { "type": "string" }, "fingerprint": { "$ref": "#/$defs/digest" }, "leaseExpiresAt": { "type": "integer" }, "indexRevision": { "type": "integer", "minimum": 1 }, "leaseDigest": { "$ref": "#/$defs/digest" } }, "additionalProperties": false },
+    { "type": "object", "required": ["apiVersion", "kind", "indexDigest", "items", "safeToDispatchFingerprints", "reconciliationDigest"], "properties": { "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "WorkContinuityReconciliation" }, "indexDigest": { "$ref": "#/$defs/digest" }, "items": { "type": "array" }, "safeToDispatchFingerprints": { "type": "array", "maxItems": 0 }, "reconciliationDigest": { "$ref": "#/$defs/digest" } }, "additionalProperties": false }
+  ]
+}

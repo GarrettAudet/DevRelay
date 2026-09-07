@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.11.0-rc.2 - 2026-09-07
+
+### Added
+
+- Added independently versioned `quality-policy@0.1.0`, `work-continuity@0.1.0`, and `project-control@0.1.0` cross-cutting Modules without changing the approved construction lifecycle.
+- Added exact ModuleDefinition-bound composition at declared Desktop boundaries, approved quality baselines and evidence obligations, durable exact-work identity and reuse, and read-only project control/productivity projections.
+- Added additive Desktop task, WorkItemVerification, SystemVerification, operator, traceability, package, and documentation integration.
+
+### Verification
+
+- Added real local Git-worktree/Desktop end-to-end coverage for `quick`, `standard`, and `assurance`, including mandatory ProjectMemory bootstrap, independent evidence, durable restart, exact-only reuse, and frontier control projection.
+- Added adversarial contract, digest-drift, hidden-context, concurrent-attempt, uncertain-effect, authority, and traceability checks plus a Windows reference benchmark at 100 bindings, 1,000 work items, and 10,000 attempt records.
+- Publication, tagging, protected-main promotion, hosted operation, and public npm distribution remain outside this candidate's authority.
+
 ## 0.11.0-rc.1 - 2026-09-06
 
 ### Added

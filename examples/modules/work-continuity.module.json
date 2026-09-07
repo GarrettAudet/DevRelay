@@ -1,0 +1,58 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": { "id": "work-continuity", "version": "0.1.0", "description": "Derive exact work identity, prevent duplicate effects, and propose safely revalidated reuse without acquiring completion or integration authority." },
+  "operations": [
+    {
+      "id": "decide-reuse",
+      "description": "Derive the exact work fingerprint and decide whether a fully revalidated completed record may be reused.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "requirements-baseline", "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1", "mediaTypes": ["application/vnd.devrelay.requirements-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "work-item", "schema": "https://devrelay.dev/artifacts/work-item/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "work-dependency-baseline", "schema": "https://devrelay.dev/artifacts/work-dependency-baseline/v1", "mediaTypes": ["application/vnd.devrelay.work-dependency-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "specialist-assignment-baseline", "schema": "https://devrelay.dev/artifacts/specialist-assignment-baseline/v1", "mediaTypes": ["application/vnd.devrelay.specialist-assignment-baseline+json"], "cardinality": "one", "required": true },
+        { "name": "quality-obligation-resolution", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "repository-snapshot", "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1", "mediaTypes": ["application/vnd.devrelay.repository-snapshot+json"], "cardinality": "one", "required": true },
+        { "name": "execution-binding", "schema": "https://devrelay.dev/artifacts/execution-binding/v1", "mediaTypes": ["application/vnd.devrelay.execution-binding+json"], "cardinality": "one", "required": true },
+        { "name": "work-continuity-index", "schema": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "work-fingerprint", "schema": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false },
+        { "name": "work-reuse-decision", "schema": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["execute", "reuse-exact", "reconciliation-required", "unable-to-proceed"],
+      "resultContracts": {
+        "execute": { "status": "completed", "requiredInputs": ["requirements-baseline", "project-overview-baseline", "work-item", "work-dependency-baseline", "specialist-assignment-baseline", "quality-obligation-resolution", "repository-snapshot", "execution-binding", "work-continuity-index"], "forbiddenInputs": [], "requiredOutputs": ["work-fingerprint", "work-reuse-decision"], "allowedOutputs": ["work-fingerprint", "work-reuse-decision"], "requiredEvidence": [{ "kind": "work-continuity/exact-identity", "statuses": ["pass"], "artifactOutput": "work-fingerprint" }], "diagnosticsRequired": false },
+        "reuse-exact": { "status": "completed", "requiredInputs": ["requirements-baseline", "project-overview-baseline", "work-item", "work-dependency-baseline", "specialist-assignment-baseline", "quality-obligation-resolution", "repository-snapshot", "execution-binding", "work-continuity-index"], "forbiddenInputs": [], "requiredOutputs": ["work-fingerprint", "work-reuse-decision"], "allowedOutputs": ["work-fingerprint", "work-reuse-decision"], "requiredEvidence": [{ "kind": "work-continuity/reuse-revalidation", "statuses": ["pass"], "artifactOutput": "work-reuse-decision" }], "diagnosticsRequired": false },
+        "reconciliation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["work-continuity/exact-identity", "work-continuity/reuse-revalidation"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    },
+    {
+      "id": "record-attempt",
+      "description": "Checkpoint one exact work attempt through compare-and-swap transitions before and after external effects.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "work-fingerprint", "schema": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "work-continuity-index", "schema": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "work-continuity-index", "schema": "https://devrelay.dev/contracts/work-continuity-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["attempt-recorded", "reconciliation-required", "baseline-drift", "execution-failed"],
+      "resultContracts": {
+        "attempt-recorded": { "status": "completed", "requiredInputs": ["project-overview-baseline", "work-fingerprint", "work-continuity-index"], "forbiddenInputs": [], "requiredOutputs": ["work-continuity-index"], "allowedOutputs": ["work-continuity-index"], "requiredEvidence": [{ "kind": "work-continuity/checkpoint", "statuses": ["pass"], "artifactOutput": "work-continuity-index" }], "diagnosticsRequired": false },
+        "reconciliation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["work-continuity/checkpoint"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    }
+  ]
+}

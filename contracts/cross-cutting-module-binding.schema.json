@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/cross-cutting-module-binding.schema.json",
+  "title": "DevRelay cross-cutting composition artifacts",
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "binding": {
+      "type": "object",
+      "required": ["id", "boundary", "moduleId", "moduleVersion", "moduleDefinitionDigest", "operationId", "operationContractDigest", "inputPorts", "outputPorts", "dependsOn", "configurationDigest", "grantDigest", "failureBehavior", "enabled"],
+      "properties": {
+        "id": { "$ref": "#/$defs/name" },
+        "boundary": { "enum": ["session-start", "before-work-planning", "before-task-dispatch", "after-work-execution", "before-integration", "frontier-complete", "session-conclusion"] },
+        "moduleId": { "$ref": "#/$defs/name" },
+        "moduleVersion": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$" },
+        "moduleDefinitionDigest": { "$ref": "#/$defs/digest" },
+        "operationId": { "$ref": "#/$defs/name" },
+        "operationContractDigest": { "$ref": "#/$defs/digest" },
+        "inputPorts": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/name" } },
+        "outputPorts": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/name" } },
+        "dependsOn": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/name" } },
+        "configurationDigest": { "$ref": "#/$defs/digest" },
+        "grantDigest": { "$ref": "#/$defs/digest" },
+        "failureBehavior": { "enum": ["stop", "diagnostic"] },
+        "enabled": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["apiVersion", "kind", "boundaries", "availablePorts", "bindings", "planDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "CrossCuttingCompositionPlan" },
+        "boundaries": { "type": "array", "items": { "$ref": "#/$defs/name" } },
+        "availablePorts": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/name" } },
+        "bindings": { "type": "array", "items": { "$ref": "#/$defs/binding" } },
+        "planDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["apiVersion", "kind", "boundary", "planDigest", "receipts", "artifacts", "resultDigest"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "CrossCuttingBoundaryResult" },
+        "boundary": { "$ref": "#/$defs/name" },
+        "planDigest": { "$ref": "#/$defs/digest" },
+        "receipts": { "type": "array", "items": { "type": "object" } },
+        "artifacts": { "type": "object" },
+        "resultDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

@@ -1,19 +1,19 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "ProjectOverviewBaseline",
-  "baselineId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
-  "version": "2.6.0",
+  "baselineId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+  "version": "2.7.0",
   "approvedOverviewCandidate": {
-    "artifactId": "project-overview-change-set-do-001-gap-remediation-v1",
-    "digest": "sha256:4d269b5394e307bfbc4560f3466b43b7e757c2442155a8ffd1d8a2849d6e2a93"
+    "artifactId": "project-overview-change-set-qc-001-quality-continuity-v1",
+    "digest": "sha256:7c2ea688a03d3f52fd21bfb520242242362a69c7458e32bf8c8bd24d4f59552a"
   },
   "supersedes": {
-    "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
-    "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
+    "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+    "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
   },
   "requirementsBaseline": {
-    "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
-    "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+    "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+    "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
   },
   "projection": {
     "id": "devrelay.requirements-to-project-overview",
@@ -760,6 +760,68 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-QUALITY-CONTINUITY-001",
+        "statement": "Scale production-quality engineering while preventing duplicate work and preserving exact current state across modules, tasks, worktrees, restarts, and releases.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
             }
           }
         ]
@@ -3177,6 +3239,73 @@
         ]
       },
       {
+        "id": "CAP-DEV-PROJECT-CONTROL-001",
+        "name": "Reconciled project control",
+        "description": "Project one read-only, digest-bound view over authoritative roadmap, memory, graph, lifecycle, task, worktree, review, Git, and performance state.",
+        "businessObjectiveIds": [
+          "BO-DEV-OBSERVABILITY-001",
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-DEV-PROJECT-MEMORY-001",
         "name": "Authoritative project memory",
         "description": "Maintain versioned project direction, decisions, rationale, status, lessons, conflicts, and supersession history.",
@@ -3238,6 +3367,73 @@
             "artifact": {
               "artifactId": "requirements-closure-pm-001-project-memory-v1",
               "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-QUALITY-POLICY-001",
+        "name": "Modular quality policy",
+        "description": "Establish, evolve, resolve, and assess digest-bound quality obligations through a cross-cutting semantic Module while existing verification gates retain progression authority.",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-001",
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
             }
           }
         ]
@@ -3919,6 +4115,73 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-WORK-CONTINUITY-001",
+        "name": "Deterministic work identity and reuse",
+        "description": "Identify exact work intent, detect active or completed equivalents, preserve attempt lineage, and propose safe reuse before allocating duplicate work.",
+        "businessObjectiveIds": [
+          "BO-DEV-DETERMINISM-001",
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
             }
           }
         ]
@@ -6046,6 +6309,192 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-QC-CONTROL-001",
+        "name": "Recoverable authoritative state",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "measure": "Fresh tasks that cannot identify the exact lifecycle stage, frontier, tasks, worktrees, memory conclusion, graph horizon, or blockers.",
+        "target": "Zero unresolved omissions for configured authorities.",
+        "measurementMethod": "Run fresh-task, restart, graph-lag, memory-lag, Git-drift, and uncertain-effect reconciliation fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-QC-QUALITY-001",
+        "name": "Evidence-complete integration",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "measure": "Integration attempts lacking the exact resolved quality policy or all required evidence.",
+        "target": "Zero attempts.",
+        "measurementMethod": "Run quick, standard, assurance, stale-policy, missing-evidence, and downgrade fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-QC-REUSE-001",
+        "name": "No exact duplicate dispatch",
+        "businessObjectiveIds": [
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "measure": "Concurrent task or worktree allocations for the same active exact WorkIntentFingerprint.",
+        "target": "Zero duplicate allocations.",
+        "measurementMethod": "Run concurrent, restart, replay, stale-target, semantic-near-match, and verified-result reuse fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
             }
           }
         ]
@@ -8626,6 +9075,286 @@
         ]
       },
       {
+        "id": "SCOPE-QC-BENCHMARK-001",
+        "statement": "Fresh packaged Windows Desktop multi-worktree benchmark with code, tests, review, integration, traceability, recovery, and acceptance evidence.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-QC-COMPOSITION-001",
+        "statement": "Generic declared composition for versioned cross-cutting Module operations at lifecycle boundaries.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-QC-CONTINUITY-001",
+        "statement": "WorkContinuity Module, exact work identity, durable attempt index, reuse decisions, concurrency control, and lineage.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-QC-CONTROL-001",
+        "statement": "ProjectControl Module, deterministic operator snapshot, authority reconciliation, diagnostics, and productivity assessment.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-QC-QUALITY-001",
+        "statement": "QualityPolicy Module, Gate, artifacts, native deterministic resolver, optional policy-pack ports, and verification integrations.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
         "id": "SCOPE-RM-BOOTSTRAP-001",
         "statement": "Mandatory DevRelaySessionBootstrap, SessionContextSnapshot, SessionContextReceipt, drift detection, RoadmapNotInitialized routing, and next-boundary refresh.",
         "sourceRefs": [
@@ -11096,6 +11825,177 @@
             "artifact": {
               "artifactId": "requirements-closure-pm-001-project-memory-v1",
               "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-QC-AUTO-SEMANTIC-REUSE-001",
+        "statement": "Automatically reuse work based only on model-assessed semantic similarity.",
+        "rationale": "Non-exact equivalence requires human review and fresh verification.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-QC-BUG-FREE-001",
+        "statement": "Claim that any policy, model, test suite, or orchestration system can guarantee defect-free software.",
+        "rationale": "DevRelay guarantees evidence and authority boundaries, not omniscient correctness.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-QC-SECOND-STATE-STORE-001",
+        "statement": "Make ProjectControl a second mutable source for roadmap, memory, graph, lifecycle, task, worktree, Git, or Gate state.",
+        "rationale": "A consolidated view must not create split-brain authority.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
             }
           }
         ]
@@ -14929,6 +15829,136 @@
         ]
       },
       {
+        "id": "CON-QC-EXACT-REUSE-001",
+        "category": "technical",
+        "statement": "Automatic reuse requires exact authority-bearing identity and checkpoint evidence; fuzzy similarity can only produce a review candidate.",
+        "rationale": "Semantic guesses cannot safely substitute implementation or verification evidence.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-QC-WORK-IDENTITY-001",
+          "AC-QC-WORK-REUSE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-QC-NO-STAGE-001",
+        "category": "business",
+        "statement": "The three new cross-cutting Modules do not alter the approved construction stage order or create an alternate progression authority.",
+        "rationale": "Cross-cutting governance must improve every stage without making the workflow longer or ambiguous.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-QC-COMPOSITION-001",
+          "AC-QC-CONTROL-AUTHORITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
         "id": "CON-RM-AUTHORITY-001",
         "category": "technical",
         "statement": "Candidate detection and adapters are proposer-only; RoadmapGate alone promotes RoadmapBaseline and Generic Core retains validation, checkpoint, and progression authority.",
@@ -18394,6 +19424,345 @@
             "artifact": {
               "artifactId": "requirements-closure-pm-001-project-memory-v1",
               "digest": "sha256:65d6390c8532388587cbde71002a65fa1d2c909eec8e3ce16375591b1247ec44"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-QC-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Bindings, policy resolution, work identity, continuity decisions, reconciliation diagnostics, projections, and replay are deterministic for exact version-pinned inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Canonical digest equality across repeated and reordered-input executions.",
+        "target": "100 percent equality for Core- and Module-owned artifacts.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-QC-COMPOSITION-001",
+          "AC-QC-CONTROL-SNAPSHOT-001",
+          "AC-QC-QUALITY-RESOLUTION-001",
+          "AC-QC-WORK-IDENTITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-QC-MODULARITY-001",
+        "category": "maintainability",
+        "statement": "QualityPolicy, WorkContinuity, and ProjectControl remain independently replaceable through provider-neutral ports without Module identity branches in Generic Core.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Replacement fixtures and Generic Core identifier scans.",
+        "target": "All reference Modules replaceable; zero identity-specific Core branches.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-QC-COMPOSITION-001",
+          "AC-QC-CONTROL-AUTHORITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-QC-RECOVERY-001",
+        "category": "reliability",
+        "statement": "Restart, interruption, partial persistence, and uncertain external effects preserve exact idempotency and require reconciliation rather than blind repetition.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Crash injection at every persistence boundary.",
+        "target": "Zero duplicate effects and 100 percent explicit recovery dispositions.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-QC-CONTROL-RECONCILIATION-001",
+          "AC-QC-WORK-CONCURRENCY-001",
+          "AC-QC-WORK-REUSE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-QC-SCALE-001",
+        "category": "performance",
+        "statement": "Quality, identity, and control checks remain bounded as modules, work items, attempts, and graph facts grow.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "p95 cross-cutting preflight and frontier reconciliation on the Windows reference host.",
+        "target": "At most 500 ms for 1,000 work items and 10,000 attempt records, excluding external providers.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-QC-CONTROL-SNAPSHOT-001",
+          "AC-QC-QUALITY-RESOLUTION-001",
+          "AC-QC-WORK-CONCURRENCY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-QC-SECURITY-001",
+        "category": "security",
+        "statement": "Cross-cutting Modules and adapters use least privilege, redact secrets, remain project-scoped, and never broaden task grants or network authority.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Grant, path, redaction, provider, and malicious-artifact matrices.",
+        "target": "Zero unauthorized effects or secret-bearing exported evidence.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-QC-COMPOSITION-001",
+          "AC-QC-CONTROL-AUTHORITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+              "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+              "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+            },
+            "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-qc-001-v1",
+              "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+              "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+              "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-qc-001-v1",
+              "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
             }
           }
         ]
@@ -22551,7 +23920,7 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "planning",
-      "summary": "DO-001 gap remediation is in verification for a restart-safe ChatGPT Desktop worktree harness with Core-derived scheduling, policy-driven review, supported repository-triggered ProjectMemory bootstrap, and exact memory-bound task plans.",
+      "summary": "QC-001 requirements are closed and approved for three cross-cutting semantic Modules—QualityPolicy, WorkContinuity, and ProjectControl—composed through generic declared boundaries without changing the construction lifecycle.",
       "sourceRefs": [
         {
           "role": "goal",
@@ -22565,6 +23934,13 @@
           "artifact": {
             "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
             "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
+          }
+        },
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
+            "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
           }
         },
         {
@@ -22582,6 +23958,14 @@
           }
         },
         {
+          "role": "owner-decision",
+          "artifact": {
+            "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
+            "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+          },
+          "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+        },
+        {
           "role": "project-context",
           "artifact": {
             "artifactId": "devrelay",
@@ -22596,10 +23980,24 @@
           }
         },
         {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-qc-001-v1",
+            "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+          }
+        },
+        {
           "role": "project-overview-baseline",
           "artifact": {
             "artifactId": "project-overview-baseline-devrelay-v1-do-001-desktop-orchestration-001",
             "digest": "sha256:14aba28af053c455f16d122a8ef99f217e7826296ba5af288d9735740ce66fc0"
+          }
+        },
+        {
+          "role": "project-overview-baseline",
+          "artifact": {
+            "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
+            "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
           }
         },
         {
@@ -22624,10 +24022,24 @@
           }
         },
         {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-qc-001-v1",
+            "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+          }
+        },
+        {
           "role": "requirements-baseline",
           "artifact": {
             "artifactId": "requirements-baseline-devrelay-v1-do-001-desktop-orchestration-001",
             "digest": "sha256:a42d7d826058361c80a597b59aa062e82789c3f24ffab87e26f92654d5edbde5"
+          }
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
+            "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
+            "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
           }
         },
         {
@@ -22650,6 +24062,13 @@
             "artifactId": "requirements-closure-do-001-v1",
             "digest": "sha256:16e13baaeabfcdff0def372696d191f9c914a8882b2abef1d0ed50e8e92a57d5"
           }
+        },
+        {
+          "role": "requirements-closure",
+          "artifact": {
+            "artifactId": "requirements-closure-qc-001-v1",
+            "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+          }
         }
       ]
     }
@@ -22659,8 +24078,8 @@
     "mediaType": "text/markdown; charset=utf-8",
     "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
     "artifact": {
-      "artifactId": "project-overview-markdown-do-001-gap-remediation-v1",
-      "digest": "sha256:f565d1b83551f2fa6dedddb3f762484868bcacd343caeaa9837722547612cc74"
+      "artifactId": "project-overview-markdown-qc-001-quality-continuity-v1",
+      "digest": "sha256:1f1d1ecb7bcac5bca246825d5e51acf7c974687a190ba5a1952640f5b2fd15b1"
     },
     "renderer": {
       "id": "devrelay.project-overview.markdown",
@@ -22670,8 +24089,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-do-001-gap-remediation-v1",
-      "digest": "sha256:5e14f8527ae3162bb67a4cdc289c747e886b44d3103ad3b0b6e72fc7ec22b097"
+      "artifactId": "requirements-gate-approval-qc-001-quality-continuity-v1",
+      "digest": "sha256:61d19ad9e11757d91225ce0bc43884468929f5ebe7a37401164f1dffd6575296"
     }
   ]
 }

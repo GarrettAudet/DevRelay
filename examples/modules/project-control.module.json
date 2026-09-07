@@ -1,0 +1,45 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": { "id": "project-control", "version": "0.1.0", "description": "Project immutable operator snapshots, reconciliation diagnostics, and local productivity evidence without becoming workflow, Gate, graph, memory, or integration authority." },
+  "operations": [
+    {
+      "id": "project-snapshot",
+      "description": "Project a deterministic read-only control snapshot from canonical lifecycle and observation references.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "project-control-source-bundle", "schema": "https://devrelay.dev/contracts/project-control-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "project-control-snapshot", "schema": "https://devrelay.dev/contracts/project-control-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["snapshot-projected", "reconciliation-required", "unable-to-proceed"],
+      "resultContracts": {
+        "snapshot-projected": { "status": "completed", "requiredInputs": ["project-overview-baseline", "project-control-source-bundle"], "forbiddenInputs": [], "requiredOutputs": ["project-control-snapshot"], "allowedOutputs": ["project-control-snapshot"], "requiredEvidence": [{ "kind": "project-control/source-reconciliation", "statuses": ["pass"], "artifactOutput": "project-control-snapshot" }], "diagnosticsRequired": false },
+        "reconciliation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["project-control/source-reconciliation"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    },
+    {
+      "id": "assess-productivity",
+      "description": "Summarize exact local benchmark observations without making universal performance claims.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "project-control-snapshot", "schema": "https://devrelay.dev/contracts/project-control-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "benchmark-measurements", "schema": "https://devrelay.dev/contracts/project-control-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "project-productivity-assessment", "schema": "https://devrelay.dev/contracts/project-control-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["assessment-projected", "unable-to-proceed"],
+      "resultContracts": {
+        "assessment-projected": { "status": "completed", "requiredInputs": ["project-overview-baseline", "project-control-snapshot", "benchmark-measurements"], "forbiddenInputs": [], "requiredOutputs": ["project-productivity-assessment"], "allowedOutputs": ["project-productivity-assessment"], "requiredEvidence": [{ "kind": "project-control/local-benchmark", "statuses": ["pass"], "artifactOutput": "project-productivity-assessment" }], "diagnosticsRequired": false },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["project-control/local-benchmark"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    }
+  ]
+}

@@ -8,13 +8,14 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `specialist-assignment@2.0.0` (with the immutable `1.0.0` manifest retained),
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting
-`roadmap-management@0.1.0`, `project-memory@0.1.0`, and the separate
+`roadmap-management@0.1.0`, `project-memory@0.1.0`, `quality-policy@0.1.0`,
+`work-continuity@0.1.0`, `project-control@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
-open-source release candidate, version `0.11.0-rc.1`. The source package retains `1.5.0` as the compatibility default and adds
+open-source release candidate, version `0.11.0-rc.2`. The source package retains `1.5.0` as the compatibility default and adds
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
-The controlled prerelease is published at [v0.11.0-rc.1](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1) from protected-main commit `08be8385966223d16a20150ac804505b5fe40153`. GitHub workflow `34034582831` verified and published the exact catalog, installable tarball, CycloneDX SBOM, and SHA-256 ledger.
+The `0.11.0-rc.2` source/library candidate is prepared locally for exact verification and separate owner-controlled publication. Tagging, protected-main promotion, and GitHub publication are not implied by candidate readiness. The latest previously published controlled prerelease remains [v0.11.0-rc.1](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1).
 
 `package.json` declares `"private": false` and `"license": "Apache-2.0"` so
 the GitHub-source tarball has accurate package metadata. This release does not
@@ -72,6 +73,7 @@ exact accepted GitHub source.
 - RoadmapManagement deterministic triage, review, reprioritization, exact weighted scoring, a human-owned Gate, structured baseline, concise projection, and trusted containment traceability.
 - Mandatory DevRelaySessionBootstrap for every fresh configured ChatGPT Desktop task on Windows, with exact context receipts and next-Module-boundary refresh.
 - A validated, deliberately installed `devrelay-desktop` plug-in with isolated dependency-frontier task orchestration, durable worktree leases, independent adversarial review policy, restart recovery, operator projection, and dependency-free repository-scoped ProjectMemory bootstrap. ChatGPT Desktop project instructions plus the managed task prompt are the supported startup boundary; no undeclared automatic hook is claimed, and the plug-in has no lifecycle authority.
+- Exact ModuleDefinition-bound cross-cutting composition plus QualityPolicy, WorkContinuity, and ProjectControl Modules for policy-derived verification obligations, exact duplicate-work prevention/reuse, and deterministic read-only project state across lifecycle Modules, Desktop tasks, worktrees, restarts, and session boundaries.
 - BusinessAcceptance exhaustive technical coverage, business objective/metric/scope
   evaluation, exact owner approval, zero-call replay, accepted-record authority,
   and forward-only acceptance traceability.
