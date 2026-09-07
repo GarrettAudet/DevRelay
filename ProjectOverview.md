@@ -34,6 +34,8 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-QUALITY-001`** [must] Require scoped verification and evidence before work, changes, systems, or business outcomes advance.
   - Stakeholders: `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-QUALITY-CONTINUITY-001`** [must] Scale production-quality engineering while preventing duplicate work and preserving exact current state across modules, tasks, worktrees, restarts, and releases.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-RELEASE-INTEGRITY-001`** [must] Make release-candidate materialization deterministic, supply-chain aware, replay-safe, and separate from publication, deployment, and protected-branch authority.
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-RELEASE-READINESS-001`** [must] Prevent a source/library candidate from reaching publication consideration until its exact bytes, prerequisites, and required verification evidence are complete and approved.
@@ -206,10 +208,20 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Audience: user-facing
   - Business objectives: `BO-DEV-OSS-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Reconciled project control** (`CAP-DEV-PROJECT-CONTROL-001`): Project one read-only, digest-bound view over authoritative roadmap, memory, graph, lifecycle, task, worktree, review, Git, and performance state.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-OBSERVABILITY-001`, `BO-DEV-QUALITY-CONTINUITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **Authoritative project memory** (`CAP-DEV-PROJECT-MEMORY-001`): Maintain versioned project direction, decisions, rationale, status, lessons, conflicts, and supersession history.
   - Priority: must
   - Audience: user-facing
   - Business objectives: `BO-DEV-PROJECT-MEMORY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Modular quality policy** (`CAP-DEV-QUALITY-POLICY-001`): Establish, evolve, resolve, and assess digest-bound quality obligations through a cross-cutting semantic Module while existing verification gates retain progression authority.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-QUALITY-001`, `BO-DEV-QUALITY-CONTINUITY-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **Release evidence and traceability** (`CAP-DEV-RELEASE-EVIDENCE-001`): Preserve compact, redacted, content-addressed preparation and verification evidence with exact forward lifecycle provenance.
   - Priority: must
@@ -270,6 +282,11 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Priority: must
   - Audience: user-facing
   - Business objectives: `BO-DEV-QUALITY-001`, `BO-DEV-TRACEABILITY-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Deterministic work identity and reuse** (`CAP-DEV-WORK-CONTINUITY-001`): Identify exact work intent, detect active or completed equivalents, preserve attempt lineage, and propose safe reuse before allocating duplicate work.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-DETERMINISM-001`, `BO-DEV-QUALITY-CONTINUITY-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **Isolated deterministic work execution** (`CAP-DEV-WORK-EXECUTION-001`): Execute one Core-selected runnable work item through a provider-neutral binding in an isolated host-enforced workspace and return proposed changes with raw evidence.
   - Priority: must
@@ -464,6 +481,21 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Target: 100 percent or an explicit approved disposition.
   - Measurement method: Run TraceabilityGraph coverage and orphan diagnostics at each lifecycle horizon.
   - Business objectives: `BO-DEV-TRACEABILITY-001`
+- **Recoverable authoritative state** (`SM-QC-CONTROL-001`)
+  - Measure: Fresh tasks that cannot identify the exact lifecycle stage, frontier, tasks, worktrees, memory conclusion, graph horizon, or blockers.
+  - Target: Zero unresolved omissions for configured authorities.
+  - Measurement method: Run fresh-task, restart, graph-lag, memory-lag, Git-drift, and uncertain-effect reconciliation fixtures.
+  - Business objectives: `BO-DEV-QUALITY-CONTINUITY-001`
+- **Evidence-complete integration** (`SM-QC-QUALITY-001`)
+  - Measure: Integration attempts lacking the exact resolved quality policy or all required evidence.
+  - Target: Zero attempts.
+  - Measurement method: Run quick, standard, assurance, stale-policy, missing-evidence, and downgrade fixtures.
+  - Business objectives: `BO-DEV-QUALITY-CONTINUITY-001`
+- **No exact duplicate dispatch** (`SM-QC-REUSE-001`)
+  - Measure: Concurrent task or worktree allocations for the same active exact WorkIntentFingerprint.
+  - Target: Zero duplicate allocations.
+  - Measurement method: Run concurrent, restart, replay, stale-target, semantic-near-match, and verified-result reuse fixtures.
+  - Business objectives: `BO-DEV-QUALITY-CONTINUITY-001`
 - **Generic Core product branches** (`SM-WDA-CORE-SPECIAL-CASES-001`)
   - Measure: WorkDependencyAnalysis, Spec Kit, or OpenSpec identifier branches in generic Core.
   - Target: Zero branches.
@@ -530,6 +562,11 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`SCOPE-PM-MEM0-001`** Version-pinned local Mem0 adapter with live execution attestation, project/session/module-attribution namespaces, synchronization verification, deterministic retrieval receipts, and native equivalence fallback.
 - **`SCOPE-PM-MODULE-001`** ProjectMemory cross-cutting module, ProjectMemoryGate, canonical baseline, update candidates, authority and precedence policy, checkpoints, receipts, and native recovery.
 - **`SCOPE-PM-TRACE-001`** Trusted TraceabilityContextProjection and source-resolving current-state, rationale, provenance, coverage, evidence-gap, orphan, and impact queries.
+- **`SCOPE-QC-BENCHMARK-001`** Fresh packaged Windows Desktop multi-worktree benchmark with code, tests, review, integration, traceability, recovery, and acceptance evidence.
+- **`SCOPE-QC-COMPOSITION-001`** Generic declared composition for versioned cross-cutting Module operations at lifecycle boundaries.
+- **`SCOPE-QC-CONTINUITY-001`** WorkContinuity Module, exact work identity, durable attempt index, reuse decisions, concurrency control, and lineage.
+- **`SCOPE-QC-CONTROL-001`** ProjectControl Module, deterministic operator snapshot, authority reconciliation, diagnostics, and productivity assessment.
+- **`SCOPE-QC-QUALITY-001`** QualityPolicy Module, Gate, artifacts, native deterministic resolver, optional policy-pack ports, and verification integrations.
 - **`SCOPE-RM-BOOTSTRAP-001`** Mandatory DevRelaySessionBootstrap, SessionContextSnapshot, SessionContextReceipt, drift detection, RoadmapNotInitialized routing, and next-boundary refresh.
 - **`SCOPE-RM-DOGFOOD-001`** Complete released-circuit dogfood and installed-package ChatGPT Desktop Windows acceptance for roadmap intake and fresh-task context.
 - **`SCOPE-RM-MODULE-001`** RoadmapManagement module, RoadmapGate, RoadmapBaseline, Roadmap.md projection, candidate dispositions, priority configuration, and trusted traceability contribution.
@@ -610,6 +647,12 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Rationale: Module attribution is a namespace, not an authority boundary.
 - **`NG-PM-RAW-CHAT-001`** Store every raw conversation by default or treat chat history as authoritative project memory.
   - Rationale: Durable memory is normalized, source-linked, minimized, and explicitly governed.
+- **`NG-QC-AUTO-SEMANTIC-REUSE-001`** Automatically reuse work based only on model-assessed semantic similarity.
+  - Rationale: Non-exact equivalence requires human review and fresh verification.
+- **`NG-QC-BUG-FREE-001`** Claim that any policy, model, test suite, or orchestration system can guarantee defect-free software.
+  - Rationale: DevRelay guarantees evidence and authority boundaries, not omniscient correctness.
+- **`NG-QC-SECOND-STATE-STORE-001`** Make ProjectControl a second mutable source for roadmap, memory, graph, lifecycle, task, worktree, Git, or Gate state.
+  - Rationale: A consolidated view must not create split-brain authority.
 - **`NG-RM-ALL-CHATS-001`** Run DevRelay bootstrap for unrelated ChatGPT conversations outside a configured DevRelay workspace.
   - Rationale: Mandatory context applies only when the user is using DevRelay.
 - **`NG-RM-CHAT-MEMORY-001`** Treat conversational memory as authoritative project or roadmap context.
@@ -799,6 +842,12 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`CON-PM-TRACE-001`** [technical; project] Mem0 receives only trusted digest-bound TraceabilityContextProjection artifacts and cannot access or mutate TraceabilityGraph directly.
   - Rationale: The graph remains the authoritative lifecycle relationship service.
   - Acceptance criteria: `AC-PM-TRACE-PROJECTION-001`, `AC-PM-TRACE-QUERY-001`
+- **`CON-QC-EXACT-REUSE-001`** [technical; project] Automatic reuse requires exact authority-bearing identity and checkpoint evidence; fuzzy similarity can only produce a review candidate.
+  - Rationale: Semantic guesses cannot safely substitute implementation or verification evidence.
+  - Acceptance criteria: `AC-QC-WORK-IDENTITY-001`, `AC-QC-WORK-REUSE-001`
+- **`CON-QC-NO-STAGE-001`** [business; project] The three new cross-cutting Modules do not alter the approved construction stage order or create an alternate progression authority.
+  - Rationale: Cross-cutting governance must improve every stage without making the workflow longer or ambiguous.
+  - Acceptance criteria: `AC-QC-COMPOSITION-001`, `AC-QC-CONTROL-AUTHORITY-001`
 - **`CON-RM-AUTHORITY-001`** [technical; project] Candidate detection and adapters are proposer-only; RoadmapGate alone promotes RoadmapBaseline and Generic Core retains validation, checkpoint, and progression authority.
   - Rationale: Roadmap convenience cannot become scope or workflow authority.
   - Acceptance criteria: `AC-RM-DISPOSITION-001`, `AC-RM-GATE-001`
@@ -1013,6 +1062,26 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Measure: Review standard Windows Desktop startup, worker handoff, conflict, recovery, and conclusion transcripts.
   - Target: One concise briefing and one concise conclusion diff, with direct exact-artifact references.
   - Acceptance criteria: `AC-PM-BRIEFING-001`, `AC-PM-DELTA-REVIEW-001`, `AC-PM-E2E-001`
+- **`NFR-QC-DETERMINISM-001`** [reliability; must; project] Bindings, policy resolution, work identity, continuity decisions, reconciliation diagnostics, projections, and replay are deterministic for exact version-pinned inputs.
+  - Measure: Canonical digest equality across repeated and reordered-input executions.
+  - Target: 100 percent equality for Core- and Module-owned artifacts.
+  - Acceptance criteria: `AC-QC-COMPOSITION-001`, `AC-QC-CONTROL-SNAPSHOT-001`, `AC-QC-QUALITY-RESOLUTION-001`, `AC-QC-WORK-IDENTITY-001`
+- **`NFR-QC-MODULARITY-001`** [maintainability; must; project] QualityPolicy, WorkContinuity, and ProjectControl remain independently replaceable through provider-neutral ports without Module identity branches in Generic Core.
+  - Measure: Replacement fixtures and Generic Core identifier scans.
+  - Target: All reference Modules replaceable; zero identity-specific Core branches.
+  - Acceptance criteria: `AC-QC-COMPOSITION-001`, `AC-QC-CONTROL-AUTHORITY-001`
+- **`NFR-QC-RECOVERY-001`** [reliability; must; project] Restart, interruption, partial persistence, and uncertain external effects preserve exact idempotency and require reconciliation rather than blind repetition.
+  - Measure: Crash injection at every persistence boundary.
+  - Target: Zero duplicate effects and 100 percent explicit recovery dispositions.
+  - Acceptance criteria: `AC-QC-CONTROL-RECONCILIATION-001`, `AC-QC-WORK-CONCURRENCY-001`, `AC-QC-WORK-REUSE-001`
+- **`NFR-QC-SCALE-001`** [performance; must; project] Quality, identity, and control checks remain bounded as modules, work items, attempts, and graph facts grow.
+  - Measure: p95 cross-cutting preflight and frontier reconciliation on the Windows reference host.
+  - Target: At most 500 ms for 1,000 work items and 10,000 attempt records, excluding external providers.
+  - Acceptance criteria: `AC-QC-CONTROL-SNAPSHOT-001`, `AC-QC-QUALITY-RESOLUTION-001`, `AC-QC-WORK-CONCURRENCY-001`
+- **`NFR-QC-SECURITY-001`** [security; must; project] Cross-cutting Modules and adapters use least privilege, redact secrets, remain project-scoped, and never broaden task grants or network authority.
+  - Measure: Grant, path, redaction, provider, and malicious-artifact matrices.
+  - Target: Zero unauthorized effects or secret-bearing exported evidence.
+  - Acceptance criteria: `AC-QC-COMPOSITION-001`, `AC-QC-CONTROL-AUTHORITY-001`
 - **`NFR-RM-DETERMINISM-001`** [reliability; must; project] Roadmap routing, scoring, ordering, projection, session snapshots, receipts, refresh, and replay must be byte-stable for exact inputs.
   - Measure: Compare canonical bytes, digests, order, and adapter call counts across repeats and restarts.
   - Target: 100 percent equality and zero duplicate adapter calls on replay.
@@ -1199,4 +1268,4 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 - Lifecycle: existing
 - Phase: planning
-- Summary: DO-001 gap remediation is in verification for a restart-safe ChatGPT Desktop worktree harness with Core-derived scheduling, policy-driven review, supported repository-triggered ProjectMemory bootstrap, and exact memory-bound task plans.
+- Summary: QC-001 requirements are closed and approved for three cross-cutting semantic Modules—QualityPolicy, WorkContinuity, and ProjectControl—composed through generic declared boundaries without changing the construction lifecycle.

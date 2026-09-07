@@ -1,6 +1,7 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
+import { verifyProjectControlSnapshot } from "./project-control.mjs";
 
-export function createDesktopOperatorSnapshot({ orchestrationRun, worktreeLeases = [], memorySessions = [] } = {}) {
+export function createDesktopOperatorSnapshot({ orchestrationRun, worktreeLeases = [], memorySessions = [], projectControlSnapshot } = {}) {
   if (orchestrationRun?.kind !== "LocalHostRunState" || orchestrationRun.state?.plan?.kind !== "DesktopOrchestrationPlan") {
     throw new TypeError("desktop operator view requires a durable orchestration run");
   }
@@ -11,6 +12,7 @@ export function createDesktopOperatorSnapshot({ orchestrationRun, worktreeLeases
     receiptCount: value.receipts.length,
   }));
   const statusCounts = Object.fromEntries([...new Set(work.map(({ status }) => status))].sort().map((status) => [status, work.filter((entry) => entry.status === status).length]));
+  if (projectControlSnapshot !== undefined) verifyProjectControlSnapshot(projectControlSnapshot);
   const body = {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "DesktopOperatorSnapshot",
@@ -24,6 +26,7 @@ export function createDesktopOperatorSnapshot({ orchestrationRun, worktreeLeases
     memory: memorySessions.map(({ sessionId, taskId, status, conclusionStatus }) => ({ sessionId, taskId, status, conclusionStatus })).sort((a, b) => a.sessionId.localeCompare(b.sessionId)),
     blockers: [...blockers].sort(),
     recovery,
+    ...(projectControlSnapshot ? { projectControl: { snapshotDigest: projectControlSnapshot.snapshotDigest, frontier: structuredClone(projectControlSnapshot.frontier), counts: structuredClone(projectControlSnapshot.counts), diagnostics: structuredClone(projectControlSnapshot.diagnostics), authority: "read-only-projection" } } : {}),
   };
   return Object.freeze({ ...body, snapshotDigest: canonicalJsonDigest(body) });
 }
@@ -51,6 +54,7 @@ export function renderDesktopOperatorSnapshot(snapshot) {
     "## Blockers",
     "",
     ...(snapshot.blockers.length ? snapshot.blockers.map((item) => `- ${item}`) : ["- None"]),
+    ...(snapshot.projectControl ? ["", "## Project control", "", `- Snapshot: ${snapshot.projectControl.snapshotDigest}`, `- Frontier: ${snapshot.projectControl.frontier.join(", ") || "None"}`, `- Remaining: ${snapshot.projectControl.counts.remaining}`, `- Diagnostics: ${snapshot.projectControl.diagnostics.length}`] : []),
     "",
   ];
   return lines.join("\n");

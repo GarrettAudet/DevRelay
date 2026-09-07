@@ -25,6 +25,24 @@ test("binds the exact subject and expands a byte-stable complete obligation set"
   assert.ok(one.obligations.every(({requiredEvidenceKinds}) => canonicalJson(requiredEvidenceKinds) === canonicalJson(["review","test-log"])));
 });
 
+test("approved QualityPolicy resolution becomes mandatory WorkItemVerification obligations", () => {
+  const subject = bind();
+  const material = {
+    policyBaselineDigest: D,
+    workflowPolicyDigest: D,
+    workItemId: workItem.id,
+    context: { riskLevels: ["high"], workTypes: ["code-change"], technologies: ["node"], surfaces: ["core"] },
+    acceptanceCriterionIds: ["AC-A"],
+    appliedRuleIds: ["RULE-A"],
+    obligations: [{ id: "independent-review", lane: "review", evidenceKinds: ["adversarial-review"], minimumPassing: 1, independent: true, deferAllowed: false }],
+    authority: { definesObligations: true, approvesWork: false, activatesGraphFacts: false },
+  };
+  const qualityResolution = { apiVersion: "devrelay.dev/v1alpha1", kind: "QualityObligationResolution", ...material, resolutionDigest: canonicalJsonDigest(material) };
+  const obligations = expandWorkItemVerificationObligations({ subject, workItem, qualityResolution });
+  assert.ok(obligations.obligations.some(({ kind, sourceRef, requiredEvidenceKinds }) => kind === "policy" && sourceRef === "independent-review" && canonicalJson(requiredEvidenceKinds) === canonicalJson(["adversarial-review"])));
+  assert.throws(() => expandWorkItemVerificationObligations({ subject, workItem, qualityResolution: { ...qualityResolution, workItemId: "WI-OTHER" } }), /exact work item/u);
+});
+
 test("rejects missing, duplicate, stale, mismatched, and cross-attempt inputs", () => {
   const missing=bindings(); delete missing.repositoryBase;
   assert.throws(()=>bindWorkItemVerificationSubject({subjectId:"SUB",workItemId:"WI-ONE",bindings:missing}), WorkItemVerificationInputError);

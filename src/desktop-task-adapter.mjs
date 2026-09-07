@@ -14,6 +14,19 @@ const fail = (message, code) => { throw new DesktopTaskAdapterError(message, cod
 const OPERATIONS = Object.freeze(["create", "inspect", "wait", "message", "handoff"]);
 const preparedTaskPlans = new WeakSet();
 
+function validateQualityContinuity(plan) {
+  const present = [plan.qualityResolution, plan.workFingerprint, plan.workContinuityDecision].filter((value) => value !== undefined).length;
+  if (present !== 0 && present !== 3) fail("quality resolution, work fingerprint, and work continuity decision must be bound together", "DR6111");
+  if (!plan.qualityResolution) return;
+  const qualityDigest = canonicalJsonDigest(Object.fromEntries(Object.entries(plan.qualityResolution).filter(([key]) => !["apiVersion", "kind", "resolutionDigest"].includes(key))));
+  const fingerprintDigest = canonicalJsonDigest(plan.workFingerprint.material);
+  const continuityDigest = canonicalJsonDigest(Object.fromEntries(Object.entries(plan.workContinuityDecision).filter(([key]) => !["apiVersion", "kind", "decisionDigest"].includes(key))));
+  if (plan.qualityResolution.kind !== "QualityObligationResolution" || plan.qualityResolution.resolutionDigest !== qualityDigest || plan.qualityResolutionDigest !== qualityDigest) fail("quality resolution digest drifted", "DR6111");
+  if (plan.workFingerprint.kind !== "WorkFingerprint" || plan.workFingerprint.fingerprint !== fingerprintDigest || plan.workFingerprintDigest !== fingerprintDigest) fail("work fingerprint digest drifted", "DR6111");
+  if (plan.workContinuityDecision.kind !== "WorkReuseDecision" || plan.workContinuityDecision.decisionDigest !== continuityDigest || plan.workContinuityDecisionDigest !== continuityDigest) fail("work continuity decision digest drifted", "DR6111");
+  if (plan.qualityResolution.workItemId !== plan.workItemId || plan.workFingerprint.material?.projectId !== plan.projectId || plan.workFingerprint.material?.workItem?.id !== plan.workItemId || plan.workFingerprint.material?.qualityResolutionDigest !== plan.qualityResolutionDigest || plan.workFingerprint.material?.targetRevision !== plan.startingRevision || plan.workContinuityDecision.fingerprint !== plan.workFingerprintDigest || plan.workContinuityDecision.qualityResolutionDigest !== plan.qualityResolutionDigest || plan.workContinuityDecision.targetRevision !== plan.startingRevision) fail("quality or continuity context does not bind the exact task", "DR6111");
+}
+
 function assertPlan(plan) {
   if (!preparedTaskPlans.has(plan)) fail("DesktopTaskPlan must be prepared or revalidated against its exact bootstrap receipt", "DR6111");
   try { validateDesktopOrchestrationArtifact(plan); } catch (error) { fail(error.message, "DR6111"); }
@@ -23,6 +36,7 @@ function assertPlan(plan) {
   const digest = plan.planDigest;
   const body = Object.fromEntries(Object.entries(plan).filter(([key]) => key !== "planDigest"));
   if (digest !== canonicalJsonDigest(body)) fail("task plan digest drifted", "DR6111");
+  validateQualityContinuity(plan);
   return plan;
 }
 
@@ -30,18 +44,29 @@ function preparePlan(plan, memoryBootstrap) {
   const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId: plan.projectId, repositoryRevision: plan.startingRevision });
   if (canonicalJsonDigest(memoryContext) !== plan.memoryContextDigest || canonicalJsonDigest(plan.memoryContext) !== plan.memoryContextDigest) fail("task plan does not bind the exact prepared ProjectMemory bootstrap", "DR6111");
   const prepared = Object.freeze(structuredClone(validateDesktopOrchestrationArtifact(plan)));
+  validateQualityContinuity(prepared);
   preparedTaskPlans.add(prepared);
   return prepared;
 }
 
-export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact, memoryBootstrap } = {}) {
+export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact, memoryBootstrap, qualityResolution, workFingerprint, workContinuityDecision } = {}) {
   if (!workItem || typeof workItem.id !== "string") fail("work item is required");
   if (!worktreeLease || worktreeLease.workItemId !== workItem.id) fail("exact worktree lease is required");
   if (!promptArtifact || typeof promptArtifact.digest !== "string") fail("prompt artifact is required");
   const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId, repositoryRevision: startingRevision });
   const attemptId = worktreeLease.attemptId;
   const memoryContextDigest = canonicalJsonDigest(memoryContext);
-  const idempotencyKey = canonicalJsonDigest({ runId, workItemId: workItem.id, attemptId, startingRevision, promptDigest: promptArtifact.digest, memoryContextDigest });
+  const qualityResolutionDigest = qualityResolution?.resolutionDigest;
+  const workFingerprintDigest = workFingerprint?.fingerprint;
+  const workContinuityDecisionDigest = workContinuityDecision?.decisionDigest;
+  const qualityContinuityCount = [qualityResolution, workFingerprint, workContinuityDecision].filter((value) => value !== undefined).length;
+  if (qualityContinuityCount !== 0 && qualityContinuityCount !== 3) fail("quality resolution, work fingerprint, and work continuity decision must be bound together", "DR6111");
+  if (qualityResolution && (qualityResolution.kind !== "QualityObligationResolution" || canonicalJsonDigest(Object.fromEntries(Object.entries(qualityResolution).filter(([key]) => !["apiVersion", "kind", "resolutionDigest"].includes(key)))) !== qualityResolutionDigest)) fail("quality resolution digest drifted", "DR6111");
+  if (workFingerprint && (workFingerprint.kind !== "WorkFingerprint" || canonicalJsonDigest(workFingerprint.material) !== workFingerprintDigest || workFingerprint.material?.projectId !== projectId || workFingerprint.material?.workItem?.id !== workItem.id || workFingerprint.material?.qualityResolutionDigest !== qualityResolutionDigest || workFingerprint.material?.targetRevision !== startingRevision)) fail("work fingerprint digest drifted or context was substituted", "DR6111");
+  if (workContinuityDecision && (workContinuityDecision.kind !== "WorkReuseDecision" || canonicalJsonDigest(Object.fromEntries(Object.entries(workContinuityDecision).filter(([key]) => !["apiVersion", "kind", "decisionDigest"].includes(key)))) !== workContinuityDecisionDigest || workContinuityDecision.fingerprint !== workFingerprintDigest || workContinuityDecision.qualityResolutionDigest !== qualityResolutionDigest || workContinuityDecision.targetRevision !== startingRevision || qualityResolution.workItemId !== workItem.id)) fail("work continuity decision digest drifted or context was substituted", "DR6111");
+  const idempotencyMaterial = { runId, workItemId: workItem.id, attemptId, startingRevision, promptDigest: promptArtifact.digest, memoryContextDigest };
+  if (qualityResolution) Object.assign(idempotencyMaterial, { qualityResolutionDigest, workFingerprintDigest, workContinuityDecisionDigest });
+  const idempotencyKey = canonicalJsonDigest(idempotencyMaterial);
   const body = {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "DesktopTaskPlan",
@@ -58,6 +83,14 @@ export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevi
     promptDigest: promptArtifact.digest,
     memoryContext: structuredClone(memoryContext),
     memoryContextDigest,
+    ...(qualityResolution ? {
+      qualityResolution: structuredClone(qualityResolution),
+      qualityResolutionDigest,
+      workFingerprint: structuredClone(workFingerprint),
+      workFingerprintDigest,
+      workContinuityDecision: structuredClone(workContinuityDecision),
+      workContinuityDecisionDigest,
+    } : {}),
     idempotencyKey,
   };
   const prepared = Object.freeze(validateDesktopOrchestrationArtifact({ ...body, planDigest: canonicalJsonDigest(body) }));

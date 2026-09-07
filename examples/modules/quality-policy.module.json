@@ -1,0 +1,48 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": { "id": "quality-policy", "version": "0.1.0", "description": "Establish approved project quality policy and deterministically resolve evidence obligations without acquiring verification or Gate authority." },
+  "operations": [
+    {
+      "id": "propose-policy",
+      "description": "Normalize project quality rules into a candidate for a separate approval Gate.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "quality-policy-input", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "quality-policy-candidate", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["candidate-proposed", "needs-clarification", "unable-to-proceed"],
+      "resultContracts": {
+        "candidate-proposed": { "status": "completed", "requiredInputs": ["project-overview-baseline", "quality-policy-input"], "forbiddenInputs": [], "requiredOutputs": ["quality-policy-candidate"], "allowedOutputs": ["quality-policy-candidate"], "requiredEvidence": [{ "kind": "quality-policy/candidate-normalization", "statuses": ["pass"], "artifactOutput": "quality-policy-candidate" }], "diagnosticsRequired": false },
+        "needs-clarification": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["quality-policy/candidate-normalization"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    },
+    {
+      "id": "resolve-obligations",
+      "description": "Resolve exact work-item quality obligations from the approved policy, workflow profile, risk, technology, changed surfaces, and acceptance criteria.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "quality-policy-baseline", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "resolved-workflow-profile", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "quality-policy-context", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "work-item", "schema": "https://devrelay.dev/artifacts/work-item/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [{ "name": "quality-obligation-resolution", "schema": "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }],
+      "inputRules": [],
+      "outcomes": ["obligations-resolved", "baseline-drift", "unable-to-proceed"],
+      "resultContracts": {
+        "obligations-resolved": { "status": "completed", "requiredInputs": ["project-overview-baseline", "quality-policy-baseline", "resolved-workflow-profile", "quality-policy-context", "work-item"], "forbiddenInputs": [], "requiredOutputs": ["quality-obligation-resolution"], "allowedOutputs": ["quality-obligation-resolution"], "requiredEvidence": [{ "kind": "quality-policy/obligation-resolution", "statuses": ["pass"], "artifactOutput": "quality-obligation-resolution" }], "diagnosticsRequired": false },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["quality-policy/obligation-resolution"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    }
+  ]
+}

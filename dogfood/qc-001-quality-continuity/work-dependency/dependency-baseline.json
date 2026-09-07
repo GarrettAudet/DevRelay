@@ -1,0 +1,26 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkDependencyBaseline",
+  "baselineId": "work-dependency-qc-001-v1",
+  "dependencies": {
+    "WI-QC-CONTRACTS": [],
+    "WI-QC-QUALITY": ["WI-QC-CONTRACTS"],
+    "WI-QC-CONTINUITY": ["WI-QC-CONTRACTS"],
+    "WI-QC-CONTROL": ["WI-QC-CONTRACTS"],
+    "WI-QC-PORTS": ["WI-QC-QUALITY", "WI-QC-CONTINUITY", "WI-QC-CONTROL"],
+    "WI-QC-TRACE": ["WI-QC-QUALITY", "WI-QC-CONTINUITY", "WI-QC-CONTROL"],
+    "WI-QC-BENCHMARK": ["WI-QC-PORTS"],
+    "WI-QC-E2E": ["WI-QC-BENCHMARK", "WI-QC-TRACE"],
+    "WI-QC-DOCS": ["WI-QC-E2E"]
+  },
+  "frontiers": [
+    ["WI-QC-CONTRACTS"],
+    ["WI-QC-CONTINUITY", "WI-QC-CONTROL", "WI-QC-QUALITY"],
+    ["WI-QC-PORTS", "WI-QC-TRACE"],
+    ["WI-QC-BENCHMARK"],
+    ["WI-QC-E2E"],
+    ["WI-QC-DOCS"]
+  ],
+  "cycleCheck": "pass",
+  "gateDecision": "approve"
+}

@@ -1,4 +1,5 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
+import { verifyCrossCuttingCompositionPlan } from "./cross-cutting-composition.mjs";
 
 export class DesktopOrchestrationError extends Error {
   constructor(message, code = "DR6120") {
@@ -45,10 +46,23 @@ function validateWorkItems(workItems) {
   return byId;
 }
 
-export function createDesktopOrchestrationPlan({ runId, projectId, horizonDigest, startingRevision, maxConcurrency = 3, workItems } = {}) {
+function assertOrchestrationPlan(plan) {
+  if (plan?.kind !== "DesktopOrchestrationPlan") fail("orchestration plan is required");
+  const { planDigest, ...body } = plan;
+  if (planDigest !== canonicalJsonDigest(body)) fail("orchestration plan digest drifted", "DR6125");
+  if ((plan.crossCuttingPlan === undefined) !== (plan.crossCuttingPlanDigest === undefined)) fail("cross-cutting plan binding is incomplete", "DR6125");
+  if (plan.crossCuttingPlan) {
+    verifyCrossCuttingCompositionPlan(plan.crossCuttingPlan);
+    if (plan.crossCuttingPlan.planDigest !== plan.crossCuttingPlanDigest) fail("cross-cutting plan binding drifted", "DR6125");
+  }
+  return plan;
+}
+
+export function createDesktopOrchestrationPlan({ runId, projectId, horizonDigest, startingRevision, maxConcurrency = 3, workItems, crossCuttingPlan } = {}) {
   for (const [label, value] of Object.entries({ runId, projectId, horizonDigest, startingRevision })) if (typeof value !== "string" || !value) fail(`${label} is required`);
   if (!Number.isSafeInteger(maxConcurrency) || maxConcurrency < 1 || maxConcurrency > 8) fail("maxConcurrency must be between 1 and 8");
   const byId = validateWorkItems(workItems);
+  if (crossCuttingPlan !== undefined) verifyCrossCuttingCompositionPlan(crossCuttingPlan);
   const body = {
     apiVersion: "devrelay.dev/v1alpha1",
     kind: "DesktopOrchestrationPlan",
@@ -59,12 +73,13 @@ export function createDesktopOrchestrationPlan({ runId, projectId, horizonDigest
     maxConcurrency,
     workItems: [...byId.values()].sort((a, b) => a.id.localeCompare(b.id)),
     readinessAuthority: "core-derived",
+    ...(crossCuttingPlan ? { crossCuttingPlan: structuredClone(crossCuttingPlan), crossCuttingPlanDigest: crossCuttingPlan.planDigest } : {}),
   };
   return Object.freeze({ ...body, planDigest: canonicalJsonDigest(body) });
 }
 
 export function deriveDesktopReadyFrontier({ plan, workState = {} } = {}) {
-  if (plan?.kind !== "DesktopOrchestrationPlan") fail("orchestration plan is required");
+  assertOrchestrationPlan(plan);
   const activeCount = Object.values(workState).filter((state) => ACTIVE.has(state.status)).length;
   const slots = Math.max(0, plan.maxConcurrency - activeCount);
   const ready = plan.workItems
@@ -108,7 +123,7 @@ export function createDesktopOrchestrationRuntime({ storage, owner = "desktop-or
   };
   return Object.freeze({
     initialize(plan) {
-      if (plan?.kind !== "DesktopOrchestrationPlan") fail("validated plan is required");
+      assertOrchestrationPlan(plan);
       const planRef = storage.putArtifact({ artifactId: `DESKTOP-PLAN-${plan.runId}`, bytes: Buffer.from(`${JSON.stringify(plan)}\n`), mediaType: "application/vnd.devrelay.desktop-orchestration-plan+json" });
       const workState = Object.fromEntries(plan.workItems.map(({ id }) => [id, { status: "pending", receipts: [] }]));
       return storage.initializeRun({ runId: idFor(plan.runId), state: { plan, workState, blockers: [], recovery: "clean" }, artifactRefs: [planRef] });

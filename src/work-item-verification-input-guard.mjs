@@ -85,7 +85,7 @@ function obligationId(kind, sourceRef) {
   return `OB-${sha256Digest(Buffer.from(canonicalJson({ kind, sourceRef }), "utf8")).slice(7, 23).toUpperCase()}`;
 }
 
-export function expandWorkItemVerificationObligations({ subject, workItem, policyDutyRefs = [], proposedObligations }) {
+export function expandWorkItemVerificationObligations({ subject, workItem, policyDutyRefs = [], qualityResolution, proposedObligations }) {
   validateWorkItemVerificationArtifact(subject);
   if (workItem?.id !== subject.workItemId || canonicalJsonDigest(workItem) !== subject.workItem.digest) fail("work item does not match the validated subject");
   const evidenceKinds = unique((workItem["required-evidence"] ?? []).map(({ kind }) => kind), "required evidence kind");
@@ -101,6 +101,15 @@ export function expandWorkItemVerificationObligations({ subject, workItem, polic
   const identities = sources.map(([kind, sourceRef]) => `${kind}\0${sourceRef}`);
   if (new Set(identities).size !== identities.length) fail("duplicate obligation identity");
   const obligations = sources.map(([kind, sourceRef]) => ({ obligationId: obligationId(kind, sourceRef), kind, sourceRef, requiredEvidenceKinds: evidenceKinds }));
+  if (qualityResolution !== undefined) {
+    if (qualityResolution?.kind !== "QualityObligationResolution" || qualityResolution.workItemId !== workItem.id) fail("quality resolution does not bind the exact work item");
+    const resolutionBody = Object.fromEntries(Object.entries(qualityResolution).filter(([key]) => !["apiVersion", "kind", "resolutionDigest"].includes(key)));
+    if (qualityResolution.resolutionDigest !== canonicalJsonDigest(resolutionBody)) fail("quality resolution digest drifted");
+    for (const duty of qualityResolution.obligations) {
+      if (!duty?.id || !Array.isArray(duty.evidenceKinds) || duty.evidenceKinds.length === 0) fail("quality resolution contains an invalid obligation");
+      obligations.push({ obligationId: `QP-${canonicalJsonDigest({ resolutionDigest: qualityResolution.resolutionDigest, obligationId: duty.id }).slice(7, 23).toUpperCase()}`, kind: "policy", sourceRef: duty.id, requiredEvidenceKinds: unique(duty.evidenceKinds, "quality evidence kind") });
+    }
+  }
   obligations.sort((left, right) => left.obligationId.localeCompare(right.obligationId));
   if (proposedObligations !== undefined && !same(proposedObligations, obligations)) fail("proposed obligations are incomplete, reordered, or unauthorized");
   const material = { subject: { artifactId: subject.subjectId, digest: subject.subjectDigest }, obligations };

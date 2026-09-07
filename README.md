@@ -23,12 +23,12 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.11.0-rc.1` is a published Apache-2.0 open-source release candidate ([GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1)) containing DevRelay Core,
+DevRelay `0.11.0-rc.2` is the locally prepared Apache-2.0 source/library release candidate, building on the published [v0.11.0-rc.1 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1), containing DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0` and `project-memory@0.1.0`, `environment-preparation@1.0.0`, and the separate
+`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0`, `project-memory@0.1.0`, `quality-policy@0.1.0`, `work-continuity@0.1.0`, and `project-control@0.1.0`, `environment-preparation@1.0.0`, and the separate
 `business-acceptance-gate@0.1.0`. Source-package
 versions and immutable Module
 versions are intentionally independent. The supported distribution is GitHub
@@ -266,6 +266,8 @@ resolve raw schema documents through exported package paths such as
 `contracts/` in a source checkout.
 
 ## Current vertical slices
+
+Cross-cutting quality, duplicate-work prevention, and read-only project control are documented in [Quality, continuity, and project control](docs/quality-continuity.md).
 
 ```text
 GoalArtifact + ProjectContext + optional paired baselines

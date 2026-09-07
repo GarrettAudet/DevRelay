@@ -157,6 +157,36 @@ export const canonicalModules = Object.freeze([
     ],
     plugins: ["mem0-project-memory"],
   },
+  {
+    id: "quality-policy",
+    version: "0.1.0",
+    definition: "examples/modules/quality-policy.module.json",
+    operations: [
+      { id: "propose-policy", steps: [] },
+      { id: "resolve-obligations", steps: [] },
+    ],
+    plugins: [],
+  },
+  {
+    id: "work-continuity",
+    version: "0.1.0",
+    definition: "examples/modules/work-continuity.module.json",
+    operations: [
+      { id: "decide-reuse", steps: [] },
+      { id: "record-attempt", steps: [] },
+    ],
+    plugins: [],
+  },
+  {
+    id: "project-control",
+    version: "0.1.0",
+    definition: "examples/modules/project-control.module.json",
+    operations: [
+      { id: "project-snapshot", steps: [] },
+      { id: "assess-productivity", steps: [] },
+    ],
+    plugins: [],
+  },
 ]);
 
 export const compatibilityModules = Object.freeze([

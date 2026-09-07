@@ -18,7 +18,7 @@ export function validateIntegratedSystemCandidate(subject, expected={}) {
   return subject;
 }
 
-export function expandSystemVerificationObligations({subject,acceptanceCriteria=[],nonFunctionalRequirements=[]}) {
+export function expandSystemVerificationObligations({subject,acceptanceCriteria=[],nonFunctionalRequirements=[],qualityResolution}) {
   validateIntegratedSystemCandidate(subject);
   const expand=(entry,kind,prefix)=>{
     const sourceRef=entry.sourceRef??entry.id??entry.acceptanceCriterionId??entry.nfrId;
@@ -26,7 +26,9 @@ export function expandSystemVerificationObligations({subject,acceptanceCriteria=
     if(!sourceRef||!Array.isArray(kinds)||kinds.length===0) fail(`invalid ${kind} obligation source`);
     return {obligationId:entry.obligationId??`${prefix}-${sourceRef}`,kind,sourceRef,requiredEvidenceKinds:[...new Set(kinds)].sort()};
   };
-  const obligations=sorted([...acceptanceCriteria.map(x=>expand(x,"acceptance-criterion","SV-AC")),...nonFunctionalRequirements.filter(x=>x.applicable!==false).map(x=>expand(x,"non-functional-requirement","SV-NFR"))],x=>x.obligationId);
+  let qualityRequirements=[];
+  if(qualityResolution!==undefined){const resolutionMaterial=Object.fromEntries(Object.entries(qualityResolution??{}).filter(([key])=>!["apiVersion","kind","resolutionDigest"].includes(key)));if(qualityResolution?.kind!=="QualityObligationResolution"||qualityResolution.resolutionDigest!==canonicalJsonDigest(resolutionMaterial))fail("quality resolution is stale or substituted","baseline-drift","DR4152");qualityRequirements=qualityResolution.obligations.map(item=>({obligationId:`SV-QP-${canonicalJsonDigest({resolutionDigest:qualityResolution.resolutionDigest,obligationId:item.id}).slice(7,23).toUpperCase()}`,sourceRef:item.id,requiredEvidenceKinds:item.evidenceKinds}));}
+  const obligations=sorted([...acceptanceCriteria.map(x=>expand(x,"acceptance-criterion","SV-AC")),...nonFunctionalRequirements.filter(x=>x.applicable!==false).map(x=>expand(x,"non-functional-requirement","SV-NFR")),...qualityRequirements.map(x=>expand(x,"non-functional-requirement","SV-QP"))],x=>x.obligationId);
   if(obligations.length===0||new Set(obligations.map(x=>x.obligationId)).size!==obligations.length) fail("obligations must be non-empty and uniquely identified");
   const subjectRef=ref(subject.subjectId,subject.subjectDigest); const material={subject:subjectRef,obligations};
   const body={apiVersion:"devrelay.dev/v1alpha1",kind:"SystemVerificationObligationSet",obligationSetId:identity("SVOS",material),...material};
