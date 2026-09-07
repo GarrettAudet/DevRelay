@@ -1,0 +1,48 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "QualityContinuitySystemVerification",
+  "verificationId": "QC-001-SYSTEM-VERIFICATION-001",
+  "subject": {
+    "version": "0.11.0-rc.2",
+    "implementationCommit": "779e6aa341b93aca99ff33177f95742284f6d606",
+    "requirementsBaseline": {
+      "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+      "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+    },
+    "projectOverviewBaseline": {
+      "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+      "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+    }
+  },
+  "verification": {
+    "canonicalReceipt": "QC-001-CANONICAL-VERIFY-001",
+    "desktopEndToEndEvidence": "QC-E2E-WINDOWS-001",
+    "benchmarkEvidence": "dogfood/qc-001-quality-continuity/verification/quality-continuity-benchmark-evidence.json",
+    "tests": 1191,
+    "passed": 1189,
+    "failed": 0,
+    "skipped": 2,
+    "desktopProfiles": [
+      "quick",
+      "standard",
+      "assurance"
+    ],
+    "benchmarkP95Milliseconds": 186.5202999999999,
+    "benchmarkThresholdMilliseconds": 500
+  },
+  "verifiedCapabilities": [
+    "exact ModuleDefinition-bound deterministic cross-cutting composition",
+    "approval-bound quality policy resolution and mandatory verification obligations",
+    "content-addressed work fingerprints, CAS claims, uncertainty quarantine, durable restart, and exact-only reuse",
+    "read-only project status, reconciliation diagnostics, and productivity assessment",
+    "real local Git worktree isolation and commits in Desktop end-to-end scenarios",
+    "ProjectMemory bootstrap in every task plan plus concluded-baseline fresh-task recovery and zero-call replay"
+  ],
+  "limitations": [
+    "The Desktop provider exercised by QC-001 is fixture-conformant; no live upstream interoperability claim is made.",
+    "The bundled graph and checkpoint stores remain reference implementations; durable host persistence is external.",
+    "Passing verification reduces known risk but is not a guarantee that future code will be defect-free."
+  ],
+  "authority": "system-verification-only",
+  "outcome": "verified"
+}

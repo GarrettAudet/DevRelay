@@ -41,8 +41,8 @@ test("published v0.11.0-rc.1 is concluded into exact durable ProjectMemory", () 
   assert.equal(summary.outcome, "pass");
   assert.equal(summary.summaryDigest, api.canonicalJsonDigest(Object.fromEntries(Object.entries(summary).filter(([key]) => key !== "summaryDigest"))));
   assert.deepEqual(historicalBaseline, concludedBaseline);
-  assert.deepEqual(currentBaseline, concludedBaseline);
-  assert.equal(currentBaseline.version, "1.0.7");
+  assert.equal(currentBaseline.version, "1.0.8");
+  assert.equal(currentBaseline.supersedes.digest, api.loadProjectMemoryArtifact(historicalBaseline).ref.digest);
   assert.equal(receipt.outcome, "concluded");
   assert.equal(receipt.resultBaseline.digest, summary.resultBaseline.digest);
   assert.equal(replay.outcome, "pass");
@@ -53,5 +53,5 @@ test("published v0.11.0-rc.1 is concluded into exact durable ProjectMemory", () 
   assert.equal(currentBaseline.records.some(({ id, status }) => id === "MEM-DEVRELAY-STATUS-DO001-RELEASE-READY-V3" && status === "superseded"), true);
   assert.equal(conclusion.pendingDecisions.includes("CHANGE-V0110RC1-NEXT-ACTION-REPLACE"), true);
   assert.equal(routes.routes.find(({ changeId }) => changeId === "CHANGE-V0110RC1-NEXT-ACTION-REPLACE").nextModule, "roadmap-management");
-  assert.deepEqual(read("project/CurrentSynopsis.md"), read(`${conclusionRoot}/CurrentSynopsis.md`));
+  assert.deepEqual(read("project/history/project-memory/1.0.7/CurrentSynopsis.md"), read(`${conclusionRoot}/CurrentSynopsis.md`));
 });
