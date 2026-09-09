@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.0-rc.3 - 2026-09-10
+
+### Added
+
+- Added the independently versioned `human-orchestration@0.1.0` cross-cutting Module with a deterministic operator view over agents and sub-agents, the dependency queue, blockers, quality, approvals, worktrees, and ProjectMemory.
+- Added typed, authority-bounded intervention requests for message, handoff, pause, resume, cancel, retry, approve, reject, and reprioritize, with optimistic concurrency and exact-effect replay protection.
+- Extended the ChatGPT Desktop plug-in workflow and installed-package smoke proof so the same human view and controls work across modular lifecycle boundaries without acquiring Gate, integration, verification, traceability, or semantic-memory authority.
+
+### Verification
+
+- Added rich-view, topology, source-drift, stale-control, route-authority, replay, traceability, scale, and real Git-worktree/Desktop end-to-end coverage.
+- Retained `v0.11.0-rc.2` as the latest published release while this exact rc.3 source and installable package complete controlled candidate verification.
+
 ## 0.11.0-rc.2 - 2026-09-07
 
 ### Added

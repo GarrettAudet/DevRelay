@@ -9,13 +9,13 @@ This repository packages DevRelay Core, `requirements-gathering@0.1.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
 `change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting
 `roadmap-management@0.1.0`, `project-memory@0.1.0`, `quality-policy@0.1.0`,
-`work-continuity@0.1.0`, `project-control@0.1.0`, and the separate
+`work-continuity@0.1.0`, `project-control@0.1.0`, `human-orchestration@0.1.0`, and the separate
 `business-acceptance-gate@0.1.0` as one Apache-2.0
-open-source release candidate, version `0.11.0-rc.2`. The source package retains `1.5.0` as the compatibility default and adds
+open-source release candidate, version `0.11.0-rc.3`. The source package retains `1.5.0` as the compatibility default and adds
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
-The `0.11.0-rc.2` source/library candidate is prepared locally for exact verification and separate owner-controlled publication. Tagging, protected-main promotion, and GitHub publication are not implied by candidate readiness. The latest previously published controlled prerelease remains [v0.11.0-rc.1](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1).
+The `0.11.0-rc.3` source/library candidate is prepared locally for exact verification and separate owner-controlled publication. Tagging, protected-main promotion, and GitHub publication are not implied by candidate readiness. The latest published controlled prerelease is [v0.11.0-rc.2](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2).
 
 `package.json` declares `"private": false` and `"license": "Apache-2.0"` so
 the GitHub-source tarball has accurate package metadata. This release does not
@@ -74,6 +74,7 @@ exact accepted GitHub source.
 - Mandatory DevRelaySessionBootstrap for every fresh configured ChatGPT Desktop task on Windows, with exact context receipts and next-Module-boundary refresh.
 - A validated, deliberately installed `devrelay-desktop` plug-in with isolated dependency-frontier task orchestration, durable worktree leases, independent adversarial review policy, restart recovery, operator projection, and dependency-free repository-scoped ProjectMemory bootstrap. ChatGPT Desktop project instructions plus the managed task prompt are the supported startup boundary; no undeclared automatic hook is claimed, and the plug-in has no lifecycle authority.
 - Exact ModuleDefinition-bound cross-cutting composition plus QualityPolicy, WorkContinuity, and ProjectControl Modules for policy-derived verification obligations, exact duplicate-work prevention/reuse, and deterministic read-only project state across lifecycle Modules, Desktop tasks, worktrees, restarts, and session boundaries.
+- HumanOrchestration deterministic agent/sub-agent topology and work-queue projection across quality, approvals, worktrees, and ProjectMemory, plus stale-safe typed requests routed only to the authority that already owns each effect or decision.
 - BusinessAcceptance exhaustive technical coverage, business objective/metric/scope
   evaluation, exact owner approval, zero-call replay, accepted-record authority,
   and forward-only acceptance traceability.

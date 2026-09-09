@@ -187,6 +187,16 @@ export const canonicalModules = Object.freeze([
     ],
     plugins: [],
   },
+  {
+    id: "human-orchestration",
+    version: "0.1.0",
+    definition: "examples/modules/human-orchestration.module.json",
+    operations: [
+      { id: "project-operator-view", steps: [] },
+      { id: "request-intervention", steps: [] },
+    ],
+    plugins: [],
+  },
 ]);
 
 export const compatibilityModules = Object.freeze([

@@ -46,8 +46,8 @@ test("the canonical project baseline contains the exact approved V1 lifecycle", 
       lifecycle.conditional,
     );
   }
-  assert.equal(requirementsBaseline.version, "2.7.0");
-  assert.equal(overviewBaseline.version, "2.7.0");
+  assert.equal(requirementsBaseline.version, "2.8.0");
+  assert.equal(overviewBaseline.version, "2.8.0");
   assert.equal(
     sha256Digest(await readFile(new URL("project/requirements-baseline.json", root))),
     promotion.next.requirementsBaseline.digest,
@@ -58,13 +58,13 @@ test("the canonical project baseline contains the exact approved V1 lifecycle", 
   );
   assert.equal(
     sha256Digest(
-      await readFile(new URL("project/history/2.6.0/requirements-baseline.json", root)),
+      await readFile(new URL("project/history/2.7.0/requirements-baseline.json", root)),
     ),
     promotion.previous.requirementsBaseline.digest,
   );
   assert.equal(
     sha256Digest(
-      await readFile(new URL("project/history/2.6.0/project-overview-baseline.json", root)),
+      await readFile(new URL("project/history/2.7.0/project-overview-baseline.json", root)),
     ),
     promotion.previous.projectOverviewBaseline.digest,
   );

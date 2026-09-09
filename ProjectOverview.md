@@ -22,6 +22,8 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-ENVIRONMENT-SAFETY-001`** [must] Make environment preparation reproducible, reversible, least-privilege, secret-safe, and replaceable across technology-specific adapters.
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-DEV-HUMAN-ORCHESTRATION-001`** [must] Let one human confidently understand and guide many concurrent agents without losing deterministic workflow state, evidence quality, or authority boundaries.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-LIVE-INTEGRATION-001`** [must] Replace ambiguous contract-only integration claims with version-pinned, receipt-backed live provider conformance while preserving Core authority.
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-MODULARITY-001`** [must] Allow best-in-class engineering capabilities to be replaced without changing canonical workflow semantics or generic Core.
@@ -162,6 +164,11 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Priority: must
   - Audience: user-facing
   - Business objectives: `BO-DEV-DOMAIN-PACK-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Conversation-native human orchestration** (`CAP-DEV-HUMAN-ORCHESTRATION-001`): Project the exact multi-agent run into one deterministic Desktop operator view and route typed human requests to existing authorities with optimistic concurrency and replay protection.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-DEV-HUMAN-ORCHESTRATION-001`, `BO-DEV-QUALITY-CONTINUITY-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **Deterministic lifecycle orchestration** (`CAP-DEV-LIFECYCLE-001`): Route exact state through the approved V1 lifecycle and stop invalid work before it propagates.
   - Priority: must
@@ -481,6 +488,16 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Target: 100 percent or an explicit approved disposition.
   - Measurement method: Run TraceabilityGraph coverage and orphan diagnostics at each lifecycle horizon.
   - Business objectives: `BO-DEV-TRACEABILITY-001`
+- **Safe human intervention** (`SM-HO-CONTROL-001`)
+  - Measure: Stale, duplicated, unavailable-route, or authority-bypassing intervention effects.
+  - Target: Zero unauthorized or duplicate effects.
+  - Measurement method: Run optimistic-concurrency, replay, routing, malformed-target, and missing-handler fixtures.
+  - Business objectives: `BO-DEV-HUMAN-ORCHESTRATION-001`
+- **Complete operator visibility** (`SM-HO-VISIBILITY-001`)
+  - Measure: Configured tasks, queue items, blockers, approvals, quality records, worktrees, or memory sessions omitted from an exact operator view.
+  - Target: Zero omissions.
+  - Measurement method: Run nested-task, multi-frontier, worktree, approval, quality, restart, and memory fixtures.
+  - Business objectives: `BO-DEV-HUMAN-ORCHESTRATION-001`
 - **Recoverable authoritative state** (`SM-QC-CONTROL-001`)
   - Measure: Fresh tasks that cannot identify the exact lifecycle stage, frontier, tasks, worktrees, memory conclusion, graph horizon, or blockers.
   - Target: Zero unresolved omissions for configured authorities.
@@ -557,6 +574,8 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`SCOPE-EP-DOGFOOD-001`** Full released-circuit dogfood and installed-package Windows Desktop preparation, readiness, execution, induced-drift, remediation, re-verification, and replay acceptance.
 - **`SCOPE-EP-MODULE-001`** EnvironmentPreparation module, EnvironmentVerificationGate, profile and baseline contracts, deterministic routing, checkpoints, remediation, receipts, and trusted traceability contributors.
 - **`SCOPE-EP-NATIVE-WINDOWS-001`** Deterministic native Windows host/project inventory and readiness verifier for the controlled Desktop release.
+- **`SCOPE-HO-E2E-001`** Clean installed-package and deliberately installed ChatGPT Desktop end-to-end evidence for nested tasks, worktrees, ProjectMemory, quality, approvals, control routing, stale rejection, and replay.
+- **`SCOPE-HO-MODULE-001`** HumanOrchestration Module, source bundle, operator view, renderer, intervention requests and receipts, controller, schema, exports, tests, and Desktop skill integration.
 - **`SCOPE-PM-CONCLUDE-001`** Worker, frontier, and main-task conclusion; /conclude Desktop UX; delta review; cross-domain routing; CurrentSynopsis.md; open-session recovery; and ConcludeReceipt.
 - **`SCOPE-PM-DOGFOOD-001`** Complete released-circuit dogfood plus installed-package ChatGPT/Codex Desktop Windows fresh-task, worker, conclusion, and resume acceptance.
 - **`SCOPE-PM-MEM0-001`** Version-pinned local Mem0 adapter with live execution attestation, project/session/module-attribution namespaces, synchronization verification, deterministic retrieval receipts, and native equivalence fallback.
@@ -637,6 +656,10 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Rationale: EP-001 verifies references and presence without becoming a secret manager.
 - **`NG-EP-UNPROVEN-SUPPORT-001`** Claim non-Windows DevRelay host or arbitrary technology interoperability from contract-only or fixture evidence.
   - Rationale: Support claims require exact live evidence.
+- **`NG-HO-AUTONOMOUS-AUTHORITY-001`** Let agents, the operator projection, or a free-text command override Core, Gates, dependency analysis, verification, integration, graph, or memory authority.
+  - Rationale: Human orchestration coordinates existing authorities; it does not replace them.
+- **`NG-HO-HOSTED-DASHBOARD-001`** Build a hosted web control plane or require a separate dashboard for the controlled release.
+  - Rationale: The primary supported surface is conversation-native ChatGPT Desktop on Windows.
 - **`NG-PM-CROSS-PROJECT-001`** Share project memory or personal preferences across repositories by default.
   - Rationale: Cross-project memory is a separate opt-in privacy and authority decision.
 - **`NG-PM-DOMAIN-BYPASS-001`** Use /conclude or ProjectMemoryGate to bypass RequirementsGate, ArchitectureGate, ContractGate, RoadmapGate, or another domain Gate.
@@ -830,6 +853,12 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`CON-EP-TRACE-001`** [technical; project] Adapters cannot access TraceabilityGraph; trusted contributors derive only approved forward readiness relationships from validated artifacts.
   - Rationale: Environment plug-ins remain untrusted and graph authority remains Core-owned.
   - Acceptance criteria: `AC-EP-TRACE-001`
+- **`CON-HO-NO-STAGE-001`** [business; project] HumanOrchestration is cross-cutting and does not change the approved construction lifecycle order.
+  - Rationale: Human usability must not create an alternate workflow.
+  - Acceptance criteria: `AC-HO-AUTHORITY-001`
+- **`CON-HO-REQUEST-ONLY-001`** [technical; project] An operator control is request-only until its exact existing authority accepts and records it.
+  - Rationale: The view and conversation cannot manufacture approval or completion authority.
+  - Acceptance criteria: `AC-HO-AUTHORITY-001`, `AC-HO-CONTROL-001`
 - **`CON-PM-AUTHORITY-001`** [technical; project] Core and ProjectMemoryGate own canonical memory authority; Mem0, modules, models, sessions, and adapters remain proposer-only.
   - Rationale: Retrieval convenience cannot become project truth or workflow authority.
   - Acceptance criteria: `AC-PM-AUTHORITY-001`, `AC-PM-PROMOTION-001`
@@ -1042,6 +1071,18 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Measure: Review standard, warning, blocked, global-effect, drift, and recovery transcripts.
   - Target: One consolidated interaction per preparation wave with direct exact-artifact references.
   - Acceptance criteria: `AC-EP-REMEDIATION-001`, `AC-EP-UX-001`
+- **`NFR-HO-DETERMINISM-001`** [reliability; must; project] Human-orchestration bundles, views, requests, routes, receipts, and rendered status are deterministic for exact inputs.
+  - Measure: Canonical digest and byte equality across repeated and reordered-input executions.
+  - Target: 100 percent equality.
+  - Acceptance criteria: `AC-HO-CONTROL-001`, `AC-HO-STALE-001`, `AC-HO-VIEW-001`
+- **`NFR-HO-SCALE-001`** [performance; must; project] Operator projection remains bounded as task hierarchy and work queues grow.
+  - Measure: p95 projection time for 1,000 work items and 1,000 task observations on the Windows reference host.
+  - Target: At most 500 ms excluding external providers.
+  - Acceptance criteria: `AC-HO-QUEUE-001`, `AC-HO-TOPOLOGY-001`
+- **`NFR-HO-SECURITY-001`** [security; must; project] Human controls use least privilege and never expand the grants or authority of their target handler.
+  - Measure: Target, route, grant, malformed-payload, and authority-bypass fixtures.
+  - Target: Zero unauthorized effects.
+  - Acceptance criteria: `AC-HO-AUTHORITY-001`, `AC-HO-CONTROL-001`
 - **`NFR-PM-ACCURACY-001`** [reliability; must; project] DevRelay must not execute from missing, stale, conflicting, unsupported, or unverifiable project memory.
   - Measure: Run the complete corruption, drift, conflict, provider, and native-equivalence matrices.
   - Target: Zero module executions from an inaccurate context bundle.
@@ -1268,4 +1309,4 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 
 - Lifecycle: existing
 - Phase: planning
-- Summary: QC-001 requirements are closed and approved for three cross-cutting semantic Modules—QualityPolicy, WorkContinuity, and ProjectControl—composed through generic declared boundaries without changing the construction lifecycle.
+- Summary: HO-001 requirements are closed and approved for a conversation-native HumanOrchestration cross-cutting Module with deterministic multi-agent visibility and typed request-only controls.
