@@ -1,0 +1,23 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "WorkDependencyBaseline",
+  "baselineId": "work-dependency-ho-001-v1",
+  "dependencies": {
+    "WI-HO-CONTRACTS": [],
+    "WI-HO-VIEW": ["WI-HO-CONTRACTS"],
+    "WI-HO-CONTROL": ["WI-HO-CONTRACTS"],
+    "WI-HO-DESKTOP": ["WI-HO-CONTROL", "WI-HO-VIEW"],
+    "WI-HO-TRACE": ["WI-HO-CONTROL", "WI-HO-VIEW"],
+    "WI-HO-TEST": ["WI-HO-CONTROL", "WI-HO-DESKTOP", "WI-HO-TRACE", "WI-HO-VIEW"],
+    "WI-HO-DOCS": ["WI-HO-TEST"]
+  },
+  "frontiers": [
+    ["WI-HO-CONTRACTS"],
+    ["WI-HO-CONTROL", "WI-HO-VIEW"],
+    ["WI-HO-DESKTOP", "WI-HO-TRACE"],
+    ["WI-HO-TEST"],
+    ["WI-HO-DOCS"]
+  ],
+  "cycleCheck": "pass",
+  "gateDecision": "approve"
+}

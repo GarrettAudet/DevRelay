@@ -21,7 +21,7 @@ test("final Desktop proof is concluded into a fresh-task-readable memory baselin
   validateProjectMemoryArtifact(baseline);
   validateProjectMemoryArtifact(finalAcceptanceBaseline);
   validateProjectMemoryArtifact(proof);
-  assert.equal(baseline.version, "1.0.8");
+  assert.equal(baseline.version, "1.0.9");
   assert.equal(proof.status, "promoted");
   assert.equal(proof.projectMemoryBaseline.digest, loadProjectMemoryArtifact(baseline).ref.digest);
   assert.equal(renderCurrentSynopsis(baseline).bytes.equals(fs.readFileSync(path.join(root, "project", "CurrentSynopsis.md"))), true);
@@ -49,5 +49,6 @@ test("final Desktop proof is concluded into a fresh-task-readable memory baselin
   assert.match(output.synopsis, /MEMORY-PROBE-20260906-B/u);
   assert.match(output.synopsis, /DevRelay v0\.11\.0-rc\.1 is published/u);
   assert.match(output.synopsis, /release workflow 34034582831 passed/u);
-  assert.match(output.synopsis, /0\.11\.0-rc\.2 Quality Continuity/u);
+  assert.match(output.synopsis, /DevRelay v0\.11\.0-rc\.2 is published/u);
+  assert.match(output.synopsis, /release workflow 34183116800 passed/u);
 });

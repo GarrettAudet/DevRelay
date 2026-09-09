@@ -23,12 +23,12 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.11.0-rc.2` is the locally prepared Apache-2.0 source/library release candidate, building on the published [v0.11.0-rc.1 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1), containing DevRelay Core,
+DevRelay `0.11.0-rc.3` is the current Apache-2.0 source/library candidate, building on the published [v0.11.0-rc.2 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2), and contains DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
 `work-execution@0.1.0`, `work-item-verification@0.1.0`, and
-`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0`, `project-memory@0.1.0`, `quality-policy@0.1.0`, `work-continuity@0.1.0`, and `project-control@0.1.0`, `environment-preparation@1.0.0`, and the separate
+`change-integration@0.1.0`, `system-verification@0.1.0`, the cross-cutting `roadmap-management@0.1.0`, `project-memory@0.1.0`, `quality-policy@0.1.0`, `work-continuity@0.1.0`, `project-control@0.1.0`, and `human-orchestration@0.1.0`, `environment-preparation@1.0.0`, and the separate
 `business-acceptance-gate@0.1.0`. Source-package
 versions and immutable Module
 versions are intentionally independent. The supported distribution is GitHub
@@ -77,6 +77,13 @@ For the dynamic, human-readable run projection available to Desktop hosts, see
 [LifecycleRunReport](docs/lifecycle-run-report.md). Its ledger, ready-frontier,
 snapshot, content-policy, and Markdown renderer APIs are available from
 `devrelay/advanced`; the report remains read-only and never controls a Gate.
+
+The current development branch adds [HumanOrchestration 0.1.0](docs/human-orchestration.md):
+a conversation-native, read-only view of the dependency-safe work queue, agents
+and sub-agents, approvals, quality evidence, worktrees, and ProjectMemory state.
+Typed state-version-bound operator requests route to the existing Desktop,
+Gate, and dependency-analysis authorities without creating a second control
+plane.
 
 For isolated worktree scheduling, bounded Desktop task receipts, adversarial
 review policy, restart recovery, and repository-triggered ProjectMemory bootstrap, see

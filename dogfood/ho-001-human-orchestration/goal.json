@@ -1,0 +1,24 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "GoalArtifact",
+  "goalId": "goal-devrelay-ho-001-human-orchestration-v1",
+  "statement": "Make multi-agent DevRelay work understandable and safely controllable from a ChatGPT Desktop conversation without changing the deterministic lifecycle or its authorities.",
+  "objectives": [
+    "Show the complete agent and sub-agent topology, dependency-safe queue, active work, blockers, approvals, quality evidence, worktrees, and ProjectMemory continuity in one view.",
+    "Translate explicit owner intent into typed, digest-bound, state-version-bound requests with auditable outcomes.",
+    "Fail closed on stale views, missing host routes, ambiguous authority, duplicate requests, and topology drift."
+  ],
+  "constraints": [
+    "HumanOrchestration is an independently versioned cross-cutting Module, not a construction stage or second control plane.",
+    "Core remains the sole readiness source and existing Modules and Gates retain planning, approval, verification, integration, graph, and memory authority.",
+    "The supported host surface remains ChatGPT/Codex Desktop on Windows with a deterministic library seam."
+  ],
+  "acceptanceCriteria": [
+    "A single deterministic view projects the exact queue and nested task topology from durable state and bounded observations.",
+    "Every control pins the displayed view digest and expected durable state version before dispatch.",
+    "Exact retries do not repeat effects and unavailable or stale routes return explicit rejection receipts."
+  ],
+  "assumptions": [
+    "The owner's repeated 'Proceed' directions approve the previously proposed read-only-first operator surface and bounded control model."
+  ]
+}

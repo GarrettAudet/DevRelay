@@ -1,15 +1,15 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
-  "version": "2.7.0",
+  "baselineId": "requirements-baseline-devrelay-v1-ho-001-human-orchestration-001",
+  "version": "2.8.0",
   "approvedCandidate": {
-    "artifactId": "requirements-change-set-qc-001-quality-continuity-v1",
-    "digest": "sha256:acc041b5c9019127c52db11b5d9dd51237549b24638b4c77cc7124e20522b6c7"
+    "artifactId": "requirements-change-set-ho-001-human-orchestration-v1",
+    "digest": "sha256:318a6f184766e2a43ab9ce24149e5f9b5a3ee9bc60073ad919d7b65b31840297"
   },
   "supersedes": {
-    "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
-    "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+    "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+    "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
   },
   "requirements": {
     "purpose": {
@@ -465,6 +465,68 @@
             "artifact": {
               "artifactId": "requirements-closure-ep-001-environment-preparation-v1",
               "digest": "sha256:9c550e786cde62a6cba54c747089c88f1499bff8fff94d9e38e6bfd45817d47a"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-DEV-HUMAN-ORCHESTRATION-001",
+        "statement": "Let one human confidently understand and guide many concurrent agents without losing deterministic workflow state, evidence quality, or authority boundaries.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
             }
           }
         ]
@@ -3139,6 +3201,130 @@
         ]
       },
       {
+        "id": "SM-HO-CONTROL-001",
+        "name": "Safe human intervention",
+        "businessObjectiveIds": [
+          "BO-DEV-HUMAN-ORCHESTRATION-001"
+        ],
+        "measure": "Stale, duplicated, unavailable-route, or authority-bypassing intervention effects.",
+        "target": "Zero unauthorized or duplicate effects.",
+        "measurementMethod": "Run optimistic-concurrency, replay, routing, malformed-target, and missing-handler fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-HO-VISIBILITY-001",
+        "name": "Complete operator visibility",
+        "businessObjectiveIds": [
+          "BO-DEV-HUMAN-ORCHESTRATION-001"
+        ],
+        "measure": "Configured tasks, queue items, blockers, approvals, quality records, worktrees, or memory sessions omitted from an exact operator view.",
+        "target": "Zero omissions.",
+        "measurementMethod": "Run nested-task, multi-frontier, worktree, approval, quality, restart, and memory fixtures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
         "id": "SM-QC-CONTROL-001",
         "name": "Recoverable authoritative state",
         "businessObjectiveIds": [
@@ -5159,6 +5345,73 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-v0.10-release-hardening-001",
               "digest": "sha256:055d00bb87853b0c161b109fd4000eee94b76da6f56174c37876461cd0680860"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-DEV-HUMAN-ORCHESTRATION-001",
+        "name": "Conversation-native human orchestration",
+        "description": "Project the exact multi-agent run into one deterministic Desktop operator view and route typed human requests to existing authorities with optimistic concurrency and replay protection.",
+        "businessObjectiveIds": [
+          "BO-DEV-HUMAN-ORCHESTRATION-001",
+          "BO-DEV-QUALITY-CONTINUITY-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
             }
           }
         ]
@@ -8118,6 +8371,90 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1-work-execution-001",
               "digest": "sha256:c66224db72ab53947d045720e87e0d6929d4fcb80fbf1fa2f4b607e967caae30"
+            }
+          }
+        ]
+      },
+      {
+        "id": "UJ-HO-OPERATE-MULTI-AGENT-001",
+        "name": "Understand and guide a multi-agent DevRelay run",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-DEV-HUMAN-ORCHESTRATION-001"
+        ],
+        "trigger": "One or more Desktop tasks are planned, active, blocked, or awaiting approval.",
+        "outcome": "The owner sees exact current state and any requested intervention is safely routed, rejected, or replayed with an auditable receipt.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Load the exact ProjectMemory and durable orchestration state.",
+            "expectedOutcome": "The view is bound to current project and run identities."
+          },
+          {
+            "sequence": 2,
+            "action": "Project the full queue and task hierarchy with evidence and attention items.",
+            "expectedOutcome": "The owner can see who is doing what, what is next, and why anything is blocked."
+          },
+          {
+            "sequence": 3,
+            "action": "Express an intervention in conversation.",
+            "expectedOutcome": "DevRelay creates a typed request rather than performing an inferred effect."
+          },
+          {
+            "sequence": 4,
+            "action": "Revalidate state and dispatch to the declared authority.",
+            "expectedOutcome": "Stale or unavailable controls fail closed and exact retries do not repeat effects."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
             }
           }
         ]
@@ -11289,6 +11626,143 @@
             "artifact": {
               "artifactId": "requirements-closure-do-001-v1",
               "digest": "sha256:16e13baaeabfcdff0def372696d191f9c914a8882b2abef1d0ed50e8e92a57d5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-HO-CONTROL-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-HUMAN-ORCHESTRATION-001",
+        "userJourneyIds": [
+          "UJ-HO-OPERATE-MULTI-AGENT-001"
+        ],
+        "need": "Message, pause, resume, cancel, retry, hand off, approve, reject, or reprioritize through explicit safe controls.",
+        "benefit": "I can guide work quickly without bypassing the deterministic lifecycle.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-HO-AUTHORITY-001",
+          "AC-HO-CONTROL-001",
+          "AC-HO-STALE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-HO-VIEW-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-DEV-HUMAN-ORCHESTRATION-001",
+        "userJourneyIds": [
+          "UJ-HO-OPERATE-MULTI-AGENT-001"
+        ],
+        "need": "See every agent and sub-agent, their work, the queue, dependencies, blockers, approvals, quality, worktrees, and memory in one compact view.",
+        "benefit": "I can supervise parallel work without reconstructing state from multiple conversations.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-HO-DESKTOP-001",
+          "AC-HO-QUEUE-001",
+          "AC-HO-TOPOLOGY-001",
+          "AC-HO-VIEW-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
             }
           }
         ]
@@ -18467,6 +18941,405 @@
             "artifact": {
               "artifactId": "requirements-closure-ep-001-environment-preparation-v1",
               "digest": "sha256:9c550e786cde62a6cba54c747089c88f1499bff8fff94d9e38e6bfd45817d47a"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-AUTHORITY-001",
+        "statement": "HumanOrchestration cannot alter readiness, dependency order, Gate decisions, verification, integration, graph activation, ProjectMemory promotion, or task state except through an explicitly bound authority handler.",
+        "verification": "Attempt every forbidden direct mutation through source, view, request, handler output, and replay.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-CONTROL-001",
+        "statement": "Every supported human action becomes a typed request with exact target, reason, payload, view digest, expected state version, deterministic authority route, and observation-only receipt.",
+        "verification": "Exercise all actions and target matrices, handler substitutions, malformed payloads, and receipt digest validation.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-DESKTOP-001",
+        "statement": "The bundled ChatGPT Desktop skill renders the exact human-orchestration view and converts explicit owner controls into typed requests before calling host task operations.",
+        "verification": "Run a clean installed-plugin Desktop scenario with a parent task, sub-task, worktree, pending approval, memory session, message request, stale rejection, and replay proof.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-QUEUE-001",
+        "statement": "The operator view shows the complete work queue and derives readiness only from Core's exact Desktop frontier while distinguishing active, complete, terminal, dependency-waiting, and capacity-waiting work.",
+        "verification": "Exercise dependencies, concurrency limits, terminal states, reordered work, and forged readiness attempts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-STALE-001",
+        "statement": "State-version drift, unavailable handlers, failed handlers, and exact retries yield deterministic rejection, failure, or replay without duplicate effects.",
+        "verification": "Advance state before dispatch, remove each handler, inject failures, and issue concurrent identical requests.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-TOPOLOGY-001",
+        "statement": "The operator view shows every configured Desktop task as an agent or sub-agent with exact parent, work item, role, title, status, depth, and attention state.",
+        "verification": "Exercise roots, multiple nesting levels, duplicate IDs, missing parents, cycles, and attention states.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-HO-VIEW-001",
+        "statement": "HumanOrchestration projects one digest-bound read-only view from the exact durable run plus bounded task, worktree, memory, approval, quality, and intervention observations.",
+        "verification": "Reorder exact sources, repeat projection, mutate each source after binding, and validate deterministic equality or fail-closed drift.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
             }
           }
         ]
@@ -26016,6 +26889,208 @@
         ]
       },
       {
+        "id": "NFR-HO-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Human-orchestration bundles, views, requests, routes, receipts, and rendered status are deterministic for exact inputs.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Canonical digest and byte equality across repeated and reordered-input executions.",
+        "target": "100 percent equality.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-HO-CONTROL-001",
+          "AC-HO-STALE-001",
+          "AC-HO-VIEW-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-HO-SCALE-001",
+        "category": "performance",
+        "statement": "Operator projection remains bounded as task hierarchy and work queues grow.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "p95 projection time for 1,000 work items and 1,000 task observations on the Windows reference host.",
+        "target": "At most 500 ms excluding external providers.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-HO-QUEUE-001",
+          "AC-HO-TOPOLOGY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-HO-SECURITY-001",
+        "category": "security",
+        "statement": "Human controls use least privilege and never expand the grants or authority of their target handler.",
+        "applicability": {
+          "level": "project"
+        },
+        "measure": "Target, route, grant, malformed-payload, and authority-bypass fixtures.",
+        "target": "Zero unauthorized effects.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-HO-AUTHORITY-001",
+          "AC-HO-CONTROL-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
         "id": "NFR-PM-ACCURACY-001",
         "category": "reliability",
         "statement": "DevRelay must not execute from missing, stale, conflicting, unsupported, or unverifiable project memory.",
@@ -30311,6 +31386,135 @@
         ]
       },
       {
+        "id": "CON-HO-NO-STAGE-001",
+        "category": "business",
+        "statement": "HumanOrchestration is cross-cutting and does not change the approved construction lifecycle order.",
+        "rationale": "Human usability must not create an alternate workflow.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-HO-AUTHORITY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-HO-REQUEST-ONLY-001",
+        "category": "technical",
+        "statement": "An operator control is request-only until its exact existing authority accepts and records it.",
+        "rationale": "The view and conversation cannot manufacture approval or completion authority.",
+        "applicability": {
+          "level": "project"
+        },
+        "acceptanceCriterionIds": [
+          "AC-HO-AUTHORITY-001",
+          "AC-HO-CONTROL-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
         "id": "CON-PM-AUTHORITY-001",
         "category": "technical",
         "statement": "Core and ProjectMemoryGate own canonical memory authority; Mem0, modules, models, sessions, and adapters remain proposer-only.",
@@ -33862,6 +35066,118 @@
         ]
       },
       {
+        "id": "SCOPE-HO-E2E-001",
+        "statement": "Clean installed-package and deliberately installed ChatGPT Desktop end-to-end evidence for nested tasks, worktrees, ProjectMemory, quality, approvals, control routing, stale rejection, and replay.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-HO-MODULE-001",
+        "statement": "HumanOrchestration Module, source bundle, operator view, renderer, intervention requests and receipts, controller, schema, exports, tests, and Desktop skill integration.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
         "id": "SCOPE-PM-CONCLUDE-001",
         "statement": "Worker, frontier, and main-task conclusion; /conclude Desktop UX; delta review; cross-domain routing; CurrentSynopsis.md; open-session recovery; and ConcludeReceipt.",
         "sourceRefs": [
@@ -36607,6 +37923,120 @@
             "artifact": {
               "artifactId": "requirements-closure-ep-001-environment-preparation-v1",
               "digest": "sha256:9c550e786cde62a6cba54c747089c88f1499bff8fff94d9e38e6bfd45817d47a"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-HO-AUTONOMOUS-AUTHORITY-001",
+        "statement": "Let agents, the operator projection, or a free-text command override Core, Gates, dependency analysis, verification, integration, graph, or memory authority.",
+        "rationale": "Human orchestration coordinates existing authorities; it does not replace them.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-HO-HOSTED-DASHBOARD-001",
+        "statement": "Build a hosted web control plane or require a separate dashboard for the controlled release.",
+        "rationale": "The primary supported surface is conversation-native ChatGPT Desktop on Windows.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
             }
           }
         ]
@@ -41173,7 +42603,7 @@
     "currentStatus": {
       "lifecycle": "existing",
       "phase": "planning",
-      "summary": "QC-001 requirements are closed and approved for three cross-cutting semantic Modules—QualityPolicy, WorkContinuity, and ProjectControl—composed through generic declared boundaries without changing the construction lifecycle.",
+      "summary": "HO-001 requirements are closed and approved for a conversation-native HumanOrchestration cross-cutting Module with deterministic multi-agent visibility and typed request-only controls.",
       "sourceRefs": [
         {
           "role": "goal",
@@ -41187,6 +42617,13 @@
           "artifact": {
             "artifactId": "goal-devrelay-do-001-gap-remediation-v1",
             "digest": "sha256:6d474152e447390bb7a22f1f6868d1ee8a85e9b00e3e494d2f2a13dc53409530"
+          }
+        },
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+            "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
           }
         },
         {
@@ -41213,6 +42650,14 @@
         {
           "role": "owner-decision",
           "artifact": {
+            "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+            "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+          },
+          "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+        },
+        {
+          "role": "owner-decision",
+          "artifact": {
             "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
             "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
           },
@@ -41230,6 +42675,13 @@
           "artifact": {
             "artifactId": "project-context-devrelay-do-001-v1",
             "digest": "sha256:1176d803d1c9260d96e7fb81f2ac0e4e4cc1a7d35e0a7b56516fd63a5af7e47e"
+          }
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-devrelay-ho-001-v1",
+            "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
           }
         },
         {
@@ -41256,6 +42708,13 @@
         {
           "role": "project-overview-baseline",
           "artifact": {
+            "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+            "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+          }
+        },
+        {
+          "role": "project-overview-baseline",
+          "artifact": {
             "artifactId": "project-overview-baseline-devrelay-v1-rp-001-release-preparation-001",
             "digest": "sha256:2c0a555ff88de4849fb10f0124b551fe046b7e3a1102c5a251ca92be6f05194c"
           }
@@ -41272,6 +42731,13 @@
           "artifact": {
             "artifactId": "repository-snapshot-devrelay-do-001-v1",
             "digest": "sha256:d0e415138e0eaa86de6da0ead934e954dbfae414b95347516aa32177eee60171"
+          }
+        },
+        {
+          "role": "repository-snapshot",
+          "artifact": {
+            "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+            "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
           }
         },
         {
@@ -41298,6 +42764,13 @@
         {
           "role": "requirements-baseline",
           "artifact": {
+            "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+            "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+          }
+        },
+        {
+          "role": "requirements-baseline",
+          "artifact": {
             "artifactId": "requirements-baseline-devrelay-v1-rp-001-release-preparation-001",
             "digest": "sha256:cf9b4018d7572c3955b477cddcc91cb8753b24cc55ab338073898110159b96ea"
           }
@@ -41314,6 +42787,13 @@
           "artifact": {
             "artifactId": "requirements-closure-do-001-v1",
             "digest": "sha256:16e13baaeabfcdff0def372696d191f9c914a8882b2abef1d0ed50e8e92a57d5"
+          }
+        },
+        {
+          "role": "requirements-closure",
+          "artifact": {
+            "artifactId": "requirements-closure-ho-001-v1",
+            "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
           }
         },
         {
@@ -42495,6 +43975,64 @@
         ]
       },
       {
+        "id": "ASM-HO-DESKTOP-001",
+        "statement": "ChatGPT/Codex Desktop task operations remain the supported live host boundary and deterministic fixtures cover unavailable operations.",
+        "status": "confirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+              "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
+            }
+          },
+          {
+            "role": "owner-decision",
+            "artifact": {
+              "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+              "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
+            },
+            "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-devrelay-ho-001-v1",
+              "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
+            }
+          },
+          {
+            "role": "project-overview-baseline",
+            "artifact": {
+              "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
+            }
+          },
+          {
+            "role": "repository-snapshot",
+            "artifact": {
+              "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+              "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
+            }
+          },
+          {
+            "role": "requirements-baseline",
+            "artifact": {
+              "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+              "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+            }
+          },
+          {
+            "role": "requirements-closure",
+            "artifact": {
+              "artifactId": "requirements-closure-ho-001-v1",
+              "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
         "id": "ASM-PM-HOST-001",
         "statement": "ChatGPT/Codex Desktop on Windows remains the only release-defining interactive host for PM-001.",
         "status": "confirmed",
@@ -43411,6 +44949,7 @@
       "Accepted PM-001 ProjectMemory bootstrap, context, conclusion, Gate, native-equivalence, and provider synchronization contracts.",
       "Accepted SIM-001 local host SQLite/CAS persistence, capability enforcement, isolated Git worktrees, recovery, CLI, and facade.",
       "Approved ArchitectureBaseline interface intent and contract-generation disposition",
+      "Approved Desktop orchestration, ProjectControl, ProjectMemory, WorkDependencyAnalysis, quality, worktree, Gate, and task-adapter artifacts.",
       "Approved ProjectMemory, TraceabilityGraph, lifecycle-run ledger, Desktop orchestration, and worktree lease artifacts.",
       "Approved ProjectOverview, requirements, architecture, contract-disposition, and repository contracts.",
       "Approved WorkBreakdown 0.1.0 and exact WorkBreakdownBaseline contract.",
@@ -43461,6 +45000,7 @@
       "A conflict resolver could silently create new unverified implementation bytes.",
       "A consistency reviewer may be mistaken for authority unless reviewer findings remain advisory inputs to the Gate.",
       "A consolidated control view can create split-brain state if it is allowed to mutate or outlive its exact source references.",
+      "A convenient operator view can become a split-brain source unless it remains immutable, horizon-bound, and explicitly non-authoritative.",
       "A crash between Git mutation and checkpoint persistence could duplicate or lose integration evidence.",
       "A declared package export may remain absent from the packed artifact unless verification derives required files from package.json itself.",
       "A facade can accidentally hide authority-relevant decisions or create an implicit bypass path.",
@@ -43504,6 +45044,7 @@
       "Execution could improperly claim verification or integration authority.",
       "External evidence can become unavailable or detached from source claims unless manifests, hashes, and retrieval checks are mandatory.",
       "External planning adapters can drift from the authoritative baseline unless synchronization is bounded, versioned, and conflict-aware.",
+      "Free-text controls can cause ambiguous effects unless translated into typed state-version-bound requests and exact target routes.",
       "Frequent conclusion approval can create fatigue unless deltas are concise, complete, grouped by authority, and empty changes remain cheap.",
       "Frontier completion may unlock dependent work too early unless only verified integrated-completion facts affect readiness.",
       "Gate proliferation may add friction unless quick paths remain clear and policy is risk-adjusted.",
@@ -43586,6 +45127,7 @@
       "Four repository-scoped DevRelay skills and a clean-checkout Windows Desktop end-to-end acceptance package.",
       "Fresh packaged Windows Desktop multi-worktree benchmark and acceptance evidence.",
       "GitHub source and installable V0.10 release tarball with exact catalog, checksums, and provenance evidence.",
+      "HumanOrchestration cross-cutting Module, deterministic operator view, typed intervention controller, schema, package exports, tests, documentation, and Desktop skill integration.",
       "Installable DevRelay Desktop plugin with orchestration skill, bounded bootstrap scripts, validation, and local installation documentation.",
       "Installed-package ChatGPT/Codex Desktop Windows end-to-end evidence covering preparation, verification, execution, drift, remediation, recovery, and replay.",
       "IntegratedChangeRecord, IntegrationConflictSet, IntegrationAttempt, and updated RepositorySnapshot contracts",
@@ -43704,6 +45246,9 @@
       "host/desktop-executor",
       "host/sqlite-recovery",
       "host/worktree-isolation",
+      "human-orchestration/chatgpt-desktop-e2e",
+      "human-orchestration/intervention-routing-stale-replay-authority",
+      "human-orchestration/view-topology-queue-determinism",
       "integration/change-proof",
       "integration/checkpoint-replay",
       "integration/input-binding",
@@ -43811,59 +45356,59 @@
       {
         "role": "goal",
         "artifact": {
-          "artifactId": "goal-devrelay-qc-001-quality-continuity-v1",
-          "digest": "sha256:423392df74a89989e588164d2f7125ffe3a79a975e5d72d458043b8e02de1c40"
+          "artifactId": "goal-devrelay-ho-001-human-orchestration-v1",
+          "digest": "sha256:06b59e068e4313ef8e5e1d8476cc14604632187e97aabfcaa58033893a4547ce"
         }
       },
       {
         "role": "owner-decision",
         "artifact": {
-          "artifactId": "owner-decisions-qc-001-quality-continuity-v1",
-          "digest": "sha256:44de209c59f7e35672afa2b70506e8009113c369829e3cedbfb639477ec1f226"
+          "artifactId": "owner-decisions-ho-001-human-orchestration-v1",
+          "digest": "sha256:b8eb49565890a61df54ac5bd2cbdbc3ae3522e43f3408aed1874d00d8e7aeb2e"
         },
-        "location": "Seven cross-cutting-module decisions approved across the preceding chat decision wave"
+        "location": "Owner-approved human-orchestration decision sequence in ChatGPT Desktop"
       },
       {
         "role": "project-context",
         "artifact": {
-          "artifactId": "project-context-devrelay-qc-001-v1",
-          "digest": "sha256:983918ca831cc7d3a0c3dfec623303d76ce533c24758730e553135e311aa93b4"
+          "artifactId": "project-context-devrelay-ho-001-v1",
+          "digest": "sha256:acc66855df12e40d4f3ed54c5e57d5c29b9afae1bf2b3479b4ceb612aa958580"
         }
       },
       {
         "role": "project-overview-baseline",
         "artifact": {
-          "artifactId": "project-overview-baseline-devrelay-v1-do-001-gap-remediation-001",
-          "digest": "sha256:82e1b3bd011fda0786c33f1dd2086dc6ea0fffc6e3070fa2e74f13020a07519b"
+          "artifactId": "project-overview-baseline-devrelay-v1-qc-001-quality-continuity-001",
+          "digest": "sha256:a475d58ef625f282d66ecbe41be8210bde8db45ae0941e7ebfc131295ad01ffd"
         }
       },
       {
         "role": "repository-snapshot",
         "artifact": {
-          "artifactId": "repository-snapshot-devrelay-qc-001-v1",
-          "digest": "sha256:ac5932654f0dcbdac5586e0e9d815adb39335731e6ac4c95d49047064c7727c9"
+          "artifactId": "repository-snapshot-devrelay-ho-001-v1",
+          "digest": "sha256:278ec65f22eab034694946d9748351506ee0e906e459fb251a68bd76b380b97e"
         }
       },
       {
         "role": "requirements-baseline",
         "artifact": {
-          "artifactId": "requirements-baseline-devrelay-v1-do-001-gap-remediation-001",
-          "digest": "sha256:93499fe08570fa52b19c20f7d7327b798832e5a972898e11f4339338a2b7154a"
+          "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
+          "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
         }
       },
       {
         "role": "requirements-closure",
         "artifact": {
-          "artifactId": "requirements-closure-qc-001-v1",
-          "digest": "sha256:39b2d205eea6dc460f53c9298459815e6e0ace6f6c305598b37c12c433ec0cc4"
+          "artifactId": "requirements-closure-ho-001-v1",
+          "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
         }
       }
     ]
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-qc-001-quality-continuity-v1",
-      "digest": "sha256:61d19ad9e11757d91225ce0bc43884468929f5ebe7a37401164f1dffd6575296"
+      "artifactId": "requirements-gate-approval-ho-001-human-orchestration-v1",
+      "digest": "sha256:d1a274b944e5859a02d82f7d1c782478bd96cac6f2ec5512ebcef6e7c0dd17db"
     }
   ]
 }

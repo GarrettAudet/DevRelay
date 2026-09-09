@@ -10,6 +10,7 @@ import { createCrossCuttingCompositionPlan, executeCrossCuttingBoundary } from "
 import { createDesktopOrchestrationPlan } from "../src/desktop-orchestration.mjs";
 import { createDesktopTaskAdapter, createDesktopTaskPlan } from "../src/desktop-task-adapter.mjs";
 import { createDesktopOperatorSnapshot } from "../src/desktop-operator-view.mjs";
+import { createHumanInterventionRequest, createHumanOrchestrationController, createHumanOrchestrationSourceBundle, createHumanOrchestrationView } from "../src/human-orchestration.mjs";
 import { loadDesktopProjectMemoryBootstrap } from "../src/desktop-project-memory-bootstrap.mjs";
 import { createDurableGitWorktreeManager } from "../src/durable-worktree-manager.mjs";
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
@@ -21,7 +22,7 @@ import { resolveWorkflowProfile } from "../src/workflow-profiles.mjs";
 const digest = (value) => canonicalJsonDigest({ value });
 const sourceRoot = path.resolve(new URL("../", import.meta.url).pathname.replace(/^\/(?:[A-Za-z]:)/u, (value) => value.slice(1)));
 const loadJson = (relativePath) => JSON.parse(readFileSync(path.join(sourceRoot, relativePath), "utf8"));
-const moduleDefinitions = ["quality-policy", "work-continuity", "project-control"].map((id) => loadJson(`examples/modules/${id}.module.json`));
+const moduleDefinitions = ["quality-policy", "work-continuity", "project-control", "human-orchestration"].map((id) => loadJson(`examples/modules/${id}.module.json`));
 
 test("quick, standard, and assurance Desktop scenarios preserve memory, isolation, quality, continuity, and operator evidence end to end", async (t) => {
   const root = mkdtempSync(path.join(tmpdir(), "devrelay-qc-e2e-"));
@@ -44,12 +45,13 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
   const qualityCandidate = createQualityPolicyCandidate({ policyId: "QP-E2E", version: "1.0.0", rules: [{ id: "RULE-DEFAULT", obligations: [{ id: "focused-test", lane: "focused", evidenceKinds: ["test/focused"] }, { id: "independent-review", lane: "review", evidenceKinds: ["review/adversarial"], independent: true }] }] });
   const qualityBaseline = promoteQualityPolicyBaseline({ candidate: qualityCandidate, approval: { kind: "QualityPolicyGateApproval", authority: "QualityPolicyGate", decision: "approve", candidateDigest: qualityCandidate.candidateDigest } });
   const crossCuttingPlan = createCrossCuttingCompositionPlan({
-    availablePorts: ["execution-binding", "project-control-source-bundle", "project-overview-baseline", "quality-policy-baseline", "quality-policy-context", "repository-snapshot", "requirements-baseline", "resolved-workflow-profile", "specialist-assignment-baseline", "work-continuity-index", "work-dependency-baseline", "work-item"],
+    availablePorts: ["execution-binding", "human-orchestration-source-bundle", "project-control-source-bundle", "project-overview-baseline", "quality-policy-baseline", "quality-policy-context", "repository-snapshot", "requirements-baseline", "resolved-workflow-profile", "specialist-assignment-baseline", "work-continuity-index", "work-dependency-baseline", "work-item"],
     moduleDefinitions,
     bindings: [
       { id: "quality", boundary: "before-task-dispatch", moduleId: "quality-policy", moduleVersion: "0.1.0", operationId: "resolve-obligations", inputPorts: ["project-overview-baseline", "quality-policy-baseline", "resolved-workflow-profile", "quality-policy-context", "work-item"], outputPorts: ["quality-obligation-resolution"], dependsOn: [], configurationDigest: digest("quality-config"), grantDigest: digest("no-grants"), failureBehavior: "stop" },
       { id: "continuity", boundary: "before-task-dispatch", moduleId: "work-continuity", moduleVersion: "0.1.0", operationId: "decide-reuse", inputPorts: ["requirements-baseline", "project-overview-baseline", "work-item", "work-dependency-baseline", "specialist-assignment-baseline", "quality-obligation-resolution", "repository-snapshot", "execution-binding", "work-continuity-index"], outputPorts: ["work-fingerprint", "work-reuse-decision"], dependsOn: ["quality"], configurationDigest: digest("continuity-config"), grantDigest: digest("no-grants"), failureBehavior: "stop" },
       { id: "control", boundary: "frontier-complete", moduleId: "project-control", moduleVersion: "0.1.0", operationId: "project-snapshot", inputPorts: ["project-overview-baseline", "project-control-source-bundle"], outputPorts: ["project-control-snapshot"], dependsOn: ["continuity"], configurationDigest: digest("control-config"), grantDigest: digest("no-grants"), failureBehavior: "diagnostic" },
+      { id: "human", boundary: "frontier-complete", moduleId: "human-orchestration", moduleVersion: "0.1.0", operationId: "project-operator-view", inputPorts: ["human-orchestration-source-bundle", "project-overview-baseline"], outputPorts: ["human-orchestration-view"], dependsOn: ["control"], configurationDigest: digest("human-config"), grantDigest: digest("no-grants"), failureBehavior: "diagnostic" },
     ],
   });
   const adapter = createDesktopTaskAdapter({ providerId: "chatgpt.desktop-fixture", providerVersion: "1.0.0", handlers: Object.fromEntries(["create", "inspect", "wait", "message", "handoff"].map((operation) => [operation, async ({ taskId }, plan) => ({ taskId: taskId ?? `TASK-${plan.attemptId}`, status: operation === "create" ? "ready" : "completed", observation: { operation, providerMode: "fixture-conformant" } })])) });
@@ -108,14 +110,26 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
     continuity.commit({ expectedHostVersion: host.version, expectedIndexRevision: host.state.index.revision, transition: { operation: "completed", attemptId }, nextIndex: completed });
     const reuse = findExactWorkReuse({ index: continuity.read().state.index, workFingerprint: fingerprint, targetRevision: revision, qualityResolutionDigest: qualityResolution.resolutionDigest, verifiedArtifactDigests: [taskReceipt.receiptDigest, digest(git(lease.workspace, "rev-parse", "HEAD")), qualityAssessment.assessmentDigest] });
     assert.equal(reuse.decision, "reuse-exact");
+    const orchestrationRun = { kind: "LocalHostRunState", version: position, state: { plan: orchestrationPlan, workState: { [workItemId]: { status: "completed", receipts: [taskReceipt] } }, blockers: [], recovery: "clean" } };
+    const leaseObservation = worktrees.inspect(attemptId);
     const projectControlSourceBundle = createProjectControlSourceBundle({ projectId: "devrelay-e2e", lifecycle: { phase: "verification", profileName }, workItems: [{ id: workItemId, status: "completed" }], assignments: [{ id: workItemId, profile: "implementation" }], taskObservations: [{ id: workItemId, receiptDigest: taskReceipt.receiptDigest }], worktreeObservations: [{ id: workItemId, revision: git(lease.workspace, "rev-parse", "HEAD") }], qualityAssessments: [{ id: workItemId, ...qualityAssessment }], continuityRecords: [{ id: workItemId, ...reuse }] });
-    const controlBoundary = await executeCrossCuttingBoundary({ plan: crossCuttingPlan, boundary: "frontier-complete", artifacts: { "project-overview-baseline": projectOverviewBaseline, "project-control-source-bundle": projectControlSourceBundle }, invoke(_item, inputs) { return { "project-control-snapshot": createProjectControlSnapshot(inputs["project-control-source-bundle"]) }; } });
-    assert.equal(controlBoundary.receipts.length, 1);
+    const humanOrchestrationSourceBundle = createHumanOrchestrationSourceBundle({ projectId: "devrelay-e2e", orchestrationRun, taskObservations: [{ taskId: taskReceipt.taskId, workItemId, role: "implementer", title: `${profileName} implementation`, status: "completed" }, { taskId: `REVIEWER-${profileName}`, parentTaskId: taskReceipt.taskId, workItemId, role: "independent-reviewer", title: `${profileName} review`, status: "completed" }], worktreeLeases: [leaseObservation], memorySessions: [{ sessionId: `SESSION-${profileName}`, taskId: taskReceipt.taskId, status: "active", conclusionStatus: "pending", baselineDigest: taskPlan.memoryContext.projectMemoryBaseline.digest }], approvals: [{ approvalId: `APPROVAL-${profileName}`, gateId: "work-item-verification-gate", workItemId, status: "approved" }], qualityEvidence: [{ assessmentId: `QUALITY-${profileName}`, workItemId, kind: "QualityAssessment", disposition: qualityAssessment.decision, evidenceDigest: qualityAssessment.assessmentDigest }] });
+    const controlBoundary = await executeCrossCuttingBoundary({ plan: crossCuttingPlan, boundary: "frontier-complete", artifacts: { "project-overview-baseline": projectOverviewBaseline, "project-control-source-bundle": projectControlSourceBundle, "human-orchestration-source-bundle": humanOrchestrationSourceBundle }, invoke(item, inputs) { return item.moduleId === "project-control" ? { "project-control-snapshot": createProjectControlSnapshot(inputs["project-control-source-bundle"]) } : { "human-orchestration-view": createHumanOrchestrationView(inputs["human-orchestration-source-bundle"]) }; } });
+    assert.equal(controlBoundary.receipts.length, 2);
     const control = controlBoundary.artifacts["project-control-snapshot"];
-    const operator = createDesktopOperatorSnapshot({ orchestrationRun: { kind: "LocalHostRunState", version: position, state: { plan: orchestrationPlan, workState: { [workItemId]: { status: "completed", receipts: [taskReceipt] } }, blockers: [], recovery: "clean" } }, worktreeLeases: [worktrees.inspect(attemptId)], projectControlSnapshot: control });
+    const human = controlBoundary.artifacts["human-orchestration-view"];
+    const operator = createDesktopOperatorSnapshot({ orchestrationRun, worktreeLeases: [leaseObservation], projectControlSnapshot: control });
     assert.equal(operator.projectControl.diagnostics.length, 0);
+    assert.equal(human.tasks.find(({ taskId }) => taskId === `REVIEWER-${profileName}`).depth, 1);
+    const intervention = createHumanInterventionRequest({ runId: orchestrationPlan.runId, expectedStateVersion: position, snapshotDigest: human.viewDigest, requestedBy: "owner", requestedAt: "2026-09-10T00:00:00.000Z", action: "message", target: { kind: "task", id: taskReceipt.taskId }, reason: "Request exact completion evidence.", payload: { message: "Return the exact quality receipt." } });
+    const humanController = createHumanOrchestrationController({ inspectRun: async () => orchestrationRun, inspectView: async () => human, handlers: { "desktop-task-adapter": async (request) => adapter.invoke("message", { plan: taskPlan, taskId: request.target.id, input: request.payload }) } });
+    const interventionResult = await humanController.execute(intervention);
+    const interventionReplay = await humanController.execute(intervention);
+    assert.equal(interventionResult.receipt.outcome, "dispatched");
+    assert.equal(interventionReplay.replayed, true);
+    assert.equal(interventionReplay.receipt.receiptDigest, interventionResult.receipt.receiptDigest);
     assert.equal(taskPlan.memoryContext.projectMemoryBaseline.artifactId.length > 0, true);
-    outcomes.push({ profileName, attemptId, taskId: taskReceipt.taskId, implementationCommit: git(lease.workspace, "rev-parse", "HEAD"), qualityAssessmentDigest: qualityAssessment.assessmentDigest, reuseDecisionDigest: reuse.decisionDigest, controlSnapshotDigest: control.snapshotDigest, operatorSnapshotDigest: operator.snapshotDigest });
+    outcomes.push({ profileName, attemptId, taskId: taskReceipt.taskId, implementationCommit: git(lease.workspace, "rev-parse", "HEAD"), qualityAssessmentDigest: qualityAssessment.assessmentDigest, reuseDecisionDigest: reuse.decisionDigest, controlSnapshotDigest: control.snapshotDigest, operatorSnapshotDigest: operator.snapshotDigest, humanViewDigest: human.viewDigest, interventionReceiptDigest: interventionResult.receipt.receiptDigest });
     worktrees.dispose(attemptId, { disposition: "completed" });
   }
 

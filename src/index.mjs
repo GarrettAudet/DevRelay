@@ -961,6 +961,27 @@ export {
   verifyProjectControlSnapshot,
 } from "./project-control.mjs";
 export {
+  HUMAN_ORCHESTRATION_ACTIONS,
+  HUMAN_ORCHESTRATION_ROUTES,
+  HumanOrchestrationError,
+  createHumanInterventionRequest,
+  createHumanOrchestrationController,
+  createHumanOrchestrationSourceBundle,
+  createHumanOrchestrationView,
+  renderHumanOrchestrationView,
+  verifyHumanInterventionReceipt,
+  verifyHumanInterventionRequest,
+  verifyHumanOrchestrationView,
+} from "./human-orchestration.mjs";
+export {
+  HumanOrchestrationArtifactValidationError,
+  validateHumanOrchestrationArtifact,
+} from "./human-orchestration-artifact-validator.mjs";
+export {
+  humanOrchestrationCandidateTraceabilityContributor,
+  humanOrchestrationTraceabilityContributors,
+} from "./human-orchestration-traceability-contributor.mjs";
+export {
   QualityContinuityArtifactValidationError,
   validateQualityContinuityArtifact,
 } from "./quality-continuity-artifact-validator.mjs";

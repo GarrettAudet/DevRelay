@@ -13,8 +13,10 @@ DevRelay Desktop is a cross-cutting host and plug-in layer for ChatGPT/Codex Des
 - `resolveDesktopReviewRequirement` requires tests and independent review for all work. High-risk, critical, cross-cutting, security, migration, integration, and release work also requires an independent adversarial reviewer.
 - `evaluateDesktopMergeReadiness` blocks missing, failed, inconclusive, self-reviewed, stale-target, or conflicting work. Ambiguous conflicts always require owner review.
 - `DesktopOperatorSnapshot` is a deterministic read-only view of work, worktrees, memory, blockers, and recovery.
+- `HumanOrchestrationView` composes the complete agent/sub-agent tree, deterministic work queue, blockers, quality obligations, approvals, worktree leases, and ProjectMemory sessions without acquiring lifecycle authority.
+- `HumanInterventionRequest` routes message, handoff, pause, resume, cancel, retry, approve, reject, and reprioritize requests to the exact owning adapter, orchestrator, Gate, or WorkDependencyAnalysis boundary. State-version and view-digest checks reject stale requests before effects, and exact replay never repeats a dispatched effect.
 
-These APIs are exported from `devrelay/advanced` and the explicit `devrelay/desktop/*` package subpaths. The package root remains the stable nine-operation facade.
+These APIs are exported from `devrelay/advanced`, the explicit `devrelay/desktop/*` package subpaths, and `devrelay/human-orchestration`. The package root remains the stable nine-operation facade.
 
 ## Persistent ProjectMemory
 

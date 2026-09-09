@@ -1,0 +1,79 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "human-orchestration",
+    "version": "0.1.0",
+    "description": "Project a deterministic Desktop operator view and route typed human intervention requests without acquiring workflow, Gate, graph, verification, integration, memory, or task authority."
+  },
+  "operations": [
+    {
+      "id": "project-operator-view",
+      "description": "Project agent topology, dependency-safe queue state, attention items, approvals, quality, worktrees, and memory from canonical lifecycle state and bounded observations.",
+      "adapterExecution": "pure",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "human-orchestration-source-bundle", "schema": "https://devrelay.dev/contracts/human-orchestration-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "human-orchestration-view", "schema": "https://devrelay.dev/contracts/human-orchestration-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["view-projected", "reconciliation-required", "unable-to-proceed"],
+      "resultContracts": {
+        "view-projected": {
+          "status": "completed",
+          "requiredInputs": ["project-overview-baseline", "human-orchestration-source-bundle"],
+          "forbiddenInputs": [],
+          "requiredOutputs": ["human-orchestration-view"],
+          "allowedOutputs": ["human-orchestration-view"],
+          "requiredEvidence": [{ "kind": "human-orchestration/source-reconciliation", "statuses": ["pass"], "artifactOutput": "human-orchestration-view" }],
+          "diagnosticsRequired": false
+        },
+        "reconciliation-required": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "unable-to-proceed": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["human-orchestration/source-reconciliation"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    },
+    {
+      "id": "request-intervention",
+      "description": "Checkpoint and route one exact state-version-bound owner request to its declared authority without applying the requested decision itself.",
+      "adapterExecution": "effect",
+      "inputs": [
+        { "name": "project-overview-baseline", "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "human-orchestration-view", "schema": "https://devrelay.dev/contracts/human-orchestration-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true },
+        { "name": "human-intervention-request", "schema": "https://devrelay.dev/contracts/human-orchestration-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": true }
+      ],
+      "outputs": [
+        { "name": "human-intervention-receipt", "schema": "https://devrelay.dev/contracts/human-orchestration-artifacts.schema.json", "mediaTypes": ["application/json"], "cardinality": "one", "required": false }
+      ],
+      "inputRules": [],
+      "outcomes": ["request-dispatched", "request-rejected", "baseline-drift", "execution-failed"],
+      "resultContracts": {
+        "request-dispatched": {
+          "status": "completed",
+          "requiredInputs": ["project-overview-baseline", "human-orchestration-view", "human-intervention-request"],
+          "forbiddenInputs": [],
+          "requiredOutputs": ["human-intervention-receipt"],
+          "allowedOutputs": ["human-intervention-receipt"],
+          "requiredEvidence": [{ "kind": "human-orchestration/intervention-dispatch", "statuses": ["pass"], "artifactOutput": "human-intervention-receipt" }],
+          "diagnosticsRequired": false
+        },
+        "request-rejected": {
+          "status": "completed",
+          "requiredInputs": ["project-overview-baseline", "human-orchestration-view", "human-intervention-request"],
+          "forbiddenInputs": [],
+          "requiredOutputs": ["human-intervention-receipt"],
+          "allowedOutputs": ["human-intervention-receipt"],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "baseline-drift": { "status": "completed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true },
+        "execution-failed": { "status": "failed", "requiredInputs": [], "forbiddenInputs": [], "requiredOutputs": [], "allowedOutputs": [], "requiredEvidence": [], "diagnosticsRequired": true }
+      },
+      "evidence": ["human-orchestration/intervention-dispatch"],
+      "optionsSchema": { "type": "object", "additionalProperties": false }
+    }
+  ]
+}

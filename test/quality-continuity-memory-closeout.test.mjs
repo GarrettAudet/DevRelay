@@ -30,10 +30,11 @@ test("QC-001 conclusion promotes exact durable memory and fresh-task replay reco
   assert.equal(summary.freshTaskReplayed, true);
   assert.equal(summary.freshTaskProviderOutcome, "native-equivalent");
   assert.deepEqual(summary.recoveredMemoryIds, ["MEM-DEVRELAY-STATUS-QC001-RC2-CANDIDATE"]);
-  assert.equal(baseline.version, "1.0.8");
-  assert.deepEqual(baseline, historical);
+  assert.equal(baseline.version, "1.0.9");
+  assert.equal(baseline.supersedes.digest, api.loadProjectMemoryArtifact(historical).ref.digest);
   assert.equal(proof.projectMemoryBaseline.digest, api.loadProjectMemoryArtifact(baseline).ref.digest);
-  assert.equal(baseline.records.some(({ id, status }) => id === "MEM-DEVRELAY-STATUS-QC001-RC2-CANDIDATE" && status === "active"), true);
+  assert.equal(baseline.records.some(({ id, status }) => id === "MEM-DEVRELAY-STATUS-QC001-RC2-CANDIDATE" && status === "superseded"), true);
+  assert.equal(baseline.records.some(({ id, status }) => id === "MEM-DEVRELAY-RELEASE-V0.11.0-RC2" && status === "active"), true);
   assert.equal(api.renderCurrentSynopsis(baseline).bytes.equals(read("project/CurrentSynopsis.md")), true);
   assert.deepEqual(replay.recoveredMemoryIds, ["MEM-DEVRELAY-STATUS-QC001-RC2-CANDIDATE"]);
   assert.equal(replay.replayed, true);
