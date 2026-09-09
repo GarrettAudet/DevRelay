@@ -1,53 +1,51 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-09-07 CST
+Last reconciled: 2026-09-10 CST
 Protected branch: main
-Working branch: codex/qc-001-quality-continuity
-Released version: 0.11.0-rc.1
-Candidate version: 0.11.0-rc.2
-Candidate implementation seal: 779e6aa341b93aca99ff33177f95742284f6d606
+Working branch: codex/ho-001-human-orchestration
+Released version: 0.11.0-rc.2
+Candidate version: 0.11.0-rc.3
+Candidate implementation seal: 119c08560273657f8d1720c9e459c033313faf50
 Release boundary: GitHub source plus a deterministic installable tarball operated through ChatGPT/Codex Desktop on Windows
 
 ## Status
 
-QC-001 is implementation-complete, system-verified, and owner-accepted for the controlled `0.11.0-rc.2` candidate boundary. It adds three separate provider-neutral cross-cutting Modules—QualityPolicy, WorkContinuity, and ProjectControl—composed through a generic deterministic boundary DAG without turning them into construction lifecycle stages or giving them Gate, integration, graph, or owner authority.
+HO-001 is implementation-complete, system-verified, and owner-accepted for controlled rc.3 candidate sealing. It adds `human-orchestration@0.1.0` as an independently versioned cross-cutting Module without changing the deterministic construction lifecycle or acquiring Gate, verification, integration, traceability, semantic-memory, or owner authority.
 
-QualityPolicy resolves project rules, workflow profile, change risk, technology surfaces, and acceptance criteria into mandatory, evidence-bound verification obligations. WorkContinuity computes content-addressed work fingerprints, coordinates compare-and-swap claims, quarantines uncertain effects, persists exact attempt lineage, and permits automatic reuse only for an exact verified identity. ProjectControl reconciles approved sources into deterministic read-only status, diagnostics, and productivity observations.
+The deterministic `HumanOrchestrationView` composes the complete agent/sub-agent tree, dependency-safe work queue, active work, blockers, quality obligations and evidence, pending approvals, durable worktree leases, and ProjectMemory sessions. It derives readiness from the existing Desktop/Core frontier and records the exact source-bundle and view digests.
 
-Desktop task plans bind the exact ProjectMemory bootstrap context, quality resolution, work fingerprint, and reuse decision. The end-to-end proof ran `quick`, `standard`, and `assurance` profiles through real local Git worktrees and commits, independent quality evidence, durable continuity restart, exact reuse, ProjectControl projection, and ProjectMemory conclusion/fresh-task recovery.
+Nine typed requests—message, handoff, pause, resume, cancel, retry, approve, reject, and reprioritize—route only to the Desktop task adapter, Desktop orchestrator, target Gate, or WorkDependencyAnalysis boundary that already owns the action. Every request pins the displayed view digest and durable state version; stale, unsupported, failed, and replayed outcomes are explicit receipts, and exact replay dispatches no duplicate effect.
 
-Canonical verification passed 1,191 tests with 1,189 passing, zero failures, and two intentional skips in 1,033,518.6514 milliseconds. The QC-001 scale benchmark covered 100 cross-cutting bindings, 1,000 work items, and 10,000 attempt records at 186.5203 milliseconds p95 against the approved 500 millisecond local-host threshold.
+The pre-conclusion acceptance suite completed 1,204 tests with 1,202 passing, zero failures, and two intentional environment-dependent skips in 795,808.5969 milliseconds. After adding the exact ProjectMemory fresh-task proof, the final `release:check` completed 1,205 tests with 1,203 passing, zero failures, and two intentional skips in 615,271.9174 milliseconds. The local projection proof covered 1,000 work items and 1,000 task observations in 131.1791 milliseconds against the 500 millisecond threshold. Installed-package verification passed 437 exact catalog-bound files and 218 installed export targets, including a real HumanOrchestration view/control/replay smoke.
 
-The post-promotion regression set passed 24 of 24 tests. The final release catalog verifies 11,452 exact repository digests and 430 exact npm-package paths, covering 16 active Modules, 26 active plug-ins, one compatibility Module, and two compatibility plug-ins. Installable-package verification passed all 430 catalog-bound files and 214 installed export targets.
+The personal `devrelay-desktop@personal` plug-in is installed, enabled, and validated at `0.1.1+codex.20260909185701`. Its installed `devrelay-orchestrate` skill is byte-identical to the repository skill and now exposes the human operator view and typed intervention workflow. ChatGPT Desktop project instructions and the managed task prompt remain the supported startup boundary; no undeclared automatic hook is claimed.
 
-ProjectMemory `/conclude` promoted baseline 1.0.8 through ProjectMemory Gate and recorded `MEM-DEVRELAY-STATUS-QC001-RC2-CANDIDATE`. A fresh task recovered that exact record from baseline `PMB-MUC-F57D31C74EA7FDF8` (`sha256:8dfe14c7a6ce4f89028b7644ae4eb36e5e578a6b6e780007e51e7315d1c9912e`) with native-equivalent provider fallback; replay made zero provider calls. The synopsis digest is `sha256:9ab2ef27a6f7537aed47327fe25acdcfdda82f9292886724e1fe9ad937480de5`, and the existing graph checkpoint remains `sha256:1207f84ad9e7ea077f59f4a4d8731c31feb0b9e0ee8c22a75a02600e7d8dccee`.
-
-The personal `devrelay-desktop@personal` plug-in remains installed and enabled at `0.1.1+codex.20260906044519`. ChatGPT Desktop project instructions plus the managed task prompt are the supported startup boundary; no undeclared automatic plug-in hook is claimed.
+ProjectMemory Gate promoted baseline `PMB-MUC-D4C52E4B6B7371E5` version 1.0.10 with digest `sha256:d36f50386a2c876aee924fe39e235001377dece11a941b5a2bec09d0b521fa0e`. A fresh task recovered `MEM-DEVRELAY-STATUS-HO001-RC3-CANDIDATE` from synopsis digest `sha256:911ed122691dcc589499ead0cd33f7bd6cddc5184cea941d5b37604257d4034c`; exact replay made zero provider calls. The graph checkpoint remains `sha256:1207f84ad9e7ea077f59f4a4d8731c31feb0b9e0ee8c22a75a02600e7d8dccee` because HumanOrchestration contributes candidate-only lineage. Replacing the obsolete rc.1 next-action is explicitly pending as `CHANGE-HO001-NEXT-ACTION-REPLACE` for RoadmapManagement rather than being promoted by the wrong authority.
 
 ## Lifecycle
 
-RequirementsGathering / RequirementsGate                  promoted paired project baseline 2.7.0
+RequirementsGathering / RequirementsGate                  promoted paired project baseline 2.8.0
 ArchitectureDiscovery                                     deterministic skip; current inventory sufficient
-ArchitectureDesign / ArchitectureGate                     cross-cutting composition approved without Core authority changes
-ContractGeneration / ContractGate                         four schemas and three ModuleDefinitions approved
-WorkBreakdown / WorkDependencyAnalysis                    nine deliverables in six acyclic frontiers
-SpecialistAssignment                                      bounded implementation, verification, release, and documentation roles
-WorkExecution / WorkItemVerification                      implementation sealed; focused, adversarial, and canonical evidence passed
-ChangeIntegration                                         implementation commit 779e6aa341b93aca99ff33177f95742284f6d606
-SystemVerification                                        1,191 tests; 1,189 pass; zero fail; two intentional skips
-BusinessAcceptance                                        accepted for controlled 0.11.0-rc.2 candidate sealing
-ProjectMemory /conclude                                   baseline 1.0.8 promoted; fresh-task read and zero-call replay passed
-ReleasePreparation                                        catalog and installable-package checks passed; evidence sealing complete
+ArchitectureDesign / ArchitectureGate                     cross-cutting operator/control design approved
+ContractGeneration / ContractGate                         HumanOrchestration schema and Module contract approved
+WorkBreakdown / WorkDependencyAnalysis                    seven deliverables in an acyclic dependency plan
+SpecialistAssignment                                      bounded implementation, verification, Desktop, traceability, and documentation roles
+WorkExecution / WorkItemVerification                      implementation sealed at 119c08560273657f8d1720c9e459c033313faf50
+ChangeIntegration                                         candidate branch contains the exact implementation and evidence
+SystemVerification                                        final release gate: 1,205 tests; 1,203 pass; zero fail; two intentional skips
+BusinessAcceptance                                        accepted for controlled 0.11.0-rc.3 candidate sealing
+ProjectMemory /conclude                                   baseline 1.0.10 promoted; fresh-task read and zero-call replay passed
+ReleasePreparation                                        release:check passed; 11,528 repository digests, 437 package paths, and 218 installed exports verified
 
 ## Published evidence retained
 
-- Release: https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.1
-- Release pull request: https://github.com/GarrettAudet/DevRelay/pull/19
-- Protected-main release tag commit: `08be8385966223d16a20150ac804505b5fe40153`
-- Release workflow run: `34034582831`
+- Release: https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2
+- Release pull request: https://github.com/GarrettAudet/DevRelay/pull/21
+- Protected-main release tag commit: `75c9b3a312d24bff967e5c652385f529ffab4db0`
+- Release workflow run: `34183116800`
 
 ## Next action
 
-Seal the exact `0.11.0-rc.2` catalog and installable package, then open the protected-branch pull request. Publication remains a separate external operation and is not authorized by candidate acceptance.
+Seal the exact rc.3 evidence commit, push the branch, open the protected-branch pull request, and wait for required checks. Merge and publication remain separate owner-controlled operations.
 
-This candidate does not claim public npm publication, one-click Desktop installation, a hosted backend, non-Windows support, or guaranteed defect-free output.
+This candidate does not claim public npm publication, one-click managed plug-in distribution, a hosted backend, non-Windows support, live upstream interoperability from fixture evidence, or guaranteed defect-free output.

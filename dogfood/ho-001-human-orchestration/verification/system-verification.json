@@ -1,0 +1,56 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "HumanOrchestrationSystemVerification",
+  "verificationId": "HO-001-SYSTEM-VERIFICATION-001",
+  "subject": {
+    "version": "0.11.0-rc.3",
+    "implementationCommit": "119c08560273657f8d1720c9e459c033313faf50",
+    "requirementsBaseline": {
+      "artifactId": "requirements-baseline-devrelay-v1-ho-001-human-orchestration-001",
+      "digest": "sha256:bc30f849481c962c66e33ced6791f37e227e949744e54ca42164fcb4df518284"
+    },
+    "projectOverviewBaseline": {
+      "artifactId": "project-overview-baseline-devrelay-v1-ho-001-human-orchestration-001",
+      "digest": "sha256:071ba150c1c1c760cc88839f1d84f3b829e49f9ece1b96557a7f7f023a72004d"
+    },
+    "moduleDefinitionDigest": "sha256:3c2b9e85390c5fd09dc7ef30f30396de79b6420394f19c1bde28c80bc66dfc38",
+    "artifactSchemaDigest": "sha256:eb5cf35916d915657d1179fded22d755241ae7c3e0eec50cf5b111d528cce49e"
+  },
+  "verification": {
+    "canonicalReceipt": "HO-001-CANONICAL-VERIFY-001",
+    "desktopEndToEndEvidence": "HO-001-DESKTOP-E2E-WINDOWS-001",
+    "tests": 1204,
+    "passed": 1202,
+    "failed": 0,
+    "skipped": 2,
+    "projectionWorkItems": 1000,
+    "projectionTaskObservations": 1000,
+    "projectionThresholdMilliseconds": 500,
+    "observedProjectionMilliseconds": 131.1791
+  },
+  "acceptanceCoverage": {
+    "AC-HO-VIEW-001": "pass",
+    "AC-HO-TOPOLOGY-001": "pass",
+    "AC-HO-QUEUE-001": "pass",
+    "AC-HO-CONTROL-001": "pass",
+    "AC-HO-STALE-001": "pass",
+    "AC-HO-AUTHORITY-001": "pass",
+    "AC-HO-DESKTOP-001": "pass"
+  },
+  "verifiedCapabilities": [
+    "deterministic agent and sub-agent tree plus dependency-safe work queue",
+    "one digest-bound view over blockers, quality, approvals, worktrees, and ProjectMemory",
+    "typed route ownership for nine human interventions",
+    "state-version and view-digest stale protection before effects",
+    "exact retry replay with zero duplicate dispatches",
+    "candidate-only traceability with no cross-authority mutation",
+    "validated and deliberately installed ChatGPT Desktop plugin integration"
+  ],
+  "limitations": [
+    "The view composes durable host observations; it does not invent or scrape undeclared provider state.",
+    "Approve, reject, and reprioritize remain requests to their owning Gate or WorkDependencyAnalysis boundary.",
+    "Passing verification reduces known risk but cannot guarantee defect-free future code."
+  ],
+  "authority": "system-verification-only",
+  "outcome": "verified"
+}
