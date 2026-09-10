@@ -22,6 +22,7 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
   const doPublicationBaseline = json("project/history/project-memory/1.0.7/project-memory-baseline.json");
   const qualityContinuityBaseline = json("project/history/project-memory/1.0.8/project-memory-baseline.json");
   const rc2PublicationBaseline = json("project/history/project-memory/1.0.9/project-memory-baseline.json");
+  const humanOrchestrationBaseline = json("project/history/project-memory/1.0.10/project-memory-baseline.json");
   const receipt = json(`${conclusionRoot}/09-conclude-receipt.json`);
   const replay = json(`${conclusionRoot}/14-fresh-task-replay-proof.json`);
 
@@ -44,7 +45,8 @@ test("published v0.10.0-rc.3 is concluded into exact durable ProjectMemory", () 
   assert.equal(doPublicationBaseline.supersedes.digest, api.loadProjectMemoryArtifact(doAcceptanceBaseline).ref.digest);
   assert.equal(qualityContinuityBaseline.supersedes.digest, api.loadProjectMemoryArtifact(doPublicationBaseline).ref.digest);
   assert.equal(rc2PublicationBaseline.supersedes.digest, api.loadProjectMemoryArtifact(qualityContinuityBaseline).ref.digest);
-  assert.equal(currentBaseline.supersedes.digest, api.loadProjectMemoryArtifact(rc2PublicationBaseline).ref.digest);
+  assert.equal(humanOrchestrationBaseline.supersedes.digest, api.loadProjectMemoryArtifact(rc2PublicationBaseline).ref.digest);
+  assert.equal(currentBaseline.supersedes.digest, api.loadProjectMemoryArtifact(humanOrchestrationBaseline).ref.digest);
   assert.equal(receipt.outcome, "concluded");
   assert.equal(receipt.resultBaseline.digest, summary.resultBaseline.digest);
   assert.equal(replay.replayed, true);

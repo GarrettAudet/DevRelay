@@ -51,5 +51,7 @@ test("final Desktop proof is concluded into a fresh-task-readable memory baselin
   assert.match(output.synopsis, /release workflow 34034582831 passed/u);
   assert.match(output.synopsis, /DevRelay v0\.11\.0-rc\.2 is published/u);
   assert.match(output.synopsis, /release workflow 34183116800 passed/u);
-  assert.match(output.synopsis, /MEM-DEVRELAY-STATUS-HO001-RC3-CANDIDATE/u);
+  assert.match(output.synopsis, /DevRelay v0\.11\.0-rc\.3 is published/u);
+  assert.match(output.synopsis, /release workflow 34469983856 passed/u);
+  assert.match(output.synopsis, /MEM-DEVRELAY-RELEASE-V0\.11\.0-RC3/u);
 });
