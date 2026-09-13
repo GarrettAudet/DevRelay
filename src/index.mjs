@@ -833,6 +833,7 @@ export {
   createLocalHostStorage,
 } from "./local-host-storage.mjs";
 export { createLocalHostCheckpointStore, LocalHostCheckpointError } from "./local-host-checkpoints.mjs";
+export { createLocalHostTraceabilityStore, LocalHostTraceabilityError } from "./local-host-traceability.mjs";
 export {
   LocalHostIsolationError,
   createCapabilityEnforcer,

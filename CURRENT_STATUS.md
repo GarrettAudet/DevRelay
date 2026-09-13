@@ -2,7 +2,7 @@
 
 Last reconciled: 2026-09-13 CST
 Protected branch: main
-Working branch: codex/desktop-host-integration
+Working branch: codex/durable-traceability-host
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
@@ -24,7 +24,12 @@ adds an immutable Core/traceability checkpoint bridge over the existing
 SQLite/CAS host. Thirty-three targeted tests pass, including Core checkpoint
 verification in a separate process with zero fixture-adapter calls during
 replay, and exact trace-checkpoint recovery after reopening storage. This does
-not yet connect the full CLI or prove graph persistence across a process restart.
+not yet connect the full CLI. All eleven checks for its commit
+`1d1d05fbaf7d7d7c98bb9256282f951ef784ec82` (PR #27) have now passed.
+The subsequent candidate adds durable graph storage with atomic head/receipt
+publication, indexed journal lookup and actual cross-process recovery tests.
+Full installed Desktop workflow acceptance remains open; see
+`docs/local-host-traceability.md` for the exact component boundary.
 The owner reconfirmed that Desktop remains the agent operator; no independent
 agent-launching service or new credential connection is in scope.
 

@@ -150,6 +150,36 @@ test("stale versions, invalid leases, and missing artifacts fail closed", () => 
   }
 });
 
+test("journal identity lookup is exact, scoped, indexed, and backwards compatible", () => {
+  const fx = fixture();
+  try {
+    for (const runId of ["identity-a", "identity-b"]) {
+      fx.storage.initializeRun({ runId, state: {} });
+      for (let version = 0; version < 3; version++) {
+        const lease = fx.storage.acquireLease({ runId, owner: "fixture", expectedVersion: version });
+        fx.storage.commitTransition({ runId, expectedVersion: version, leaseToken: lease.token,
+          transition: { id: `identity-${version}` }, nextState: {} });
+        fx.storage.releaseLease({ runId, leaseToken: lease.token });
+      }
+    }
+    assert.equal(fx.storage.readTransitionJournal("identity-a").length, 3);
+    const exact = fx.storage.readTransitionJournal("identity-a", { transitionId: "identity-1" });
+    assert.equal(exact.length, 1);
+    assert.equal(exact[0].runId, "identity-a");
+    assert.equal(exact[0].toVersion, 2);
+    assert.deepEqual(fx.storage.readTransitionJournal("identity-a", { toVersion: 2 }), exact);
+    assert.deepEqual(fx.storage.readTransitionJournal("identity-a", { transitionId: "identity-0", toVersion: 2 }), []);
+    assert.throws(() => fx.storage.readTransitionJournal("identity-a", { toVersion: 0 }), { code: "DR4923" });
+    assert.deepEqual(fx.storage.readTransitionJournal("identity-a", { transitionId: "identity-%" }), []);
+    assert.throws(() => fx.storage.readTransitionJournal("identity-a", { transitionId: "" }), { code: "DR4911" });
+    const database = new DatabaseSync(fx.storage.databasePath);
+    try {
+      const plan = database.prepare("EXPLAIN QUERY PLAN SELECT * FROM transition_journal WHERE run_id = ? AND json_extract(transition_json, '$.id') = ? ORDER BY entry_id").all("identity-a", "identity-1");
+      assert.ok(plan.some(({ detail }) => detail.includes("transition_journal_identity")));
+    } finally { database.close(); }
+  } finally { fx.cleanup(); }
+});
+
 test("transaction failure injection rolls back state and journal together", () => {
   let failBoundary = false;
   const fx = fixture({

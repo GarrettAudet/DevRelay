@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-traceability-head/v1",
+  "title": "Local host atomic traceability head",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "namespace", "graphId", "headRef"],
+  "properties": {
+    "kind": { "const": "LocalHostTraceabilityHead" },
+    "namespace": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "graphId": { "type": "string", "minLength": 1 },
+    "headRef": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" }
+  }
+}
