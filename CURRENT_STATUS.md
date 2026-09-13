@@ -1,14 +1,30 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-09-10 CST
+Last reconciled: 2026-09-13 CST
 Protected branch: main
-Working branch: codex/ho-001-human-orchestration
-Released version: 0.11.0-rc.2
-Candidate version: 0.11.0-rc.3
-Candidate implementation seal: 119c08560273657f8d1720c9e459c033313faf50
+Working branch: codex/release-completion-20260913
+Released version: 0.11.0-rc.3
+Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
+Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
 Release boundary: GitHub source plus a deterministic installable tarball operated through ChatGPT/Codex Desktop on Windows
 
 ## Status
+
+The full release-completion goal is active. The current repair slice removes
+false-success CLI behavior and patches the active dependency graph to fast-uri
+3.1.7 and js-yaml 4.3.2. Subprocess CLI tests, offline security regressions and
+the exact approved requirements/overview pair pass targeted verification.
+Full installed-host integration is still incomplete; neither these tests nor
+the existing injected-host library tests establish final product acceptance.
+See [the current repair record](dogfood/release-completion-20260913/README.md).
+
+ProjectMemory is now baseline `PMB-MUC-7A172C974C0158E7`, version 1.0.11,
+digest `sha256:47eddea9836521b0b1557782740121feab15d5fbc9ad6556654172b0334a57e4`.
+The publication session is concluded and the fresh bootstrap passed on this
+branch. The obsolete rc.1 next action remains pending RoadmapManagement; it is
+not silently treated as current release direction.
+
+## Accepted HO-001 slice — historical evidence
 
 HO-001 is implementation-complete, system-verified, and owner-accepted for controlled rc.3 candidate sealing. It adds `human-orchestration@0.1.0` as an independently versioned cross-cutting Module without changing the deterministic construction lifecycle or acquiring Gate, verification, integration, traceability, semantic-memory, or owner authority.
 
@@ -22,7 +38,7 @@ The personal `devrelay-desktop@personal` plug-in is installed, enabled, and vali
 
 ProjectMemory Gate promoted baseline `PMB-MUC-D4C52E4B6B7371E5` version 1.0.10 with digest `sha256:d36f50386a2c876aee924fe39e235001377dece11a941b5a2bec09d0b521fa0e`. A fresh task recovered `MEM-DEVRELAY-STATUS-HO001-RC3-CANDIDATE` from synopsis digest `sha256:911ed122691dcc589499ead0cd33f7bd6cddc5184cea941d5b37604257d4034c`; exact replay made zero provider calls. The graph checkpoint remains `sha256:1207f84ad9e7ea077f59f4a4d8731c31feb0b9e0ee8c22a75a02600e7d8dccee` because HumanOrchestration contributes candidate-only lineage. Replacing the obsolete rc.1 next-action is explicitly pending as `CHANGE-HO001-NEXT-ACTION-REPLACE` for RoadmapManagement rather than being promoted by the wrong authority.
 
-## Lifecycle
+## HO-001 lifecycle at its acceptance boundary
 
 RequirementsGathering / RequirementsGate                  promoted paired project baseline 2.8.0
 ArchitectureDiscovery                                     deterministic skip; current inventory sufficient
@@ -39,13 +55,18 @@ ReleasePreparation                                        release:check passed; 
 
 ## Published evidence retained
 
-- Release: https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2
-- Release pull request: https://github.com/GarrettAudet/DevRelay/pull/21
-- Protected-main release tag commit: `75c9b3a312d24bff967e5c652385f529ffab4db0`
-- Release workflow run: `34183116800`
+- Release: https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.3
+- Release pull request: https://github.com/GarrettAudet/DevRelay/pull/22
+- Protected-main release tag commit: `0284fb781d38aaba7538cb62fb82a1a022280eb9`
+- Release workflow run: `34469983856`
+- Publication-memory follow-up: https://github.com/GarrettAudet/DevRelay/pull/24 (merged at `b9fdc997c21269c22ae2c46abbbb544b4e982c32`)
 
 ## Next action
 
-Seal the exact rc.3 evidence commit, push the branch, open the protected-branch pull request, and wait for required checks. Merge and publication remain separate owner-controlled operations.
+Complete the durable Desktop host/installed CLI integration; reconcile roadmap
+and historical security findings; run a fresh installed-product change through
+memory, isolated worktrees, quality, human orchestration and crash recovery;
+then obtain independent human review and BusinessAcceptance before sealing a
+new release. rc.4 is not yet ready to tag or publish.
 
 This candidate does not claim public npm publication, one-click managed plug-in distribution, a hosted backend, non-Windows support, live upstream interoperability from fixture evidence, or guaranteed defect-free output.

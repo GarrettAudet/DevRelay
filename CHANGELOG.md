@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0-rc.4 - Unreleased
+
+- Repaired the executable's confusion between `--version` and command protocol version `v1`; unbound commands now return explicit nonzero diagnostics, including JSON output.
+- Rejected unsupported, duplicate, missing, and malformed command arguments without echoing sensitive input. Missing host result dispositions and thrown errors with zero or invalid exit codes no longer become success.
+- Updated the active fast-uri override/lock to `3.1.7` and the js-yaml development dependency lock to `4.3.2`, with targeted behavior regressions and Ajv reference-validation compatibility coverage.
+- Added subprocess tests of the actual executable. These do not yet prove a fully connected Desktop local host or full-product end-to-end acceptance.
+- Reconciled current publication status with published rc.3 while preserving historical release evidence. This candidate is not accepted, tagged, or published.
+
 ## 0.11.0-rc.3 - 2026-09-10
 
 ### Added
