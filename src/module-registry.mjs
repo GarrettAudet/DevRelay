@@ -1952,7 +1952,7 @@ export function createModuleRegistry({
       loadedByPort[portName] = [];
       for (const ref of refs) {
         const loaded = await runtimeAction(() =>
-          loadArtifactContent(ref, runtime.context.artifacts),
+          loadArtifactContent(ref, runtime.context.artifacts, artifactContractRegistry.get(ref.schema)?.representation),
         );
         loadedByPort[portName].push(loaded);
       }
@@ -1962,7 +1962,7 @@ export function createModuleRegistry({
       phase === "input" ? loadedByPort : runtime.loadedInputs;
     const loadAttachedArtifact = async (ref) =>
       runtimeAction(() =>
-        loadArtifactContent(ref, runtime.context.artifacts),
+        loadArtifactContent(ref, runtime.context.artifacts, artifactContractRegistry.get(ref.schema)?.representation),
       );
     const loadAttached = async (ref) =>
       (await loadAttachedArtifact(ref)).value;
@@ -2388,7 +2388,11 @@ export function createModuleRegistry({
         runtime,
         producer,
       );
-      return loaded[portName][0];
+      const artifact = loaded[portName][0];
+      // Text is validated by its declared contract, but graph provenance owns
+      // the opaque-byte projection and must not receive a decoded substitute.
+      return artifactContractRegistry.get(ref.schema)?.representation === "utf8-text"
+        ? Object.freeze({ ref: artifact.ref, bytes: artifact.bytes }) : artifact;
     };
 
     return Object.freeze({

@@ -12,22 +12,23 @@ export class ArchitectureDiscoveryGapPolicyError extends Error {
 const fail = (message) => { throw new ArchitectureDiscoveryGapPolicyError(message); };
 const ordered = (values, key = canonicalJson) => [...values].sort((a, b) => key(a).localeCompare(key(b)));
 const digestBody = (value, field) => canonicalJsonDigest(Object.fromEntries(Object.entries(value).filter(([key]) => !["apiVersion", "kind", field].includes(key))));
-const ref = (gap) => ({
+const ref = (gap, materialized) => ({
   artifactId: gap.gapId,
-  digest: gap.gapDigest,
+  digest: materialized ? canonicalJsonDigest(gap) : gap.gapDigest,
   schema: "https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/gap",
   mediaType: "application/vnd.devrelay.architecture-discovery-gap+json",
-  uri: `artifact://architecture-discovery/gap/${gap.gapId}/${gap.gapDigest.slice(7)}.json`,
+  uri: `artifact://architecture-discovery/gap/${gap.gapId}/${(materialized ? canonicalJsonDigest(gap) : gap.gapDigest).slice(7)}.json`,
 });
 
-function validateInputs(snapshot, observations, rules) {
+function validateInputs(snapshot, observations, rules, materialized) {
   try { validateArchitectureDiscoveryArtifact(snapshot); } catch (error) { fail(error.message); }
   if (snapshot.kind !== "CurrentArchitectureSnapshot") fail("snapshot must be a CurrentArchitectureSnapshot");
   if (!Array.isArray(observations) || !Array.isArray(rules)) fail("observations and Core-owned rules must be arrays");
   const expected = new Map(snapshot.observations.map((value) => [value.artifactId, value.digest]));
   for (const observation of observations) {
     try { validateArchitectureDiscoveryArtifact(observation); } catch (error) { fail(error.message); }
-    if (observation.kind !== "ArchitectureObservation" || expected.get(observation.observationId) !== observation.observationDigest) fail("observations must exactly cover snapshot observation references");
+    const expectedDigest = materialized ? canonicalJsonDigest(observation) : observation.observationDigest;
+    if (observation.kind !== "ArchitectureObservation" || expected.get(observation.observationId) !== expectedDigest) fail("observations must exactly cover snapshot observation references");
   }
   if (observations.length !== expected.size || new Set(observations.map((value) => value.observationId)).size !== observations.length) fail("observations must cover the exact snapshot set once");
 }
@@ -64,7 +65,17 @@ function createGap(rule, matches) {
 }
 
 export function evaluateArchitectureDiscoveryGapPolicy({ snapshot, observations, rules = [] } = {}) {
-  validateInputs(snapshot, observations, rules);
+  return evaluate({ snapshot, observations, rules }, false);
+}
+
+// Explicit additive entry point for canonical UTF-8 JSON artifact files. The
+// existing content-digest API remains unchanged for historical consumers.
+export function evaluateMaterializedArchitectureDiscoveryGapPolicy({ snapshot, observations, rules = [] } = {}) {
+  return evaluate({ snapshot, observations, rules }, true);
+}
+
+function evaluate({ snapshot, observations, rules }, materialized) {
+  validateInputs(snapshot, observations, rules, materialized);
   const ids = new Set();
   const gaps = [];
   for (const rule of ordered(rules, (value) => value?.id ?? "")) {
@@ -77,7 +88,7 @@ export function evaluateArchitectureDiscoveryGapPolicy({ snapshot, observations,
   const blocking = gaps.some((gap) => gap.material);
   if (blocking) return Object.freeze({ outcome:"needs_clarification", gaps:Object.freeze(gaps), diagnostics:Object.freeze(gaps.filter((gap) => gap.material).map((gap) => `Material discovery gap ${gap.gapId}: ${gap.reason}`)) });
   const body = {
-    ...structuredClone(snapshot), gaps:ordered(gaps.map(ref), (value) => value.artifactId),
+    ...structuredClone(snapshot), gaps:ordered(gaps.map((gap) => ref(gap, materialized)), (value) => value.artifactId),
     warnings:ordered(new Set([...snapshot.warnings, ...gaps.map((gap) => `Non-material discovery gap ${gap.gapId} remains explicit for downstream Gate review: ${gap.reason}`)]), (value) => value),
   };
   delete body.snapshotDigest;

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { canonicalJson, canonicalJsonDigest } from "../src/content-digest.mjs";
-import { evaluateArchitectureDiscoveryGapPolicy, ArchitectureDiscoveryGapPolicyError } from "../src/architecture-discovery-gap-policy.mjs";
+import { evaluateArchitectureDiscoveryGapPolicy, evaluateMaterializedArchitectureDiscoveryGapPolicy, ArchitectureDiscoveryGapPolicyError } from "../src/architecture-discovery-gap-policy.mjs";
 import { createArchitectureDiscoveryCheckpointController, ArchitectureDiscoveryCheckpointError } from "../src/architecture-discovery-checkpoint.mjs";
 
 const D=(ch)=>`sha256:${ch.repeat(64)}`;
@@ -13,6 +13,26 @@ const observation=(id,subject,statement,score=1,disposition="observed")=>seal({a
 const observationRef=(value)=>({artifactId:value.observationId,digest:value.observationDigest});
 function snapshot(observations) { return seal({apiVersion:"devrelay.dev/v1alpha1",kind:"CurrentArchitectureSnapshot",snapshotId:"SNAP",repositorySnapshot:repository,nativeInventory:{artifactId:"inventory",digest:D("d")},analyzerResults:[],observations:observations.map(observationRef),gaps:[],warnings:[],discoveryMethods:["native-inventory"],sourceRefs:[source],authority:"observational"},"snapshotDigest"); }
 const rule=(id,subject,condition,material,extra={})=>({id,subject,condition,material,reason:`${condition} evidence for ${subject} requires explicit review.`,sources:[source],...extra});
+
+test("materialized gap policy binds exact observation and gap file digests without rewriting the snapshot", () => {
+  const values = [observation("OBS-RAW", "service:a", "Possibly present.", 0.4, "analyzer-inferred")];
+  const rawSnapshot = seal({ ...snapshot(values), observations: values.map(value => ({ artifactId: value.observationId, digest: canonicalJsonDigest(value) })) }, "snapshotDigest");
+  const before = canonicalJson(rawSnapshot);
+  const input = { snapshot: rawSnapshot, observations: values, rules: [rule("LOW", "service:a", "low-confidence", false, { minimumScore: 0.8 })] };
+  const result = evaluateMaterializedArchitectureDiscoveryGapPolicy(input);
+  assert.equal(result.outcome, "discovered");
+  assert.equal(result.snapshot.gaps[0].digest, canonicalJsonDigest(result.gaps[0]));
+  assert.notEqual(result.snapshot.gaps[0].digest, result.gaps[0].gapDigest);
+  assert.deepEqual(result.snapshot.observations, rawSnapshot.observations);
+  assert.equal(canonicalJson(rawSnapshot), before);
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, snapshot: snapshot(values) }), ArchitectureDiscoveryGapPolicyError);
+  assert.throws(() => evaluateArchitectureDiscoveryGapPolicy(input), ArchitectureDiscoveryGapPolicyError);
+  const altered = observation("OBS-RAW", "service:a", "Different evidence.", 0.4, "analyzer-inferred");
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, observations: [altered] }), ArchitectureDiscoveryGapPolicyError);
+  const blocking = evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, rules: [rule("LOW", "service:a", "low-confidence", true, { minimumScore: 0.8 })] });
+  assert.equal(blocking.outcome, "needs_clarification");
+  assert.equal("snapshot" in blocking, false);
+});
 
 test("complete evidence produces a deterministic discovered snapshot",()=>{const values=[observation("OBS-A","service:a","Service A exists.")];const first=evaluateArchitectureDiscoveryGapPolicy({snapshot:snapshot(values),observations:values,rules:[rule("R","service:a","missing",true)]});const second=evaluateArchitectureDiscoveryGapPolicy({snapshot:snapshot(values),observations:[...values].reverse(),rules:[rule("R","service:a","missing",true)]});assert.equal(first.outcome,"discovered");assert.equal(first.gaps.length,0);assert.equal(canonicalJson(first.snapshot),canonicalJson(second.snapshot))});
 test("material missing and conflicting facts require clarification",()=>{for(const [values,rules] of [[[observation("OBS-OTHER","service:other","Another service exists.")],[rule("M","service:missing","missing",true)]],[[observation("OBS-A","service:a","A uses SQL."),observation("OBS-B","service:a","A uses files.")],[rule("C","service:a","conflict",true)]]]){const result=evaluateArchitectureDiscoveryGapPolicy({snapshot:snapshot(values),observations:values,rules});assert.equal(result.outcome,"needs_clarification");assert.equal(result.gaps[0].material,true);assert.equal("snapshot" in result,false)}});

@@ -73,6 +73,9 @@ export function createArtifactContractRegistry(contracts = []) {
         `artifactContracts[${index}].validate must be a function`,
       );
     }
+    if (contract.representation !== undefined && !["json", "utf8-text"].includes(contract.representation)) {
+      fail("DR1503", `artifactContracts[${index}].representation must be json or utf8-text`);
+    }
     if (registry.has(contract.schema)) {
       fail(
         "DR1504",
@@ -164,6 +167,7 @@ export function createArtifactContractRegistry(contracts = []) {
       Object.freeze({
         schema: contract.schema,
         validate: contract.validate,
+        ...(contract.representation === undefined ? {} : { representation: contract.representation }),
         ...(inputGuard === undefined ? {} : { inputGuard }),
       }),
     );
@@ -214,11 +218,13 @@ export async function loadArtifactBytes(ref, artifacts) {
   });
 }
 
-export async function loadArtifactContent(ref, artifacts) {
+export async function loadArtifactContent(ref, artifacts, representation = "json") {
+  if (!["json", "utf8-text"].includes(representation)) fail("DR2104", "unsupported artifact representation");
   const loaded = await loadArtifactBytes(ref, artifacts);
   let value;
   try {
-    value = JSON.parse(decodeUtf8(loaded.bytes, ref.artifactId));
+    const text = decodeUtf8(loaded.bytes, ref.artifactId);
+    value = representation === "utf8-text" ? text : JSON.parse(text);
   } catch (error) {
     if (error instanceof ArtifactRuntimeError) {
       throw error;
@@ -269,7 +275,7 @@ export async function loadAndValidateArtifact(
   artifacts,
   validationContext = {},
 ) {
-  const loaded = await loadArtifactContent(ref, artifacts);
+  const loaded = await loadArtifactContent(ref, artifacts, contracts.get(ref.schema)?.representation);
   return validateLoadedArtifact(loaded, contracts, validationContext);
 }
 

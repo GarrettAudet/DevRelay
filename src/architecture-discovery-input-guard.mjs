@@ -54,7 +54,7 @@ export function bindArchitectureDiscoveryInputs({ projectOverview, projectArchit
     const grant = transmission.grant;
     if (!grant || grant.explicit !== true || grant.sourceContent !== true || !digest.test(grant.policyDigest ?? "") || !same(grant.adapterBindings, adapters)) fail("external source transmission requires an explicit policy- and exact-adapter-bound opt-in grant");
   } else if (transmission.grant !== undefined) fail("offline execution must not carry an external transmission grant");
-  return freeze({ projectOverview:projectOverviewRef, projectArchitectureState:stateRef, repositorySnapshot:repositoryRef, allowedPaths:[...paths].sort(), adapterBindings:adapters, transmission:{ mode:transmission.mode, policyDigest:transmission.grant?.policyDigest } });
+  return freeze({ projectOverview:projectOverviewRef, projectArchitectureState:stateRef, repositorySnapshot:repositoryRef, allowedPaths:[...paths].sort(), adapterBindings:adapters, transmission:{ mode:transmission.mode, ...(transmission.mode === "external" ? { policyDigest:transmission.grant.policyDigest } : {}) } });
 }
 
 export const guardArchitectureDiscoveryInputs = bindArchitectureDiscoveryInputs;

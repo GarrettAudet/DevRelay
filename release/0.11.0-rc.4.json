@@ -41,8 +41,8 @@
     },
     {
       "id": "architecture-discovery",
-      "version": "0.1.0",
-      "definition": "examples/modules/architecture-discovery.module.json",
+      "version": "0.1.1",
+      "definition": "examples/modules/architecture-discovery-0.1.1.module.json",
       "operations": [
         {
           "id": "discover",
@@ -373,11 +373,11 @@
     },
     {
       "id": "native-architecture-discovery",
-      "version": "0.1.0",
-      "manifest": "examples/plugins/native-architecture-discovery.plugin.json",
+      "version": "1.0.0",
+      "manifest": "examples/plugins/native-architecture-discovery-1.0.0.plugin.json",
       "module": {
         "id": "architecture-discovery",
-        "version": "0.1.0"
+        "version": "0.1.1"
       },
       "bindings": [
         {
@@ -785,12 +785,26 @@
   ],
   "compatibilityModules": [
     {
+      "id": "architecture-discovery",
+      "version": "0.1.0",
+      "definition": "examples/modules/architecture-discovery.module.json"
+    },
+    {
       "id": "specialist-assignment",
       "version": "1.0.0",
       "definition": "examples/modules/specialist-assignment-v1.module.json"
     }
   ],
   "compatibilityPlugins": [
+    {
+      "id": "native-architecture-discovery",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/native-architecture-discovery.plugin.json",
+      "module": {
+        "id": "architecture-discovery",
+        "version": "0.1.0"
+      }
+    },
     {
       "id": "a2a-profile-source",
       "version": "1.0.0",
@@ -965,7 +979,7 @@
       "path": "CURRENT_STATUS.md",
       "role": "repository-support",
       "packaged": false,
-      "digest": "sha256:db7fafca4add1a12417d188b3ddc1a07f937abd46ece7ad2139e45b9a7375012"
+      "digest": "sha256:ebeb86971d5c50a3b66e3d72b94cf4baefab3c942c90a508acc3e8ca53ce8f21"
     },
     {
       "path": "DCO.md",
@@ -1085,7 +1099,7 @@
       "path": "contracts/desktop-local-host-configuration.schema.json",
       "role": "contract-schema",
       "packaged": true,
-      "digest": "sha256:181aaed99d8ebdd5d7dc137affbbdffe19d1e6c53deca9736fa31c8f38a8d64d"
+      "digest": "sha256:e5666ef7c625281ca47d25974c00a46236ded0680e81efd7e97ba5021efc5419"
     },
     {
       "path": "contracts/desktop-orchestration-artifacts.schema.json",
@@ -1373,7 +1387,7 @@
       "path": "docs/desktop-local-host.md",
       "role": "contract-documentation",
       "packaged": true,
-      "digest": "sha256:2f4f8d559bd4026df540c1a9974da297da6a0cfc757f2a27aee65e799db4bf2e"
+      "digest": "sha256:ca9568a855759cba77475494b5a6763ad1a0cfd47666680fb158f79d7d7b55e0"
     },
     {
       "path": "docs/desktop-orchestration.md",
@@ -27035,7 +27049,7 @@
       "path": "dogfood/release-completion-20260913/desktop-cli-host.md",
       "role": "dogfood-evidence",
       "packaged": false,
-      "digest": "sha256:a8d6bf4d7c10f9fcb2d8befc1fbbdefcb6d0f528dfbe4474cf8bcb18d2893049"
+      "digest": "sha256:3115700fcdd886f068d364aba9b4bc958ce752beceec569cf992fe1426c4e113"
     },
     {
       "path": "dogfood/release-completion-20260913/desktop-context-handoff.md",
@@ -64250,6 +64264,12 @@
       "digest": "sha256:fe39148d27b1364291d7a55ec24041a6aa0fce98ea2b2458bbe08e543e4dc7ae"
     },
     {
+      "path": "examples/modules/architecture-discovery-0.1.1.module.json",
+      "role": "module-definition",
+      "packaged": false,
+      "digest": "sha256:1ef7c84ce6862d9e2b724ffea09d36d71592d963a28cc546d0b23466a0fadc59"
+    },
+    {
       "path": "examples/modules/architecture-discovery.module.json",
       "role": "module-definition",
       "packaged": true,
@@ -64476,6 +64496,12 @@
       "role": "plugin-manifest",
       "packaged": true,
       "digest": "sha256:7356a7b34cfb4e8e94d4687a56151023a74a2db03092239a593dbeded247145f"
+    },
+    {
+      "path": "examples/plugins/native-architecture-discovery-1.0.0.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": false,
+      "digest": "sha256:b31ff859625996f0789a49b84743d866151dc550f73f5a230d4ac0cc6a40607a"
     },
     {
       "path": "examples/plugins/native-architecture-discovery.plugin.json",
@@ -67829,7 +67855,7 @@
       "path": "scripts/release-catalog.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:96a625db87204614abdba05a0b3c0af1bfcdfc255a5818e18e16b12201a62eb8"
+      "digest": "sha256:c38a582add20813dc357e2a3a26bffae11dbb5e30f07806859e3f7f04bf87858"
     },
     {
       "path": "scripts/release-check.mjs",
@@ -67841,7 +67867,7 @@
       "path": "scripts/release-tools.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:1cb0ddba1bb785749048546f401f2ba70c3a15cd6e90ce834244541072987454"
+      "digest": "sha256:ace881b1226cf5fb3a3bf4807bf4c80a759156e18fca815e02e21be0885bc00b"
     },
     {
       "path": "scripts/replay-work-breakdown-r3.mjs",
@@ -67919,13 +67945,13 @@
       "path": "src/architecture-discovery-gap-policy.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:392bdd1c839ed2966bb2e0c65026b049e59a76f9af9705de49024560d07d5af6"
+      "digest": "sha256:3e32ddee1523b57d36113b5414d6642a80023ba09189894674c983b81caea407"
     },
     {
       "path": "src/architecture-discovery-input-guard.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:98b440c9b33ae7d0aa41cecade078e3223164fa2068720a527012e7cc3870aa6"
+      "digest": "sha256:dd22587681331275a651ed0928cf9c8b8527b214b84202d6224c524d661eac40"
     },
     {
       "path": "src/architecture-discovery-native-inventory.mjs",
@@ -67949,7 +67975,7 @@
       "path": "src/architecture-discovery-traceability-contributor.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:9d19ff3f484b60f9e480fa5a5744fad9ebb58653b4f3bf6c62aecd86730f8ab1"
+      "digest": "sha256:edbdb6277eb2a9c743a364d6e0296107342f6e6aeb098a91fc56a7d0c38cbaa6"
     },
     {
       "path": "src/architecture-gate.mjs",
@@ -67985,7 +68011,7 @@
       "path": "src/artifact-runtime.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:2ef1df78b85e42a0d73608988b38b6326b67cf344963ef42572e2d3f287d6eba"
+      "digest": "sha256:d22b6690b172612155cb6f27cfa71d5f5c2599290666e27997afb877d664b2bb"
     },
     {
       "path": "src/business-acceptance-artifact-validator.mjs",
@@ -68141,7 +68167,7 @@
       "path": "src/desktop-local-host.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:2fe4ad0272b9a73972c87c0dfa26cd4122c3643b235fce2e3159350854c2b02b"
+      "digest": "sha256:3c5e79d2520d0465a4d24742b7cdf21b8cd63da35d517bee12cd4e21ce93bbe5"
     },
     {
       "path": "src/desktop-memory-journal.mjs",
@@ -68291,7 +68317,7 @@
       "path": "src/index.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:0397367f09450c4938c4a2754337b8f7290405849868ccc20ed2d065c6359185"
+      "digest": "sha256:14d2ca918e24311a3eb1eb34d30d0c401bc8d71b9c451796a7977b3a7d8f4928"
     },
     {
       "path": "src/lifecycle-run-report-artifact-validator.mjs",
@@ -68429,7 +68455,13 @@
       "path": "src/module-registry.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:63781bf4ec0bec27f055cf06af6d85ea1854c8ec5ed09a16a8b16e495ba58cc8"
+      "digest": "sha256:5755c4467ff13f0dd8a7dd9f7b5c9d97bc39a0b36034044b1120925607569a47"
+    },
+    {
+      "path": "src/native-discovery-binding.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:50d7826f9ff247555473d9051e57d258b4a4933dfbd759ba0c78de4277b63e03"
     },
     {
       "path": "src/openspec-requirements-adapter.mjs",
@@ -68993,7 +69025,7 @@
       "path": "test/architecture-discovery-contracts.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:bd7c1ffbc05855b138411a8cc79fa912f4ad1ba75f499bc3f17aabdae8d75c82"
+      "digest": "sha256:36b854e6abb16579a3c3c1b3435ee8da15fef4c141c1f20e8d62b07943c17a2a"
     },
     {
       "path": "test/architecture-discovery-documentation.test.mjs",
@@ -69005,7 +69037,7 @@
       "path": "test/architecture-discovery-gap-checkpoint.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:b4a28562bf30f5d74889adc1c4629022062917680943643293c8931b87c96d56"
+      "digest": "sha256:ff5e129210e012896b00c2ea6b89cd9b1ae2dac6eafef2cdd42ac818e65de719"
     },
     {
       "path": "test/architecture-discovery-native-inventory.test.mjs",
@@ -69023,13 +69055,13 @@
       "path": "test/architecture-discovery-release.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:ac1a535cc015f5c9e856fddde36e27b7fad96773499ecb6e7a632cf5eaf40f32"
+      "digest": "sha256:725b57d3b0e787bf0c5819ee0e9ea2fd2e2b29a36e457eb7d83a8180213347d5"
     },
     {
       "path": "test/architecture-discovery-routing.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:2c370372562bfe0a37fe8e97fe9506eb41078f9250d0ea7b36af2372d91bc35c"
+      "digest": "sha256:26ddd447b1cb76d99389bf7dddb5f8e4e87026b94696f4524c31d404164ee719"
     },
     {
       "path": "test/architecture-discovery-traceability.test.mjs",
@@ -69089,7 +69121,7 @@
       "path": "test/artifact-runtime-boundary.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:7391bf90586c79bc655d5dd3be96f4bea8a04dca3bb48dd6ca98080e97c1bd1d"
+      "digest": "sha256:c35dfd3bd02cc959380c7124df13a6cb0da089c25c665540673217cd33e9aef9"
     },
     {
       "path": "test/bootstrap-structurizr.test.mjs",
@@ -69293,7 +69325,7 @@
       "path": "test/desktop-local-host.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:32ac95c73e30a317dfe0d0e4526f883bdff5954fe5a69d9e939794126030583a"
+      "digest": "sha256:9cb613c2e23cf71c9c17c40b7437d9b08dfe464e3a57ea5a5e8479e6f1d187ab"
     },
     {
       "path": "test/desktop-memory-live-acceptance.test.mjs",
@@ -69404,10 +69436,22 @@
       "digest": "sha256:3ac0c5bc571f0fb11d1aa6668608d10e6cd20d6d38e560e60a5077ce0bbc2178"
     },
     {
+      "path": "test/fixtures/desktop-native-discovery-host.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:d55c47b34560ad4d88a08c92b5acd9cf4ef8f5256c270c67da1a4de3e4d7ab0a"
+    },
+    {
       "path": "test/fixtures/desktop-requirements-change-host.mjs",
       "role": "verification",
       "packaged": false,
       "digest": "sha256:b4aa4ac429ae4d2dd57106452c9abf22fc73ec6fd602d89942bda37f123f6bae"
+    },
+    {
+      "path": "test/fixtures/installed-native-discovery-smoke.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:f942d2c994147d9eab7ba58062f43d03ebbfc01c34faed8f1085571ab009487e"
     },
     {
       "path": "test/fixtures/installed-requirements-gate-smoke.mjs",

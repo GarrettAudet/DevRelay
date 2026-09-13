@@ -7,8 +7,36 @@ launches an agent, runs an external command or approves a Gate.
 
 ## Exact supported boundary
 
+The candidate `architecture-discovery` contract set supports the exact bundled
+`native-architecture-discovery@1.0.0` binding for `architecture-discovery@0.1.1`.
+This new module version explicitly declares both approved requirements and overview
+inputs. Released discovery 0.1.0 and its contributor remain unchanged.
+
+Supply the exact `nativeDiscoveryPlugin` definition from the advanced API as a
+digest-pinned plugin file, and the new versioned module definition from
+`examples/modules/architecture-discovery-0.1.1.module.json`. The invocation must
+declare a `filesystem.read` grant for `config.sourceRoot`, plus `config.sources`
+as an explicit list of `{ path, digest }` entries. `sourceRoot` may be `.`; sources
+are still individually pinned and checked against the repository snapshot's
+included/excluded paths. Host grants and real-path confinement remain mandatory.
+
+The native binding runs offline inventory only, with no optional analyzer or
+external transmission. It requires the declared session revision and exact current
+requirements/overview pair. It stores source evidence, observations, inventory and
+snapshot bytes, and lets Core checkpoint and project the result. A successful
+`module-completed` result is observational, not an ArchitectureGate approval or
+authorization to start the next module. No source enumeration or independently
+observed Git revision is implied by the configured snapshot.
+
+Native inventory replay reuses durable checkpoints. Core replay can verify the
+stored evidence after working-file changes; a new invocation must satisfy the
+pinned source digests again. Source text has an explicit `utf8-text` artifact
+contract; other contracts retain JSON decoding unless explicitly declared.
+Traceability owns its existing opaque-byte projection of source files.
+
 The connection runs one explicit ModuleInvocation at a time. Its closed runtime
-contract sets are `requirements`, `architecture` and `work-breakdown`. Module
+contract sets are `requirements`, `architecture`, `architecture-discovery` and
+`work-breakdown`. Module
 definitions and Desktop effect plug-in definitions are explicit digest-pinned
 JSON files; the host does not infer an adapter from a provider name. Existing
 Core routing, full-chain preflight, artifact validation, checkpoint replay and

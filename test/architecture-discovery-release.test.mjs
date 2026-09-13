@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createLocalHostCheckpointStore } from "../src/local-host-checkpoints.mjs";
 
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
 import { selectArchitectureDiscoveryRoute } from "../src/architecture-discovery-routing.mjs";
@@ -8,7 +13,7 @@ import { bindArchitectureDiscoveryInputs } from "../src/architecture-discovery-i
 import { createNativeArchitectureInventory } from "../src/architecture-discovery-native-inventory.mjs";
 import { createArchitectureDiscoveryCheckpointController } from "../src/architecture-discovery-checkpoint.mjs";
 import { normalizeArchitectureDiscoveryObservations } from "../src/architecture-discovery-observation-normalizer.mjs";
-import { evaluateArchitectureDiscoveryGapPolicy } from "../src/architecture-discovery-gap-policy.mjs";
+import { evaluateMaterializedArchitectureDiscoveryGapPolicy } from "../src/architecture-discovery-gap-policy.mjs";
 import { architectureDiscoveryTraceabilityContributor } from "../src/architecture-discovery-traceability-contributor.mjs";
 import { createInMemoryTraceabilityStore, createTraceabilityGraphService } from "../src/traceability-graph.mjs";
 
@@ -17,7 +22,7 @@ const fullRef = (artifactId, digest, schema="https://devrelay.dev/test/v1") => (
 const loaded = (value, artifactId) => { const bytes=Buffer.from(canonicalJson(value)); return {value,bytes,ref:fullRef(artifactId,sha256Digest(bytes))}; };
 const seal = (body, field) => ({...body,[field]:canonicalJsonDigest(Object.fromEntries(Object.entries(body).filter(([key])=>!["apiVersion","kind",field].includes(key))))});
 
-test("the pinned DevRelay repository completes the offline discovery circuit and safely reaches ArchitectureDesign", async () => {
+test("the pinned DevRelay repository completes the offline discovery circuit and safely reaches ArchitectureDesign", async (t) => {
   const repositoryValue=JSON.parse(await readFile(new URL("dogfood/architecture-discovery/repository-snapshot.json",root),"utf8"));
   const repository=loaded(repositoryValue,"repository-snapshot-devrelay-ad");
   const overviewValue=JSON.parse(await readFile(new URL("project/project-overview-baseline.json",root),"utf8"));
@@ -36,18 +41,24 @@ test("the pinned DevRelay repository completes the offline discovery circuit and
   assert.equal(JSON.stringify(guarded).includes("sourceContent"),false);
 
   const invocation=seal({apiVersion:"devrelay.dev/v1alpha1",kind:"RepositoryInventoryInvocation",invocationId:"AD-RELEASE-INVENTORY-001",repositorySnapshot:repository.ref,allowedPaths:guarded.allowedPaths,policy:fullRef("AD-OFFLINE-PRIVACY",canonicalJsonDigest({mode:"offline"})),adapter},"invocationFingerprint");
-  let calls=0; const values=new Map();
-  const checkpoints={get:key=>values.get(key),put:(key,value)=>{assert.equal(values.has(key),false);values.set(key,structuredClone(value));}};
+  let calls=0;
+  const stateRoot = mkdtempSync(join(tmpdir(), "devrelay-native-discovery-"));
+  let storage = createLocalHostStorage({ rootDirectory: stateRoot });
+  t.after(() => { storage.close(); rmSync(stateRoot, { recursive: true, force: true }); });
+  let checkpoints = createLocalHostCheckpointStore({ storage, namespace: "native-discovery" });
+  checkpoints.put("guarded-inputs", guarded);
   const controller=createArchitectureDiscoveryCheckpointController({adapter:async exact=>{calls++;return createNativeArchitectureInventory({invocation:exact,files});}});
   const first=await controller.execute({invocation,checkpoints});
-  const replay=await controller.execute({invocation,checkpoints});
+  storage.close();
+  storage = createLocalHostStorage({ rootDirectory: stateRoot });
+  checkpoints = createLocalHostCheckpointStore({ storage, namespace: "native-discovery" });
+  assert.deepEqual(checkpoints.get("guarded-inputs"), guarded);
+  const restarted = createArchitectureDiscoveryCheckpointController({ adapter: () => { throw new Error("restart must not rerun native inventory"); } });
+  const replay=await restarted.execute({invocation,checkpoints});
   assert.equal(calls,1); assert.equal(replay.replayed,true); assert.deepEqual(replay.nativeBytes,first.nativeBytes);
 
   const normalized=normalizeArchitectureDiscoveryObservations({snapshotId:"AD-RELEASE-SNAPSHOT-001",nativeInventory:first.result});
-  const policySnapshot={...normalized.snapshot,observations:normalized.observations.map(value=>({...normalized.snapshot.observations.find(ref=>ref.artifactId===value.observationId),digest:value.observationDigest}))};
-  delete policySnapshot.snapshotDigest;
-  policySnapshot.snapshotDigest=canonicalJsonDigest(Object.fromEntries(Object.entries(policySnapshot).filter(([key])=>!["apiVersion","kind","snapshotDigest"].includes(key))));
-  const decision=evaluateArchitectureDiscoveryGapPolicy({snapshot:policySnapshot,observations:normalized.observations,rules:[]});
+  const decision=evaluateMaterializedArchitectureDiscoveryGapPolicy({snapshot:normalized.snapshot,observations:normalized.observations,rules:[]});
   assert.equal(decision.outcome,"discovered"); assert.equal(decision.snapshot.authority,"observational");
   const snapshot=loaded(normalized.snapshot,normalized.snapshot.snapshotId);
   const inventory=loaded(first.result,normalized.snapshot.nativeInventory.artifactId);

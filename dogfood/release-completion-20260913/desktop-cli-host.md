@@ -44,6 +44,36 @@ Desktop agent dispatch, independently produced code or owner review.
 
 ## Remaining full-goal work
 
+### Native discovery connection evidence (2026-09-14)
+
+The candidate on `codex/desktop-lifecycle-integration` adds a bounded offline
+native discovery binding. Module 0.1.1 declares its paired requirements input;
+plug-in 1.0.0 and observational contributor 1.1.0 are version-pinned separately
+from the unchanged released definitions. The host supplies explicit source paths,
+raw-byte digests and filesystem grants. Generic Core supports declared UTF-8 text
+artifacts without product-specific branches; the graph retains opaque source
+evidence rather than treating source text as an approved assertion.
+
+Combined regression completed 88 tests with 88 passing, zero failures and zero
+skips (210,082.948 milliseconds). Additional manifest consistency checks passed
+7/7 after declaring canonical and compatibility catalog entries. Offline package
+verification then passed 463 exact catalog-bound files and 232 installed export
+targets. Its real installed Windows executable proved native discovery, durable
+Core/graph replay, read-only verification and rejection of changed source bytes
+on a new invocation. Existing installed checkpoint, graph and requirements Gate
+smokes also passed. These checks use fixture project context; they do not prove
+independent repository revision discovery, live code production, human approval
+or full lifecycle acceptance.
+
+The next integration boundary is concrete: native discovery emits the
+observational snapshot schema, whereas ArchitectureDesign currently consumes
+the older structured snapshot with project-state lineage and architecture
+sections. An explicit validated handoff is required. Relabeling the schema or
+inventing architecture facts would not satisfy that boundary. Native inventory
+success alone must not be treated as proof that design-critical gaps are closed.
+
+### Outstanding release acceptance
+
 - Connect the complete lifecycle scheduler and owning Gates, then approved DAG
   frontiers, exact DesktopTaskPlans and durable isolated worktrees.
 - Surface quality, duplicate-work/continuity and human operator controls through

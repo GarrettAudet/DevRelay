@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createLocalHostCheckpointStore } from "../src/local-host-checkpoints.mjs";
 import { canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
 import { selectArchitectureDiscoveryRoute, ArchitectureDiscoveryRoutingError } from "../src/architecture-discovery-routing.mjs";
 import { bindArchitectureDiscoveryInputs, ArchitectureDiscoveryInputGuardError } from "../src/architecture-discovery-input-guard.mjs";
@@ -26,7 +31,7 @@ test("routing rejects stale bytes and contradictory approved state", () => {
   const value=state("existing-undiscovered"), raw=Buffer.from(`${JSON.stringify(value)}\n`), stale=structuredClone(value); stale.state="baselined";
   assert.throws(()=>selectArchitectureDiscoveryRoute({projectArchitectureState:stale,projectArchitectureStateRef:ref(value,raw),projectArchitectureStateBytes:raw}),ArchitectureDiscoveryRoutingError);
 });
-test("privacy guard accepts tracked or declared offline scope", () => {
+test("privacy guard accepts tracked or declared offline scope", (t) => {
   const stateBinding=binding(state("existing-undiscovered"));
   const repo=binding({apiVersion:"devrelay.dev/v1alpha1",kind:"RepositorySnapshot",artifactId:"repo-snapshot",revision:"a".repeat(40),treeDigest:`sha256:${"4".repeat(64)}`});
   stateBinding.artifact.repositorySnapshot=repo.reference; stateBinding.rawBytes=Buffer.from(`${JSON.stringify(stateBinding.artifact)}\n`); stateBinding.reference=ref(stateBinding.artifact,stateBinding.rawBytes);
@@ -35,6 +40,18 @@ test("privacy guard accepts tracked or declared offline scope", () => {
   const guarded=bindArchitectureDiscoveryInputs({projectOverview:overview,projectArchitectureState:stateBinding,repositorySnapshot:repo,routeDecision:route,sourceEntries:[{path:"src/a.mjs",tracked:true},{path:"docs/declared.md",declared:true}],adapterBindings:[{id:"native",version:"1.0.0",configurationDigest:canonicalJsonDigest({offline:true})}]});
   assert.deepEqual(guarded.allowedPaths,["docs/declared.md","src/a.mjs"]);
   assert.equal(Object.isFrozen(guarded),true);
+  assert.deepEqual(guarded.transmission, { mode: "offline" });
+  assert.equal(canonicalJsonDigest(guarded), canonicalJsonDigest(JSON.parse(JSON.stringify(guarded))));
+  const root = mkdtempSync(join(tmpdir(), "devrelay-discovery-context-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  let storage = createLocalHostStorage({ rootDirectory: root });
+  try {
+    createLocalHostCheckpointStore({ storage, namespace: "discovery-input" }).put("guarded", guarded);
+  } finally { storage.close(); }
+  storage = createLocalHostStorage({ rootDirectory: root });
+  try {
+    assert.deepEqual(createLocalHostCheckpointStore({ storage, namespace: "discovery-input" }).get("guarded"), guarded);
+  } finally { storage.close(); }
 });
 test("privacy guard rejects ignored, secret, broad untracked, and binding drift", () => {
   const stateBinding=binding(state("existing-undiscovered")); const repo=binding({artifactId:"repo-snapshot"}); stateBinding.artifact.repositorySnapshot=repo.reference; stateBinding.rawBytes=Buffer.from(`${JSON.stringify(stateBinding.artifact)}\n`); stateBinding.reference=ref(stateBinding.artifact,stateBinding.rawBytes); const overview=binding({artifactId:"overview"}); const route=selectArchitectureDiscoveryRoute({projectArchitectureState:stateBinding.artifact,projectArchitectureStateRef:stateBinding.reference,projectArchitectureStateBytes:stateBinding.rawBytes});

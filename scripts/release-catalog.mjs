@@ -41,8 +41,8 @@ export const canonicalModules = Object.freeze([
   },
   {
     id: "architecture-discovery",
-    version: "0.1.0",
-    definition: "examples/modules/architecture-discovery.module.json",
+    version: "0.1.1",
+    definition: "examples/modules/architecture-discovery-0.1.1.module.json",
     operations: [{ id: "discover", steps: [] }],
     plugins: ["native-architecture-discovery"],
   },
@@ -200,9 +200,11 @@ export const canonicalModules = Object.freeze([
 ]);
 
 export const compatibilityModules = Object.freeze([
+  { id: "architecture-discovery", version: "0.1.0", definition: "examples/modules/architecture-discovery.module.json" },
   { id: "specialist-assignment", version: "1.0.0", definition: "examples/modules/specialist-assignment-v1.module.json" },
 ]);
 export const compatibilityPlugins = Object.freeze([
+  { id: "native-architecture-discovery", version: "0.1.0", manifest: "examples/plugins/native-architecture-discovery.plugin.json", module: { id: "architecture-discovery", version: "0.1.0" } },
   { id: "a2a-profile-source", version: "1.0.0", manifest: "examples/plugins/a2a-profile-source-v1.plugin.json", module: { id: "specialist-assignment", version: "1.0.0" } },
   { id: "native-specialist-ranker", version: "1.0.0", manifest: "examples/plugins/native-specialist-ranker-v1.plugin.json", module: { id: "specialist-assignment", version: "1.0.0" } },
 ]);
@@ -231,9 +233,9 @@ export const canonicalPlugins = Object.freeze([
   },
   {
     id: "native-architecture-discovery",
-    version: "0.1.0",
-    manifest: "examples/plugins/native-architecture-discovery.plugin.json",
-    module: { id: "architecture-discovery", version: "0.1.0" },
+    version: "1.0.0",
+    manifest: "examples/plugins/native-architecture-discovery-1.0.0.plugin.json",
+    module: { id: "architecture-discovery", version: "0.1.1" },
     bindings: [{ operation: "discover", step: null, role: "proposer" }],
   },
   {
