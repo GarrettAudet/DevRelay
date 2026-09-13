@@ -100,21 +100,24 @@ export function createLocalHostStorage({
   rootDirectory,
   clock = () => Date.now(),
   failureInjector = () => {},
+  readOnly = false,
 } = {}) {
   requiredText(rootDirectory, "rootDirectory");
   if (!isAbsolute(rootDirectory)) fail("rootDirectory must be absolute", "DR4914");
   if (typeof clock !== "function" || typeof failureInjector !== "function") {
     fail("clock and failureInjector must be functions", "DR4914");
   }
+  if (typeof readOnly !== "boolean") fail("readOnly must be boolean", "DR4914");
 
   const root = resolve(rootDirectory);
   const databasePath = join(root, "state.sqlite");
   const artifactRoot = join(root, "artifacts", "sha256");
-  mkdirSync(artifactRoot, { recursive: true });
+  if (!readOnly) mkdirSync(artifactRoot, { recursive: true });
 
   let database;
   try {
-    database = new DatabaseSync(databasePath);
+    database = new DatabaseSync(databasePath, { readOnly });
+    if (!readOnly) {
     database.exec("PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL; PRAGMA synchronous = FULL;");
     database.exec(`
       CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -164,6 +167,7 @@ export function createLocalHostStorage({
     database
       .prepare("INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)")
       .run(1, clock());
+    }
     const migration = database
       .prepare("SELECT MAX(version) AS version FROM schema_migrations")
       .get();
@@ -180,6 +184,10 @@ export function createLocalHostStorage({
   let closed = false;
   const ensureOpen = () => {
     if (closed) fail("storage is closed", "DR4916");
+  };
+  const ensureWritable = () => {
+    ensureOpen();
+    if (readOnly) fail("storage was opened read-only", "DR4929");
   };
 
   const artifactPath = (digest) => {
@@ -266,7 +274,7 @@ export function createLocalHostStorage({
     databasePath,
 
     putArtifact({ artifactId, bytes, mediaType, provenance = [], expectedDigest } = {}) {
-      ensureOpen();
+      ensureWritable();
       requiredText(artifactId, "artifactId");
       requiredText(mediaType, "mediaType");
       if (!Buffer.isBuffer(bytes) && !(bytes instanceof Uint8Array)) {
@@ -344,7 +352,7 @@ export function createLocalHostStorage({
     },
 
     initializeRun({ runId, state, artifactRefs = [] } = {}) {
-      ensureOpen();
+      ensureWritable();
       requiredText(runId, "runId");
       const refs = normalizeRefs(artifactRefs, "artifactRefs");
       verifyAllRefs(refs);
@@ -376,7 +384,7 @@ export function createLocalHostStorage({
     },
 
     acquireLease({ runId, owner, expectedVersion, durationMilliseconds = 30_000 } = {}) {
-      ensureOpen();
+      ensureWritable();
       requiredText(runId, "runId");
       requiredText(owner, "lease owner");
       if (!Number.isSafeInteger(expectedVersion) || expectedVersion < 0) {
@@ -417,7 +425,7 @@ export function createLocalHostStorage({
       checkpointRef = null,
       graphRef = null,
     } = {}) {
-      ensureOpen();
+      ensureWritable();
       requiredText(runId, "runId");
       requiredText(leaseToken, "leaseToken");
       if (!Number.isSafeInteger(expectedVersion) || expectedVersion < 0) {
@@ -482,7 +490,7 @@ export function createLocalHostStorage({
     },
 
     releaseLease({ runId, leaseToken } = {}) {
-      ensureOpen();
+      ensureWritable();
       requiredText(runId, "runId");
       requiredText(leaseToken, "leaseToken");
       transaction(() => {

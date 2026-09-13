@@ -834,6 +834,8 @@ export {
 } from "./local-host-storage.mjs";
 export { createLocalHostCheckpointStore, LocalHostCheckpointError } from "./local-host-checkpoints.mjs";
 export { createLocalHostTraceabilityStore, LocalHostTraceabilityError } from "./local-host-traceability.mjs";
+export { createDesktopStepExchange, DesktopStepExchangeError, DesktopStepRequired } from "./desktop-step-exchange.mjs";
+export { openDesktopLocalHost } from "./desktop-local-host.mjs";
 export {
   LocalHostIsolationError,
   createCapabilityEnforcer,

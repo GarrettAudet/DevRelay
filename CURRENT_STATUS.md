@@ -2,7 +2,7 @@
 
 Last reconciled: 2026-09-13 CST
 Protected branch: main
-Working branch: codex/durable-traceability-host
+Working branch: codex/desktop-cli-host
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
@@ -30,6 +30,17 @@ The subsequent candidate adds durable graph storage with atomic head/receipt
 publication, indexed journal lookup and actual cross-process recovery tests.
 Full installed Desktop workflow acceptance remains open; see
 `docs/local-host-traceability.md` for the exact component boundary.
+All eleven checks passed for the durable graph commit
+`f68b04a8e74590f86878043992fcf5323cfc3c02` in PR #28.
+The next candidate connects all seven executable commands to the real public
+facade and Core through an explicitly configured Windows local host. It adds
+durable Desktop step requests, candidate response ingestion, exact checkpoint
+resume, read-only inspection and genuine Core/graph verification. It validates
+the paired project context, ProjectMemory and prior-session disposition before
+opening state. Its supported scope is individual module invocations, not yet
+the complete lifecycle scheduler, managed worktree dispatch or operator view.
+See [the connection guide](docs/desktop-local-host.md) and
+[candidate evidence](dogfood/release-completion-20260913/desktop-cli-host.md).
 The owner reconfirmed that Desktop remains the agent operator; no independent
 agent-launching service or new credential connection is in scope.
 
@@ -83,5 +94,11 @@ and historical security findings; run a fresh installed-product change through
 memory, isolated worktrees, quality, human orchestration and crash recovery;
 then obtain independent human review and BusinessAcceptance before sealing a
 new release. rc.4 is not yet ready to tag or publish.
+
+The owner requested a connected visual memory/requirements/lifecycle/work
+workspace and explicitly chose **runtime release first, visual workspace next**.
+The [deferred visual-workspace intake](docs/specs/visual-workspace-intake.md)
+preserves the request and proposed acceptance checks. It does not add a visual
+application to the current runtime release or mark one implemented.
 
 This candidate does not claim public npm publication, one-click managed plug-in distribution, a hosted backend, non-Windows support, live upstream interoperability from fixture evidence, or guaranteed defect-free output.

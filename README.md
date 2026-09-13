@@ -36,7 +36,13 @@ claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 
 The release contains Core, schemas, versioned manifests, fixtures, bounded
 adapter contracts, a small nine-operation facade, workflow profiles, a
-filesystem-backed local Windows host boundary, and an injected-host operator CLI library. The executable currently fails explicitly when no host is bound; complete installed-host integration remains a release blocker.
+filesystem-backed local Windows host boundary, and an operator CLI library. The
+unreleased candidate connects the executable to an explicitly configured local
+host with `--host` and `--host-digest`: Desktop supplies candidate step results,
+while actual Core validates and checkpoints them. Unbound commands fail
+explicitly. This is a module-level connection, not yet the complete lifecycle
+scheduler or installed-product acceptance. See the
+[Desktop local host guide](docs/desktop-local-host.md).
 The next release candidate also includes a validated, deliberately installed
 ChatGPT Desktop orchestration plug-in; it is not a one-click managed distribution
 or a hosted backend. See [Desktop orchestration](docs/desktop-orchestration.md). The

@@ -20,12 +20,21 @@ try {
     process.stdout.write(
       "DevRelay commands: init run resume status verify inspect evidence\n" +
         "Use --json and --input '{...}' for deterministic machine operation.\n" +
+        "Bind native local commands with --host <absolute-config.json> --host-digest sha256:<digest>.\n" +
         "Commands require a configured ChatGPT Desktop host binding.\n",
     );
     process.exitCode = OPERATOR_EXIT_CODES.pass;
   } else if (parsed.version === true) {
     process.stdout.write(`${pkg.version}\n`);
     process.exitCode = OPERATOR_EXIT_CODES.pass;
+  } else if (parsed.host) {
+    const { openDesktopLocalHost } = await import("../src/desktop-local-host.mjs");
+    const host = await openDesktopLocalHost({ configurationPath: parsed.host.path, configurationDigest: parsed.host.digest, command: parsed.command });
+    try {
+      const result = await host.cli.execute(parsed);
+      process.stdout.write(`${result.stdout}\n`);
+      process.exitCode = result.exitCode;
+    } finally { host.close(); }
   } else {
     throw new OperatorCliError(
       "a ChatGPT Desktop host binding is required; use createOperatorCli from devrelay/advanced",

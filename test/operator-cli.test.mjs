@@ -31,6 +31,14 @@ const cli = createOperatorCli({
   evidence: async () => ({ outcome: "pass", secretToken: "do-not-print" }),
 });
 
+test("native host arguments require a complete exact configuration binding", () => {
+  const digest = `sha256:${"a".repeat(64)}`;
+  assert.deepEqual(parseOperatorArguments(["init", "--host", "C:/project/host.json", "--host-digest", digest]).host, { path: "C:/project/host.json", digest });
+  for (const flags of [["--host", "host.json"], ["--host-digest", digest], ["--host", "--json"], ["--host", "a", "--host", "b"], ["--host", "a", "--host-digest", "bad"]]) {
+    assert.throws(() => parseOperatorArguments(["init", ...flags]), { code: "DR4770" });
+  }
+});
+
 test("exposes the exact versioned command matrix and stable exit codes", () => {
   assert.deepEqual(OPERATOR_COMMANDS, [
     "init",
