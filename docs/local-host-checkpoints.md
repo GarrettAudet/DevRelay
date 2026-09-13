@@ -57,5 +57,7 @@ The candidate tests exercise an actual Core effect checkpoint in a new process
 with a fixture adapter that is forbidden to run during replay. A separate
 graph-aware test reopens the durable checkpoint database after a simulated merge
 outage and proves the exact prepared update and resulting graph proof are reused.
-That test retains the graph service in memory; it does not claim graph persistence
-across a process restart or live upstream adapter conformance.
+That original test retains the graph service in memory. The subsequent
+`local-host-traceability` increment adds separate-process graph persistence and
+abrupt-exit recovery tests; see `docs/local-host-traceability.md`. Neither test
+claims live upstream adapter conformance or complete product acceptance.

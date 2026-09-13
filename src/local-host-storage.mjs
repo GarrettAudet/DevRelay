@@ -156,6 +156,10 @@ export function createLocalHostStorage({
         committed_at INTEGER NOT NULL,
         FOREIGN KEY (run_id) REFERENCES runs(run_id)
       ) STRICT;
+      CREATE INDEX IF NOT EXISTS transition_journal_identity
+        ON transition_journal(run_id, json_extract(transition_json, '$.id'));
+      CREATE INDEX IF NOT EXISTS transition_journal_version
+        ON transition_journal(run_id, to_version);
     `);
     database
       .prepare("INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)")
@@ -492,13 +496,18 @@ export function createLocalHostStorage({
       return readRun(runId);
     },
 
-    readTransitionJournal(runId) {
+    readTransitionJournal(runId, { transitionId, toVersion } = {}) {
       ensureOpen();
       requiredText(runId, "runId");
+      if (transitionId !== undefined) requiredText(transitionId, "transitionId");
+      if (toVersion !== undefined && (!Number.isSafeInteger(toVersion) || toVersion < 1)) fail("toVersion must be a positive safe integer", "DR4923");
+      const predicates = ["run_id = ?"];
+      const parameters = [runId];
+      if (transitionId !== undefined) { predicates.push("json_extract(transition_json, '$.id') = ?"); parameters.push(transitionId); }
+      if (toVersion !== undefined) { predicates.push("to_version = ?"); parameters.push(toVersion); }
+      const rows = database.prepare(`SELECT * FROM transition_journal WHERE ${predicates.join(" AND ")} ORDER BY entry_id`).all(...parameters);
       return immutable(
-        database
-          .prepare("SELECT * FROM transition_journal WHERE run_id = ? ORDER BY entry_id")
-          .all(runId)
+        rows
           .map((row) => ({
             entryId: row.entry_id,
             runId: row.run_id,
