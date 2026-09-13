@@ -2,7 +2,7 @@
 
 Last reconciled: 2026-09-13 CST
 Protected branch: main
-Working branch: codex/release-completion-20260913
+Working branch: codex/desktop-host-integration
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
@@ -17,6 +17,16 @@ the exact approved requirements/overview pair pass targeted verification.
 Full installed-host integration is still incomplete; neither these tests nor
 the existing injected-host library tests establish final product acceptance.
 See [the current repair record](dogfood/release-completion-20260913/README.md).
+
+The repair commit `630116f937a73689855ad7f5ebb6c721419b1362` is submitted in
+draft PR #26; all eleven GitHub checks passed. The next integration candidate
+adds an immutable Core/traceability checkpoint bridge over the existing
+SQLite/CAS host. Thirty-three targeted tests pass, including Core checkpoint
+verification in a separate process with zero fixture-adapter calls during
+replay, and exact trace-checkpoint recovery after reopening storage. This does
+not yet connect the full CLI or prove graph persistence across a process restart.
+The owner reconfirmed that Desktop remains the agent operator; no independent
+agent-launching service or new credential connection is in scope.
 
 ProjectMemory is now baseline `PMB-MUC-7A172C974C0158E7`, version 1.0.11,
 digest `sha256:47eddea9836521b0b1557782740121feab15d5fbc9ad6556654172b0334a57e4`.

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-checkpoint/v1",
+  "title": "Local host immutable checkpoint envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "namespace", "key", "value"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "kind": { "const": "LocalHostCheckpoint" },
+    "namespace": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "key": { "type": "string", "minLength": 1 },
+    "value": {}
+  }
+}

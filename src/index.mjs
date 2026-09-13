@@ -832,6 +832,7 @@ export {
   LocalHostStorageError,
   createLocalHostStorage,
 } from "./local-host-storage.mjs";
+export { createLocalHostCheckpointStore, LocalHostCheckpointError } from "./local-host-checkpoints.mjs";
 export {
   LocalHostIsolationError,
   createCapabilityEnforcer,

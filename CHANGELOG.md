@@ -2,6 +2,7 @@
 
 ## 0.11.0-rc.4 - Unreleased
 
+- Added an immutable SQLite/CAS checkpoint bridge for existing Core and traceability checkpoint contracts, with closed JSON validation, namespace isolation, conflict rejection and restart/replay regressions. Full Desktop host/CLI integration remains in progress.
 - Repaired the executable's confusion between `--version` and command protocol version `v1`; unbound commands now return explicit nonzero diagnostics, including JSON output.
 - Rejected unsupported, duplicate, missing, and malformed command arguments without echoing sensitive input. Missing host result dispositions and thrown errors with zero or invalid exit codes no longer become success.
 - Updated the active fast-uri override/lock to `3.1.7` and the js-yaml development dependency lock to `4.3.2`, with targeted behavior regressions and Ajv reference-validation compatibility coverage.

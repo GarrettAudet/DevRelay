@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 
 import { canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
@@ -11,6 +14,8 @@ import {
   createTraceabilityGraphService,
 } from "../src/traceability-graph.mjs";
 import { validateModuleExecutionRecord } from "../src/module-execution-record-validator.mjs";
+import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createLocalHostCheckpointStore } from "../src/local-host-checkpoints.mjs";
 
 const SOURCE_SCHEMA = "https://devrelay.dev/artifacts/trace-test-source/v1";
 const DRAFT_SCHEMA = "https://devrelay.dev/artifacts/trace-test-draft/v1";
@@ -645,6 +650,48 @@ function eventIndex(events, type, kind) {
     (event) => event.type === type && (kind === undefined || event.kind === kind),
   );
 }
+
+test("durable trace checkpoints survive storage restart after a merge outage without adapter reinvocation", async (t) => {
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-durable-trace-"));
+  let storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  const harness = singleHarness({ mergeFailures: 1 });
+  let persistedCheckpoint;
+  const connect = () => {
+    const checkpoints = createLocalHostCheckpointStore({ storage, namespace: "trace/restart-proof" });
+    harness.context.traceabilityCheckpoints = {
+      get: checkpoints.get,
+      putIfAbsent(key, value) {
+        const winner = checkpoints.putIfAbsent(key, value);
+        if (value.kind === "ModuleTraceabilityCheckpoint" && !persistedCheckpoint) persistedCheckpoint = clone(winner);
+        harness.events.push({ type: "durable-trace-put", kind: value.kind });
+        return winner;
+      },
+    };
+  };
+  connect();
+  await assert.rejects(() => harness.registry.executeWithTraceability(harness.invocation, harness.context), /forced graph merge outage/u);
+  assert.equal(harness.calls.length, 1);
+  const persistedAt = eventIndex(harness.events, "durable-trace-put", "ModuleTraceabilityCheckpoint");
+  assert.ok(persistedAt >= 0 && persistedAt < eventIndex(harness.events, "graph-merge"));
+  storage.close();
+  storage = createLocalHostStorage({ rootDirectory });
+  connect();
+  const record = await harness.registry.executeWithTraceability(harness.invocation, harness.context);
+  validateModuleExecutionRecord(record);
+  const replay = await harness.registry.executeWithTraceability(harness.invocation, harness.context);
+  assert.equal(harness.calls.length, 1);
+  // Trusted projection validation may run again; the untrusted adapter must not.
+  assert.ok(harness.graph.projectCalls.length >= 1);
+  for (const projection of harness.graph.projectCalls) {
+    assert.equal(projection.invocationId, harness.invocation.invocationId);
+    assert.equal(projection.outputDigest, harness.artifacts.product.digest);
+  }
+  assert.deepEqual(record.traceabilityUpdateRef, persistedCheckpoint.updateRef);
+  assert.match(record.applicationProof.resultGraphRef.digest, /^sha256:[0-9a-f]{64}$/u);
+  assert.deepEqual(replay.applicationProof.resultGraphRef, record.applicationProof.resultGraphRef);
+  assert.equal(storage.verifyIntegrity().database, "ok");
+});
 
 async function expectContractError(promise, code) {
   await assert.rejects(promise, (error) => {
