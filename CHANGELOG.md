@@ -2,6 +2,8 @@
 
 ## 0.11.0-rc.4 - Unreleased
 
+- Enforced the read-only workflow profile at the facade boundary: run, resume and conclude now fail before bootstrap or dispatch, with default-profile, explicit-profile and connected-host regressions.
+- Connected all seven executable commands to an explicitly digest-bound Windows local host through the real public facade, Core, SQLite/CAS checkpoints and durable graph. Desktop remains the operator; pending requests and immutable candidate responses do not launch agents or approve Gates. Added read-only inspection and exact-context/replay regressions. This module-level connection is not full lifecycle acceptance.
 - Added a durable graph-store implementation with atomic head/receipt publication, indexed journal lookups, exact cross-process replay, and abrupt-exit recovery tests. It retains the existing trusted graph-service authority and does not claim full installed-host acceptance.
 - Added an immutable SQLite/CAS checkpoint bridge for existing Core and traceability checkpoint contracts, with closed JSON validation, namespace isolation, conflict rejection and restart/replay regressions. Full Desktop host/CLI integration remains in progress.
 - Repaired the executable's confusion between `--version` and command protocol version `v1`; unbound commands now return explicit nonzero diagnostics, including JSON output.

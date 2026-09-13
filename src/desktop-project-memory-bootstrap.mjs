@@ -30,14 +30,14 @@ const hasCanonicalFileBytes = (bytes, value) => {
   return text === canonical || text === `${canonical}\n`;
 };
 
-export function loadDesktopProjectMemoryBootstrap({ projectRoot, taskId, repositoryRevision = "working-tree", manifestPath = "project/project-memory-bootstrap-manifest.json" } = {}) {
+export function loadDesktopProjectMemoryBootstrap({ projectRoot, taskId, projectId = "devrelay", repositoryRevision = "working-tree", manifestPath = "project/project-memory-bootstrap-manifest.json" } = {}) {
   if (!path.isAbsolute(projectRoot ?? "") || typeof taskId !== "string" || !taskId) fail("absolute projectRoot and taskId are required");
   const root = path.resolve(projectRoot);
   const manifestFile = path.resolve(root, manifestPath);
   if (!manifestFile.startsWith(`${root}${path.sep}`)) fail("bootstrap manifest must stay inside the project", "DR6151");
   const manifestLoaded = readJson(manifestFile, "bootstrap manifest");
   const manifest = manifestLoaded.value;
-  if (manifest.kind !== "DesktopProjectMemoryBootstrapManifest" || manifest.projectId !== "devrelay") fail("bootstrap manifest identity is invalid", "DR6151");
+  if (typeof projectId !== "string" || !projectId || manifest.kind !== "DesktopProjectMemoryBootstrapManifest" || manifest.projectId !== projectId) fail("bootstrap manifest identity is invalid", "DR6151");
   const paths = Object.fromEntries(Object.entries(manifest.paths ?? {}).map(([key, value]) => {
     const resolved = path.resolve(root, value);
     if (!resolved.startsWith(`${root}${path.sep}`)) fail(`bootstrap path ${key} escapes the project`, "DR6151");
@@ -48,6 +48,7 @@ export function loadDesktopProjectMemoryBootstrap({ projectRoot, taskId, reposit
   const synopsisBytes = readFileSync(paths.currentSynopsis);
   const baselineLoaded = readJson(paths.projectMemoryBaseline, "ProjectMemory baseline");
   validateProjectMemoryArtifact(baselineLoaded.value);
+  if (baselineLoaded.value.projectId !== projectId) fail("ProjectMemory belongs to a different project", "DR6152");
   const baseline = loadProjectMemoryArtifact(baselineLoaded.value, `file:///${paths.projectMemoryBaseline.replaceAll("\\", "/")}`);
   if (sha256Digest(baselineLoaded.bytes) !== baseline.ref.digest) fail("ProjectMemory baseline is not canonical exact bytes", "DR6152");
   const rendered = renderCurrentSynopsis(baselineLoaded.value);

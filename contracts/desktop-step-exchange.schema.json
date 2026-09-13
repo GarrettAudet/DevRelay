@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-step-exchange/v1",
+  "title": "Exact Desktop-operated Core step exchange",
+  "oneOf": [{ "$ref": "#/$defs/request" }, { "$ref": "#/$defs/response" }],
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "request": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "requestId", "contextDigest", "invocation", "producer"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopStepRequest" },
+        "requestId": { "$ref": "#/$defs/digest" },
+        "contextDigest": { "$ref": "#/$defs/digest" },
+        "invocation": { "type": "object" },
+        "producer": { "$ref": "#/$defs/producer" }
+      }
+    },
+    "producer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["invocationId", "step", "plugin", "invocationFingerprint", "chainFingerprint", "stepInvocationDigest"],
+      "properties": {
+        "invocationId": { "type": "string", "minLength": 1 },
+        "step": { "type": "string", "minLength": 1 },
+        "plugin": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": { "id": { "type": "string", "minLength": 1 }, "version": { "type": "string", "minLength": 1 } } },
+        "invocationFingerprint": { "$ref": "#/$defs/digest" },
+        "chainFingerprint": { "$ref": "#/$defs/digest" },
+        "stepInvocationDigest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "response": {
+      "type": "object", "additionalProperties": false,
+      "required": ["apiVersion", "kind", "requestId", "requestDigest", "result"],
+      "properties": {
+        "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+        "kind": { "const": "DesktopStepResponse" },
+        "requestId": { "$ref": "#/$defs/digest" },
+        "requestDigest": { "$ref": "#/$defs/digest" },
+        "result": {
+          "oneOf": [
+            { "$ref": "https://devrelay.dev/contracts/module-result.schema.json" },
+            { "$ref": "https://devrelay.dev/contracts/module-step-result.schema.json" }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -119,10 +119,13 @@ function normalizeRequest(operation, request, defaults) {
     taskId: requireText(request.taskId, "taskId"),
     profile: request.profile ?? defaults.profile,
   };
-  resolveWorkflowProfile({
+  const workflowProfile = resolveWorkflowProfile({
     profileName: common.profile,
     projectRiskContext: request.projectRiskContext,
   });
+  if (!workflowProfile.executionPolicy.lifecycleMutationAllowed && !["inspect", "verify"].includes(operation)) {
+    fail("the selected read-only profile forbids lifecycle mutation", "DR4743");
+  }
   if (operation === "run") requireText(request.goal, "goal");
   else if (operation === "conclude") requireText(request.sessionId, "sessionId");
   else requireText(request.runId, "runId");
@@ -221,4 +224,3 @@ export const resume = (relay, request) => relay.resume(request);
 export const verify = (relay, request) => relay.verify(request);
 export const inspect = (relay, request) => relay.inspect(request);
 export const conclude = (relay, request) => relay.conclude(request);
-

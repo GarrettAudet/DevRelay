@@ -52,7 +52,7 @@ function sessionReceipt(taskId, outcome = "pass") {
   };
   return { ...material, contentDigest: canonicalJsonDigest(material) };
 }
-function fixture({ bootstrapOutcome = "pass" } = {}) {
+function fixture({ bootstrapOutcome = "pass", profile = "standard" } = {}) {
   const calls = [];
   const services = Object.fromEntries(["run", "resume", "verify", "inspect", "conclude"].map((operation) => [operation, async (input) => {
     calls.push({ operation, input });
@@ -66,7 +66,7 @@ function fixture({ bootstrapOutcome = "pass" } = {}) {
   const relay = createDevRelay({
     projectId: "PROJECT-1",
     host,
-    profile: "standard",
+    profile,
     modules: [defineModule({ id: "requirements.gathering", version: "1.0.0", operations: ["gather"] })],
     plugins: [definePlugin({ id: "openspec.requirements", version: "1.0.0", capabilities: ["requirements.gather"] })],
   });
@@ -117,6 +117,27 @@ test("inspect is read-only delegation through the same stable envelope", async (
   const result = await inspect(relay, { taskId: "TASK-1", runId: "RUN-1" });
   assert.equal(result.outputs.operation, "inspect");
   assert.match(result.operationDigest, /^sha256:/u);
+});
+
+test("inspect profile blocks lifecycle mutation before bootstrap or host dispatch", async () => {
+  for (const defaultProfile of ["standard", "inspect"]) {
+    const { relay, calls } = fixture({ profile: defaultProfile });
+    const request = { taskId: "TASK-READONLY", runId: "RUN-1", goal: "must not execute",
+      sessionId: "SESSION-1", checkpointDigest: digest,
+      ...(defaultProfile === "standard" ? { profile: "inspect" } : {}) };
+    for (const operation of ["run", "resume", "conclude"]) {
+      await assert.rejects(relay[operation](request), { code: "DR4743" });
+      assert.deepEqual(calls, []);
+    }
+  }
+});
+
+test("inspect profile retains inspection and verification access", async () => {
+  const { relay, calls } = fixture({ profile: "inspect" });
+  const request = { taskId: "TASK-READONLY", runId: "RUN-1", subject: { kind: "checkpoint" } };
+  assert.equal((await relay.inspect(request)).outputs.operation, "inspect");
+  assert.equal((await relay.verify(request)).outputs.operation, "verify");
+  assert.deepEqual(calls.map(({ operation }) => operation), ["bootstrap", "inspect", "verify"]);
 });
 
 test("/conclude is an explicit Desktop operation bound to the bootstrapped task", async () => {

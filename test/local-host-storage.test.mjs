@@ -41,6 +41,25 @@ function putJson(storage, artifactId, value) {
   });
 }
 
+test("read-only storage inspects existing bytes and rejects every mutating operation", () => {
+  const fx = fixture();
+  const stored = putJson(fx.storage, "READ-ONLY", { exact: true });
+  fx.storage.initializeRun({ runId: "readonly", state: { exact: true }, artifactRefs: [stored] });
+  fx.storage.close();
+  const before = readFileSync(join(fx.rootDirectory, "state.sqlite"));
+  const readonly = createLocalHostStorage({ rootDirectory: fx.rootDirectory, readOnly: true });
+  try {
+    assert.equal(readonly.readRun("readonly").version, 0);
+    assert.equal(readonly.verifyIntegrity().database, "ok");
+    assert.ok(readonly.getArtifact(stored).length > 0);
+    for (const operation of ["putArtifact", "initializeRun", "acquireLease", "commitTransition", "releaseLease"]) {
+      assert.throws(() => readonly[operation]({}), { code: "DR4929" });
+    }
+  } finally { readonly.close(); }
+  assert.deepEqual(readFileSync(join(fx.rootDirectory, "state.sqlite")), before);
+  fx.cleanup();
+});
+
 test("SQLite state and CAS bytes survive restart with exact journal lineage", () => {
   const fx = fixture();
   try {

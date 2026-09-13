@@ -76,9 +76,15 @@ const exitFor = (result) => {
 };
 const concise = (command, result, exitCode) => {
   const outcome = disposition(result);
+  const detail = result?.outputs ?? result;
   const evidence = result?.outputs?.evidence ?? result?.evidence ?? [];
   return [
     `DevRelay ${command}: ${outcome}`,
+    ...(detail?.scope ? [`Scope: ${detail.scope}`] : []),
+    ...(detail?.runId ? [`Run: ${detail.runId}`] : []),
+    ...(detail?.state?.status ? [`State: ${detail.state.status}`] : []),
+    ...(detail?.checkpointDigest ? [`Checkpoint: ${detail.checkpointDigest}`] : []),
+    ...(detail?.desktopRequest ? [`Desktop request: ${detail.desktopRequest.requestId}`] : []),
     ...(evidence.length
       ? [
           `Evidence: ${evidence
@@ -195,14 +201,21 @@ export function parseOperatorArguments(argv) {
   if (flags.length === 1 && flags[0] === "--help") return immutable({ help: true });
   let format = "human";
   let input = {};
+  let hostPath;
+  let hostDigest;
   const seen = new Set();
   for (let index = 0; index < flags.length; index += 1) {
     const flag = flags[index];
-    if (!["--json", "--input"].includes(flag)) fail("unsupported command argument");
+    if (!["--json", "--input", "--host", "--host-digest"].includes(flag)) fail("unsupported command argument");
     if (seen.has(flag)) fail("duplicate command argument");
     seen.add(flag);
     if (flag === "--json") {
       format = "json";
+    } else if (flag === "--host" || flag === "--host-digest") {
+      const value = flags[++index];
+      if (!value || value.startsWith("--")) fail("host arguments require explicit values");
+      if (flag === "--host") hostPath = value;
+      else hostDigest = value;
     } else {
       const value = flags[++index];
       if (value === undefined) fail("--input requires a JSON object");
@@ -216,7 +229,8 @@ export function parseOperatorArguments(argv) {
       }
     }
   }
-  return immutable({ command, version: "v1", input, format });
+  if ((hostPath === undefined) !== (hostDigest === undefined) || (hostDigest !== undefined && !/^sha256:[a-f0-9]{64}$/u.test(hostDigest))) fail("--host and --host-digest must form an exact configuration binding");
+  return immutable({ command, version: "v1", input, format, ...(hostPath === undefined ? {} : { host: { path: hostPath, digest: hostDigest } }) });
 }
 
 export const OPERATOR_COMMANDS = COMMANDS;

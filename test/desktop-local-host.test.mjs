@@ -1,0 +1,135 @@
+import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+import { canonicalJsonDigest } from "../src/content-digest.mjs";
+import { openDesktopLocalHost } from "../src/desktop-local-host.mjs";
+import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { materializeDesktopHostFixture } from "./fixtures/desktop-local-host.mjs";
+
+function fixture(t) {
+  const root = mkdtempSync(join(tmpdir(), "devrelay-connected-host-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  return { root, ...materializeDesktopHostFixture(root) };
+}
+const output = (result) => result.result?.outputs ?? result.result;
+async function command(fx, operation, input = fx.input) {
+  const host = await openDesktopLocalHost({ ...fx, command: operation, platform: "win32" });
+  try { return await host.cli.execute({ command: operation, input, format: "json" }); }
+  finally { host.close(); }
+}
+
+test("native host connects real facade/Core to durable Desktop pending/result/replay flow", async (t) => {
+  const fx = fixture(t);
+  assert.equal((await command(fx, "init")).exitCode, 0);
+  const readOnlyRun = await command(fx, "run", { ...fx.input, profile: "inspect" });
+  assert.equal(readOnlyRun.exitCode, 2);
+  assert.equal(readOnlyRun.diagnostics[0].code, "DR4743");
+  const pending = await command(fx, "run");
+  assert.equal(pending.outcome, "awaiting-desktop", JSON.stringify(pending));
+  assert.equal(pending.exitCode, 5);
+  const waiting = output(pending);
+  assert.equal(waiting.lifecycleComplete, false);
+  assert.equal(waiting.desktopRequest.invocation.invocationId, fx.result.invocationId);
+  const readOnlyResume = await command(fx, "resume", { ...fx.input, profile: "inspect", checkpointDigest: waiting.checkpointDigest });
+  assert.equal(readOnlyResume.exitCode, 2);
+  assert.equal(readOnlyResume.diagnostics[0].code, "DR4743");
+  assert.equal(output(await command(fx, "status")).checkpointDigest, waiting.checkpointDigest);
+  const stale = await command(fx, "resume", { ...fx.input, checkpointDigest: `sha256:${"f".repeat(64)}` });
+  assert.equal(stale.exitCode, 6);
+  assert.equal((await command(fx, "verify", { ...fx.input, subject: { kind: "checkpoint" } })).exitCode, 7);
+  const response = { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopStepResponse", requestId: waiting.desktopRequest.requestId,
+    requestDigest: canonicalJsonDigest(waiting.desktopRequest), result: fx.result };
+  const responseFile = fx.json("response.json", response);
+  const mismatched = fx.json("mismatched.json", { ...response, requestDigest: `sha256:${"f".repeat(64)}` });
+  assert.notEqual((await command(fx, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response: mismatched })).exitCode, 0);
+  const completed = await command(fx, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response: responseFile });
+  assert.equal(completed.exitCode, 0, JSON.stringify(completed));
+  assert.equal(output(completed).state.status, "module-completed");
+  const verified = await command(fx, "verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.equal(verified.exitCode, 0, JSON.stringify(verified));
+  assert.equal(output(verified).lifecycleComplete, false);
+  const before = readFileSync(join(fx.root, "state", "state.sqlite"));
+  for (const operation of ["status", "inspect", "evidence", "verify"]) {
+    assert.equal((await command(fx, operation, { ...fx.input, subject: { kind: "checkpoint" } })).exitCode, 0);
+  }
+  assert.deepEqual(readFileSync(join(fx.root, "state", "state.sqlite")), before);
+  const replay = await command(fx, "resume", { ...fx.input, checkpointDigest: output(completed).checkpointDigest });
+  assert.equal(replay.exitCode, 0, JSON.stringify(replay));
+  const again = await command(fx, "verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.deepEqual(output(again).applicationProof, output(verified).applicationProof);
+});
+
+test("stale configuration, context, missing grants, and unknown state stop before effects", async (t) => {
+  const fx = fixture(t);
+  await assert.rejects(openDesktopLocalHost({ ...fx, configurationDigest: `sha256:${"f".repeat(64)}`, command: "init", platform: "win32" }), { code: "DR4962" });
+  assert.equal(existsSync(join(fx.root, "state")), false);
+  await assert.rejects(openDesktopLocalHost({ ...fx, command: "status", platform: "win32" }), { code: "DR4963" });
+  assert.equal(existsSync(join(fx.root, "state")), false);
+  const denied = fx.json("denied.json", { ...fx.configuration, grants: [{ kind: "filesystem.read", values: ["."] }] });
+  await assert.rejects(openDesktopLocalHost({ configurationPath: join(fx.root, denied.path), configurationDigest: denied.digest, command: "init", platform: "win32" }), { code: "DR4736" });
+  assert.equal(existsSync(join(fx.root, "state")), false);
+  const prior = JSON.parse(readFileSync(join(fx.root, fx.configuration.memorySessionState.path)));
+  const priorBody = { ...prior, status: "open", taskId: "another-task" };
+  delete priorBody.contentDigest;
+  const priorFile = fx.json("prior-session.json", { ...priorBody, contentDigest: canonicalJsonDigest(priorBody) });
+  const priorConfig = fx.json("prior-host.json", { ...fx.configuration, memorySessionState: priorFile });
+  await assert.rejects(openDesktopLocalHost({ configurationPath: join(fx.root, priorConfig.path), configurationDigest: priorConfig.digest, command: "init", platform: "win32" }), { code: "DR4967" });
+  assert.equal(existsSync(join(fx.root, "state")), false);
+  fx.write(fx.configuration.sessionSnapshot.path, Buffer.from("{}"));
+  await assert.rejects(openDesktopLocalHost({ ...fx, command: "init", platform: "win32" }), { code: "DR4962" });
+  assert.equal(existsSync(join(fx.root, "state")), false);
+});
+
+test("invalid Desktop response can be corrected without overwriting candidate history", async (t) => {
+  const fx = fixture(t);
+  await command(fx, "init");
+  const waiting = output(await command(fx, "run"));
+  const response = { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopStepResponse", requestId: waiting.desktopRequest.requestId,
+    requestDigest: canonicalJsonDigest(waiting.desktopRequest), result: { ...fx.result, outcome: "not_declared" } };
+  const invalid = fx.json("invalid.json", response);
+  const rejected = await command(fx, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response: invalid });
+  assert.notEqual(rejected.exitCode, 0);
+  assert.equal(output(await command(fx, "status")).state.status, "awaiting-desktop");
+  const valid = fx.json("valid.json", { ...response, result: fx.result });
+  const corrected = await command(fx, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response: valid });
+  assert.equal(corrected.exitCode, 0, JSON.stringify(corrected));
+  const storage = createLocalHostStorage({ rootDirectory: join(fx.root, "state"), readOnly: true });
+  try { assert.equal(storage.listRuns({ prefix: "local-checkpoint:" }).filter(({ state }) => state.namespace.endsWith("/responses")).length, 2); }
+  finally { storage.close(); }
+});
+
+test("actual executable uses the explicit native host binding and its supported platform boundary", (t) => {
+  const fx = fixture(t);
+  const bin = fileURLToPath(new URL("../bin/devrelay.mjs", import.meta.url));
+  const child = spawnSync(process.execPath, [bin, "init", "--json", "--host", fx.configurationPath, "--host-digest", fx.configurationDigest], { encoding: "utf8", windowsHide: true, timeout: 30_000 });
+  assert.ifError(child.error);
+  const result = JSON.parse(child.stdout);
+  if (process.platform === "win32") {
+    assert.equal(child.status, 0, child.stdout);
+    assert.equal(result.outcome, "initialized");
+    const invoke = (operation, input) => {
+      const next = spawnSync(process.execPath, [bin, operation, "--json", "--host", fx.configurationPath, "--host-digest", fx.configurationDigest, "--input", JSON.stringify(input)], { encoding: "utf8", windowsHide: true, timeout: 30_000 });
+      assert.ifError(next.error);
+      return { exit: next.status, body: JSON.parse(next.stdout) };
+    };
+    const pending = invoke("run", fx.input);
+    assert.equal(pending.exit, 5, JSON.stringify(pending));
+    const waiting = output(pending.body);
+    const packet = fx.json("subprocess-response.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopStepResponse",
+      requestId: waiting.desktopRequest.requestId, requestDigest: canonicalJsonDigest(waiting.desktopRequest), result: fx.result });
+    const resumed = invoke("resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response: packet });
+    assert.equal(resumed.exit, 0, JSON.stringify(resumed));
+    for (const operation of ["status", "inspect", "evidence", "verify"]) {
+      const inspected = invoke(operation, { ...fx.input, subject: { kind: "checkpoint" } });
+      assert.equal(inspected.exit, 0, JSON.stringify(inspected));
+    }
+  } else {
+    assert.notEqual(child.status, 0);
+    assert.equal(result.diagnostics[0].code, "DR4961");
+    assert.equal(existsSync(join(fx.root, "state")), false);
+  }
+});

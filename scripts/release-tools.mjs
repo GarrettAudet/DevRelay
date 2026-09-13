@@ -562,6 +562,30 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
     'const replayGraph = await installedGraph.mergePrepared(await installedGraph.validatePrepared({ checkpoint: preparedGraph.checkpoint, ...graphRequest }));',
     'if (installedGraph.captureBase().revision !== 1 || replayGraph.receiptRef.digest !== mergedGraph.receiptRef.digest || installedGraph.assertApplied(preparedGraph.updateRef).resultGraphRef.digest !== mergedGraph.snapshotRef.digest) throw new Error("installed graph restart/replay proof drifted");',
     'graphStorage.close(); console.log("Installed durable graph commit/restart/exact-receipt replay smoke passed.");',
+    `if (process.platform === "win32") {
+      const { materializeDesktopHostFixture } = await import(${JSON.stringify(new URL("../test/fixtures/desktop-local-host.mjs", import.meta.url).href)});
+      const { mkdirSync } = await import("node:fs");
+      const { spawnSync } = await import("node:child_process");
+      const hostRoot = checkpointPathJoin(process.cwd(), "installed-desktop-host"); mkdirSync(hostRoot);
+      const fixture = materializeDesktopHostFixture(hostRoot);
+      const installedBin = checkpointPathJoin(process.cwd(), "node_modules", ${JSON.stringify(packageName)}, "bin", "devrelay.mjs");
+      const call = (command, input = fixture.input) => {
+        const child = spawnSync(process.execPath, [installedBin, command, "--json", "--host", fixture.configurationPath, "--host-digest", fixture.configurationDigest, "--input", JSON.stringify(input)], { encoding: "utf8", windowsHide: true, timeout: 60000 });
+        if (child.error) throw child.error;
+        return { exit: child.status, body: JSON.parse(child.stdout) };
+      };
+      if (call("init").exit !== 0) throw new Error("installed native host init failed");
+      const pending = call("run"); if (pending.exit !== 5) throw new Error("installed host did not require Desktop result");
+      const waiting = pending.body.result.outputs;
+      const response = fixture.json("installed-response.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopStepResponse", requestId: waiting.desktopRequest.requestId, requestDigest: api.canonicalJsonDigest(waiting.desktopRequest), result: fixture.result });
+      const resumed = call("resume", { ...fixture.input, checkpointDigest: waiting.checkpointDigest, response });
+      if (resumed.exit !== 0) throw new Error("installed native host resume failed: " + JSON.stringify(resumed.body));
+      for (const command of ["status", "inspect", "evidence", "verify"]) {
+        const result = call(command, { ...fixture.input, subject: { kind: "checkpoint" } });
+        if (result.exit !== 0) throw new Error("installed native host command failed: " + command);
+      }
+      console.log("Installed Windows CLI/facade/Core/Desktop-exchange/replay command matrix passed (fixture candidate, not full lifecycle acceptance).");
+    }`,
     'const expectedFacade = ["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];',
     'if (JSON.stringify(Object.keys(facade).sort()) !== JSON.stringify(expectedFacade)) throw new Error("unexpected root facade exports");',
     'if (typeof api.createModuleRegistry !== "function") throw new Error("missing createModuleRegistry export");',
