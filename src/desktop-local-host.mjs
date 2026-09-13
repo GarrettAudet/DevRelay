@@ -27,11 +27,13 @@ import { validateArchitectureDiscoveryArtifact } from "./architecture-discovery-
 import { createPairedArchitectureDiscoveryTraceabilityContributor } from "./architecture-discovery-traceability-contributor.mjs";
 import { loadArchitectureDiscoveryInterpretation } from "./architecture-discovery-interpretation.mjs";
 import { prepareDiscoveryInterpretationRevision, readDiscoveryInterpretationHistory } from "./discovery-interpretation-history.mjs";
+import { prepareArchitectureDiscoveryGate } from "./architecture-discovery-gate.mjs";
 
 const schema = (name) => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const validateConfiguration = compileArtifactSchema(schema("desktop-local-host-configuration.schema.json"), [schema("module-result.schema.json")]);
 const validateGateSubmission = compileArtifactSchema(schema("desktop-requirements-gate-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateDiscoverySubmission = compileArtifactSchema(schema("discovery-interpretation-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
+const validateDiscoveryGateSubmission = compileArtifactSchema(schema("desktop-discovery-gate-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateGateActivation = compileArtifactSchema(schema("desktop-requirements-gate-activation.schema.json"));
 const validateContextRefresh = compileArtifactSchema(schema("requirements-context-refresh.schema.json"));
 const validateContextSelection = compileArtifactSchema({ $ref: "https://devrelay.dev/host/requirements-context-materialization/v1#/$defs/selection" },
@@ -227,6 +229,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         blockingGaps: loaded.structured.value.gaps.filter(gap => gap.blocking).length };
     };
     const execute = async (input, resume) => {
+      if (input.discoveryGate !== undefined && (!resume || input.discoveryInterpretation || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate || input.refreshRequirementsContext || input.materializeRequirementsContext)) fail("discovery Gate requires a separate exact resume");
       if (input.discoveryInterpretation !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate || input.refreshRequirementsContext || input.materializeRequirementsContext)) fail("discovery interpretation requires a separate exact resume");
       if (input.materializeRequirementsContext !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate || input.refreshRequirementsContext ||
           !validateContextSelection(input.materializeRequirementsContext))) fail("context materialization requires a separate resume bound to its handoff digest");
@@ -283,6 +286,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         await prepareRuntime();
         let nextState;
         if (input.discoveryInterpretation) {
+          if (run.state.discoveryGateKey) fail("a sealed discovery Gate cannot be replaced by a candidate revision", "DR4962", 6);
           if (!run.state.recordKey || run.state.pendingRequestId) fail("interpretation requires a completed Core discovery record", "DR4965", 4);
           const submission = json(input.discoveryInterpretation);
           if (!validateDiscoverySubmission(submission)) fail("discovery interpretation submission violates its closed contract");
@@ -309,6 +313,32 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           }
           records.put(discoveryInterpretationKey, revision.record);
           nextState = { ...run.state, status: "awaiting-discovery-approval", discoveryInterpretationKey };
+        } else if (input.discoveryGate) {
+          if (!run.state.recordKey || run.state.pendingRequestId || !run.state.discoveryInterpretationKey) fail("discovery Gate requires an exact completed interpretation", "DR4965", 4);
+          const submission = json(input.discoveryGate);
+          if (!validateDiscoveryGateSubmission(submission)) fail("discovery Gate submission violates its closed contract");
+          const receipt = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
+          const history = readDiscoveryInterpretationHistory({ headKey: run.state.discoveryInterpretationKey, readRecord: key => records.get(key) });
+          const supplied = new Map();
+          for (const entry of [submission.ownerApproval, ...submission.artifacts]) {
+            const key = canonicalJsonDigest(entry.ref);
+            if (supplied.has(key)) fail("duplicate discovery Gate artifact");
+            supplied.set(key, { ref: entry.ref, bytes: read({ path: entry.path, digest: entry.ref.digest }) });
+          }
+          let gate;
+          try { gate = await prepareArchitectureDiscoveryGate({ checkpointReplay: receipt,
+            interpretationRef: history[0].record.interpretationRef, ownerApprovalRef: submission.ownerApproval.ref,
+            loadArtifact: ref => supplied.get(canonicalJsonDigest(ref))?.bytes ?? executionContext.artifacts.load(ref) }); }
+          catch (error) { fail(error.message, "DR4962", 6); }
+          const discoveryGateKey = `discovery-gate:${gate.commitDigest}`;
+          if (run.state.discoveryGateKey && run.state.discoveryGateKey !== discoveryGateKey) fail("another discovery Gate is already sealed", "DR4962", 6);
+          for (const { ref, bytes } of supplied.values()) {
+            const stored = storage.putArtifact({ artifactId: ref.artifactId, mediaType: ref.mediaType, bytes, expectedDigest: ref.digest });
+            records.put(`artifact:${canonicalJsonDigest(ref)}`, { ref, stored });
+            records.put(`artifact-pointer:${pointerKey(ref)}`, ref);
+          }
+          records.put(discoveryGateKey, gate);
+          nextState = { ...run.state, status: "awaiting-gate-activation", discoveryGateKey };
         } else if (input.requirementsGate) {
           if (!run.state.recordKey || run.state.pendingRequestId) fail("Gate submission requires a completed Core record", "DR4965", 4);
           const submission = json(input.requirementsGate);
@@ -425,6 +455,17 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             } catch (error) { fail(`discovery interpretation history verification failed: ${error.message}`, "DR4964", 7); }
           }
           let requirementsGate = null;
+          let discoveryGate = null;
+          if (observed.state.discoveryGateKey) {
+            try {
+              const saved = records.get(observed.state.discoveryGateKey);
+              if (!discoveryInterpretation) fail("discovery Gate has no current interpretation", "DR4964", 7);
+              discoveryGate = await prepareArchitectureDiscoveryGate({ checkpointReplay: receipt,
+                interpretationRef: discoveryInterpretation.interpretationRef, ownerApprovalRef: saved?.ownerApprovalRef,
+                loadArtifact: executionContext.artifacts.load });
+              if (!same(saved, discoveryGate) || observed.state.discoveryGateKey !== `discovery-gate:${discoveryGate.commitDigest}`) fail("discovery Gate checkpoint drifted", "DR4964", 7);
+            } catch (error) { fail(`discovery Gate verification failed: ${error.message}`, "DR4964", 7); }
+          }
           let requirementsActivation = null;
           let requirementsContext = null;
           let requirementsContextFiles = null;
@@ -456,7 +497,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             } catch { fail("requirements Gate checkpoint verification failed", "DR4964", 7); }
           }
           return { outcome: "verified", scope: "core-checkpoint-and-graph", lifecycleComplete: false,
-            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, discoveryInterpretation, discoveryInterpretationHistory, requirementsGate, requirementsActivation, requirementsContext, requirementsContextFiles, integrity: storage.verifyIntegrity() };
+            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, discoveryInterpretation, discoveryInterpretationHistory, discoveryGate, requirementsGate, requirementsActivation, requirementsContext, requirementsContextFiles, integrity: storage.verifyIntegrity() };
         },
       };
     const facade = createDevRelay({ projectId: configuration.projectId,
@@ -471,6 +512,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         return { outcome: "pass", scope: "run-evidence", lifecycleComplete: false,
           initialization: records.get(initializationKey), execution: observed.state.recordKey ? records.get(observed.state.recordKey) : null,
           discoveryInterpretation: observed.state.discoveryInterpretationKey ? records.get(observed.state.discoveryInterpretationKey) : null,
+          discoveryGate: observed.state.discoveryGateKey ? records.get(observed.state.discoveryGateKey) : null,
           discoveryInterpretationHistory: observed.state.discoveryInterpretationKey ? readDiscoveryInterpretationHistory({ headKey: observed.state.discoveryInterpretationKey, readRecord: key => records.get(key) }).map(entry => entry.record) : [],
           requirementsGate: observed.state.gateRecordKey ? records.get(observed.state.gateRecordKey) : null,
           requirementsActivation: observed.state.gateActivationKey ? records.get(observed.state.gateActivationKey) : null,

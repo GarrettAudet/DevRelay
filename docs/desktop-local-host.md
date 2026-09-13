@@ -293,6 +293,23 @@ rejected. Exact revision replay does not add another record. `evidence` exposes
 the history newest-first; `verify` revalidates every candidate against the same
 Core discovery receipt and checks every history link read-only.
 
-Review policy, approval and durable next-stage activation followed by a real
-ArchitectureDesign invocation remain unconnected. No synthetic successful
-transition is substituted for those remaining integration steps.
+The in-progress discovery Gate accepts a separate `resume.discoveryGate` exact
+file descriptor for `DesktopDiscoveryGateSubmission`. It contains `ownerApproval`
+and supporting `artifacts` file descriptors. The closed owner approval binds the
+current interpretation, repository revision, raw review and nonempty supporting
+evidence, plus exact warning, non-material-gap and out-of-scope dispositions.
+Unresolved observations and material gaps block preparation. Caller-authored
+Core receipts do not carry Gate authority.
+
+The host validates the entire decision before storing evidence and the immutable
+Gate commit, then returns `awaiting-gate-activation` (exit 5). The prepared state
+is `existing-discovered-unbaselined`; it is observational and never creates an
+ArchitectureBaseline. Exact replay preserves the run version. A different Gate
+or candidate revision cannot silently replace a sealed decision. `evidence`
+exposes `discoveryGate`; `verify` rederives it from stored evidence and the genuine
+Core checkpoint without writing state. Approval JSON is evidence supplied by the
+operator, not independent authentication of the human who authored it.
+
+Durable next-stage activation followed by a real ArchitectureDesign invocation
+remains unconnected. No synthetic successful transition is substituted for those
+remaining integration steps.
