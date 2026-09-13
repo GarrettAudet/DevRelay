@@ -1,8 +1,8 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-09-13 CST
+Last reconciled: 2026-09-14 CST
 Protected branch: main
-Working branch: codex/desktop-requirements-gate
+Working branch: codex/desktop-context-handoff
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
@@ -63,6 +63,25 @@ Twenty-four targeted tests pass, including the change/Gate/activation/replay/ver
 independent Windows CLI processes and the unchanged real project pair. See
 [the scoped evidence](dogfood/release-completion-20260913/desktop-requirements-gate.md).
 This candidate is not yet release-sealed; full integration verification is pending.
+
+The Gate increment is submitted in draft PR #30 at
+`b58d3c6ecf8521705621b0a23a91b4b1efa7f800`; its final offline package check passed
+456 catalog-bound files and 228 installed export targets. The next local candidate
+adds an explicitly requested requirements-context handoff after activation. It
+preserves historical session/memory bindings, exposes invalidated downstream work,
+and rederives the new snapshot and receipt on verification. Explicit immutable
+next-configuration materialization is implemented, with no-clobber publication,
+interruption retry and read-only file verification. The Windows flow reached
+new-configuration initialization and correctly rejected adopting the old run.
+Its final historical inspection exposed an existing CLI bug: an omitted subject
+was forwarded as undefined and rejected by strict canonical hashing. A focused
+regression reproduced the defect; the repair now passes all 35 combined tests.
+Static verification passed, and offline package verification passed 462 exact
+catalog-bound files and 232 installed export targets, including context refresh,
+new initialization and historical inspection. See
+[the scoped evidence](dogfood/release-completion-20260913/desktop-context-handoff.md).
+Normal downstream lifecycle routing remains incomplete,
+so no agent dispatch or full installed-product acceptance is claimed.
 
 ProjectMemory is now baseline `PMB-MUC-7A172C974C0158E7`, version 1.0.11,
 digest `sha256:47eddea9836521b0b1557782740121feab15d5fbc9ad6556654172b0334a57e4`.

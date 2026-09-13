@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
@@ -10,6 +10,9 @@ import { commitLocalRequirementsGate, verifyLocalRequirementsGate, activateLocal
 import { createTraceabilityGraphService } from "../src/traceability-graph.mjs";
 import { createLocalHostTraceabilityStore } from "../src/local-host-traceability.mjs";
 import { createRequirementsActivationTraceabilityContributor, requirementsTraceabilityContributor } from "../src/requirements-traceability-contributor.mjs";
+import { createLocalRequirementsContextHandoff } from "../src/local-requirements-context.mjs";
+import { createSessionContextSnapshot, executeSessionBootstrap } from "../src/session-bootstrap.mjs";
+import { materializeLocalRequirementsContext, verifyLocalRequirementsContextFiles } from "../src/local-context-materialization.mjs";
 
 import { sha256Digest } from "../src/content-digest.mjs";
 import { createModuleRegistry } from "../src/module-registry.mjs";
@@ -354,6 +357,78 @@ test("Gate activation checkpoints before merge and recovers the exact approved g
   assert.ok(prepared.update.sourceArtifacts.some(({ artifactId }) => artifactId === "requirements-approval-001"));
   storage.close(); storage = createLocalHostStorage({ rootDirectory, readOnly: true }); graph = createGraph();
   assert.deepEqual(await verifyLocalRequirementsActivation(args()), activated);
+});
+
+test("requirements context handoff binds the current pair and retains invalidated work as history", async (t) => {
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-context-handoff-"));
+  const storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  const { runtime, request } = await verifiedPromotion("change");
+  const record = commitLocalRequirementsGate({ storage, namespace: "gate", request }).committed;
+  const graph = createTraceabilityGraphService({ projectId: "auth-product", graphId: "handoff-graph",
+    contributors: [requirementsTraceabilityContributor, createRequirementsActivationTraceabilityContributor()],
+    store: createLocalHostTraceabilityStore({ storage, namespace: "graph", graphId: "handoff-graph" }) });
+  const gateArgs = { storage, namespace: "gate", graph, checkpointReplay: request.checkpointReplay, record,
+    resolveArtifact: async (ref) => ({ ref, bytes: await runtime.artifacts.load(ref) }) };
+  const contextBytes = Buffer.from("explicit context fixture");
+  const contextRef = { artifactId: "context-fixture", digest: sha256Digest(contextBytes), schema: "https://example.test/context/v1", mediaType: "text/plain", uri: "fixture://context" };
+  const roles = ["project-memory-baseline", "current-synopsis", "traceability-context", "lifecycle-status", "ready-frontier"];
+  const priorSnapshot = createSessionContextSnapshot({ projectId: "auth-product", taskId: "handoff-task", workspaceId: "handoff-workspace",
+    repositoryRevision: "0".repeat(40), createdAt: "2026-09-14T00:00:00Z", roadmapDisposition: "RoadmapNotInitialized",
+    bindings: [...roles.map((role) => ({ role, artifact: contextRef, artifactVersion: "fixture" })),
+      { role: "requirements-baseline", artifact: request.checkpointReplay.loadedInputs["requirements-baseline"][0].ref, artifactVersion: "1.0.0" },
+      { role: "project-overview", artifact: request.checkpointReplay.loadedInputs["project-overview-baseline"][0].ref, artifactVersion: "1.0.0" },
+      { role: "project-overview-projection", artifact: contextRef, artifactVersion: "fixture" }] });
+  const artifactResolver = (ref) => ref.artifactId === contextRef.artifactId ? contextBytes : runtime.artifacts.load(ref);
+  const priorReceipt = await executeSessionBootstrap({ snapshot: priorSnapshot, artifactResolver,
+    expectedProjectId: priorSnapshot.projectId, expectedTaskId: priorSnapshot.taskId,
+    expectedWorkspaceId: priorSnapshot.workspaceId, expectedRepositoryRevision: priorSnapshot.repositoryRevision });
+  const args = { ...gateArgs, priorSnapshot, priorReceipt, artifactResolver, createdAt: "2026-09-14T01:00:00Z" };
+  await assert.rejects(createLocalRequirementsContextHandoff(args), /activation checkpoint is missing/);
+  await activateLocalRequirementsGate(gateArgs);
+  const handoff = await createLocalRequirementsContextHandoff(args);
+  assert.deepEqual(await createLocalRequirementsContextHandoff(args), handoff);
+  assert.equal(handoff.snapshot.bindings.find(({ role }) => role === "requirements-baseline").artifact.artifactId, "requirements-baseline-002");
+  assert.deepEqual(handoff.snapshot.bindings.find(({ role }) => role === "traceability-context").artifact, contextRef);
+  assert.equal(handoff.snapshot.bindings.some(({ role }) => role === "ready-frontier"), false);
+  assert.equal(handoff.invalidatedBindings[0].role, "ready-frontier");
+  assert.equal(priorSnapshot.bindings.some(({ role }) => role === "ready-frontier"), true);
+  assert.equal(handoff.lifecycleComplete, false);
+  assert.equal(Object.isFrozen(handoff.snapshot.bindings), true);
+  assert.equal(handoff.receipt.outcome, "RoadmapNotInitialized");
+  await assert.rejects(createLocalRequirementsContextHandoff({ ...args, artifactResolver: () => Buffer.from("drifted") }), /context refresh failed/);
+  const missingHead = { ...storage, readRun(id) {
+    if (id.startsWith("requirements-head:")) throw Object.assign(new Error("missing head"), { code: "DR4920" });
+    return storage.readRun(id);
+  } };
+  await assert.rejects(createLocalRequirementsContextHandoff({ ...args, storage: missingHead }), /activated requirements head is missing/);
+  // Publication-only fixture; the separate CLI test proves actual next-host init.
+  const file = { path: "declared-fixture.json", digest: contextRef.digest };
+  const configuration = { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopLocalHostConfiguration",
+    projectId: priorSnapshot.projectId, taskId: priorSnapshot.taskId, workspaceRoot: rootDirectory,
+    stateDirectory: "publication", graphId: graph.graphId, sessionSnapshot: file, memoryManifest: "memory.json",
+    memorySessionState: file, contractSet: "requirements", modules: [file], plugins: [file],
+    artifacts: [{ path: file.path, ref: contextRef }], grants: [{ kind: "filesystem.read", values: ["."] }, { kind: "filesystem.write", values: ["publication"] }] };
+  const resolvePath = (relative) => join(rootDirectory, relative);
+  assert.throws(() => materializeLocalRequirementsContext({ configuration, handoff,
+    resolvePath: (relative, kind) => { if (kind === "filesystem.write") throw new Error("write grant denied"); return resolvePath(relative); } }), /write grant denied/);
+  assert.equal(existsSync(join(rootDirectory, "publication")), false);
+  let configurationWrites = 0;
+  assert.throws(() => materializeLocalRequirementsContext({ configuration, handoff,
+    resolvePath: (relative, kind) => {
+      if (relative.endsWith("host.json") && kind === "filesystem.write" && ++configurationWrites === 2) throw new Error("interrupted before configuration publication");
+      return resolvePath(relative);
+    } }), /interrupted before configuration publication/);
+  assert.equal(existsSync(join(rootDirectory, "publication", "contexts", handoff.handoffDigest.slice(7), "host.json")), false);
+  const publication = materializeLocalRequirementsContext({ configuration, handoff, resolvePath });
+  assert.deepEqual(materializeLocalRequirementsContext({ configuration, handoff, resolvePath }), publication);
+  assert.deepEqual(verifyLocalRequirementsContextFiles({ configuration, handoff,
+    resolvePath: (relative, kind) => { assert.equal(kind, "filesystem.read"); return resolvePath(relative); } }), publication);
+  const nextConfiguration = JSON.parse(readFileSync(publication.configurationPath));
+  const projected = nextConfiguration.artifacts.find(({ ref }) => ref.artifactId.startsWith("OVERVIEW-"));
+  writeFileSync(resolvePath(projected.path), "unexpected replacement");
+  assert.throws(() => materializeLocalRequirementsContext({ configuration, handoff, resolvePath }), /conflicts with existing bytes/);
+  assert.equal(readFileSync(resolvePath(projected.path), "utf8"), "unexpected replacement");
 });
 
 function rebindBaselineDocument(request, field) {

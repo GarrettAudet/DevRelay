@@ -131,10 +131,9 @@ export function createOperatorCli({ relay, initialize, evidence }) {
         else if (command === "verify") result = await relay.verify(input);
         else if (command === "evidence") result = await evidence(immutable(input));
         else {
-          result = await relay.inspect({
-            ...input,
-            subject: command === "status" ? { kind: "status" } : input.subject,
-          });
+          result = await relay.inspect(command === "status"
+            ? { ...input, subject: { kind: "status" } }
+            : input);
         }
         if (
           !result || typeof result !== "object" || Array.isArray(result) ||

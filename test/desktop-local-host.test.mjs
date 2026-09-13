@@ -26,10 +26,10 @@ async function command(fx, operation, input = fx.input) {
 test("CLI resume validates a current-pair requirements change through the actual Gate", async (t) => {
   const base = fixture(t);
   const fx = { root: base.root, ...materializeRequirementsChangeHostFixture(base.root) };
-  const invoke = async (operation, input = fx.input) => {
-    if (process.platform !== "win32") return command(fx, operation, input);
+  const invoke = async (operation, input = fx.input, selected = fx) => {
+    if (process.platform !== "win32") return command({ ...fx, ...selected }, operation, input);
     const child = spawnSync(process.execPath, [fileURLToPath(new URL("../bin/devrelay.mjs", import.meta.url)), operation,
-      "--json", "--host", fx.configurationPath, "--host-digest", fx.configurationDigest, "--input", JSON.stringify(input)],
+      "--json", "--host", selected.configurationPath, "--host-digest", selected.configurationDigest, "--input", JSON.stringify(input)],
     { encoding: "utf8", windowsHide: true, timeout: 30_000 });
     assert.ifError(child.error);
     const body = JSON.parse(child.stdout);
@@ -87,6 +87,39 @@ test("CLI resume validates a current-pair requirements change through the actual
   const staleRun = await invoke("run", { ...fx.input, runId: "old-context-new-run" });
   assert.equal(staleRun.exitCode, 6, JSON.stringify(staleRun));
   assert.equal(output(await invoke("status")).checkpointDigest, output(activated).checkpointDigest);
+  const refreshRequirementsContext = "2026-09-14T02:00:00Z";
+  const refreshed = await invoke("resume", { ...fx.input, checkpointDigest: output(activated).checkpointDigest, refreshRequirementsContext });
+  assert.equal(refreshed.outcome, "requirements-context-prepared", JSON.stringify(refreshed));
+  const context = output(await invoke("evidence")).requirementsContext;
+  assert.equal(context.snapshot.bindings.find(({ role }) => role === "requirements-baseline").artifact.artifactId, "requirements-baseline-002");
+  assert.equal(context.lifecycleComplete, false);
+  const contextDatabase = readFileSync(join(fx.root, "state", "state.sqlite"));
+  const verifiedContext = await invoke("verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.equal(verifiedContext.exitCode, 0, JSON.stringify(verifiedContext));
+  assert.deepEqual(output(verifiedContext).requirementsContext, context);
+  assert.deepEqual(readFileSync(join(fx.root, "state", "state.sqlite")), contextDatabase);
+  const repeatedContext = await invoke("resume", { ...fx.input, checkpointDigest: output(refreshed).checkpointDigest, refreshRequirementsContext });
+  assert.equal(output(repeatedContext).version, output(refreshed).version);
+  const conflict = await invoke("resume", { ...fx.input, checkpointDigest: output(refreshed).checkpointDigest,
+    refreshRequirementsContext: "2026-09-14T03:00:00Z" });
+  assert.equal(conflict.exitCode, 6, JSON.stringify(conflict));
+  const originalConfiguration = readFileSync(fx.configurationPath);
+  const materialized = await invoke("resume", { ...fx.input, checkpointDigest: output(refreshed).checkpointDigest,
+    materializeRequirementsContext: context.handoffDigest });
+  assert.equal(materialized.outcome, "requirements-context-materialized", JSON.stringify(materialized));
+  const nextConfiguration = output(materialized).nextConfiguration;
+  assert.deepEqual(readFileSync(fx.configurationPath), originalConfiguration);
+  const filesVerified = await invoke("verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.equal(filesVerified.exitCode, 0, JSON.stringify(filesVerified));
+  assert.deepEqual(output(filesVerified).requirementsContextFiles, nextConfiguration);
+  const materializationReplay = await invoke("resume", { ...fx.input, checkpointDigest: output(materialized).checkpointDigest,
+    materializeRequirementsContext: context.handoffDigest });
+  assert.equal(output(materializationReplay).version, output(materialized).version);
+  const nextInitialized = await invoke("init", fx.input, nextConfiguration);
+  assert.equal(nextInitialized.exitCode, 0, JSON.stringify(nextInitialized));
+  assert.equal((await invoke("inspect", fx.input, nextConfiguration)).exitCode, 6);
+  const historical = await invoke("inspect");
+  assert.equal(historical.exitCode, 0, JSON.stringify(historical));
 });
 
 test("native host connects real facade/Core to durable Desktop pending/result/replay flow", async (t) => {

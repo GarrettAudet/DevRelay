@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { canonicalJsonDigest } from "../src/content-digest.mjs";
 
 import {
   createOperatorCli,
@@ -72,6 +73,28 @@ test("status and inspect are read-only facade inspections", async () => {
     calls.map(({ operation }) => operation),
     ["inspect", "inspect"],
   );
+});
+
+test("inspect preserves an omitted subject as canonical JSON without inventing a selector", async () => {
+  const requests = [];
+  const operator = createOperatorCli({
+    relay: { ...relay, inspect: async (input) => {
+      canonicalJsonDigest(input);
+      requests.push(input);
+      return { outcome: "pass" };
+    } },
+    initialize: async () => ({ outcome: "initialized" }),
+    evidence: async () => ({ outcome: "pass" }),
+  });
+  const input = { runId: "historical-run", taskId: "operator-task" };
+  const result = await operator.execute({ command: "inspect", input });
+  assert.equal(result.exitCode, 0, result.stdout);
+  assert.deepEqual(requests[0], input);
+  assert.equal(Object.hasOwn(requests[0], "subject"), false);
+  await operator.execute({ command: "inspect", input: { ...input, subject: { kind: "graph" } } });
+  assert.deepEqual(requests[1].subject, { kind: "graph" });
+  await operator.execute({ command: "status", input });
+  assert.deepEqual(requests[2].subject, { kind: "status" });
 });
 
 test("machine and human output retain evidence while secrets are redacted", async () => {

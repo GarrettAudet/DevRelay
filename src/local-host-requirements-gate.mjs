@@ -123,10 +123,14 @@ function activationRequest({ checkpointReplay, record, resolveArtifact }) {
 
 const requirementsHeadId = (namespace, projectId) => `requirements-head:${canonicalJsonDigest({ namespace, projectId })}`;
 
-export function assertLocalRequirementsCurrentPair({ storage, namespace, projectId, pair }) {
+export function assertLocalRequirementsCurrentPair({ storage, namespace, projectId, pair, required = false }) {
   let head;
   try { head = storage.readRun(requirementsHeadId(namespace, projectId)); }
-  catch (error) { if (error.code === "DR4920") return; throw error; }
+  catch (error) {
+    if (error.code !== "DR4920") throw error;
+    if (required) throw new TypeError("the activated requirements head is missing");
+    return;
+  }
   if (!validateHead(head.state)) throw new TypeError("requirements head violates its closed contract");
   if (head.state.pendingCommit !== null || canonicalJsonDigest(head.state.pair) !== canonicalJsonDigest(pair)) {
     throw Object.assign(new TypeError("requirements context is stale or a Gate activation needs recovery"), { code: "DR4962", exitCode: 6 });

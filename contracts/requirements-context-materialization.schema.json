@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/requirements-context-materialization/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "handoffDigest", "configurationPath", "configurationDigest", "snapshot", "lifecycleComplete"],
+  "properties": {
+    "kind": { "const": "DesktopRequirementsContextMaterialization" },
+    "handoffDigest": { "$ref": "#/$defs/selection" },
+    "configurationPath": { "type": "string", "minLength": 1 },
+    "configurationDigest": { "$ref": "#/$defs/selection" },
+    "snapshot": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/file" },
+    "lifecycleComplete": { "const": false }
+  },
+  "$defs": { "selection": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }
+}

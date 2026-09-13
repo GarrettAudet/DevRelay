@@ -166,11 +166,42 @@ context and do not silently adopt a newer baseline.
 
 The resulting status is `requirements-activated`, not lifecycle completion.
 `evidence` and read-only `verify` expose a separate `requirementsActivation`
-application proof. Current session-context refresh and downstream lifecycle
-progression remain incomplete. Configurations omitting the observer version
+application proof. Downstream lifecycle progression remains incomplete.
+Configurations omitting the observer version
 retain released 1.0.0 behavior and cannot activate; changing an existing context
 requires explicit reconciliation, never silent contributor migration. No
 independent human approval is inferred from the presence of approval bytes.
+
+After activation, a separate `resume` may supply `refreshRequirementsContext`
+as an explicit UTC timestamp, together with the current checkpoint digest.
+The host verifies the actual activation and current requirements head, then
+seals a `DesktopRequirementsContextHandoff`. Its new snapshot binds the paired
+baselines, exact overview bytes and a lifecycle boundary containing the runtime
+graph/receipt references. ProjectMemory, synopsis, memory graph and roadmap
+bindings are preserved and reloaded by exact digest. The prior session is not
+rewritten. Downstream bindings, including old ready work or blockers, are retained
+as `invalidatedBindings` requiring reassessment, never silently marked resolved.
+
+The result is `requirements-context-prepared`, exit 5. `evidence` exposes the
+handoff and its four exact artifact payloads; `verify` rederives the same handoff
+read-only. Exact replay preserves the run version; a different timestamp cannot
+replace an already sealed handoff. This is not an approved next-stage route.
+
+A subsequent separate `resume` may supply `materializeRequirementsContext` as
+the exact handoff digest, together with the current checkpoint digest. The host
+rederives the genuine handoff before publishing its four artifacts and snapshot
+under the explicitly granted state directory. It publishes `host.json` last,
+using atomic no-clobber file publication. Exact existing bytes are reused;
+conflicting bytes are rejected, never overwritten. An interrupted publication
+can retry the same immutable files without publishing a usable partial configuration.
+
+The result is `requirements-context-materialized`, exit 5, with
+`outputs.nextConfiguration.configurationPath` and `configurationDigest`. Use
+these exact values as `--host` and `--host-digest` for an explicit `init`.
+`verify` checks published bytes read-only. The old configuration is not modified,
+and the new configuration cannot inspect or adopt an old run's context identity.
+Module bindings and grants are preserved; no next-stage route is selected and
+no agent task is launched. Normal downstream lifecycle routing remains required.
 
 Tests exercise the actual Windows executable in separate processes and the
 installed package across all seven commands. Candidate artifacts are labelled

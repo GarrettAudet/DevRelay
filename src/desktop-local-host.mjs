@@ -20,11 +20,18 @@ import { deriveProjectOverview } from "./project-overview.mjs";
 import { validateProjectMemoryArtifact } from "./project-memory-artifact-validator.mjs";
 import { commitLocalRequirementsGate, verifyLocalRequirementsGate, activateLocalRequirementsGate, verifyLocalRequirementsActivation, assertLocalRequirementsCurrentPair } from "./local-host-requirements-gate.mjs";
 import { createRequirementsActivationTraceabilityContributor } from "./requirements-traceability-contributor.mjs";
+import { createLocalRequirementsContextHandoff } from "./local-requirements-context.mjs";
+import { materializeLocalRequirementsContext, verifyLocalRequirementsContextFiles } from "./local-context-materialization.mjs";
 
 const schema = (name) => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const validateConfiguration = compileArtifactSchema(schema("desktop-local-host-configuration.schema.json"), [schema("module-result.schema.json")]);
 const validateGateSubmission = compileArtifactSchema(schema("desktop-requirements-gate-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateGateActivation = compileArtifactSchema(schema("desktop-requirements-gate-activation.schema.json"));
+const validateContextRefresh = compileArtifactSchema(schema("requirements-context-refresh.schema.json"));
+const validateContextSelection = compileArtifactSchema({ $ref: "https://devrelay.dev/host/requirements-context-materialization/v1#/$defs/selection" },
+  [schema("requirements-context-materialization.schema.json"), schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
+const requirementsStatus = (state, fallback) => state.contextMaterializationKey ? "requirements-context-materialized"
+  : state.contextHandoffKey ? "requirements-context-prepared" : state.gateActivationKey ? "requirements-activated" : fallback;
 const same = (a, b) => a === undefined || b === undefined ? a === b : canonicalJson(a) === canonicalJson(b);
 const fail = (message, code = "DR4960", exitCode = 2) => { throw new OperatorCliError(message, code, exitCode); };
 const inside = (root, target) => { const r = path.relative(root, target); return r !== "" && !path.isAbsolute(r) && r !== ".." && !r.startsWith(`..${path.sep}`); };
@@ -184,6 +191,10 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
       registry = createModuleRegistry({ modules: configuration.modules.map(json), plugins, artifactContracts: contracts(), traceability: { graph, checkpoints: traces } });
     };
     const execute = async (input, resume) => {
+      if (input.materializeRequirementsContext !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate || input.refreshRequirementsContext ||
+          !validateContextSelection(input.materializeRequirementsContext))) fail("context materialization requires a separate resume bound to its handoff digest");
+      if (input.refreshRequirementsContext !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate ||
+          !validateContextRefresh(input.refreshRequirementsContext))) fail("context refresh requires a separate resume with an explicit timestamp");
       if (input.requirementsGate && (!resume || input.response || input.artifacts)) fail("Gate submission requires a separate exact resume without candidate ingestion");
       if (input.activateRequirementsGate !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate ||
           !validateGateActivation(input.activateRequirementsGate))) fail("Gate activation requires a separate resume bound to the exact commit digest");
@@ -264,7 +275,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           } });
           const gateRecordKey = `requirements-gate:${gate.committed.commitDigest}`;
           records.put(gateRecordKey, gate.committed);
-          nextState = { ...run.state, status: run.state.gateActivationKey ? "requirements-activated" : "awaiting-gate-activation", gateRecordKey };
+          nextState = { ...run.state, status: requirementsStatus(run.state, "awaiting-gate-activation"), gateRecordKey };
         } else if (input.activateRequirementsGate) {
           if (!run.state.gateRecordKey) fail("Gate activation requires a validated pair checkpoint", "DR4965", 4);
           const gateRecord = records.get(run.state.gateRecordKey);
@@ -275,7 +286,31 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
           const gateActivationKey = `requirements-activation:${gateRecord.commitDigest}`;
           records.put(gateActivationKey, activation);
-          nextState = { ...run.state, status: "requirements-activated", gateActivationKey };
+          nextState = { ...run.state, status: requirementsStatus(run.state, "requirements-activated"), gateActivationKey };
+        } else if (input.refreshRequirementsContext) {
+          if (!run.state.gateActivationKey) fail("context refresh requires an activated requirements pair", "DR4965", 4);
+          const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
+          const handoff = await createLocalRequirementsContextHandoff({ storage, namespace: `${namespace}/requirements-gate`, graph,
+            checkpointReplay, record: records.get(run.state.gateRecordKey), priorSnapshot: snapshot, priorReceipt: session,
+            createdAt: input.refreshRequirementsContext, artifactResolver: loadConfigured,
+            resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
+          const contextHandoffKey = `requirements-context:${handoff.handoffDigest}`;
+          if (run.state.contextHandoffKey && run.state.contextHandoffKey !== contextHandoffKey) fail("a different context handoff is already sealed for this boundary", "DR4962", 6);
+          records.put(contextHandoffKey, handoff);
+          nextState = { ...run.state, status: run.state.contextMaterializationKey ? "requirements-context-materialized" : "requirements-context-prepared", contextHandoffKey };
+        } else if (input.materializeRequirementsContext) {
+          const stored = run.state.contextHandoffKey && records.get(run.state.contextHandoffKey);
+          if (!stored || stored.handoffDigest !== input.materializeRequirementsContext) fail("context materialization requires the exact sealed handoff", "DR4962", 6);
+          const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
+          const handoff = await createLocalRequirementsContextHandoff({ storage, namespace: `${namespace}/requirements-gate`, graph,
+            checkpointReplay, record: records.get(run.state.gateRecordKey), priorSnapshot: snapshot, priorReceipt: session,
+            createdAt: stored.snapshot.createdAt, artifactResolver: loadConfigured,
+            resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
+          if (!same(handoff, stored)) fail("sealed context handoff drifted", "DR4962", 6);
+          const materialization = materializeLocalRequirementsContext({ configuration, handoff, resolvePath: scopedPath });
+          const contextMaterializationKey = `context-files:${handoff.handoffDigest}`;
+          records.put(contextMaterializationKey, materialization);
+          nextState = { ...run.state, status: "requirements-context-materialized", contextMaterializationKey };
         } else if (run.state.gateRecordKey) {
           // Ordinary replay cannot erase the Gate handoff or silently advance it.
           nextState = run.state;
@@ -295,6 +330,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         }
         const observed = inspect(input);
         return { ...observed, outcome: nextState.status === "module-completed" ? "completed" : nextState.status,
+          ...(nextState.contextMaterializationKey ? { nextConfiguration: records.get(nextState.contextMaterializationKey) } : {}),
           ...(nextState.pendingRequestId ? { desktopRequest: exchange.readRequest(nextState.pendingRequestId) } : {}) };
       } finally { storage.releaseLease({ runId: id, leaseToken: lease.token }); }
     };
@@ -312,6 +348,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const proof = graph.assertApplied(record.traceabilityUpdateRef);
           let requirementsGate = null;
           let requirementsActivation = null;
+          let requirementsContext = null;
+          let requirementsContextFiles = null;
           if (observed.state.gateRecordKey) {
             const gateRecord = records.get(observed.state.gateRecordKey);
             try {
@@ -323,11 +361,24 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
                   checkpointReplay: receipt, record: gateRecord,
                   resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
                 if (!same(requirementsActivation, records.get(observed.state.gateActivationKey))) fail("Gate activation record differs from stored graph proof", "DR4964", 7);
+                if (observed.state.contextHandoffKey) {
+                  const stored = records.get(observed.state.contextHandoffKey);
+                  requirementsContext = await createLocalRequirementsContextHandoff({ storage, namespace: `${namespace}/requirements-gate`, graph,
+                    checkpointReplay: receipt, record: gateRecord, priorSnapshot: snapshot, priorReceipt: session,
+                    createdAt: stored?.snapshot?.createdAt, artifactResolver: loadConfigured,
+                    resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
+                  if (!same(requirementsContext, stored) || observed.state.contextHandoffKey !== `requirements-context:${requirementsContext.handoffDigest}`) fail("context handoff differs from its verified boundary", "DR4964", 7);
+                  if (observed.state.contextMaterializationKey) {
+                    requirementsContextFiles = verifyLocalRequirementsContextFiles({ configuration, handoff: requirementsContext, resolvePath: scopedPath });
+                    if (observed.state.contextMaterializationKey !== `context-files:${requirementsContext.handoffDigest}` ||
+                        !same(requirementsContextFiles, records.get(observed.state.contextMaterializationKey))) fail("materialized context record drifted", "DR4964", 7);
+                  }
+                }
               }
             } catch { fail("requirements Gate checkpoint verification failed", "DR4964", 7); }
           }
           return { outcome: "verified", scope: "core-checkpoint-and-graph", lifecycleComplete: false,
-            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, requirementsGate, requirementsActivation, integrity: storage.verifyIntegrity() };
+            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, requirementsGate, requirementsActivation, requirementsContext, requirementsContextFiles, integrity: storage.verifyIntegrity() };
         },
       };
     const facade = createDevRelay({ projectId: configuration.projectId,
@@ -343,6 +394,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           initialization: records.get(initializationKey), execution: observed.state.recordKey ? records.get(observed.state.recordKey) : null,
           requirementsGate: observed.state.gateRecordKey ? records.get(observed.state.gateRecordKey) : null,
           requirementsActivation: observed.state.gateActivationKey ? records.get(observed.state.gateActivationKey) : null,
+          requirementsContext: observed.state.contextHandoffKey ? records.get(observed.state.contextHandoffKey) : null,
+          requirementsContextFiles: observed.state.contextMaterializationKey ? records.get(observed.state.contextMaterializationKey) : null,
           pendingRequest: observed.state.pendingRequestId ? exchange.readRequest(observed.state.pendingRequestId) : null };
       },
     });
