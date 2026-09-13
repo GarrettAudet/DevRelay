@@ -25,10 +25,13 @@ import { materializeLocalRequirementsContext, verifyLocalRequirementsContextFile
 import { createNativeDiscoveryBinding, nativeDiscoveryPlugin } from "./native-discovery-binding.mjs";
 import { validateArchitectureDiscoveryArtifact } from "./architecture-discovery-artifact-validator.mjs";
 import { createPairedArchitectureDiscoveryTraceabilityContributor } from "./architecture-discovery-traceability-contributor.mjs";
+import { loadArchitectureDiscoveryInterpretation } from "./architecture-discovery-interpretation.mjs";
+import { prepareDiscoveryInterpretationRevision, readDiscoveryInterpretationHistory } from "./discovery-interpretation-history.mjs";
 
 const schema = (name) => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const validateConfiguration = compileArtifactSchema(schema("desktop-local-host-configuration.schema.json"), [schema("module-result.schema.json")]);
 const validateGateSubmission = compileArtifactSchema(schema("desktop-requirements-gate-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
+const validateDiscoverySubmission = compileArtifactSchema(schema("discovery-interpretation-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateGateActivation = compileArtifactSchema(schema("desktop-requirements-gate-activation.schema.json"));
 const validateContextRefresh = compileArtifactSchema(schema("requirements-context-refresh.schema.json"));
 const validateContextSelection = compileArtifactSchema({ $ref: "https://devrelay.dev/host/requirements-context-materialization/v1#/$defs/selection" },
@@ -210,7 +213,21 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         store: createLocalHostTraceabilityStore({ storage, namespace: `${namespace}/graph`, graphId: configuration.graphId }) });
       registry = createModuleRegistry({ modules: configuration.modules.map(json), plugins, artifactContracts: contracts(), traceability: { graph, checkpoints: traces } });
     };
+    const verifyDiscoveryInterpretation = async (interpretationRef, receipt, loadArtifact) => {
+      const loaded = await loadArchitectureDiscoveryInterpretation({ interpretationRef, loadArtifact });
+      const candidate = loaded.interpretation.value;
+      const outputs = receipt.moduleResult.outputs?.["current-architecture-snapshot"];
+      if (receipt.moduleResult.outcome !== "discovered" || outputs?.length !== 1 || !same(outputs[0], candidate.discoverySnapshot)) fail("interpretation does not bind the exact completed discovery output", "DR4962", 6);
+      for (const [port, ref] of [["project-architecture-state", candidate.projectArchitectureState], ["requirements-baseline", candidate.requirementsBaseline], ["project-overview-baseline", candidate.projectOverviewBaseline]]) {
+        const inputs = receipt.loadedInputs[port];
+        if (inputs?.length !== 1 || !same(inputs[0].ref, ref)) fail("interpretation changes the discovery input context", "DR4962", 6);
+      }
+      return { interpretationRef, authority: "candidate", discoverySnapshot: candidate.discoverySnapshot,
+        structuredSnapshot: candidate.structuredSnapshot, unresolvedObservations: candidate.observations.filter(entry => entry.disposition === "unresolved").length,
+        blockingGaps: loaded.structured.value.gaps.filter(gap => gap.blocking).length };
+    };
     const execute = async (input, resume) => {
+      if (input.discoveryInterpretation !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate || input.refreshRequirementsContext || input.materializeRequirementsContext)) fail("discovery interpretation requires a separate exact resume");
       if (input.materializeRequirementsContext !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate || input.refreshRequirementsContext ||
           !validateContextSelection(input.materializeRequirementsContext))) fail("context materialization requires a separate resume bound to its handoff digest");
       if (input.refreshRequirementsContext !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate || input.activateRequirementsGate ||
@@ -265,7 +282,34 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         }
         await prepareRuntime();
         let nextState;
-        if (input.requirementsGate) {
+        if (input.discoveryInterpretation) {
+          if (!run.state.recordKey || run.state.pendingRequestId) fail("interpretation requires a completed Core discovery record", "DR4965", 4);
+          const submission = json(input.discoveryInterpretation);
+          if (!validateDiscoverySubmission(submission)) fail("discovery interpretation submission violates its closed contract");
+          const receipt = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
+          const entries = [submission.interpretation, ...submission.artifacts];
+          const supplied = new Map();
+          for (const entry of entries) {
+            const key = canonicalJsonDigest(entry.ref);
+            if (supplied.has(key)) fail("duplicate interpretation artifact");
+            supplied.set(key, { ref: entry.ref, bytes: read({ path: entry.path, digest: entry.ref.digest }) });
+          }
+          const candidateRecord = await verifyDiscoveryInterpretation(submission.interpretation.ref, receipt,
+            ref => supplied.get(canonicalJsonDigest(ref))?.bytes ?? executionContext.artifacts.load(ref));
+          let revision;
+          try { revision = prepareDiscoveryInterpretationRevision({ candidate: candidateRecord,
+            headKey: run.state.discoveryInterpretationKey ?? null, replacesInterpretation: submission.replacesInterpretation,
+            readRecord: key => records.get(key) }); }
+          catch (error) { fail(error.message, "DR4962", 6); }
+          const discoveryInterpretationKey = revision.key;
+          for (const { ref, bytes } of supplied.values()) {
+            const stored = storage.putArtifact({ artifactId: ref.artifactId, mediaType: ref.mediaType, bytes, expectedDigest: ref.digest });
+            records.put(`artifact:${canonicalJsonDigest(ref)}`, { ref, stored });
+            records.put(`artifact-pointer:${pointerKey(ref)}`, ref);
+          }
+          records.put(discoveryInterpretationKey, revision.record);
+          nextState = { ...run.state, status: "awaiting-discovery-approval", discoveryInterpretationKey };
+        } else if (input.requirementsGate) {
           if (!run.state.recordKey || run.state.pendingRequestId) fail("Gate submission requires a completed Core record", "DR4965", 4);
           const submission = json(input.requirementsGate);
           if (!validateGateSubmission(submission)) fail("requirements Gate submission violates its closed contract");
@@ -331,7 +375,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const contextMaterializationKey = `context-files:${handoff.handoffDigest}`;
           records.put(contextMaterializationKey, materialization);
           nextState = { ...run.state, status: "requirements-context-materialized", contextMaterializationKey };
-        } else if (run.state.gateRecordKey) {
+        } else if (run.state.gateRecordKey || run.state.discoveryInterpretationKey) {
           // Ordinary replay cannot erase the Gate handoff or silently advance it.
           nextState = run.state;
         } else try {
@@ -366,6 +410,20 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const record = records.get(observed.state.recordKey);
           if (!same(receipt.moduleResult, record.moduleResult)) fail("Core receipt differs from stored execution", "DR4964", 7);
           const proof = graph.assertApplied(record.traceabilityUpdateRef);
+          let discoveryInterpretation = null;
+          let discoveryInterpretationHistory = [];
+          if (observed.state.discoveryInterpretationKey) {
+            try {
+              const history = readDiscoveryInterpretationHistory({ headKey: observed.state.discoveryInterpretationKey, readRecord: key => records.get(key) });
+              for (const { record: saved } of history) {
+                const derived = await verifyDiscoveryInterpretation(saved.interpretationRef, receipt, executionContext.artifacts.load);
+                const expected = { ...derived, ...(Object.hasOwn(saved, "previousInterpretationKey") ? { previousInterpretationKey: saved.previousInterpretationKey } : {}) };
+                if (!same(expected, saved)) fail("discovery interpretation checkpoint drifted", "DR4964", 7);
+              }
+              discoveryInterpretationHistory = history.map(entry => entry.record);
+              discoveryInterpretation = discoveryInterpretationHistory[0];
+            } catch (error) { fail(`discovery interpretation history verification failed: ${error.message}`, "DR4964", 7); }
+          }
           let requirementsGate = null;
           let requirementsActivation = null;
           let requirementsContext = null;
@@ -398,7 +456,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             } catch { fail("requirements Gate checkpoint verification failed", "DR4964", 7); }
           }
           return { outcome: "verified", scope: "core-checkpoint-and-graph", lifecycleComplete: false,
-            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, requirementsGate, requirementsActivation, requirementsContext, requirementsContextFiles, integrity: storage.verifyIntegrity() };
+            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, discoveryInterpretation, discoveryInterpretationHistory, requirementsGate, requirementsActivation, requirementsContext, requirementsContextFiles, integrity: storage.verifyIntegrity() };
         },
       };
     const facade = createDevRelay({ projectId: configuration.projectId,
@@ -412,6 +470,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         const observed = inspect(input);
         return { outcome: "pass", scope: "run-evidence", lifecycleComplete: false,
           initialization: records.get(initializationKey), execution: observed.state.recordKey ? records.get(observed.state.recordKey) : null,
+          discoveryInterpretation: observed.state.discoveryInterpretationKey ? records.get(observed.state.discoveryInterpretationKey) : null,
+          discoveryInterpretationHistory: observed.state.discoveryInterpretationKey ? readDiscoveryInterpretationHistory({ headKey: observed.state.discoveryInterpretationKey, readRecord: key => records.get(key) }).map(entry => entry.record) : [],
           requirementsGate: observed.state.gateRecordKey ? records.get(observed.state.gateRecordKey) : null,
           requirementsActivation: observed.state.gateActivationKey ? records.get(observed.state.gateActivationKey) : null,
           requirementsContext: observed.state.contextHandoffKey ? records.get(observed.state.contextHandoffKey) : null,

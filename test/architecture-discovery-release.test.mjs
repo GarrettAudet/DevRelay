@@ -22,7 +22,7 @@ const fullRef = (artifactId, digest, schema="https://devrelay.dev/test/v1") => (
 const loaded = (value, artifactId) => { const bytes=Buffer.from(canonicalJson(value)); return {value,bytes,ref:fullRef(artifactId,sha256Digest(bytes))}; };
 const seal = (body, field) => ({...body,[field]:canonicalJsonDigest(Object.fromEntries(Object.entries(body).filter(([key])=>!["apiVersion","kind",field].includes(key))))});
 
-test("the pinned DevRelay repository completes the offline discovery circuit and safely reaches ArchitectureDesign", async (t) => {
+test("offline discovery checkpoints and observational graph replay pass; synthetic state only proves discovery bypass", async (t) => {
   const repositoryValue=JSON.parse(await readFile(new URL("dogfood/architecture-discovery/repository-snapshot.json",root),"utf8"));
   const repository=loaded(repositoryValue,"repository-snapshot-devrelay-ad");
   const overviewValue=JSON.parse(await readFile(new URL("project/project-overview-baseline.json",root),"utf8"));
@@ -73,6 +73,8 @@ test("the pinned DevRelay repository completes the offline discovery circuit and
   assert.equal(merged.receipt.disposition,"merged"); assert.deepEqual(graphReplay.receipt,merged.receipt);
   assert.ok(merged.snapshot.edges.length>0); assert.equal(merged.snapshot.edges.every(edge=>edge.authority==="candidate"),true);
 
+  // This is a synthetic routing assertion, not an ArchitectureDesign invocation
+  // or proof that the observational snapshot satisfies its handoff contract.
   const progressedState={...state.value,state:"existing-discovered-unbaselined",currentArchitectureSnapshot:snapshot.ref};
   const progressed=loaded(progressedState,progressedState.stateId);
   assert.deepEqual(selectArchitectureDiscoveryRoute({projectArchitectureState:progressed.value,projectArchitectureStateRef:progressed.ref,projectArchitectureStateBytes:progressed.bytes}).selection,{kind:"bypass"});

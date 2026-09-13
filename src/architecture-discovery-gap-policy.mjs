@@ -70,25 +70,48 @@ export function evaluateArchitectureDiscoveryGapPolicy({ snapshot, observations,
 
 // Explicit additive entry point for canonical UTF-8 JSON artifact files. The
 // existing content-digest API remains unchanged for historical consumers.
-export function evaluateMaterializedArchitectureDiscoveryGapPolicy({ snapshot, observations, rules = [] } = {}) {
-  return evaluate({ snapshot, observations, rules }, true);
+export function evaluateMaterializedArchitectureDiscoveryGapPolicy({ snapshot, observations, rules = [], existingGaps = [] } = {}) {
+  return evaluate({ snapshot, observations, rules, existingGaps }, true);
 }
 
-function evaluate({ snapshot, observations, rules }, materialized) {
+function retainedMaterializedGaps(snapshot, existingGaps) {
+  if (!Array.isArray(existingGaps)) fail("existingGaps must resolve the exact snapshot gap set");
+  const expected = new Map(snapshot.gaps.map(value => [value.artifactId, value]));
+  if (expected.size !== snapshot.gaps.length || existingGaps.length !== expected.size) fail("existingGaps must cover the exact snapshot gap set once");
+  const seen = new Set();
+  for (const gap of existingGaps) {
+    try { validateArchitectureDiscoveryArtifact(gap); } catch (error) { fail(error.message); }
+    if (gap.kind !== "ArchitectureDiscoveryGap" || seen.has(gap.gapId) || expected.get(gap.gapId)?.digest !== canonicalJsonDigest(gap)) fail("existing gap bytes are missing, duplicated or substituted");
+    seen.add(gap.gapId);
+  }
+  return structuredClone(existingGaps);
+}
+
+function evaluate({ snapshot, observations, rules, existingGaps }, materialized) {
   validateInputs(snapshot, observations, rules, materialized);
   const ids = new Set();
-  const gaps = [];
+  // Reevaluation is not a disposition authority: prior gaps require exact
+  // bytes and remain open even if the current rule list no longer emits them.
+  const gaps = materialized ? retainedMaterializedGaps(snapshot, existingGaps) : [];
   for (const rule of ordered(rules, (value) => value?.id ?? "")) {
     validateRule(rule);
     if (ids.has(rule.id)) fail(`duplicate rule ${rule.id}`);
     ids.add(rule.id);
     const matches = observations.filter((value) => value.finding.subject === rule.subject);
-    if (triggered(rule, matches)) gaps.push(createGap(rule, matches));
+    if (triggered(rule, matches)) {
+      const gap = createGap(rule, matches);
+      const prior = gaps.find(value => value.gapId === gap.gapId);
+      if (prior && canonicalJson(prior) !== canonicalJson(gap)) fail(`gap identity ${gap.gapId} has conflicting bytes`);
+      if (!prior) gaps.push(gap);
+    }
   }
+  if (materialized) gaps.sort((a, b) => a.gapId.localeCompare(b.gapId));
   const blocking = gaps.some((gap) => gap.material);
   if (blocking) return Object.freeze({ outcome:"needs_clarification", gaps:Object.freeze(gaps), diagnostics:Object.freeze(gaps.filter((gap) => gap.material).map((gap) => `Material discovery gap ${gap.gapId}: ${gap.reason}`)) });
   const body = {
-    ...structuredClone(snapshot), gaps:ordered(gaps.map((gap) => ref(gap, materialized)), (value) => value.artifactId),
+    ...structuredClone(snapshot), gaps:ordered(gaps.map((gap) => materialized
+      ? structuredClone(snapshot.gaps.find(value => value.artifactId === gap.gapId) ?? ref(gap, true))
+      : ref(gap, false)), (value) => value.artifactId),
     warnings:ordered(new Set([...snapshot.warnings, ...gaps.map((gap) => `Non-material discovery gap ${gap.gapId} remains explicit for downstream Gate review: ${gap.reason}`)]), (value) => value),
   };
   delete body.snapshotDigest;

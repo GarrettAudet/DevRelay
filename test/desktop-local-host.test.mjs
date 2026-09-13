@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,6 +9,7 @@ import { canonicalJsonDigest } from "../src/content-digest.mjs";
 import { materializeNativeDiscoveryHostFixture } from "./fixtures/desktop-native-discovery-host.mjs";
 import { openDesktopLocalHost } from "../src/desktop-local-host.mjs";
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createLocalHostCheckpointStore } from "../src/local-host-checkpoints.mjs";
 import { materializeDesktopHostFixture } from "./fixtures/desktop-local-host.mjs";
 import { materializeRequirementsChangeHostFixture } from "./fixtures/desktop-requirements-change-host.mjs";
 
@@ -34,6 +35,80 @@ async function executableCommand(fx, operation, input = fx.input) {
   assert.equal(child.status, result.exitCode, child.stdout);
   return result;
 }
+
+test("Desktop discovery interpretation persists candidate-only evidence and revalidates after restart", async (t) => {
+  const root = mkdtempSync(join(tmpdir(), "devrelay-discovery-handoff-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const { fx, configured, invocation } = materializeNativeDiscoveryHostFixture(root);
+  const invoke = (operation, input = configured.input) => executableCommand(configured, operation, input);
+  assert.equal((await invoke("init")).exitCode, 0);
+  const run = await invoke("run");
+  assert.equal(run.exitCode, 0, JSON.stringify(run));
+  const evidence = output(await invoke("evidence"));
+  const snapshotRef = evidence.execution.moduleResult.outputs["current-architecture-snapshot"][0];
+  const storage = createLocalHostStorage({ rootDirectory: join(root, "state"), readOnly: true });
+  let discovered;
+  try {
+    const namespace = `desktop-host/${canonicalJsonDigest({ projectId: "devrelay", root: realpathSync(root) }).slice(7)}/records`;
+    const records = createLocalHostCheckpointStore({ storage, namespace });
+    discovered = JSON.parse(storage.getArtifact(records.get(`artifact:${canonicalJsonDigest(snapshotRef)}`).stored));
+  } finally { storage.close(); }
+  const structured = JSON.parse(readFileSync(new URL("../examples/artifacts/current-architecture-snapshot-001.json", import.meta.url)));
+  const state = JSON.parse(readFileSync(join(root, "native/state.json")));
+  const repository = JSON.parse(readFileSync(join(root, "native/repository.json")));
+  structured.projectArchitectureState = invocation.inputs["project-architecture-state"][0];
+  structured.projectContext = state.projectContext;
+  structured.repositorySnapshot = state.repositorySnapshot;
+  structured.repositoryRevision = { revision: repository.revision, treeDigest: repository.treeDigest };
+  structured.sourceRefs = [{ role: "original-discovery", artifact: snapshotRef }];
+  structured.warnings = discovered.warnings;
+  const structuredFile = fx.json("handoff/structured.json", structured);
+  const structuredRef = { artifactId: structured.snapshotId, schema: "https://devrelay.dev/artifacts/current-architecture-snapshot/v1", mediaType: "application/vnd.devrelay.current-architecture-snapshot+json", digest: structuredFile.digest, uri: "artifact://fixture/structured" };
+  const candidate = { apiVersion: "devrelay.dev/v1alpha1", kind: "ArchitectureDiscoveryInterpretation", interpretationId: "host-interpretation", authority: "candidate", discoverySnapshot: snapshotRef, structuredSnapshot: structuredRef, projectArchitectureState: structured.projectArchitectureState, requirementsBaseline: state.requirementsBaseline, projectOverviewBaseline: state.projectOverviewBaseline, observations: discovered.observations.map(observation => ({ observation, disposition: "unresolved", rationale: "Fixture interpretation remains unreviewed.", targetPointers: [] })), gaps: [] };
+  const submit = (value, replacesInterpretation) => {
+    const file = fx.json("handoff/interpretation.json", value);
+    const ref = { artifactId: value.interpretationId, schema: "https://devrelay.dev/artifacts/architecture-discovery-interpretation/v1", mediaType: "application/json", digest: file.digest, uri: "artifact://fixture/interpretation" };
+    return fx.json("handoff/submission.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopDiscoveryInterpretationSubmission", interpretation: { path: file.path, ref }, artifacts: [{ path: structuredFile.path, ref: structuredRef }], ...(replacesInterpretation ? { replacesInterpretation } : {}) });
+  };
+  const descriptor = submit(candidate);
+  const input = { ...configured.input, checkpointDigest: output(run).checkpointDigest, discoveryInterpretation: descriptor };
+  const submitted = await invoke("resume", input);
+  assert.equal(submitted.exitCode, 4, JSON.stringify(submitted));
+  assert.equal(output(submitted).state.status, "awaiting-discovery-approval");
+  const database = readFileSync(join(root, "state/state.sqlite"));
+  const verified = await invoke("verify", { ...configured.input, subject: { kind: "checkpoint" } });
+  assert.equal(verified.exitCode, 0, JSON.stringify(verified));
+  assert.equal(output(verified).discoveryInterpretation.authority, "candidate");
+  assert.ok(output(verified).discoveryInterpretation.unresolvedObservations > 0);
+  assert.deepEqual(readFileSync(join(root, "state/state.sqlite")), database);
+  const replay = await invoke("resume", { ...input, checkpointDigest: output(submitted).checkpointDigest });
+  assert.equal(replay.exitCode, 4, JSON.stringify(replay));
+  assert.equal(output(replay).version, output(submitted).version);
+  const different = structuredClone(candidate); different.observations[0].rationale = "Different candidate.";
+  const denied = await invoke("resume", { ...input, checkpointDigest: output(submitted).checkpointDigest, discoveryInterpretation: submit(different) });
+  assert.equal(denied.exitCode, 6, JSON.stringify(denied));
+  const ordinaryReplay = await invoke("resume", { ...configured.input, checkpointDigest: output(submitted).checkpointDigest });
+  assert.equal(ordinaryReplay.exitCode, 4, JSON.stringify(ordinaryReplay));
+  assert.equal(output(ordinaryReplay).version, output(submitted).version);
+  assert.equal((await invoke("verify", { ...configured.input, subject: { kind: "checkpoint" } })).exitCode, 0);
+  const originalRef = output(verified).discoveryInterpretation.interpretationRef;
+  const correction = submit(different, originalRef);
+  const revised = await invoke("resume", { ...input, checkpointDigest: output(submitted).checkpointDigest, discoveryInterpretation: correction });
+  assert.equal(revised.exitCode, 4, JSON.stringify(revised));
+  assert.equal(output(revised).version, output(submitted).version + 1);
+  const revisionReplay = await invoke("resume", { ...input, checkpointDigest: output(revised).checkpointDigest, discoveryInterpretation: correction });
+  assert.equal(revisionReplay.exitCode, 4, JSON.stringify(revisionReplay));
+  assert.equal(output(revisionReplay).version, output(revised).version);
+  const revisedDatabase = readFileSync(join(root, "state/state.sqlite"));
+  const revisionVerification = await invoke("verify", { ...configured.input, subject: { kind: "checkpoint" } });
+  assert.equal(revisionVerification.exitCode, 0, JSON.stringify(revisionVerification));
+  const history = output(revisionVerification).discoveryInterpretationHistory;
+  assert.equal(history.length, 2);
+  assert.deepEqual(history[1].interpretationRef, originalRef);
+  assert.deepEqual(readFileSync(join(root, "state/state.sqlite")), revisedDatabase);
+  const third = structuredClone(candidate); third.observations[0].rationale = "Third candidate.";
+  assert.equal((await invoke("resume", { ...input, checkpointDigest: output(revised).checkpointDigest, discoveryInterpretation: submit(third, originalRef) })).exitCode, 6);
+});
 
 test("native discovery runs through the durable host and Core without a Desktop candidate response", async (t) => {
   const root = mkdtempSync(join(tmpdir(), "devrelay-native-cli-"));
