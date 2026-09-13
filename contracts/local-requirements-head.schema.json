@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-requirements-head/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "pair", "pendingCommit"],
+  "properties": {
+    "kind": { "const": "LocalRequirementsHead" },
+    "pendingCommit": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }] },
+    "pair": { "oneOf": [{ "type": "null" }, {
+      "type": "object", "additionalProperties": false,
+      "required": ["requirementsBaseline", "projectOverviewBaseline"],
+      "properties": {
+        "requirementsBaseline": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+        "projectOverviewBaseline": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" }
+      }
+    }] }
+  }
+}

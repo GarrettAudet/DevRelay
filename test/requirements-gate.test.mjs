@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createLocalHostCheckpointStore } from "../src/local-host-checkpoints.mjs";
+import { commitLocalRequirementsGate, verifyLocalRequirementsGate, activateLocalRequirementsGate, verifyLocalRequirementsActivation } from "../src/local-host-requirements-gate.mjs";
+import { createTraceabilityGraphService } from "../src/traceability-graph.mjs";
+import { createLocalHostTraceabilityStore } from "../src/local-host-traceability.mjs";
+import { createRequirementsActivationTraceabilityContributor, requirementsTraceabilityContributor } from "../src/requirements-traceability-contributor.mjs";
 
 import { sha256Digest } from "../src/content-digest.mjs";
 import { createModuleRegistry } from "../src/module-registry.mjs";
@@ -197,8 +206,9 @@ function harness(kind, { execute = true } = {}) {
   };
 }
 
-async function verifiedPromotion(kind) {
+async function verifiedPromotion(kind, { runId } = {}) {
   const runtime = harness(kind);
+  if (runId) runtime.invocation.runId = runId;
   await runtime.registry.execute(runtime.invocation, {
     artifacts: runtime.artifacts,
     checkpoints: runtime.checkpoints,
@@ -212,10 +222,17 @@ async function verifiedPromotion(kind) {
   );
   assert.equal(runtime.calls(), 1, "checkpoint verification must not invoke");
   const initial = kind === "initial";
+  const approvalBytes = await readFile(new URL(initial ? "examples/artifacts/requirements-approval-001.md" : "examples/artifacts/requirements-change-approval-001.md", root));
+  const approvalId = initial ? "requirements-approval-001" : "requirements-change-approval-001";
   return {
     runtime,
     request: {
       checkpointReplay,
+      approvalEvidence: [{ ref: {
+        artifactId: approvalId, digest: sha256Digest(approvalBytes),
+        schema: "https://devrelay.dev/artifacts/requirements-approval-evidence/v1",
+        mediaType: "text/markdown", uri: `fixture://requirements-gate/${approvalId}`,
+      }, bytes: approvalBytes }],
       requirementsBaseline: clone(
         initial
           ? requirementsBaselineOneDocument.value
@@ -244,6 +261,100 @@ async function verifiedPromotion(kind) {
     },
   };
 }
+
+test("local host atomically persists the owning Gate's exact pair and revalidates replay", async (t) => {
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-requirements-gate-"));
+  let storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  const { runtime, request } = await verifiedPromotion("initial");
+  const invoke = (value = request) => commitLocalRequirementsGate({ storage, namespace: "requirements-test", request: value });
+  const first = invoke();
+  assert.equal(first.replayed, false);
+  assert.equal(first.committed.commitPayload.requirementsBaseline.bytesBase64, requirementsBaselineOneDocument.bytes.toString("base64"));
+  assert.equal(first.committed.commitPayload.projectOverviewBaseline.bytesBase64, overviewBaselineOneDocument.bytes.toString("base64"));
+  assert.equal(first.committed.projectOverviewMarkdown.bytesBase64, overviewMarkdownOne.toString("base64"));
+  storage.close(); storage = createLocalHostStorage({ rootDirectory });
+  const again = invoke();
+  assert.equal(again.replayed, true);
+  assert.deepEqual(again.committed, first.committed);
+  assert.equal(runtime.calls(), 1);
+  const verify = (record = again.committed, checkpointReplay = request.checkpointReplay) => verifyLocalRequirementsGate({ record, checkpointReplay });
+  assert.equal(verify().commitDigest, first.committed.commitDigest);
+  assert.throws(() => verify(again.committed, clone(request.checkpointReplay)));
+  for (const mutate of [
+    (value) => { value.lifecycleComplete = true; },
+    (value) => { value.invocationDigest = `sha256:${"f".repeat(64)}`; },
+    (value) => { value.commitPayload.requirementsBaseline.byteLength += 1; },
+    (value) => { value.projectOverviewMarkdown.bytesBase64 += "\n"; },
+    (value) => { value.unapproved = true; },
+    (value) => { value.approvalEvidence[0].bytesBase64 = Buffer.from("changed approval").toString("base64"); },
+  ]) {
+    const changed = clone(again.committed);
+    mutate(changed);
+    assert.throws(() => verify(changed));
+  }
+  assert.throws(() => invoke({ ...request, checkpointReplay: clone(request.checkpointReplay) }));
+  assert.throws(() => invoke({ ...request, requirementsBaselineBytes: Buffer.from("{}") }));
+  assert.throws(() => invoke({ ...request, approvalEvidence: [] }), /complete approval evidence/);
+  assert.throws(() => invoke({ ...request, approvalEvidence: [...request.approvalEvidence, ...request.approvalEvidence] }), /complete approval evidence/);
+  assert.throws(() => invoke({ ...request, approvalEvidence: [{ ...request.approvalEvidence[0], bytes: Buffer.from("unapproved") }] }), /evidence bytes drifted/);
+  assert.throws(() => invoke({ ...request, approvalEvidence: [{ ...request.approvalEvidence[0], ref: { ...request.approvalEvidence[0].ref, artifactId: "another-approval" } }] }), /paired baseline citation/);
+  assert.equal(storage.listRuns({ prefix: "local-checkpoint:" }).length, 1);
+});
+
+test("failed pair publication exposes neither baseline and can retry without the adapter", async (t) => {
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-requirements-gate-failure-"));
+  const storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  const { runtime, request } = await verifiedPromotion("initial");
+  const interrupted = { ...storage, initializeRun() { throw new Error("simulated publication interruption"); } };
+  assert.throws(() => commitLocalRequirementsGate({ storage: interrupted, namespace: "requirements-test", request }), /publication interruption/);
+  assert.equal(storage.listRuns({ prefix: "local-checkpoint:" }).length, 0);
+  const recovered = commitLocalRequirementsGate({ storage, namespace: "requirements-test", request });
+  assert.equal(recovered.replayed, false);
+  assert.equal(storage.listRuns({ prefix: "local-checkpoint:" }).length, 1);
+  assert.equal(runtime.calls(), 1);
+});
+
+test("Gate activation checkpoints before merge and recovers the exact approved graph after restart", async (t) => {
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-gate-activation-"));
+  let storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  const { runtime, request } = await verifiedPromotion("initial");
+  const record = commitLocalRequirementsGate({ storage, namespace: "gate", request }).committed;
+  const createGraph = () => createTraceabilityGraphService({ projectId: "auth-product", graphId: "gate-graph",
+    contributors: [requirementsTraceabilityContributor, createRequirementsActivationTraceabilityContributor()],
+    store: createLocalHostTraceabilityStore({ storage, namespace: "graph", graphId: "gate-graph" }) });
+  let graph = createGraph();
+  const args = () => ({ storage, namespace: "gate", graph, checkpointReplay: request.checkpointReplay, record,
+    resolveArtifact: async (ref) => ({ ref, bytes: await runtime.artifacts.load(ref) }) });
+  await assert.rejects(activateLocalRequirementsGate({ ...args(), graph: { ...graph,
+    mergePrepared() { throw new Error("simulated interruption before graph merge"); } } }), /interruption before graph merge/);
+  assert.ok(storage.listRuns({ prefix: "local-checkpoint:" }).some(({ state }) => state.key === `requirements-activation:${record.commitDigest}`));
+  const competing = await verifiedPromotion("initial", { runId: "competing-requirements-run" });
+  const competingRecord = commitLocalRequirementsGate({ storage, namespace: "competing-gate", request: competing.request }).committed;
+  const competingArgs = () => ({ ...args(), checkpointReplay: competing.request.checkpointReplay, record: competingRecord });
+  await assert.rejects(activateLocalRequirementsGate(competingArgs()), /current pair or pending Gate/);
+  storage.close(); storage = createLocalHostStorage({ rootDirectory }); graph = createGraph();
+  await assert.rejects(activateLocalRequirementsGate({ ...args(), graph: { ...graph,
+    async mergePrepared(prepared) { await graph.mergePrepared(prepared); throw new Error("interruption after graph merge"); } } }), /interruption after graph merge/);
+  assert.equal(storage.listRuns({ prefix: "requirements-head:" })[0].state.pendingCommit, record.commitDigest);
+  const activated = await activateLocalRequirementsGate(args());
+  assert.equal(storage.listRuns({ prefix: "requirements-head:" })[0].state.pendingCommit, null);
+  const again = await activateLocalRequirementsGate(args());
+  assert.deepEqual(again, activated);
+  const revision = graph.captureBase().snapshot.revision;
+  await assert.rejects(activateLocalRequirementsGate(competingArgs()), /current pair or pending Gate/);
+  assert.equal(graph.captureBase().snapshot.revision, revision);
+  assert.equal(runtime.calls(), 1);
+  const snapshot = graph.captureBase().snapshot;
+  assert.ok(snapshot.nodes.some(({ kind, authority }) => kind === "business-objective" && authority === "approved"));
+  assert.ok(snapshot.nodes.some(({ kind, authority }) => kind === "business-objective" && authority === "candidate"));
+  const prepared = createLocalHostCheckpointStore({ storage, namespace: "gate" }).get(`requirements-activation:${record.commitDigest}`);
+  assert.ok(prepared.update.sourceArtifacts.some(({ artifactId }) => artifactId === "requirements-approval-001"));
+  storage.close(); storage = createLocalHostStorage({ rootDirectory, readOnly: true }); graph = createGraph();
+  assert.deepEqual(await verifyLocalRequirementsActivation(args()), activated);
+});
 
 function rebindBaselineDocument(request, field) {
   const bytes = Buffer.from(

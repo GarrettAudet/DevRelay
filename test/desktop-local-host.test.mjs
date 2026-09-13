@@ -9,6 +9,7 @@ import { canonicalJsonDigest } from "../src/content-digest.mjs";
 import { openDesktopLocalHost } from "../src/desktop-local-host.mjs";
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
 import { materializeDesktopHostFixture } from "./fixtures/desktop-local-host.mjs";
+import { materializeRequirementsChangeHostFixture } from "./fixtures/desktop-requirements-change-host.mjs";
 
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), "devrelay-connected-host-"));
@@ -22,6 +23,72 @@ async function command(fx, operation, input = fx.input) {
   finally { host.close(); }
 }
 
+test("CLI resume validates a current-pair requirements change through the actual Gate", async (t) => {
+  const base = fixture(t);
+  const fx = { root: base.root, ...materializeRequirementsChangeHostFixture(base.root) };
+  const invoke = async (operation, input = fx.input) => {
+    if (process.platform !== "win32") return command(fx, operation, input);
+    const child = spawnSync(process.execPath, [fileURLToPath(new URL("../bin/devrelay.mjs", import.meta.url)), operation,
+      "--json", "--host", fx.configurationPath, "--host-digest", fx.configurationDigest, "--input", JSON.stringify(input)],
+    { encoding: "utf8", windowsHide: true, timeout: 30_000 });
+    assert.ifError(child.error);
+    const body = JSON.parse(child.stdout);
+    assert.equal(child.status, body.exitCode, child.stdout);
+    return body;
+  };
+  assert.equal((await invoke("init")).exitCode, 0);
+  const pending = await invoke("run");
+  assert.equal(pending.exitCode, 5, JSON.stringify(pending));
+  const waiting = output(pending);
+  const response = fx.json("change-response.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopStepResponse", requestId: waiting.desktopRequest.requestId, requestDigest: canonicalJsonDigest(waiting.desktopRequest), result: fx.result });
+  const completed = await invoke("resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response });
+  assert.equal(completed.exitCode, 0, JSON.stringify(completed));
+  const gate = await invoke("resume", { ...fx.input, checkpointDigest: output(completed).checkpointDigest, requirementsGate: fx.gate });
+  assert.equal(gate.outcome, "awaiting-gate-activation", JSON.stringify(gate));
+  assert.equal(gate.exitCode, 5);
+  const evidence = output(await invoke("evidence"));
+  assert.equal(evidence.requirementsGate.commitPayload.requirementsBaseline.ref.artifactId, "requirements-baseline-002");
+  const replay = await invoke("resume", { ...fx.input, checkpointDigest: output(gate).checkpointDigest, requirementsGate: fx.gate });
+  assert.equal(output(replay).state.gateRecordKey, output(gate).state.gateRecordKey);
+  assert.equal(output(replay).lifecycleComplete, false);
+  assert.equal(output(replay).version, output(gate).version);
+  const staleActivation = await invoke("resume", { ...fx.input, checkpointDigest: output(gate).checkpointDigest,
+    activateRequirementsGate: `sha256:${"f".repeat(64)}` });
+  assert.equal(staleActivation.exitCode, 6, JSON.stringify(staleActivation));
+  const submission = JSON.parse(readFileSync(join(fx.root, fx.gate.path)));
+  assert.equal(evidence.requirementsGate.approvalEvidence[0].ref.artifactId, "requirements-change-approval-001");
+  // Committed verification uses exact stored approval bytes; a new submission
+  // must still validate the source file before it can publish anything.
+  fx.write(submission.approvalEvidence[0].path, Buffer.from("altered approval"));
+  const changedApproval = await invoke("resume", { ...fx.input, checkpointDigest: output(gate).checkpointDigest, requirementsGate: fx.gate });
+  assert.equal(changedApproval.exitCode, 6, JSON.stringify(changedApproval));
+  const databaseBefore = readFileSync(join(fx.root, "state", "state.sqlite"));
+  const verified = await invoke("verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.equal(verified.exitCode, 0, JSON.stringify(verified));
+  assert.equal(output(verified).requirementsGate.commitDigest, evidence.requirementsGate.commitDigest);
+  assert.equal(output(verified).requirementsGate.scope, "validated-requirements-pair");
+  assert.equal(output(verified).requirementsGate.lifecycleComplete, false);
+  assert.deepEqual(readFileSync(join(fx.root, "state", "state.sqlite")), databaseBefore);
+  const activated = await invoke("resume", { ...fx.input, checkpointDigest: output(gate).checkpointDigest,
+    activateRequirementsGate: evidence.requirementsGate.commitDigest });
+  assert.equal(activated.outcome, "requirements-activated", JSON.stringify(activated));
+  assert.equal(output(activated).lifecycleComplete, false);
+  const activeEvidence = output(await invoke("evidence"));
+  assert.ok(activeEvidence.requirementsActivation.applicationProof.receiptRef);
+  const activeBytes = readFileSync(join(fx.root, "state", "state.sqlite"));
+  const activeVerification = await invoke("verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.equal(activeVerification.exitCode, 0, JSON.stringify(activeVerification));
+  assert.deepEqual(output(activeVerification).requirementsActivation, activeEvidence.requirementsActivation);
+  assert.deepEqual(readFileSync(join(fx.root, "state", "state.sqlite")), activeBytes);
+  const activationReplay = await invoke("resume", { ...fx.input, checkpointDigest: output(activated).checkpointDigest,
+    activateRequirementsGate: evidence.requirementsGate.commitDigest });
+  assert.equal(output(activationReplay).version, output(activated).version);
+  assert.deepEqual(output(await invoke("evidence")).requirementsActivation, activeEvidence.requirementsActivation);
+  const staleRun = await invoke("run", { ...fx.input, runId: "old-context-new-run" });
+  assert.equal(staleRun.exitCode, 6, JSON.stringify(staleRun));
+  assert.equal(output(await invoke("status")).checkpointDigest, output(activated).checkpointDigest);
+});
+
 test("native host connects real facade/Core to durable Desktop pending/result/replay flow", async (t) => {
   const fx = fixture(t);
   assert.equal((await command(fx, "init")).exitCode, 0);
@@ -33,6 +100,10 @@ test("native host connects real facade/Core to durable Desktop pending/result/re
   assert.equal(pending.exitCode, 5);
   const waiting = output(pending);
   assert.equal(waiting.lifecycleComplete, false);
+  const legacyActivation = await command(fx, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest,
+    activateRequirementsGate: `sha256:${"a".repeat(64)}` });
+  assert.equal(legacyActivation.exitCode, 4, JSON.stringify(legacyActivation));
+  assert.equal(output(await command(fx, "status")).checkpointDigest, waiting.checkpointDigest);
   assert.equal(waiting.desktopRequest.invocation.invocationId, fx.result.invocationId);
   const readOnlyResume = await command(fx, "resume", { ...fx.input, profile: "inspect", checkpointDigest: waiting.checkpointDigest });
   assert.equal(readOnlyResume.exitCode, 2);
@@ -49,6 +120,9 @@ test("native host connects real facade/Core to durable Desktop pending/result/re
   const completed = await command(fx, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest, response: responseFile });
   assert.equal(completed.exitCode, 0, JSON.stringify(completed));
   assert.equal(output(completed).state.status, "module-completed");
+  const invalidGate = fx.json("invalid-gate.json", { kind: "DesktopRequirementsGateSubmission", approved: true });
+  assert.notEqual((await command(fx, "resume", { ...fx.input, checkpointDigest: output(completed).checkpointDigest, requirementsGate: invalidGate })).exitCode, 0);
+  assert.equal(output(await command(fx, "status")).checkpointDigest, output(completed).checkpointDigest);
   const verified = await command(fx, "verify", { ...fx.input, subject: { kind: "checkpoint" } });
   assert.equal(verified.exitCode, 0, JSON.stringify(verified));
   assert.equal(output(verified).lifecycleComplete, false);

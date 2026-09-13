@@ -18,9 +18,13 @@ import { validateRequirementsArtifact } from "./requirements-artifact-validator.
 import { validateProjectOverviewArtifact, validateProjectOverviewRenderedDocument } from "./project-overview-artifact-validator.mjs";
 import { deriveProjectOverview } from "./project-overview.mjs";
 import { validateProjectMemoryArtifact } from "./project-memory-artifact-validator.mjs";
+import { commitLocalRequirementsGate, verifyLocalRequirementsGate, activateLocalRequirementsGate, verifyLocalRequirementsActivation, assertLocalRequirementsCurrentPair } from "./local-host-requirements-gate.mjs";
+import { createRequirementsActivationTraceabilityContributor } from "./requirements-traceability-contributor.mjs";
 
 const schema = (name) => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const validateConfiguration = compileArtifactSchema(schema("desktop-local-host-configuration.schema.json"), [schema("module-result.schema.json")]);
+const validateGateSubmission = compileArtifactSchema(schema("desktop-requirements-gate-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
+const validateGateActivation = compileArtifactSchema(schema("desktop-requirements-gate-activation.schema.json"));
 const same = (a, b) => a === undefined || b === undefined ? a === b : canonicalJson(a) === canonicalJson(b);
 const fail = (message, code = "DR4960", exitCode = 2) => { throw new OperatorCliError(message, code, exitCode); };
 const inside = (root, target) => { const r = path.relative(root, target); return r !== "" && !path.isAbsolute(r) && r !== ".." && !r.startsWith(`..${path.sep}`); };
@@ -173,11 +177,17 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         if (!definition.metadata?.id?.startsWith("desktop-") || definition.implements?.length !== 1 || definition.implements[0].operations?.length !== 1 || definition.implements[0].operations[0].execution !== "effect") fail("Desktop exchange plugins must name one exact effect binding with a desktop- identity");
         return { definition, adapter: exchange.adapter };
       });
-      graph = createTraceabilityGraphService({ projectId: configuration.projectId, graphId: configuration.graphId, contributors,
+      const hostContributors = contributors.map((contributor) => configuration.requirementsObserverVersion === "1.1.0" && contributor.metadata.id === "devrelay.requirements-baseline-observer"
+        ? createRequirementsActivationTraceabilityContributor() : contributor);
+      graph = createTraceabilityGraphService({ projectId: configuration.projectId, graphId: configuration.graphId, contributors: hostContributors,
         store: createLocalHostTraceabilityStore({ storage, namespace: `${namespace}/graph`, graphId: configuration.graphId }) });
       registry = createModuleRegistry({ modules: configuration.modules.map(json), plugins, artifactContracts: contracts(), traceability: { graph, checkpoints: traces } });
     };
     const execute = async (input, resume) => {
+      if (input.requirementsGate && (!resume || input.response || input.artifacts)) fail("Gate submission requires a separate exact resume without candidate ingestion");
+      if (input.activateRequirementsGate !== undefined && (!resume || input.response || input.artifacts || input.requirementsGate ||
+          !validateGateActivation(input.activateRequirementsGate))) fail("Gate activation requires a separate resume bound to the exact commit digest");
+      if (input.activateRequirementsGate && configuration.requirementsObserverVersion !== "1.1.0") fail("Gate activation requires an explicitly initialized requirements observer 1.1.0 context", "DR4965", 4);
       if (session.outcome === "RoadmapNotInitialized") fail("establish the roadmap through its owning workflow before general execution", "DR4965", 4);
       if (input.taskId !== configuration.taskId) fail("taskId differs from the bound Desktop task");
       const id = runKey(input.runId, input.nodeId);
@@ -187,6 +197,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         if (input.checkpointDigest !== observed.checkpointDigest) fail("resume checkpoint is stale", "DR4962", 6);
         run = storage.readRun(id);
       } else {
+        assertLocalRequirementsCurrentPair({ storage, namespace: `${namespace}/requirements-gate`, projectId: configuration.projectId,
+          pair: { requirementsBaseline: roleRef("requirements-baseline"), projectOverviewBaseline: roleRef("project-overview") } });
         const invocation = json(input.invocation);
         if (invocation.runId !== input.runId || invocation.nodeId !== input.nodeId) fail("invocation run/node identity differs from the requested run");
         const invocationKey = `invocation:${canonicalJsonDigest(invocation)}`;
@@ -196,6 +208,10 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
       }
       const invocation = records.get(run.state.invocationKey);
       if (!invocation) fail("run invocation checkpoint is unavailable", "DR4962", 6);
+      if (resume && !run.state.gateRecordKey) {
+        assertLocalRequirementsCurrentPair({ storage, namespace: `${namespace}/requirements-gate`, projectId: configuration.projectId,
+          pair: { requirementsBaseline: roleRef("requirements-baseline"), projectOverviewBaseline: roleRef("project-overview") } });
+      }
       for (const grant of invocation.grants ?? []) {
         if (!["filesystem.read", "filesystem.write"].includes(grant.kind)) fail("Desktop result exchange cannot acquire process, network or secret grants", "DR4966");
         capability.authorize({ kind: grant.kind, path: grant.scope });
@@ -218,7 +234,52 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         }
         await prepareRuntime();
         let nextState;
-        try {
+        if (input.requirementsGate) {
+          if (!run.state.recordKey || run.state.pendingRequestId) fail("Gate submission requires a completed Core record", "DR4965", 4);
+          const submission = json(input.requirementsGate);
+          if (!validateGateSubmission(submission)) fail("requirements Gate submission violates its closed contract");
+          const replay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
+          // An existing configured project may evolve only its exact approved
+          // pair. An unrelated initial example is never a replacement baseline.
+          for (const [port, role] of [["requirements-baseline", "requirements-baseline"], ["project-overview-baseline", "project-overview"]]) {
+            const loaded = replay.loadedInputs[port];
+            if (loaded?.length !== 1 || !same(loaded[0].ref, roleRef(role))) fail("Gate change does not bind the current approved project pair", "DR4962", 6);
+          }
+          const baselineDocument = (entry) => {
+            const bytes = read({ path: entry.path, digest: entry.ref.digest });
+            let value;
+            try { value = JSON.parse(bytes); } catch { fail("Gate baseline is not JSON"); }
+            return { bytes, value, ref: entry.ref };
+          };
+          const requirements = baselineDocument(submission.requirementsBaseline);
+          const overviewBaseline = baselineDocument(submission.projectOverviewBaseline);
+          const gate = commitLocalRequirementsGate({ storage, namespace: `${namespace}/requirements-gate`, request: {
+            checkpointReplay: replay,
+            requirementsBaseline: requirements.value, requirementsBaselineRef: requirements.ref, requirementsBaselineBytes: requirements.bytes,
+            projectOverviewBaseline: overviewBaseline.value, projectOverviewBaselineRef: overviewBaseline.ref, projectOverviewBaselineBytes: overviewBaseline.bytes,
+            projectOverviewMarkdownBytes: read(submission.projectOverviewMarkdown),
+            approvalEvidence: submission.approvalEvidence.map((entry) => ({
+              ref: entry.ref, bytes: read({ path: entry.path, digest: entry.ref.digest }),
+            })),
+          } });
+          const gateRecordKey = `requirements-gate:${gate.committed.commitDigest}`;
+          records.put(gateRecordKey, gate.committed);
+          nextState = { ...run.state, status: run.state.gateActivationKey ? "requirements-activated" : "awaiting-gate-activation", gateRecordKey };
+        } else if (input.activateRequirementsGate) {
+          if (!run.state.gateRecordKey) fail("Gate activation requires a validated pair checkpoint", "DR4965", 4);
+          const gateRecord = records.get(run.state.gateRecordKey);
+          if (gateRecord?.commitDigest !== input.activateRequirementsGate) fail("Gate activation commit is stale", "DR4962", 6);
+          const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
+          const activation = await activateLocalRequirementsGate({ storage, namespace: `${namespace}/requirements-gate`, graph,
+            checkpointReplay, record: gateRecord,
+            resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
+          const gateActivationKey = `requirements-activation:${gateRecord.commitDigest}`;
+          records.put(gateActivationKey, activation);
+          nextState = { ...run.state, status: "requirements-activated", gateActivationKey };
+        } else if (run.state.gateRecordKey) {
+          // Ordinary replay cannot erase the Gate handoff or silently advance it.
+          nextState = run.state;
+        } else try {
           const record = await registry.execute(invocation, executionContext);
           const recordKey = `execution:${canonicalJsonDigest(record)}`;
           records.put(recordKey, record);
@@ -228,8 +289,10 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           if (!(error instanceof DesktopStepRequired)) throw error;
           nextState = { ...run.state, status: "awaiting-desktop", pendingRequestId: error.request.requestId, recordKey: null };
         }
-        storage.commitTransition({ runId: id, expectedVersion: run.version, leaseToken: lease.token,
-          transition: { kind: "DesktopLocalRunProgress", invocationKey: run.state.invocationKey }, nextState });
+        if (!same(nextState, run.state)) {
+          storage.commitTransition({ runId: id, expectedVersion: run.version, leaseToken: lease.token,
+            transition: { kind: "DesktopLocalRunProgress", invocationKey: run.state.invocationKey }, nextState });
+        }
         const observed = inspect(input);
         return { ...observed, outcome: nextState.status === "module-completed" ? "completed" : nextState.status,
           ...(nextState.pendingRequestId ? { desktopRequest: exchange.readRequest(nextState.pendingRequestId) } : {}) };
@@ -247,8 +310,24 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const record = records.get(observed.state.recordKey);
           if (!same(receipt.moduleResult, record.moduleResult)) fail("Core receipt differs from stored execution", "DR4964", 7);
           const proof = graph.assertApplied(record.traceabilityUpdateRef);
+          let requirementsGate = null;
+          let requirementsActivation = null;
+          if (observed.state.gateRecordKey) {
+            const gateRecord = records.get(observed.state.gateRecordKey);
+            try {
+              requirementsGate = verifyLocalRequirementsGate({ checkpointReplay: receipt, record: gateRecord });
+              if (observed.state.gateRecordKey !== `requirements-gate:${requirementsGate.commitDigest}`) fail("Gate record key differs from its exact commit", "DR4964", 7);
+              if (observed.state.gateActivationKey) {
+                if (observed.state.gateActivationKey !== `requirements-activation:${gateRecord.commitDigest}`) fail("Gate activation key differs from the validated pair", "DR4964", 7);
+                requirementsActivation = await verifyLocalRequirementsActivation({ storage, namespace: `${namespace}/requirements-gate`, graph,
+                  checkpointReplay: receipt, record: gateRecord,
+                  resolveArtifact: async (ref) => ({ ref, bytes: await executionContext.artifacts.load(ref) }) });
+                if (!same(requirementsActivation, records.get(observed.state.gateActivationKey))) fail("Gate activation record differs from stored graph proof", "DR4964", 7);
+              }
+            } catch { fail("requirements Gate checkpoint verification failed", "DR4964", 7); }
+          }
           return { outcome: "verified", scope: "core-checkpoint-and-graph", lifecycleComplete: false,
-            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, integrity: storage.verifyIntegrity() };
+            moduleResultDigest: canonicalJsonDigest(receipt.moduleResult), applicationProof: proof, requirementsGate, requirementsActivation, integrity: storage.verifyIntegrity() };
         },
       };
     const facade = createDevRelay({ projectId: configuration.projectId,
@@ -262,6 +341,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         const observed = inspect(input);
         return { outcome: "pass", scope: "run-evidence", lifecycleComplete: false,
           initialization: records.get(initializationKey), execution: observed.state.recordKey ? records.get(observed.state.recordKey) : null,
+          requirementsGate: observed.state.gateRecordKey ? records.get(observed.state.gateRecordKey) : null,
+          requirementsActivation: observed.state.gateActivationKey ? records.get(observed.state.gateActivationKey) : null,
           pendingRequest: observed.state.pendingRequestId ? exchange.readRequest(observed.state.pendingRequestId) : null };
       },
     });

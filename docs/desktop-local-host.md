@@ -125,6 +125,53 @@ explicitly initialized context and do not silently migrate an existing run.
 
 ## Evidence and remaining integration
 
+After a completed requirements change invocation, a separate `resume` can
+submit `requirementsGate: {path, digest}`. The referenced JSON must satisfy
+`contracts/desktop-requirements-gate-submission.schema.json`: exact baseline
+file/ref bindings for both requirements and overview, plus a raw-digest-bound
+Markdown file and `approvalEvidence` file/ref bindings in the exact order cited
+by the paired baselines. Every cited approval must resolve to nonempty raw
+bytes with the exact digest; omitted, extra, mismatched or altered evidence
+fails before pair publication. Candidate responses and artifact ingestion cannot accompany
+this submission. Both prior input baselines must equal the configured pair.
+
+The owning Requirements Gate validates the genuine Core checkpoint replay,
+lineage, versions, approval evidence, exact baseline bytes and Markdown
+projection. The local host durably checkpoints the pair and cited approval bytes atomically under
+`contracts/local-requirements-gate-commit.schema.json`. It returns
+`awaiting-gate-activation` (exit 5), **not** lifecycle completion or approval
+graph activation. Exact retry preserves the run version. `verify` reconstructs
+the recorded pair through the owning Gate with a genuine Core receipt without
+writing storage or invoking the adapter. Its nested `requirementsGate` proof
+is scoped to `validated-requirements-pair`.
+
+An explicitly initialized host configuration with
+`requirementsObserverVersion: "1.1.0"` also supports a separate `resume` with
+`activateRequirementsGate: "sha256:<exact-commit-digest>"` and the current run
+checkpoint digest. The activation selection conforms to
+`contracts/desktop-requirements-gate-activation.schema.json`; it cannot accompany
+candidate ingestion or a new Gate submission. The host revalidates the saved
+pair and approval bytes through the owning Gate, projects explicit Gate outputs
+through the versioned trusted contributor, saves the exact prepared update, and
+then merges it. Cited approval artifacts are included in the graph's source
+closure. Replay validates that same checkpoint and returns the same graph receipt.
+
+A project-wide requirements-head reservation serializes activation independently
+of the selected graph ID. A competing Gate based on the old pair cannot publish
+over the winner. Interruption before or after graph merge leaves the exact pending
+commit recoverable; graph replay completes head advancement without a duplicate
+update. New module work rejects stale paired context or a pending activation.
+Read-only historical inspection and exact Gate recovery retain their original
+context and do not silently adopt a newer baseline.
+
+The resulting status is `requirements-activated`, not lifecycle completion.
+`evidence` and read-only `verify` expose a separate `requirementsActivation`
+application proof. Current session-context refresh and downstream lifecycle
+progression remain incomplete. Configurations omitting the observer version
+retain released 1.0.0 behavior and cannot activate; changing an existing context
+requires explicit reconciliation, never silent contributor migration. No
+independent human approval is inferred from the presence of approval bytes.
+
 Tests exercise the actual Windows executable in separate processes and the
 installed package across all seven commands. Candidate artifacts are labelled
 fixtures; this is not live provider conformance or produced-code acceptance.

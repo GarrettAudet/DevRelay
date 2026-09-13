@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-requirements-gate-commit/v1",
+  "title": "Validated requirements pair checkpoint, not lifecycle activation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "invocationDigest", "moduleResultDigest", "commitPayload", "projectOverviewMarkdown", "approvalEvidence", "scope", "lifecycleComplete", "commitDigest"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "kind": { "const": "LocalRequirementsGateCommit" },
+    "invocationDigest": { "$ref": "#/$defs/digest" },
+    "moduleResultDigest": { "$ref": "#/$defs/digest" },
+    "commitDigest": { "$ref": "#/$defs/digest" },
+    "scope": { "const": "validated-requirements-pair" },
+    "lifecycleComplete": { "const": false },
+    "approvalEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/artifactBytes" } },
+    "commitPayload": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requirementsBaseline", "projectOverviewBaseline"],
+      "properties": {
+        "requirementsBaseline": { "$ref": "#/$defs/artifactBytes" },
+        "projectOverviewBaseline": { "$ref": "#/$defs/artifactBytes" }
+      }
+    },
+    "projectOverviewMarkdown": {
+      "type": "object", "additionalProperties": false,
+      "required": ["digest", "byteLength", "bytesBase64"],
+      "properties": {
+        "digest": { "$ref": "#/$defs/digest" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "bytesBase64": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "artifactBytes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ref", "byteLength", "bytesBase64"],
+      "properties": {
+        "ref": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "bytesBase64": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
