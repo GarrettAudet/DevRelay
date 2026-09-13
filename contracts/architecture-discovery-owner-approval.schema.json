@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/evidence/architecture-discovery-owner-approval/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "approvalId",
+    "authority",
+    "decision",
+    "policyVersion",
+    "interpretation",
+    "repositoryRevision",
+    "review",
+    "requiredEvidence",
+    "acknowledgedWarnings",
+    "acceptedNonMaterialGapIds",
+    "acceptedOutOfScopeObservations"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ArchitectureDiscoveryOwnerApproval"
+    },
+    "approvalId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "authority": {
+      "const": "project-owner"
+    },
+    "decision": {
+      "const": "approve"
+    },
+    "policyVersion": {
+      "const": "architecture-discovery-gate/0.1.0"
+    },
+    "interpretation": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "repositoryRevision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "requiredEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+      }
+    },
+    "acknowledgedWarnings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "acceptedNonMaterialGapIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "acceptedOutOfScopeObservations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+      }
+    }
+  }
+}

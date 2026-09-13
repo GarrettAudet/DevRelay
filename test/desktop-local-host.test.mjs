@@ -108,6 +108,70 @@ test("Desktop discovery interpretation persists candidate-only evidence and reva
   assert.deepEqual(readFileSync(join(root, "state/state.sqlite")), revisedDatabase);
   const third = structuredClone(candidate); third.observations[0].rationale = "Third candidate.";
   assert.equal((await invoke("resume", { ...input, checkpointDigest: output(revised).checkpointDigest, discoveryInterpretation: submit(third, originalRef) })).exitCode, 6);
+  // These approvals are deliberately synthetic fixtures, not project-owner
+  // acceptance of DevRelay or of the example architecture.
+  const gateSubmission = (interpretationRef, modify = () => {}) => {
+    const evidenceFile = (id, schema, text) => {
+      const file = fx.write(`handoff/${id}.md`, Buffer.from(text));
+      return { path: file.path, ref: { artifactId: id, schema, mediaType: "text/markdown", digest: file.digest, uri: `artifact://fixture/${id}` } };
+    };
+    const review = evidenceFile("discovery-review", "https://devrelay.dev/evidence/architecture-discovery-review/v1", "Fixture-only independent review. Not a real approval.");
+    const evidence = evidenceFile("discovery-support", "https://devrelay.dev/evidence/test/v1", "Fixture-only supporting evidence.");
+    const approval = { apiVersion: "devrelay.dev/v1alpha1", kind: "ArchitectureDiscoveryOwnerApproval", approvalId: "fixture-owner-approval",
+      authority: "project-owner", decision: "approve", policyVersion: "architecture-discovery-gate/0.1.0", interpretation: interpretationRef,
+      repositoryRevision: repository.revision, review: review.ref, requiredEvidence: [evidence.ref],
+      acknowledgedWarnings: structured.warnings, acceptedNonMaterialGapIds: structured.gaps.map(gap => gap.id),
+      acceptedOutOfScopeObservations: discovered.observations };
+    modify(approval);
+    const file = fx.json("handoff/owner-approval.json", approval);
+    const ref = { artifactId: approval.approvalId, schema: "https://devrelay.dev/evidence/architecture-discovery-owner-approval/v1",
+      mediaType: "application/vnd.devrelay.architecture-discovery-owner-approval+json", digest: file.digest, uri: "artifact://fixture/owner-approval" };
+    return fx.json("handoff/gate.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopDiscoveryGateSubmission", ownerApproval: { path: file.path, ref }, artifacts: [review, evidence] });
+  };
+  const blocked = await invoke("resume", { ...configured.input, checkpointDigest: output(revised).checkpointDigest,
+    discoveryGate: gateSubmission(history[0].interpretationRef) });
+  assert.equal(blocked.exitCode, 6, JSON.stringify(blocked));
+  assert.match(JSON.stringify(blocked), /unresolved observations/);
+  const disposed = structuredClone(candidate);
+  disposed.observations.forEach(entry => { entry.disposition = "out-of-scope"; entry.rationale = "Explicitly excluded for this fixture only."; });
+  const ready = await invoke("resume", { ...input, checkpointDigest: output(revised).checkpointDigest,
+    discoveryInterpretation: submit(disposed, history[0].interpretationRef) });
+  assert.equal(ready.exitCode, 4, JSON.stringify(ready));
+  const readyEvidence = output(await invoke("evidence"));
+  for (const modify of [
+    approval => { approval.interpretation = originalRef; },
+    approval => { approval.repositoryRevision = "another-revision"; },
+    approval => { approval.acceptedOutOfScopeObservations = []; },
+    approval => { approval.acknowledgedWarnings = ["invented-warning"]; },
+    approval => { approval.requiredEvidence = [approval.review]; },
+    approval => { approval.decision = "reject"; },
+  ]) {
+    const deniedGate = await command(configured, "resume", { ...configured.input, checkpointDigest: output(ready).checkpointDigest,
+      discoveryGate: gateSubmission(readyEvidence.discoveryInterpretation.interpretationRef, modify) });
+    assert.equal(deniedGate.exitCode, 6, JSON.stringify(deniedGate));
+  }
+  const discoveryGate = gateSubmission(readyEvidence.discoveryInterpretation.interpretationRef);
+  const prepared = await invoke("resume", { ...configured.input, checkpointDigest: output(ready).checkpointDigest, discoveryGate });
+  assert.equal(prepared.exitCode, 5, JSON.stringify(prepared));
+  const preparedEvidence = output(await invoke("evidence"));
+  assert.equal(preparedEvidence.discoveryGate.scope, "observational-discovery-readiness");
+  const nextState = JSON.parse(preparedEvidence.discoveryGate.nextState.utf8);
+  assert.equal(nextState.state, "existing-discovered-unbaselined");
+  assert.equal(nextState.architectureBaseline, undefined);
+  const gateReplay = await invoke("resume", { ...configured.input, checkpointDigest: output(prepared).checkpointDigest, discoveryGate });
+  assert.equal(gateReplay.exitCode, 5, JSON.stringify(gateReplay));
+  assert.equal(output(gateReplay).version, output(prepared).version);
+  fx.write("handoff/discovery-review.md", Buffer.from("Changed source review after commit."));
+  const changedReview = await command(configured, "resume", { ...configured.input, checkpointDigest: output(prepared).checkpointDigest, discoveryGate });
+  assert.equal(changedReview.exitCode, 6, JSON.stringify(changedReview));
+  const gateDatabase = readFileSync(join(root, "state/state.sqlite"));
+  const gateVerified = await invoke("verify", { ...configured.input, subject: { kind: "checkpoint" } });
+  assert.equal(gateVerified.exitCode, 0, JSON.stringify(gateVerified));
+  assert.deepEqual(output(gateVerified).discoveryGate, preparedEvidence.discoveryGate);
+  assert.deepEqual(readFileSync(join(root, "state/state.sqlite")), gateDatabase);
+  const sealedRevision = await invoke("resume", { ...input, checkpointDigest: output(prepared).checkpointDigest,
+    discoveryInterpretation: submit(third, readyEvidence.discoveryInterpretation.interpretationRef) });
+  assert.equal(sealedRevision.exitCode, 6, JSON.stringify(sealedRevision));
 });
 
 test("native discovery runs through the durable host and Core without a Desktop candidate response", async (t) => {

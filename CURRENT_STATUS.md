@@ -2,7 +2,7 @@
 
 Last reconciled: 2026-09-14 CST
 Protected branch: main
-Working branch: codex/discovery-design-handoff
+Working branch: codex/discovery-gate
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
@@ -10,7 +10,7 @@ Release boundary: GitHub source plus a deterministic installable tarball operate
 
 ## Status
 
-The current uncommitted handoff candidate validates the complete materialized
+The handoff candidate submitted in draft PR #33 validates the complete materialized
 discovery evidence bundle and preserves exact prior gaps during reevaluation.
 An explicit candidate interpretation now binds observational findings to a
 structured design-input snapshot, with exhaustive observation/gap dispositions,
@@ -20,10 +20,21 @@ Subsequent exact-predecessor revision history passed the Windows CLI test;
 mapping-target and attached-content validation passed nine focused checks.
 The host now accepts a separate interpretation submission against the genuine
 Core discovery receipt, persists candidate evidence, and stops for approval.
-Restart verification and immutable replay pass the focused host test. Review,
-durable next-stage activation and full lifecycle acceptance remain unconnected.
-Package/static evidence below describes the prior PR #32
-candidate, not these uncommitted additions.
+Restart verification and immutable replay pass the focused host test. Its exact
+candidate package verified 468 files and 234 exports; static checks passed.
+PR #32 and PR #33 now both have all eleven checks passing.
+
+The current uncommitted discovery Gate addition binds owner evidence to the
+latest interpretation and genuine Core receipt, blocks unresolved/material gaps,
+and prepares an observational next state. The host persists the Gate commit,
+rejects replacement after sealing, and rederives the decision on read-only
+verification. Focused baseline/ArchitectureDesign/receipt/closure/history/gap
+checks pass 31/31. The expanded Windows CLI preparation/replay/restart test,
+including closed commit validation and approval/evidence negatives, passed on
+retry (1/1, zero skips). An earlier attempt timed out during candidate submission.
+Broader host regression and package checks remain pending. Durable next-stage activation and full
+lifecycle acceptance remain unconnected. Prior package verification does not
+cover this uncommitted Gate addition.
 
 The next local candidate connects explicit offline native architecture discovery
 through the Windows CLI, Core, durable inventory checkpoints and traceability.
