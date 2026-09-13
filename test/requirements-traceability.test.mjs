@@ -7,6 +7,7 @@ import {
   requirementsBaselineObserverContributor,
   requirementsControlTraceabilityContributor,
   requirementsTraceabilityContributor,
+  createRequirementsActivationTraceabilityContributor,
 } from "../src/requirements-traceability-contributor.mjs";
 import { validateTraceabilityUpdate } from "../src/traceability-artifact-validator.mjs";
 import {
@@ -302,6 +303,35 @@ test("Requirements baseline observer projects approved facts without architectur
     assert.equal(scope.sourceLocators[0].entityDigest, canonicalJsonDigest(approved));
   }
   assert.equal(projected.edges.filter(({ kind, target }) => kind === "defines" && target.kind === "business-scope").length, 3);
+});
+
+test("versioned requirements activation projects only the owning Gate's exact baseline outputs", async () => {
+  const contributor = createRequirementsActivationTraceabilityContributor();
+  const prior = baselineObserverContext();
+  const context = requirementsContext();
+  context.loadedOutputs = { ...context.loadedOutputs,
+    "requirements-baseline": prior.loadedInputs["requirements-baseline"],
+    "project-overview-baseline": prior.loadedInputs["project-overview-baseline"],
+  };
+  assert.equal(contributor.match(context), false);
+  context.gate = { id: "requirements-gate", outcome: "promoted", commitDigest: `sha256:${"a".repeat(64)}`,
+    requirementsBaseline: context.loadedOutputs["requirements-baseline"][0].ref,
+    projectOverviewBaseline: context.loadedOutputs["project-overview-baseline"][0].ref };
+  assert.equal(contributor.match(context), true);
+  assert.equal(contributor.authority, "approved");
+  assert.equal(contributor.metadata.version, "1.1.0");
+  assert.equal(requirementsBaselineObserverContributor.metadata.version, "1.0.0");
+  assert.deepEqual(await contributor.project(context), await requirementsBaselineObserverContributor.project(prior));
+  assert.equal(contributor.match(prior), true);
+  assert.deepEqual(await contributor.project(prior), await requirementsBaselineObserverContributor.project(prior));
+  const mismatched = structuredClone(context);
+  mismatched.gate.requirementsBaseline.digest = `sha256:${"f".repeat(64)}`;
+  // Clone the binding separately: fixture gate/output refs originally alias.
+  mismatched.loadedOutputs["requirements-baseline"][0].ref = structuredClone(prior.loadedInputs["requirements-baseline"][0].ref);
+  await assert.rejects(contributor.project(mismatched), /output bindings differ/);
+  const candidate = structuredClone(context);
+  candidate.loadedOutputs["requirements-baseline"][0].value.kind = "RequirementsDraft";
+  await assert.rejects(contributor.project(candidate), /validated baseline pair/);
 });
 
 test("Requirements baseline observer rejects malformed and duplicate authoritative business-scope records", async () => {

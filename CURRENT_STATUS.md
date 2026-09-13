@@ -2,7 +2,7 @@
 
 Last reconciled: 2026-09-13 CST
 Protected branch: main
-Working branch: codex/desktop-cli-host
+Working branch: codex/desktop-requirements-gate
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
@@ -43,6 +43,26 @@ See [the connection guide](docs/desktop-local-host.md) and
 [candidate evidence](dogfood/release-completion-20260913/desktop-cli-host.md).
 The owner reconfirmed that Desktop remains the agent operator; no independent
 agent-launching service or new credential connection is in scope.
+
+The in-progress requirements Gate host increment accepts a separate, exact
+change-pair submission after Core completes. It checkpoints both baseline byte
+strings and the rendered overview together, revalidates saved records through
+the owning Gate on read-only verification, and preserves the run version on
+exact replay. Every cited approval must resolve to its exact nonempty bytes,
+which are preserved with the pair and used during restart verification.
+An explicit activation resume now revalidates the saved pair, checkpoints the
+trusted versioned graph update before merge, and returns `requirements-activated`.
+An explicit observer 1.1.0 host configuration is required; existing configurations
+retain observer 1.0.0. Candidate facts remain separate, and read-only verification
+checks the exact activation receipt. Refreshed session context and downstream
+lifecycle progression remain incomplete.
+Project-wide activation reservation prevents competing Gates from overwriting the
+same old pair, recovers interruptions on both sides of graph merge, and blocks new
+module work from stale sessions while retaining historical inspection.
+Twenty-four targeted tests pass, including the change/Gate/activation/replay/verify sequence in
+independent Windows CLI processes and the unchanged real project pair. See
+[the scoped evidence](dogfood/release-completion-20260913/desktop-requirements-gate.md).
+This candidate is not yet release-sealed; full integration verification is pending.
 
 ProjectMemory is now baseline `PMB-MUC-7A172C974C0158E7`, version 1.0.11,
 digest `sha256:47eddea9836521b0b1557782740121feab15d5fbc9ad6556654172b0334a57e4`.

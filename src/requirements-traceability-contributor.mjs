@@ -670,3 +670,38 @@ export const requirementsTraceabilityContributors = Object.freeze([
   requirementsBaselineObserverContributor,
   requirementsControlTraceabilityContributor,
 ]);
+
+// Additive observer version for hosts with an owning Requirements Gate. Keep
+// the released 1.0.0 observer and default bundle unchanged. A graph registers
+// this instead of 1.0.0: two versions may not own the same approved scope.
+export function createRequirementsActivationTraceabilityContributor() {
+  const observer = createRequirementsBaselineObserverContributor();
+  const matchesGate = (context) => isModule(context, REQUIREMENTS_MODULE) &&
+    hasOutcome(context, CANDIDATE_OUTCOMES) &&
+    context.gate?.id === "requirements-gate" && context.gate?.outcome === "promoted" &&
+    /^sha256:[a-f0-9]{64}$/u.test(context.gate?.commitDigest ?? "");
+  return Object.freeze({
+    ...observer,
+    metadata: deepFreeze({ id: "devrelay.requirements-baseline-observer", version: "1.1.0" }),
+    match: (context) => matchesGate(context) || observer.match(context),
+    async project(context) {
+      if (!matchesGate(context)) return observer.project(context);
+      // These are explicit Gate outputs, not fabricated downstream inputs or
+      // an adapter's claim that its candidate is approved. The owning Gate must
+      // validate the exact pair and receipt before it calls graph.prepare.
+      const requirements = oneLoaded(context, "loadedOutputs", "requirements-baseline");
+      const overview = oneLoaded(context, "loadedOutputs", "project-overview-baseline");
+      if (requirements.value.kind !== "RequirementsBaseline" || overview.value.kind !== "ProjectOverviewBaseline") {
+        fail("Gate activation requires the validated baseline pair");
+      }
+      if (canonicalJson(context.gate.requirementsBaseline) !== canonicalJson(requirements.ref) ||
+          canonicalJson(context.gate.projectOverviewBaseline) !== canonicalJson(overview.ref)) {
+        fail("Gate activation output bindings differ from the validated pair");
+      }
+      return projectSelected(context, {
+        requirements, overview, body: requirements.value.requirements,
+        bodyPointer: "/requirements", overviewRequirementField: "requirementsBaseline",
+      }, { includeBusinessScope: true });
+    },
+  });
+}

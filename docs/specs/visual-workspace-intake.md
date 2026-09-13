@@ -28,6 +28,15 @@ inspiration, not a request to install Cognee, migrate memory, transmit project
 data, or adopt its architecture. Its authors' retrieval/completeness claims are
 not DevRelay verification evidence.
 
+On 2026-09-14 the owner specifically preferred incorporating Cognee as the
+memory map and asked for the next workspace to run locally. Evaluate Cognee
+as a bounded derived semantic-graph/retrieval adapter, preserving canonical
+ProjectMemory, TraceabilityGraph and Gate authority. This is the preferred
+next-stage direction, not a completed provider integration or permission to
+send repository content to a cloud service. A local deployment must explicitly
+choose both model and embedding providers and a concurrency-safe graph-store
+configuration. No Cognee installation or memory migration has occurred.
+
 ## Proposed experience — candidate, not approved implementation scope
 
 Use a shared selected item and exact snapshot across complementary views:

@@ -585,6 +585,9 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
         if (result.exit !== 0) throw new Error("installed native host command failed: " + command);
       }
       console.log("Installed Windows CLI/facade/Core/Desktop-exchange/replay command matrix passed (fixture candidate, not full lifecycle acceptance).");
+      const { verifyInstalledRequirementsGate } = await import(${JSON.stringify(new URL("../test/fixtures/installed-requirements-gate-smoke.mjs", import.meta.url).href)});
+      verifyInstalledRequirementsGate({ root: checkpointPathJoin(process.cwd(), "installed-requirements-gate"), installedBin });
+      console.log("Installed Windows requirements Gate/activation/read-only verification/exact replay passed (fixture approval, not human acceptance).");
     }`,
     'const expectedFacade = ["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];',
     'if (JSON.stringify(Object.keys(facade).sort()) !== JSON.stringify(expectedFacade)) throw new Error("unexpected root facade exports");',
