@@ -15,7 +15,7 @@ open-source release candidate, version `0.11.0-rc.3`. The source package retains
 explicit `1.6.0` execution-attempt semantics while preserving historical
 vocabulary support.
 
-The `0.11.0-rc.3` source/library candidate is prepared locally for exact verification and separate owner-controlled publication. Tagging, protected-main promotion, and GitHub publication are not implied by candidate readiness. The latest published controlled prerelease is [v0.11.0-rc.2](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2).
+The `0.11.0-rc.4` source/library candidate is in development and is not yet release-ready. The latest published controlled prerelease is [v0.11.0-rc.3](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.3). Tagging, protected-main promotion, and publication require exact verification and separate owner authority. See the [release-completion record](dogfood/release-completion-20260913/README.md) for current blockers; published rc.3 bytes are unchanged.
 
 `package.json` declares `"private": false` and `"license": "Apache-2.0"` so
 the GitHub-source tarball has accurate package metadata. This release does not
@@ -34,7 +34,7 @@ exact accepted GitHub source.
   atomic paired Requirements Gate validation, and ArchitectureDesign's explicit
   project-overview context contract through the public JavaScript API.
 - ArchitectureDiscovery deterministic state routing, offline tracked-or-declared native inventory, optional bounded analyzer port, observational normalization, Core-owned confidence and material-gap policy, exact checkpoint replay, trusted candidate-only traceability, and explicit source-transmission consent through the advanced API.
-- Standard, fast, and high-assurance workflow profiles; a filesystem-backed Windows local-host storage/isolation/execution boundary; and the versioned `init`, `run`, `resume`, `status`, `verify`, `inspect`, and `evidence` CLI commands.
+- Standard, fast, and high-assurance workflow profiles; a filesystem-backed Windows local-host storage/isolation/execution boundary; and injected-host library implementations of `init`, `run`, `resume`, `status`, `verify`, `inspect`, and `evidence`. The packaged executable's complete host integration is still open; an unbound command must fail, not report successful execution.
 - Optional pack conformance with Godot/GdUnit4 and provider-neutral web-service fixtures; domain behavior does not enter Generic Core.
 - WorkBreakdown state routing, pre-adapter baseline drift detection, closed
   work-item and coverage contracts, typed change application, deterministic

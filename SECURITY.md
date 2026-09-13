@@ -2,7 +2,11 @@
 
 ## Supported version
 
-The supported public preview line is DevRelay `0.10.0-rc.x`. The historical
+The current public preview line is DevRelay `0.11.0-rc.x`. The unreleased
+`0.11.0-rc.4` work includes dependency security patches; this is not a claim
+that the published rc.3 tarball contains those patches. See the
+[release-completion record](dogfood/release-completion-20260913/README.md).
+The historical
 `0.9.0` controlled-source candidate and older snapshots are not supported
 security baselines.
 

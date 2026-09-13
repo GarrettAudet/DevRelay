@@ -44,7 +44,7 @@ const redact = (value) => {
   );
 };
 const disposition = (result) =>
-  result?.outputs?.outcome ?? result?.outcome ?? result?.status ?? "pass";
+  result?.outputs?.outcome ?? result?.outputs?.status ?? result?.outcome ?? result?.status ?? "invalid-result";
 const exitFor = (result) => {
   const outcome = String(disposition(result));
   if (
@@ -130,9 +130,17 @@ export function createOperatorCli({ relay, initialize, evidence }) {
             subject: command === "status" ? { kind: "status" } : input.subject,
           });
         }
+        if (
+          !result || typeof result !== "object" || Array.isArray(result) ||
+          typeof disposition(result) !== "string" || disposition(result) === "invalid-result"
+        ) {
+          fail("host operation returned no explicit result disposition", "DR4772", EXIT.internal);
+        }
       } catch (error) {
-        const exitCode =
-          error?.exitCode ?? (error?.code === "DR4741" ? EXIT.recovery : EXIT.validation);
+        const requestedExit = error?.exitCode;
+        const exitCode = Object.values(EXIT).includes(requestedExit) && requestedExit !== EXIT.pass
+          ? requestedExit
+          : (error?.code === "DR4741" ? EXIT.recovery : EXIT.validation);
         const body = {
           apiVersion: "devrelay.dev/v1alpha1",
           kind: "OperatorCommandResult",
@@ -177,19 +185,35 @@ export function createOperatorCli({ relay, initialize, evidence }) {
 }
 
 export function parseOperatorArguments(argv) {
-  if (!Array.isArray(argv)) fail("argv must be an array");
-  if (argv.includes("--help")) return immutable({ help: true });
-  if (argv.includes("--version")) return immutable({ version: true });
+  if (!Array.isArray(argv) || argv.some((value) => typeof value !== "string")) {
+    fail("argv must be an array of strings");
+  }
+  if (argv.length === 1 && argv[0] === "--help") return immutable({ help: true });
+  if (argv.length === 1 && argv[0] === "--version") return immutable({ version: true });
   const [command, ...flags] = argv;
-  const format = flags.includes("--json") ? "json" : "human";
-  const inputAt = flags.indexOf("--input");
+  if (!COMMANDS.includes(command)) fail("command is missing or unsupported");
+  if (flags.length === 1 && flags[0] === "--help") return immutable({ help: true });
+  let format = "human";
   let input = {};
-  if (inputAt >= 0) {
-    if (!flags[inputAt + 1]) fail("--input requires canonical JSON");
-    try {
-      input = JSON.parse(flags[inputAt + 1]);
-    } catch {
-      fail("--input contains invalid JSON");
+  const seen = new Set();
+  for (let index = 0; index < flags.length; index += 1) {
+    const flag = flags[index];
+    if (!["--json", "--input"].includes(flag)) fail("unsupported command argument");
+    if (seen.has(flag)) fail("duplicate command argument");
+    seen.add(flag);
+    if (flag === "--json") {
+      format = "json";
+    } else {
+      const value = flags[++index];
+      if (value === undefined) fail("--input requires a JSON object");
+      try {
+        input = JSON.parse(value);
+      } catch {
+        fail("--input contains invalid JSON");
+      }
+      if (!input || typeof input !== "object" || Array.isArray(input)) {
+        fail("--input must contain a JSON object");
+      }
     }
   }
   return immutable({ command, version: "v1", input, format });

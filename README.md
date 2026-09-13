@@ -8,9 +8,8 @@ Modules with a Core-owned lifecycle traceability sidecar.
 Use these documents in order when inspecting or resuming DevRelay:
 
 - **Current status:** [CURRENT_STATUS.md](CURRENT_STATUS.md) records the canonical release state, lifecycle position, evidence, blockers, and next product increment.
-- **Handoff overview:** [handoff/2026-08-22-ep001-environment-preparation-release/README.md](handoff/2026-08-22-ep001-environment-preparation-release/README.md) summarizes the completed release and the exact pickup boundary.
-- **Exact next actions:** [handoff/2026-08-22-ep001-environment-preparation-release/NEXT_ACTIONS.md](handoff/2026-08-22-ep001-environment-preparation-release/NEXT_ACTIONS.md) gives the ordered, gate-by-gate work required next.
-- **Pickup prompt:** [handoff/2026-08-22-ep001-environment-preparation-release/PICKUP_PROMPT.md](handoff/2026-08-22-ep001-environment-preparation-release/PICKUP_PROMPT.md) is the self-contained prompt to give the next ChatGPT/Codex Desktop task.
+- **Release-completion work:** [the current repair record](dogfood/release-completion-20260913/README.md) distinguishes verified repairs from open release requirements.
+- **Historical handoff:** [the EP-001 release handoff](handoff/2026-08-22-ep001-environment-preparation-release/README.md) is preserved evidence, not the current work queue.
 - **Roadmap:** [Roadmap.md](Roadmap.md) contains the approved, prioritized product initiatives.
 
 This status page is a human-readable projection; digest-bound lifecycle
@@ -23,7 +22,7 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.11.0-rc.3` is the current Apache-2.0 source/library candidate, building on the published [v0.11.0-rc.2 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2), and contains DevRelay Core,
+DevRelay `0.11.0-rc.4` is an **unreleased, in-progress** Apache-2.0 source/library candidate, building on the published [v0.11.0-rc.3 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.3), and contains DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
@@ -37,7 +36,7 @@ claimed. See [LICENSE](LICENSE) and [RELEASE.md](RELEASE.md).
 
 The release contains Core, schemas, versioned manifests, fixtures, bounded
 adapter contracts, a small nine-operation facade, workflow profiles, a
-filesystem-backed local Windows host boundary, and a deterministic operator CLI.
+filesystem-backed local Windows host boundary, and an injected-host operator CLI library. The executable currently fails explicitly when no host is bound; complete installed-host integration remains a release blocker.
 The next release candidate also includes a validated, deliberately installed
 ChatGPT Desktop orchestration plug-in; it is not a one-click managed distribution
 or a hosted backend. See [Desktop orchestration](docs/desktop-orchestration.md). The

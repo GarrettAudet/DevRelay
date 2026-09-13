@@ -436,9 +436,9 @@ function assertPackageMetadata(packageDocument) {
       throw new Error(`${name} must be pinned exactly to ${version}`);
     }
   }
-  if (packageDocument.overrides?.["fast-uri"] !== "3.1.5") {
+  if (packageDocument.overrides?.["fast-uri"] !== "3.1.7") {
     throw new Error(
-      "fast-uri must remain pinned to the audited 3.1.5 override",
+      "fast-uri must remain pinned to the security-patched 3.1.7 override",
     );
   }
   if (packageDocument.main !== "./src/root.mjs") {

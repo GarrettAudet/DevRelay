@@ -101,3 +101,33 @@ test("argument parser accepts canonical JSON and rejects malformed input", () =>
     /invalid JSON/u,
   );
 });
+
+test("missing or nested failure dispositions never become successful CLI results", async () => {
+  for (const value of [undefined, null, {}, { outputs: {} }, { outputs: { status: "failed" } }]) {
+    const invalid = createOperatorCli({
+      relay,
+      initialize: async () => value,
+      evidence: async () => value,
+    });
+    const result = await invalid.execute({ command: "init", format: "json" });
+    assert.notEqual(result.exitCode, 0);
+    assert.notEqual(JSON.parse(result.stdout).outcome, "pass");
+  }
+  const nested = createOperatorCli({
+    relay,
+    initialize: async () => ({ outputs: { status: "initialized" } }),
+    evidence: async () => ({ status: "completed" }),
+  });
+  assert.equal((await nested.execute({ command: "init" })).exitCode, 0);
+});
+
+test("a thrown host error cannot override the stable nonzero exit-code contract", async () => {
+  for (const value of [0, -1, 256, 1.5, "0", null, undefined]) {
+    const failed = async () => { const error = new Error("host rejected"); error.exitCode = value; throw error; };
+    const operator = createOperatorCli({ relay, initialize: failed, evidence: failed });
+    const result = await operator.execute({ command: "init", format: "json" });
+    assert.equal(result.outcome, "failed");
+    assert.equal(result.exitCode, OPERATOR_EXIT_CODES.validation);
+    assert.equal(JSON.parse(result.stdout).exitCode, OPERATOR_EXIT_CODES.validation);
+  }
+});
