@@ -6,6 +6,7 @@ import { createArchitectureDiscoveryCheckpointController } from "./architecture-
 import { normalizeArchitectureDiscoveryObservations } from "./architecture-discovery-observation-normalizer.mjs";
 import { evaluateMaterializedArchitectureDiscoveryGapPolicy } from "./architecture-discovery-gap-policy.mjs";
 import { validateArchitectureDiscoveryArtifact } from "./architecture-discovery-artifact-validator.mjs";
+import { loadMaterializedArchitectureDiscoveryClosure } from "./architecture-discovery-materialized-closure.mjs";
 
 const digest = { type: "string", pattern: "^sha256:[a-f0-9]{64}$" };
 const portablePath = { type: "string", pattern: "^(?!/)(?!.*\\\\)(?!.*:)(?!.*(?:^|/)\\.\\.?(?:/|$)).+$" };
@@ -90,6 +91,7 @@ export function createNativeDiscoveryBinding({ loadArtifact, readSource, saveArt
       schema: "https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/snapshot",
       mediaType: "application/vnd.devrelay.current-architecture-snapshot+json", uri: `artifact://native-discovery/${decision.snapshot.snapshotId}` };
     await save(snapshotRef, decision.snapshot);
+    await loadMaterializedArchitectureDiscoveryClosure({ snapshotRef, loadArtifact });
     return { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleResult", invocationId: invocation.invocationId,
       status: "completed", outcome: "discovered", outputs: { "current-architecture-snapshot": [snapshotRef] },
       evidence: [{ kind: "architecture-discovery/native-inventory", subject: snapshotRef.artifactId, status: "pass", artifact: inventoryRef }], diagnostics: [] };

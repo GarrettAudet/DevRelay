@@ -2,13 +2,28 @@
 
 Last reconciled: 2026-09-14 CST
 Protected branch: main
-Working branch: codex/desktop-lifecycle-integration
+Working branch: codex/discovery-design-handoff
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
 Release boundary: GitHub source plus a deterministic installable tarball operated through ChatGPT/Codex Desktop on Windows
 
 ## Status
+
+The current uncommitted handoff candidate validates the complete materialized
+discovery evidence bundle and preserves exact prior gaps during reevaluation.
+An explicit candidate interpretation now binds observational findings to a
+structured design-input snapshot, with exhaustive observation/gap dispositions,
+source provenance and unchanged gap materiality. The broader host, interpretation,
+gap and ArchitectureDesign regression passed 56 tests with no failures or skips.
+Subsequent exact-predecessor revision history passed the Windows CLI test;
+mapping-target and attached-content validation passed nine focused checks.
+The host now accepts a separate interpretation submission against the genuine
+Core discovery receipt, persists candidate evidence, and stops for approval.
+Restart verification and immutable replay pass the focused host test. Review,
+durable next-stage activation and full lifecycle acceptance remain unconnected.
+Package/static evidence below describes the prior PR #32
+candidate, not these uncommitted additions.
 
 The next local candidate connects explicit offline native architecture discovery
 through the Windows CLI, Core, durable inventory checkpoints and traceability.

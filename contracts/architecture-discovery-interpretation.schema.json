@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/artifacts/architecture-discovery-interpretation/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "interpretationId",
+    "authority",
+    "discoverySnapshot",
+    "structuredSnapshot",
+    "projectArchitectureState",
+    "requirementsBaseline",
+    "projectOverviewBaseline",
+    "observations",
+    "gaps"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "ArchitectureDiscoveryInterpretation"
+    },
+    "interpretationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "const": "candidate"
+    },
+    "discoverySnapshot": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "structuredSnapshot": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "projectArchitectureState": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "requirementsBaseline": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "projectOverviewBaseline": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "observation",
+          "disposition",
+          "rationale",
+          "targetPointers"
+        ],
+        "properties": {
+          "observation": {
+            "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+          },
+          "disposition": {
+            "enum": [
+              "mapped",
+              "out-of-scope",
+              "unresolved"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetPointers": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^/(architectureModel/content/(elements|relationships)|diagrams/content/views|interfaceIntent/content/interfaces|architectureConstraints/content/constraints|decisionRecords/content/decisions|nativeArtifacts/content/entries)/(0|[1-9][0-9]*)$"
+            }
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gap",
+          "structuredGapId"
+        ],
+        "properties": {
+          "gap": {
+            "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+          },
+          "structuredGapId": {
+            "type": "string",
+            "pattern": "^GAP-[A-Z0-9-]+$"
+          }
+        }
+      }
+    }
+  }
+}

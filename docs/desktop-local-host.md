@@ -238,6 +238,14 @@ Read-only checks compare database bytes, and negative cases cover stale
 bindings, missing grants, prior open memory, substituted responses and corrected
 candidate history.
 
+Before returning native discovery success, the host now reloads the materialized
+snapshot, repository, native inventory, observations, gaps and source evidence by
+raw digest. It rederives observations from the producer findings and rejects
+substituted observations or omitted producer warnings. This closure check is
+read-only and does not select a route, approve a Gate, or claim design readiness.
+Materialized gap reevaluation requires the exact existing gap records and retains
+them even when no current rule emits them; a retained material gap still blocks.
+
 The host currently verifies the declared repository revision in the supplied
 snapshot, not an independently observed Git HEAD. It initializes a new runtime
 graph rather than importing the existing approved ProjectMemory graph. Current
@@ -246,3 +254,45 @@ context migration is not implemented. Memory conclusion belongs to its owning
 Gate. Full lifecycle scheduling, approved-frontier dispatch, worktree execution,
 quality/continuity/operator integration, installed code-production acceptance,
 independent human review and release sealing remain separate required work.
+
+The in-progress `ArchitectureDiscoveryInterpretation` candidate contract binds
+the raw observational discovery snapshot to a separate structured snapshot with
+the exact project-state, requirements and overview references. Every observation
+has a mapped, out-of-scope or unresolved disposition and a rationale. Mapped
+targets must resolve to actual entries within architecture sections, never section
+metadata. Target pointers use a read-only logical `content` view for both embedded
+and attached sections; attached content is loaded by raw digest and validated
+through the owning architecture contract without rewriting the snapshot.
+Every original gap must map
+to a structured gap without changing its reason or materiality; producer warnings
+and the original snapshot reference are retained. The read-only interpretation
+loader first verifies the complete discovery evidence bundle, then validates
+structured-snapshot lineage through the existing ArchitectureDesign contract.
+
+This is a candidate validation boundary, not semantic approval. In particular,
+an unresolved disposition or blocking gap can be represented for review; loading
+it does not authorize progression. After a completed native discovery run, a
+separate `resume` can supply `discoveryInterpretation` as an exact file descriptor
+for a `DesktopDiscoveryInterpretationSubmission`. That closed submission contains
+an `interpretation` artifact-file descriptor and an `artifacts` array for its
+structured snapshot or other new referenced bytes. The host checks source paths
+against grants, validates the candidate against the genuine Core replay receipt
+and exact discovery inputs, then persists the validated bytes before the run
+transition. It returns `awaiting-discovery-approval` (exit 4).
+
+`evidence` exposes the stored candidate record and its unresolved-observation and
+blocking-gap counts. `verify` reloads the persisted bytes and revalidates the
+interpretation against Core without modifying state. Exact resubmission and
+ordinary resume preserve the run version and review boundary. A different
+candidate cannot overwrite the sealed boundary implicitly. A correction must
+set the submission's `replacesInterpretation` to the exact current interpretation
+reference. The host appends a content-addressed history record, retains the old
+candidate bytes and advances only the candidate head. A stale predecessor,
+invented initial predecessor or attempt to reactivate a historical candidate is
+rejected. Exact revision replay does not add another record. `evidence` exposes
+the history newest-first; `verify` revalidates every candidate against the same
+Core discovery receipt and checks every history link read-only.
+
+Review policy, approval and durable next-stage activation followed by a real
+ArchitectureDesign invocation remain unconnected. No synthetic successful
+transition is substituted for those remaining integration steps.

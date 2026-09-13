@@ -14,6 +14,33 @@ const observationRef=(value)=>({artifactId:value.observationId,digest:value.obse
 function snapshot(observations) { return seal({apiVersion:"devrelay.dev/v1alpha1",kind:"CurrentArchitectureSnapshot",snapshotId:"SNAP",repositorySnapshot:repository,nativeInventory:{artifactId:"inventory",digest:D("d")},analyzerResults:[],observations:observations.map(observationRef),gaps:[],warnings:[],discoveryMethods:["native-inventory"],sourceRefs:[source],authority:"observational"},"snapshotDigest"); }
 const rule=(id,subject,condition,material,extra={})=>({id,subject,condition,material,reason:`${condition} evidence for ${subject} requires explicit review.`,sources:[source],...extra});
 
+test("materialized reevaluation cannot erase existing gaps or bypass their materiality", () => {
+  const values = [observation("OBS-RETAIN", "service:a", "Observed.")];
+  const raw = seal({ ...snapshot(values), observations: values.map(value => ({ artifactId: value.observationId, digest: canonicalJsonDigest(value) })) }, "snapshotDigest");
+  const initial = evaluateMaterializedArchitectureDiscoveryGapPolicy({ snapshot: raw, observations: values, rules: [rule("MISSING", "service:other", "missing", false)] });
+  const input = { snapshot: initial.snapshot, observations: values, rules: [], existingGaps: initial.gaps };
+  const retained = evaluateMaterializedArchitectureDiscoveryGapPolicy(input);
+  assert.deepEqual(retained.gaps, initial.gaps);
+  assert.deepEqual(retained.snapshot.gaps, initial.snapshot.gaps);
+  assert.equal(canonicalJson(retained.snapshot), canonicalJson(initial.snapshot));
+  const repeated = evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, rules: [rule("MISSING", "service:other", "missing", false)] });
+  assert.deepEqual(repeated, retained);
+  const additional = evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, rules: [rule("SECOND", "service:third", "missing", false)] });
+  assert.equal(additional.gaps.length, 2);
+  assert.ok(additional.snapshot.gaps.some(value => canonicalJson(value) === canonicalJson(initial.snapshot.gaps[0])));
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, rules: [rule("MISSING", "service:other", "missing", false, { sources: [{ ...source, location: { path: "different.mjs" } }] })] }), ArchitectureDiscoveryGapPolicyError);
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, existingGaps: [] }), ArchitectureDiscoveryGapPolicyError);
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, existingGaps: [...initial.gaps, ...initial.gaps] }), ArchitectureDiscoveryGapPolicyError);
+  const duplicateSnapshot = seal({ ...initial.snapshot, gaps: [...initial.snapshot.gaps, ...initial.snapshot.gaps] }, "snapshotDigest");
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, snapshot: duplicateSnapshot }), ArchitectureDiscoveryGapPolicyError);
+  const changed = seal({ ...initial.gaps[0], material: true }, "gapDigest");
+  assert.throws(() => evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, existingGaps: [changed] }), ArchitectureDiscoveryGapPolicyError);
+  const blockingSnapshot = seal({ ...initial.snapshot, gaps: [{ ...initial.snapshot.gaps[0], digest: canonicalJsonDigest(changed) }] }, "snapshotDigest");
+  const blocked = evaluateMaterializedArchitectureDiscoveryGapPolicy({ ...input, snapshot: blockingSnapshot, existingGaps: [changed] });
+  assert.equal(blocked.outcome, "needs_clarification");
+  assert.equal("snapshot" in blocked, false);
+});
+
 test("materialized gap policy binds exact observation and gap file digests without rewriting the snapshot", () => {
   const values = [observation("OBS-RAW", "service:a", "Possibly present.", 0.4, "analyzer-inferred")];
   const rawSnapshot = seal({ ...snapshot(values), observations: values.map(value => ({ artifactId: value.observationId, digest: canonicalJsonDigest(value) })) }, "snapshotDigest");

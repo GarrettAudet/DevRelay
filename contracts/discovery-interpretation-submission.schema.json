@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/discovery-interpretation-submission/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "interpretation",
+    "artifacts"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "DesktopDiscoveryInterpretationSubmission"
+    },
+    "interpretation": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "replacesInterpretation": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+      }
+    }
+  }
+}
