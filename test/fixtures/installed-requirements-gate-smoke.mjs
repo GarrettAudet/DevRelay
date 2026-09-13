@@ -11,9 +11,9 @@ export function verifyInstalledRequirementsGate({ root, installedBin }) {
   assert.equal(process.platform, "win32");
   mkdirSync(root, { recursive: true });
   const fx = materializeRequirementsChangeHostFixture(root);
-  const call = (command, input = fx.input) => {
-    const child = spawnSync(process.execPath, [installedBin, command, "--json", "--host", fx.configurationPath,
-      "--host-digest", fx.configurationDigest, "--input", JSON.stringify(input)],
+  const call = (command, input = fx.input, configuration = fx) => {
+    const child = spawnSync(process.execPath, [installedBin, command, "--json", "--host", configuration.configurationPath,
+      "--host-digest", configuration.configurationDigest, "--input", JSON.stringify(input)],
     { encoding: "utf8", windowsHide: true, timeout: 60_000 });
     assert.ifError(child.error);
     const result = JSON.parse(child.stdout);
@@ -44,5 +44,25 @@ export function verifyInstalledRequirementsGate({ root, installedBin }) {
   const replay = call("resume", { ...fx.input, checkpointDigest: output(activated).checkpointDigest, activateRequirementsGate });
   assert.equal(output(replay).version, output(activated).version);
   assert.deepEqual(output(call("evidence")).requirementsActivation, output(verified).requirementsActivation);
+  const refreshed = call("resume", { ...fx.input, checkpointDigest: output(replay).checkpointDigest,
+    refreshRequirementsContext: "2026-09-14T02:00:00.000Z" });
+  assert.equal(refreshed.outcome, "requirements-context-prepared", JSON.stringify(refreshed));
+  const handoff = output(call("evidence")).requirementsContext;
+  const originalConfiguration = readFileSync(fx.configurationPath);
+  const materialized = call("resume", { ...fx.input, checkpointDigest: output(refreshed).checkpointDigest,
+    materializeRequirementsContext: handoff.handoffDigest });
+  assert.equal(materialized.outcome, "requirements-context-materialized", JSON.stringify(materialized));
+  const nextConfiguration = output(materialized).nextConfiguration;
+  assert.deepEqual(readFileSync(fx.configurationPath), originalConfiguration);
+  const materializedState = readFileSync(join(root, "state", "state.sqlite"));
+  const filesVerified = call("verify", { ...fx.input, subject: { kind: "checkpoint" } });
+  assert.equal(filesVerified.exitCode, 0, JSON.stringify(filesVerified));
+  assert.deepEqual(output(filesVerified).requirementsContextFiles, nextConfiguration);
+  assert.deepEqual(readFileSync(join(root, "state", "state.sqlite")), materializedState);
+  const nextInitialized = call("init", fx.input, nextConfiguration);
+  assert.equal(nextInitialized.exitCode, 0, JSON.stringify(nextInitialized));
+  assert.equal(call("inspect", fx.input, nextConfiguration).exitCode, 6);
+  const historical = call("inspect");
+  assert.equal(historical.exitCode, 0, JSON.stringify(historical));
   return output(verified).requirementsActivation;
 }
