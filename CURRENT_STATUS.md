@@ -2,13 +2,27 @@
 
 Last reconciled: 2026-09-14 CST
 Protected branch: main
-Working branch: codex/desktop-context-handoff
+Working branch: codex/desktop-lifecycle-integration
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
 Release boundary: GitHub source plus a deterministic installable tarball operated through ChatGPT/Codex Desktop on Windows
 
 ## Status
+
+The next local candidate connects explicit offline native architecture discovery
+through the Windows CLI, Core, durable inventory checkpoints and traceability.
+Discovery 0.1.1 declares its required paired requirements input; released 0.1.0
+remains unchanged. A matching contributor 1.1.0 is isolated from its predecessor.
+Source evidence uses explicit UTF-8 text contracts with strict byte digests and
+opaque graph projection. The native subprocess flow passed including missing-
+grant rejection, read-only verification, exact replay and new-run source drift
+rejection. Broader Core regression passed 59 tests; combined regression passed
+88 tests with zero failures or skips. Installed-package verification passed
+463 exact catalog-bound files and 232 installed export targets, including native
+discovery, checkpoint replay and source-drift rejection. These use fixture
+context, not a production-code acceptance run. Downstream ArchitectureDesign/Gate
+connection and full code-production acceptance remain incomplete.
 
 The full release-completion goal is active. The current repair slice removes
 false-success CLI behavior and patches the active dependency graph to fast-uri

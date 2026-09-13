@@ -674,6 +674,7 @@ export {
 export {
   applyArchitectureDiscoveryGapPolicy,
   evaluateArchitectureDiscoveryGapPolicy,
+  evaluateMaterializedArchitectureDiscoveryGapPolicy,
 } from "./architecture-discovery-gap-policy.mjs";
 export {
   architectureDiscoveryCheckpointKey,
@@ -682,7 +683,9 @@ export {
 export {
   architectureDiscoveryTraceabilityContributor,
   createArchitectureDiscoveryTraceabilityContributor,
+  createPairedArchitectureDiscoveryTraceabilityContributor,
 } from "./architecture-discovery-traceability-contributor.mjs";
+export { nativeDiscoveryPlugin, createNativeDiscoveryBinding } from "./native-discovery-binding.mjs";
 export {
   LIFECYCLE_RUN_REPORT_ARTIFACT_KINDS,
   LifecycleRunReportArtifactValidationError,

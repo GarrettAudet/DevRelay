@@ -21,11 +21,11 @@ function immutable(value) {
   return freeze(copy);
 }
 
-function matches(context) {
+function matches(context, version = MODULE.version) {
   const module = context?.invocation?.module;
   return Boolean(
     module?.id === MODULE.id &&
-      module.version === MODULE.version &&
+      module.version === version &&
       module.operation === MODULE.operation &&
       context?.moduleResult?.status === "completed" &&
       context.moduleResult.outcome === "discovered",
@@ -93,8 +93,8 @@ async function resolveValidated(context, ref, expectedKind) {
   return loaded;
 }
 
-async function project(context) {
-  if (!matches(context)) fail("project called for a nonmatching execution");
+async function project(context, version = MODULE.version) {
+  if (!matches(context, version)) fail("project called for a nonmatching execution");
   const snapshot = oneLoaded(context, "current-architecture-snapshot");
   validateArchitectureDiscoveryArtifact(snapshot.value);
   if (snapshot.value.kind !== "CurrentArchitectureSnapshot") {
@@ -160,3 +160,12 @@ export function createArchitectureDiscoveryTraceabilityContributor() {
 }
 
 export const architectureDiscoveryTraceabilityContributor = createArchitectureDiscoveryTraceabilityContributor();
+
+export function createPairedArchitectureDiscoveryTraceabilityContributor() {
+  return Object.freeze({
+    ...createArchitectureDiscoveryTraceabilityContributor(),
+    metadata: immutable({ id: "devrelay.architecture-discovery-observational", version: "1.1.0" }),
+    match: context => matches(context, "0.1.1"),
+    project: context => project(context, "0.1.1"),
+  });
+}

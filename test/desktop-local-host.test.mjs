@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { canonicalJsonDigest } from "../src/content-digest.mjs";
+import { materializeNativeDiscoveryHostFixture } from "./fixtures/desktop-native-discovery-host.mjs";
 import { openDesktopLocalHost } from "../src/desktop-local-host.mjs";
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
 import { materializeDesktopHostFixture } from "./fixtures/desktop-local-host.mjs";
@@ -22,6 +23,45 @@ async function command(fx, operation, input = fx.input) {
   try { return await host.cli.execute({ command: operation, input, format: "json" }); }
   finally { host.close(); }
 }
+
+async function executableCommand(fx, operation, input = fx.input) {
+  if (process.platform !== "win32") return command(fx, operation, input);
+  const child = spawnSync(process.execPath, [fileURLToPath(new URL("../bin/devrelay.mjs", import.meta.url)), operation,
+    "--json", "--host", fx.configurationPath, "--host-digest", fx.configurationDigest, "--input", JSON.stringify(input)],
+  { encoding: "utf8", windowsHide: true, timeout: 60_000 });
+  assert.ifError(child.error);
+  const result = JSON.parse(child.stdout);
+  assert.equal(child.status, result.exitCode, child.stdout);
+  return result;
+}
+
+test("native discovery runs through the durable host and Core without a Desktop candidate response", async (t) => {
+  const root = mkdtempSync(join(tmpdir(), "devrelay-native-cli-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const { fx, configured, source, invocation } = materializeNativeDiscoveryHostFixture(root);
+  assert.equal((await executableCommand(configured, "init")).exitCode, 0);
+  const result = await executableCommand(configured, "run");
+  assert.equal(result.exitCode, 0, JSON.stringify(result));
+  assert.equal(output(result).state.status, "module-completed");
+  assert.equal(output(result).state.pendingRequestId, null);
+  const databaseBefore = readFileSync(join(fx.root, "state/state.sqlite"));
+  const verified = await executableCommand(configured, "verify", { ...configured.input, subject: { kind: "checkpoint" } });
+  assert.equal(verified.exitCode, 0, JSON.stringify(verified));
+  assert.deepEqual(readFileSync(join(fx.root, "state/state.sqlite")), databaseBefore);
+  const ungrantedInvocation = { ...invocation, invocationId: "native-ungranted", runId: "native-ungranted", grants: [] };
+  const denied = await executableCommand(configured, "run", { ...configured.input, runId: ungrantedInvocation.runId,
+    invocation: fx.json("native/ungranted.json", ungrantedInvocation) });
+  assert.notEqual(denied.exitCode, 0);
+  fx.write(source.path, Buffer.from("export const greeting = 'changed';\n"));
+  const replay = await executableCommand(configured, "resume", { ...configured.input, checkpointDigest: output(result).checkpointDigest });
+  assert.equal(replay.exitCode, 0, JSON.stringify(replay));
+  assert.equal(output(replay).version, output(result).version);
+  const nextInvocation = { ...invocation, invocationId: "native-discovery-002", runId: "native-run-002" };
+  const changed = await executableCommand(configured, "run", { ...configured.input, runId: nextInvocation.runId,
+    invocation: fx.json("native/changed-invocation.json", nextInvocation) });
+  assert.notEqual(changed.exitCode, 0);
+  assert.match(JSON.stringify(changed), /declared source bytes drifted/);
+});
 
 test("CLI resume validates a current-pair requirements change through the actual Gate", async (t) => {
   const base = fixture(t);

@@ -3,9 +3,29 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { canonicalJsonDigest } from "../src/content-digest.mjs";
 import { documentValidators, validationDetail } from "../src/schema-validation.mjs";
+import { nativeDiscoveryPlugin } from "../src/native-discovery-binding.mjs";
+import { createPairedArchitectureDiscoveryTraceabilityContributor, createArchitectureDiscoveryTraceabilityContributor } from "../src/architecture-discovery-traceability-contributor.mjs";
 import { ARCHITECTURE_DISCOVERY_ARTIFACT_KINDS, ArchitectureDiscoveryArtifactValidationError, validateArchitectureDiscoveryArtifact } from "../src/architecture-discovery-artifact-validator.mjs";
 
 const D=`sha256:${"a".repeat(64)}`, E=`sha256:${"b".repeat(64)}`;
+
+test("paired discovery version declares requirements explicitly without changing the released module", () => {
+  const legacy = JSON.parse(readFileSync(new URL("../examples/modules/architecture-discovery.module.json", import.meta.url)));
+  const paired = JSON.parse(readFileSync(new URL("../examples/modules/architecture-discovery-0.1.1.module.json", import.meta.url)));
+  assert.equal(documentValidators.moduleDefinition(paired), true, validationDetail(documentValidators.moduleDefinition));
+  assert.equal(documentValidators.modulePlugin(nativeDiscoveryPlugin), true);
+  assert.deepEqual(JSON.parse(readFileSync(new URL("../examples/plugins/native-architecture-discovery-1.0.0.plugin.json", import.meta.url))), nativeDiscoveryPlugin);
+  assert.equal(legacy.metadata.version, "0.1.0");
+  assert.equal(paired.metadata.version, "0.1.1");
+  assert.equal(paired.operations[0].inputs[0].name, "requirements-baseline");
+  assert.equal(paired.operations[0].inputs[0].required, true);
+  const oldContributor = createArchitectureDiscoveryTraceabilityContributor();
+  const newContributor = createPairedArchitectureDiscoveryTraceabilityContributor();
+  const context = version => ({ invocation: { module: { id: "architecture-discovery", version, operation: "discover" } }, moduleResult: { status: "completed", outcome: "discovered" } });
+  assert.equal(oldContributor.match(context("0.1.1")), false);
+  assert.equal(newContributor.match(context("0.1.0")), false);
+  assert.equal(newContributor.match(context("0.1.1")), true);
+});
 const ref=(artifactId,digest=D)=>({artifactId,digest});
 const seal=(value,field)=>({...value,[field]:canonicalJsonDigest(Object.fromEntries(Object.entries(value).filter(([key])=>!["apiVersion","kind",field].includes(key))))});
 const reject=(value,context)=>assert.throws(()=>validateArchitectureDiscoveryArtifact(value,context),ArchitectureDiscoveryArtifactValidationError);

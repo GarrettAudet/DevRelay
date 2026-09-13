@@ -588,6 +588,9 @@ function installAndImport(tarball, packageDocument, temporaryRoot, exportInvento
       const { verifyInstalledRequirementsGate } = await import(${JSON.stringify(new URL("../test/fixtures/installed-requirements-gate-smoke.mjs", import.meta.url).href)});
       verifyInstalledRequirementsGate({ root: checkpointPathJoin(process.cwd(), "installed-requirements-gate"), installedBin });
       console.log("Installed Windows requirements Gate/activation/read-only verification/exact replay passed (fixture approval, not human acceptance).");
+      const { verifyInstalledNativeDiscovery } = await import(${JSON.stringify(new URL("../test/fixtures/installed-native-discovery-smoke.mjs", import.meta.url).href)});
+      verifyInstalledNativeDiscovery({ root: checkpointPathJoin(process.cwd(), "installed-native-discovery"), installedBin });
+      console.log("Installed Windows native discovery/Core/traceability/replay/source-drift smoke passed (fixture context, not full lifecycle acceptance).");
     }`,
     'const expectedFacade = ["conclude", "createDevRelay", "createLocalHost", "defineModule", "definePlugin", "inspect", "resume", "run", "verify"];',
     'if (JSON.stringify(Object.keys(facade).sort()) !== JSON.stringify(expectedFacade)) throw new Error("unexpected root facade exports");',

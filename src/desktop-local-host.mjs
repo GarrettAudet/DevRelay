@@ -22,6 +22,9 @@ import { commitLocalRequirementsGate, verifyLocalRequirementsGate, activateLocal
 import { createRequirementsActivationTraceabilityContributor } from "./requirements-traceability-contributor.mjs";
 import { createLocalRequirementsContextHandoff } from "./local-requirements-context.mjs";
 import { materializeLocalRequirementsContext, verifyLocalRequirementsContextFiles } from "./local-context-materialization.mjs";
+import { createNativeDiscoveryBinding, nativeDiscoveryPlugin } from "./native-discovery-binding.mjs";
+import { validateArchitectureDiscoveryArtifact } from "./architecture-discovery-artifact-validator.mjs";
+import { createPairedArchitectureDiscoveryTraceabilityContributor } from "./architecture-discovery-traceability-contributor.mjs";
 
 const schema = (name) => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const validateConfiguration = compileArtifactSchema(schema("desktop-local-host-configuration.schema.json"), [schema("module-result.schema.json")]);
@@ -176,11 +179,28 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
       const sets = {
         requirements: [api.requirementsRuntimeArtifactContracts, api.requirementsTraceabilityContributors],
         architecture: [api.architectureRuntimeArtifactContracts, [...api.requirementsTraceabilityContributors, ...api.architectureTraceabilityContributors]],
+        "architecture-discovery": [() => [...api.architectureRuntimeArtifactContracts().filter(contract => contract.schema !== "https://devrelay.dev/artifacts/project-architecture-state/v1"),
+          { schema: "https://devrelay.dev/artifacts/project-architecture-state/v1", validate: value => api.validateArchitectureArtifact(value) },
+          { schema: "https://devrelay.dev/evidence/repository-file/v1", representation: "utf8-text", validate: value => {
+            if (typeof value !== "string") throw new TypeError("repository source evidence must be UTF-8 text");
+          } },
+          ...["snapshot", "gap", "nativeInventory", "observation"].map(kind => ({ schema: `https://devrelay.dev/contracts/architecture-discovery-artifacts.schema.json#/$defs/${kind}`, validate: validateArchitectureDiscoveryArtifact }))],
+          [...api.requirementsTraceabilityContributors, createPairedArchitectureDiscoveryTraceabilityContributor()]],
         "work-breakdown": [api.workBreakdownRuntimeArtifactContracts, [...api.requirementsTraceabilityContributors, ...api.architectureTraceabilityContributors, ...api.workBreakdownTraceabilityContributors]],
       };
       const [contracts, contributors] = sets[configuration.contractSet];
       const plugins = configuration.plugins.map((entry) => {
         const definition = json(entry);
+        if (same(definition, nativeDiscoveryPlugin)) return { definition, adapter: createNativeDiscoveryBinding({
+          loadArtifact: executionContext.artifacts.load, readSource: relative => readFileSync(scopedPath(relative)),
+          requirementsRef: roleRef("requirements-baseline"), overviewRef: roleRef("project-overview"), repositoryRevision: snapshot.repositoryRevision,
+          checkpoints: createLocalHostCheckpointStore({ storage, namespace: `${namespace}/native-discovery` }),
+          saveArtifact: (ref, bytes) => {
+            const stored = storage.putArtifact({ artifactId: ref.artifactId, mediaType: ref.mediaType, bytes, expectedDigest: ref.digest });
+            records.put(`artifact:${canonicalJsonDigest(ref)}`, { ref, stored });
+            records.put(`artifact-pointer:${pointerKey(ref)}`, ref);
+          },
+        }) };
         if (!definition.metadata?.id?.startsWith("desktop-") || definition.implements?.length !== 1 || definition.implements[0].operations?.length !== 1 || definition.implements[0].operations[0].execution !== "effect") fail("Desktop exchange plugins must name one exact effect binding with a desktop- identity");
         return { definition, adapter: exchange.adapter };
       });

@@ -4,6 +4,8 @@ import test from "node:test";
 import {
   ArtifactRuntimeError,
   loadArtifactContent,
+  createArtifactContractRegistry,
+  loadAndValidateArtifact,
 } from "../src/artifact-runtime.mjs";
 import { sha256Digest } from "../src/content-digest.mjs";
 
@@ -24,6 +26,22 @@ async function expectRuntimeError(promise, code) {
     return true;
   });
 }
+
+test("declared UTF-8 text contracts preserve exact bytes without weakening JSON defaults", async () => {
+  const bytes = Buffer.from("export const message = '你好';\n");
+  const reference = { ...ref(bytes), mediaType: "text/plain" };
+  const artifacts = { load: async () => bytes };
+  let validated;
+  const contracts = createArtifactContractRegistry([{ schema: reference.schema, representation: "utf8-text", validate: value => { validated = value; } }]);
+  const loaded = await loadAndValidateArtifact(reference, contracts, artifacts);
+  assert.equal(validated, bytes.toString("utf8"));
+  assert.deepEqual(loaded.bytes, bytes);
+  await expectRuntimeError(loadArtifactContent(reference, artifacts), "DR2104");
+  await expectRuntimeError(loadArtifactContent({ ...reference, digest: sha256Digest(Buffer.from("other")) }, artifacts, "utf8-text"), "DR2103");
+  const invalid = Buffer.from([0xc3, 0x28]);
+  await expectRuntimeError(loadArtifactContent(ref(invalid), { load: async () => invalid }, "utf8-text"), "DR2106");
+  assert.throws(() => createArtifactContractRegistry([{ schema: reference.schema, representation: "javascript", validate() {} }]), ArtifactRuntimeError);
+});
 
 test("authoritative artifact loaders must return bytes, never strings", async () => {
   const source = '{"kind":"Example"}\n';
