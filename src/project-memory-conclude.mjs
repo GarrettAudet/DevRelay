@@ -1,5 +1,5 @@
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "./content-digest.mjs";
-import { loadProjectMemoryArtifact } from "./project-memory.mjs";
+import { loadProjectMemoryArtifact, resolveMemoryChangeRoutes } from "./project-memory.mjs";
 import { validateProjectMemoryArtifact, withProjectMemoryContentDigest } from "./project-memory-artifact-validator.mjs";
 
 export class ProjectMemoryConcludeError extends Error { constructor(message, code = "DR5360") { super(`project memory conclude failed: ${message}`); this.name = "ProjectMemoryConcludeError"; this.code = code; } }
@@ -50,10 +50,28 @@ export function createProjectMemoryConclusionCoordinator({ journal = createInMem
   if (typeof commitAtomic !== "function") fail("commitAtomic is required");
   return Object.freeze({ async conclude({ conclusion, candidate, candidateRef, approval, baseBaseline, baseBaselineRef, providerSyncReceipt, providerSyncReceiptRef, resultGraphCheckpoint, sourceRefs }) {
     validateProjectMemoryArtifact(conclusion); validateProjectMemoryArtifact(candidate, { currentBaselineRef: baseBaselineRef, currentGraphCheckpoint: conclusion.startingGraphCheckpoint }); validateProjectMemoryArtifact(approval, { candidate, candidateRef }); validateProjectMemoryArtifact(providerSyncReceipt, { ref: providerSyncReceiptRef });
+    for (const [value, ref] of [[baseBaseline, baseBaselineRef], [candidate, candidateRef], [providerSyncReceipt, providerSyncReceiptRef]]) {
+      if (!sameRef(loadProjectMemoryArtifact(value).ref, ref)) fail("conclusion input reference differs from canonical artifact bytes", "DR5368");
+    }
+    if (conclusion.producerType !== "main" || candidate.producerType !== "main" ||
+        conclusion.projectId !== candidate.projectId || conclusion.projectId !== baseBaseline.projectId ||
+        conclusion.sessionId !== candidate.sessionId || conclusion.taskId !== candidate.taskId ||
+        !sameRef(conclusion.memoryCandidate, candidateRef)) fail("conclusion must bind its exact main-task candidate lineage", "DR5367");
+    const approvedChanges = new Set(approval.decisions.filter(item => item.decision === "approve").map(item => item.changeId));
+    const routed = resolveMemoryChangeRoutes(candidate).filter(route => route.blocking && approvedChanges.has(route.changeId));
+    if (routed.length) fail(`owning Module and Gate resolution required: ${routed.map(route => `${route.changeId} -> ${route.nextModule}`).join(", ")}`, "DR5366");
     if (!sameRef(conclusion.startingBaseline, baseBaselineRef) || !sameRef(candidate.baseBaseline, baseBaselineRef)) fail("baseline drift", "DR5363");
     if (!["pass","native-equivalent"].includes(providerSyncReceipt.outcome)) fail("provider synchronization is not verified", "DR5364");
     const key = canonicalJsonDigest({ conclusion: conclusion.contentDigest, candidate: candidate.contentDigest, approval: approval.contentDigest });
-    const prior = journal.get(key); if (prior) return Object.freeze({ ...prior, replayed: true });
+    const prior = journal.get(key);
+    if (prior) {
+      if (!sameRef(prior.receipt.resultGraphCheckpoint, resultGraphCheckpoint) ||
+          !sameRef(prior.receipt.providerSyncReceipt, providerSyncReceiptRef) ||
+          canonicalJsonDigest(prior.baseline.value.sourceRefs) !== canonicalJsonDigest(sourceRefs)) {
+        fail("conclusion replay differs from committed graph, provider, or source evidence", "DR5369");
+      }
+      return Object.freeze({ ...prior, replayed: true });
+    }
     const records = applyApprovedChanges(baseBaseline, candidate, approval);
     let baseline = withProjectMemoryContentDigest({ apiVersion: "devrelay.dev/v1alpha1", kind: "ProjectMemoryBaseline", baselineId: `PMB-${candidate.candidateId}`, projectId: baseBaseline.projectId, version: nextVersion(baseBaseline.version), approvedCandidate: candidateRef, supersedes: baseBaselineRef, records, graphCheckpoint: structuredClone(resultGraphCheckpoint), projectionDigest: canonicalJsonDigest(records), providerSyncReceipt: providerSyncReceiptRef, approvalEvidence: [loadProjectMemoryArtifact(approval).ref], sourceRefs: structuredClone(sourceRefs) });
     validateProjectMemoryArtifact(baseline); const baselineLoaded = loadProjectMemoryArtifact(baseline); const synopsis = renderCurrentSynopsis(baseline);
