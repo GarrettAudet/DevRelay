@@ -93,6 +93,8 @@ test("Desktop task adapter binds every observation and exact memory context to o
   await assert.rejects(() => adapter.invoke("create", { plan: resealedStalePlan }), /prepared or revalidated/u);
   assert.throws(() => createDesktopTaskPlan({ runId: "RUN-DO-1", workItem: { id: "WI-A" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: lease, assignment: {}, executor: {}, promptArtifact: ref("PROMPT-A"), memoryBootstrap: structuredClone(memoryBootstrap()) }), /not prepared by the exact loader/u);
   assert.throws(() => createDesktopTaskPlan({ runId: "RUN-DO-1", workItem: { id: "WI-A" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: lease, assignment: {}, executor: {}, promptArtifact: ref("PROMPT-A"), memoryBootstrap: memoryBootstrap("ATT-A", "d".repeat(40)) }), /revision drifted/u);
+  assert.throws(() => createDesktopTaskPlan({ runId: "RUN-DO-1", workItem: { id: "WI-A" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: lease, assignment: {}, executor: {}, promptArtifact: ref("PROMPT-A"), memoryBootstrap: memoryBootstrap("ATT-OTHER") }), /task or attempt identity drifted/u);
+  assert.throws(() => revalidateDesktopTaskPlan({ plan: structuredClone(plan), memoryBootstrap: memoryBootstrap("ATT-OTHER") }), /task or attempt identity drifted/u);
   const revalidated = revalidateDesktopTaskPlan({ plan: structuredClone(plan), memoryBootstrap: memoryBootstrap() });
   assert.equal((await adapter.invoke("create", { plan: revalidated })).taskId, "TASK-A");
   assert.deepEqual(adapter.authority, { gates: false, readiness: false, graph: false, verification: false, integration: false });
@@ -107,6 +109,17 @@ test("high-risk and cross-cutting changes require independent adversarial review
   assert.match(evaluateDesktopMergeReadiness({ requirement, implementerTaskId: "TASK-A", testDisposition: "pass", reviewDisposition: "pass", adversarialReview: { reviewerTaskId: "TASK-REVIEW", subjectDigest: canonicalJsonDigest({ stale: true }), disposition: "pass" } }).blockers.join(), /subject-drift/u);
   assert.equal(evaluateDesktopMergeReadiness({ requirement, implementerTaskId: "TASK-A", testDisposition: "pass", reviewDisposition: "pass", adversarialReview: { reviewerTaskId: "TASK-REVIEW", subjectDigest: DIGEST, disposition: "pass" } }).outcome, "merge-ready");
   assert.equal(evaluateDesktopMergeReadiness({ requirement, implementerTaskId: "TASK-A", testDisposition: "pass", reviewDisposition: "pass", adversarialReview: { reviewerTaskId: "TASK-REVIEW", disposition: "pass" }, conflicts: ["src/a.mjs"] }).conflictDisposition, "owner-review-required");
+});
+
+test("worktree configuration rejects implicit current-directory paths before storage access", () => {
+  let writes = 0;
+  const storage = { initializeRun() { writes++; throw new Error("unexpected storage write"); } };
+  const valid = { repositoryPath: path.resolve("fixture-repository"), worktreeRoot: path.resolve("fixture-worktrees"), storage };
+  for (const change of [{ repositoryPath: undefined }, { worktreeRoot: undefined },
+    { repositoryPath: "relative-repository" }, { worktreeRoot: "relative-worktrees" }, { repositoryPath: "" }]) {
+    assert.throws(() => createDurableGitWorktreeManager({ ...valid, ...change }), /absolute repository and worktree paths/);
+  }
+  assert.equal(writes, 0);
 });
 
 test("durable worktree leases recover exact Git state after manager restart", (t) => {
@@ -124,6 +137,32 @@ test("durable worktree leases recover exact Git state after manager restart", (t
   const restarted = createDurableGitWorktreeManager({ repositoryPath: repository, worktreeRoot: worktrees, storage: fx.storage });
   assert.equal(restarted.recover("ATT-1").observedRevision, revision);
   assert.equal(restarted.inspect("ATT-1").taskId, "TASK-1");
+  const allocation = { attemptId: "ATT-1", runId: "RUN-1", workItemId: "WI-1", revision };
+  const beforeRetry = fx.storage.readRun("worktree-lease:ATT-1");
+  assert.equal(restarted.allocate(allocation).taskId, "TASK-1");
+  assert.equal(restarted.allocate({ ...allocation, taskId: "TASK-1" }).observedRevision, revision);
+  for (const change of [{ runId: "RUN-OTHER" }, { workItemId: "WI-OTHER" },
+    { revision: "f".repeat(40) }, { taskId: "TASK-OTHER" }]) {
+    assert.throws(() => restarted.allocate({ ...allocation, ...change }), { code: "DR6131" });
+  }
+  const otherRoot = createDurableGitWorktreeManager({ repositoryPath: repository,
+    worktreeRoot: path.join(fx.root, "other-worktrees"), storage: fx.storage });
+  assert.throws(() => otherRoot.allocate(allocation), { code: "DR6131" });
+  const otherRepository = path.join(fx.root, "other-repository");
+  execFileSync("git", ["init", otherRepository], { stdio: "ignore", windowsHide: true });
+  const foreign = createDurableGitWorktreeManager({ repositoryPath: otherRepository, worktreeRoot: worktrees, storage: fx.storage });
+  for (const operation of [() => foreign.allocate(allocation), () => foreign.recover("ATT-1"),
+    () => foreign.inspect("ATT-1"), () => foreign.bindTask("ATT-1", "TASK-1"),
+    () => foreign.dispose("ATT-1", { disposition: "completed" })]) {
+    assert.throws(operation, /different repository/);
+  }
+  assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-1"), beforeRetry, "replays and rejected substitutions must not mutate the lease");
+  const workspace = restarted.inspect("ATT-1").workspace;
+  writeFileSync(path.join(workspace, "base.txt"), "uncommitted work must survive\n");
+  assert.throws(() => restarted.dispose("ATT-1", { disposition: "completed" }));
+  assert.equal(readFileSync(path.join(workspace, "base.txt"), "utf8"), "uncommitted work must survive\n");
+  assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-1"), beforeRetry);
+  writeFileSync(path.join(workspace, "base.txt"), "base\n");
   assert.equal(restarted.dispose("ATT-1", { disposition: "completed" }).status, "disposed");
 });
 

@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, realpathSync } from "node:fs";
 import path from "node:path";
 
 import { canonicalJsonDigest } from "./content-digest.mjs";
@@ -23,8 +23,10 @@ const inside = (root, candidate) => {
 };
 
 export function createDurableGitWorktreeManager({ repositoryPath, worktreeRoot, storage, gitExecutable = "git", owner = "desktop-worktree-manager" } = {}) {
-  const repository = path.resolve(repositoryPath ?? "");
-  const root = path.resolve(worktreeRoot ?? "");
+  if (typeof repositoryPath !== "string" || !path.isAbsolute(repositoryPath) ||
+      typeof worktreeRoot !== "string" || !path.isAbsolute(worktreeRoot)) fail("absolute repository and worktree paths are required");
+  const repository = path.resolve(repositoryPath);
+  const root = path.resolve(worktreeRoot);
   if (!inside(path.dirname(repository), repository) || !inside(path.dirname(root), root)) fail("absolute repository and worktree paths are required");
   if (repository === root || inside(repository, root)) fail("worktree root must be outside the source checkout");
   if (!storage || typeof storage.initializeRun !== "function") fail("durable storage is required");
@@ -50,9 +52,15 @@ export function createDurableGitWorktreeManager({ repositoryPath, worktreeRoot, 
       try { storage.releaseLease({ runId: run.runId, leaseToken: lease.token }); } catch {}
     }
   };
-  const observedRevision = (workspace) => existsSync(workspace)
-    ? execFileSync(gitExecutable, ["-C", workspace, "rev-parse", "HEAD"], { encoding: "utf8", windowsHide: true }).trim()
-    : null;
+  const observedRevision = (workspace) => {
+    if (!inside(root, workspace)) fail("stored worktree path escapes configured root", "DR6131");
+    if (!existsSync(workspace)) return null;
+    const commonDirectory = (directory) => realpathSync(execFileSync(gitExecutable,
+      ["-C", directory, "rev-parse", "--path-format=absolute", "--git-common-dir"],
+      { encoding: "utf8", windowsHide: true }).trim());
+    if (commonDirectory(workspace) !== commonDirectory(repository)) fail("worktree belongs to a different repository", "DR6131");
+    return execFileSync(gitExecutable, ["-C", workspace, "rev-parse", "HEAD"], { encoding: "utf8", windowsHide: true }).trim();
+  };
   return Object.freeze({
     allocate({ attemptId, runId, workItemId, revision, taskId = null } = {}) {
       safeId(attemptId);
@@ -70,6 +78,12 @@ export function createDurableGitWorktreeManager({ repositoryPath, worktreeRoot, 
         durable = storage.initializeRun({ runId: idFor(attemptId), state });
       } catch (error) {
         if (error?.code !== "DR4922") throw error;
+        const prior = storage.readRun(idFor(attemptId)).state;
+        if (prior.kind !== "WorktreeLease" || prior.attemptId !== attemptId || prior.runId !== runId ||
+            prior.workItemId !== workItemId || prior.revision !== revision || prior.workspace !== workspace ||
+            (taskId !== null && prior.taskId !== taskId)) {
+          fail("attempt identity already binds a different worktree allocation", "DR6131");
+        }
         return this.recover(attemptId);
       }
       try {
@@ -91,6 +105,7 @@ export function createDurableGitWorktreeManager({ repositoryPath, worktreeRoot, 
       if (typeof taskId !== "string" || !taskId) fail("taskId is required");
       const run = storage.readRun(idFor(attemptId));
       if (run.state.taskId && run.state.taskId !== taskId) fail("task identity is already bound", "DR6131");
+      observedRevision(run.state.workspace);
       return commit(run, "task-bound", { ...run.state, taskId }).state;
     },
     recover(attemptId) {
@@ -106,7 +121,10 @@ export function createDurableGitWorktreeManager({ repositoryPath, worktreeRoot, 
       const run = storage.readRun(idFor(attemptId));
       const workspace = run.state.workspace;
       if (!inside(root, workspace)) fail("refusing unsafe worktree cleanup");
-      if (existsSync(workspace)) execFileSync(gitExecutable, ["-C", repository, "worktree", "remove", "--force", "--", workspace], { stdio: "pipe", windowsHide: true });
+      observedRevision(workspace);
+      // A disposition is not permission to discard uncommitted or locked work.
+      // Let Git refuse unsafe removal and leave the durable lease unchanged.
+      if (existsSync(workspace)) execFileSync(gitExecutable, ["-C", repository, "worktree", "remove", "--", workspace], { stdio: "pipe", windowsHide: true });
       return commit(run, "worktree-disposed", { ...run.state, status: "disposed", cleanupDisposition: disposition, disposalDigest: canonicalJsonDigest({ attemptId, disposition, workspace }) }).state;
     },
     list() { return storage.listRuns({ prefix: "worktree-lease:" }).map((run) => Object.freeze({ ...structuredClone(run.state), stateVersion: run.version })); },

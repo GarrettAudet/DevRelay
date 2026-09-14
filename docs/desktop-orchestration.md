@@ -30,6 +30,38 @@ The repository-backed `ProjectMemoryBaseline`, `CurrentSynopsis.md`, and Project
 
 This provides deterministic cross-task survival without treating cached provider memory, prompt text, or conversation history as authority.
 
+### Unreleased candidate: exact attempt binding
+
+Task-plan creation and restart revalidation now require the bootstrap receipt's
+`taskId` to match the plan's `attemptId`, as well as its project and starting
+revision. Use the stable attempt ID when preparing memory, before the Desktop
+provider assigns its task ID. A different attempt needs its own bootstrap;
+do not substitute the provider's later task ID into the original receipt.
+Direct `bindPreparedDesktopProjectMemoryBootstrap` callers must supply this
+exact `taskId` alongside `projectId` and `repositoryRevision`.
+
+### Unreleased candidate: safe worktree retries and cleanup
+
+Configure explicit absolute repository and worktree-root paths; the worktree
+root must be outside the source checkout. Missing or relative paths are rejected.
+An allocation retry must retain the attempt's run, work item, revision and
+workspace, and any explicitly supplied task ID must match the existing binding.
+Changing these fields requires a new approved attempt, not reuse of an old ID.
+
+For existing workspaces, the manager checks their actual Git common directory
+against the configured repository. A foreign repository cannot recover, bind,
+inspect or dispose of that workspace through the manager. This live check is
+not evidence of repository ownership for a missing or already disposed workspace.
+
+Cleanup no longer forces Git to remove a worktree. If Git refuses because work
+is dirty or locked, the files and durable lease remain available for recovery.
+Inspect and preserve the work, then resolve its disposition explicitly; do not
+retry with a force-removal workaround. Clean removal remains an explicit action.
+
+These candidate safeguards have focused regression coverage. They do not establish
+full installed-host dispatch, integration, or release acceptance; see
+[current status](../CURRENT_STATUS.md).
+
 ## Desktop plug-in
 
 The source plug-in is in `plugins/devrelay-desktop` and contains:

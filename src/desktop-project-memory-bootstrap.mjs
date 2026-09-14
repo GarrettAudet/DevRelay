@@ -92,10 +92,11 @@ export function loadDesktopProjectMemoryBootstrap({ projectRoot, taskId, project
   return result;
 }
 
-export function bindPreparedDesktopProjectMemoryBootstrap(bootstrap, { projectId, repositoryRevision } = {}) {
+export function bindPreparedDesktopProjectMemoryBootstrap(bootstrap, { projectId, repositoryRevision, taskId } = {}) {
   if (!preparedBootstraps.has(bootstrap)) fail("bootstrap result was not prepared by the exact loader", "DR6153");
   const { receipt, receiptRef, memoryContext } = bootstrap;
   if (receipt.projectId !== projectId || receipt.repositoryRevision !== repositoryRevision || receipt.outcome !== "pass") fail("bootstrap project or repository revision drifted", "DR6153");
+  if (typeof taskId !== "string" || !taskId || receipt.taskId !== taskId) fail("bootstrap task or attempt identity drifted", "DR6153");
   const exactReceiptDigest = sha256Digest(Buffer.from(canonicalJson(receipt), "utf8"));
   if (receiptRef.artifactId !== receipt.receiptId || receiptRef.digest !== exactReceiptDigest) fail("bootstrap receipt reference drifted", "DR6153");
   if (!sameRef(memoryContext.bootstrapReceipt, receiptRef) || !sameRef(memoryContext.projectMemoryBaseline, receipt.projectMemoryBaseline) || !sameRef(memoryContext.synopsisProjection, receipt.synopsisProjection) || !sameRef(memoryContext.graphCheckpoint, receipt.graphCheckpoint)) fail("bootstrap memory context does not match its exact receipt", "DR6153");

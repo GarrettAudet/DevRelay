@@ -43,6 +43,19 @@ Automatic reuse requires the same fingerprint, target revision, and quality reso
 
 Git worktree isolation remains owned by the durable worktree manager. These Modules consume its exact observations; they do not create hidden worktrees or infer provider state. ProjectControl can be added to the Desktop operator snapshot to show the exact frontier, remaining work, and reconciliation diagnostics.
 
+In the unreleased candidate, the task adapter refuses fresh `create` calls when
+a bound continuity decision is anything other than `execute`. An exact-reuse
+decision therefore makes zero provider creation calls; inspect the existing work
+and its evidence instead. This does not promote completion or replace the owning
+verification and integration checks. Legacy plans without the optional quality
+triple remain supported; full host enforcement of that triple is still pending.
+
+The candidate local continuity claim helper also excludes unresolved attempts
+for the same work item across changed fingerprints, including expired and
+quarantined attempts. Two independent SQLite connections cannot both commit a
+claim from the same state version. This helper is not yet wired into the complete
+installed Desktop dispatch workflow; its tests are not proof of that integration.
+
 ## Traceability and authority
 
 Trusted QC contributors accept only exact canonical bytes for the declared Module, version, and operation. Candidate and approved scopes are distinct and append-only. Adapters cannot author graph operations, and ProjectControl cannot mutate workflow state, approve Gates, integrate code, promote memory, or activate graph facts.

@@ -54,7 +54,11 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
       { id: "human", boundary: "frontier-complete", moduleId: "human-orchestration", moduleVersion: "0.1.0", operationId: "project-operator-view", inputPorts: ["human-orchestration-source-bundle", "project-overview-baseline"], outputPorts: ["human-orchestration-view"], dependsOn: ["control"], configurationDigest: digest("human-config"), grantDigest: digest("no-grants"), failureBehavior: "diagnostic" },
     ],
   });
-  const adapter = createDesktopTaskAdapter({ providerId: "chatgpt.desktop-fixture", providerVersion: "1.0.0", handlers: Object.fromEntries(["create", "inspect", "wait", "message", "handoff"].map((operation) => [operation, async ({ taskId }, plan) => ({ taskId: taskId ?? `TASK-${plan.attemptId}`, status: operation === "create" ? "ready" : "completed", observation: { operation, providerMode: "fixture-conformant" } })])) });
+  let createCalls = 0;
+  const adapter = createDesktopTaskAdapter({ providerId: "chatgpt.desktop-fixture", providerVersion: "1.0.0", handlers: Object.fromEntries(["create", "inspect", "wait", "message", "handoff"].map((operation) => [operation, async ({ taskId }, plan) => {
+    if (operation === "create") createCalls++;
+    return { taskId: taskId ?? `TASK-${plan.attemptId}`, status: operation === "create" ? "ready" : "completed", observation: { operation, providerMode: "fixture-conformant" } };
+  }])) });
   const outcomes = [];
 
   for (const [position, profileName] of ["quick", "standard", "assurance"].entries()) {
@@ -110,6 +114,12 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
     continuity.commit({ expectedHostVersion: host.version, expectedIndexRevision: host.state.index.revision, transition: { operation: "completed", attemptId }, nextIndex: completed });
     const reuse = findExactWorkReuse({ index: continuity.read().state.index, workFingerprint: fingerprint, targetRevision: revision, qualityResolutionDigest: qualityResolution.resolutionDigest, verifiedArtifactDigests: [taskReceipt.receiptDigest, digest(git(lease.workspace, "rev-parse", "HEAD")), qualityAssessment.assessmentDigest] });
     assert.equal(reuse.decision, "reuse-exact");
+    const reusePlan = createDesktopTaskPlan({ ...taskPlan, workItem: { id: workItemId },
+      memoryBootstrap: loadDesktopProjectMemoryBootstrap({ projectRoot: sourceRoot, taskId: attemptId, repositoryRevision: revision }),
+      workContinuityDecision: reuse });
+    const callsBeforeReuse = createCalls;
+    await assert.rejects(adapter.invoke("create", { plan: reusePlan }), /does not authorize fresh task execution/);
+    assert.equal(createCalls, callsBeforeReuse, "exact reuse must make zero provider creation calls");
     const orchestrationRun = { kind: "LocalHostRunState", version: position, state: { plan: orchestrationPlan, workState: { [workItemId]: { status: "completed", receipts: [taskReceipt] } }, blockers: [], recovery: "clean" } };
     const leaseObservation = worktrees.inspect(attemptId);
     const projectControlSourceBundle = createProjectControlSourceBundle({ projectId: "devrelay-e2e", lifecycle: { phase: "verification", profileName }, workItems: [{ id: workItemId, status: "completed" }], assignments: [{ id: workItemId, profile: "implementation" }], taskObservations: [{ id: workItemId, receiptDigest: taskReceipt.receiptDigest }], worktreeObservations: [{ id: workItemId, revision: git(lease.workspace, "rev-parse", "HEAD") }], qualityAssessments: [{ id: workItemId, ...qualityAssessment }], continuityRecords: [{ id: workItemId, ...reuse }] });

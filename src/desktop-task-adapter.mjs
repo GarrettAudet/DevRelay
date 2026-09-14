@@ -41,7 +41,7 @@ function assertPlan(plan) {
 }
 
 function preparePlan(plan, memoryBootstrap) {
-  const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId: plan.projectId, repositoryRevision: plan.startingRevision });
+  const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId: plan.projectId, repositoryRevision: plan.startingRevision, taskId: plan.attemptId });
   if (canonicalJsonDigest(memoryContext) !== plan.memoryContextDigest || canonicalJsonDigest(plan.memoryContext) !== plan.memoryContextDigest) fail("task plan does not bind the exact prepared ProjectMemory bootstrap", "DR6111");
   const prepared = Object.freeze(structuredClone(validateDesktopOrchestrationArtifact(plan)));
   validateQualityContinuity(prepared);
@@ -53,7 +53,7 @@ export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevi
   if (!workItem || typeof workItem.id !== "string") fail("work item is required");
   if (!worktreeLease || worktreeLease.workItemId !== workItem.id) fail("exact worktree lease is required");
   if (!promptArtifact || typeof promptArtifact.digest !== "string") fail("prompt artifact is required");
-  const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId, repositoryRevision: startingRevision });
+  const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId, repositoryRevision: startingRevision, taskId: worktreeLease.attemptId });
   const attemptId = worktreeLease.attemptId;
   const memoryContextDigest = canonicalJsonDigest(memoryContext);
   const qualityResolutionDigest = qualityResolution?.resolutionDigest;
@@ -109,6 +109,9 @@ export function createDesktopTaskAdapter({ providerId, providerVersion, handlers
   const invoke = async (operation, { plan, taskId, input = {} } = {}) => {
     if (!OPERATIONS.includes(operation)) fail(`unsupported operation ${operation}`);
     assertPlan(plan);
+    if (operation === "create" && plan.workContinuityDecision && plan.workContinuityDecision.decision !== "execute") {
+      fail("work continuity does not authorize fresh task execution", "DR6111");
+    }
     if (operation !== "create" && (typeof taskId !== "string" || !taskId)) fail("bound taskId is required");
     const request = Object.freeze({ operation, planDigest: plan.planDigest, taskId: taskId ?? null, input: structuredClone(input) });
     const observed = await handlers[operation](request, plan);
