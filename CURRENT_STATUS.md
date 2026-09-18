@@ -77,6 +77,31 @@ lanes require separate worktrees and exact source/evidence bindings; shared
 integration and graph promotion remain serialized. The installed product's
 parallel frontier dispatch is still part of the uncompleted MES scope.
 
+Parallel work identified and repaired a composition-contract omission: the first
+schema required an agent and harness even for deterministic native Modules. A
+new v2 candidate preserves the complete old agent-bearing branch and adds an
+explicit native executor pin, empty agents and null harness. Independent schema
+review passed 51 assertions plus additional legacy/malformed-input checks.
+Actual ContractGeneration preserved 102 native contract byte sequences and changed
+only this interface; all 103 formats passed and genuine replay made zero generator
+calls. A second evidence review reproduced the historical activation and new
+candidate trace. The canonical diff remains `breaking`; the parent's explicit
+bounded decision and owning ContractGate validated a prepared 2.5.0 baseline.
+The active baseline remains 2.4.0. Attempt reconciliation and the recorded
+downstream planning migration precede activation and new native composition work.
+This does not yet establish executable native composition or product acceptance.
+
+The parallel recovery helper passed 22 temporary-store cases in both author and
+parent runs and an independent source review. Parent inspection then replayed
+the actual recovery and byte-handoff checkpoints with new execution denied.
+Both old construction attempts were settled through their original claims and
+three journaled transitions each; the continuity index is now revision 8.
+Read-only completed replay made zero writes or executor calls. Approved heads
+and the empty completion ledger stayed unchanged. This settles execution
+bookkeeping only; both work items still require their owning verification and
+integration. Local replay-fixture tests depend on retained raw construction
+artifacts and are not published as portable repository tests.
+
 A bounded candidate fix maps the existing-project repository snapshot into the
 unreleased v3 assignment input, rejecting ambiguous roles without rewriting
 approved work bytes. Its 13 runtime/Gate tests pass. This bootstrap correction
