@@ -39,6 +39,26 @@ configuration. No Cognee installation or memory migration has occurred.
 
 ## Proposed experience — candidate, not approved implementation scope
 
+The owner's 2026-09-14 direction is **simple to understand and use**, citing
+early LangChain as an experience analogy, not a dependency selection. Prefer
+one everyday flow: describe the goal, review the plan, follow progress and
+resolve needed decisions, then review the tested result. Module identifiers,
+receipt digests, graph internals and worktree mechanics belong in expandable
+details, not mandatory operator input. Preserve explicit approvals and show
+blocked or unverified states honestly; simplicity must not imply bypassing Gates.
+
+Proposed usability checks for the next-stage requirements interview:
+
+- A first-time operator can identify the goal, current work, needed decision
+  and next action from the landing view without opening raw artifacts.
+- Each displayed completion links to verified integration evidence; an agent's
+  “done” message is visibly distinct from reviewed and integrated work.
+- Resuming the same project recovers its queue and decisions without requiring
+  the operator to retell the project history.
+- Advanced details remain available without being required for the everyday flow.
+
+These are candidate checks, not evidence of implemented UI or accepted usability.
+
 Use a shared selected item and exact snapshot across complementary views:
 
 1. **Project map:** business outcomes and requirements as anchors, with focused

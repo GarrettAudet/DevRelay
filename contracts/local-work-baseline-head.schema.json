@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-work-baseline-head/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "baseline", "activationDigest", "pendingCommit"],
+  "properties": {
+    "kind": { "const": "LocalWorkBaselineHead" },
+    "baseline": { "anyOf": [{ "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" }, { "type": "null" }] },
+    "activationDigest": { "type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$" },
+    "pendingCommit": { "type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

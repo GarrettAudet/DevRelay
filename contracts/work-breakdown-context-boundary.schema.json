@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/work-breakdown-context-boundary/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "state", "route", "architectureState", "contractState", "lifecycleComplete"],
+  "properties": {
+    "kind": { "const": "DesktopWorkBreakdownContextBoundary" },
+    "state": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "route": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "architectureState": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "contractState": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "lifecycleComplete": { "const": false }
+  }
+}

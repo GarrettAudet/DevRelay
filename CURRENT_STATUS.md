@@ -1,14 +1,287 @@
 # DevRelay current implementation status
 
-Last reconciled: 2026-09-14 CST
+Last reconciled: 2026-09-18 CST
 Protected branch: main
-Working branch: codex/discovery-gate
+Working branch: codex/modular-zeroshot (isolated MES-001 construction worktree)
 Released version: 0.11.0-rc.3
 Candidate version: 0.11.0-rc.4 (unreleased, not yet accepted)
 Latest published tag commit: 0284fb781d38aaba7538cb62fb82a1a022280eb9
 Release boundary: GitHub source plus a deterministic installable tarball operated through ChatGPT/Codex Desktop on Windows
 
 ## Status
+
+### Modular engineering build — 2026-09-18
+
+MES-001 carries the owner's modular DevRelay vision: ready-made workflows with
+swappable Modules/adapters/agent configurations, native Desktop workers on
+Windows orchestrated by pinned Zeroshot, bounded Meta-Harness executable-code
+experiments, and the existing lifecycle, traceability, ProjectMemory and controls.
+
+The actual Requirements Gate has approved the paired project baseline version
+2.9.0; its exact bytes and deterministic `ProjectOverview.md` are now published
+in this worktree's project files, with the prior 2.8.0 pair preserved in history.
+Architecture Gate approved the MES change in the durable lifecycle store.
+Zeroshot's independent acceptance and correctness reviewers accepted the repaired
+contracts; ContractGate approved and activated `CB-DEVRELAY-MES-001`, preserving
+94 prior schemas and adding nine interfaces. The WorkBreakdown, dependency and
+assignment Gates have now approved and activated 11 new deliverables alongside
+nine retained items, covering all 23 MES acceptance criteria. The approved
+planning baselines and their actual Gate records are published in this worktree;
+`project/modular-engineering-publication.json` records the exact projections.
+The unchanged quality policy is activated in the construction store.
+
+Core derived the initial ready frontier from an empty current completion ledger:
+MES composition, change handoff, recovery, and the retained RP artifact contracts.
+Historical acceptance has not been imported as current completion. Recovery is
+selected first to diagnose the prior long-running host lease failure and prove
+bounded restart/ownership behavior before broader native execution. Preparation
+is in progress; no MES WorkExecution item is yet verified or integrated.
+
+A bounded candidate fix maps the existing-project repository snapshot into the
+unreleased v3 assignment input, rejecting ambiguous roles without rewriting
+approved work bytes. Its 13 runtime/Gate tests pass. This bootstrap correction
+has now passed the actual current-baseline assignment handoff. It remains subject
+to later work verification and is not a completed WorkExecution item.
+
+Evidence is under `dogfood/modular-engineering-20260918/`. Construction drivers
+invoke actual Module runtimes and owning Gates but do not establish the complete
+installed product flow. Preserved rc.4 source candidates remain unaccepted;
+implementation reconciliation, source verification, integration, installed
+Windows execution and BusinessAcceptance remain outstanding. Earlier status
+entries below are retained as history, not current MES baseline authority.
+
+### Resume checkpoint — 2026-09-18
+
+Owner authorized lifecycle reconciliation and dependency-safe parallel work.
+The approved requirements/overview preservation check passed again (1/1).
+Architecture and downstream planning still require existing-project change
+lineage; the fresh-project host handoffs cannot substitute for this route.
+See `docs/specs/runtime-dogfood-reconciliation.md` for the concrete recovery path.
+
+The saved expanded host test `full-host-claim-current-20260914.log` is terminal:
+**FAIL 1/1**, 12445783.0596ms, DR4924 during lease renewal at the assertion on
+`test/desktop-local-host.test.mjs:650`. Diagnosis is pending. Earlier pending-run
+notes below are historical, not current status. No release acceptance is claimed.
+
+### Current release checkpoint — 2026-09-14
+
+The runtime release is **not complete**. The ordinary user experience is intended
+to be describe the work, approve its plan and decisions, follow progress, and
+receive verified results. Modules, worktrees and evidence remain inspectable
+implementation details, not separate systems the operator must manually manage.
+The local visual workspace remains the next stage, not a current release claim.
+
+Dogfooding audit: recent runtime host edits were made directly and verified with
+tests, not fully orchestrated through DevRelay's lifecycle. Current project work
+planning still binds historical RP-001 requirements rather than the current
+HO-001 pair. See `docs/specs/runtime-dogfood-reconciliation.md`. Do not count these
+edits as accepted lifecycle work or retrofit approvals to their test evidence.
+
+Current-source memory regression passed **44/44** (7709.9292ms), covering memory
+artifacts, context, conclusion, traceability, Module contracts, QC memory closeout,
+and validation of the retained historical Desktop acceptance proof. This is not
+a fresh live Desktop acceptance run. Conclusion now rejects mismatched canonical
+input references, cross-task candidate substitution, worker promotion, and
+memory-only approval of changes routed to another owning Module/Gate.
+Exact conclusion replay also rejects changed graph, provider or source evidence
+without performing another commit; a regression reproduced the prior bypass.
+
+Bootstrap passed against ProjectMemory baseline `PMB-MUC-7A172C974C0158E7`
+(1.0.11), and the prior session is concluded. The obsolete rc.1 next-action still
+requires RoadmapManagement resolution and supported memory ingestion: integrity
+of recovered bytes does not establish freshness of their meaning.
+
+The long host preparation test passed **1/1** (3151884.5803ms, about 52.5 minutes),
+including assignment activation, queue preparation, read-only queue verification,
+quality preparation/verification/replay and unchanged-queue quality preservation.
+It loaded source before the latest memory/worktree/validation and request-reuse
+changes, so it is not frozen-source release evidence. A new current-source run
+is active in `full-host-quality-current-20260914.log`; its result is pending.
+Late verification takes minutes; acceptable operator latency remains unproven.
+This fixture ends at preparation: it does not execute an actual Desktop worker,
+review/integrate its code, or establish full business acceptance.
+
+Remaining release work includes composing actual Desktop dispatch and worktree
+claims with current quality authority, execution/review/integration through
+system verification and acceptance, memory freshness and recovery, human
+controls, security triage, current-source installed-package acceptance, and
+final source/package sealing and publication. Component tests do not substitute
+for that composed workflow.
+
+### Earlier implementation checkpoints (historical, not cumulative release proof)
+
+Full no-contract host verification through dependency activation passed 1/1
+(1255357ms, about21min). This includes work/dependency context preparation,
+execution, approval, activation and read-only/replay assertions; it does not include
+the newer assignment CLI assertions. The expanded assignment-Gate run is active.
+
+Durable assignment activation now checkpoints graph preparation before merge,
+reserves the pending baseline head, publishes the raw baseline and atomically
+records its activation. Interruption after merge and storage reopen recover with
+one total merge. Current/stale/pending head and historical-replay tests pass in
+the 27-test suite (26282ms). The host now registers the opt-in assignment contributor
+and exposes explicit activation plus read-only evidence verification; full host
+activation assertions are added but unrun. Existing-assignment replacement/change
+activation remains a separate missing contract; the new transaction handles initial
+activation and exact replay, not an inferred replacement.
+
+The opt-in assignment activation contributor now projects approved work-to-profile
+edges from the exact v3 Gate baseline/draft and pinned specialist catalog. Profile
+details come from the catalog, not the first work item's requirements. Real graph
+preparation passes with approved work endpoints and leaves the live graph unchanged.
+The 27-test suite passes (21045ms); existing specialist/traceability tests also pass
+5/5 (3740ms). The contributor is not yet registered in the live host: checkpointed
+activation, publication, current-head checks and interruption recovery remain open.
+
+Assignment native execution and approval preparation now have separate CLI
+controls. Execution requires an explicitly configured exact v3 Module and native
+binding, an exact handoff, and durable checkpoint verification. Gate preparation
+requires the current context plus explicit owner approval and evidence; it stops
+at awaiting-assignment-activation. Evidence/read-only verification covers both
+records. The related 27-test suite passes (19519ms), and the execution command
+boundary test passes (1/1,29095ms). The full host fixture includes these new
+assertions but has not yet executed them. Graph activation and agent dispatch
+are not implied by this implementation checkpoint.
+
+Assignment preparation/publication now have closed CLI submission and resume
+controls, sealed context records, and evidence/read-only verification paths.
+The host verifies the exact activated dependency context before preparing the
+next session. Resume returns the latest published configuration directly. The
+focused facade regression passed 1/1 (33002ms), including mixed-command rejection.
+The full host fixture now includes assignment context publication and startup,
+but those newly added assertions have not yet run; current end-to-end evidence
+must not be inferred from component or command-shape tests.
+The related work/dependency/assignment regression now passes 27/27 (20961ms).
+
+Assignment context publication now writes the exact handoff artifacts and session
+before publishing the next host configuration. It supports no-clobber recovery,
+repeat publication and read-only verification while preserving configured modules
+and grants. The host recognizes the explicit specialist-assignment contract set;
+this does not install a provider or activate assignment graph facts. The combined
+26-test regression passes (12932ms), including interrupted-copy recovery. CLI
+commands for assignment handoff/execution/approval are still required.
+
+Newest assignment integration: the opt-in version-3 native runtime now preserves
+approved raw bytes and ArtifactRefs, validates full checkpoint derivation, and
+returns genuine replay receipts. Its new approval Gate requires a closed,
+versioned owner approval with exact candidate/checkpoint/fingerprint binding and
+digest-checked evidence. Version-1/version-2 runtime behavior remains unchanged.
+The v3 Module definition passes generic registry validation; complete release
+catalog/conformance integration is not yet established.
+
+Local assignment planning/context now pin v3, and a durable execution wrapper
+uses exact upstream activation proof, an explicit native binding and storage
+checkpoints. Work/dependency/assignment tests pass 26/26 (8451ms), including
+independent storage reread, unchanged approved IDs, corruption rejection, and
+pending-approval fresh-execution blocking with historical replay. These tests
+use synthetic upstream/approval fixtures and do not prove live agent dispatch.
+CLI publication, assignment baseline graph activation and downstream work remain
+unfinished. A fresh no-contract full-host test is running with a durable log;
+the prior handle disappeared without a captured result and is not counted green.
+
+Latest local integration checkpoint: the full no-contract host test failed at
+work activation because the separate-command allowlist omitted the public
+facade's sessionContext, configurationDigest and host bindings (1/1 failed,
+1058268ms). The allowlist is now corrected for work activation and dependency
+controls; the focused real-facade regression passed 1/1 (22408ms), including
+mixed-command rejection and unchanged checkpoint proof. The complete host flow
+still needs a fresh successful run. This does not change release readiness.
+
+Assignment input planning now binds the activated dependency baseline and its
+approved work lineage to the seven inputs of specialist-assignment 2.0.0. It
+preserves the exact overview, capability catalog and repository context, requires
+an explicit specialist catalog and assignment policy, and rejects fresh planning
+while dependency approval is pending. Historical verification does not clear the
+pending approval. Work/dependency regression tests pass 15/15 (14336ms), including
+this new input handoff. Assignment execution, session publication and downstream
+host integration remain unfinished; no agents were dispatched by this test.
+
+The assignment session handoff now has closed boundary/handoff schemas and a
+fresh session receipt. It retains the exact memory, synopsis, traceability and
+approved project bindings, replaces the prior lifecycle boundary, and rejects a
+repository revision that differs from the session. Historical handoff verification
+does not authorize progression during pending approval. The work/dependency
+suite passes 15/15 (18574ms) with this coverage. These are synthetic fixture
+bindings, not a new live Desktop memory acceptance test.
+
+Assignment execution compatibility remains open: the published v2 runtime
+validates input digests against canonicalized objects and derives a repository
+artifact ID from repository name/revision. The local host must retain approved
+raw-byte digests and ArtifactRefs. Do not rename or reserialize approved inputs
+to make that runtime accept them; address this in an explicitly versioned binding.
+The new assignment context is not yet exposed through CLI publication/dispatch.
+
+The latest in-process host fixture now passes discovery through architecture,
+native contract generation, candidate traceability, ContractGate preparation,
+approved contract graph/state activation, read-only verification and replay.
+It passed 1/1 in 614184ms; this runtime cost remains a release performance concern.
+Approval data is synthetic test evidence, not human acceptance. The zero-contract
+host approval branch also passed (1/1,352999ms). Its new durable graph/state
+activation recovered after an interrupted merge and reopened storage (1/1,27871ms).
+Desktop activation wiring and read-only/replay verification now pass the
+zero-contract host fixture (1/1,2123746ms, about35min). This is functional
+fixture evidence, not an acceptable performance result or release acceptance.
+Downstream WorkBreakdown/lifecycle integration and final frozen-source release
+verification remain open. The new work is uncommitted and unsealed.
+
+The Windows CLI discovery-through-architecture-activation fixture passed in
+339933ms (1/1, no skips). Durable interruption/reopen tests now cover both before
+and after graph merge, exact prepared-checkpoint reuse, zero repeated design
+calls and historical replay without head rollback. The related runtime/activation
+regression suite passes 39/39. This is synthetic integration evidence, not human
+release acceptance. Downstream lifecycle composition remains incomplete; final
+frozen-source package and release verification are still required.
+
+The latest in-process fixture now passes discovery through ArchitectureDesign,
+owning ArchitectureGate preparation, approved graph/state activation, read-only
+verification and exact activation replay (1/1, no skips). Sixteen focused tests
+cover contributor binding, Gate authority, pending-state restart guards and the
+closed activation record contract. This uses synthetic approval evidence, not
+human release acceptance. A Windows CLI rerun is underway. Activation crash
+injection, downstream lifecycle composition and final release verification remain
+open; earlier paragraphs below describe historical candidate milestones.
+
+ArchitectureGate preparation is now connected to the host. The latest in-process
+fixture completes discovery, approval, activation, context publication, all three
+ArchitectureDesign steps, Core verification/replay and exact owner-evidence Gate
+preparation. It also rejects a wrong repository revision and verifies the sealed
+Gate read-only. Forty-two focused architecture/Gate tests pass. The complete
+Windows executable rerun is pending; an earlier run exceeded the test harness's
+60-second terminal-process budget, now bounded at 180 seconds. Runtime lease
+expiry checks remain unchanged. Performance, baseline activation, remaining
+lifecycle stages and final package/release verification are still open.
+
+The latest in-process integration fixture completes the full ArchitectureDesign
+designer/modeler/decision-recorder chain after discovery approval, activation
+and context publication, with Core verification and exact replay. The extended
+Windows executable test is running. ArchitectureGate host approval is not yet
+connected. A Gate outcome mismatch (drafted versus released baseline_drafted)
+was corrected; 41 architecture runtime/change tests pass. A terminal run exposed
+the fixed 30-second host lease limit; bounded renewal now preserves exact lease
+ownership and rejects expired/stale renewals. Eleven storage/lease checks pass.
+These uncommitted additions still need full host and package verification.
+
+Discovery Gate preparation is committed in draft PR #34 at d7c14959. Final checks
+passed: 31 focused tests, all seven Windows host tests, static verification and
+472 exact installed-package files with 237 exports. These remain bounded fixture
+and component proofs, not complete lifecycle acceptance.
+
+The current uncommitted addition implements explicit discovery-state activation:
+owning Gate revalidation, exact state-byte persistence, an atomic state-head and
+journal transition, read-only verification and stale-state rejection for new
+runs. The expanded Windows activation test passed (1/1, no skips), as did two
+authority/head guard tests and twelve baseline/provenance/history checks.
+Downstream configuration
+publication, actual ArchitectureDesign execution and full release acceptance
+remain incomplete. The package results above do not cover this new addition.
+
+The subsequent context-handoff addition now publishes immutable downstream
+configuration files and derives the ArchitectureDesign route through Core. The
+in-process fixture passed through discovery, approval, activation, publication,
+read-only verification and a real pending Desktop designer step. Two Windows
+attempts exposed fixture-native provenance gaps, which were corrected without
+weakening validation. The corrected Windows executable rerun is pending.
+This does not yet complete the designer/modeler/recorder chain or ArchitectureGate.
 
 The handoff candidate submitted in draft PR #33 validates the complete materialized
 discovery evidence bundle and preserves exact prior gaps during reevaluation.

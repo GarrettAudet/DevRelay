@@ -50,6 +50,11 @@ export function createLocalHostTraceabilityStore({ storage, namespace, graphId }
   const runId = `local-traceability:${identity}`;
   const checkpoints = createLocalHostCheckpointStore({ storage, namespace: `local-traceability/${identity}` });
   const leaseOwner = `traceability-store:${randomUUID()}`;
+  // Reuse only privately owned, deeply frozen decoded values. Persistence is
+  // still reread and its raw digest verified on every load; a cache hit never
+  // substitutes for current storage bytes or graph/head/journal validation.
+  const decoded = new Map();
+  let decodedBytes = 0;
   const assertGraph = (id) => { if (id !== graphId) fail("graph identity was substituted", "DR4941"); };
   const assertRef = (ref) => { if (!validateRef(ref)) fail("invalid artifact reference", "DR4941"); };
   const artifactKey = (ref) => {
@@ -60,12 +65,28 @@ export function createLocalHostTraceabilityStore({ storage, namespace, graphId }
     assertRef(ref);
     const contract = artifactKinds.get(ref.schema);
     if (!contract || ref.mediaType !== contract[0] || sha256Digest(bytes) !== ref.digest) fail("artifact contract or raw digest drifted", "DR4941");
+    const key = canonicalJson(ref);
+    const cached = decoded.get(key);
+    if (cached && cached.bytes.equals(bytes)) {
+      decoded.delete(key); decoded.set(key, cached);
+      return Object.freeze({ ref: cached.ref, bytes: Buffer.from(bytes), value: cached.value });
+    }
     let value;
     try { value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); }
     catch { fail("artifact is not UTF-8 JSON", "DR4941"); }
     contract[1](value);
     assertGraph(value.graphId);
-    return Object.freeze({ ref: clone(ref), bytes: Buffer.from(bytes), value: clone(value) });
+    const result = Object.freeze({ ref: clone(ref), bytes: Buffer.from(bytes), value: clone(value) });
+    if (bytes.length <= 4 * 1024 * 1024) {
+      if (cached) { decodedBytes -= cached.bytes.length; decoded.delete(key); }
+      const entry = { ref: result.ref, bytes: Buffer.from(bytes), value: result.value };
+      decoded.set(key, entry); decodedBytes += entry.bytes.length;
+      while (decoded.size > 8 || decodedBytes > 16 * 1024 * 1024) {
+        const oldest = decoded.keys().next().value;
+        decodedBytes -= decoded.get(oldest).bytes.length; decoded.delete(oldest);
+      }
+    }
+    return result;
   };
   const load = (ref) => {
     const entry = checkpoints.get(artifactKey(ref));

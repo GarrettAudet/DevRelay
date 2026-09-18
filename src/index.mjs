@@ -493,6 +493,7 @@ export {
   TRACEABILITY_VOCABULARY_V1_6,
   TRACEABILITY_VOCABULARY_V1_7,
   TRACEABILITY_VOCABULARY_V1_8,
+  TRACEABILITY_VOCABULARY_V1_9,
 } from "./traceability-artifact-validator.mjs";
 export {
   workItemVerificationApprovedTraceabilityContributor,
@@ -513,6 +514,7 @@ export {
   createWorkExecutionCheckpointController,
   deriveRunnableFrontierProof,
   executeWorkItem,
+  prepareWorkExecutionInvocation,
   loadWorkExecutionInput,
   validateExecutionBinding,
 } from "./work-execution-runtime.mjs";

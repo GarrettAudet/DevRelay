@@ -31,6 +31,8 @@ import {
   TRACEABILITY_VOCABULARY_V1_2,
   TRACEABILITY_VOCABULARY_V1_3,
   TRACEABILITY_VOCABULARY_V1_4,
+  TRACEABILITY_VOCABULARY_V1_8,
+  TRACEABILITY_VOCABULARY_V1_9,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityEdgeId,
@@ -43,6 +45,13 @@ import {
   createInMemoryTraceabilityStore,
   createTraceabilityGraphService,
 } from "../src/traceability-graph.mjs";
+
+test("approved work vocabulary is opt-in and cannot downgrade to 1.8", () => {
+  assert.equal(TRACEABILITY_VOCABULARY.version, "1.5.0");
+  assert.deepEqual(assertTraceabilityVocabularyTransition(TRACEABILITY_VOCABULARY_V1_8, TRACEABILITY_VOCABULARY_V1_9), TRACEABILITY_VOCABULARY_V1_9);
+  assert.throws(() => assertTraceabilityVocabularyTransition(TRACEABILITY_VOCABULARY_V1_9, TRACEABILITY_VOCABULARY_V1_8), { code: "TG_VOCABULARY_DOWNGRADE" });
+  assert.notEqual(TRACEABILITY_VOCABULARY_V1_8.contractDigest, TRACEABILITY_VOCABULARY_V1_9.contractDigest);
+});
 
 function assertionNode({
   graphId,

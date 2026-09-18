@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/specialist-assignment-context-handoff/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "priorSnapshotDigest", "snapshot", "receipt", "plan", "files", "invalidatedBindings", "lifecycleComplete", "handoffDigest"],
+  "properties": {
+    "kind": { "const": "DesktopSpecialistAssignmentContextHandoff" },
+    "priorSnapshotDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "snapshot": { "$ref": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json#/$defs/sessionSnapshot" },
+    "receipt": { "$ref": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json#/$defs/sessionReceipt" },
+    "plan": { "$ref": "https://devrelay.dev/host/local-specialist-assignment-inputs/v1" },
+    "files": { "type": "array", "minItems": 8, "items": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" } },
+    "invalidatedBindings": { "type": "array", "items": { "$ref": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json#/$defs/contextBinding" } },
+    "lifecycleComplete": { "const": false },
+    "handoffDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

@@ -309,6 +309,17 @@ export const TRACEABILITY_VOCABULARY_V1_8 = Object.freeze({
   contractDigest: canonicalJsonDigest(CURRENT_VOCABULARY_MATERIAL_V1_8),
 });
 export const TRACEABILITY_VOCABULARY = TRACEABILITY_VOCABULARY_V1_5;
+// Opt-in vocabulary: published endpoint policies remain immutable.
+export const TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9 = "1.9.0";
+const VOCABULARY_MATERIAL_V1_9 = Object.freeze({
+  ...CURRENT_VOCABULARY_MATERIAL_V1_8,
+  version: "1.9.0",
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9,
+});
+export const TRACEABILITY_VOCABULARY_V1_9 = Object.freeze({
+  id: VOCABULARY_MATERIAL_V1_9.id, version: VOCABULARY_MATERIAL_V1_9.version,
+  contractDigest: canonicalJsonDigest(VOCABULARY_MATERIAL_V1_9),
+});
 export const TRACEABILITY_ANALYZER = Object.freeze({
   id: "devrelay.traceability/analyzer",
   version: "1.0.0",
@@ -349,6 +360,10 @@ const V1_7_VOCABULARY_PROFILE = Object.freeze({
   endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_7,
   edgeKinds: EDGE_KINDS_V1_7,
   horizons: new Set(TRACEABILITY_HORIZONS),
+});
+const V1_9_VOCABULARY_PROFILE = Object.freeze({
+  ...V1_8_VOCABULARY_PROFILE, version: "1.9.0",
+  endpointPolicyVersion: TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9,
 });
 const V1_6_VOCABULARY_PROFILE = Object.freeze({
   version: "1.6.0",
@@ -644,6 +659,7 @@ function assertNode(node, graphId) {
 const WORK_BREAKDOWN_SCOPE = "work-breakdown/candidate";
 const supportsIntegrationEndpoints = (profile) =>
   new Set([
+    TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9,
     TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_4,
     TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_5,
     TRACEABILITY_ENDPOINT_POLICY_VERSION,
@@ -684,6 +700,11 @@ const supportsAssignmentEndpoints = (profile) =>
   ]).has(profile.endpointPolicyVersion);
 
 function edgeEndpointsAllowed(kind, sourceKind, targetKind, profile) {
+  // 1.9 inherits every 1.8 endpoint-kind rule; its additional authority rule
+  // is validated separately by assertPlanningEdgeAuthority below.
+  if (profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9) {
+    return edgeEndpointsAllowed(kind, sourceKind, targetKind, V1_8_VOCABULARY_PROFILE);
+  }
   switch (kind) {
     case "defines":
       return sourceKind === "project";
@@ -824,7 +845,8 @@ function assertPlanningEdgeAuthority(edge, source, target, profile) {
   }
   if (
     edge.kind === "planned-by" &&
-    edge.scope !== WORK_BREAKDOWN_SCOPE
+    edge.scope !== WORK_BREAKDOWN_SCOPE &&
+    !(profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9 && edge.scope === "work-breakdown/baseline")
   ) {
     return;
   }
@@ -842,14 +864,16 @@ function assertPlanningEdgeAuthority(edge, source, target, profile) {
   if (sourceScope === undefined) {
     return;
   }
+  const approvedPlanning = profile.endpointPolicyVersion === TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9 && edge.scope === "work-breakdown/baseline";
+  const targetScope = approvedPlanning ? "work-breakdown/baseline" : WORK_BREAKDOWN_SCOPE;
   if (
     source.authority !== "approved" ||
     source.kind !== sourceKinds.get(edge.kind) ||
-    edge.scope !== WORK_BREAKDOWN_SCOPE ||
+    edge.scope !== targetScope ||
     target.kind !== "work-item" ||
     source.scope !== sourceScope ||
-    target.authority !== "candidate" ||
-    target.scope !== "work-breakdown/candidate" ||
+    target.authority !== (approvedPlanning ? "approved" : "candidate") ||
+    target.scope !== targetScope ||
     edge.authority !== target.authority ||
     edge.scope !== target.scope ||
     !sameContract(edge.contributor, target.contributor)
@@ -1010,6 +1034,9 @@ function assertUpdateClosure(update) {
 }
 
 function assertVocabulary(vocabulary) {
+  if (sameContract(vocabulary, TRACEABILITY_VOCABULARY_V1_9)) {
+    return V1_9_VOCABULARY_PROFILE;
+  }
   if (sameContract(vocabulary, TRACEABILITY_VOCABULARY_V1_8)) {
     return V1_8_VOCABULARY_PROFILE;
   }
@@ -1056,6 +1083,7 @@ export function assertTraceabilityVocabularyTransition(
     ["1.6.0", 6],
     ["1.7.0", 7],
     ["1.8.0", 8],
+    ["1.9.0", 9],
   ]);
   if (rank.get(updateProfile.version) < rank.get(parentProfile.version)) {
     fail(
@@ -1169,6 +1197,7 @@ function validateUpdate(update) {
           TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_6,
           TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_7,
           TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_8,
+          TRACEABILITY_ENDPOINT_POLICY_VERSION_V1_9,
         ]).has(vocabularyProfile.endpointPolicyVersion) &&
         (!sourceNode || new Set(["business-objective", "business-scope", "success-metric"]).has(sourceNode.kind)) &&
         targetNode?.kind === "business-acceptance-record"

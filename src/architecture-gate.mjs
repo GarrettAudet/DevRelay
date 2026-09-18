@@ -159,7 +159,7 @@ function assertArchitectureReplay(receipt) {
   const expected = {
     "establish-baseline": {
       kind: "ArchitectureDraft",
-      outcome: "drafted",
+      outcome: "baseline_drafted",
       port: "architecture-draft",
     },
     "design-change": {

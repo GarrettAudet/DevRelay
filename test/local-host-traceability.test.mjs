@@ -35,6 +35,29 @@ function prepare(service, id = "one", baseGraph = service.captureBase()) {
   });
 }
 
+test("decoded graph cache keeps bytes isolated and rereads persistence on warm loads", t => {
+  const fx = fixture(t);
+  const base = fx.service.captureBase();
+  let reads = 0;
+  let corrupt = false;
+  const { store } = fx.connect({ ...fx.storage, getArtifact(ref) {
+    reads++;
+    const bytes = Buffer.from(fx.storage.getArtifact(ref));
+    if (corrupt) bytes[0] ^= 1;
+    return bytes;
+  } });
+  const first = store.load(base.ref);
+  const second = store.load(base.ref);
+  assert.equal(first.value, second.value, "only the deeply frozen decoded value is reusable");
+  assert.equal(Object.isFrozen(second.value.nodes), true);
+  first.bytes.fill(0);
+  assert.deepEqual(store.load(base.ref).bytes, base.bytes, "returned bytes must not poison cached bytes");
+  const before = reads;
+  corrupt = true;
+  assert.throws(() => store.load(base.ref));
+  assert.ok(reads > before, "a warm decode cache must still read current persistent bytes");
+});
+
 test("graph heads, exact receipts, history, and namespace isolation survive reopened storage", async (t) => {
   const fx = fixture(t);
   const initial = fx.service.captureBase();

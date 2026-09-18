@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-work-dependency-gate/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "checkpointDigest", "gateCommitDigest", "baseline", "approval", "scope", "lifecycleComplete", "commitDigest"],
+  "properties": {
+    "kind": { "const": "LocalWorkDependencyGateCommit" },
+    "checkpointDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "gateCommitDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "baseline": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "approval": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "scope": { "const": "validated-work-dependency-baseline" },
+    "lifecycleComplete": { "const": false },
+    "commitDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

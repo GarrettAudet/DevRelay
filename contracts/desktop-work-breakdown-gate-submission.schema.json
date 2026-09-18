@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-work-breakdown-gate-submission/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "baseline", "artifacts", "noWorkApprovals"],
+  "properties": {
+    "kind": { "const": "DesktopWorkBreakdownGateSubmission" },
+    "baseline": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "artifacts": { "type": "array", "items": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" } },
+    "noWorkApprovals": { "type": "array", "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedCoverageDisposition/properties/approval" } }
+  }
+}

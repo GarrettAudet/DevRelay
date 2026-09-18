@@ -7,6 +7,7 @@ import {
   architectureBaselineObserverContributor,
   architectureControlTraceabilityContributor,
   architectureTraceabilityContributor,
+  createArchitectureActivationTraceabilityContributor,
 } from "../src/architecture-traceability-contributor.mjs";
 import { requirementsBaselineObserverContributor } from "../src/requirements-traceability-contributor.mjs";
 import { validateTraceabilityUpdate } from "../src/traceability-artifact-validator.mjs";
@@ -83,6 +84,39 @@ function findNode(projected, kind, stableId) {
 function findEdges(projected, kind) {
   return projected.edges.filter((edge) => edge.kind === kind);
 }
+
+test("opt-in architecture Gate observer binds exact approved outputs without a fabricated downstream invocation", async () => {
+  const context = architectureContext();
+  const baseline = await readJson("examples/artifacts/architecture-baseline-001.json");
+  const candidateRef = context.loadedOutputs["architecture-draft"][0].ref;
+  baseline.approvedDraft = candidateRef;
+  baseline.requirementsBaseline = context.loadedInputs["requirements-baseline"][0].ref;
+  const ref = { ...candidateRef, artifactId: baseline.baselineId, schema: "https://devrelay.dev/artifacts/architecture-baseline/v1",
+    mediaType: "application/vnd.devrelay.architecture-baseline+json", digest: canonicalJsonDigest(baseline) };
+  context.loadedOutputs["architecture-baseline"] = [entry(ref, baseline)];
+  context.gate = { id: "architecture-gate", outcome: "promoted", commitDigest: canonicalJsonDigest({ fixture: true }), baseline: ref };
+  const observer = createArchitectureActivationTraceabilityContributor();
+  assert.equal(architectureBaselineObserverContributor.metadata.version, "1.0.0");
+  assert.equal(architectureBaselineObserverContributor.match(context), false);
+  assert.equal(observer.metadata.version, "1.1.0");
+  assert.equal(observer.match(context), true);
+  assert.equal(observer.authority, "approved");
+  const before = structuredClone(context);
+  const projected = await observer.project(context);
+  assert.ok(projected.nodes.length > 0);
+  assert.deepEqual(await observer.project(context), projected);
+  assert.deepEqual(context, before);
+  for (const modify of [
+    value => { value.gate.baseline = candidateRef; },
+    value => { value.loadedOutputs["architecture-baseline"][0].value.approvedDraft = ref; },
+    value => { value.loadedOutputs["architecture-baseline"][0].value.requirementsBaseline = ref; },
+  ]) {
+    const changed = structuredClone(context); modify(changed);
+    await assert.rejects(observer.project(changed), /exact candidate/);
+  }
+  const unapproved = structuredClone(context); delete unapproved.gate;
+  assert.equal(observer.match(unapproved), false);
+});
 
 test("Architecture contributor projects exhaustive design traceability without direct AC claims", async () => {
   const context = architectureContext();

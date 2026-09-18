@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-contract-candidate-trace/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["apiVersion", "kind", "checkpointKey", "executionCheckpointDigest", "applicationProof", "scope", "lifecycleComplete"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "kind": { "const": "LocalContractCandidateTrace" },
+    "checkpointKey": { "type": "string", "pattern": "^contract-candidate-trace:sha256:[a-f0-9]{64}$" },
+    "executionCheckpointDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "applicationProof": { "$ref": "https://devrelay.dev/contracts/module-execution-record.schema.json#/$defs/applicationProof" },
+    "scope": { "const": "candidate-contract-trace" },
+    "lifecycleComplete": { "const": false }
+  }
+}

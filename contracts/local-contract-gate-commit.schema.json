@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-contract-gate-commit/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["apiVersion", "kind", "checkpointDigest", "approval", "baseline", "disposition", "scope", "lifecycleComplete", "commitDigest"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "kind": { "const": "LocalContractGateCommit" },
+    "checkpointDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "approval": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "baseline": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "disposition": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "scope": { "const": "validated-contract-baseline" },
+    "lifecycleComplete": { "const": false },
+    "commitDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

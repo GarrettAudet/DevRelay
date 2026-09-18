@@ -6,6 +6,7 @@ import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content
 import { createContractCanonicalDiff } from "../src/contract-canonical-diff.mjs";
 import { createJsonSchemaContractBundle } from "../src/contract-format-registry.mjs";
 import { approveContractsNotApplicable } from "../src/contract-gate.mjs";
+import { createContractNotApplicableTraceabilityContributor } from "../src/contract-traceability-contributor.mjs";
 import { createContractGenerationRuntime, deriveContractGenerationRoute } from "../src/contract-generation-runtime.mjs";
 
 const ROOT = new URL("../", import.meta.url);
@@ -79,6 +80,7 @@ test("canonical diff records adds, removals, prior digests, target digests, and 
 test("ContractGate alone approves not-applicable when architecture has zero required intents", async () => {
   const inputs = await baseInputs();
   const architectureValue = structuredClone(inputs.architecture.value);
+  architectureValue.projectOverviewBaseline = inputs.projectOverview.ref;
   for (const intent of architectureValue.sections.interfaceIntent.content.interfaces) {
     intent.contractGeneration = { required: false, suggestedKinds: [] };
   }
@@ -89,4 +91,33 @@ test("ContractGate alone approves not-applicable when architecture has zero requ
   const commit = await approveContractsNotApplicable({ state, architecture, approval, evidenceResolver: async () => evidence });
   assert.equal(commit.progressionAllowed, true);
   assert.equal(commit.contractDisposition.mode, "not-applicable");
+  const disposition = loaded(commit.contractDisposition, "https://devrelay.dev/artifacts/contract-disposition/v1", "application/vnd.devrelay.contract-disposition+json", commit.contractDisposition.dispositionId);
+  const contributor = createContractNotApplicableTraceabilityContributor();
+  const context = { gate: { id: "contract-gate", outcome: "not-applicable", commitDigest: canonicalJsonDigest(commit), disposition: disposition.ref },
+    loadedInputs: { "project-contract-state": [state] }, loadedOutputs: { "contract-disposition": [disposition] } };
+  assert.equal(contributor.match(context), true);
+  const projection = await contributor.project(context);
+  assert.deepEqual(projection.nodes, []);
+  assert.deepEqual(projection.edges, []);
+  assert.ok(projection.reason);
+  assert.equal(contributor.match({ ...context, gate: { ...context.gate, outcome: "promoted" } }), false);
+  await assert.rejects(contributor.project({ ...context, gate: { ...context.gate, disposition: { ...disposition.ref, artifactId: "substituted" } } }), /exact disposition/);
+  let evidenceCalls = 0;
+  const reject = candidate => approveContractsNotApplicable({ state, architecture: candidate, approval,
+    evidenceResolver: async () => { evidenceCalls++; return evidence; } });
+  await assert.rejects(reject({ ...architecture, bytes: Buffer.from("{}") }), /bytes|contract/);
+  await assert.rejects(reject({ ...architecture, value: { ...architecture.value, sections: {} } }), /parsed object differs/);
+  await assert.rejects(reject({ ...architecture, ref: { ...architecture.ref, artifactId: "unrelated-architecture" } }), /exact architecture/);
+  await assert.rejects(reject(inputs.architecture), /exact architecture/);
+  const requiredValue = structuredClone(architecture.value);
+  requiredValue.sections.interfaceIntent.content.interfaces[0].contractGeneration = { required: true, suggestedKinds: ["json-schema"] };
+  const required = loaded(requiredValue, architecture.ref.schema, architecture.ref.mediaType, architecture.ref.artifactId);
+  const requiredState = loaded({ ...state.value, architectureBaseline: required.ref }, state.ref.schema, state.ref.mediaType, state.ref.artifactId);
+  await assert.rejects(approveContractsNotApplicable({ state: requiredState, architecture: required, approval,
+    evidenceResolver: async () => { evidenceCalls++; return evidence; } }), /required interface intent|contract generation/i);
+  const missing = loaded({ ...architecture.value, sections: {} }, architecture.ref.schema, architecture.ref.mediaType, architecture.ref.artifactId);
+  const reboundState = loaded({ ...state.value, architectureBaseline: missing.ref }, state.ref.schema, state.ref.mediaType, state.ref.artifactId);
+  await assert.rejects(approveContractsNotApplicable({ state: reboundState, architecture: missing, approval,
+    evidenceResolver: async () => { evidenceCalls++; return evidence; } }), /architecture|schema|section/i);
+  assert.equal(evidenceCalls, 0, "invalid architecture must fail before approval evidence evaluation");
 });

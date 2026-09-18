@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-contract-planning/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "architectureActivation", "state", "route", "scope", "lifecycleComplete", "planningDigest"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "kind": { "const": "LocalContractPlanning" },
+    "architectureActivation": { "$ref": "https://devrelay.dev/host/local-architecture-activation/v1" },
+    "state": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "route": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false,
+          "required": ["kind", "branch", "reasonCode", "requiredInterfaceIntentIds"],
+          "properties": { "kind": { "const": "gate" }, "branch": { "const": "approve-not-applicable" }, "reasonCode": { "const": "NO_REQUIRED_CONTRACT_INTENTS" }, "requiredInterfaceIntentIds": { "type": "array", "maxItems": 0 } } },
+        { "type": "object", "additionalProperties": false,
+          "required": ["kind", "operation", "reasonCode", "requiredInterfaceIntentIds"],
+          "properties": { "kind": { "const": "module" }, "operation": { "const": "establish-contracts" }, "reasonCode": { "const": "CONTRACT_BASELINE_ABSENT" }, "requiredInterfaceIntentIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^IF-[A-Z0-9-]+$" } } } }
+      ]
+    },
+    "scope": { "const": "contract-planning-candidate" },
+    "lifecycleComplete": { "const": false },
+    "planningDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

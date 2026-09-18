@@ -27,6 +27,7 @@ import {
   TRACEABILITY_VOCABULARY_V1_6,
   TRACEABILITY_VOCABULARY_V1_7,
   TRACEABILITY_VOCABULARY_V1_8,
+  TRACEABILITY_VOCABULARY_V1_9,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityDiagnosticId,
@@ -1772,6 +1773,9 @@ export function createTraceabilityGraphService({
     vocabulary.version === TRACEABILITY_VOCABULARY_V1_7.version &&
     vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_7.contractDigest;
   const usesVocabularyV1_8 =
+    (vocabulary.id === TRACEABILITY_VOCABULARY_V1_9.id &&
+    vocabulary.version === TRACEABILITY_VOCABULARY_V1_9.version &&
+    vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_9.contractDigest) ||
     vocabulary.id === TRACEABILITY_VOCABULARY_V1_8.id &&
     vocabulary.version === TRACEABILITY_VOCABULARY_V1_8.version &&
     vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_8.contractDigest;

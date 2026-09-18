@@ -1,0 +1,18 @@
+[package]
+name = "devrelay-zeroshot-desktop"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+zeroshot = { git = "https://github.com/the-open-engine/zeroshot", rev = "054ad3fd6c763b98d12f5b2e90830b97116561ad" }
+openengine-cluster-protocol = { git = "https://github.com/the-open-engine/zeroshot", rev = "054ad3fd6c763b98d12f5b2e90830b97116561ad" }
+async-trait = "0.1.89"
+fs2 = "0.4.3"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+sha2 = "0.10.9"
+tokio = { version = "1.48.0", features = ["macros", "rt-multi-thread", "time", "signal"] }
+
+[profile.dev]
+debug = 0

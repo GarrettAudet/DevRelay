@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/architecture-context-materialization/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "handoffDigest",
+    "configurationPath",
+    "configurationDigest",
+    "state",
+    "discoverySnapshot",
+    "route",
+    "lifecycleComplete"
+  ],
+  "properties": {
+    "kind": {
+      "const": "DesktopArchitectureContextMaterialization"
+    },
+    "handoffDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "configurationPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "configurationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "state": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "discoverySnapshot": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "route": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "lifecycleComplete": {
+      "const": false
+    }
+  }
+}

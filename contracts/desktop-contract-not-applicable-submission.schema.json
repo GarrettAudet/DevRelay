@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-contract-not-applicable-submission/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["apiVersion", "kind", "planningDigest", "approval", "artifacts"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" }, "kind": { "const": "DesktopContractNotApplicableSubmission" },
+    "planningDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "approval": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "artifacts": { "type": "array", "items": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" } }
+  }
+}

@@ -1,6 +1,7 @@
 ﻿import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { prepareLocalContractGate, verifyLocalContractGate } from "../src/local-contract-gate.mjs";
 
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
 import { createJsonSchemaContractBundle } from "../src/contract-format-registry.mjs";
@@ -303,6 +304,14 @@ test("ContractGate promotes only the exact replayed candidate and emits downstre
   assert.equal(commit.baseline.contracts.length, 34);
   assert.equal(commit.contractDisposition.mode, "baseline");
   assert.equal(commit.contractDisposition.contractTargets.length, 34);
+  const loadArtifact = ref => [approval, baselineLoaded, review].find(entry => canonicalJsonDigest(entry.ref) === canonicalJsonDigest(ref))?.bytes;
+  const local = await prepareLocalContractGate({ replayReceipt: receipt, approvalRef: approval.ref, baselineRef: baselineLoaded.ref, loadArtifact });
+  assert.equal(local.scope, "validated-contract-baseline");
+  assert.equal(local.lifecycleComplete, false);
+  assert.deepEqual(await verifyLocalContractGate({ replayReceipt: receipt, record: local, loadArtifact }), local);
+  await assert.rejects(prepareLocalContractGate({ replayReceipt: { ...receipt }, approvalRef: approval.ref, baselineRef: baselineLoaded.ref,
+    loadArtifact: () => { throw new Error("must reject before artifact access"); } }), /receipt/i);
+  await assert.rejects(verifyLocalContractGate({ replayReceipt: receipt, record: { ...local, commitDigest: sha256Digest(Buffer.from("changed")) }, loadArtifact }), /differs/);
   await assert.rejects(
     promoteContractBaseline({
       replayReceipt: { ...receipt },

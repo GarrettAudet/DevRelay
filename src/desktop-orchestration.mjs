@@ -1,5 +1,7 @@
-import { canonicalJsonDigest } from "./content-digest.mjs";
+import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 import { verifyCrossCuttingCompositionPlan } from "./cross-cutting-composition.mjs";
+import { revalidateDesktopTaskPlan } from "./desktop-task-adapter.mjs";
+import { validateDesktopOrchestrationArtifact } from "./desktop-orchestration-artifact-validator.mjs";
 
 export class DesktopOrchestrationError extends Error {
   constructor(message, code = "DR6120") {
@@ -103,19 +105,20 @@ export function deriveDesktopReadyFrontier({ plan, workState = {} } = {}) {
 export function createDesktopOrchestrationRuntime({ storage, owner = "desktop-orchestrator" } = {}) {
   if (!storage || typeof storage.initializeRun !== "function") fail("durable storage is required");
   const idFor = (runId) => `desktop-orchestration:${runId}`;
-  const transition = (runId, operation, update) => {
+  const transition = (runId, operation, update, additionalRefs = []) => {
     const storageRunId = idFor(runId);
     const current = storage.readRun(storageRunId);
+    const nextState = update(structuredClone(current.state));
+    if (canonicalJsonDigest(nextState) === canonicalJsonDigest(current.state) && additionalRefs.length === 0) return current;
     const lease = storage.acquireLease({ runId: storageRunId, owner, expectedVersion: current.version });
     try {
-      const nextState = update(structuredClone(current.state));
       return storage.commitTransition({
         runId: storageRunId,
         expectedVersion: current.version,
         leaseToken: lease.token,
         transition: { operation, transitionDigest: canonicalJsonDigest({ operation, from: current.state, to: nextState }) },
         nextState,
-        artifactRefs: current.artifactRefs,
+        artifactRefs: [...current.artifactRefs, ...additionalRefs],
       });
     } finally {
       try { storage.releaseLease({ runId: storageRunId, leaseToken: lease.token }); } catch {}
@@ -130,10 +133,94 @@ export function createDesktopOrchestrationRuntime({ storage, owner = "desktop-or
     },
     inspect(runId) { return storage.readRun(idFor(runId)); },
     frontier(runId) { const run = storage.readRun(idFor(runId)); return deriveDesktopReadyFrontier({ plan: run.state.plan, workState: run.state.workState }); },
+    prepareTask({ plan, memoryBootstrap } = {}) {
+      const prepared = revalidateDesktopTaskPlan({ plan, memoryBootstrap });
+      const current = storage.readRun(idFor(prepared.runId));
+      const parent = current.state.plan;
+      if (prepared.projectId !== parent.projectId || prepared.startingRevision !== parent.startingRevision) fail("task differs from orchestration context", "DR6125");
+      const work = current.state.workState[prepared.workItemId];
+      if (!work) fail("task work item is absent", "DR6125");
+      if (work.taskPlanRef) {
+        const bytes = storage.getArtifact(work.taskPlanRef);
+        if (bytes.toString("utf8") !== canonicalJson(prepared)) fail("work item already binds another task plan", "DR6125");
+        return current;
+      }
+      const ref = storage.putArtifact({ artifactId: `DESKTOP-TASK-PLAN-${prepared.attemptId}`,
+        mediaType: "application/vnd.devrelay.desktop-task-plan+json", bytes: Buffer.from(canonicalJson(prepared)) });
+      return transition(prepared.runId, "prepare-task-plan", state => {
+        const item = state.workState[prepared.workItemId];
+        if (item.taskPlanRef || item.status !== "pending" ||
+            !deriveDesktopReadyFrontier({ plan: state.plan, workState: state.workState }).workItemIds.includes(prepared.workItemId)) {
+          fail("task preparation is outside the exact pending frontier", "DR6123");
+        }
+        item.taskPlanRef = ref;
+        item.status = "prepared";
+        return state;
+      }, [ref]);
+    },
+    loadTaskPlan(runId, { workItemId, memoryBootstrap } = {}) {
+      const current = storage.readRun(idFor(runId));
+      const ref = current.state.workState[workItemId]?.taskPlanRef;
+      if (!ref) fail("saved task plan is absent", "DR6125");
+      const bytes = storage.getArtifact(ref);
+      const plan = revalidateDesktopTaskPlan({ plan: JSON.parse(bytes), memoryBootstrap });
+      if (canonicalJson(plan) !== bytes.toString("utf8") || plan.runId !== runId || plan.workItemId !== workItemId ||
+          plan.projectId !== current.state.plan.projectId || plan.startingRevision !== current.state.plan.startingRevision) fail("saved task plan context differs", "DR6125");
+      return plan;
+    },
+    reserveTaskDispatch({ plan, memoryBootstrap, provider } = {}) {
+      const prepared = revalidateDesktopTaskPlan({ plan, memoryBootstrap });
+      if (!provider || Object.keys(provider).some(key => !["id", "version"].includes(key)) ||
+          typeof provider.id !== "string" || !provider.id || typeof provider.version !== "string" || !provider.version ||
+          provider.id !== prepared.executor.id || (prepared.executor.version !== undefined && provider.version !== prepared.executor.version)) fail("dispatch provider differs from task executor", "DR6125");
+      const saved = this.loadTaskPlan(prepared.runId, { workItemId: prepared.workItemId, memoryBootstrap });
+      if (canonicalJsonDigest(saved) !== canonicalJsonDigest(prepared)) fail("dispatch requires the exact saved plan", "DR6125");
+      return transition(prepared.runId, "reserve-task-dispatch", state => {
+        const item = state.workState[prepared.workItemId];
+        if (item.status !== "prepared" || item.dispatchReservation) fail("dispatch is already reserved or advanced; reconcile without repeating creation", "DR6126");
+        item.dispatchReservation = { planDigest: prepared.planDigest, provider: structuredClone(provider), status: "reserved" };
+        return state;
+      });
+    },
+    recordTaskDispatch({ plan, memoryBootstrap, receipt } = {}) {
+      const prepared = this.loadTaskPlan(plan.runId, { workItemId: plan.workItemId, memoryBootstrap });
+      if (canonicalJsonDigest(prepared) !== canonicalJsonDigest(plan)) fail("dispatch result plan differs", "DR6125");
+      validateDesktopOrchestrationArtifact(receipt);
+      const current = storage.readRun(idFor(plan.runId));
+      const item = current.state.workState[plan.workItemId];
+      if (!item.dispatchReservation || receipt.kind !== "DesktopTaskReceipt" || receipt.operation !== "create" ||
+          receipt.planDigest !== plan.planDigest || receipt.idempotencyKey !== plan.idempotencyKey ||
+          receipt.runId !== plan.runId || receipt.workItemId !== plan.workItemId || receipt.attemptId !== plan.attemptId ||
+          canonicalJsonDigest(receipt.provider) !== canonicalJsonDigest(item.dispatchReservation.provider)) fail("dispatch receipt differs from reservation", "DR6125");
+      if (item.dispatchReservation.receipt) {
+        if (canonicalJsonDigest(item.dispatchReservation.receipt) !== canonicalJsonDigest(receipt)) fail("dispatch receipt already bound", "DR6125");
+        return current;
+      }
+      return transition(plan.runId, "record-task-dispatch", state => {
+        const work = state.workState[plan.workItemId];
+        if (work.status !== "prepared" || work.dispatchReservation?.status !== "reserved") fail("dispatch reservation advanced", "DR6126");
+        work.dispatchReservation = { ...work.dispatchReservation, status: "recorded", receipt: structuredClone(receipt) };
+        work.status = "dispatched";
+        work.receipts.push(structuredClone(receipt));
+        return state;
+      });
+    },
     record(runId, { workItemId, status, receipt } = {}) {
       return transition(runId, `record-${status}`, (state) => {
         const current = state.workState[workItemId];
         if (!current) fail(`unknown work item ${workItemId}`);
+        if (current.taskPlanRef && status === "dispatched") fail("saved tasks require reserved dispatch receipt recording", "DR6124");
+        if (current.taskPlanRef && ["running", "completed"].includes(status)) {
+          validateDesktopOrchestrationArtifact(receipt);
+          const dispatched = current.dispatchReservation?.receipt;
+          if (!dispatched || receipt.kind !== "DesktopTaskReceipt" || !["inspect", "wait"].includes(receipt.operation) ||
+              receipt.status !== status || receipt.taskId !== dispatched.taskId || receipt.planDigest !== dispatched.planDigest ||
+              receipt.idempotencyKey !== dispatched.idempotencyKey || receipt.attemptId !== dispatched.attemptId ||
+              receipt.runId !== runId || receipt.workItemId !== workItemId ||
+              canonicalJsonDigest(receipt.provider) !== canonicalJsonDigest(dispatched.provider)) {
+            fail("task progress requires the exact bound provider observation", "DR6124");
+          }
+        }
         if (current.status === status && receipt && current.receipts.some((value) => canonicalJsonDigest(value) === canonicalJsonDigest(receipt))) return state;
         if (TERMINAL.has(current.status) && current.status !== "integrated") fail("terminal work state cannot be rewritten", "DR6122");
         if (!TRANSITIONS[current.status]?.has(status)) fail(`invalid work transition ${current.status} -> ${status}`, "DR6122");

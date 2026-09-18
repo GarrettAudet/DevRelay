@@ -63,6 +63,11 @@ export function createLocalHostCheckpointStore({ storage, namespace } = {}) {
     if (typeof storage?.[operation] !== "function") fail("an explicitly opened LocalHostStorage is required");
   }
   const identity = (key) => `local-checkpoint:${canonicalJsonDigest({ namespace, key: text(key, "key") }).slice(7)}`;
+  // Cache decoding only, never storage or authority. Every hit follows current
+  // pointer validation and a raw storage reread/digest check. Values are deeply
+  // frozen; raw cache bytes remain private. Bound both count and retained bytes.
+  const decoded = new Map();
+  let decodedBytes = 0;
   const encode = (key, value) => {
     text(key, "key");
     assertJson(value);
@@ -89,6 +94,11 @@ export function createLocalHostCheckpointStore({ storage, namespace } = {}) {
       artifact.artifactId !== `LOCAL-CHECKPOINT-${artifact.digest?.slice(7)}`
     ) fail("checkpoint pointer identity or immutable state drifted", "DR4931");
     const bytes = storage.getArtifact(artifact);
+    const cached = decoded.get(runId);
+    if (cached && cached.bytes.equals(bytes)) {
+      decoded.delete(runId); decoded.set(runId, cached);
+      return { bytes: Buffer.from(bytes), value: cached.value };
+    }
     let envelope;
     try { envelope = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); }
     catch { fail("checkpoint bytes are not valid UTF-8 JSON", "DR4931"); }
@@ -96,7 +106,16 @@ export function createLocalHostCheckpointStore({ storage, namespace } = {}) {
       !validateEnvelope(envelope) || envelope.namespace !== namespace || envelope.key !== key ||
       !Buffer.from(canonicalJson(envelope), "utf8").equals(bytes)
     ) fail("checkpoint envelope identity or canonical bytes drifted", "DR4931");
-    return { bytes, value: immutable(envelope.value) };
+    const value = immutable(envelope.value);
+    if (cached) { decoded.delete(runId); decodedBytes -= cached.bytes.length; }
+    if (bytes.length <= 4 * 1024 * 1024) {
+      while (decoded.size >= 8 || decodedBytes + bytes.length > 16 * 1024 * 1024) {
+        const oldest = decoded.keys().next().value;
+        decodedBytes -= decoded.get(oldest).bytes.length; decoded.delete(oldest);
+      }
+      decoded.set(runId, { bytes: Buffer.from(bytes), value }); decodedBytes += bytes.length;
+    }
+    return { bytes, value };
   };
   const storeBytesIfAbsent = (key, bytes) => {
     const prior = read(key);

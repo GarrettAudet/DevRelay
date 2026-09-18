@@ -101,11 +101,24 @@ export function createDurableGitWorktreeManager({ repositoryPath, worktreeRoot, 
       const observed = observedRevision(run.state.workspace);
       return Object.freeze({ ...structuredClone(run.state), observedRevision: observed, stateVersion: run.version });
     },
+    inspectForDispatch(attemptId) {
+      const observation = this.inspect(attemptId);
+      if (observation.status !== "active" || observation.taskId !== null ||
+          observation.observedRevision !== observation.revision) fail("dispatch requires an active unbound worktree at its exact starting revision", "DR6131");
+      const changes = execFileSync(gitExecutable, ["--no-optional-locks", "-C", observation.workspace, "status", "--porcelain=v1", "--untracked-files=all"],
+        { encoding: "utf8", windowsHide: true });
+      if (changes.length !== 0) fail("dispatch worktree has uncommitted or untracked work", "DR6131");
+      // Observation is not a lease renewal or task-creation receipt. The caller
+      // must still bind current memory, continuity, permissions and task identity.
+      return observation;
+    },
     bindTask(attemptId, taskId) {
       if (typeof taskId !== "string" || !taskId) fail("taskId is required");
       const run = storage.readRun(idFor(attemptId));
       if (run.state.taskId && run.state.taskId !== taskId) fail("task identity is already bound", "DR6131");
-      observedRevision(run.state.workspace);
+      const observed = observedRevision(run.state.workspace);
+      if (run.state.taskId === taskId) return Object.freeze(structuredClone(run.state));
+      if (run.state.status !== "active" || observed === null) fail("new task binding requires an existing active worktree", "DR6131");
       return commit(run, "task-bound", { ...run.state, taskId }).state;
     },
     recover(attemptId) {

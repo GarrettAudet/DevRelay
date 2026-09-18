@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-quality-policy-head/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "baseline", "preparationDigest", "pendingPreparation"],
+  "properties": {
+    "kind": { "const": "LocalQualityPolicyHead" },
+    "baseline": { "anyOf": [{ "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" }, { "type": "null" }] },
+    "preparationDigest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] },
+    "pendingPreparation": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }
+  },
+  "$defs": { "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }
+}

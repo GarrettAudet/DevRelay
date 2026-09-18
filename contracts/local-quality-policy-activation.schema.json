@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-quality-policy-activation/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "baseline", "preparationDigest", "checkpointKey", "applicationProof", "dispatchAuthorized"],
+  "properties": {
+    "kind": { "const": "LocalQualityPolicyActivation" },
+    "baseline": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "preparationDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "checkpointKey": { "type": "string", "pattern": "^quality-policy-activation:sha256:[a-f0-9]{64}$" },
+    "applicationProof": { "$ref": "https://devrelay.dev/contracts/module-execution-record.schema.json#/$defs/applicationProof" },
+    "dispatchAuthorized": { "const": false }
+  }
+}

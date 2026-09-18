@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { prepareLocalWorkDependencyGate, verifyLocalWorkDependencyGate } from "../src/local-work-dependency-gate.mjs";
+import { createWorkDependencyActivationTraceabilityContributor } from "../src/work-dependency-traceability-contributor.mjs";
 import { pathToFileURL } from "node:url";
 
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
@@ -342,6 +344,25 @@ test("Gate promotes only an exact approved static-DAG baseline", async () => {
   });
   assert.equal(commit.progressionAllowed, true);
   assert.equal(commit.baseline.kind, "WorkDependencyBaseline");
+  const localRequest = { replayReceipt: receipt, baselineRef: baselineLoaded.ref, approvalRef: approval.ref,
+    loadArtifact: async ref => [baselineLoaded, approval, approvalEvidence].find(loaded => loaded.ref.digest === ref.digest)?.bytes };
+  const localGate = await prepareLocalWorkDependencyGate(localRequest);
+  assert.equal(localGate.gateCommitDigest, commit.commitDigest);
+  assert.equal(localGate.lifecycleComplete, false);
+  const contributor = createWorkDependencyActivationTraceabilityContributor();
+  // Synthetic projection context only; the host must supply actual Core history.
+  const traceContext = { invocation: { module: { id: "work-breakdown", version: "0.1.0" } }, moduleResult: { status: "completed", outcome: "decomposed" },
+    gate: { id: "work-dependency-gate", outcome: "promoted", commitDigest: localGate.commitDigest, baseline: baselineLoaded.ref },
+    loadedOutputs: { "work-dependency-baseline": [baselineLoaded], "work-breakdown-baseline": [inputs.workBreakdown] } };
+  const projection = await contributor.project(traceContext);
+  assert.ok(projection.edges.length > 0);
+  assert.ok(projection.edges.every(edge => edge.source.authority === "approved" && edge.target.authority === "approved" && edge.source.scope === "work-breakdown/baseline"));
+  await assert.rejects(contributor.project({ ...traceContext, gate: undefined }), /owning Gate/);
+  await assert.rejects(contributor.project({ ...traceContext, gate: { ...traceContext.gate, baseline: approval.ref } }), /differs from Gate/);
+  assert.deepEqual(await verifyLocalWorkDependencyGate({ ...localRequest, record: localGate }), localGate);
+  await assert.rejects(prepareLocalWorkDependencyGate({ ...localRequest, replayReceipt: { ...receipt }, loadArtifact: () => { throw new Error("must not load"); } }), /unforgeable/);
+  await assert.rejects(prepareLocalWorkDependencyGate({ ...localRequest, loadArtifact: ref => ref.digest === approvalEvidence.ref.digest ? Buffer.from("tampered") : localRequest.loadArtifact(ref) }), /bytes do not match/);
+  await assert.rejects(verifyLocalWorkDependencyGate({ ...localRequest, record: { ...localGate, lifecycleComplete: true } }), /contract/);
 
   await assert.rejects(
     promoteWorkDependencyBaseline({

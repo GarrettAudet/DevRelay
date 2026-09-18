@@ -1,5 +1,6 @@
 import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 import { validateContractGenerationArtifact } from "./contract-generation-artifact-validator.mjs";
+import { validateWorkBreakdownArtifact } from "./work-breakdown-artifact-validator.mjs";
 
 const EMPTY = Object.freeze([]);
 
@@ -151,6 +152,29 @@ export function createContractControlTraceabilityContributor() {
         edges: [],
         reason: `ContractGeneration outcome ${context.moduleResult.outcome} has no contract candidate to project.`,
       };
+    },
+  });
+}
+
+// A Gate-approved absence is explicit accounting, never a fabricated contract.
+// The trusted host must revalidate the owning Gate before supplying this context.
+export function createContractNotApplicableTraceabilityContributor() {
+  const scope = "contracts/not-applicable";
+  return Object.freeze({
+    metadata: deepFreeze({ id: "devrelay.contract-not-applicable", version: "1.0.0" }),
+    match: context => context?.gate?.id === "contract-gate" && context.gate.outcome === "not-applicable" &&
+      /^sha256:[a-f0-9]{64}$/.test(context.gate.commitDigest ?? ""),
+    scope, authority: "approved",
+    ownership: deepFreeze({ scope, authority: "approved", nodeKinds: EMPTY, edgeKinds: EMPTY }),
+    async project(context) {
+      const disposition = oneLoaded(context, "loadedOutputs", "contract-disposition");
+      const state = oneLoaded(context, "loadedInputs", "project-contract-state");
+      validateWorkBreakdownArtifact(disposition.value, { ref: disposition.ref });
+      validateContractGenerationArtifact(state.value, { ref: state.ref });
+      if (disposition.value.kind !== "ContractDisposition" || disposition.value.mode !== "not-applicable" ||
+          state.value.state !== "not-applicable" || state.value.requiredInterfaceIntentIds.length !== 0 ||
+          canonicalJson(context.gate.disposition) !== canonicalJson(disposition.ref)) fail("not-applicable Gate context does not bind its exact disposition and zero-intent state");
+      return { horizon: "contracts", nodes: [], edges: [], reason: "The owning ContractGate approved an explicit disposition with zero required contract intents." };
     },
   });
 }

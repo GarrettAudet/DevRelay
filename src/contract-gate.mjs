@@ -3,7 +3,8 @@ import {
   CONTRACT_GENERATION_ARTIFACT_CONTRACTS,
   validateContractGenerationArtifact,
 } from "./contract-generation-artifact-validator.mjs";
-import { assertVerifiedContractGenerationReceipt } from "./contract-generation-runtime.mjs";
+import { assertVerifiedContractGenerationReceipt, deriveContractGenerationRoute } from "./contract-generation-runtime.mjs";
+import { validateArchitectureArtifact } from "./architecture-artifact-validator.mjs";
 import {
   validateWorkBreakdownArtifact,
   WORK_BREAKDOWN_ARTIFACT_CONTRACTS,
@@ -225,10 +226,15 @@ export async function approveContractsNotApplicable({ state, architecture, appro
   if (stateValue.state !== "not-applicable" || stateValue.requiredInterfaceIntentIds.length !== 0) {
     fail("not-applicable requires a state with zero required interface intents");
   }
-  const interfaces = architecture.value?.sections?.interfaceIntent?.content?.interfaces ?? [];
-  if (interfaces.some((entry) => entry.contractGeneration?.required === true)) {
-    fail("ArchitectureBaseline still contains a required contract intent");
-  }
+  const architectureValue = exactLoaded(architecture, "ArchitectureBaseline", {
+    schema: "https://devrelay.dev/artifacts/architecture-baseline/v1",
+    mediaType: "application/vnd.devrelay.architecture-baseline+json",
+  });
+  if (architectureValue.kind !== "ArchitectureBaseline" || !sameRef(stateValue.architectureBaseline, architecture.ref) ||
+      !sameRef(stateValue.projectOverviewBaseline, architectureValue.projectOverviewBaseline)) fail("not-applicable state does not bind its exact architecture and overview");
+  validateArchitectureArtifact(architectureValue);
+  const route = deriveContractGenerationRoute({ state: stateValue, architectureBaseline: architectureValue });
+  if (route.kind !== "gate" || route.branch !== "approve-not-applicable") fail("ArchitectureBaseline still requires contract generation");
   const approvalValue = exactLoaded(
     approval,
     "ApprovedNotApplicable",

@@ -548,14 +548,14 @@ function validateRetryLineage(retryLineage, attemptId) {
   }
 }
 
-export async function executeWorkItem({
+// Host pre-dispatch boundary. It derives the same invocation as execution but
+// performs no executor call, checkpoint write, work claim or Gate promotion.
+export function prepareWorkExecutionInvocation({
   attemptId,
   workItemId,
   input,
   workspaceBaseDigest,
-  executor,
   executorConfigurationDigest,
-  checkpoints,
   retryLineage,
 }) {
   validateLoadedInputs(input);
@@ -592,6 +592,16 @@ export async function executeWorkItem({
     workspaceBaseDigest,
     retryLineage,
   });
+  return Object.freeze({ invocation, readinessProof: readiness.proof });
+}
+
+export async function executeWorkItem({
+  attemptId, workItemId, input, workspaceBaseDigest, executor,
+  executorConfigurationDigest, checkpoints, retryLineage,
+}) {
+  const { invocation, readinessProof } = prepareWorkExecutionInvocation({
+    attemptId, workItemId, input, workspaceBaseDigest, executorConfigurationDigest, retryLineage,
+  });
   const controller = createWorkExecutionCheckpointController({ executor });
   const checkpointResult = await controller.execute({
     invocation,
@@ -607,7 +617,7 @@ export async function executeWorkItem({
   return Object.freeze({
     ...assembled,
     invocation,
-    readinessProof: readiness.proof,
+    readinessProof,
     checkpoint: clone(checkpointResult.checkpoint),
     replayed: checkpointResult.replayed,
     executorCalls: checkpointResult.executorCalls,

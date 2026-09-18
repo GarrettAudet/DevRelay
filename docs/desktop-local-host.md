@@ -310,6 +310,208 @@ exposes `discoveryGate`; `verify` rederives it from stored evidence and the genu
 Core checkpoint without writing state. Approval JSON is evidence supplied by the
 operator, not independent authentication of the human who authored it.
 
-Durable next-stage activation followed by a real ArchitectureDesign invocation
-remains unconnected. No synthetic successful transition is substituted for those
-remaining integration steps.
+The in-progress `resume.activateDiscoveryGate` accepts the exact prepared Gate
+commit digest in a separate request. The host rederives approval through the
+owning Gate and genuine Core checkpoint, stores the exact next-state bytes, and
+atomically advances a leased architecture-state head with its transition journal.
+It returns `discovery-activated` (exit 5), not lifecycle completion. No design
+baseline or approved design graph facts are created by observational activation.
+
+`evidence.discoveryActivation` exposes the state reference and activation digest.
+`verify` checks the exact Gate, journal and stored state bytes without writing.
+Exact activation replay does not advance the run version. Historical replay is
+observational; new runs cannot use an architecture state superseded by the active
+head. State persistence precedes head publication so an interrupted activation
+can retry without rerunning the discovery adapter.
+
+The in-progress `resume.prepareArchitectureContext` accepts an explicit timestamp
+after discovery activation. ArchitectureDesign must already be declared in the
+host's module configuration. Core derives its operation from the exact activated
+state. A refreshed session preserves the approved project pair, ProjectMemory
+and roadmap bindings; the handoff replaces lifecycle status and lists invalidated
+bindings. Original discovery provenance is retained, not rewritten to the new
+state. ArchitectureDesign requires exact native-artifact evidence roles for any
+source references that are not direct invocation inputs or prior handoffs.
+
+`resume.materializeArchitectureContext` accepts the exact handoff digest. It
+publishes immutable state, snapshot, route and session files, followed by a new
+host configuration as the final usable marker. It preserves declared modules,
+plug-ins and grants, and selects the full architecture contract set for downstream
+lineage validation. `verify` rederives the handoff and checks published bytes
+read-only. The old configuration is unchanged.
+
+The downstream invocation still requires its explicitly configured adapter chain
+and normal Core preflight. Reaching a Desktop designer request is not completion
+of ArchitectureDesign; designer, modeler, decision-recorder, ArchitectureGate and
+the remaining lifecycle must still execute with their required evidence.
+
+The in-progress `resume.architectureGate` accepts an exact file descriptor for a
+closed `DesktopArchitectureGateSubmission`: owner approval, baseline, and review/
+supporting artifact files. The host requires the completed Core candidate and
+current architecture state, binds the repository revision, and invokes the
+owning ArchitectureGate. It persists the exact validated approval and baseline
+bytes plus their evidence before returning `awaiting-gate-activation` (exit 5).
+Conflicting decisions cannot silently replace a sealed Gate. `evidence` exposes
+`architectureGate`; `verify` rederives it from Core and durable evidence read-only.
+This prepares the approved baseline but does not activate its graph facts, change
+the architecture-state head, or advance the lifecycle automatically. Test owner
+approvals are explicitly synthetic fixtures, never human product acceptance.
+
+A separate `resume.activateArchitectureGate` takes the exact prepared Gate
+commit digest. The host configuration must explicitly select
+`architectureObserverVersion: "1.1.0"`; the released default observer is unchanged.
+Activation revalidates the owning Gate, stores the prepared graph update before
+merge, reserves the architecture head, and publishes the baselined state only
+after the exact graph application proof exists. Pending activation blocks new
+work. Recovery reuses the stored update; completed historical replay cannot
+roll back a newer head or acquire a lease merely to observe an old publication.
+
+The command returns `architecture-activated` (exit 5). `evidence` exposes a
+closed `LocalArchitectureActivation`; `verify` rederives its Gate, graph receipt
+and state publication read-only. This is not full lifecycle completion and does
+not yet publish a downstream ContractGeneration/WorkBreakdown configuration.
+Exception-injection tests cover interruptions before and after durable graph
+merge with storage reopening; these are not OS process-kill tests.
+
+The in-progress `resume.prepareContractPlanning` takes that exact activated
+architecture Gate digest. It derives an initial `ProjectContractState`, persists
+the state bytes and a closed planning candidate, then returns
+`contract-planning-prepared` (exit 5). Required interface intents select
+`establish-contracts`; zero required intents select the separate ContractGate
+`approve-not-applicable` branch, not automatic approval. Evidence includes
+`contractPlanning`; verification rederives it without writes. Historical evidence
+remains verifiable after a newer architecture head, but new planning from the
+old head is rejected. Downstream configuration publication, generator execution,
+ContractGate host composition and existing-contract change planning remain open.
+
+The subsequent in-progress `resume.executeContracts` selects the exact persisted
+planning digest. It requires an explicit `contractGenerators` configuration with
+the pinned `json-schema-contract-generator` version `0.1.0` and contract kind
+`json-schema`. Missing bindings and unsupported kinds fail closed. The native
+binding runs the released ContractGeneration validation/diff/checkpoint runtime;
+it does not invoke a model, provider, shell or network. Its deterministic execution
+identity binds both the architecture invocation and planning digest.
+
+Successful generation stops at `contract-candidate-prepared` (exit 5), not
+approval. Evidence includes `contractExecution`; verification checks its genuine
+runtime checkpoint, exact input bindings, candidate and outcome. Replay reuses
+the same execution identity. ContractGate host approval and graph promotion remain
+unconnected, as does downstream session/configuration publication.
+
+The subsequent in-progress `resume.contractGate` accepts a file descriptor for
+`DesktopContractGateSubmission`: exact approval and baseline files plus cited
+evidence files. The host requires the current architecture, rederived planning,
+and a genuine ContractGeneration receipt bound to those exact inputs before the
+owning Gate validates approval. The raw baseline, approval, evidence and derived
+disposition are preserved before publishing the immutable Gate record. A second
+different approval cannot replace the sealed record.
+
+Preparation stops at `awaiting-contract-activation` (exit 5). Evidence exposes
+`contractGate`; verification revalidates it through the owning Gate without
+writes. This does not yet activate approved graph/state or advance WorkBreakdown.
+
+Long-running Core validation uses an explicit two-minute host run lease, renewed
+every ten seconds while the event loop can progress. Renewal requires the exact
+current token and state version and cannot resurrect an expired or stolen lease.
+The host checks renewal failure and renews again before committing run progress;
+the timer is stopped on completion or failure. A validation stall exceeding the
+lease window still fails closed and requires checkpoint-based recovery. This is
+not permission for an adapter to run an undeclared process or keep a task alive.
+
+Artifact-loading boundaries cooperatively yield to the event loop at least when
+250 milliseconds have elapsed between such boundaries. This prevents a chain of
+already-resolved promises from indefinitely starving the renewal timer. It does
+not interrupt a single synchronous operation, extend the lease duration, revive
+an expired lease, or bypass ownership/version checks. Focused scheduler and lease
+tests pass; the current full host run must still prove the original failure is
+resolved. Test-only `DEVRELAY_TEST_PROGRESS=1` reports command timings and maximum
+observed event-loop delay without logging request payloads.
+
+## Work-baseline activation (unreleased integration)
+
+After `resume.workBreakdownGate` prepares the exact owning Gate record, a separate
+`resume.activateWorkBreakdownGate` accepts its commit digest. It requires the
+explicit host configuration `traceabilityVocabularyVersion: "1.9.0"`; newly
+materialized work contexts select this version. Existing default configurations
+retain vocabulary 1.5.0. Older vocabulary digests and authority policies are unchanged.
+
+Activation revalidates the genuine Core receipt and Gate evidence, checkpoints
+the graph update before merge, reserves the baseline head, and publishes the raw
+baseline with an atomic journal transition. It stops at `work-baseline-activated`
+(exit 5). This is not assignment, execution or lifecycle completion. Evidence and
+read-only verification expose `workActivation`; replay reuses the exact graph
+receipt without repeating the adapter or graph merge.
+
+The durable transaction has an interruption/reopen test. Full Desktop-host
+activation, verification and replay assertions are added but not yet proven by
+the extended integration run. These fixtures do not constitute human acceptance.
+
+## Durable completion ledger and queue (unreleased integration)
+
+The local completion ledger records exact integrated work, not worker status.
+Initialization is explicit; an absent ledger is an error, never an inferred empty
+completion list. Every read replays the recorded integration invocations through
+the host's Core verifier and checks their work item, all seven baseline bindings,
+integration subject, target state and passing evidence. The full append journal
+must match the ledger state. Copied receipts are not replay authority.
+
+Appending uses a version check and lease to commit the new state and journal in
+one SQLite transaction. Exact repeated completion returns the existing result;
+a conflicting completion cannot overwrite it. Incoming completion must already
+be recoverable through the host's verifier before it can be recorded. Restart,
+interrupted commit, stale version, omitted history and zero-adapter-call replay
+have focused component tests using synthetic integration results inside Core.
+
+The queue command below connects initialization and readiness. Execution still
+must derive the exact work-item input from approved work, reserve it, enforce
+current heads at dispatch, and record verified integration. A worker's “done” message or
+a caller-supplied list of completed IDs must never replace that path. Replacing
+baselines requires an explicit continuity decision; initialization does not reset
+an existing ledger. These checks do not prove native Git integration acceptance.
+
+The unreleased `deriveLocalWorkReadiness` library function now reads that ledger,
+loads raw digest-bound work/dependency baselines, checks their exact lineage and
+work-item universe, and invokes existing owning DAG/readiness-proof mechanics.
+It checks each completed work item's raw projection against approved work and
+rejects caller completion overrides. Its result includes ready/blocked/completed
+dispositions, blocking prerequisites, per-item proofs and an exact ledger version
+and digest. A completion committed while inputs are loading invalidates the
+snapshot. This is a read-only queue snapshot, not a work reservation or dispatch
+grant; current activation heads and reservations must still be checked by the
+Desktop host. Focused tests cover initial readiness, dependent-work unlocking,
+storage reopen, byte drift and a concurrent completion update.
+
+After assignment activation, a separate `resume.prepareWorkQueue` takes the
+exact assignment Gate commit digest. The host revalidates the activation chain,
+derives all seven baseline references from its evidence, rejects pending or stale
+heads, initializes the completion ledger if absent, and records a derived queue.
+It stops at `work-queue-prepared` (exit 5), without launching an agent. Evidence
+exposes `workReadiness`; read-only verification rederives it and rejects stale or
+substituted snapshots. Repeating the same request reuses the queue state.
+
+The activation-chain-to-initial-queue component test passes. Full Desktop CLI
+queue/verification/replay assertions are present but await a completed current-source
+end-to-end run. No release or live execution acceptance is claimed by these tests.
+
+## Work quality preparation (unreleased integration)
+
+A separate `resume.prepareWorkQuality` takes an exact `{ path, digest }` file descriptor for a closed
+`DesktopWorkQualitySubmission`: one ready work item, the exact queue digest,
+and explicit quality-policy/context artifact files. The host rederives current
+readiness, checks activated heads, and computes obligations using the resolved
+workflow profile. The context must cover the approved item's exact acceptance
+criteria. The owning `work-type` is explicitly mapped to the quality resolver's
+`type` input without editing approved work bytes. Caller-authored obligations,
+approval flags and stale queue references are rejected.
+
+The command records a per-item quality handoff and stops at
+`work-quality-prepared` (exit 5); it does not approve policy, reserve work, or
+launch an agent. Read-only verification rederives the handoff from stored raw
+inputs and detects changed obligations. A changed queue clears current quality
+selections while retaining immutable historical records. Fresh preparation still
+needs the surrounding host policy-approval/current-policy integration before
+production dispatch; this command is not independent policy approval authority.
+
+Focused handoff tests cover ready/stale/blocked work, exact criteria coverage,
+byte drift and replay substitution. Full successful Desktop command acceptance
+has not yet been demonstrated on the current source.

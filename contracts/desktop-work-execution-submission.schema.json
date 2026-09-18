@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-work-execution-submission/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "readinessDigest", "qualityPreparationDigest", "workItemId", "attemptId", "executionBinding", "executionPolicy", "repositorySnapshot", "workspaceBaseDigest", "executorConfigurationDigest"],
+  "properties": {
+    "kind": { "const": "DesktopWorkExecutionSubmission" },
+    "readinessDigest": { "$ref": "#/$defs/digest" },
+    "qualityPreparationDigest": { "$ref": "#/$defs/digest" },
+    "workspaceBaseDigest": { "$ref": "#/$defs/digest" },
+    "executorConfigurationDigest": { "$ref": "#/$defs/digest" },
+    "workItemId": { "type": "string", "pattern": "^WI-[A-Z0-9-]+$" },
+    "attemptId": { "type": "string", "minLength": 1 },
+    "executionBinding": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "executionPolicy": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "repositorySnapshot": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" }
+  },
+  "$defs": { "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }
+}

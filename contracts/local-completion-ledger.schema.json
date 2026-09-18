@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/local-completion-ledger.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "baselines", "entries", "ledgerDigest"],
+  "properties": {
+    "kind": { "const": "LocalCompletionLedger" },
+    "ledgerDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "baselines": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requirementsBaseline", "projectOverviewBaseline", "architectureBaseline", "contractDisposition", "workBreakdownBaseline", "workDependencyBaseline", "specialistAssignmentBaseline"],
+      "properties": {
+        "requirementsBaseline": { "$ref": "#/$defs/ref" },
+        "projectOverviewBaseline": { "$ref": "#/$defs/ref" },
+        "architectureBaseline": { "$ref": "#/$defs/ref" },
+        "contractDisposition": { "$ref": "#/$defs/ref" },
+        "workBreakdownBaseline": { "$ref": "#/$defs/ref" },
+        "workDependencyBaseline": { "$ref": "#/$defs/ref" },
+        "specialistAssignmentBaseline": { "$ref": "#/$defs/ref" }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["invocation", "workItemRef", "fact"],
+        "properties": {
+          "invocation": { "$ref": "https://devrelay.dev/contracts/module-invocation.schema.json" },
+          "workItemRef": { "$ref": "#/$defs/ref" },
+          "fact": { "$ref": "https://devrelay.dev/contracts/work-execution-artifacts.schema.json#/$defs/completion" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ref": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" }
+  }
+}

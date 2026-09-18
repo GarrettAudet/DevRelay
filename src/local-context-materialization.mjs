@@ -37,7 +37,7 @@ function exactFile(target, bytes) {
   if (!readFileSync(target).equals(bytes)) throw new TypeError("immutable context publication conflicts with existing bytes");
 }
 
-function publishFile(relative, bytes, resolvePath) {
+export function publishLocalContextFile(relative, bytes, resolvePath) {
   let target = resolvePath(relative, "filesystem.write");
   if (existsSync(target)) { exactFile(resolvePath(relative, "filesystem.read"), bytes); return; }
   mkdirSync(path.dirname(target), { recursive: true });
@@ -71,10 +71,10 @@ export function materializeLocalRequirementsContext({ configuration, handoff, re
   for (const entry of [...plan.files, plan.configuration]) {
     resolvePath(entry.path, "filesystem.read"); resolvePath(entry.path, "filesystem.write");
   }
-  for (const entry of plan.files) publishFile(entry.path, entry.bytes, resolvePath);
+  for (const entry of plan.files) publishLocalContextFile(entry.path, entry.bytes, resolvePath);
   // The usable host configuration is the final publication marker. Partial
   // artifact files from an interrupted attempt are immutable and safe to retry.
-  publishFile(plan.configuration.path, plan.configurationBytes, resolvePath);
+  publishLocalContextFile(plan.configuration.path, plan.configurationBytes, resolvePath);
   return result(plan, handoff, resolvePath);
 }
 

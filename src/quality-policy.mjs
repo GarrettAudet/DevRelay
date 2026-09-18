@@ -91,6 +91,16 @@ export function resolveQualityObligations({ baseline, workflowProfile, context, 
   const { apiVersion, kind, baselineDigest, ...body } = baseline;
   void apiVersion; void kind;
   if (baselineDigest !== canonicalJsonDigest(body)) fail("baseline digest drifted", "DR7104");
+  // A recomputed outer digest cannot replace the candidate identity approved
+  // by the Gate. Reconstruct the canonical proposal and exact promotion.
+  try {
+    const candidate = createQualityPolicyCandidate({ policyId: baseline.policyId, version: baseline.version,
+      previousBaselineDigest: baseline.previousBaselineDigest, rules: baseline.rules, sourceRefs: baseline.sourceRefs });
+    const expected = promoteQualityPolicyBaseline({ candidate, approval: baseline.approval });
+    if (canonicalJsonDigest(expected) !== canonicalJsonDigest(baseline)) fail("policy differs from approved candidate", "DR7104");
+  } catch {
+    fail("policy differs from approved candidate or exact Gate approval", "DR7104");
+  }
   try { verifyResolvedWorkflowProfile(workflowProfile); } catch { fail("resolved workflow profile is invalid or drifted", "DR7104"); }
   if (typeof workItem.id !== "string" || !workItem.id) fail("work item identity is required", "DR7104");
   let policyContext;

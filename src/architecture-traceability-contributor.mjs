@@ -870,3 +870,36 @@ export const architectureTraceabilityContributors = Object.freeze([
   architectureBaselineObserverContributor,
   architectureControlTraceabilityContributor,
 ]);
+
+// Opt-in replacement for the released observer, not an additional owner of the
+// same approved scope. Only an owning Gate may supply these validated outputs.
+export function createArchitectureActivationTraceabilityContributor() {
+  const observer = createArchitectureBaselineObserverContributor();
+  const matchesGate = context => sameModule(context) &&
+    ((context.invocation.module.operation === "establish-baseline" && context.moduleResult.outcome === "baseline_drafted") ||
+      (context.invocation.module.operation === "design-change" && context.moduleResult.outcome === "change_set_drafted")) &&
+    context.gate?.id === "architecture-gate" && context.gate?.outcome === "promoted" &&
+    /^sha256:[a-f0-9]{64}$/u.test(context.gate?.commitDigest ?? "");
+  return Object.freeze({
+    ...observer,
+    metadata: deepFreeze({ id: "devrelay.architecture-baseline-observer", version: "1.1.0" }),
+    match: context => matchesGate(context) || observer.match(context),
+    async project(context) {
+      if (!matchesGate(context)) return observer.project(context);
+      const baseline = oneLoaded(context, "loadedOutputs", "architecture-baseline");
+      const requirements = oneLoaded(context, "loadedInputs", "requirements-baseline");
+      const candidatePort = context.invocation.module.operation === "establish-baseline" ? "architecture-draft" : "architecture-change-set-draft";
+      const candidate = oneLoaded(context, "loadedOutputs", candidatePort);
+      if (baseline.value.kind !== "ArchitectureBaseline" || requirements.value.kind !== "RequirementsBaseline" ||
+          canonicalJson(context.gate.baseline) !== canonicalJson(baseline.ref) ||
+          !sameRef(baseline.value.approvedDraft, candidate.ref) || !sameRef(baseline.value.requirementsBaseline, requirements.ref)) {
+        fail("architecture Gate output does not bind its exact candidate, baseline and requirements");
+      }
+      const currentRequirementIds = new Set([
+        "businessObjectives", "successMetrics", "stakeholders", "users", "capabilities", "userJourneys", "userStories", "acceptanceCriteria", "nonFunctionalRequirements", "constraints",
+      ].flatMap(field => (requirements.value.requirements[field] ?? []).map(({ id }) => id)));
+      return projectSelectedArchitecture(context, { candidate: baseline, requirements,
+        requirementsField: "requirementsBaseline", traceability: undefined, currentRequirementIds });
+    },
+  });
+}

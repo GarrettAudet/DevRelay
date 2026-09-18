@@ -70,6 +70,23 @@ test("unsupported data fails before persistence and never executes getters/toJSO
   assert.throws(() => createLocalHostCheckpointStore({ storage, namespace: "" }), code("DR4930"));
 });
 
+test("decode cache rereads storage, isolates frozen values and evicts bounded entries", t => {
+  const { storage } = fixture(t);
+  let reads = 0;
+  const store = createLocalHostCheckpointStore({ namespace: "decode-cache", storage: { ...storage,
+    getArtifact(ref) { reads++; return storage.getArtifact(ref); } } });
+  store.put("first", { nested: { value: 1 } });
+  const first = store.get("first");
+  const priorReads = reads;
+  assert.strictEqual(store.get("first"), first);
+  assert.equal(reads, priorReads + 1, "a cache hit must reread and verify raw stored bytes");
+  assert.throws(() => { first.nested.value = 9; }, TypeError);
+  for (let index = 0; index < 8; index++) store.put(`entry-${index}`, { index });
+  const afterEviction = store.get("first");
+  assert.deepEqual(afterEviction, first);
+  assert.notStrictEqual(afterEviction, first, "old decoded entry was evicted");
+});
+
 test("a competing immutable insertion returns the exact durable winner", (t) => {
   const { storage } = fixture(t);
   const winner = createLocalHostCheckpointStore({ storage, namespace: "race" });

@@ -1,4 +1,8 @@
 import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
+import { readFileSync } from "node:fs";
+import { compileArtifactSchema } from "./schema-validation.mjs";
+
+const validateExternalRequest = compileArtifactSchema(JSON.parse(readFileSync(new URL("../contracts/desktop-external-execution-request.schema.json", import.meta.url), "utf8")));
 
 export class DesktopExecutionCoordinatorError extends Error {
   constructor(message, code = "DR4760") { super(`Desktop execution coordinator: ${message}`); this.name = "DesktopExecutionCoordinatorError"; this.code = code; }
@@ -12,7 +16,7 @@ const covers = (required, supplied) => {
 };
 
 export function createDesktopExecutionCoordinator({ storage, worktreeManager, executors, failureInjector = () => {} }) {
-  if (!storage || !worktreeManager || !executors || typeof executors !== "object") fail("storage, worktree manager, and executor registry are required");
+  if (!storage || typeof worktreeManager?.inspectForDispatch !== "function" || !executors || typeof executors !== "object") fail("storage, dispatch-capable worktree manager, and executor registry are required");
   const registry = new Map(Object.entries(executors));
   const bindingFor = (request) => {
     const supplied = request.executor;
@@ -22,8 +26,10 @@ export function createDesktopExecutionCoordinator({ storage, worktreeManager, ex
       !covers(request.requiredCapabilities ?? [], trusted.capabilities ?? []) ||
       !covers(request.requiredGrants ?? [], trusted.grants ?? [])
     ) fail("executor capability or grant coverage is incomplete", "DR4761");
-    const worktree = worktreeManager.inspect(request.attemptId);
-    if (worktree.workItemId !== request.workItemId || worktree.revision !== request.repositoryRevision) fail("worktree binding is stale or substituted", "DR4762");
+    const worktree = worktreeManager.inspectForDispatch(request.attemptId);
+    if (worktree.attemptId !== request.attemptId || worktree.workItemId !== request.workItemId ||
+        worktree.revision !== request.repositoryRevision || worktree.observedRevision !== request.repositoryRevision ||
+        worktree.status !== "active") fail("worktree binding is stale or substituted", "DR4762");
     const material = {
       runId: request.runId,
       attemptId: request.attemptId,
@@ -61,16 +67,46 @@ export function createDesktopExecutionCoordinator({ storage, worktreeManager, ex
       failureInjector({ boundary: "after-prepared", runId: state.runId });
       return frozen({ runId: state.runId, phase: initialized.state.phase, bindingDigest: state.bindingDigest, version: initialized.version });
     },
+    beginExternal(runId) {
+      const run = storage.readRun(runId);
+      if (run.state.phase !== "prepared") return frozen({ outcome: "quarantined", executorCalls: 0, phase: run.state.phase });
+      const current = bindingFor(run.state);
+      if (current.state.bindingDigest !== run.state.bindingDigest) fail("prepared execution binding drifted", "DR4762");
+      const execution = { ...run.state, phase: "effect-started" };
+      const body = { kind: "DesktopExternalExecutionRequest", execution, repeatAllowed: false };
+      const request = { ...body, requestDigest: canonicalJsonDigest(body) };
+      if (!validateExternalRequest(request)) fail("external request violates its contract");
+      const requestRef = storage.putArtifact({ artifactId: `DESKTOP-EXTERNAL-${runId}`,
+        mediaType: "application/vnd.devrelay.desktop-external-execution-request+json", bytes: Buffer.from(canonicalJson(request)) });
+      const lease = storage.acquireLease({ runId, owner: "desktop-external-operator", expectedVersion: run.version });
+      try {
+        commit(run, lease, { operation: "request-external-effect", requestDigest: request.requestDigest },
+          { ...execution, externalRequestRef: requestRef }, [requestRef]);
+        failureInjector({ boundary: "after-external-request", runId });
+        return frozen({ outcome: "operator-action-required", executorCalls: 0, request, requestRef });
+      } finally { storage.releaseLease({ runId, leaseToken: lease.token }); }
+    },
     async execute(runId) {
       let run = storage.readRun(runId);
-      if (run.state.phase === "recorded") return frozen({ outcome: "replayed", executorCalls: 0, receipt: run.artifactRefs[0], result: JSON.parse(storage.getArtifact(run.artifactRefs[0])).result });
+      if (run.state.phase === "recorded") {
+        if (run.artifactRefs.length !== 1 || canonicalJsonDigest(run.artifactRefs[0]) !== canonicalJsonDigest(run.state.receipt) ||
+            canonicalJsonDigest(run.checkpointRef) !== canonicalJsonDigest(run.state.receipt)) fail("recorded receipt reference differs", "DR4763");
+        const bytes = storage.getArtifact(run.artifactRefs[0]);
+        const value = JSON.parse(bytes);
+        if (Object.keys(value).sort().join(",") !== "bindingDigest,idempotencyKey,result" ||
+            value.bindingDigest !== run.state.bindingDigest || value.idempotencyKey !== run.state.idempotencyKey ||
+            bytes.toString("utf8") !== canonicalJson(value)) fail("recorded receipt binding differs", "DR4763");
+        return frozen({ outcome: "replayed", executorCalls: 0, receipt: run.artifactRefs[0], result: value.result });
+      }
       if (run.state.phase !== "prepared") return frozen({ outcome: "quarantined", executorCalls: 0, phase: run.state.phase });
       const trusted = registry.get(run.state.executor.id);
       if (!trusted || trusted.version !== run.state.executor.version || trusted.configurationDigest !== run.state.executor.configurationDigest) fail("approved executor is no longer available", "DR4761");
+      const currentBinding = bindingFor(run.state);
+      if (currentBinding.state.bindingDigest !== run.state.bindingDigest) fail("prepared execution binding drifted", "DR4762");
       const lease = storage.acquireLease({ runId, owner: `desktop-executor:${run.state.executor.id}`, expectedVersion: run.version });
       run = commit(run, lease, { operation: "authorize-effect", idempotencyKey: run.state.idempotencyKey }, { ...run.state, phase: "effect-started" });
-      failureInjector({ boundary: "after-effect-state", runId });
       try {
+        failureInjector({ boundary: "after-effect-state", runId });
         const result = await trusted.execute(frozen({ ...run.state, worktree: run.state.worktree }));
         failureInjector({ boundary: "after-effect", runId });
         const receipt = artifact(run.state, result);
@@ -86,7 +122,7 @@ export function createDesktopExecutionCoordinator({ storage, worktreeManager, ex
     },
     async resume({ runId, workItemId, executor }) {
       const run = storage.readRun(runId);
-      if (run.state.workItemId !== workItemId || run.state.executor.id !== executor.id || run.state.executor.configurationDigest !== executor.configurationDigest) fail("resume binding was substituted", "DR4761");
+      if (run.state.workItemId !== workItemId || run.state.executor.id !== executor.id || run.state.executor.version !== executor.version || run.state.executor.configurationDigest !== executor.configurationDigest) fail("resume binding was substituted", "DR4761");
       if (run.state.phase === "recorded") return this.execute(runId);
       if (run.state.phase === "prepared") return this.execute(runId);
       return frozen({ outcome: "quarantined", executorCalls: 0, phase: run.state.phase, idempotencyKey: run.state.idempotencyKey });
@@ -104,4 +140,3 @@ export function createDesktopExecutionCoordinator({ storage, worktreeManager, ex
     inspect(runId) { return storage.readRun(runId); },
   });
 }
-

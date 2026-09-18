@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-discovery-activation/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "gateCommitDigest",
+    "priorState",
+    "state",
+    "storedState",
+    "scope",
+    "lifecycleComplete",
+    "activationDigest"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "LocalDiscoveryActivation"
+    },
+    "gateCommitDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "priorState": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "state": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "storedState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "digest",
+        "mediaType",
+        "byteCount"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "byteCount": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "scope": {
+      "const": "observational-state-activation"
+    },
+    "lifecycleComplete": {
+      "const": false
+    },
+    "activationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

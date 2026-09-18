@@ -14,6 +14,13 @@ const fail = (message, code) => { throw new DesktopTaskAdapterError(message, cod
 const OPERATIONS = Object.freeze(["create", "inspect", "wait", "message", "handoff"]);
 const preparedTaskPlans = new WeakSet();
 
+function validateWorktreeBinding(plan) {
+  // The shared artifact validator owns identity/revision consistency. A task
+  // plan must additionally originate from an active lease, not a failed or
+  // disposed allocation. This does not replace a fresh native observation.
+  if (plan.worktreeLease?.status !== "active") fail("task plan requires an active worktree lease", "DR6111");
+}
+
 function validateQualityContinuity(plan) {
   const present = [plan.qualityResolution, plan.workFingerprint, plan.workContinuityDecision].filter((value) => value !== undefined).length;
   if (present !== 0 && present !== 3) fail("quality resolution, work fingerprint, and work continuity decision must be bound together", "DR6111");
@@ -37,6 +44,7 @@ function assertPlan(plan) {
   const body = Object.fromEntries(Object.entries(plan).filter(([key]) => key !== "planDigest"));
   if (digest !== canonicalJsonDigest(body)) fail("task plan digest drifted", "DR6111");
   validateQualityContinuity(plan);
+  validateWorktreeBinding(plan);
   return plan;
 }
 
@@ -45,6 +53,7 @@ function preparePlan(plan, memoryBootstrap) {
   if (canonicalJsonDigest(memoryContext) !== plan.memoryContextDigest || canonicalJsonDigest(plan.memoryContext) !== plan.memoryContextDigest) fail("task plan does not bind the exact prepared ProjectMemory bootstrap", "DR6111");
   const prepared = Object.freeze(structuredClone(validateDesktopOrchestrationArtifact(plan)));
   validateQualityContinuity(prepared);
+  validateWorktreeBinding(prepared);
   preparedTaskPlans.add(prepared);
   return prepared;
 }
@@ -52,6 +61,7 @@ function preparePlan(plan, memoryBootstrap) {
 export function createDesktopTaskPlan({ runId, workItem, projectId, startingRevision, worktreeLease, assignment, executor, grants = [], promptArtifact, memoryBootstrap, qualityResolution, workFingerprint, workContinuityDecision } = {}) {
   if (!workItem || typeof workItem.id !== "string") fail("work item is required");
   if (!worktreeLease || worktreeLease.workItemId !== workItem.id) fail("exact worktree lease is required");
+  validateWorktreeBinding({ worktreeLease, runId, workItemId: workItem.id, attemptId: worktreeLease.attemptId, startingRevision });
   if (!promptArtifact || typeof promptArtifact.digest !== "string") fail("prompt artifact is required");
   const memoryContext = bindPreparedDesktopProjectMemoryBootstrap(memoryBootstrap, { projectId, repositoryRevision: startingRevision, taskId: worktreeLease.attemptId });
   const attemptId = worktreeLease.attemptId;

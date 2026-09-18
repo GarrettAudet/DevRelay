@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-quality-policy-submission/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "candidate", "approval", "previousBaseline"],
+  "properties": {
+    "kind": { "const": "DesktopQualityPolicySubmission" },
+    "candidate": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "approval": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "previousBaseline": { "anyOf": [{ "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" }, { "type": "null" }] }
+  }
+}

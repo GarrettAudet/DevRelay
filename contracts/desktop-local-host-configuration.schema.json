@@ -15,8 +15,23 @@
     "sessionSnapshot": { "$ref": "#/$defs/file" },
     "memoryManifest": { "type": "string", "minLength": 1 },
     "memorySessionState": { "$ref": "#/$defs/file" },
-    "contractSet": { "enum": ["requirements", "architecture", "architecture-discovery", "work-breakdown"] },
+    "contractSet": { "enum": ["requirements", "architecture", "architecture-discovery", "work-breakdown", "work-dependency", "specialist-assignment"] },
     "requirementsObserverVersion": { "enum": ["1.0.0", "1.1.0"] },
+    "architectureObserverVersion": { "enum": ["1.0.0", "1.1.0"] },
+    "traceabilityVocabularyVersion": { "enum": ["1.5.0", "1.9.0"] },
+    "assignmentBinding": { "const": { "id": "devrelay.native-specialist-ranker", "version": "1.0.0" } },
+    "dependencyBinding": {
+      "type": "object", "additionalProperties": false, "required": ["proposer", "reviewer", "entrypoint"],
+      "properties": {
+        "proposer": { "const": { "id": "native-structured-dependency-proposer", "version": "0.1.0" } },
+        "reviewer": { "const": { "id": "devrelay.native-consistency-reviewer", "version": "0.1.0" } },
+        "entrypoint": { "const": "devrelay/work_dependency/decision" }
+      }
+    },
+    "contractGenerators": { "type": "array", "minItems": 1, "maxItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["contractKind", "id", "version"],
+      "properties": { "contractKind": { "const": "json-schema" }, "id": { "const": "json-schema-contract-generator" }, "version": { "const": "0.1.0" } }
+    } },
     "modules": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/file" } },
     "plugins": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/file" } },
     "artifacts": { "type": "array", "items": { "$ref": "#/$defs/artifactFile" } },

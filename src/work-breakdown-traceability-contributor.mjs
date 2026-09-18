@@ -2,6 +2,7 @@ import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 import {
   applyWorkBreakdownChangeSet,
   validateWorkBreakdownArtifact,
+  validateWorkBreakdownBaselinePromotion,
 } from "./work-breakdown-artifact-validator.mjs";
 
 const MODULE = Object.freeze({ id: "work-breakdown", version: "0.1.0" });
@@ -501,6 +502,35 @@ export function createWorkBreakdownControlTraceabilityContributor() {
 
 export const workBreakdownTraceabilityContributor =
   createWorkBreakdownTraceabilityContributor();
+
+// Separately registered owning-Gate projection; successful Module output alone
+// cannot activate this scope. It records planned work, never implemented work.
+export function createWorkBreakdownApprovalTraceabilityContributor() {
+  const scope = "work-breakdown/baseline";
+  const match = context => sameModule(context) && hasSuccessOutcome(context) &&
+    context?.gate?.id === "work-breakdown-gate" && context.gate.outcome === "promoted" &&
+    /^sha256:[a-f0-9]{64}$/.test(context.gate.commitDigest ?? "");
+  return Object.freeze({
+    metadata: deepFreeze({ id: "devrelay.work-breakdown-approved", version: "1.0.0" }),
+    match, scope, authority: "approved",
+    ownership: ownership(scope, "approved", WORK_BREAKDOWN_NODE_KINDS, WORK_BREAKDOWN_EDGE_KINDS),
+    async project(context) {
+      if (!match(context)) fail("approved work projection requires owning Gate context");
+      const selected = selectCandidate(context);
+      const baseline = oneLoaded(context, "loadedOutputs", "work-breakdown-baseline");
+      validateWorkBreakdownArtifact(baseline.value, { ref: baseline.ref });
+      if (canonicalJson(baseline.ref) !== canonicalJson(context.gate.baseline)) fail("approved work Gate baseline differs");
+      const previous = context.loadedInputs["current-work-breakdown-baseline"]?.[0];
+      validateWorkBreakdownBaselinePromotion({ candidate: selected.candidate.value, candidateRef: selected.candidate.ref,
+        baseline: baseline.value, previousBaseline: previous?.value, previousBaselineRef: previous?.ref,
+        noWorkApprovals: context.gate.noWorkApprovals ?? [] });
+      const items = baseline.value.workItems.map((item, index) => itemSource(baseline, pointer("/workItems", index), item));
+      return { horizon: "implementation", nodes: [artifactNode(baseline), ...items.map(projectWorkItem)],
+        edges: items.flatMap(source => planningEdges(source).map(edge => ({ ...edge,
+          target: approvedEndpoint("work-item", source.item.id, scope), rationale: edge.rationale.replace("candidate work item", "approved work item") }))) };
+    },
+  });
+}
 export const contractDispositionObserverContributor =
   createContractDispositionObserverContributor();
 export const workBreakdownControlTraceabilityContributor =

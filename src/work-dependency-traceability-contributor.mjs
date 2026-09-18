@@ -1,5 +1,6 @@
 import { canonicalJson, canonicalJsonDigest } from "./content-digest.mjs";
 import { validateWorkDependencyArtifact } from "./work-dependency-artifact-validator.mjs";
+import { validateWorkBreakdownArtifact } from "./work-breakdown-artifact-validator.mjs";
 
 const MODULE = Object.freeze({ id: "work-dependency-gate", version: "0.1.0" });
 const OPERATION = "promote-baseline";
@@ -83,10 +84,14 @@ function workItemEndpoint(stableId) {
 async function project(context) {
   if (!matches(context)) fail("project called for a nonmatching execution");
   const baseline = oneBaseline(context);
+  return projectBaseline(baseline, workItemEndpoint);
+}
+
+function projectBaseline(baseline, endpoint) {
   const edges = baseline.value.edges.map((edge, position) => ({
     kind: "prerequisite-for",
-    source: workItemEndpoint(edge.prerequisiteId),
-    target: workItemEndpoint(edge.dependentId),
+    source: endpoint(edge.prerequisiteId),
+    target: endpoint(edge.dependentId),
     rationale:
       "The approved WorkDependencyBaseline establishes the source WorkItem as a prerequisite for the downstream WorkItem.",
     sourceLocators: [sourceLocator(baseline, `/edges/${position}`, edge)],
@@ -124,3 +129,29 @@ export function createWorkDependencyBaselineTraceabilityContributor() {
 
 export const workDependencyBaselineTraceabilityContributor =
   createWorkDependencyBaselineTraceabilityContributor();
+
+// Explicitly selected by the durable owning-Gate activation host. It projects
+// approved work identities without changing the released candidate-work observer.
+export function createWorkDependencyActivationTraceabilityContributor() {
+  const match = context => context?.invocation?.module?.id === "work-breakdown" &&
+    context.invocation.module.version === "0.1.0" && context.moduleResult?.status === "completed" &&
+    context.moduleResult.outcome === "decomposed" && context.gate?.id === "work-dependency-gate" &&
+    context.gate.outcome === "promoted" && /^sha256:[a-f0-9]{64}$/.test(context.gate.commitDigest ?? "");
+  return Object.freeze({
+    metadata: immutable({ id: "devrelay.work-dependency-activation", version: "1.0.0" }),
+    match, scope: SCOPE, authority: "approved",
+    ownership: immutable({ scope: SCOPE, authority: "approved", nodeKinds: [], edgeKinds: ["prerequisite-for"] }),
+    async project(context) {
+      if (!match(context)) fail("dependency activation requires owning Gate context");
+      const baseline = oneBaseline(context);
+      if (canonicalJson(baseline.ref) !== canonicalJson(context.gate.baseline)) fail("dependency activation baseline differs from Gate");
+      const work = context.loadedOutputs?.["work-breakdown-baseline"]?.[0];
+      if (!work || canonicalJson(work.ref) !== canonicalJson(baseline.value.workBreakdownBaseline)) fail("dependency activation changes approved work lineage");
+      validateWorkBreakdownArtifact(work.value, { ref: work.ref });
+      if (work.value.kind !== "WorkBreakdownBaseline") fail("dependency activation requires approved work baseline");
+      const expected = work.value.workItems.map(item => item.id).sort();
+      if (canonicalJson(expected) !== canonicalJson([...baseline.value.nodes].sort())) fail("dependency activation omits approved work items");
+      return projectBaseline(baseline, stableId => ({ kind: "work-item", stableId, authority: "approved", scope: "work-breakdown/baseline" }));
+    },
+  });
+}

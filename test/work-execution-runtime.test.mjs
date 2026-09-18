@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { prepareLocalWorkExecution, prepareLocalWorkDispatch, prepareLocalWorkExecutionHandoff, verifyLocalWorkExecutionHandoff } from "../src/local-work-execution-preparation.mjs";
+import { prepareLocalWorkQualityHandoff } from "../src/local-work-quality-handoff.mjs";
+import { createQualityPolicyCandidate, promoteQualityPolicyBaseline, createQualityPolicyContext } from "../src/quality-policy.mjs";
+import { resolveWorkflowProfile } from "../src/workflow-profiles.mjs";
+import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createDurableWorkContinuityStore } from "../src/work-continuity.mjs";
+import { claimLocalWorkContinuity } from "../src/local-work-continuity.mjs";
 
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "../src/content-digest.mjs";
 import {
@@ -9,6 +18,7 @@ import {
   createInMemoryWorkExecutionCheckpointStore,
   deriveRunnableFrontierProof,
   executeWorkItem,
+  prepareWorkExecutionInvocation,
   loadWorkExecutionInput,
 } from "../src/work-execution-runtime.mjs";
 
@@ -53,14 +63,14 @@ function loadedFile(relativePath, artifactId, schema, mediaType) {
   });
 }
 
-function fixture({ workItemId = "WI-REL-WORK-EXECUTION-RUNTIME" } = {}) {
-  const workBreakdown = loadedFile(
+function fixture({ workItemId = "WI-REL-WORK-EXECUTION-RUNTIME", linkedOverview = false } = {}) {
+  let workBreakdown = loadedFile(
     "../project/history/work-breakdown/1.8.0/work-breakdown-baseline.json",
     "WBB-WB-DOGFOOD",
     "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
     "application/vnd.devrelay.work-breakdown-baseline+json",
   );
-  const dependencies = loaded(
+  let dependencies = loaded(
     valueFrom("../project/history/work-dependency/WDB-REL-RELEASE-HARDENING-R3/1.0.3/work-dependency-baseline.json"),
     "WDB-REL-RELEASE-HARDENING-R3",
     "https://devrelay.dev/artifacts/work-dependency-baseline/v1",
@@ -78,6 +88,13 @@ function fixture({ workItemId = "WI-REL-WORK-EXECUTION-RUNTIME" } = {}) {
     "https://devrelay.dev/artifacts/project-overview-baseline/v1",
     "application/vnd.devrelay.project-overview-baseline+json",
   );
+  if (linkedOverview) {
+    // Synthetic linked fixture, not a promotion of modified historical work.
+    const work = structuredClone(workBreakdown.value);
+    work.inputBindings.find(entry => entry.role === "project-overview-baseline").artifact = projectOverview.ref;
+    workBreakdown = createCanonicalWorkExecutionInput({ value: work, ref: workBreakdown.ref });
+    dependencies = createCanonicalWorkExecutionInput({ value: { ...dependencies.value, workBreakdownBaseline: workBreakdown.ref }, ref: dependencies.ref });
+  }
   const repository = loaded(
     valueFrom("../dogfood/v0.10-release-hardening/repository-snapshot.json"),
     "repository-snapshot-devrelay-a38d2ff",
@@ -230,6 +247,90 @@ function executor(calls, bindingDigest) {
   };
 }
 
+test("local host prepares exact execution inputs from queue and rejects caller completion overrides", async () => {
+  const f = fixture();
+  const body = { baselines: Object.fromEntries(["workBreakdownBaseline", "workDependencyBaseline", "specialistAssignmentBaseline", "projectOverviewBaseline"].map(name => [name, f.input[name].ref])),
+    readyWorkItemIds: [f.workItemId], proofs: [f.input.runnableFrontierProof.value], factSet: f.input.integratedCompletionFacts.value };
+  const readiness = { ...body, readinessDigest: canonicalJsonDigest(body) };
+  let loads = 0;
+  const request = { readiness, attemptId: "ATT-LOCAL-READY", workItemId: f.workItemId,
+    executionBindingRef: f.input.executionBinding.ref, executionPolicyRef: f.input.executionPolicy.ref,
+    repositorySnapshotRef: f.input.repositorySnapshot.ref, workspaceBaseDigest: D, executorConfigurationDigest: D,
+    loadArtifact: ref => { loads++; return Object.values(f.input).find(item => item.ref.digest === ref.digest)?.bytes; } };
+  const prepared = await prepareLocalWorkExecution(request);
+  assert.equal(loads, 7);
+  assert.deepEqual(prepared.input.workBreakdownBaseline.bytes, f.input.workBreakdownBaseline.bytes);
+  assert.deepEqual(prepared.readinessProof, f.input.runnableFrontierProof.value);
+  const calls = [];
+  const executed = await executeWorkItem({ ...request, input: prepared.input,
+    executor: executor(calls, f.input.executionBinding.value.bindingDigest), checkpoints: createInMemoryWorkExecutionCheckpointStore() });
+  assert.deepEqual(prepared.invocation, executed.invocation);
+  await assert.rejects(prepareLocalWorkExecution({ ...request, completedWorkItemIds: [] }), /undeclared/);
+  await assert.rejects(prepareLocalWorkExecution({ ...request, workItemId: "WI-NOT-READY" }), /exact ready queue/);
+  const changedBody = { ...body, proofs: [] };
+  await assert.rejects(prepareLocalWorkExecution({ ...request, readiness: { ...changedBody, readinessDigest: canonicalJsonDigest(changedBody) } }), /one exact readiness proof/);
+});
+
+test("dispatch preparation binds quality and execution into an attempt-independent fingerprint", async t => {
+  const f = fixture({ linkedOverview: true });
+  const body = { baselines: Object.fromEntries(["workBreakdownBaseline", "workDependencyBaseline", "specialistAssignmentBaseline", "projectOverviewBaseline"].map(name => [name, f.input[name].ref])),
+    readyWorkItemIds: [f.workItemId], proofs: [f.input.runnableFrontierProof.value], factSet: f.input.integratedCompletionFacts.value };
+  const readiness = { ...body, readinessDigest: canonicalJsonDigest(body) };
+  const candidate = createQualityPolicyCandidate({ policyId: "QP-DISPATCH", version: "1.0.0",
+    rules: [{ id: "TEST", obligations: [{ id: "test", lane: "test", evidenceKinds: ["test/pass"] }] }] });
+  const policyValue = promoteQualityPolicyBaseline({ candidate, approval: { kind: "QualityPolicyGateApproval", authority: "fixture-owner", decision: "approve", candidateDigest: candidate.candidateDigest } });
+  const owner = "https://devrelay.dev/contracts/quality-policy-artifacts.schema.json";
+  const policy = loaded(policyValue, policyValue.policyId, owner, "application/json");
+  const work = f.input.workBreakdownBaseline.value.workItems.find(item => item.id === f.workItemId);
+  const context = loaded(createQualityPolicyContext({ acceptanceCriteria: work["acceptance-criterion-refs"] }), "QC-DISPATCH", owner, "application/json");
+  const loadArtifact = ref => [...Object.values(f.input), policy, context].find(item => item.ref.digest === ref.digest)?.bytes;
+  const qualityHandoff = await prepareLocalWorkQualityHandoff({ readiness, loadArtifact, workflowProfile: resolveWorkflowProfile({ profileName: "quick" }),
+    submission: { kind: "DesktopWorkQualitySubmission", readinessDigest: readiness.readinessDigest, workItemId: f.workItemId,
+      qualityPolicy: { path: "policy.json", ref: policy.ref }, qualityContext: { path: "context.json", ref: context.ref }, artifacts: [] } });
+  const executionRequest = { readiness, attemptId: "ATT-DISPATCH-ONE", workItemId: f.workItemId,
+    executionBindingRef: f.input.executionBinding.ref, executionPolicyRef: f.input.executionPolicy.ref,
+    repositorySnapshotRef: f.input.repositorySnapshot.ref, workspaceBaseDigest: D, executorConfigurationDigest: D, loadArtifact };
+  const first = await prepareLocalWorkDispatch({ projectId: "devrelay", executionRequest, qualityHandoff });
+  const second = await prepareLocalWorkDispatch({ projectId: "devrelay", executionRequest: { ...executionRequest, attemptId: "ATT-DISPATCH-TWO" }, qualityHandoff });
+  assert.equal(first.workFingerprint.fingerprint, second.workFingerprint.fingerprint);
+  assert.notEqual(first.invocation.invocationFingerprint, second.invocation.invocationFingerprint);
+  assert.equal(first.workFingerprint.material.workItem.type, work["work-type"]);
+  const changed = await prepareLocalWorkDispatch({ projectId: "devrelay", executionRequest: { ...executionRequest, workspaceBaseDigest: E }, qualityHandoff });
+  assert.notEqual(changed.workFingerprint.fingerprint, first.workFingerprint.fingerprint);
+  const submission = { kind: "DesktopWorkExecutionSubmission", readinessDigest: readiness.readinessDigest,
+    qualityPreparationDigest: qualityHandoff.preparationDigest, workItemId: f.workItemId, attemptId: executionRequest.attemptId,
+    executionBinding: { path: "binding.json", ref: executionRequest.executionBindingRef },
+    executionPolicy: { path: "execution-policy.json", ref: executionRequest.executionPolicyRef },
+    repositorySnapshot: { path: "repository.json", ref: executionRequest.repositorySnapshotRef },
+    workspaceBaseDigest: D, executorConfigurationDigest: D };
+  const handoffRequest = { projectId: "devrelay", submission, readiness, qualityHandoff, loadArtifact };
+  const handoff = await prepareLocalWorkExecutionHandoff(handoffRequest);
+  assert.equal(handoff.record.dispatchAuthorized, false);
+  assert.deepEqual((await verifyLocalWorkExecutionHandoff({ ...handoffRequest, record: handoff.record })).record, handoff.record);
+  await assert.rejects(prepareLocalWorkExecutionHandoff({ ...handoffRequest, submission: { ...submission, completed: true } }), /closed contract/);
+  await assert.rejects(prepareLocalWorkExecutionHandoff({ ...handoffRequest, submission: { ...submission, qualityPreparationDigest: E } }), /quality preparation differs/);
+  const tampered = structuredClone(handoff.record); tampered.artifacts.invocation.bytesBase64 = Buffer.from("{}").toString("base64");
+  await assert.rejects(verifyLocalWorkExecutionHandoff({ ...handoffRequest, record: tampered }), /exact derivation/);
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-prepared-claim-"));
+  let storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  let store = createDurableWorkContinuityStore({ storage, projectId: "devrelay" });
+  const claim = claimLocalWorkContinuity({ store, workFingerprint: first.workFingerprint,
+    attemptId: first.invocation.attemptId, owner: "fixture-desktop", now: 100, leaseExpiresAt: 200,
+    expectedHostVersion: 0, expectedIndexRevision: 0 });
+  assert.equal(claim.hostVersion, 1);
+  storage.close(); storage = createLocalHostStorage({ rootDirectory });
+  store = createDurableWorkContinuityStore({ storage, projectId: "devrelay" });
+  for (const preparation of [second, changed]) {
+    assert.throws(() => claimLocalWorkContinuity({ store, workFingerprint: preparation.workFingerprint,
+      attemptId: "ATT-COMPETING", owner: "fixture-desktop", now: 300, leaseExpiresAt: 400,
+      expectedHostVersion: 1, expectedIndexRevision: 1 }), /requires recovery or completion/);
+  }
+  assert.equal(store.read().version, 1);
+  assert.equal(store.read().state.index.records.length, 1);
+  assert.equal(store.read().state.index.records[0].fingerprint, first.workFingerprint.fingerprint);
+});
+
 test("exact v0.10 baselines execute one ready item and replay without a second executor call", async () => {
   const { input, workItemId } = fixture();
   const calls = [];
@@ -243,7 +344,11 @@ test("exact v0.10 baselines execute one ready item and replay without a second e
     executorConfigurationDigest: D,
     checkpoints,
   };
+  const prepared = prepareWorkExecutionInvocation(args);
+  assert.equal(calls.length, 0);
   const first = await executeWorkItem(args);
+  assert.deepEqual(prepared.invocation, first.invocation);
+  assert.deepEqual(prepared.readinessProof, first.readinessProof);
   const replay = await executeWorkItem(args);
   assert.equal(first.outcome, "proposed");
   assert.equal(first.executorCalls, 1);

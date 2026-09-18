@@ -52,6 +52,12 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-DEV-TRACEABILITY-001`** [must] Trace every approved business objective through requirements, design, planned work, implementation, verification, integration, and acceptance.
   - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-MES-COMPOSITION-001`** [must] Make an existing-project software-change workflow executable from a ready-made preset with compatible semantic Module, adapter and agent choices while preserving existing engineering obligations.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-MES-NATIVE-001`** [must] Use native Codex Desktop agents on Windows through bounded Zeroshot coordination to produce independently verified software changes with visible progress and exact recoverable provenance.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
+- **`BO-MES-OPTIMIZATION-001`** [must] Improve one coding-worker harness through bounded executable-code search and independent held-out software-task evaluation, permitting an honest no-improvement result and retaining owner-controlled activation.
+  - Stakeholders: `STK-DEV-MAINTAINER-001`, `STK-DEV-OWNER-001`, `STK-DEV-WORKFLOW-AUTHOR-001`
 - **`BO-WDA-CORRECTNESS-001`** [must] Prevent invalid, cyclic, incomplete, or impossible dependency plans from reaching assignment and execution.
   - Stakeholders: `STK-WDA-MAINTAINER-001`, `STK-WDA-WORKFLOW-AUTHOR-001`
 - **`BO-WDA-MODULARITY-001`** [must] Replace dependency-analysis capabilities without changing canonical semantics or generic Core.
@@ -315,6 +321,36 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Audience: user-facing
   - Business objectives: `BO-DEV-DESKTOP-ORCHESTRATION-001`
   - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Reviewed activation and rollback** (`CAP-MES-ACTIVATION-001`): Qualify immutable harness versions with exact evidence, retain owner review as the proposed v1 activation boundary, and allow prior-version rollback for future runs.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-MES-OPTIMIZATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Immutable run configuration** (`CAP-MES-CONFIGURATION-001`): Pin exact execution configuration and permit replacements only at declared new-run boundaries initially, preserving predecessor lineage and historical replay.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-MES-COMPOSITION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Operator and evidence continuity** (`CAP-MES-CONTINUITY-001`): Extend existing operator, traceability, ProjectMemory and recovery surfaces with preset/configuration and experiment identities, raw evidence links and existing human controls.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-MES-NATIVE-001`, `BO-MES-OPTIMIZATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Native Desktop workers and independent reviews** (`CAP-MES-DESKTOP-001`): Coordinate actual native Windows Codex Desktop workers and independent review attempts through a bounded Zeroshot binding, consuming DevRelay authority and returning candidates and observations.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-MES-NATIVE-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Bounded harness-code experiments** (`CAP-MES-HARNESS-001`): Search executable context-selection, retrieval and tool-scaffolding code for one coding-worker role, with isolated bounded search and independent baseline/candidate evaluation on disjoint software tasks.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-MES-OPTIMIZATION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
+- **Composable engineering preset** (`CAP-MES-PRESET-001`): Select a versioned existing-project software-change preset and compatible semantic Modules, adapters and agent configurations through complete preflight.
+  - Priority: must
+  - Audience: user-facing
+  - Business objectives: `BO-MES-COMPOSITION-001`
+  - Users: `USR-DEV-WORKFLOW-AUTHOR-001`
 - **Work dependency analysis** (`CAP-WDA-ANALYZE-001`): Analyze an approved work breakdown and propose directed dependencies and dispositions.
   - Priority: must
   - Audience: internal
@@ -498,6 +534,31 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Target: Zero omissions.
   - Measurement method: Run nested-task, multi-frontier, worktree, approval, quality, restart, and memory fixtures.
   - Business objectives: `BO-DEV-HUMAN-ORCHESTRATION-001`
+- **Executable preset configurations** (`SM-MES-CONFIGURATIONS-001`)
+  - Measure: Compatible configurations qualified and incompatible configurations dispatching effects.
+  - Target: At least one preset and two compatible execution configurations; zero incompatible dispatches.
+  - Measurement method: Run positive and negative composition checks against exact configurations, including Module ports, obligations, adapters, grants, contributors and agent eligibility.
+  - Business objectives: `BO-MES-COMPOSITION-001`
+- **Authority and configuration continuity** (`SM-MES-CONTINUITY-001`)
+  - Measure: Silent configuration changes, duplicate checkpointed effects, stale-owner transitions and unauthorized activation.
+  - Target: Zero cases across restart, drift, interrupted evaluation, lease-expiry, activation and rollback checks.
+  - Measurement method: Compare exact durable checkpoints, configurations, leases, memory and decision receipts before and after controlled failures.
+  - Business objectives: `BO-MES-COMPOSITION-001`, `BO-MES-NATIVE-001`, `BO-MES-OPTIMIZATION-001`
+- **Comparable harness evaluation** (`SM-MES-EXPERIMENT-001`)
+  - Measure: Partition leakage, complete matched trials and evidence-supported conclusions.
+  - Target: Zero search/held-out task-family overlap, complete attempted-trial receipts and zero unsupported improvement claims.
+  - Measurement method: Audit frozen manifests, actual model/tools/environment/budget attestations, evaluator versions, raw results and preregistered qualification thresholds.
+  - Business objectives: `BO-MES-OPTIMIZATION-001`
+- **Observed execution quality and resources** (`SM-MES-OUTCOMES-001`)
+  - Measure: Verified completion, escaped defects, human intervention time, elapsed time, token/tool usage and available cost.
+  - Target: Each metric is observed with provenance or explicitly unavailable with reason; no fabricated performance or cost target is claimed achieved.
+  - Measurement method: Use fixed metric definitions and observation windows; include failures, cancellations and incomplete trials, and report uncertainty for noisy measurements.
+  - Business objectives: `BO-MES-NATIVE-001`, `BO-MES-OPTIMIZATION-001`
+- **Native reviewed software completion** (`SM-MES-REAL-CHANGE-001`)
+  - Measure: Real source-and-test changes accepted through the installed Windows product.
+  - Target: At least one existing-project change completes the actual lifecycle; diagnostic smoke and preparation count as zero accepted changes.
+  - Measurement method: Inspect native worker/reviewer receipts, changed source/tests, verification, integration, SystemVerification and BusinessAcceptance evidence.
+  - Business objectives: `BO-MES-NATIVE-001`
 - **Recoverable authoritative state** (`SM-QC-CONTROL-001`)
   - Measure: Fresh tasks that cannot identify the exact lifecycle stage, frontier, tasks, worktrees, memory conclusion, graph horizon, or blockers.
   - Target: Zero unresolved omissions for configured authorities.
@@ -859,6 +920,27 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
 - **`CON-HO-REQUEST-ONLY-001`** [technical; project] An operator control is request-only until its exact existing authority accepts and records it.
   - Rationale: The view and conversation cannot manufacture approval or completion authority.
   - Acceptance criteria: `AC-HO-AUTHORITY-001`, `AC-HO-CONTROL-001`
+- **`CON-MES-AUTHORITY-001`** [technical; capabilities `CAP-MES-CONTINUITY-001`, `CAP-MES-DESKTOP-001`, `CAP-MES-HARNESS-001`, `CAP-MES-PRESET-001`] Composition, engine, optimizer and views reuse Core, owning Gates, QualityPolicy, WorkContinuity, HumanOrchestration, ProjectMemory and traceability. Generic Core stays free of Module, adapter, Zeroshot or Meta-Harness identity branches.
+  - Rationale: Configurable implementations cannot form a parallel authority system.
+  - Acceptance criteria: `AC-MES-AUTHORITY-001`, `AC-MES-SUBSTITUTION-001`, `AC-MES-TRACE-MEMORY-001`
+- **`CON-MES-CHANGE-RECOVERY-001`** [technical; capabilities `CAP-MES-CONTINUITY-001`, `CAP-MES-DESKTOP-001`, `CAP-MES-PRESET-001`] Repair stale downstream planning through the existing-project change lifecycle while preserving prior baselines, candidates and diagnostics as distinct history. Fixtures/smoke cannot establish implementation, acceptance or release readiness.
+  - Rationale: The repository already has approved lineage and unaccepted candidate changes.
+  - Acceptance criteria: `AC-MES-ACCEPTANCE-001`, `AC-MES-CHANGE-LINEAGE-001`
+- **`CON-MES-EVALUATION-001`** [security; capabilities `CAP-MES-HARNESS-001`] Optimization cannot change the base model within a comparable experiment, held-out tasks/tests, evaluator, metrics, budget policy, review, contracts, permissions, approvals or ProjectMemory authority.
+  - Rationale: Search must improve bounded code without gaming evaluation or expanding authority.
+  - Acceptance criteria: `AC-MES-COMPARABILITY-001`, `AC-MES-PARTITIONS-001`, `AC-MES-QUALIFICATION-001`
+- **`CON-MES-FIRST-RELEASE-001`** [business; capabilities `CAP-MES-HARNESS-001`, `CAP-MES-PRESET-001`] MES-001 initially delivers one existing-project software-change preset and one coding-worker optimization role, retaining prior approved capabilities without arbitrary stage deletion or a new general workflow language.
+  - Rationale: A bounded release proves composition and harness evaluation without replacing the product.
+  - Acceptance criteria: `AC-MES-CODE-SEARCH-001`, `AC-MES-PREFLIGHT-001`, `AC-MES-PRESET-001`
+- **`CON-MES-OWNER-ACTIVATION-001`** [business; capabilities `CAP-MES-ACTIVATION-001`] Retain owner-reviewed activation for proposed v1 implementation. The unanswered clarification is not resolved by this assumption; automatic activation remains a future explicit owner-approved policy change, not a default or optimizer decision.
+  - Rationale: Existing human authority applies while drafting proceeds without fabricated product intent.
+  - Acceptance criteria: `AC-MES-ACTIVATION-DECISION-001`, `AC-MES-ACTIVATION-POLICY-001`
+- **`CON-MES-SWAPS-001`** [compatibility; capabilities `CAP-MES-ACTIVATION-001`, `CAP-MES-CONFIGURATION-001`] Only new-run swaps are supported initially; configuration changes require exact predecessor lineage and full preflight without changing active attempts or published versions.
+  - Rationale: Immutable runs preserve comparison and recovery.
+  - Acceptance criteria: `AC-MES-REPLAY-001`, `AC-MES-ROLLBACK-001`, `AC-MES-SWAPS-001`
+- **`CON-MES-WINDOWS-001`** [platform; capabilities `CAP-MES-DESKTOP-001`] The product remains Codex/ChatGPT Desktop on Windows with native agents. Zeroshot is a bounded construction/execution integration; the experimental bridge is not an accepted production binding. No API keys, external model services, hosted backend or non-Windows product support are assumed.
+  - Rationale: Owner direction retains Windows/native execution and demands honest maturity.
+  - Acceptance criteria: `AC-MES-ACCEPTANCE-001`, `AC-MES-NATIVE-001`
 - **`CON-PM-AUTHORITY-001`** [technical; project] Core and ProjectMemoryGate own canonical memory authority; Mem0, modules, models, sessions, and adapters remain proposer-only.
   - Rationale: Retrieval convenience cannot become project truth or workflow authority.
   - Acceptance criteria: `AC-PM-AUTHORITY-001`, `AC-PM-PROMOTION-001`
@@ -1083,6 +1165,38 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Measure: Target, route, grant, malformed-payload, and authority-bypass fixtures.
   - Target: Zero unauthorized effects.
   - Acceptance criteria: `AC-HO-AUTHORITY-001`, `AC-HO-CONTROL-001`
+- **`NFR-MES-AUTHORITY-001`** [security; must; capabilities `CAP-MES-ACTIVATION-001`, `CAP-MES-DESKTOP-001`, `CAP-MES-HARNESS-001`] Engine coordination and executable harness candidates stay within existing grants, isolation and owning authority boundaries.
+  - Measure: Forbidden filesystem/process/network effects and unauthorized policy, graph, memory or Gate mutations.
+  - Target: Zero successful unauthorized effects; each denied attempt yields attributable diagnostics.
+  - Acceptance criteria: `AC-MES-AUTHORITY-001`, `AC-MES-CODE-SEARCH-001`, `AC-MES-PARTITIONS-001`
+- **`NFR-MES-BUDGETS-001`** [performance; must; capabilities `CAP-MES-HARNESS-001`] Experiments enforce configured trial, elapsed-time, token/tool and resource limits; unknown consumption cannot establish budget compliance.
+  - Measure: Effects after budget exhaustion and trials without enforceable limits.
+  - Target: Zero further dispatch after exhaustion; unsupported enforcement blocks start or yields an incomplete result.
+  - Acceptance criteria: `AC-MES-CODE-SEARCH-001`, `AC-MES-RAW-RECEIPTS-001`
+- **`NFR-MES-COMPATIBILITY-001`** [compatibility; must; capabilities `CAP-MES-CONFIGURATION-001`, `CAP-MES-PRESET-001`] Composition and substitution preserve exact typed obligations and fail before effects when a selected binding is incompatible.
+  - Measure: Invalid configurations producing executor/effect calls.
+  - Target: Zero across required compatibility and tampering cases.
+  - Acceptance criteria: `AC-MES-PREFLIGHT-001`, `AC-MES-SUBSTITUTION-001`
+- **`NFR-MES-DETERMINISM-001`** [reliability; must; capabilities `CAP-MES-CONFIGURATION-001`, `CAP-MES-DESKTOP-001`] Core-owned resolution, diagnostics and checkpoint reuse remain deterministic for exact inputs even when workers are nondeterministic.
+  - Measure: Configuration digest equality and repeated checkpointed effects.
+  - Target: 100 percent equality for deterministic resolution; zero repeated checkpointed effects.
+  - Acceptance criteria: `AC-MES-PINNING-001`, `AC-MES-RECOVERY-001`, `AC-MES-REPLAY-001`
+- **`NFR-MES-EVIDENCE-001`** [observability; must; capabilities `CAP-MES-ACTIVATION-001`, `CAP-MES-CONTINUITY-001`, `CAP-MES-HARNESS-001`] Evaluation and activation conclusions are reproducible from retained raw observations and exact immutable inputs.
+  - Measure: Attempt-to-receipt coverage and unsupported model, improvement or cost claims.
+  - Target: 100 percent attempted-trial receipt coverage; zero unsupported claims.
+  - Acceptance criteria: `AC-MES-COMPARABILITY-001`, `AC-MES-QUALIFICATION-001`, `AC-MES-RAW-RECEIPTS-001`
+- **`NFR-MES-PRIVACY-001`** [privacy; must; capabilities `CAP-MES-CONTINUITY-001`, `CAP-MES-HARNESS-001`] Task/context/tool evidence remains local under declared retention and access policy, with protected secrets and redacted operator views; external transmission requires a separate explicit grant.
+  - Measure: Secret exposure and undeclared external transmission.
+  - Target: Zero undeclared transmission or exposed secrets in operator views; evidence omissions remain explicit.
+  - Acceptance criteria: `AC-MES-CODE-SEARCH-001`, `AC-MES-OPERATOR-001`, `AC-MES-RAW-RECEIPTS-001`
+- **`NFR-MES-RECOVERY-001`** [reliability; must; capabilities `CAP-MES-ACTIVATION-001`, `CAP-MES-CONTINUITY-001`, `CAP-MES-DESKTOP-001`] Interrupted execution, evaluation and activation recover exact durable state with fresh ownership and preserved historical evidence.
+  - Measure: Duplicate effects, stale-owner commits and lost prior configurations after interruption.
+  - Target: Zero across checkpoint, lease-expiry, activation and rollback scenarios.
+  - Acceptance criteria: `AC-MES-RECOVERY-001`, `AC-MES-ROLLBACK-001`, `AC-MES-TRACE-MEMORY-001`
+- **`NFR-MES-USABILITY-001`** [usability; must; capabilities `CAP-MES-CONTINUITY-001`, `CAP-MES-PRESET-001`] Ordinary use extends the existing compact facade/operator view with selection, outcomes and decisions; exact provenance remains expandable.
+  - Measure: Required hand-authored internal artifacts and mismatches between displayed and durable state.
+  - Target: Zero hand-authored internal artifacts on the supported path; each decision/metric resolves to exact source evidence or an unavailable reason.
+  - Acceptance criteria: `AC-MES-CONTROLS-001`, `AC-MES-OPERATOR-001`, `AC-MES-PRESET-001`
 - **`NFR-PM-ACCURACY-001`** [reliability; must; project] DevRelay must not execute from missing, stale, conflicting, unsupported, or unverifiable project memory.
   - Measure: Run the complete corruption, drift, conflict, provider, and native-equivalence matrices.
   - Target: Zero module executions from an inaccurate context bundle.
@@ -1259,6 +1373,13 @@ Provide a deterministic, provider-neutral orchestration runtime that turns appro
   - Aliases: Readiness receipt
 - **EnvironmentRemediationPlan** (`TERM-EP-REMEDIATION-001`): A deterministic consolidated proposal for resolving all current required environment gaps, including effects, grants, impact, rollback, and evidence obligations.
   - Aliases: Remediation plan
+- **Harness activation** (`TERM-MES-ACTIVATION-001`): An owning-boundary decision making an exact qualified harness available to future runs under recorded policy; it does not alter active runs or give the optimizer approval authority.
+- **Immutable run configuration** (`TERM-MES-CONFIGURATION-001`): Exact content-bound preset, Module, adapter, agent, model observation, harness, tools, inputs, grants, budgets and policies for one run and its child attempts.
+- **Worker harness code** (`TERM-MES-HARNESS-CODE-001`): Executable context-selection, retrieval and tool-scaffolding behavior around a coding worker, searched within a granted surface while semantic contracts and authority remain fixed.
+- **Held-out software evaluation** (`TERM-MES-HELD-OUT-001`): Independent evaluation on preregistered software tasks excluded from search and candidate selection, with protected tests, fixed conditions and raw evidence.
+- **Incomparable experiment** (`TERM-MES-INCOMPARABLE-001`): An experiment that cannot support an improvement comparison because required identities, matched conditions, task separation or complete trial evidence are unavailable or invalid.
+- **Semantic Module substitution** (`TERM-MES-MODULE-SWAP-001`): Replacement in an explicitly compatible preset slot, requiring port, outcome, obligation and contributor compatibility; distinct from adapter selection for the same operation.
+- **Engineering workflow preset** (`TERM-MES-PRESET-001`): A versioned executable composition of declared semantic Module slots, bindings and obligations, validated before effects; distinct from a fixed quality-policy profile.
 - **ProjectMemoryBaseline** (`TERM-PM-BASELINE-001`): The authoritative content-addressed project-scoped memory state containing active, pending, superseded, and historical records plus exact source identities.
   - Aliases: Project memory
 - **ConcludeReceipt** (`TERM-PM-CONCLUDE-RECEIPT-001`): Proof that an exact session or frontier was reconciled against pinned memory and graph checkpoints, its delta was governed, its synopsis rendered, and provider synchronization verified.

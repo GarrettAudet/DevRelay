@@ -414,6 +414,22 @@ export function createLocalHostStorage({
       return immutable(lease);
     },
 
+    renewLease({ runId, leaseToken, expectedVersion, durationMilliseconds = 30_000 } = {}) {
+      ensureWritable();
+      requiredText(runId, "runId");
+      requiredText(leaseToken, "leaseToken");
+      if (!Number.isSafeInteger(expectedVersion) || expectedVersion < 0 || !Number.isSafeInteger(durationMilliseconds) || durationMilliseconds <= 0) fail("lease renewal parameters are invalid", "DR4924");
+      const now = clock();
+      const expiresAt = now + durationMilliseconds;
+      transaction(() => {
+        const changed = database.prepare(`UPDATE runs SET lease_expires_at = ?, updated_at = ?
+          WHERE run_id = ? AND version = ? AND lease_token = ? AND lease_owner IS NOT NULL AND lease_expires_at > ?`)
+          .run(expiresAt, now, runId, expectedVersion, leaseToken, now);
+        if (changed.changes !== 1) fail("lease renewal requires the exact current unexpired lease and version", "DR4924");
+      });
+      return immutable({ token: leaseToken, expiresAt });
+    },
+
     commitTransition({
       runId,
       expectedVersion,

@@ -7,16 +7,20 @@ import test from "node:test";
 
 import { canonicalJsonDigest } from "../src/content-digest.mjs";
 import { createCrossCuttingCompositionPlan, executeCrossCuttingBoundary } from "../src/cross-cutting-composition.mjs";
-import { createDesktopOrchestrationPlan } from "../src/desktop-orchestration.mjs";
+import { createDesktopOrchestrationPlan, createDesktopOrchestrationRuntime } from "../src/desktop-orchestration.mjs";
 import { createDesktopTaskAdapter, createDesktopTaskPlan } from "../src/desktop-task-adapter.mjs";
 import { createDesktopOperatorSnapshot } from "../src/desktop-operator-view.mjs";
 import { createHumanInterventionRequest, createHumanOrchestrationController, createHumanOrchestrationSourceBundle, createHumanOrchestrationView } from "../src/human-orchestration.mjs";
 import { loadDesktopProjectMemoryBootstrap } from "../src/desktop-project-memory-bootstrap.mjs";
 import { createDurableGitWorktreeManager } from "../src/durable-worktree-manager.mjs";
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
+import { createDesktopExecutionCoordinator } from "../src/desktop-execution-coordinator.mjs";
+import { claimLocalWorkContinuity } from "../src/local-work-continuity.mjs";
+import { prepareClaimedDesktopTaskPlan } from "../src/local-desktop-task-preparation.mjs";
+import { settleRecordedDesktopDispatch } from "../src/local-desktop-dispatch-settlement.mjs";
 import { createProjectControlSnapshot, createProjectControlSourceBundle } from "../src/project-control.mjs";
 import { createQualityPolicyCandidate, createQualityPolicyContext, evaluateQualityEvidence, promoteQualityPolicyBaseline, resolveQualityObligations } from "../src/quality-policy.mjs";
-import { claimWorkAttempt, createDurableWorkContinuityStore, createWorkFingerprintInput, deriveWorkFingerprint, findExactWorkReuse, transitionWorkAttempt } from "../src/work-continuity.mjs";
+import { createDurableWorkContinuityStore, createWorkFingerprintInput, deriveWorkFingerprint, findExactWorkReuse, transitionWorkAttempt } from "../src/work-continuity.mjs";
 import { resolveWorkflowProfile } from "../src/workflow-profiles.mjs";
 
 const digest = (value) => canonicalJsonDigest({ value });
@@ -41,7 +45,7 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
   let storage = createLocalHostStorage({ rootDirectory: stateRoot });
   t.after(() => { try { storage.close(); } catch {} rmSync(root, { recursive: true, force: true }); });
   const worktrees = createDurableGitWorktreeManager({ repositoryPath: repository, worktreeRoot, storage });
-  let continuity = createDurableWorkContinuityStore({ storage, projectId: "devrelay-e2e" });
+  let continuity = createDurableWorkContinuityStore({ storage, projectId: "devrelay" });
   const qualityCandidate = createQualityPolicyCandidate({ policyId: "QP-E2E", version: "1.0.0", rules: [{ id: "RULE-DEFAULT", obligations: [{ id: "focused-test", lane: "focused", evidenceKinds: ["test/focused"] }, { id: "independent-review", lane: "review", evidenceKinds: ["review/adversarial"], independent: true }] }] });
   const qualityBaseline = promoteQualityPolicyBaseline({ candidate: qualityCandidate, approval: { kind: "QualityPolicyGateApproval", authority: "QualityPolicyGate", decision: "approve", candidateDigest: qualityCandidate.candidateDigest } });
   const crossCuttingPlan = createCrossCuttingCompositionPlan({
@@ -89,14 +93,88 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
     const fingerprint = dispatchBoundary.artifacts["work-fingerprint"];
     const initialDecision = dispatchBoundary.artifacts["work-reuse-decision"];
     assert.equal(initialDecision.decision, "execute");
-    const claimed = claimWorkAttempt({ index: continuity.read().state.index, expectedRevision: continuity.read().state.index.revision, workFingerprint: fingerprint, attemptId, owner: "chatgpt.desktop-fixture", targetRevision: revision, qualityResolutionDigest: qualityResolution.resolutionDigest, leaseExpiresAt: Date.now() + 60_000 });
     let host = continuity.read();
-    continuity.commit({ expectedHostVersion: host.version, expectedIndexRevision: host.state.index.revision, transition: { operation: "claim", attemptId }, nextIndex: claimed.index });
+    const claim = { attemptId, owner: "chatgpt.desktop-fixture", leaseExpiresAt: Date.now() + 60_000,
+      expectedHostVersion: host.version, expectedIndexRevision: host.state.index.revision };
+    claimLocalWorkContinuity({ store: continuity, workFingerprint: fingerprint, ...claim, now: Date.now() });
     const lease = worktrees.allocate({ attemptId, runId: `RUN-${profileName}`, workItemId, revision });
-    const orchestrationPlan = createDesktopOrchestrationPlan({ runId: `RUN-${profileName}`, projectId: "devrelay-e2e", horizonDigest: digest(`horizon-${profileName}`), startingRevision: revision, maxConcurrency: 1, workItems: [{ id: workItemId, dependencies: [] }], crossCuttingPlan });
-    const taskPlan = createDesktopTaskPlan({ runId: orchestrationPlan.runId, workItem: { id: workItemId }, projectId: "devrelay", startingRevision: revision, worktreeLease: lease, assignment: { profile: "implementation" }, executor: { id: "chatgpt.desktop-fixture" }, grants: [{ kind: "filesystem.write", scope: lease.workspace }], promptArtifact: { artifactId: `PROMPT-${profileName}`, digest: digest(`prompt-${profileName}`), schema: "https://devrelay.dev/test/prompt/v1", mediaType: "application/json", uri: `memory://qc/${profileName}/prompt` }, memoryBootstrap: loadDesktopProjectMemoryBootstrap({ projectRoot: sourceRoot, taskId: attemptId, repositoryRevision: revision }), qualityResolution, workFingerprint: fingerprint, workContinuityDecision: initialDecision });
-    const taskReceipt = await adapter.invoke("create", { plan: taskPlan });
-    worktrees.bindTask(attemptId, taskReceipt.taskId);
+    const dispatchObservation = worktrees.inspectForDispatch(attemptId);
+    assert.equal(dispatchObservation.workspace, lease.workspace);
+    assert.equal(dispatchObservation.observedRevision, revision);
+    const orchestrationPlan = createDesktopOrchestrationPlan({ runId: `RUN-${profileName}`, projectId: "devrelay", horizonDigest: digest(`horizon-${profileName}`), startingRevision: revision, maxConcurrency: 1, workItems: [{ id: workItemId, dependencies: [] }], crossCuttingPlan });
+    const runtime = createDesktopOrchestrationRuntime({ storage });
+    runtime.initialize(orchestrationPlan);
+    const preparation = { storage, store: continuity, worktrees, claim, now: Date.now(), runId: orchestrationPlan.runId,
+      executor: { id: "chatgpt.desktop-fixture" }, grants: [{ kind: "filesystem.write", scope: lease.workspace }],
+      promptArtifact: { artifactId: `PROMPT-${profileName}`, digest: digest(`prompt-${profileName}`), schema: "https://devrelay.dev/test/prompt/v1", mediaType: "application/json", uri: `memory://qc/${profileName}/prompt` },
+      memoryBootstrap: loadDesktopProjectMemoryBootstrap({ projectRoot: sourceRoot, taskId: attemptId, repositoryRevision: revision }),
+      qualityResolution, workFingerprint: fingerprint };
+    const taskPlan = prepareClaimedDesktopTaskPlan(preparation);
+    assert.deepEqual(taskPlan.assignment, fingerprint.material.assignment);
+    assert.throws(() => prepareClaimedDesktopTaskPlan({ ...preparation, claim: { ...claim, owner: "other" } }), /original claim evidence/);
+    assert.throws(() => prepareClaimedDesktopTaskPlan({ ...preparation, now: claim.leaseExpiresAt }), /expired/);
+    assert.throws(() => prepareClaimedDesktopTaskPlan({ ...preparation, runId: "OTHER-RUN" }), /worktree identity/);
+    assert.equal(createCalls, position, "preparation and rejection must not create provider tasks");
+    runtime.prepareTask({ plan: taskPlan, memoryBootstrap: preparation.memoryBootstrap });
+    const savedPlan = runtime.loadTaskPlan(orchestrationPlan.runId, { workItemId, memoryBootstrap: preparation.memoryBootstrap });
+    assert.deepEqual(savedPlan, taskPlan);
+    const provider = { id: adapter.id, version: adapter.version };
+    runtime.reserveTaskDispatch({ plan: savedPlan, memoryBootstrap: preparation.memoryBootstrap, provider });
+    assert.throws(() => runtime.reserveTaskDispatch({ plan: savedPlan, memoryBootstrap: preparation.memoryBootstrap, provider }), /reconcile without repeating/);
+    const effectExecutor = { ...provider, configurationDigest: fingerprint.material.implementationConfigurationDigest };
+    let coordinatorExecutorCalls = 0;
+    const coordinator = createDesktopExecutionCoordinator({ storage, worktreeManager: worktrees,
+      executors: { [provider.id]: { ...effectExecutor, capabilities: ["desktop-task"], grants: ["fixture-task-create"],
+        async execute() {
+          coordinatorExecutorCalls++;
+          const currentPlan = prepareClaimedDesktopTaskPlan({ ...preparation, now: Date.now() });
+          assert.deepEqual(currentPlan, savedPlan);
+          assert.equal(runtime.inspect(orchestrationPlan.runId).state.workState[workItemId].dispatchReservation.status, "reserved");
+          return adapter.invoke("create", { plan: currentPlan });
+        } } } });
+    const effectRunId = `desktop-effect:${attemptId}`;
+    coordinator.prepare({ runId: effectRunId, attemptId, workItemId, repositoryRevision: revision,
+      executor: effectExecutor, requiredCapabilities: ["desktop-task"], requiredGrants: ["fixture-task-create"],
+      idempotencyKey: savedPlan.idempotencyKey });
+    let effect;
+    if (profileName === "assurance") {
+      const handoff = coordinator.beginExternal(effectRunId);
+      assert.equal(handoff.outcome, "operator-action-required");
+      assert.equal(handoff.executorCalls, 0);
+      // Simulated Desktop operator, outside the coordinator's executor registry.
+      const operatorPlan = prepareClaimedDesktopTaskPlan({ ...preparation, now: Date.now() });
+      assert.deepEqual(operatorPlan, savedPlan);
+      const operatorReceipt = await adapter.invoke("create", { plan: operatorPlan });
+      coordinator.reconcile({ runId: effectRunId, receiptResult: {
+        bindingDigest: handoff.request.execution.bindingDigest,
+        idempotencyKey: handoff.request.execution.idempotencyKey, result: operatorReceipt } });
+      effect = await coordinator.execute(effectRunId);
+      assert.equal(effect.outcome, "replayed");
+      assert.equal(coordinatorExecutorCalls, 0);
+    } else {
+      effect = await coordinator.execute(effectRunId);
+      assert.equal(effect.outcome, "recorded");
+      assert.equal(coordinatorExecutorCalls, 1);
+    }
+    const taskReceipt = effect.result;
+    runtime.recordTaskDispatch({ plan: savedPlan, memoryBootstrap: preparation.memoryBootstrap, receipt: taskReceipt });
+    const dispatchState = runtime.inspect(orchestrationPlan.runId);
+    assert.deepEqual(runtime.recordTaskDispatch({ plan: savedPlan, memoryBootstrap: preparation.memoryBootstrap, receipt: taskReceipt }), dispatchState);
+    const replayedEffect = await coordinator.resume({ runId: effectRunId, workItemId, executor: effectExecutor });
+    assert.equal(replayedEffect.executorCalls, 0);
+    assert.deepEqual(replayedEffect.result, taskReceipt);
+    assert.equal(createCalls, position + 1);
+    const settlement = { storage, store: continuity, worktrees, runtime, coordinator, effectRunId,
+      runId: orchestrationPlan.runId, workItemId, memoryBootstrap: preparation.memoryBootstrap, claim };
+    await assert.rejects(settleRecordedDesktopDispatch({ ...settlement, store: { ...continuity,
+      commit(args) { continuity.commit(args); throw new Error("fixture lost settlement response"); } } }), /lost settlement response/);
+    const settledContinuity = continuity.read();
+    assert.deepEqual(await settleRecordedDesktopDispatch(settlement), taskReceipt);
+    assert.deepEqual(continuity.read(), settledContinuity);
+    const boundLeaseState = storage.readRun(`worktree-lease:${attemptId}`);
+    worktrees.bindTask(attemptId, replayedEffect.result.taskId);
+    assert.deepEqual(storage.readRun(`worktree-lease:${attemptId}`), boundLeaseState);
+    assert.equal(createCalls, position + 1);
     writeFileSync(path.join(lease.workspace, "quality.txt"), `base\n${profileName}\n`, "utf8");
     assert.match(readFileSync(path.join(lease.workspace, "quality.txt"), "utf8"), new RegExp(profileName));
     git(lease.workspace, "add", "quality.txt");
@@ -104,7 +182,7 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
     const evidence = qualityResolution.obligations.map((obligation) => ({ kind: obligation.evidenceKinds[0], status: "pass", independent: true, digest: digest(`${profileName}-${obligation.id}`), producerTaskId: obligation.independent ? `REVIEWER-${profileName}` : taskReceipt.taskId }));
     const qualityAssessment = evaluateQualityEvidence({ resolution: qualityResolution, evidence, changeProducerIdentities: [taskReceipt.taskId] });
     assert.equal(qualityAssessment.decision, "satisfied");
-    for (const [fromStatus, toStatus] of [["prepared", "dispatched"], ["dispatched", "running"]]) {
+    for (const [fromStatus, toStatus] of [["dispatched", "running"]]) {
       host = continuity.read();
       const next = transitionWorkAttempt({ index: host.state.index, expectedRevision: host.state.index.revision, attemptId, fromStatus, toStatus });
       continuity.commit({ expectedHostVersion: host.version, expectedIndexRevision: host.state.index.revision, transition: { operation: toStatus, attemptId }, nextIndex: next });
@@ -120,7 +198,9 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
     const callsBeforeReuse = createCalls;
     await assert.rejects(adapter.invoke("create", { plan: reusePlan }), /does not authorize fresh task execution/);
     assert.equal(createCalls, callsBeforeReuse, "exact reuse must make zero provider creation calls");
-    const orchestrationRun = { kind: "LocalHostRunState", version: position, state: { plan: orchestrationPlan, workState: { [workItemId]: { status: "completed", receipts: [taskReceipt] } }, blockers: [], recovery: "clean" } };
+    const completionReceipt = await adapter.invoke("wait", { plan: savedPlan, taskId: taskReceipt.taskId });
+    runtime.record(orchestrationPlan.runId, { workItemId, status: "completed", receipt: completionReceipt });
+    const orchestrationRun = runtime.inspect(orchestrationPlan.runId);
     const leaseObservation = worktrees.inspect(attemptId);
     const projectControlSourceBundle = createProjectControlSourceBundle({ projectId: "devrelay-e2e", lifecycle: { phase: "verification", profileName }, workItems: [{ id: workItemId, status: "completed" }], assignments: [{ id: workItemId, profile: "implementation" }], taskObservations: [{ id: workItemId, receiptDigest: taskReceipt.receiptDigest }], worktreeObservations: [{ id: workItemId, revision: git(lease.workspace, "rev-parse", "HEAD") }], qualityAssessments: [{ id: workItemId, ...qualityAssessment }], continuityRecords: [{ id: workItemId, ...reuse }] });
     const humanOrchestrationSourceBundle = createHumanOrchestrationSourceBundle({ projectId: "devrelay-e2e", orchestrationRun, taskObservations: [{ taskId: taskReceipt.taskId, workItemId, role: "implementer", title: `${profileName} implementation`, status: "completed" }, { taskId: `REVIEWER-${profileName}`, parentTaskId: taskReceipt.taskId, workItemId, role: "independent-reviewer", title: `${profileName} review`, status: "completed" }], worktreeLeases: [leaseObservation], memorySessions: [{ sessionId: `SESSION-${profileName}`, taskId: taskReceipt.taskId, status: "active", conclusionStatus: "pending", baselineDigest: taskPlan.memoryContext.projectMemoryBaseline.digest }], approvals: [{ approvalId: `APPROVAL-${profileName}`, gateId: "work-item-verification-gate", workItemId, status: "approved" }], qualityEvidence: [{ assessmentId: `QUALITY-${profileName}`, workItemId, kind: "QualityAssessment", disposition: qualityAssessment.decision, evidenceDigest: qualityAssessment.assessmentDigest }] });
@@ -131,7 +211,7 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
     const operator = createDesktopOperatorSnapshot({ orchestrationRun, worktreeLeases: [leaseObservation], projectControlSnapshot: control });
     assert.equal(operator.projectControl.diagnostics.length, 0);
     assert.equal(human.tasks.find(({ taskId }) => taskId === `REVIEWER-${profileName}`).depth, 1);
-    const intervention = createHumanInterventionRequest({ runId: orchestrationPlan.runId, expectedStateVersion: position, snapshotDigest: human.viewDigest, requestedBy: "owner", requestedAt: "2026-09-10T00:00:00.000Z", action: "message", target: { kind: "task", id: taskReceipt.taskId }, reason: "Request exact completion evidence.", payload: { message: "Return the exact quality receipt." } });
+    const intervention = createHumanInterventionRequest({ runId: orchestrationPlan.runId, expectedStateVersion: orchestrationRun.version, snapshotDigest: human.viewDigest, requestedBy: "owner", requestedAt: "2026-09-10T00:00:00.000Z", action: "message", target: { kind: "task", id: taskReceipt.taskId }, reason: "Request exact completion evidence.", payload: { message: "Return the exact quality receipt." } });
     const humanController = createHumanOrchestrationController({ inspectRun: async () => orchestrationRun, inspectView: async () => human, handlers: { "desktop-task-adapter": async (request) => adapter.invoke("message", { plan: taskPlan, taskId: request.target.id, input: request.payload }) } });
     const interventionResult = await humanController.execute(intervention);
     const interventionReplay = await humanController.execute(intervention);
@@ -145,7 +225,7 @@ test("quick, standard, and assurance Desktop scenarios preserve memory, isolatio
 
   storage.close();
   storage = createLocalHostStorage({ rootDirectory: stateRoot });
-  continuity = createDurableWorkContinuityStore({ storage, projectId: "devrelay-e2e" });
+  continuity = createDurableWorkContinuityStore({ storage, projectId: "devrelay" });
   assert.equal(continuity.read().state.index.records.filter(({ status }) => status === "completed").length, 3);
   assert.deepEqual(outcomes.map(({ profileName }) => profileName), ["quick", "standard", "assurance"]);
   assert.ok(outcomes.every(({ taskId, implementationCommit }) => taskId && /^[0-9a-f]{40}$/u.test(implementationCommit)));

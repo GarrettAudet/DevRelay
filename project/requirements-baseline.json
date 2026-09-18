@@ -1,15 +1,15 @@
 {
   "apiVersion": "devrelay.dev/v1alpha1",
   "kind": "RequirementsBaseline",
-  "baselineId": "requirements-baseline-devrelay-v1-ho-001-human-orchestration-001",
-  "version": "2.8.0",
+  "baselineId": "requirements-baseline-devrelay-v1-mes-001",
+  "version": "2.9.0",
   "approvedCandidate": {
-    "artifactId": "requirements-change-set-ho-001-human-orchestration-v1",
-    "digest": "sha256:318a6f184766e2a43ab9ce24149e5f9b5a3ee9bc60073ad919d7b65b31840297"
+    "artifactId": "requirements-change-set-755fb55b3d257f0b6f6df6b7",
+    "digest": "sha256:e043e1d1c9ad7cf85ee2124fb4e388f63e0602d1f0e2163b19eec204ac6d562f"
   },
   "supersedes": {
-    "artifactId": "requirements-baseline-devrelay-v1-qc-001-quality-continuity-001",
-    "digest": "sha256:75312f1bf6bfdf75d84c56452f953e080ea8fc6401da78fbbd5d7881e3402bc0"
+    "artifactId": "requirements-baseline-devrelay-v1-ho-001-human-orchestration-001",
+    "digest": "sha256:bc30f849481c962c66e33ced6791f37e227e949744e54ca42164fcb4df518284"
   },
   "requirements": {
     "purpose": {
@@ -1252,6 +1252,63 @@
             "artifact": {
               "artifactId": "requirements-baseline-devrelay-v1",
               "digest": "sha256:25b9a8ddecc65b1f4f797052b12310e3e7284d29e2f7fcf9dad42291ae39cdc0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-MES-COMPOSITION-001",
+        "statement": "Make an existing-project software-change workflow executable from a ready-made preset with compatible semantic Module, adapter and agent choices while preserving existing engineering obligations.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-MES-NATIVE-001",
+        "statement": "Use native Codex Desktop agents on Windows through bounded Zeroshot coordination to produce independently verified software changes with visible progress and exact recoverable provenance.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "BO-MES-OPTIMIZATION-001",
+        "statement": "Improve one coding-worker harness through bounded executable-code search and independent held-out software-task evaluation, permitting an honest no-improvement result and retaining owner-controlled activation.",
+        "stakeholderIds": [
+          "STK-DEV-MAINTAINER-001",
+          "STK-DEV-OWNER-001",
+          "STK-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
             }
           }
         ]
@@ -3320,6 +3377,104 @@
             "artifact": {
               "artifactId": "requirements-closure-ho-001-v1",
               "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-MES-CONFIGURATIONS-001",
+        "name": "Executable preset configurations",
+        "businessObjectiveIds": [
+          "BO-MES-COMPOSITION-001"
+        ],
+        "measure": "Compatible configurations qualified and incompatible configurations dispatching effects.",
+        "target": "At least one preset and two compatible execution configurations; zero incompatible dispatches.",
+        "measurementMethod": "Run positive and negative composition checks against exact configurations, including Module ports, obligations, adapters, grants, contributors and agent eligibility.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-MES-CONTINUITY-001",
+        "name": "Authority and configuration continuity",
+        "businessObjectiveIds": [
+          "BO-MES-COMPOSITION-001",
+          "BO-MES-NATIVE-001",
+          "BO-MES-OPTIMIZATION-001"
+        ],
+        "measure": "Silent configuration changes, duplicate checkpointed effects, stale-owner transitions and unauthorized activation.",
+        "target": "Zero cases across restart, drift, interrupted evaluation, lease-expiry, activation and rollback checks.",
+        "measurementMethod": "Compare exact durable checkpoints, configurations, leases, memory and decision receipts before and after controlled failures.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-MES-EXPERIMENT-001",
+        "name": "Comparable harness evaluation",
+        "businessObjectiveIds": [
+          "BO-MES-OPTIMIZATION-001"
+        ],
+        "measure": "Partition leakage, complete matched trials and evidence-supported conclusions.",
+        "target": "Zero search/held-out task-family overlap, complete attempted-trial receipts and zero unsupported improvement claims.",
+        "measurementMethod": "Audit frozen manifests, actual model/tools/environment/budget attestations, evaluator versions, raw results and preregistered qualification thresholds.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-MES-OUTCOMES-001",
+        "name": "Observed execution quality and resources",
+        "businessObjectiveIds": [
+          "BO-MES-NATIVE-001",
+          "BO-MES-OPTIMIZATION-001"
+        ],
+        "measure": "Verified completion, escaped defects, human intervention time, elapsed time, token/tool usage and available cost.",
+        "target": "Each metric is observed with provenance or explicitly unavailable with reason; no fabricated performance or cost target is claimed achieved.",
+        "measurementMethod": "Use fixed metric definitions and observation windows; include failures, cancellations and incomplete trials, and report uncertainty for noisy measurements.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-MES-REAL-CHANGE-001",
+        "name": "Native reviewed software completion",
+        "businessObjectiveIds": [
+          "BO-MES-NATIVE-001"
+        ],
+        "measure": "Real source-and-test changes accepted through the installed Windows product.",
+        "target": "At least one existing-project change completes the actual lifecycle; diagnostic smoke and preparation count as zero accepted changes.",
+        "measurementMethod": "Inspect native worker/reviewer receipts, changed source/tests, verification, integration, SystemVerification and BusinessAcceptance evidence.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
             }
           }
         ]
@@ -7128,6 +7283,145 @@
         ]
       },
       {
+        "id": "CAP-MES-ACTIVATION-001",
+        "name": "Reviewed activation and rollback",
+        "description": "Qualify immutable harness versions with exact evidence, retain owner review as the proposed v1 activation boundary, and allow prior-version rollback for future runs.",
+        "businessObjectiveIds": [
+          "BO-MES-OPTIMIZATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-MES-CONFIGURATION-001",
+        "name": "Immutable run configuration",
+        "description": "Pin exact execution configuration and permit replacements only at declared new-run boundaries initially, preserving predecessor lineage and historical replay.",
+        "businessObjectiveIds": [
+          "BO-MES-COMPOSITION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-MES-CONTINUITY-001",
+        "name": "Operator and evidence continuity",
+        "description": "Extend existing operator, traceability, ProjectMemory and recovery surfaces with preset/configuration and experiment identities, raw evidence links and existing human controls.",
+        "businessObjectiveIds": [
+          "BO-MES-NATIVE-001",
+          "BO-MES-OPTIMIZATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-MES-DESKTOP-001",
+        "name": "Native Desktop workers and independent reviews",
+        "description": "Coordinate actual native Windows Codex Desktop workers and independent review attempts through a bounded Zeroshot binding, consuming DevRelay authority and returning candidates and observations.",
+        "businessObjectiveIds": [
+          "BO-MES-NATIVE-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-MES-HARNESS-001",
+        "name": "Bounded harness-code experiments",
+        "description": "Search executable context-selection, retrieval and tool-scaffolding code for one coding-worker role, with isolated bounded search and independent baseline/candidate evaluation on disjoint software tasks.",
+        "businessObjectiveIds": [
+          "BO-MES-OPTIMIZATION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CAP-MES-PRESET-001",
+        "name": "Composable engineering preset",
+        "description": "Select a versioned existing-project software-change preset and compatible semantic Modules, adapters and agent configurations through complete preflight.",
+        "businessObjectiveIds": [
+          "BO-MES-COMPOSITION-001"
+        ],
+        "userIds": [
+          "USR-DEV-WORKFLOW-AUTHOR-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
         "id": "CAP-WDA-ANALYZE-001",
         "name": "Work dependency analysis",
         "description": "Analyze an approved work breakdown and propose directed dependencies and dispositions.",
@@ -8455,6 +8749,137 @@
             "artifact": {
               "artifactId": "requirements-closure-ho-001-v1",
               "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "UJ-MES-CHANGE-001",
+        "name": "Configure and complete an existing-project change",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-MES-CONFIGURATION-001",
+          "CAP-MES-CONTINUITY-001",
+          "CAP-MES-DESKTOP-001",
+          "CAP-MES-PRESET-001"
+        ],
+        "trigger": "A workflow author describes a software change to an already baselined repository.",
+        "outcome": "Accepted software or an explicit recoverable blocker with exact lifecycle evidence.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Select a preset and available Module, adapter and agent bindings.",
+            "expectedOutcome": "The operator sees compatible choices, maturity, required grants and full preflight findings."
+          },
+          {
+            "sequence": 2,
+            "action": "Reconcile current requirements, architecture, contracts and downstream planning through the existing-project change route.",
+            "expectedOutcome": "Only exact approved inputs and a Core-derived ready frontier authorize work; existing candidates remain preserved."
+          },
+          {
+            "sequence": 3,
+            "action": "Run native Desktop workers through Zeroshot, independent reviews and scoped verification.",
+            "expectedOutcome": "Candidate changes and review observations remain distinct; owning verification/integration boundaries decide progression."
+          },
+          {
+            "sequence": 4,
+            "action": "Inspect integration, system verification and business acceptance.",
+            "expectedOutcome": "Real accepted implementation is distinguished from preparation and diagnostic engine smoke."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "UJ-MES-EXPERIMENT-001",
+        "name": "Evaluate and review a worker harness",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-MES-ACTIVATION-001",
+          "CAP-MES-CONTINUITY-001",
+          "CAP-MES-HARNESS-001"
+        ],
+        "trigger": "An explicitly started bounded experiment has eligible local traces and software tasks.",
+        "outcome": "An evidenced qualifying, non-improving, failed or incomparable result, followed by owner-reviewed activation only when authorized.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Freeze baseline code, mutable surface, task partitions, evaluator, model/tools/environment, budgets, trial schedule and thresholds.",
+            "expectedOutcome": "Search cannot alter held-out tests, evaluation rules, permissions or promotion policy."
+          },
+          {
+            "sequence": 2,
+            "action": "Generate and execute candidate harness code on search tasks.",
+            "expectedOutcome": "Sources, failures, budget use and raw receipts are retained for every attempt."
+          },
+          {
+            "sequence": 3,
+            "action": "Freeze the selected candidate and independently evaluate it and the baseline on held-out tasks.",
+            "expectedOutcome": "Quality/authority failures block qualification; missing identity or evidence prevents improvement claims."
+          },
+          {
+            "sequence": 4,
+            "action": "Present exact evidence and obtain an owner activation decision.",
+            "expectedOutcome": "A qualifying approved version becomes available for future runs; rejection or no improvement leaves the active version unchanged."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "UJ-MES-RECOVER-001",
+        "name": "Resume exact work or roll back future runs",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityIds": [
+          "CAP-MES-ACTIVATION-001",
+          "CAP-MES-CONFIGURATION-001",
+          "CAP-MES-CONTINUITY-001",
+          "CAP-MES-DESKTOP-001"
+        ],
+        "trigger": "The operator pauses work, a lease expires, the host restarts or a harness needs rollback.",
+        "outcome": "Exact recovery with fresh ownership, or an explicitly authorized future run using a prior configuration.",
+        "steps": [
+          {
+            "sequence": 1,
+            "action": "Load current ProjectMemory/session and exact run, experiment and worktree checkpoints.",
+            "expectedOutcome": "Open sessions are resolved; stale context or ownership blocks effects."
+          },
+          {
+            "sequence": 2,
+            "action": "Reconcile raw attempts, completed effects and outstanding reviews.",
+            "expectedOutcome": "Only exact checkpointed results are reused; no duplicate work or stale-owner mutation occurs."
+          },
+          {
+            "sequence": 3,
+            "action": "Route pause, resume, cancel, review or rollback to its owning boundary.",
+            "expectedOutcome": "A typed receipt records the decision without silently changing active-run configuration."
+          },
+          {
+            "sequence": 4,
+            "action": "Conclude worker and parent work through candidate memory deltas.",
+            "expectedOutcome": "Only the ProjectMemory Gate promotes; a fresh task recovers the same provenance and authority distinctions."
+          }
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
             }
           }
         ]
@@ -11763,6 +12188,166 @@
             "artifact": {
               "artifactId": "requirements-closure-ho-001-v1",
               "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-MES-ACTIVATION-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-MES-ACTIVATION-001",
+        "userJourneyIds": [
+          "UJ-MES-EXPERIMENT-001",
+          "UJ-MES-RECOVER-001"
+        ],
+        "need": "Review qualified evidence before activation and restore a prior version for future runs.",
+        "benefit": "Optimization cannot silently alter behavior or authority.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-ACTIVATION-DECISION-001",
+          "AC-MES-ACTIVATION-POLICY-001",
+          "AC-MES-ROLLBACK-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-MES-CONFIGURATION-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-MES-CONFIGURATION-001",
+        "userJourneyIds": [
+          "UJ-MES-CHANGE-001",
+          "UJ-MES-RECOVER-001"
+        ],
+        "need": "Know each run configuration and replace bindings deliberately for future runs.",
+        "benefit": "Restart and evaluation remain meaningful.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-PINNING-001",
+          "AC-MES-REPLAY-001",
+          "AC-MES-SWAPS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-MES-CONTINUITY-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-MES-CONTINUITY-001",
+        "userJourneyIds": [
+          "UJ-MES-CHANGE-001",
+          "UJ-MES-EXPERIMENT-001",
+          "UJ-MES-RECOVER-001"
+        ],
+        "need": "See configuration, progress, metrics, decisions and recovery state in the existing operator view.",
+        "benefit": "Guide execution while durable memory and traceability preserve history.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-ACCEPTANCE-001",
+          "AC-MES-CONTROLS-001",
+          "AC-MES-OPERATOR-001",
+          "AC-MES-TRACE-MEMORY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-MES-DESKTOP-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-MES-DESKTOP-001",
+        "userJourneyIds": [
+          "UJ-MES-CHANGE-001",
+          "UJ-MES-RECOVER-001"
+        ],
+        "need": "Run actual native workers and independent reviewers through Zeroshot.",
+        "benefit": "Receive verified software with DevRelay-owned progression.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-AUTHORITY-001",
+          "AC-MES-INDEPENDENCE-001",
+          "AC-MES-NATIVE-001",
+          "AC-MES-RECOVERY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-MES-HARNESS-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-MES-HARNESS-001",
+        "userJourneyIds": [
+          "UJ-MES-EXPERIMENT-001"
+        ],
+        "need": "Search coding-worker harness code and compare it fairly on separate software tasks.",
+        "benefit": "Attribute measured outcomes to harness changes and retain useful failed or inconclusive evidence.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-CODE-SEARCH-001",
+          "AC-MES-COMPARABILITY-001",
+          "AC-MES-PARTITIONS-001",
+          "AC-MES-QUALIFICATION-001",
+          "AC-MES-RAW-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "US-MES-PRESET-001",
+        "userId": "USR-DEV-WORKFLOW-AUTHOR-001",
+        "capabilityId": "CAP-MES-PRESET-001",
+        "userJourneyIds": [
+          "UJ-MES-CHANGE-001"
+        ],
+        "need": "Choose a ready-made workflow with compatible semantic Modules, adapters and agents.",
+        "benefit": "Customize execution while retaining lifecycle obligations.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-CHANGE-LINEAGE-001",
+          "AC-MES-PREFLIGHT-001",
+          "AC-MES-PRESET-001",
+          "AC-MES-SUBSTITUTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
             }
           }
         ]
@@ -19340,6 +19925,328 @@
             "artifact": {
               "artifactId": "requirements-closure-ho-001-v1",
               "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-ACCEPTANCE-001",
+        "statement": "MES acceptance requires an installed-product Windows Desktop existing-project change exercising preset selection, actual native worker, independent review, scoped verification/integration, human controls, interruption recovery, SystemVerification and BusinessAcceptance. A bounded harness-code experiment supplies complete evidence even if no improvement is found. Construction bridge smoke and fixtures remain separately labeled.",
+        "verification": "Retain the actual installed-product evidence chain and owning acceptance record; demonstrate rejection, fresh-task recovery and evidenced experiment outcome. Preparation or engine smoke alone cannot establish release readiness.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-ACTIVATION-DECISION-001",
+        "statement": "A qualifying candidate becomes a new immutable future-run harness version only after independent verification and required owner activation evidence bind exact source, evaluation receipts, policy and prior active version. Rejection, stale decisions, substituted evidence, no improvement or pending review retain the current version with a durable outcome.",
+        "verification": "Approve an exact qualifying candidate through its owning boundary, reject stale/substituted evidence and replay without duplicate activation; verify the next run binding and unchanged active runs.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-ACTIVATION-POLICY-001",
+        "statement": "The proposed v1 configuration explicitly records review-required activation, retaining the existing owner boundary as a conservative implementation assumption rather than a user answer. Automatic proposal/evaluation may run within its grant. Automatic activation is a distinct future policy choice requiring explicit owner authorization and owning contract/Gate approval. Unset, ambiguous or unapproved activation policy cannot activate a harness.",
+        "verification": "Inspect policy provenance, preserve the unanswered clarification, and test missing policy, unapproved automatic activation and completed experiments awaiting review; none may activate.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-AUTHORITY-001",
+        "statement": "Zeroshot coordinates only DevRelay-authorized bounded requests. It cannot determine authoritative DAG readiness, approve Gates, expand grants, assert graph facts, promote ProjectMemory, integrate code or declare business acceptance. Engine completion and reviewer consensus remain candidate observations.",
+        "verification": "Attempt prohibited outputs and unauthorized dispatch, integration and promotion; verify owning Module/Gate evidence is required for each transition and Generic Core has no Zeroshot-specific authority branch.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-CHANGE-LINEAGE-001",
+        "statement": "The preset follows the actual existing-project change route: evolve the exact current requirements/overview pair for real scope changes, reconcile prior approved architecture/contracts, then derive approved work, dependencies and assignments before Core-ready dispatch. Stale RP-001 plans and preserved implementation candidates cannot be treated as approved MES work.",
+        "verification": "Demonstrate ArchitectureChangeSetDraft, ContractGeneration change lineage and ApprovedChangePackage-based WorkBreakdown with exact prior bytes and genuine replay/Gate receipts; reject fresh-project shortcuts and stale downstream inputs.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-CODE-SEARCH-001",
+        "statement": "An explicitly started bounded optimizer searches executable harness source for one coding-worker role: context selection/construction, retrieval ranking and tool scaffolding within declared capabilities. Baseline/candidate source and diffs are retained. Candidates execute only in isolated granted environments with enforceable trial, time, token/tool-call, filesystem and process/resource limits.",
+        "verification": "Generate and evaluate a real executable context/retrieval or tool-scaffolding code change; reject edits outside the surface and terminate over-budget candidates with diagnostics. Prompt-only tuning does not prove harness-code search.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-COMPARABILITY-001",
+        "statement": "Baseline and candidate evaluations pin the same attested base model/version and configuration, tools, environment, task inputs, evaluator and budgets, plus a preregistered trial schedule and repeated trials when noisy. Unknown/unverifiable model identity, changed conditions or incomplete evaluation yields an incomparable result and prevents comparable-improvement and improvement-based qualification claims.",
+        "verification": "Compare matched receipts, inject unknown model identity and tool/budget drift, and verify incomparable diagnostics instead of treating desktop-inherited or requested identity as attestation.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-CONTROLS-001",
+        "statement": "Existing typed pause, resume, cancel, retry, approve and reject requests route eligible work/experiment decisions through their established owning boundaries. Each request binds displayed state, target and policy; stale or unauthorized requests fail and exact replay produces no duplicate effect.",
+        "verification": "Exercise controls during search, held-out evaluation, review and recovery, including stale-view and duplicate requests; verify exact receipts and no Gate/grant bypass.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-INDEPENDENCE-001",
+        "statement": "Required independent reviews use attempts separate from the implementing worker and bind exact candidate bytes and resolved review policy. Workers cannot author or replace their required reviews. Findings route to bounded repair under the existing retry budget; changed subjects receive required revalidation and review before integration.",
+        "verification": "Inject self-review, swapped subjects, stale approvals, missing review and exhausted repair budgets; verify blocked progression and fresh exact-subject reviews after repair.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-NATIVE-001",
+        "statement": "An explicitly installed, version-pinned bounded Zeroshot binding coordinates actual native Codex Desktop workers and independent review attempts on Windows with exact request/response contracts, task plans, worktree leases and receipts. No API key or external service is assumed. Experimental bridge and smoke runs remain construction tooling until production binding conformance and acceptance are proven.",
+        "verification": "Run a real source-and-test change through the installed Windows product; retain native worker/reviewer receipts and distinguish observed executor identity from configuration labels, fixtures and engine smoke.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-OPERATOR-001",
+        "statement": "The existing compact Desktop view exposes preset/configuration, compatible choices, worker/review states, blockers, decisions, current/candidate harness, experiment budget/evaluation state, rollback availability and evidence links. Observed outcomes and unknown model/cost/performance fields are distinct; the view stays read-only.",
+        "verification": "Inspect success, failure, awaiting-review, incomparable and recovery scenarios against durable sources; verify source/view digests and raw-evidence navigation without hand-authoring internal artifacts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-PARTITIONS-001",
+        "statement": "Freeze disjoint software search/held-out manifests before search, separating project or task families to prevent near-duplicate leakage. Optimizers access search material only. A separate evaluator protects held-out tasks, tests and criteria; the selected candidate is frozen before held-out results are exposed. Evaluation criteria, reviews, contracts, permissions, ProjectMemory and promotion policy are outside the mutable surface.",
+        "verification": "Audit task provenance/overlap and attempt access to held-out tasks, tests and results plus edits to protected policy/evaluator files; reject each prohibited operation and retain evidence.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-PINNING-001",
+        "statement": "Each run stores one immutable content-bound configuration resolving preset, Modules, step adapters, agent/specialist configuration, executor, actual model identity or explicit unavailability, harness code, context strategy, tools, grants, budgets and quality/review/activation policy. Child attempts bind that configuration and exact approved project context.",
+        "verification": "Tamper with each component before dispatch/resume and verify rejection. Inspect worker/reviewer plan bindings; a requested model or desktop-inherited label must not count as actual model attestation.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-PREFLIGHT-001",
+        "statement": "Before dispatch or other effects, complete preflight validates exact Module and adapter versions, typed ports, ordered steps, conditional routes, downstream obligations, required Gates, trusted contributors, agent capabilities, environment readiness and grants. Missing, incompatible or unavailable bindings fail closed with actionable diagnostics.",
+        "verification": "Exercise each incompatibility class and assert zero worker/effect calls; reject deletion of a required stage, obligation or Gate.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-PRESET-001",
+        "statement": "The first release exposes at least one versioned existing-project software-change preset with declared slots and obligations. Selecting it resolves executable Module, adapter and agent bindings; two compatible execution configurations use the same preset without Generic Core changes. Quick, standard, assurance and inspect retain their existing policy meaning.",
+        "verification": "Qualify both configurations and execute at least one real end-to-end change. Preset metadata alone or relabeled fixed profiles cannot satisfy executable composition.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-QUALIFICATION-001",
+        "statement": "Freeze completion/quality criteria, authority invariants, regression limits, metrics, trial count, uncertainty rules and improvement thresholds before evaluation. All mandatory quality and authority checks must pass; speed or token savings cannot offset failure. No improvement, failure or incomparability leaves the current harness active and remains a valid recorded experiment outcome.",
+        "verification": "Evaluate qualifying, non-improving, noisy, failed-quality, authority-violating and incomplete cases against the frozen policy; permit only supported conclusions without requiring a fabricated gain.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-RAW-RECEIPTS-001",
+        "statement": "Every search and held-out attempt, including failed, canceled and timed-out trials, preserves complete permitted raw receipts: source/configuration/input digests, observed identities or unavailable reasons, prompt/context provenance, tool calls/outputs, evaluator output/scores, timestamps/durations, budget use and observed token/cost fields. Summaries link to raw evidence and never replace it; required missing evidence makes the result incomplete.",
+        "verification": "Account for every planned/attempted trial, rederive scores from raw evaluator output, reject missing required receipts and verify secret-safe retention/redacted views with explicit unknown costs.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-RECOVERY-001",
+        "statement": "Interrupted native execution/review preserves durable receipts and worktree leases. Expired or stale owners cannot commit or release a successor lease. Fresh ownership reconciles saved requests and intermediate queue/completion records before resuming. Effect-bearing work is never blindly retried.",
+        "verification": "Induce lease expiry around queue preparation, effect checkpoint and parent transition; prove unchanged unauthorized parent state, one logical completion, no duplicate dispatch/effect and rejection of stale-owner writes.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-REPLAY-001",
+        "statement": "Restart and checkpoint replay load exact stored configuration and input bytes. Changed code, adapter/tool identity, grants or unavailable pinned dependencies block progression instead of silently falling back. Matching checkpointed effects are revalidated and reused without reinvocation.",
+        "verification": "Restart around effect checkpoints and induce dependency/configuration drift; verify historical inspection, explicit blocking and zero repeated effect calls.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-ROLLBACK-001",
+        "statement": "Keep the prior approved harness/configuration available for explicitly authorized future-run rollback with compatibility preflight and a durable receipt. Rollback preserves all experiment/activation history and cannot rewrite completed evidence or silently change active workers.",
+        "verification": "Activate and roll back a version, interrupt/resume the transition, then verify future-run configuration, active-run immutability, historical receipt integrity and exact replay.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-SUBSTITUTION-001",
+        "statement": "Semantic Module substitution and adapter substitution have distinct compatibility checks. A Module replacement satisfies preset-slot inputs, outputs, steps/outcomes, downstream obligations and trusted traceability support; an adapter implements one exact operation/step without semantic authority. Published versions remain immutable.",
+        "verification": "Independently swap two compatible conformance Modules in a declared slot and two compatible adapters; reject mismatched ports, obligations or contributor coverage and inspect Generic Core for identity-specific branches.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-SWAPS-001",
+        "statement": "First-release Module, adapter, agent, model, tool, context and harness replacements take effect only in a new immutable run after complete preflight and authority checks. Active runs cannot hot-swap. Unsupported mid-run migration returns a diagnostic; future migration requires a separately versioned approved contract and lineage.",
+        "verification": "Attempt swaps during execution, review and checkpoint replay and confirm unchanged configuration; start an authorized successor run and verify predecessor/configuration lineage.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "AC-MES-TRACE-MEMORY-001",
+        "statement": "Preset runs, code candidates, evaluations and activation decisions connect to existing traceability/ProjectMemory through declared artifacts and trusted contributors. Retain all graph history and candidate/approved scopes, checkpoint prepared graph updates before merge, bind task bootstrap/context digests and conclude workers as candidate-only memory deltas for the ProjectMemory Gate.",
+        "verification": "Verify contributor ownership, checkpoint-before-merge, exact replay and historical retention; recover configuration/experiment context in a fresh task and reject worker-authored approved graph or memory facts.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
             }
           }
         ]
@@ -27091,6 +27998,238 @@
         ]
       },
       {
+        "id": "NFR-MES-AUTHORITY-001",
+        "category": "security",
+        "statement": "Engine coordination and executable harness candidates stay within existing grants, isolation and owning authority boundaries.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-ACTIVATION-001",
+            "CAP-MES-DESKTOP-001",
+            "CAP-MES-HARNESS-001"
+          ]
+        },
+        "measure": "Forbidden filesystem/process/network effects and unauthorized policy, graph, memory or Gate mutations.",
+        "target": "Zero successful unauthorized effects; each denied attempt yields attributable diagnostics.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-AUTHORITY-001",
+          "AC-MES-CODE-SEARCH-001",
+          "AC-MES-PARTITIONS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-BUDGETS-001",
+        "category": "performance",
+        "statement": "Experiments enforce configured trial, elapsed-time, token/tool and resource limits; unknown consumption cannot establish budget compliance.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-HARNESS-001"
+          ]
+        },
+        "measure": "Effects after budget exhaustion and trials without enforceable limits.",
+        "target": "Zero further dispatch after exhaustion; unsupported enforcement blocks start or yields an incomplete result.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-CODE-SEARCH-001",
+          "AC-MES-RAW-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-COMPATIBILITY-001",
+        "category": "compatibility",
+        "statement": "Composition and substitution preserve exact typed obligations and fail before effects when a selected binding is incompatible.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-CONFIGURATION-001",
+            "CAP-MES-PRESET-001"
+          ]
+        },
+        "measure": "Invalid configurations producing executor/effect calls.",
+        "target": "Zero across required compatibility and tampering cases.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-PREFLIGHT-001",
+          "AC-MES-SUBSTITUTION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-DETERMINISM-001",
+        "category": "reliability",
+        "statement": "Core-owned resolution, diagnostics and checkpoint reuse remain deterministic for exact inputs even when workers are nondeterministic.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-CONFIGURATION-001",
+            "CAP-MES-DESKTOP-001"
+          ]
+        },
+        "measure": "Configuration digest equality and repeated checkpointed effects.",
+        "target": "100 percent equality for deterministic resolution; zero repeated checkpointed effects.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-PINNING-001",
+          "AC-MES-RECOVERY-001",
+          "AC-MES-REPLAY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-EVIDENCE-001",
+        "category": "observability",
+        "statement": "Evaluation and activation conclusions are reproducible from retained raw observations and exact immutable inputs.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-ACTIVATION-001",
+            "CAP-MES-CONTINUITY-001",
+            "CAP-MES-HARNESS-001"
+          ]
+        },
+        "measure": "Attempt-to-receipt coverage and unsupported model, improvement or cost claims.",
+        "target": "100 percent attempted-trial receipt coverage; zero unsupported claims.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-COMPARABILITY-001",
+          "AC-MES-QUALIFICATION-001",
+          "AC-MES-RAW-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-PRIVACY-001",
+        "category": "privacy",
+        "statement": "Task/context/tool evidence remains local under declared retention and access policy, with protected secrets and redacted operator views; external transmission requires a separate explicit grant.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-CONTINUITY-001",
+            "CAP-MES-HARNESS-001"
+          ]
+        },
+        "measure": "Secret exposure and undeclared external transmission.",
+        "target": "Zero undeclared transmission or exposed secrets in operator views; evidence omissions remain explicit.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-CODE-SEARCH-001",
+          "AC-MES-OPERATOR-001",
+          "AC-MES-RAW-RECEIPTS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-RECOVERY-001",
+        "category": "reliability",
+        "statement": "Interrupted execution, evaluation and activation recover exact durable state with fresh ownership and preserved historical evidence.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-ACTIVATION-001",
+            "CAP-MES-CONTINUITY-001",
+            "CAP-MES-DESKTOP-001"
+          ]
+        },
+        "measure": "Duplicate effects, stale-owner commits and lost prior configurations after interruption.",
+        "target": "Zero across checkpoint, lease-expiry, activation and rollback scenarios.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-RECOVERY-001",
+          "AC-MES-ROLLBACK-001",
+          "AC-MES-TRACE-MEMORY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NFR-MES-USABILITY-001",
+        "category": "usability",
+        "statement": "Ordinary use extends the existing compact facade/operator view with selection, outcomes and decisions; exact provenance remains expandable.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-CONTINUITY-001",
+            "CAP-MES-PRESET-001"
+          ]
+        },
+        "measure": "Required hand-authored internal artifacts and mismatches between displayed and durable state.",
+        "target": "Zero hand-authored internal artifacts on the supported path; each decision/metric resolves to exact source evidence or an unavailable reason.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-MES-CONTROLS-001",
+          "AC-MES-OPERATOR-001",
+          "AC-MES-PRESET-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
         "id": "NFR-PM-ACCURACY-001",
         "category": "reliability",
         "statement": "DevRelay must not execute from missing, stale, conflicting, unsupported, or unverifiable project memory.",
@@ -31510,6 +32649,192 @@
             "artifact": {
               "artifactId": "requirements-closure-ho-001-v1",
               "digest": "sha256:f3eaa104311ad6cb588b655174f03ee6a8487825d5d4e8001479d73b5c3e8e12"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-AUTHORITY-001",
+        "category": "technical",
+        "statement": "Composition, engine, optimizer and views reuse Core, owning Gates, QualityPolicy, WorkContinuity, HumanOrchestration, ProjectMemory and traceability. Generic Core stays free of Module, adapter, Zeroshot or Meta-Harness identity branches.",
+        "rationale": "Configurable implementations cannot form a parallel authority system.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-CONTINUITY-001",
+            "CAP-MES-DESKTOP-001",
+            "CAP-MES-HARNESS-001",
+            "CAP-MES-PRESET-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-AUTHORITY-001",
+          "AC-MES-SUBSTITUTION-001",
+          "AC-MES-TRACE-MEMORY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-CHANGE-RECOVERY-001",
+        "category": "technical",
+        "statement": "Repair stale downstream planning through the existing-project change lifecycle while preserving prior baselines, candidates and diagnostics as distinct history. Fixtures/smoke cannot establish implementation, acceptance or release readiness.",
+        "rationale": "The repository already has approved lineage and unaccepted candidate changes.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-CONTINUITY-001",
+            "CAP-MES-DESKTOP-001",
+            "CAP-MES-PRESET-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-ACCEPTANCE-001",
+          "AC-MES-CHANGE-LINEAGE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-EVALUATION-001",
+        "category": "security",
+        "statement": "Optimization cannot change the base model within a comparable experiment, held-out tasks/tests, evaluator, metrics, budget policy, review, contracts, permissions, approvals or ProjectMemory authority.",
+        "rationale": "Search must improve bounded code without gaming evaluation or expanding authority.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-HARNESS-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-COMPARABILITY-001",
+          "AC-MES-PARTITIONS-001",
+          "AC-MES-QUALIFICATION-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-FIRST-RELEASE-001",
+        "category": "business",
+        "statement": "MES-001 initially delivers one existing-project software-change preset and one coding-worker optimization role, retaining prior approved capabilities without arbitrary stage deletion or a new general workflow language.",
+        "rationale": "A bounded release proves composition and harness evaluation without replacing the product.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-HARNESS-001",
+            "CAP-MES-PRESET-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-CODE-SEARCH-001",
+          "AC-MES-PREFLIGHT-001",
+          "AC-MES-PRESET-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-OWNER-ACTIVATION-001",
+        "category": "business",
+        "statement": "Retain owner-reviewed activation for proposed v1 implementation. The unanswered clarification is not resolved by this assumption; automatic activation remains a future explicit owner-approved policy change, not a default or optimizer decision.",
+        "rationale": "Existing human authority applies while drafting proceeds without fabricated product intent.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-ACTIVATION-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-ACTIVATION-DECISION-001",
+          "AC-MES-ACTIVATION-POLICY-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-SWAPS-001",
+        "category": "compatibility",
+        "statement": "Only new-run swaps are supported initially; configuration changes require exact predecessor lineage and full preflight without changing active attempts or published versions.",
+        "rationale": "Immutable runs preserve comparison and recovery.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-ACTIVATION-001",
+            "CAP-MES-CONFIGURATION-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-REPLAY-001",
+          "AC-MES-ROLLBACK-001",
+          "AC-MES-SWAPS-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "CON-MES-WINDOWS-001",
+        "category": "platform",
+        "statement": "The product remains Codex/ChatGPT Desktop on Windows with native agents. Zeroshot is a bounded construction/execution integration; the experimental bridge is not an accepted production binding. No API keys, external model services, hosted backend or non-Windows product support are assumed.",
+        "rationale": "Owner direction retains Windows/native execution and demands honest maturity.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-MES-DESKTOP-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-MES-ACCEPTANCE-001",
+          "AC-MES-NATIVE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
             }
           }
         ]
@@ -41216,6 +42541,111 @@
         ]
       },
       {
+        "id": "TERM-MES-ACTIVATION-001",
+        "term": "Harness activation",
+        "definition": "An owning-boundary decision making an exact qualified harness available to future runs under recorded policy; it does not alter active runs or give the optimizer approval authority.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-MES-CONFIGURATION-001",
+        "term": "Immutable run configuration",
+        "definition": "Exact content-bound preset, Module, adapter, agent, model observation, harness, tools, inputs, grants, budgets and policies for one run and its child attempts.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-MES-HARNESS-CODE-001",
+        "term": "Worker harness code",
+        "definition": "Executable context-selection, retrieval and tool-scaffolding behavior around a coding worker, searched within a granted surface while semantic contracts and authority remain fixed.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-MES-HELD-OUT-001",
+        "term": "Held-out software evaluation",
+        "definition": "Independent evaluation on preregistered software tasks excluded from search and candidate selection, with protected tests, fixed conditions and raw evidence.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-MES-INCOMPARABLE-001",
+        "term": "Incomparable experiment",
+        "definition": "An experiment that cannot support an improvement comparison because required identities, matched conditions, task separation or complete trial evidence are unavailable or invalid.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-MES-MODULE-SWAP-001",
+        "term": "Semantic Module substitution",
+        "definition": "Replacement in an explicitly compatible preset slot, requiring port, outcome, obligation and contributor compatibility; distinct from adapter selection for the same operation.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-MES-PRESET-001",
+        "term": "Engineering workflow preset",
+        "definition": "A versioned executable composition of declared semantic Module slots, bindings and obligations, validated before effects; distinct from a fixed quality-policy profile.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
         "id": "TERM-PM-BASELINE-001",
         "term": "ProjectMemoryBaseline",
         "definition": "The authoritative content-addressed project-scoped memory state containing active, pending, superseded, and historical records plus exact source identities.",
@@ -44033,6 +45463,81 @@
         ]
       },
       {
+        "id": "ASM-MES-MEASUREMENT-001",
+        "statement": "Trial counts, budgets, evaluator ownership and thresholds will be fixed in versioned experiment policy before search. Actual live quality, latency, tokens and cost remain unknown until measured.",
+        "status": "unconfirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-MES-MODEL-IDENTITY-001",
+        "statement": "Native Desktop may expose an attested actual model identity; availability is unproven. If unavailable, execution records the limitation and comparable-improvement or improvement-based qualification claims are blocked.",
+        "status": "unconfirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-MES-OPTIMIZER-001",
+        "statement": "Meta-Harness-style executable-code search can be exposed through a replaceable bounded binding compatible with native Windows Desktop execution; upstream wrapper compatibility is not established by this candidate.",
+        "status": "unconfirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-MES-REVIEW-DEFAULT-001",
+        "statement": "The parent proposed retaining existing owner approval for v1 activation while allowing bounded automatic proposal/evaluation. This conservative implementation assumption is not an owner answer to Q-MES-HARNESS-ACTIVATION-001; candidate activation still requires owner review.",
+        "status": "unconfirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ASM-MES-TASK-CORPUS-001",
+        "statement": "A local software-task corpus with suitable permissions and separable project/task families can be assembled; exact tasks and partition must be reviewed and frozen before search.",
+        "status": "unconfirmed",
+        "blocking": false,
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "GOAL-MES-001",
+              "digest": "sha256:229eb5f585eeaf1609a3cbf26103e23f53a5aaab4c65563eb1c8a92dbff8add0"
+            }
+          }
+        ]
+      },
+      {
         "id": "ASM-PM-HOST-001",
         "statement": "ChatGPT/Codex Desktop on Windows remains the only release-defining interactive host for PM-001.",
         "status": "confirmed",
@@ -44975,6 +46480,11 @@
       "GitHub repository settings allowing the owner to set main as default, enable branch protection or rulesets, and enable private vulnerability reporting.",
       "Host-enforced repository, process, network, and secret policy",
       "Independent human review before stable release promotion.",
+      "MES-001: Exact current requirements/overview pair and the existing-project route reconciling prior architecture/contracts and stale work/dependency/assignment lineage.",
+      "MES-001: Exact qualification and verification evidence plus owner activation decision; future automatic activation requires explicit policy authorization.",
+      "MES-001: Existing Core, canonical artifacts, owning Gates, trusted contributors, durable checkpoints, ProjectMemory, QualityPolicy, WorkContinuity and HumanOrchestration.",
+      "MES-001: Explicitly installed, pinned Zeroshot/native Desktop binding with Windows capability checks, isolated worktrees, durable receipts and independent review support.",
+      "MES-001: Frozen local corpus, disjoint search/held-out partitions, protected evaluator, attested model/tools/environment, enforceable budgets and complete raw receipts for comparable evaluation.",
       "Optional planning-system adapters only after bounded adapter evaluation and owner approval.",
       "Owner-approved version-pinned adapter evaluations and first-download grants for every selected upstream provider.",
       "Pinned Graphology and Graphology-DAG libraries behind the Core graph-mechanics boundary.",
@@ -45057,6 +46567,13 @@
       "Inferred current state could be mistaken for approved intended architecture.",
       "Instrumentation can add overhead or nondeterminism unless timing and unavailable host observations are modeled explicitly.",
       "Language-specific analyzer semantics could leak into the provider-neutral snapshot contract.",
+      "MES-001: Construction bridge smoke or engine consensus may be mistaken for implementation or acceptance; retain exact maturity and authority labels.",
+      "MES-001: Missing/changing model identity, tools, budgets or cost observations may prevent comparability; report incomparable or unknown rather than inventing gains.",
+      "MES-001: Port-compatible Module swaps may omit downstream obligations or trusted contributors; complete preflight and semantic conformance evidence must detect this.",
+      "MES-001: Raw evidence may contain sensitive context; local access/retention policy, secret-safe capture and redacted views must protect it without concealing missing evidence.",
+      "MES-001: Search may leak held-out task families or overfit evaluator feedback; protected partitions, frozen selection and independent evaluation are required.",
+      "MES-001: Stale planning, expired ownership or partial queue/completion records may cause duplicate or unauthorized work; exact lineage and durable recovery must precede dispatch.",
+      "MES-001: Treating the conservative review assumption as an owner answer or automatic-activation consent would violate the existing authority boundary.",
       "Mandatory bootstrap can add friction or block recovery unless read-only inspection and RoadmapNotInitialized have explicit routes.",
       "Mem0 indexing or model-backed extraction can be nondeterministic, stale, unavailable, or transmit data unless exact configuration, receipts, local defaults, and native equivalence are enforced.",
       "Module boundaries may drift into duplicated responsibility unless every contract keeps one primary purpose.",
@@ -45135,6 +46652,12 @@
       "Live JSON Schema 2020-12 generator and pinned validator path",
       "Live native repository inventory adapter and optional analyzer adapter contracts",
       "Local version-pinned Mem0 adapter evaluation, live provider attestation, synchronization verification, retrieval receipts, and native equivalence fallback.",
+      "MES-001: Bounded native Windows Desktop worker/reviewer integration through Zeroshot with independent verification and preserved authority.",
+      "MES-001: Executable coding-worker harness search, isolated protected evaluation and complete baseline/candidate raw receipts.",
+      "MES-001: Existing operator, human controls, traceability, ProjectMemory and recovery integration with installed-product acceptance evidence.",
+      "MES-001: Immutable configuration and new-run swap contracts, exact predecessor lineage, drift diagnostics and checkpoint replay.",
+      "MES-001: Owner-reviewed activation and future-run rollback with exact candidate/policy/decision evidence and retained versions.",
+      "MES-001: Versioned existing-project preset, declared semantic slots and full compatibility preflight with two compatible execution configurations.",
       "One complete DevRelay V1 end-to-end dogfood report followed by evidence-driven optimization recommendations.",
       "Optional Godot engineering pack with compatibility matrix, permissions, receipts, GdUnit4 evidence, export, smoke, and release workflow.",
       "ProjectControl cross-cutting Module, reconciliation diagnostics, operator projection, and productivity assessment.",
@@ -45164,6 +46687,23 @@
       "WorkContinuity cross-cutting Module, exact identity and reuse contracts, durable index, concurrency guard, and lineage evidence."
     ],
     "requiredEvidence": [
+      "MES-001/compatibility-negative-preflight",
+      "MES-001/complete-search-held-out-raw-receipts",
+      "MES-001/engine-authority-and-review-independence",
+      "MES-001/existing-project-change-lineage",
+      "MES-001/experiment-policy-protected-partitions",
+      "MES-001/harness-baseline-candidate-source-diffs",
+      "MES-001/immutable-configuration-and-swap-boundaries",
+      "MES-001/installed-windows-existing-project-acceptance",
+      "MES-001/lease-expiry-interruption-exact-replay",
+      "MES-001/model-tool-environment-budget-attestations",
+      "MES-001/module-and-adapter-substitution",
+      "MES-001/native-desktop-worker-reviewer-receipts",
+      "MES-001/operator-controls-metrics-unknowns",
+      "MES-001/owner-reviewed-activation-rollback",
+      "MES-001/preset-selection-and-composition",
+      "MES-001/qualification-incomparable-no-improvement",
+      "MES-001/traceability-memory-fresh-task-recovery",
       "architecture-discovery/analyzer-provenance",
       "architecture-discovery/checkpoint-replay",
       "architecture-discovery/confidence-gaps",
@@ -45407,8 +46947,8 @@
   },
   "approvalEvidence": [
     {
-      "artifactId": "requirements-gate-approval-ho-001-human-orchestration-v1",
-      "digest": "sha256:d1a274b944e5859a02d82f7d1c782478bd96cac6f2ec5512ebcef6e7c0dd17db"
+      "artifactId": "MES-001-REQUIREMENTS-APPROVAL",
+      "digest": "sha256:015ec77a91786a1e0a8e04417d202fde8c55d3ec042e89e8a804439ef082031d"
     }
   ]
 }

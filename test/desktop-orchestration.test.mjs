@@ -95,10 +95,84 @@ test("Desktop task adapter binds every observation and exact memory context to o
   assert.throws(() => createDesktopTaskPlan({ runId: "RUN-DO-1", workItem: { id: "WI-A" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: lease, assignment: {}, executor: {}, promptArtifact: ref("PROMPT-A"), memoryBootstrap: memoryBootstrap("ATT-A", "d".repeat(40)) }), /revision drifted/u);
   assert.throws(() => createDesktopTaskPlan({ runId: "RUN-DO-1", workItem: { id: "WI-A" }, projectId: "devrelay", startingRevision: REVISION, worktreeLease: lease, assignment: {}, executor: {}, promptArtifact: ref("PROMPT-A"), memoryBootstrap: memoryBootstrap("ATT-OTHER") }), /task or attempt identity drifted/u);
   assert.throws(() => revalidateDesktopTaskPlan({ plan: structuredClone(plan), memoryBootstrap: memoryBootstrap("ATT-OTHER") }), /task or attempt identity drifted/u);
+  for (const changes of [{ runId: "RUN-OTHER" }, { revision: "d".repeat(40) }, { status: "quarantined" }, { attemptId: "ATT-OTHER" }]) {
+    const changedLease = { ...lease, ...changes };
+    if (!changes.attemptId) assert.throws(() => createDesktopTaskPlan({ ...plan, workItem: { id: plan.workItemId },
+      worktreeLease: changedLease, memoryBootstrap: memoryBootstrap() }), /worktree.*(disagree|active)|active worktree/);
+    const { planDigest, ...body } = structuredClone(plan);
+    body.worktreeLease = changedLease;
+    const substituted = { ...body, planDigest: canonicalJsonDigest(body) };
+    assert.throws(() => revalidateDesktopTaskPlan({ plan: substituted, memoryBootstrap: memoryBootstrap() }), /worktree.*(disagree|active)|active worktree/);
+  }
   const revalidated = revalidateDesktopTaskPlan({ plan: structuredClone(plan), memoryBootstrap: memoryBootstrap() });
   assert.equal((await adapter.invoke("create", { plan: revalidated })).taskId, "TASK-A");
   assert.deepEqual(adapter.authority, { gates: false, readiness: false, graph: false, verification: false, integration: false });
   await assert.rejects(() => adapter.invoke("inspect", { plan, taskId: "TASK-X" }), /substituted/u);
+});
+
+test("task plan storage survives restart and rejects rebinding without advancing the journal", async t => {
+  const fx = storageFixture(t);
+  const runtime = createDesktopOrchestrationRuntime({ storage: fx.storage });
+  runtime.initialize(orchestrationPlan());
+  const bootstrap = memoryBootstrap();
+  const makePlan = (promptArtifact = ref("PROMPT-A")) => createDesktopTaskPlan({ runId: "RUN-DO-1", workItem: { id: "WI-A" },
+    projectId: "devrelay", startingRevision: REVISION,
+    worktreeLease: { apiVersion: "devrelay.dev/v1alpha1", kind: "WorktreeLease", attemptId: "ATT-A", runId: "RUN-DO-1",
+      workItemId: "WI-A", revision: REVISION, workspace: "C:/worktrees/ATT-A", status: "active", cleanupDisposition: "retain" },
+    assignment: { specialistId: "implementation" }, executor: { id: "chatgpt.desktop-fixture" }, promptArtifact, memoryBootstrap: bootstrap });
+  const plan = makePlan();
+  runtime.prepareTask({ plan, memoryBootstrap: bootstrap });
+  const saved = runtime.inspect("RUN-DO-1");
+  assert.equal(saved.state.workState["WI-A"].status, "prepared");
+  assert.throws(() => runtime.record("RUN-DO-1", { workItemId: "WI-A", status: "dispatched", receipt: {} }), /reserved dispatch receipt/);
+  assert.deepEqual(runtime.prepareTask({ plan, memoryBootstrap: bootstrap }), saved);
+  assert.throws(() => runtime.prepareTask({ plan: makePlan(ref("OTHER-PROMPT", canonicalJsonDigest({ other: true }))), memoryBootstrap: bootstrap }), /another task plan/);
+  assert.deepEqual(runtime.inspect("RUN-DO-1"), saved);
+  const provider = { id: "chatgpt.desktop-fixture", version: "1.0.0" };
+  assert.throws(() => runtime.reserveTaskDispatch({ plan, memoryBootstrap: bootstrap, provider: { ...provider, id: "other" } }), /provider differs/);
+  runtime.reserveTaskDispatch({ plan, memoryBootstrap: bootstrap, provider });
+  const reserved = runtime.inspect("RUN-DO-1");
+  let calls = 0;
+  const adapter = createDesktopTaskAdapter({ providerId: provider.id, providerVersion: provider.version,
+    handlers: Object.fromEntries(["create", "inspect", "wait", "message", "handoff"].map(operation => [operation, async () => {
+      calls++;
+      assert.equal(runtime.inspect("RUN-DO-1").state.workState["WI-A"].dispatchReservation.status, "reserved");
+      return { taskId: "TASK-A", status: "ready" };
+    }])) });
+  const receipt = await adapter.invoke("create", { plan });
+  fx.storage.close();
+  const reopened = createLocalHostStorage({ rootDirectory: path.join(fx.root, "state") });
+  try {
+    const resumed = createDesktopOrchestrationRuntime({ storage: reopened });
+    const restored = resumed.loadTaskPlan("RUN-DO-1", { workItemId: "WI-A", memoryBootstrap: memoryBootstrap() });
+    assert.deepEqual(restored, plan);
+    assert.deepEqual(resumed.prepareTask({ plan: restored, memoryBootstrap: memoryBootstrap() }), reserved);
+    assert.throws(() => resumed.loadTaskPlan("RUN-DO-1", { workItemId: "WI-A", memoryBootstrap: memoryBootstrap("ATT-OTHER") }), /task or attempt identity drifted/);
+    assert.throws(() => resumed.loadTaskPlan("RUN-DO-1", { workItemId: "WI-B", memoryBootstrap: bootstrap }), /absent/);
+    assert.deepEqual(resumed.inspect("RUN-DO-1"), reserved);
+    assert.equal(resumed.recover("RUN-DO-1").duplicateEffectsAllowed, false);
+    assert.throws(() => resumed.reserveTaskDispatch({ plan: restored, memoryBootstrap: bootstrap, provider }), /reconcile without repeating/);
+    const { receiptDigest, ...wrongBody } = receipt;
+    wrongBody.provider = { ...provider, version: "other" };
+    assert.throws(() => resumed.recordTaskDispatch({ plan: restored, memoryBootstrap: bootstrap,
+      receipt: { ...wrongBody, receiptDigest: canonicalJsonDigest(wrongBody) } }), /receipt differs/);
+    resumed.recordTaskDispatch({ plan: restored, memoryBootstrap: bootstrap, receipt });
+    const recorded = resumed.inspect("RUN-DO-1");
+    assert.equal(recorded.state.workState["WI-A"].status, "dispatched");
+    assert.deepEqual(resumed.recordTaskDispatch({ plan: restored, memoryBootstrap: bootstrap, receipt }), recorded);
+    assert.throws(() => resumed.record("RUN-DO-1", { workItemId: "WI-A", status: "completed", receipt }), /bound provider observation/);
+    const { receiptDigest: originalDigest, ...progressBody } = receipt;
+    Object.assign(progressBody, { operation: "wait", status: "completed", taskId: "TASK-OTHER" });
+    assert.throws(() => resumed.record("RUN-DO-1", { workItemId: "WI-A", status: "completed",
+      receipt: { ...progressBody, receiptDigest: canonicalJsonDigest(progressBody) } }), /bound provider observation/);
+    assert.equal(resumed.inspect("RUN-DO-1").version, recorded.version);
+    progressBody.taskId = receipt.taskId;
+    const fixtureProgress = { ...progressBody, receiptDigest: canonicalJsonDigest(progressBody) };
+    resumed.record("RUN-DO-1", { workItemId: "WI-A", status: "completed", receipt: fixtureProgress });
+    const completedState = resumed.inspect("RUN-DO-1");
+    assert.deepEqual(resumed.record("RUN-DO-1", { workItemId: "WI-A", status: "completed", receipt: fixtureProgress }), completedState);
+    assert.equal(calls, 1, "reservation recovery and receipt replay never call the provider");
+  } finally { reopened.close(); }
 });
 
 test("high-risk and cross-cutting changes require independent adversarial review", () => {
@@ -133,12 +207,28 @@ test("durable worktree leases recover exact Git state after manager restart", (t
   const revision = git("rev-parse", "HEAD");
   const first = createDurableGitWorktreeManager({ repositoryPath: repository, worktreeRoot: worktrees, storage: fx.storage });
   assert.equal(first.allocate({ attemptId: "ATT-1", runId: "RUN-1", workItemId: "WI-1", revision }).status, "active");
+  const beforeDispatch = fx.storage.readRun("worktree-lease:ATT-1");
+  const readyWorkspace = first.inspectForDispatch("ATT-1");
+  assert.equal(readyWorkspace.observedRevision, revision);
+  assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-1"), beforeDispatch);
+  writeFileSync(path.join(readyWorkspace.workspace, "base.txt"), "pending changes\n");
+  assert.throws(() => first.inspectForDispatch("ATT-1"), /uncommitted or untracked/);
+  assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-1"), beforeDispatch);
+  writeFileSync(path.join(readyWorkspace.workspace, "base.txt"), "base\n");
+  const untracked = path.join(readyWorkspace.workspace, "untracked.txt");
+  writeFileSync(untracked, "untracked work\n");
+  assert.throws(() => first.inspectForDispatch("ATT-1"), /uncommitted or untracked/);
+  assert.equal(readFileSync(untracked, "utf8"), "untracked work\n");
+  rmSync(untracked);
   first.bindTask("ATT-1", "TASK-1");
+  assert.throws(() => first.inspectForDispatch("ATT-1"), /active unbound worktree/);
   const restarted = createDurableGitWorktreeManager({ repositoryPath: repository, worktreeRoot: worktrees, storage: fx.storage });
   assert.equal(restarted.recover("ATT-1").observedRevision, revision);
   assert.equal(restarted.inspect("ATT-1").taskId, "TASK-1");
   const allocation = { attemptId: "ATT-1", runId: "RUN-1", workItemId: "WI-1", revision };
   const beforeRetry = fx.storage.readRun("worktree-lease:ATT-1");
+  assert.equal(restarted.bindTask("ATT-1", "TASK-1").taskId, "TASK-1");
+  assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-1"), beforeRetry, "task binding replay must not advance the journal");
   assert.equal(restarted.allocate(allocation).taskId, "TASK-1");
   assert.equal(restarted.allocate({ ...allocation, taskId: "TASK-1" }).observedRevision, revision);
   for (const change of [{ runId: "RUN-OTHER" }, { workItemId: "WI-OTHER" },
@@ -164,6 +254,13 @@ test("durable worktree leases recover exact Git state after manager restart", (t
   assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-1"), beforeRetry);
   writeFileSync(path.join(workspace, "base.txt"), "base\n");
   assert.equal(restarted.dispose("ATT-1", { disposition: "completed" }).status, "disposed");
+  assert.throws(() => restarted.inspectForDispatch("ATT-1"), /active unbound worktree/);
+  const abandoned = restarted.allocate({ attemptId: "ATT-ABANDONED", runId: "RUN-1", workItemId: "WI-2", revision });
+  assert.equal(abandoned.status, "active");
+  restarted.dispose("ATT-ABANDONED", { disposition: "abandoned" });
+  const disposedState = fx.storage.readRun("worktree-lease:ATT-ABANDONED");
+  assert.throws(() => restarted.bindTask("ATT-ABANDONED", "TASK-LATE"), /existing active worktree/);
+  assert.deepEqual(fx.storage.readRun("worktree-lease:ATT-ABANDONED"), disposedState);
 });
 
 test("automatic memory journal bootstraps exact repository memory and preserves conclusion candidates", (t) => {

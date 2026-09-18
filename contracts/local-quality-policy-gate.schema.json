@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-quality-policy-gate/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "candidate", "approval", "previousBaseline", "baseline", "scope", "activatesPolicy", "preparationDigest"],
+  "properties": {
+    "kind": { "const": "LocalQualityPolicyGatePreparation" },
+    "candidate": { "$ref": "#/$defs/bytes" },
+    "approval": { "$ref": "#/$defs/bytes" },
+    "previousBaseline": { "anyOf": [{ "$ref": "#/$defs/bytes" }, { "type": "null" }] },
+    "baseline": { "$ref": "#/$defs/bytes" },
+    "scope": { "const": "validated-policy-promotion" },
+    "activatesPolicy": { "const": false },
+    "preparationDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "$defs": {
+    "bytes": {
+      "type": "object", "additionalProperties": false, "required": ["ref", "bytesBase64"],
+      "properties": {
+        "ref": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+        "bytesBase64": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

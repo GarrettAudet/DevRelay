@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/specialist-assignment-context-materialization/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "handoffDigest", "configurationPath", "configurationDigest", "plan", "lifecycleComplete"],
+  "properties": {
+    "kind": { "const": "DesktopSpecialistAssignmentContextMaterialization" },
+    "handoffDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "configurationPath": { "type": "string", "minLength": 1 },
+    "configurationDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "plan": { "$ref": "https://devrelay.dev/host/local-specialist-assignment-inputs/v1" },
+    "lifecycleComplete": { "const": false }
+  }
+}

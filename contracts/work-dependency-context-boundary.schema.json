@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/work-dependency-context-boundary/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "state", "route", "workBaseline", "workBoundary", "lifecycleComplete"],
+  "properties": {
+    "kind": { "const": "DesktopWorkDependencyContextBoundary" },
+    "state": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "route": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "workBaseline": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "workBoundary": { "$ref": "https://devrelay.dev/host/work-breakdown-context-boundary/v1" },
+    "lifecycleComplete": { "const": false }
+  }
+}

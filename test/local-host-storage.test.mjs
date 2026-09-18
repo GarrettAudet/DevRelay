@@ -52,7 +52,7 @@ test("read-only storage inspects existing bytes and rejects every mutating opera
     assert.equal(readonly.readRun("readonly").version, 0);
     assert.equal(readonly.verifyIntegrity().database, "ok");
     assert.ok(readonly.getArtifact(stored).length > 0);
-    for (const operation of ["putArtifact", "initializeRun", "acquireLease", "commitTransition", "releaseLease"]) {
+    for (const operation of ["putArtifact", "initializeRun", "acquireLease", "renewLease", "commitTransition", "releaseLease"]) {
       assert.throws(() => readonly[operation]({}), { code: "DR4929" });
     }
   } finally { readonly.close(); }

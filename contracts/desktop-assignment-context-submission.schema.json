@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-assignment-context-submission/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "activationDigest",
+    "createdAt",
+    "specialistCatalog",
+    "assignmentPolicy",
+    "artifacts"
+  ],
+  "properties": {
+    "kind": {
+      "const": "DesktopAssignmentContextSubmission"
+    },
+    "activationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+      }
+    },
+    "specialistCatalog": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "assignmentPolicy": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    }
+  }
+}

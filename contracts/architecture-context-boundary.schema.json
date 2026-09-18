@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/architecture-context-boundary/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "activationDigest",
+    "state",
+    "discoverySnapshot",
+    "route",
+    "lifecycleComplete"
+  ],
+  "properties": {
+    "kind": {
+      "const": "DesktopArchitectureContextBoundary"
+    },
+    "activationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "state": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "discoverySnapshot": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "route": {
+      "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+    },
+    "lifecycleComplete": {
+      "const": false
+    }
+  }
+}

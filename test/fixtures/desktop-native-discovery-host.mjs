@@ -4,7 +4,7 @@ import { nativeDiscoveryPlugin } from "../../src/native-discovery-binding.mjs";
 import { materializeDesktopHostFixture } from "./desktop-local-host.mjs";
 
 // Fixture context; real native inventory over an explicitly declared source file.
-export function materializeNativeDiscoveryHostFixture(root) {
+export function materializeNativeDiscoveryHostFixture(root, { withDesign = false } = {}) {
   const fx = { root, ...materializeDesktopHostFixture(root) };
   const config = structuredClone(fx.configuration);
   const session = JSON.parse(readFileSync(join(fx.root, config.sessionSnapshot.path)));
@@ -29,6 +29,29 @@ export function materializeNativeDiscoveryHostFixture(root) {
   config.contractSet = "architecture-discovery";
   config.modules = [fx.write("native/module.json", readFileSync(new URL("../../examples/modules/architecture-discovery-0.1.1.module.json", import.meta.url)))];
   config.plugins = [fx.json("native/plugin.json", nativeDiscoveryPlugin)];
+  if (withDesign) {
+    config.architectureObserverVersion = "1.1.0";
+    config.contractGenerators = [{ contractKind: "json-schema", id: "json-schema-contract-generator", version: "0.1.0" }];
+    config.assignmentBinding = { id: "devrelay.native-specialist-ranker", version: "1.0.0" };
+    config.dependencyBinding = { proposer: { id: "native-structured-dependency-proposer", version: "0.1.0" },
+      reviewer: { id: "devrelay.native-consistency-reviewer", version: "0.1.0" }, entrypoint: "devrelay/work_dependency/decision" };
+    config.modules.push(fx.write("design/module.json", readFileSync(new URL("../../examples/modules/architecture-design.module.json", import.meta.url))));
+    config.modules.push(fx.write("work/module.json", readFileSync(new URL("../../examples/modules/work-breakdown.module.json", import.meta.url))));
+    config.modules.push(fx.write("dependency/module.json", readFileSync(new URL("../../examples/modules/work-dependency-analysis.module.json", import.meta.url))));
+    config.modules.push(fx.write("assignment/module.json", readFileSync(new URL("../../examples/modules/specialist-assignment-v3.module.json", import.meta.url))));
+    config.plugins.push(fx.json("work/plugin.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "ModulePlugin",
+      metadata: { id: "desktop-work-breakdown-fixture", version: "0.1.0", description: "Fixture-only Desktop WorkBreakdown exchange; no upstream tool conformance." },
+      implements: [{ module: { id: "work-breakdown", version: "0.1.0" }, operations: [{ id: "establish-breakdown", execution: "effect",
+        configSchema: { type: "object", additionalProperties: false, properties: {} }, capabilities: [] }] }] }));
+    for (const [name, step] of [["spec-kit-plan", "designer"], ["structurizr", "modeler"], ["madr", "decision-recorder"]]) {
+      const plugin = JSON.parse(readFileSync(new URL(`../../examples/plugins/${name}.plugin.json`, import.meta.url)));
+      plugin.metadata.id = `desktop-architecture-${step}-fixture`;
+      plugin.metadata.description = "Fixture-only Desktop exchange, not live upstream conformance.";
+      plugin.implements[0].operations = plugin.implements[0].operations.filter(operation => operation.id === "establish-baseline");
+      plugin.implements[0].operations[0].capabilities = [];
+      config.plugins.push(fx.json(`design/${step}.json`, plugin));
+    }
+  }
   const source = fx.write("sample/index.mjs", Buffer.from("export const greeting = 'hello';\n"));
   const invocation = { apiVersion: "devrelay.dev/v1alpha1", kind: "ModuleInvocation", invocationId: "native-discovery-001",
     runId: "native-run", nodeId: "discovery", module: { id: "architecture-discovery", version: "0.1.1", operation: "discover" },

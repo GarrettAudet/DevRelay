@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-work-breakdown-gate/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "invocationDigest", "moduleResultDigest", "candidateRef", "baseline", "noWorkApprovals", "scope", "lifecycleComplete", "commitDigest"],
+  "properties": {
+    "kind": { "const": "LocalWorkBreakdownGateCommit" },
+    "invocationDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "moduleResultDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "candidateRef": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "baseline": { "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes" },
+    "noWorkApprovals": { "type": "array", "items": { "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedCoverageDisposition/properties/approval" } },
+    "scope": { "const": "validated-work-breakdown-baseline" },
+    "lifecycleComplete": { "const": false },
+    "commitDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  }
+}

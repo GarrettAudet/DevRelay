@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-dependency-gate-submission/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "baseline", "approval", "artifacts"],
+  "properties": {
+    "kind": { "const": "DesktopDependencyGateSubmission" },
+    "baseline": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "approval": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" },
+    "artifacts": { "type": "array", "items": { "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile" } }
+  }
+}

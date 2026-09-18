@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-work-baseline-activation/v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "gateCommitDigest", "checkpointKey", "applicationProof", "baseline", "storedBaseline", "lifecycleComplete"],
+  "properties": {
+    "kind": { "const": "LocalWorkBaselineActivation" },
+    "gateCommitDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "checkpointKey": { "type": "string", "pattern": "^work-baseline-activation:sha256:[a-f0-9]{64}$" },
+    "applicationProof": { "$ref": "https://devrelay.dev/contracts/module-execution-record.schema.json#/$defs/applicationProof" },
+    "baseline": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "storedBaseline": { "$ref": "https://devrelay.dev/host/local-discovery-activation/v1#/properties/storedState" },
+    "lifecycleComplete": { "const": false }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-architecture-gate-submission/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "ownerApproval",
+    "baseline",
+    "artifacts"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "devrelay.dev/v1alpha1"
+    },
+    "kind": {
+      "const": "DesktopArchitectureGateSubmission"
+    },
+    "ownerApproval": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "baseline": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+      }
+    }
+  }
+}

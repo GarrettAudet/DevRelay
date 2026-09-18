@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/local-architecture-activation/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "gateCommitDigest", "checkpointKey", "applicationProof", "state", "storedState", "scope", "lifecycleComplete"],
+  "properties": {
+    "apiVersion": { "const": "devrelay.dev/v1alpha1" },
+    "kind": { "const": "LocalArchitectureActivation" },
+    "gateCommitDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "checkpointKey": { "type": "string", "pattern": "^architecture-activation:sha256:[a-f0-9]{64}$" },
+    "applicationProof": { "$ref": "https://devrelay.dev/contracts/module-execution-record.schema.json#/$defs/applicationProof" },
+    "state": { "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef" },
+    "storedState": { "$ref": "https://devrelay.dev/host/local-discovery-activation/v1#/properties/storedState" },
+    "scope": { "const": "approved-architecture-state-activation" },
+    "lifecycleComplete": { "const": false }
+  }
+}
