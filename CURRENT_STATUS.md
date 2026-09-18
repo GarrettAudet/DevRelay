@@ -45,9 +45,15 @@ OS sleep. No MES work item is yet formally verified or integrated.
 The recovery candidate adds controlled host clocks/scheduling, sticky ownership
 failure diagnostics, queue/readiness reconciliation, unique acquisition tokens,
 commit-time expiry rollback, and a fresh ownership check before native dispatch.
-The exact-byte verification/integration handoff needs a compatibility repair:
-five current approved baseline byte digests differ from the canonical hashes
-assumed by the older input helpers. Preserve their exact approved references.
+The exact-byte verification/integration handoff now has a reviewed compatibility
+candidate: seven baseline helper bindings accept exact bytes without changing
+their approved references. Both independent Zeroshot reviewers accepted it, and
+164 focused owning-module tests passed. The actual recovery subject preparation
+preserves all seven activated pointers, derives 17 mandatory obligations, rejects
+all seven byte-tampering cases, and replays WorkExecution with zero executor calls.
+This is a partial WI-MES-CHANGE-HANDOFF slice; its existing-project planning routes
+still require implementation. The recovery quality assessment remains blocked
+on contract and regression evidence; no Gate approval or integration is inferred.
 The complete host fixture, full regression, formal verification/integration,
 installed assurance and BusinessAcceptance remain outstanding.
 
@@ -55,11 +61,21 @@ The owner requested a GitHub update. The construction branch is published at
 `codex/modular-zeroshot`; these are reviewable implementation candidates, not a
 new accepted release. Compact recovery evidence is indexed in
 `dogfood/modular-engineering-20260918/publication/recovery/candidate.json`.
+The follow-on byte-identity repair is indexed in
+`dogfood/modular-engineering-20260918/publication/handoff/candidate.json`.
 Full native records and the durable construction store are retained locally;
 the compact publication is not a portable replay bundle. GitHub's push response
 also reported 13 high-severity dependency alerts on the default branch; those
 alerts require separate triage and are not a claim about this candidate's cause
 or exploitability.
+
+The owner requested more parallel execution. New-agent creation had reached the
+session limit; existing idle agents can be reused with fresh task/bootstrap/plan
+bindings. A correctness reviewer and a composition implementation assessor have
+now run concurrently with parent verification/publication work. Independent code
+lanes require separate worktrees and exact source/evidence bindings; shared
+integration and graph promotion remain serialized. The installed product's
+parallel frontier dispatch is still part of the uncompleted MES scope.
 
 A bounded candidate fix maps the existing-project repository snapshot into the
 unreleased v3 assignment input, rejecting ambiguous roles without rewriting

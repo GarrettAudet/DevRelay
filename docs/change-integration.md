@@ -50,6 +50,21 @@ must equal the approved verification subject's repository context, and the
 permission demands must exactly equal the grants. Stale, missing, substituted,
 cross-item, over-granted, or unauthorized inputs fail closed.
 
+For each of the seven baseline entries, the `bindChangeIntegrationInputs`
+JavaScript helper also accepts `{ artifact, reference, rawBytes }`. Optional
+`rawBytes` must be a `Buffer` or `Uint8Array` of the exact stored UTF-8 JSON
+object. The helper checks the raw digest, strictly decodes and parses the bytes,
+and requires the parsed value to equal `artifact` before checking its intrinsic
+identity and the approved verification-subject reference. Validation uses an
+immutable copy of the loaded value. The exact supplied reference is retained;
+pretty printing, property order, or a trailing newline does not cause it to be
+reidentified. Malformed or explicitly undefined bytes and unknown binding
+fields fail with `DR4091`, without canonical fallback. Omitting `rawBytes`
+preserves the existing canonical object/reference path. The target snapshot's
+two-field binding and the separate legacy opaque `verifiedChangeBytes` and
+`integrationPolicyBytes` parameters are unchanged. No Module schema, baseline,
+Gate, or integration authority is changed by this helper input.
+
 Core deterministically builds an `IntegrationPlan` from those bindings and the
 verified change bytes. It adds the exact source commit and one supported
 strategy: `fast-forward`, `merge-commit`, or `cherry-pick`. A caller may compare

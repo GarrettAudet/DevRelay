@@ -25,6 +25,22 @@ test("binds the exact subject and expands a byte-stable complete obligation set"
   assert.ok(one.obligations.every(({requiredEvidenceKinds}) => canonicalJson(requiredEvidenceKinds) === canonicalJson(["review","test-log"])));
 });
 
+test("canonical baseline bytes preserve the legacy subject exactly", () => {
+  const explicit = bindings();
+  for (const name of ["requirementsBaseline", "projectOverviewBaseline", "architectureBaseline", "contractDisposition", "workBreakdownBaseline", "workDependencyBaseline", "specialistAssignmentBaseline"]) {
+    explicit[name].rawBytes = Buffer.from(canonicalJson(explicit[name].artifact));
+  }
+  const actual = bindWorkItemVerificationSubject({ subjectId: "SUB-1", workItemId: "WI-ONE", bindings: explicit });
+  assert.equal(canonicalJson(actual), canonicalJson(bind()));
+});
+
+test("raw bytes do not extend canonical work-item or other non-baseline bindings", () => {
+  for (const name of ["workItem", "executionAttempt", "changeSetDraft", "executionEvidenceBundle", "verificationPolicy", "repositoryBase", "candidateWorkspace"]) {
+    const entry = bindings()[name];
+    assert.throws(() => bind({ [name]: { ...entry, rawBytes: Buffer.from(canonicalJson(entry.artifact)) } }), WorkItemVerificationInputError, name);
+  }
+});
+
 test("approved QualityPolicy resolution becomes mandatory WorkItemVerification obligations", () => {
   const subject = bind();
   const material = {

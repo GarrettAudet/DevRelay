@@ -33,6 +33,15 @@ const inputArgs={subjectId:"CI-SUB",bindingId:"CI-BIND",workItem,workItemRef,ver
 const bind=overrides=>bindChangeIntegrationInputs({...inputArgs,...overrides});
 const plan=(validatedInput=bind(),overrides={})=>buildChangeIntegrationPlan({planId:"PLAN",validatedInput,verifiedChangeBytes:changeBytes,sourceCommit:N,strategy:"cherry-pick",...overrides});
 
+test("canonical baseline bytes preserve the legacy binding and opaque effect/policy bytes", () => {
+  const baselines = structuredClone(baselineArtifacts);
+  for (const entry of Object.values(baselines)) entry.rawBytes = Buffer.from(canonicalJson(entry.artifact));
+  assert.equal(canonicalJson(bind({ baselines })), canonicalJson(bind()));
+  assert.equal(canonicalJson(plan(bind({ baselines }))), canonicalJson(plan()));
+  assert.equal(bind({ baselines }).verifiedChangeBytesDigest, sha256Digest(changeBytes));
+  assert.throws(() => bind({ target: { ...target, rawBytes: Buffer.from(canonicalJson(target.artifact)) } }), ChangeIntegrationInputError);
+});
+
 test("real Gate-exact inputs bind successfully and produce a byte-stable deeply immutable plan",()=>{const validated=bind(),first=plan(validated),second=plan(bind());assert.equal(canonicalJson(first),canonicalJson(second));assert.equal(first.preState.treeDigest,snapshot.treeDigest);assert.equal(first.preState.commit,snapshot.revision);for(const value of [validated,validated.subject,validated.binding,validated.binding.baselines,validated.binding.permissionDemands,first,first.transition,first.baselines])assert.equal(Object.isFrozen(value),true)});
 test("every baseline is byte-bound and only its exact reference enters the binding",()=>{const validated=bind();for(const [name,value] of Object.entries(baselineArtifacts))assert.deepEqual(validated.binding.baselines[name],value.reference);const stale=structuredClone(baselineArtifacts);stale.architectureBaseline.artifact.version="1.0.1";assert.throws(()=>bind({baselines:stale}),/architectureBaseline bytes/);const substituted=structuredClone(baselineArtifacts);substituted.contractDisposition.reference.digest=D;assert.throws(()=>bind({baselines:substituted}),ChangeIntegrationInputError)});
 test("wrong baseline kinds, swapped slots, and intrinsic identity substitutions fail closed",()=>{const wrong=structuredClone(baselineArtifacts);wrong.requirementsBaseline.artifact.kind="ArchitectureBaseline";wrong.requirementsBaseline.reference.digest=canonicalJsonDigest(wrong.requirementsBaseline.artifact);assert.throws(()=>bind({baselines:wrong}),/canonical kind RequirementsBaseline/);const swapped=structuredClone(baselineArtifacts),temp=swapped.requirementsBaseline;swapped.requirementsBaseline=swapped.architectureBaseline;swapped.architectureBaseline=temp;assert.throws(()=>bind({baselines:swapped}),/canonical kind/);const identity=structuredClone(baselineArtifacts);identity.workBreakdownBaseline.reference.artifactId="OTHER";assert.throws(()=>bind({baselines:identity}),/intrinsic artifact identity/)});

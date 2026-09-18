@@ -60,6 +60,20 @@ No step relies on conversational memory or a provider-native session.
 `candidateWorkspace`. Every loaded artifact must match its reference digest;
 the work item must be the exact member of the bound WorkBreakdown baseline.
 
+The `bindWorkItemVerificationSubject` JavaScript helper accepts
+`{ artifact, reference, rawBytes }` for the seven baseline bindings listed above
+(requirements through specialist assignment). `rawBytes` is optional and must
+be a `Buffer` or `Uint8Array` containing the exact stored UTF-8 JSON object.
+When present, the helper checks its byte digest, decodes UTF-8 strictly, and
+requires the parsed object to equal `artifact`. It uses an immutable copy of
+that loaded value and preserves the supplied reference, including noncanonical
+JSON formatting. Explicit invalid or undefined bytes fail with `DR4071`; they
+never fall back to canonical hashing. Unknown binding fields are rejected.
+Without `rawBytes`, the existing canonical object/reference digest check is
+unchanged. Other inputs, including the canonical work-item projection, retain
+their existing two-field binding contract. This additive helper input changes
+no Module port, artifact schema, baseline identity, or approval authority.
+
 The remaining public artifacts are:
 
 | Artifact | Identity and boundary |

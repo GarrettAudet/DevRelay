@@ -1,4 +1,5 @@
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "./content-digest.mjs";
+import { loadOwnedJsonArtifact } from "./loaded-json-artifact-integrity.mjs";
 import { validateWorkExecutionArtifact } from "./work-execution-artifact-validator.mjs";
 import { validateWorkItemVerificationArtifact } from "./work-item-verification-artifact-validator.mjs";
 
@@ -8,6 +9,11 @@ const INPUTS = Object.freeze([
   "architectureBaseline", "contractDisposition", "workBreakdownBaseline",
   "workDependencyBaseline", "specialistAssignmentBaseline", "repositoryBase",
   "candidateWorkspace",
+]);
+const BASELINES = Object.freeze([
+  "requirementsBaseline", "projectOverviewBaseline", "architectureBaseline",
+  "contractDisposition", "workBreakdownBaseline", "workDependencyBaseline",
+  "specialistAssignmentBaseline",
 ]);
 
 export class WorkItemVerificationInputError extends Error {
@@ -24,10 +30,18 @@ const same = (left, right) => canonicalJson(left) === canonicalJson(right);
 function validateBinding(name, binding) {
   if (!binding || typeof binding !== "object" || Array.isArray(binding)) fail(`missing ${name}`);
   const keys = Object.keys(binding).sort();
-  if (!same(keys, ["artifact", "reference"].sort())) fail(`${name} binding must contain only artifact and reference`);
+  const hasRawBytes = Object.hasOwn(binding, "rawBytes");
+  const allowedKeys = hasRawBytes && BASELINES.includes(name) ? ["artifact", "rawBytes", "reference"] : ["artifact", "reference"];
+  if (!same(keys, allowedKeys)) fail(`${name} binding must contain only ${allowedKeys.join(", ")}`);
   const { artifact, reference } = binding;
   if (!artifact || !reference || typeof reference.artifactId !== "string" ||
       !/^sha256:[0-9a-f]{64}$/.test(reference.digest)) fail(`${name} requires an immutable reference`);
+  if (hasRawBytes) {
+    let loadedArtifact;
+    try { loadedArtifact = loadOwnedJsonArtifact({ ref: reference, bytes: binding.rawBytes, value: artifact }, name); }
+    catch (error) { fail(error.message); }
+    return Object.freeze({ artifact: loadedArtifact, reference: structuredClone(reference) });
+  }
   const digest = canonicalJsonDigest(artifact);
   if (reference.digest !== digest) fail(`${name} reference is stale or mismatched`);
   return Object.freeze({ artifact, reference: structuredClone(reference) });

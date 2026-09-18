@@ -1,4 +1,5 @@
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "./content-digest.mjs";
+import { loadOwnedJsonArtifact } from "./loaded-json-artifact-integrity.mjs";
 import { validateChangeIntegrationArtifact } from "./change-integration-artifact-validator.mjs";
 import { validateWorkItemVerificationArtifact } from "./work-item-verification-artifact-validator.mjs";
 
@@ -21,16 +22,31 @@ function deepFreeze(value) {
   return value;
 }
 
-function exactRef(name, artifact, reference, rawBytes) {
+function requireImmutableReference(name, artifact, reference) {
   if (!artifact || !reference || typeof reference.artifactId !== "string" || !/^sha256:[0-9a-f]{64}$/.test(reference.digest)) fail(`${name} requires one immutable artifact and reference`);
+}
+function exactRef(name, artifact, reference, rawBytes) {
+  requireImmutableReference(name, artifact, reference);
   const digest = rawBytes === undefined ? canonicalJsonDigest(artifact) : sha256Digest(Buffer.isBuffer(rawBytes) ? rawBytes : Buffer.from(rawBytes));
   if (reference.digest !== digest) fail(`${name} bytes are stale or substituted`);
   return structuredClone(reference);
 }
-function exactBinding(name, binding) {
-  if (!binding || !same(Object.keys(binding).sort(), ["artifact", "reference"])) fail(`${name} must be an exact artifact/reference binding`);
-  const reference = exactRef(name, binding.artifact, binding.reference);
-  const intrinsicId = binding.artifact.artifactId ?? binding.artifact.dispositionId ?? binding.artifact.baselineId;
+function exactBinding(name, binding, allowRawBytes = false) {
+  if (!binding || typeof binding !== "object" || Array.isArray(binding)) fail(`${name} must be an exact artifact/reference binding`);
+  const hasRawBytes = Object.hasOwn(binding, "rawBytes");
+  const allowedKeys = hasRawBytes && allowRawBytes ? ["artifact", "rawBytes", "reference"] : ["artifact", "reference"];
+  if (!same(Object.keys(binding).sort(), allowedKeys)) fail(`${name} must be an exact artifact/reference binding`);
+  let artifact = binding.artifact;
+  let reference;
+  if (hasRawBytes) {
+    requireImmutableReference(name, artifact, binding.reference);
+    try { artifact = loadOwnedJsonArtifact({ ref: binding.reference, bytes: binding.rawBytes, value: artifact }, name); }
+    catch (error) { fail(error.message); }
+    reference = structuredClone(binding.reference);
+  } else {
+    reference = exactRef(name, artifact, binding.reference);
+  }
+  const intrinsicId = artifact.artifactId ?? artifact.dispositionId ?? artifact.baselineId;
   if (intrinsicId !== undefined && (typeof intrinsicId !== "string" || intrinsicId.length === 0 || reference.artifactId !== intrinsicId)) fail(`${name} reference does not match its intrinsic artifact identity`);
   return reference;
 }
@@ -59,7 +75,7 @@ export function bindChangeIntegrationInputs({ subjectId, bindingId, workItem, wo
   if (!Array.isArray(evidence) || evidence.length === 0 || new Set(evidence.map(canonicalJson)).size !== evidence.length || !same(evidence, gateApproval.acceptedEvidence)) fail("verification evidence must be the complete exact Gate-approved evidence set");
   if (!baselines || !same(Object.keys(baselines).sort(), [...BASELINES].sort())) fail("exact project baselines are required");
   for (const name of BASELINES) if (baselines[name]?.artifact?.kind !== BASELINE_KINDS[name]) fail(`${name} must contain canonical kind ${BASELINE_KINDS[name]}`);
-  const baselineRefs = Object.fromEntries(BASELINES.map((name) => [name, exactBinding(name, baselines[name])]));
+  const baselineRefs = Object.fromEntries(BASELINES.map((name) => [name, exactBinding(name, baselines[name], true)]));
   for (const name of BASELINES) if (!same(baselineRefs[name], verificationSubject[name])) fail(`${name} does not match the exact approved verification-subject baseline reference`);
   const snapshotReference = exactBinding("repositorySnapshot", target);
   const snapshot = target.artifact;
