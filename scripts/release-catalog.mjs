@@ -202,6 +202,8 @@ export const canonicalModules = Object.freeze([
 export const compatibilityModules = Object.freeze([
   { id: "architecture-discovery", version: "0.1.0", definition: "examples/modules/architecture-discovery.module.json" },
   { id: "specialist-assignment", version: "1.0.0", definition: "examples/modules/specialist-assignment-v1.module.json" },
+  // The Desktop host pins v3; the existing v2 adapter bindings remain canonical.
+  { id: "specialist-assignment", version: "3.0.0", definition: "examples/modules/specialist-assignment-v3.module.json" },
 ]);
 export const compatibilityPlugins = Object.freeze([
   { id: "native-architecture-discovery", version: "0.1.0", manifest: "examples/plugins/native-architecture-discovery.plugin.json", module: { id: "architecture-discovery", version: "0.1.0" } },
