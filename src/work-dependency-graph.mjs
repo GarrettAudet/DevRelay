@@ -168,9 +168,9 @@ export function analyzeDependencyGraph({ expectedWorkItemIds, nodeIds, edges }) 
   const normalizedEdges = edges
     .map(normalizeEdge)
     .sort((left, right) =>
-      `${left.prerequisiteId}\u0000${left.dependentId}\u0000${left.id}`.localeCompare(
+      compareText(
+        `${left.prerequisiteId}\u0000${left.dependentId}\u0000${left.id}`,
         `${right.prerequisiteId}\u0000${right.dependentId}\u0000${right.id}`,
-        "en",
       ),
     );
   const diagnostics = [];

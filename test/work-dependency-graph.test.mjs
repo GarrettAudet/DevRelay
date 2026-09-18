@@ -46,6 +46,26 @@ test("Graphology-DAG mechanics produce insertion-order-independent canonical out
   assert.doesNotThrow(() => validateWorkDependencyArtifact(first));
 });
 
+test("prefix-related endpoints use the validator's lexical edge order", () => {
+  const nodes = ["WI-A", "WI-A-LIBRARY", "WI-B", "WI-B-LIBRARY", "WI-C"];
+  const edges = [
+    edge("WI-A-LIBRARY", "WI-C"),
+    edge("WI-A", "WI-B-LIBRARY"),
+    edge("WI-A", "WI-B"),
+  ];
+  const result = analyzeDependencyGraph({ expectedWorkItemIds: nodes, nodeIds: nodes, edges });
+  assert.equal(result.status, "valid");
+  assert.doesNotThrow(() => validateWorkDependencyArtifact(result));
+  assert.deepEqual(result.edges.map(({ prerequisiteId, dependentId }) => [prerequisiteId, dependentId]), [
+    ["WI-A", "WI-B"],
+    ["WI-A", "WI-B-LIBRARY"],
+    ["WI-A-LIBRARY", "WI-C"],
+  ]);
+  assert.deepEqual(result, analyzeDependencyGraph({
+    expectedWorkItemIds: nodes, nodeIds: [...nodes].reverse(), edges: [...edges].reverse(),
+  }));
+});
+
 test("cycles, self-dependencies, duplicates, and unknown endpoints remain explicit evidence", () => {
   const cycle = analyzeDependencyGraph({
     expectedWorkItemIds: ["WI-A", "WI-B", "WI-C"],
