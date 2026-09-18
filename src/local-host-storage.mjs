@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
@@ -393,17 +393,17 @@ export function createLocalHostStorage({
       if (!Number.isSafeInteger(durationMilliseconds) || durationMilliseconds <= 0) {
         fail("durationMilliseconds is invalid", "DR4924");
       }
-      const now = clock();
-      const expiresAt = now + durationMilliseconds;
       let lease;
       transaction(() => {
+        const now = clock();
+        const expiresAt = now + durationMilliseconds;
         const row = database.prepare("SELECT * FROM runs WHERE run_id = ?").get(runId);
         if (!row) fail(`run ${runId} does not exist`, "DR4920");
         if (row.version !== expectedVersion) fail("stale expected state version", "DR4923");
         if (row.lease_owner && row.lease_expires_at > now && row.lease_owner !== owner) {
           fail("run has an active lease owned by another executor", "DR4924");
         }
-        const tokenMaterial = { runId, owner, version: row.version, acquiredAt: now, expiresAt };
+        const tokenMaterial = { runId, owner, version: row.version, acquiredAt: now, expiresAt, acquisition: randomUUID() };
         const token = canonicalJsonDigest(tokenMaterial);
         database
           .prepare(`UPDATE runs SET lease_owner = ?, lease_token = ?,
@@ -419,9 +419,10 @@ export function createLocalHostStorage({
       requiredText(runId, "runId");
       requiredText(leaseToken, "leaseToken");
       if (!Number.isSafeInteger(expectedVersion) || expectedVersion < 0 || !Number.isSafeInteger(durationMilliseconds) || durationMilliseconds <= 0) fail("lease renewal parameters are invalid", "DR4924");
-      const now = clock();
-      const expiresAt = now + durationMilliseconds;
+      let expiresAt;
       transaction(() => {
+        const now = clock();
+        expiresAt = now + durationMilliseconds;
         const changed = database.prepare(`UPDATE runs SET lease_expires_at = ?, updated_at = ?
           WHERE run_id = ? AND version = ? AND lease_token = ? AND lease_owner IS NOT NULL AND lease_expires_at > ?`)
           .run(expiresAt, now, runId, expectedVersion, leaseToken, now);
@@ -455,9 +456,9 @@ export function createLocalHostStorage({
         .filter((ref) => ref !== null)
         .map((ref, index) => validateArtifactRef(ref, `authoritativeRef[${index}]`));
       verifyAllRefs([...refs, ...optionalRefs]);
-      const now = clock();
       const nextVersion = expectedVersion + 1;
       transaction(() => {
+        const now = clock();
         const row = database.prepare("SELECT * FROM runs WHERE run_id = ?").get(runId);
         if (!row) fail(`run ${runId} does not exist`, "DR4920");
         if (row.version !== expectedVersion) fail("stale expected state version", "DR4923");
@@ -501,6 +502,9 @@ export function createLocalHostStorage({
             now,
           );
         failureInjector({ boundary: "before-state-commit", runId, nextVersion });
+        // Serialization, synchronous validation or a paused process can cross
+        // expiry while the transaction is open. Roll back state and journal.
+        if (row.lease_expires_at <= clock()) fail("lease expired before state commit", "DR4924");
       });
       return readRun(runId);
     },

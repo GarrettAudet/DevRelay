@@ -9,6 +9,8 @@ import { deriveLocalIntegrationCompletion } from "../src/local-integration-compl
 import { createLocalHostStorage } from "../src/local-host-storage.mjs";
 import { initializeLocalCompletionLedger, readLocalCompletionLedger, appendLocalCompletion } from "../src/local-completion-ledger.mjs";
 import { deriveLocalWorkReadiness, assertLocalCompletionSnapshotCurrent } from "../src/local-work-readiness.mjs";
+import { createLocalHostCheckpointStore } from "../src/local-host-checkpoints.mjs";
+import { prepareLocalWorkQueue, assertLocalWorkQueueCurrent, createLocalHostLeaseKeeper } from "../src/local-host-recovery.mjs";
 
 const apiVersion = "devrelay.dev/v1alpha1";
 const D = `sha256:${"a".repeat(64)}`;
@@ -243,4 +245,82 @@ test("readiness rejects byte drift and a completion committed while its inputs a
   const fresh = await deriveLocalWorkReadiness(request);
   assert.equal(fresh.ledgerVersion, 1);
   assert.equal(fresh.readyWorkItemIds.includes("WI-AUTH-CORE"), false);
+});
+
+for (const interruptedAt of ["ledger", "readiness", "parent-commit"]) {
+  test(`queue recovery after ${interruptedAt} interruption reopens exact records and advances parent once`, async t => {
+    const f = await fixture(() => {}, () => {}, true);
+    const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-queue-recovery-"));
+    let now = 1000, interrupt = true;
+    let storage = createLocalHostStorage({ rootDirectory, clock: () => now,
+      failureInjector({ boundary, runId }) {
+        if (interrupt && interruptedAt === "parent-commit" && runId === "parent" && boundary === "before-state-commit") now = 121_000;
+      } });
+    t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+    storage.initializeRun({ runId: "parent", state: { status: "assignment-baseline-activated" } });
+    const scheduler = { setInterval() { return 1; }, clearInterval() {} };
+    const keeper = createLocalHostLeaseKeeper({ storage, scheduler, runId: "parent", owner: "first", expectedVersion: 0 });
+    const namespace = "queue-recovery";
+    const request = { namespace, baselines: f.request.baselines, verifyIntegration: f.replay, loadArtifact: f.loadArtifact };
+    const durableRecords = createLocalHostCheckpointStore({ storage, namespace });
+    const records = { ...durableRecords, put(key, value) {
+      const result = durableRecords.put(key, value);
+      if (interrupt && interruptedAt === "readiness") { now = 121_000; throw new Error("interrupted readiness"); }
+      return result;
+    } };
+    const interruptedStorage = { ...storage, initializeRun(input) {
+      const result = storage.initializeRun(input);
+      if (interrupt && interruptedAt === "ledger" && input.runId.startsWith("completion-ledger:")) {
+        now = 121_000; throw new Error("interrupted ledger");
+      }
+      return result;
+    } };
+    await assert.rejects(async () => {
+      const queue = await prepareLocalWorkQueue({ ...request, storage: interruptedStorage, records });
+      keeper.assertCurrent();
+      storage.commitTransition({ runId: "parent", expectedVersion: 0, leaseToken: keeper.lease.token,
+        transition: { kind: "queue" }, nextState: { status: "work-queue-prepared", workReadinessKey: queue.workReadinessKey } });
+    }, interruptedAt === "parent-commit" ? { code: "DR4924" } : /interrupted/);
+    assert.equal(storage.readRun("parent").version, 0);
+    assert.deepEqual(storage.readTransitionJournal("parent"), []);
+    storage.close(); interrupt = false;
+    storage = createLocalHostStorage({ rootDirectory, clock: () => now });
+    const successor = createLocalHostLeaseKeeper({ storage, scheduler, runId: "parent", owner: "successor", expectedVersion: 0 });
+    assert.throws(() => storage.releaseLease({ runId: "parent", leaseToken: keeper.lease.token }), { code: "DR4924" });
+    const recoveredRecords = createLocalHostCheckpointStore({ storage, namespace });
+    const recoveredRequest = { ...request, storage, records: recoveredRecords };
+    const recovered = await prepareLocalWorkQueue(recoveredRequest);
+    assert.equal(recovered.readiness.ledgerVersion, 0);
+    assert.equal(storage.listRuns({ prefix: "completion-ledger:" }).length, 1);
+    assertLocalWorkQueueCurrent({ ...recoveredRequest, readiness: recovered.readiness });
+    successor.assertCurrent();
+    storage.commitTransition({ runId: "parent", expectedVersion: 0, leaseToken: successor.lease.token,
+      transition: { kind: "queue" }, nextState: { status: "work-queue-prepared", workReadinessKey: recovered.workReadinessKey } });
+    successor.close();
+    assert.deepEqual(await prepareLocalWorkQueue(recoveredRequest), recovered);
+    assert.equal(storage.readTransitionJournal("parent").length, 1);
+    assert.equal(f.calls(), 1, "queue recovery cannot repeat the integration adapter");
+  });
+}
+
+test("queue recovery reconciles a completed ledger without resetting or duplicating completion", async t => {
+  const f = await fixture(() => {}, () => {}, true);
+  const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-queue-completed-"));
+  let storage = createLocalHostStorage({ rootDirectory });
+  t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+  const request = { namespace: "queue-completed", baselines: f.request.baselines, verifyIntegration: f.replay, loadArtifact: f.loadArtifact };
+  let records = createLocalHostCheckpointStore({ storage, namespace: request.namespace });
+  const stale = await prepareLocalWorkQueue({ ...request, storage, records });
+  await appendLocalCompletion({ ...request, ...f.request, storage, expectedVersion: 0 });
+  assert.throws(() => assertLocalWorkQueueCurrent({ ...request, storage, records, readiness: stale.readiness }), /snapshot is stale/);
+  storage.close(); storage = createLocalHostStorage({ rootDirectory });
+  records = createLocalHostCheckpointStore({ storage, namespace: request.namespace });
+  const recovered = await prepareLocalWorkQueue({ ...request, storage, records });
+  assert.equal(recovered.readiness.ledgerVersion, 1);
+  assert.notEqual(recovered.workReadinessKey, stale.workReadinessKey);
+  const completed = await appendLocalCompletion({ ...request, ...f.request, storage, expectedVersion: 0 });
+  assert.equal(completed.replayed, true);
+  assert.equal(completed.state.entries.length, 1);
+  assert.equal(storage.readTransitionJournal(completed.runId).length, 1);
+  assert.equal(f.calls(), 1);
 });

@@ -40,3 +40,14 @@ test("real event-loop timer runs during sustained asynchronous artifact-style wo
     assert.equal(fired, true, "resolved promise continuations must not starve the host timer");
   } finally { clearTimeout(timer); }
 });
+
+test("a backwards host clock still yields once and resets the scheduling boundary", async () => {
+  let now = 1000, calls = 0;
+  const cooperate = createLocalHostCooperativeYield({ intervalMilliseconds: 10, now: () => now,
+    yieldToHost: async () => { calls++; } });
+  now = 900;
+  await cooperate();
+  assert.equal(calls, 1);
+  now = 909; await cooperate(); assert.equal(calls, 1);
+  now = 910; await cooperate(); assert.equal(calls, 2);
+});

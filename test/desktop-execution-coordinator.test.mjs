@@ -134,3 +134,44 @@ test("lost operator handoff response leaves uncertainty without repeating intent
   assert.deepEqual(f.coordinator.inspect("RUN-1"), persisted);
   assert.equal(f.calls(), 0);
 });
+
+for (const interruptedAt of ["after-effect-state", "after-effect", "after-artifact", "after-recorded"]) {
+  test(`controlled expiry at ${interruptedAt} preserves successor ownership and reopens without duplicate effects`, async t => {
+    const rootDirectory = mkdtempSync(path.join(tmpdir(), "devrelay-expired-executor-"));
+    let now = 1000, calls = 0, successor;
+    let storage = createLocalHostStorage({ rootDirectory, clock: () => now });
+    t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
+    const worktreeManager = { inspectForDispatch: attemptId => ({ attemptId, workItemId: "WI-1", revision,
+      observedRevision: revision, status: "active", workspace: path.join(rootDirectory, "worktree") }) };
+    const executors = { [executor.id]: { ...executor, async execute() { calls++; return { taskId: "native-task" }; } } };
+    const coordinator = createDesktopExecutionCoordinator({ storage, worktreeManager, executors,
+      failureInjector({ boundary, runId }) {
+        if (boundary !== interruptedAt) return;
+        now += 30_000;
+        successor = storage.acquireLease({ runId, owner: "successor", expectedVersion: storage.readRun(runId).version });
+      } });
+    const request = { runId: "run", attemptId: "ATT-1", workItemId: "WI-1", repositoryRevision: revision,
+      executor, requiredCapabilities: ["node"], requiredGrants: ["process.spawn"], idempotencyKey: "logical-effect" };
+    const prepared = coordinator.prepare(request);
+    await assert.rejects(coordinator.execute("run"), { code: "DR4924" });
+    const expectedCalls = interruptedAt === "after-effect-state" ? 0 : 1;
+    assert.equal(calls, expectedCalls);
+    assert.deepEqual(storage.readRun("run").lease, successor);
+    storage.close();
+    storage = createLocalHostStorage({ rootDirectory, clock: () => now });
+    const reopened = createDesktopExecutionCoordinator({ storage, worktreeManager, executors });
+    const replay = await reopened.execute("run");
+    assert.equal(replay.outcome, interruptedAt === "after-recorded" ? "replayed" : "quarantined");
+    assert.equal(replay.executorCalls, 0);
+    assert.equal(calls, expectedCalls);
+    if (expectedCalls === 1 && interruptedAt !== "after-recorded") {
+      storage.releaseLease({ runId: "run", leaseToken: successor.token });
+      reopened.reconcile({ runId: "run", receiptResult: { idempotencyKey: request.idempotencyKey,
+        bindingDigest: prepared.bindingDigest, result: { taskId: "native-task" } } });
+      assert.equal((await reopened.execute("run")).outcome, "replayed");
+    }
+    assert.equal(calls, expectedCalls);
+    assert.equal(storage.readTransitionJournal("run").filter(row =>
+      ["record-effect", "reconcile-effect"].includes(row.transition.operation)).length, expectedCalls);
+  });
+}

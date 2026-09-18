@@ -1115,6 +1115,93 @@ test("native host connects real facade/Core to durable Desktop pending/result/re
   assert.deepEqual(output(again).applicationProof, output(verified).applicationProof);
 });
 
+test("controlled host expiry reopens saved Desktop request and completed checkpoint without duplicate progression", async t => {
+  const fx = fixture(t);
+  let now = 1000, expire = false, timers = 0;
+  const controlled = { ...fx, clock: () => now, scheduler: {
+    setInterval(callback, interval) {
+      assert.equal(interval, 10_000); timers++;
+      if (expire) now += 120_000;
+      return timers;
+    },
+    clearInterval() { timers--; },
+  } };
+  const inspectStorage = () => {
+    const storage = createLocalHostStorage({ rootDirectory: join(fx.root, "state"), clock: () => now, readOnly: true });
+    try {
+      const runs = storage.listRuns();
+      const parent = runs.find(run => run.state.kind === "DesktopLocalRun");
+      return { parent, journal: parent ? storage.readTransitionJournal(parent.runId) : [],
+        requests: runs.filter(run => run.state.namespace?.endsWith("/exchange/requests")),
+        executions: runs.filter(run => run.state.key?.startsWith("execution:")) };
+    } finally { storage.close(); }
+  };
+  assert.equal((await command(controlled, "init")).exitCode, 0);
+  expire = true;
+  const interrupted = await command(controlled, "run");
+  assert.equal(interrupted.exitCode, 2, JSON.stringify(interrupted));
+  assert.equal(interrupted.diagnostics[0].code, "DR4924");
+  const saved = inspectStorage();
+  assert.equal(saved.parent.version, 0);
+  assert.equal(saved.parent.state.status, "prepared");
+  assert.equal(saved.requests.length, 1);
+  assert.deepEqual(saved.journal, []);
+  assert.equal(timers, 0);
+  expire = false;
+  const unchanged = output(await command(controlled, "status"));
+  const resumed = await command(controlled, "resume", { ...fx.input, checkpointDigest: unchanged.checkpointDigest });
+  assert.equal(resumed.exitCode, 5, JSON.stringify(resumed));
+  const waiting = output(resumed);
+  assert.equal(waiting.version, 1);
+  assert.deepEqual(inspectStorage().requests, saved.requests);
+  const responseFile = fx.json("recovery-response.json", { apiVersion: "devrelay.dev/v1alpha1", kind: "DesktopStepResponse",
+    requestId: waiting.desktopRequest.requestId, requestDigest: canonicalJsonDigest(waiting.desktopRequest), result: fx.result });
+  expire = true;
+  const interruptedCompletion = await command(controlled, "resume", { ...fx.input,
+    checkpointDigest: waiting.checkpointDigest, response: responseFile });
+  assert.equal(interruptedCompletion.exitCode, 2, JSON.stringify(interruptedCompletion));
+  assert.equal(interruptedCompletion.diagnostics[0].code, "DR4924");
+  const completedCheckpoint = inspectStorage();
+  assert.equal(completedCheckpoint.parent.version, 1);
+  assert.equal(completedCheckpoint.executions.length, 1);
+  expire = false;
+  const recovered = await command(controlled, "resume", { ...fx.input, checkpointDigest: waiting.checkpointDigest });
+  assert.equal(recovered.exitCode, 0, JSON.stringify(recovered));
+  assert.equal(output(recovered).version, 2);
+  assert.equal(output(recovered).state.recordKey, completedCheckpoint.executions[0].state.key);
+  const replay = await command(controlled, "resume", { ...fx.input, checkpointDigest: output(recovered).checkpointDigest });
+  assert.equal(replay.exitCode, 0, JSON.stringify(replay));
+  assert.equal(output(replay).version, 2);
+  assert.deepEqual(inspectStorage().executions, completedCheckpoint.executions);
+  assert.equal(inspectStorage().journal.length, 2);
+  expire = true;
+  const expiredReplay = await command(controlled, "resume", { ...fx.input, checkpointDigest: output(recovered).checkpointDigest });
+  assert.equal(expiredReplay.exitCode, 2, JSON.stringify(expiredReplay));
+  assert.equal(expiredReplay.diagnostics[0].code, "DR4924");
+  assert.equal(inspectStorage().parent.version, 2, "an unchanged parent must still reject expired ownership");
+  assert.equal(timers, 0);
+});
+
+test("controlled host heartbeat failure aborts loading before a Desktop request is emitted", async t => {
+  const fx = fixture(t);
+  let now = 1000, timers = 0;
+  const controlled = { ...fx, clock: () => now, scheduler: {
+    setInterval(callback) { timers++; now += 120_000; callback(); return 1; },
+    clearInterval() { timers--; },
+  } };
+  assert.equal((await command(controlled, "init")).exitCode, 0);
+  const stopped = await command(controlled, "run");
+  assert.equal(stopped.exitCode, 2, JSON.stringify(stopped));
+  assert.equal(stopped.diagnostics[0].code, "DR4924");
+  const storage = createLocalHostStorage({ rootDirectory: join(fx.root, "state"), clock: () => now, readOnly: true });
+  try {
+    const runs = storage.listRuns();
+    assert.equal(runs.filter(run => run.state.namespace?.endsWith("/exchange/requests")).length, 0);
+    assert.equal(runs.find(run => run.state.kind === "DesktopLocalRun").version, 0);
+  } finally { storage.close(); }
+  assert.equal(timers, 0);
+});
+
 test("assignment verification uses the replay invocation and reports missing lineage without a scope error", async t => {
   const fx = fixture(t);
   assert.equal((await command(fx, "init")).exitCode, 0);

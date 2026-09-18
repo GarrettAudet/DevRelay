@@ -104,9 +104,12 @@ export function createDesktopExecutionCoordinator({ storage, worktreeManager, ex
       const currentBinding = bindingFor(run.state);
       if (currentBinding.state.bindingDigest !== run.state.bindingDigest) fail("prepared execution binding drifted", "DR4762");
       const lease = storage.acquireLease({ runId, owner: `desktop-executor:${run.state.executor.id}`, expectedVersion: run.version });
-      run = commit(run, lease, { operation: "authorize-effect", idempotencyKey: run.state.idempotencyKey }, { ...run.state, phase: "effect-started" });
       try {
+        run = commit(run, lease, { operation: "authorize-effect", idempotencyKey: run.state.idempotencyKey }, { ...run.state, phase: "effect-started" });
         failureInjector({ boundary: "after-effect-state", runId });
+        // A persisted intent is not continuing permission to dispatch. The
+        // owner may have expired or been replaced while saving that intent.
+        storage.renewLease({ runId, leaseToken: lease.token, expectedVersion: run.version });
         const result = await trusted.execute(frozen({ ...run.state, worktree: run.state.worktree }));
         failureInjector({ boundary: "after-effect", runId });
         const receipt = artifact(run.state, result);

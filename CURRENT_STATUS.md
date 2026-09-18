@@ -34,8 +34,32 @@ Core derived the initial ready frontier from an empty current completion ledger:
 MES composition, change handoff, recovery, and the retained RP artifact contracts.
 Historical acceptance has not been imported as current completion. Recovery is
 selected first to diagnose the prior long-running host lease failure and prove
-bounded restart/ownership behavior before broader native execution. Preparation
-is in progress; no MES WorkExecution item is yet verified or integrated.
+bounded restart/ownership behavior before broader native execution. Its actual
+Zeroshot worker and two independent reviewers have finished successfully.
+WorkExecution recorded a 12-file proposal with one executor call and zero-call
+replay; its trusted traceability update was checkpointed and merged. Independent
+checks passed 75 focused tests and seven bounded Desktop host tests. The old
+failed full-host run remains failed; its measured event-loop gap does not prove
+OS sleep. No MES work item is yet formally verified or integrated.
+
+The recovery candidate adds controlled host clocks/scheduling, sticky ownership
+failure diagnostics, queue/readiness reconciliation, unique acquisition tokens,
+commit-time expiry rollback, and a fresh ownership check before native dispatch.
+The exact-byte verification/integration handoff needs a compatibility repair:
+five current approved baseline byte digests differ from the canonical hashes
+assumed by the older input helpers. Preserve their exact approved references.
+The complete host fixture, full regression, formal verification/integration,
+installed assurance and BusinessAcceptance remain outstanding.
+
+The owner requested a GitHub update. The construction branch is published at
+`codex/modular-zeroshot`; these are reviewable implementation candidates, not a
+new accepted release. Compact recovery evidence is indexed in
+`dogfood/modular-engineering-20260918/publication/recovery/candidate.json`.
+Full native records and the durable construction store are retained locally;
+the compact publication is not a portable replay bundle. GitHub's push response
+also reported 13 high-severity dependency alerts on the default branch; those
+alerts require separate triage and are not a claim about this candidate's cause
+or exploitability.
 
 A bounded candidate fix maps the existing-project repository snapshot into the
 unreleased v3 assignment input, rejecting ambiguous roles without rewriting

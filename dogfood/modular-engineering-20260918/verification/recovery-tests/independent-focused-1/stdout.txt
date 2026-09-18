@@ -1,0 +1,460 @@
+TAP version 13
+# Subtest: records one exact effect and replay never calls the executor again
+ok 1 - records one exact effect and replay never calls the executor again
+  ---
+  duration_ms: 36.7515
+  type: 'test'
+  ...
+# Subtest: rejects executor, capability, grant, and worktree substitution
+ok 2 - rejects executor, capability, grant, and worktree substitution
+  ---
+  duration_ms: 17.8185
+  type: 'test'
+  ...
+# Subtest: recorded effect replay rejects substituted receipt envelope without another executor call
+ok 3 - recorded effect replay rejects substituted receipt envelope without another executor call
+  ---
+  duration_ms: 34.9006
+  type: 'test'
+  ...
+# Subtest: crash after effect leaves an uncertain run quarantined and never blindly retries
+ok 4 - crash after effect leaves an uncertain run quarantined and never blindly retries
+  ---
+  duration_ms: 16.599
+  type: 'test'
+  ...
+# Subtest: exact external receipt reconciles uncertain effect without executor replay
+ok 5 - exact external receipt reconciles uncertain effect without executor replay
+  ---
+  duration_ms: 36.7767
+  type: 'test'
+  ...
+# Subtest: missing or mismatched reconciliation evidence fails closed
+ok 6 - missing or mismatched reconciliation evidence fails closed
+  ---
+  duration_ms: 21.7028
+  type: 'test'
+  ...
+# Subtest: resume rejects a substituted work item or executor binding
+ok 7 - resume rejects a substituted work item or executor binding
+  ---
+  duration_ms: 21.5057
+  type: 'test'
+  ...
+# Subtest: execution rechecks grants, capabilities and worktree binding before authorizing an effect
+ok 8 - execution rechecks grants, capabilities and worktree binding before authorizing an effect
+  ---
+  duration_ms: 22.061
+  type: 'test'
+  ...
+# Subtest: external operator handoff persists intent and never invokes the registered executor
+ok 9 - external operator handoff persists intent and never invokes the registered executor
+  ---
+  duration_ms: 48.9291
+  type: 'test'
+  ...
+# Subtest: lost operator handoff response leaves uncertainty without repeating intent or executor calls
+ok 10 - lost operator handoff response leaves uncertainty without repeating intent or executor calls
+  ---
+  duration_ms: 30.7339
+  type: 'test'
+  ...
+# Subtest: controlled expiry at after-effect-state preserves successor ownership and reopens without duplicate effects
+ok 11 - controlled expiry at after-effect-state preserves successor ownership and reopens without duplicate effects
+  ---
+  duration_ms: 28.0275
+  type: 'test'
+  ...
+# Subtest: controlled expiry at after-effect preserves successor ownership and reopens without duplicate effects
+ok 12 - controlled expiry at after-effect preserves successor ownership and reopens without duplicate effects
+  ---
+  duration_ms: 43.5147
+  type: 'test'
+  ...
+# Subtest: controlled expiry at after-artifact preserves successor ownership and reopens without duplicate effects
+ok 13 - controlled expiry at after-artifact preserves successor ownership and reopens without duplicate effects
+  ---
+  duration_ms: 37.807
+  type: 'test'
+  ...
+# Subtest: controlled expiry at after-recorded preserves successor ownership and reopens without duplicate effects
+ok 14 - controlled expiry at after-recorded preserves successor ownership and reopens without duplicate effects
+  ---
+  duration_ms: 36.309
+  type: 'test'
+  ...
+# Subtest: the versioned checkpoint wire contract is closed and requires exact identities
+ok 15 - the versioned checkpoint wire contract is closed and requires exact identities
+  ---
+  duration_ms: 16.5464
+  type: 'test'
+  ...
+# Subtest: durable checkpoints preserve exact JSON, idempotency and namespace isolation
+ok 16 - durable checkpoints preserve exact JSON, idempotency and namespace isolation
+  ---
+  duration_ms: 55.9672
+  type: 'test'
+  ...
+# Subtest: unsupported data fails before persistence and never executes getters/toJSON
+ok 17 - unsupported data fails before persistence and never executes getters/toJSON
+  ---
+  duration_ms: 16.2533
+  type: 'test'
+  ...
+# Subtest: decode cache rereads storage, isolates frozen values and evicts bounded entries
+ok 18 - decode cache rereads storage, isolates frozen values and evicts bounded entries
+  ---
+  duration_ms: 86.1121
+  type: 'test'
+  ...
+# Subtest: a competing immutable insertion returns the exact durable winner
+ok 19 - a competing immutable insertion returns the exact durable winner
+  ---
+  duration_ms: 35.1879
+  type: 'test'
+  ...
+# Subtest: a failed pointer commit is not visible as a completed checkpoint
+ok 20 - a failed pointer commit is not visible as a completed checkpoint
+  ---
+  duration_ms: 26.4338
+  type: 'test'
+  ...
+# Subtest: corrupt CAS bytes and pointer substitution are errors, not cache misses
+ok 21 - corrupt CAS bytes and pointer substitution are errors, not cache misses
+  ---
+  duration_ms: 61.3421
+  type: 'test'
+  ...
+# Subtest: real Core checkpoint verification survives a new process without invoking its fixture adapter
+ok 22 - real Core checkpoint verification survives a new process without invoking its fixture adapter
+  ---
+  duration_ms: 2372.1496
+  type: 'test'
+  ...
+# Subtest: cooperative yielding bounds a microtask chain and coalesces concurrent yields
+ok 23 - cooperative yielding bounds a microtask chain and coalesces concurrent yields
+  ---
+  duration_ms: 2.7289
+  type: 'test'
+  ...
+# Subtest: failed yielding propagates and can be retried without granting lease authority
+ok 24 - failed yielding propagates and can be retried without granting lease authority
+  ---
+  duration_ms: 0.873
+  type: 'test'
+  ...
+# Subtest: real event-loop timer runs during sustained asynchronous artifact-style work
+ok 25 - real event-loop timer runs during sustained asynchronous artifact-style work
+  ---
+  duration_ms: 6.4597
+  type: 'test'
+  ...
+# Subtest: a backwards host clock still yields once and resets the scheduling boundary
+ok 26 - a backwards host clock still yields once and resets the scheduling boundary
+  ---
+  duration_ms: 0.3547
+  type: 'test'
+  ...
+# Subtest: lease renewal preserves ownership and never revives expiry or a stale version
+ok 27 - lease renewal preserves ownership and never revives expiry or a stale version
+  ---
+  duration_ms: 27.5314
+  type: 'test'
+  ...
+# Subtest: same-owner acquisitions in one clock tick never reuse a stale token
+ok 28 - same-owner acquisitions in one clock tick never reuse a stale token
+  ---
+  duration_ms: 18.6746
+  type: 'test'
+  ...
+# Subtest: expiry at before-state-update rolls back parent state and journal together
+ok 29 - expiry at before-state-update rolls back parent state and journal together
+  ---
+  duration_ms: 18.1883
+  type: 'test'
+  ...
+# Subtest: expiry at after-state-update-before-journal rolls back parent state and journal together
+ok 30 - expiry at after-state-update-before-journal rolls back parent state and journal together
+  ---
+  duration_ms: 20.8469
+  type: 'test'
+  ...
+# Subtest: expiry at before-state-commit rolls back parent state and journal together
+ok 31 - expiry at before-state-commit rolls back parent state and journal together
+  ---
+  duration_ms: 20.6054
+  type: 'test'
+  ...
+# Subtest: controlled host heartbeat renews beyond the original deadline without changing lease duration
+ok 32 - controlled host heartbeat renews beyond the original deadline without changing lease duration
+  ---
+  duration_ms: 32.6616
+  type: 'test'
+  ...
+# Subtest: missed heartbeat fails closed and stale cleanup preserves successor ownership
+ok 33 - missed heartbeat fails closed and stale cleanup preserves successor ownership
+  ---
+  duration_ms: 16.0942
+  type: 'test'
+  ...
+# Subtest: foreground ownership check detects expiry even when the scheduler has not fired
+ok 34 - foreground ownership check detects expiry even when the scheduler has not fired
+  ---
+  duration_ms: 14.7136
+  type: 'test'
+  ...
+# Subtest: scheduler setup failure releases the acquired lease
+ok 35 - scheduler setup failure releases the acquired lease
+  ---
+  duration_ms: 16.0492
+  type: 'test'
+  ...
+# Subtest: read-only storage inspects existing bytes and rejects every mutating operation
+ok 36 - read-only storage inspects existing bytes and rejects every mutating operation
+  ---
+  duration_ms: 26.9746
+  type: 'test'
+  ...
+# Subtest: SQLite state and CAS bytes survive restart with exact journal lineage
+ok 37 - SQLite state and CAS bytes survive restart with exact journal lineage
+  ---
+  duration_ms: 36.7072
+  type: 'test'
+  ...
+# Subtest: stale versions, invalid leases, and missing artifacts fail closed
+ok 38 - stale versions, invalid leases, and missing artifacts fail closed
+  ---
+  duration_ms: 14.3216
+  type: 'test'
+  ...
+# Subtest: journal identity lookup is exact, scoped, indexed, and backwards compatible
+ok 39 - journal identity lookup is exact, scoped, indexed, and backwards compatible
+  ---
+  duration_ms: 49.3816
+  type: 'test'
+  ...
+# Subtest: transaction failure injection rolls back state and journal together
+ok 40 - transaction failure injection rolls back state and journal together
+  ---
+  duration_ms: 16.4018
+  type: 'test'
+  ...
+# Subtest: artifact digest mismatch and post-write failure leave no registered or orphaned bytes
+ok 41 - artifact digest mismatch and post-write failure leave no registered or orphaned bytes
+  ---
+  duration_ms: 19.9294
+  type: 'test'
+  ...
+# Subtest: tampered CAS bytes are rejected by retrieval and recovery
+ok 42 - tampered CAS bytes are rejected by retrieval and recovery
+  ---
+  duration_ms: 27.4963
+  type: 'test'
+  ...
+# Subtest: expired leases are reported deterministically during reconciliation
+ok 43 - expired leases are reported deterministically during reconciliation
+  ---
+  duration_ms: 16.9765
+  type: 'test'
+  ...
+# Subtest: two host connections reject a stale concurrent transition
+ok 44 - two host connections reject a stale concurrent transition
+  ---
+  duration_ms: 39.9512
+  type: 'test'
+  ...
+# Subtest: unknown future schema versions fail closed on reopen
+ok 45 - unknown future schema versions fail closed on reopen
+  ---
+  duration_ms: 22.4081
+  type: 'test'
+  ...
+# Subtest: decoded graph cache keeps bytes isolated and rereads persistence on warm loads
+ok 46 - decoded graph cache keeps bytes isolated and rereads persistence on warm loads
+  ---
+  duration_ms: 44.9993
+  type: 'test'
+  ...
+# Subtest: graph heads, exact receipts, history, and namespace isolation survive reopened storage
+ok 47 - graph heads, exact receipts, history, and namespace isolation survive reopened storage
+  ---
+  duration_ms: 230.9346
+  type: 'test'
+  ...
+# Subtest: graph head and receipt both roll back at before-state-update
+ok 48 - graph head and receipt both roll back at before-state-update
+  ---
+  duration_ms: 90.8463
+  type: 'test'
+  ...
+# Subtest: graph head and receipt both roll back at after-state-update-before-journal
+ok 49 - graph head and receipt both roll back at after-state-update-before-journal
+  ---
+  duration_ms: 120.5943
+  type: 'test'
+  ...
+# Subtest: graph head and receipt both roll back at before-state-commit
+ok 50 - graph head and receipt both roll back at before-state-commit
+  ---
+  duration_ms: 93.1591
+  type: 'test'
+  ...
+# Subtest: stale-head and interleaved commits do not lose updates or duplicate receipts
+ok 51 - stale-head and interleaved commits do not lose updates or duplicate receipts
+  ---
+  duration_ms: 193.1397
+  type: 'test'
+  ...
+# Subtest: graph pointers and corrupt content fail closed rather than reverting to genesis
+ok 52 - graph pointers and corrupt content fail closed rather than reverting to genesis
+  ---
+  duration_ms: 95.3701
+  type: 'test'
+  ...
+# Subtest: actual Core effect and graph recover in fresh processes: normal
+ok 53 - actual Core effect and graph recover in fresh processes: normal
+  ---
+  duration_ms: 4343.1927
+  type: 'test'
+  ...
+# Subtest: actual Core effect and graph recover in fresh processes: before-commit
+ok 54 - actual Core effect and graph recover in fresh processes: before-commit
+  ---
+  duration_ms: 3774.7968
+  type: 'test'
+  ...
+# Subtest: actual Core effect and graph recover in fresh processes: after-commit
+ok 55 - actual Core effect and graph recover in fresh processes: after-commit
+  ---
+  duration_ms: 3565.4144
+  type: 'test'
+  ...
+# Subtest: abrupt process exit leaves recoverable exact graph state: crash-before-commit
+ok 56 - abrupt process exit leaves recoverable exact graph state: crash-before-commit
+  ---
+  duration_ms: 3500.6864
+  type: 'test'
+  ...
+# Subtest: abrupt process exit leaves recoverable exact graph state: crash-after-commit
+ok 57 - abrupt process exit leaves recoverable exact graph state: crash-after-commit
+  ---
+  duration_ms: 6079.7121
+  type: 'test'
+  ...
+# Subtest: completion requires genuine replay and preserves exact output references with zero-call replay
+ok 58 - completion requires genuine replay and preserves exact output references with zero-call replay
+  ---
+  duration_ms: 57.8709
+  type: 'test'
+  ...
+# Subtest: completion rejects substituted work, omitted baselines, and every stale baseline
+ok 59 - completion rejects substituted work, omitted baselines, and every stale baseline
+  ---
+  duration_ms: 19.8418
+  type: 'test'
+  ...
+# Subtest: a genuine non-integrated replay is not work completion
+ok 60 - a genuine non-integrated replay is not work completion
+  ---
+  duration_ms: 6.8758
+  type: 'test'
+  ...
+# Subtest: schema-valid but contradictory integration records cannot unlock dependent work
+ok 61 - schema-valid but contradictory integration records cannot unlock dependent work
+  ---
+  duration_ms: 34.5184
+  type: 'test'
+  ...
+# Subtest: durable completion survives storage reopen, refuses implicit empty history and deduplicates replay
+ok 62 - durable completion survives storage reopen, refuses implicit empty history and deduplicates replay
+  ---
+  duration_ms: 78.0462
+  type: 'test'
+  ...
+# Subtest: completion append rolls back interrupted publication and rejects stale writes and truncated history
+ok 63 - completion append rolls back interrupted publication and rejects stale writes and truncated history
+  ---
+  duration_ms: 53.9779
+  type: 'test'
+  ...
+# Subtest: readiness advances only from durable integration, survives reopen and rejects completion overrides
+ok 64 - readiness advances only from durable integration, survives reopen and rejects completion overrides
+  ---
+  duration_ms: 86.182
+  type: 'test'
+  ...
+# Subtest: readiness rejects byte drift and a completion committed while its inputs are loading
+ok 65 - readiness rejects byte drift and a completion committed while its inputs are loading
+  ---
+  duration_ms: 45.0452
+  type: 'test'
+  ...
+# Subtest: queue recovery after ledger interruption reopens exact records and advances parent once
+ok 66 - queue recovery after ledger interruption reopens exact records and advances parent once
+  ---
+  duration_ms: 52.606
+  type: 'test'
+  ...
+# Subtest: queue recovery after readiness interruption reopens exact records and advances parent once
+ok 67 - queue recovery after readiness interruption reopens exact records and advances parent once
+  ---
+  duration_ms: 51.1509
+  type: 'test'
+  ...
+# Subtest: queue recovery after parent-commit interruption reopens exact records and advances parent once
+ok 68 - queue recovery after parent-commit interruption reopens exact records and advances parent once
+  ---
+  duration_ms: 52.1928
+  type: 'test'
+  ...
+# Subtest: queue recovery reconciles a completed ledger without resetting or duplicating completion
+ok 69 - queue recovery reconciles a completed ledger without resetting or duplicating completion
+  ---
+  duration_ms: 90.3093
+  type: 'test'
+  ...
+# Subtest: historical claim evidence survives expiry and completion without authorizing recovery
+ok 70 - historical claim evidence survives expiry and completion without authorizing recovery
+  ---
+  duration_ms: 108.1375
+  type: 'test'
+  ...
+# Subtest: lost claim response recovers exact journaled claim after reopen without renewing or repeating work
+ok 71 - lost claim response recovers exact journaled claim after reopen without renewing or repeating work
+  ---
+  duration_ms: 91.7003
+  type: 'test'
+  ...
+# Subtest: same work stays exclusive across changed fingerprints, expiry and storage restart
+ok 72 - same work stays exclusive across changed fingerprints, expiry and storage restart
+  ---
+  duration_ms: 30.0622
+  type: 'test'
+  ...
+# Subtest: quarantine never silently releases a work item; independent work can still be claimed
+ok 73 - quarantine never silently releases a work item; independent work can still be claimed
+  ---
+  duration_ms: 38.5874
+  type: 'test'
+  ...
+# Subtest: claim rejects stale, cross-project, expired and undeclared requests without advancing state
+ok 74 - claim rejects stale, cross-project, expired and undeclared requests without advancing state
+  ---
+  duration_ms: 19.9541
+  type: 'test'
+  ...
+# Subtest: independent connections reject a claim raced after its initial readiness read
+ok 75 - independent connections reject a claim raced after its initial readiness read
+  ---
+  duration_ms: 51.5914
+  type: 'test'
+  ...
+1..75
+# tests 75
+# suites 0
+# pass 75
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 32860.1714

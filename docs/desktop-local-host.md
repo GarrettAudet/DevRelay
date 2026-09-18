@@ -427,6 +427,26 @@ tests pass; the current full host run must still prove the original failure is
 resolved. Test-only `DEVRELAY_TEST_PROGRESS=1` reports command timings and maximum
 observed event-loop delay without logging request payloads.
 
+The programmatic host accepts a `clock` and a `scheduler` (`setInterval` and
+`clearInterval`) for controlled lease testing. These functions are host-owned
+dependencies, never JSON configuration or adapter inputs. Storage expiry and
+host cooperative scheduling use the same clock. Lease renewal failure is sticky;
+the host checks ownership again even when resuming would leave the parent state
+unchanged. Cleanup can release only its exact token and cannot release a successor.
+Every acquisition has a fresh token, including same-owner acquisitions in one
+clock tick. Transaction commit rechecks expiry after preparing state and journal.
+Handoff-contained artifact loads cooperate just like configured artifact loads.
+Artifact loading stops when the heartbeat has reported lost ownership. A backward
+clock adjustment still yields to the scheduler instead of starving its callbacks.
+
+Queue recovery initializes or validates the exact existing completion ledger,
+rederives readiness through Core replay, and compares any saved readiness bytes.
+Before parent progression it rechecks the saved readiness and current completion
+snapshot. An interrupted intermediate record grants no dispatch authority and
+cannot reset completed work. Native execution rechecks its lease after recording
+effect intent and before dispatch. An uncertain effect remains quarantined until
+exact receipt reconciliation; saved effects replay without a second provider call.
+
 ## Work-baseline activation (unreleased integration)
 
 After `resume.workBreakdownGate` prepares the exact owning Gate record, a separate

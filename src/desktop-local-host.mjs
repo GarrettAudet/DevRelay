@@ -13,7 +13,7 @@ import { activateLocalQualityPolicy, verifyLocalQualityPolicyActivation, assertL
 import { qualityContinuityApprovedTraceabilityContributor } from "./quality-continuity-traceability-contributor.mjs";
 import { createLocalHostCooperativeYield } from "./local-host-cooperative-yield.mjs";
 import { prepareLocalExecutionBaselines } from "./local-execution-baselines.mjs";
-import { initializeLocalCompletionLedger } from "./local-completion-ledger.mjs";
+import { createLocalHostLeaseKeeper, prepareLocalWorkQueue, assertLocalWorkQueueCurrent } from "./local-host-recovery.mjs";
 import { deriveLocalWorkReadiness, assertLocalCompletionSnapshotCurrent } from "./local-work-readiness.mjs";
 import { createLocalHostCheckpointStore } from "./local-host-checkpoints.mjs";
 import { createLocalHostTraceabilityStore } from "./local-host-traceability.mjs";
@@ -98,7 +98,9 @@ const inside = (root, target) => { const r = path.relative(root, target); return
 
 // This is an explicit native host, not a user-code loader. All executable code
 // comes from this package; configured files contain contract/artifact JSON only.
-export async function openDesktopLocalHost({ configurationPath, configurationDigest, command, platform = process.platform } = {}) {
+export async function openDesktopLocalHost({ configurationPath, configurationDigest, command, platform = process.platform,
+  clock = Date.now, scheduler = { setInterval, clearInterval } } = {}) {
+  if (typeof clock !== "function" || typeof scheduler?.setInterval !== "function" || typeof scheduler?.clearInterval !== "function") fail("invalid host clock or scheduler");
   if (platform !== "win32") fail("the configured Desktop local host requires Windows", "DR4961");
   if (!path.isAbsolute(configurationPath ?? "") || !/^sha256:[a-f0-9]{64}$/u.test(configurationDigest ?? "")) fail("absolute configuration path and exact digest are required");
   const configurationBytes = readFileSync(configurationPath);
@@ -196,7 +198,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
   const stateDirectory = scopedPath(configuration.stateDirectory, command === "init" || command === "run" || command === "resume" ? "filesystem.write" : "filesystem.read");
   scopedPath(path.join(configuration.stateDirectory, "state.sqlite"), ["init", "run", "resume"].includes(command) ? "filesystem.write" : "filesystem.read");
   if (command !== "init" && !existsSync(path.join(stateDirectory, "state.sqlite"))) fail("host is not initialized; run init first", "DR4963");
-  const storage = createLocalHostStorage({ rootDirectory: stateDirectory, readOnly: !["init", "run", "resume"].includes(command) });
+  const storage = createLocalHostStorage({ rootDirectory: stateDirectory, clock, readOnly: !["init", "run", "resume"].includes(command) });
   try {
     const namespace = `desktop-host/${canonicalJsonDigest({ projectId: configuration.projectId, root }).slice(7)}`;
     const records = createLocalHostCheckpointStore({ storage, namespace: `${namespace}/records` });
@@ -220,7 +222,13 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
     };
     let registry;
     let graph;
-    const cooperate = createLocalHostCooperativeYield();
+    let activeLeaseKeeper;
+    const yieldCooperatively = createLocalHostCooperativeYield({ now: clock });
+    const cooperate = async () => {
+      activeLeaseKeeper?.throwIfFailed();
+      await yieldCooperatively();
+      activeLeaseKeeper?.throwIfFailed();
+    };
     const executionContext = { artifacts: { async load(suppliedRef) {
       await cooperate();
       const raw = Object.keys(suppliedRef).sort().join(",") === "artifactId,digest";
@@ -307,7 +315,11 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         record: records.get(run.state.workGateKey), boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))),
         expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle,
         binding: configuration.dependencyBinding, priorSnapshot: handoff.snapshot, priorReceipt: handoff.receipt,
-        loadArtifact: ref => { const file = handoff.files.find(entry => same(entry.ref, ref)); return file ? Buffer.from(file.bytesBase64, "base64") : load(ref); } };
+        loadArtifact: async ref => {
+          await cooperate();
+          const file = handoff.files.find(entry => same(entry.ref, ref));
+          return file ? Buffer.from(file.bytesBase64, "base64") : load(ref);
+        } };
       const verified = await verifyLocalDependencyBaselineActivation(request);
       if (run.state.dependencyActivationKey !== `dependency-activation-record:${gate.commitDigest}` || !same(verified, activation)) fail("assignment activation evidence drifted", "DR4962", 6);
       return request;
@@ -425,17 +437,11 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
       }
       const overview = invocation.inputs?.["project-overview-baseline"];
       if (overview && (overview.length !== 1 || !same(overview[0], snapshot.bindings.find(({ role }) => role === "project-overview")?.artifact))) fail("module input does not bind the exact session ProjectOverview baseline", "DR4962", 6);
-      // Renew while bounded Core work proceeds. A two-minute window tolerates
-      // synchronous validation bursts; expiry never permits silent resurrection.
-      const durationMilliseconds = 120_000;
-      const lease = storage.acquireLease({ runId: id, owner: `${configuration.taskId}:${process.pid}`, expectedVersion: run.version, durationMilliseconds });
-      let leaseFailure;
-      const heartbeat = setInterval(() => {
-        if (leaseFailure) return;
-        try { storage.renewLease({ runId: id, leaseToken: lease.token, expectedVersion: run.version, durationMilliseconds }); }
-        catch (error) { leaseFailure = error; }
-      }, 10_000);
-      heartbeat.unref();
+      const leaseKeeper = createLocalHostLeaseKeeper({ storage, runId: id,
+        owner: `${configuration.taskId}:${process.pid}`, expectedVersion: run.version, scheduler });
+      activeLeaseKeeper = leaseKeeper;
+      const { lease } = leaseKeeper;
+      let validateParentState = () => {};
       try {
         if (input.response) {
           if (!resume || !run.state.pendingRequestId) fail("response requires an exact pending Desktop request");
@@ -613,7 +619,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             const store = createDurableWorkContinuityStore({ storage, projectId: configuration.projectId });
             const workFingerprint = JSON.parse(Buffer.from(prepared.record.artifacts.workFingerprint.bytesBase64, "base64"));
             const parameters = { store, workFingerprint, attemptId: claimRequest.attemptId, owner: claimRequest.owner,
-              leaseExpiresAt: claimRequest.leaseExpiresAt, now: Date.now(), expectedHostVersion: claimRequest.expectedHostVersion,
+              leaseExpiresAt: claimRequest.leaseExpiresAt, now: clock(), expectedHostVersion: claimRequest.expectedHostVersion,
               expectedIndexRevision: claimRequest.expectedIndexRevision };
             const exists = store.read().state.index.records.some(item => item.attemptId === claimRequest.attemptId);
             const result = exists ? recoverLocalWorkContinuityClaim({ storage, ...parameters }) : claimLocalWorkContinuity(parameters);
@@ -674,10 +680,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const baselines = await prepareLocalExecutionBaselines({ ...request, assignmentExecution: execution, assignmentGate: gate });
           const queueRequest = { storage, namespace, baselines, loadArtifact: request.loadArtifact,
             verifyIntegration: exactInvocation => registry.verifyCheckpointedExecution(exactInvocation, executionContext) };
-          initializeLocalCompletionLedger(queueRequest);
-          const readiness = await deriveLocalWorkReadiness(queueRequest);
-          const workReadinessKey = `work-readiness:${readiness.readinessDigest}`;
-          records.put(workReadinessKey, readiness);
+          const { readiness, workReadinessKey } = await prepareLocalWorkQueue({ ...queueRequest, records });
+          validateParentState = () => assertLocalWorkQueueCurrent({ ...queueRequest, records, readiness });
           nextState = { ...run.state, workReadinessKey, ...(run.state.workReadinessKey === workReadinessKey
             ? { status: run.state.status } : { workQualityKeys: {}, status: "work-queue-prepared" }) };
         } else if (input.activateAssignmentGate) {
@@ -1190,9 +1194,9 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           if (!(error instanceof DesktopStepRequired)) throw error;
           nextState = { ...run.state, status: "awaiting-desktop", pendingRequestId: error.request.requestId, recordKey: null };
         }
+        validateParentState();
+        leaseKeeper.assertCurrent();
         if (!same(nextState, run.state)) {
-          if (leaseFailure) throw leaseFailure;
-          storage.renewLease({ runId: id, leaseToken: lease.token, expectedVersion: run.version, durationMilliseconds });
           storage.commitTransition({ runId: id, expectedVersion: run.version, leaseToken: lease.token,
             transition: { kind: "DesktopLocalRunProgress", invocationKey: run.state.invocationKey }, nextState });
         }
@@ -1204,7 +1208,12 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           ...(nextState.dependencyContextFilesKey ? { nextConfiguration: records.get(nextState.dependencyContextFilesKey) } : {}),
           ...(nextState.assignmentContextFilesKey ? { nextConfiguration: records.get(nextState.assignmentContextFilesKey) } : {}),
           ...(nextState.pendingRequestId ? { desktopRequest: exchange.readRequest(nextState.pendingRequestId) } : {}) };
-      } finally { clearInterval(heartbeat); storage.releaseLease({ runId: id, leaseToken: lease.token }); }
+      } catch (error) {
+        // Core may wrap an aborted artifact load. Report the host's original
+        // ownership failure instead of misdiagnosing it as missing input bytes.
+        leaseKeeper.throwIfFailed();
+        throw error;
+      } finally { activeLeaseKeeper = undefined; leaseKeeper.close(); }
     };
     const services = {
         bootstrap: async () => session,
