@@ -43,7 +43,7 @@ async function derive({ priorSnapshot, priorReceipt, createdAt, ...request }, hi
   };
   add(prepared.state.ref, prepared.state.bytes);
   const route = generated(`dependency-route-${prepared.state.ref.digest.slice(7)}`, "https://devrelay.dev/artifacts/module-route-decision/v1", prepared.route, "application/vnd.devrelay.module-route-decision+json");
-  for (const ref of [value.workBreakdownBaseline, value.projectOverviewBaseline, value.contextSliceSet, value.policyBundle]) add(ref, await request.loadArtifact(ref));
+  for (const ref of [value.workBreakdownBaseline, value.projectOverviewBaseline, value.contextSliceSet, value.policyBundle, ...(value.currentWorkDependencyBaseline ? [value.currentWorkDependencyBaseline] : [])]) add(ref, await request.loadArtifact(ref));
   const policy = JSON.parse(Buffer.from(await request.loadArtifact(value.policyBundle)));
   add(policy.wasm, await request.loadArtifact(policy.wasm));
   for (const slice of prepared.state.snapshot.contextSlices) add(slice.sourceArtifact, await request.loadArtifact(slice.sourceArtifact));

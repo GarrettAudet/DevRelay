@@ -5,6 +5,7 @@ import { verifyLocalWorkDependencyExecution } from "./local-work-dependency-exec
 import { verifyLocalWorkDependencyGate } from "./local-work-dependency-gate.mjs";
 import { assertLocalWorkBaselineCurrent } from "./local-work-baseline-activation.mjs";
 import { assertLocalWorkContextCurrent } from "./local-work-breakdown-context.mjs";
+import { dependencyHeadId, verifyDependencyPredecessor } from "./local-work-dependency-planning.mjs";
 import { createLocalHostCheckpointStore } from "./local-host-checkpoints.mjs";
 
 const read = name => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
@@ -12,7 +13,7 @@ const validateHead = compileArtifactSchema(read("local-dependency-baseline-head.
 const validateResult = compileArtifactSchema(read("local-dependency-baseline-activation.schema.json"), [read("module-result.schema.json"), read("module-execution-record.schema.json"), read("local-discovery-activation.schema.json")]);
 const same = (a, b) => canonicalJsonDigest(a) === canonicalJsonDigest(b);
 const fail = message => { throw new TypeError(`dependency activation: ${message}`); };
-export const localDependencyBaselineHeadId = namespace => `dependency-baseline-head:${canonicalJsonDigest({ namespace })}`;
+export const localDependencyBaselineHeadId = dependencyHeadId;
 
 export function assertLocalDependencyBaselineCurrent({ storage, namespace, baseline }) {
   const head = storage.readRun(localDependencyBaselineHeadId(namespace));
@@ -29,8 +30,9 @@ async function prepare({ dependencyGate, ...request }) {
   const work = decode(request.record.baseline);
   const replay = request.checkpointReplay;
   if (!same(work.ref, baseline.value.workBreakdownBaseline)) fail("approved work lineage differs");
-  return { baseline, work, digest: dependencyGate.commitDigest,
-    prior: JSON.parse(Buffer.from(request.expectedState.bytes)).currentWorkDependencyBaseline ?? null,
+  const prior = JSON.parse(Buffer.from(request.expectedState.bytes)).currentWorkDependencyBaseline;
+  const predecessor = await verifyDependencyPredecessor({ ...request, currentWorkDependencyBaseline: prior });
+  return { baseline, work, digest: dependencyGate.commitDigest, predecessor, prior: predecessor?.ref ?? null,
     stored: { artifactId: baseline.ref.artifactId, digest: baseline.ref.digest, mediaType: baseline.ref.mediaType, byteCount: baseline.bytes.length },
     graphRequest: { invocation: replay.invocation, moduleResult: replay.moduleResult,
       invocationFingerprint: canonicalJsonDigest({ invocation: replay.invocation, gateCommit: dependencyGate.commitDigest }),
@@ -53,32 +55,42 @@ function result(target, key, applicationProof) {
   return value;
 }
 
+function assertPredecessorHead(head, target) {
+  if (!validateHead(head.state) || !same(head.state.baseline, target.prior) ||
+      head.state.activationDigest !== (target.predecessor?.activationDigest ?? null) ||
+      (head.state.pendingCommit !== null && head.state.pendingCommit !== target.digest)) fail("prior baseline or pending Gate conflicts");
+}
+
 export async function activateLocalDependencyBaseline(request) {
   const { storage, namespace, graph } = request;
   const target = await prepare(request);
   const key = `dependency-baseline-activation:${target.digest}`;
   const checkpoints = createLocalHostCheckpointStore({ storage, namespace });
-  const saved = checkpoints.get(key);
-  const prepared = saved ? await graph.validatePrepared({ ...target.graphRequest, checkpoint: saved }) : await graph.prepare({ ...target.graphRequest, baseGraph: graph.captureBase() });
-  checkpoints.put(key, prepared.checkpoint);
   const id = localDependencyBaselineHeadId(namespace);
-  if (publication(storage, id, target)) return result(target, key, graph.assertApplied(prepared.updateRef));
+  if (publication(storage, id, target)) return verifyLocalDependencyBaselineActivation(request);
   assertLocalWorkBaselineCurrent({ storage, namespace, baseline: target.work.ref });
   assertLocalWorkContextCurrent({ storage, namespace, boundary: request.boundary, state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
   let head;
   try { head = storage.readRun(id); }
   catch (error) {
     if (error.code !== "DR4920") throw error;
-    try { head = storage.initializeRun({ runId: id, state: { kind: "LocalDependencyBaselineHead", baseline: target.prior, activationDigest: null, pendingCommit: null } }); }
+    try { head = storage.initializeRun({ runId: id, state: { kind: "LocalDependencyBaselineHead", baseline: null, activationDigest: null, pendingCommit: null } }); }
     catch (race) { if (race.code !== "DR4922") throw race; head = storage.readRun(id); }
   }
-  if (!validateHead(head.state)) fail("head violates its contract");
+  assertPredecessorHead(head, target);
   const lease = storage.acquireLease({ runId: id, owner: `dependency-gate:${process.pid}`, expectedVersion: head.version, durationMilliseconds: 120000 });
   try {
+    head = storage.readRun(id);
+    if (publication(storage, id, target)) return verifyLocalDependencyBaselineActivation(request);
+    assertPredecessorHead(head, target);
+    await verifyDependencyPredecessor({ ...request, currentWorkDependencyBaseline: target.prior ?? undefined });
+    assertLocalWorkBaselineCurrent({ storage, namespace, baseline: target.work.ref });
+    assertLocalWorkContextCurrent({ storage, namespace, boundary: request.boundary, state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
+    const saved = checkpoints.get(key);
+    const prepared = saved ? await graph.validatePrepared({ ...target.graphRequest, checkpoint: saved }) : await graph.prepare({ ...target.graphRequest, baseGraph: graph.captureBase() });
+    checkpoints.put(key, prepared.checkpoint);
     let proof;
     try { proof = graph.assertApplied(prepared.updateRef); } catch (error) { if (error.code !== "TG_UPDATE_NOT_APPLIED") throw error; }
-    if (publication(storage, id, target)) { if (!proof) fail("published baseline lacks graph proof"); return result(target, key, proof); }
-    if (!same(head.state.baseline, target.prior) || (head.state.pendingCommit !== null && head.state.pendingCommit !== target.digest)) fail("prior baseline or pending Gate conflicts");
     if (head.state.pendingCommit === null) {
       if (proof) fail("graph applied without durable reservation");
       head = storage.commitTransition({ runId: id, expectedVersion: head.version, leaseToken: lease.token,

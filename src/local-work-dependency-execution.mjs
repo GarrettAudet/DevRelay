@@ -1,7 +1,7 @@
 import { canonicalJsonDigest } from "./content-digest.mjs";
 import { loadArtifactContent, loadArtifactBytes } from "./artifact-runtime.mjs";
 import { createLocalHostCheckpointStore } from "./local-host-checkpoints.mjs";
-import { verifyLocalWorkDependencyRoute } from "./local-work-dependency-planning.mjs";
+import { verifyLocalWorkDependencyRoute, verifyDependencyPredecessor, assertDependencyPredecessorCurrent } from "./local-work-dependency-planning.mjs";
 import { assertLocalWorkBaselineCurrent } from "./local-work-baseline-activation.mjs";
 import { assertLocalWorkContextCurrent } from "./local-work-breakdown-context.mjs";
 import { createWorkDependencyAnalysisRuntime } from "./work-dependency-runtime.mjs";
@@ -27,11 +27,13 @@ async function prepare({ binding, ...request }) {
     .map(([role, artifact]) => ({ role, artifact })).sort((a, b) => a.role < b.role ? -1 : a.role > b.role ? 1 : 0);
   const executionFingerprint = canonicalJsonDigest({ module: { id: "work-dependency-analysis", version: "0.1.0", operation: "analyze-dependencies" },
     executionId, bindings: inputBindings, ...binding });
+  const predecessor = await verifyDependencyPredecessor(request);
   const runtime = createWorkDependencyAnalysisRuntime({ ...binding,
     proposer: { ...binding.proposer, propose(snapshot) {
       assertLocalWorkBaselineCurrent({ storage: request.storage, namespace: request.namespace, baseline: state.workBreakdownBaseline });
       assertLocalWorkContextCurrent({ storage: request.storage, namespace: request.namespace, boundary: request.boundary,
         state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
+      assertDependencyPredecessorCurrent({ ...request, predecessor });
       return createNativeDependencyProposal(snapshot);
     } } });
   return { runtime, inputs, executionId, executionFingerprint,

@@ -92,3 +92,11 @@ No inverse edge is stored. Traceability vocabulary 1.2 adds this relationship wh
 ## V1 boundary
 
 V1 supports static acyclic graphs only. Conditional dependencies, resource constraints, assignment, estimates, scheduling, execution state, retries, and dynamic replanning belong to later modules or versions.
+
+## Desktop dependency replacement handoff
+
+The closed host submission v2 uses kind `DesktopDependencyReplacementContextSubmission` and requires an explicit `currentWorkDependencyBaseline` artifact file, alongside the existing work activation, context slices, policy and artifact files. The v1 initial submission remains unchanged and cannot replace an existing dependency head. This host extension does not change the semantic Module or Gate.
+
+Preparation binds the predecessor's exact raw bytes and archived namespace publication into the owning ProjectWorkDependencyState. Fresh planning and proposer execution require that predecessor to be the current published head with no pending Gate. Historical rederivation uses the pinned archived publication, preserving initial state identities when the predecessor is absent. Context handoffs carry the predecessor bytes through materialization and restart. Execution identity includes the exact state, preventing cross-predecessor checkpoint reuse.
+
+Activation derives the predecessor only from verified state, checks the real head under lease before graph preparation, checkpoints before merge, and reserves the exact Gate before publication. A missing head is initialized empty, never seeded from supplied predecessor data. Replays of an already published Gate verify historical evidence without changing the current head.

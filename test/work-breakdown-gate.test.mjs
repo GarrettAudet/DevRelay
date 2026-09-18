@@ -1,3 +1,4 @@
+import { exerciseDependencyReplacement } from "./fixtures/local-dependency-replacement.mjs";
 import { exerciseAssignmentReplacement } from "./fixtures/local-assignment-replacement.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -726,6 +727,13 @@ async function activationFixture(t, replacement = false) {
   assert.deepEqual(await verifyLocalDependencyBaselineActivation(activationArgs()), dependencyActivated);
   assert.deepEqual(await activateLocalDependencyBaseline(activationArgs()), dependencyActivated);
   assert.deepEqual(storage.readRun(localDependencyBaselineHeadId(namespace)), dependencyHead);
+  if (replacement === "dependency") {
+    await exerciseDependencyReplacement({ initial: activationArgs(), initialActivation: dependencyActivated,
+      context: { ...contextArgs, storage, graph, loadArtifact: ref => ref.artifactId === dependencyBaseline.ref.artifactId ? dependencyBaseline.bytes : sessionLoad(ref) },
+      configuration, resolvePath, jsonArtifact, evidenceRef: gateEvidenceRef(),
+      reopen() { storage.close(); storage = createLocalHostStorage({ rootDirectory }); graph = connect(); return { storage, graph }; } });
+    return;
+  }
   const specialists = jsonArtifact("SC-RECOVERY", { schema: "https://devrelay.dev/artifacts/specialist-catalog/v1", mediaType: "application/vnd.devrelay.specialist-catalog+json" },
     { kind: "SpecialistCatalog", catalogId: "SC-RECOVERY", profiles: [{ id: "FIXTURE-CODER", capabilityIds: ["CAP-CODE"], toolIds: [], grantIds: [] }] });
   const assignmentPolicy = jsonArtifact("AP-RECOVERY", { schema: "https://devrelay.dev/artifacts/assignment-policy/v1", mediaType: "application/vnd.devrelay.assignment-policy+json" },
@@ -1331,3 +1339,5 @@ test("blocking diagnostics are derived from replay and reject progression", asyn
     /blocking diagnostics: WB-BLOCK/,
   );
 });
+
+test("dependency replacement preserves exact predecessor and recovers genuine Gate publication", t => activationFixture(t, "dependency"));

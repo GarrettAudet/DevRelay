@@ -498,6 +498,13 @@ for (const requiredContracts of [true, false]) test(`Desktop discovery approval 
     const dependencySubmission = fx.json("dependency/submission.json", { kind: "DesktopDependencyContextSubmission",
       activationDigest: output(verifiedWorkActivation).workActivation.gateCommitDigest, createdAt: "2026-09-14T02:00:00Z",
       contextSliceSet: dependencySlices, policyBundle: dependencyPolicy, artifacts: [wasm] });
+    const invalidReplacement = fx.json("dependency/invalid-replacement.json", { kind: "DesktopDependencyReplacementContextSubmission",
+      activationDigest: output(verifiedWorkActivation).workActivation.gateCommitDigest, createdAt: "2026-09-14T02:00:00Z",
+      contextSliceSet: dependencySlices, policyBundle: dependencyPolicy, artifacts: [wasm] });
+    const rejectedReplacement = await command(workHost, "resume", { ...workInput,
+      checkpointDigest: output(activatedWork).checkpointDigest, prepareDependencyContext: invalidReplacement });
+    assert.notEqual(rejectedReplacement.exitCode, 0);
+    assert.match(rejectedReplacement.diagnostics[0].message, /dependency submission violates its closed contract/);
     const dependencyPrepared = await executableCommand(workHost, "resume", { ...workInput,
       checkpointDigest: output(activatedWork).checkpointDigest, prepareDependencyContext: dependencySubmission });
     assert.equal(dependencyPrepared.exitCode, 5, JSON.stringify(dependencyPrepared));

@@ -57,6 +57,7 @@ import { prepareLocalWorkBreakdownGate, verifyLocalWorkBreakdownGate } from "./l
 import { activateLocalWorkBaseline, verifyLocalWorkBaselineActivation } from "./local-work-baseline-activation.mjs";
 import { createWorkBreakdownApprovalTraceabilityContributor } from "./work-breakdown-traceability-contributor.mjs";
 import { TRACEABILITY_VOCABULARY_V1_9 } from "./traceability-artifact-validator.mjs";
+import { verifyDependencyPredecessor, assertDependencyPredecessorCurrent } from "./local-work-dependency-planning.mjs";
 import { assertLocalWorkDependencyContextCurrent, createLocalWorkDependencyContext, verifyLocalWorkDependencyContext, materializeLocalWorkDependencyContext } from "./local-work-dependency-context.mjs";
 import { executeLocalWorkDependencyPlanning, verifyLocalWorkDependencyExecution } from "./local-work-dependency-execution.mjs";
 import { prepareLocalWorkDependencyGate, verifyLocalWorkDependencyGate } from "./local-work-dependency-gate.mjs";
@@ -82,6 +83,7 @@ const validateQualityPolicySubmission = compileArtifactSchema(schema("desktop-qu
 const validateWorkClaim = compileArtifactSchema(schema("desktop-work-claim.schema.json"));
 const validateWorkClaimRecord = compileArtifactSchema(schema("local-work-execution-claim.schema.json"), [schema("desktop-work-claim.schema.json"), schema("work-continuity-artifacts.schema.json")]);
 const validateWorkSubmission = compileArtifactSchema(schema("desktop-work-context-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
+const validateDependencyReplacementSubmission = compileArtifactSchema(schema("desktop-dependency-context-submission-v2.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateDependencySubmission = compileArtifactSchema(schema("desktop-dependency-context-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateAssignmentSubmission = compileArtifactSchema(schema("desktop-assignment-context-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateAssignmentGateSubmission = compileArtifactSchema(schema("desktop-assignment-gate-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
@@ -313,7 +315,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
       const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
       const request = { storage, namespace, graph, registry, checkpointReplay, dependencyGate: gate, execution,
         record: records.get(run.state.workGateKey), boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))),
-        expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle,
+        expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline,
         binding: configuration.dependencyBinding, priorSnapshot: handoff.snapshot, priorReceipt: handoff.receipt,
         loadArtifact: async ref => {
           await cooperate();
@@ -777,7 +779,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
           const activation = await activateLocalDependencyBaseline({ storage, namespace, graph, registry, checkpointReplay, dependencyGate: gate,
             record: records.get(run.state.workGateKey), boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))),
-            expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle,
+            expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline,
             binding: configuration.dependencyBinding, loadArtifact: executionContext.artifacts.load, execution });
           const dependencyActivationKey = `dependency-activation-record:${gate.commitDigest}`;
           records.put(dependencyActivationKey, activation);
@@ -794,10 +796,14 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const boundaryRef = handoff.snapshot.bindings.find(entry => entry.role === "lifecycle-status").artifact;
           const boundary = JSON.parse(Buffer.from(handoff.files.find(entry => same(entry.ref, boundaryRef)).bytesBase64, "base64"));
           assertLocalWorkDependencyContextCurrent({ storage, namespace, boundary, state: handoff.state });
+          if (!run.state.dependencyGateKey) {
+            const predecessor = await verifyDependencyPredecessor({ storage, namespace, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline, loadArtifact: executionContext.artifacts.load });
+            assertDependencyPredecessorCurrent({ storage, namespace, predecessor });
+          }
           const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
           const replayReceipt = await verifyLocalWorkDependencyExecution({ storage, namespace, graph, registry, checkpointReplay,
             record: records.get(run.state.workGateKey), boundary: boundary.workBoundary, expectedState: { ref: handoff.state, bytes },
-            contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, binding: configuration.dependencyBinding,
+            contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline, binding: configuration.dependencyBinding,
             loadArtifact: executionContext.artifacts.load, execution });
           const supplied = new Map();
           for (const entry of [submission.baseline, submission.approval, ...submission.artifacts]) {
@@ -825,7 +831,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
           const execution = await executeLocalWorkDependencyPlanning({ storage, namespace, graph, registry, checkpointReplay,
             record: records.get(run.state.workGateKey), boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))),
-            expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle,
+            expectedState: { ref: handoff.state, bytes }, contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline,
             binding: configuration.dependencyBinding, loadArtifact: executionContext.artifacts.load });
           const dependencyExecutionKey = `dependency-execution:${execution.executionFingerprint}`;
           const persisted = JSON.parse(JSON.stringify({ ...execution, replayed: false }));
@@ -839,20 +845,22 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           if (input.materializeDependencyContext && saved?.handoffDigest !== input.materializeDependencyContext) fail("dependency handoff is stale", "DR4962", 6);
           const savedState = input.materializeDependencyContext ? JSON.parse(Buffer.from(saved.files.find(entry => same(entry.ref, saved.state)).bytesBase64, "base64")) : undefined;
           const submission = input.prepareDependencyContext ? json(input.prepareDependencyContext) : {
-            activationDigest: activation.gateCommitDigest, createdAt: saved.snapshot.createdAt, contextSliceSet: { ref: savedState.contextSliceSet }, policyBundle: { ref: savedState.policyBundle }, artifacts: [] };
-          if (input.prepareDependencyContext && !validateDependencySubmission(submission)) fail("dependency submission violates its closed contract");
+            activationDigest: activation.gateCommitDigest, createdAt: saved.snapshot.createdAt, contextSliceSet: { ref: savedState.contextSliceSet }, policyBundle: { ref: savedState.policyBundle }, currentWorkDependencyBaseline: savedState.currentWorkDependencyBaseline ? { ref: savedState.currentWorkDependencyBaseline } : undefined, artifacts: [] };
+          if (input.prepareDependencyContext && !(submission.kind === "DesktopDependencyReplacementContextSubmission" ? validateDependencyReplacementSubmission(submission) : validateDependencySubmission(submission))) fail("dependency submission violates its closed contract");
           if (submission.activationDigest !== activation.gateCommitDigest) fail("dependency submission changes work activation", "DR4962", 6);
           const supplied = new Map();
-          if (input.prepareDependencyContext) for (const entry of [submission.contextSliceSet, submission.policyBundle, ...submission.artifacts]) {
+          if (input.prepareDependencyContext) for (const entry of [submission.contextSliceSet, submission.policyBundle, ...(submission.currentWorkDependencyBaseline ? [submission.currentWorkDependencyBaseline] : []), ...submission.artifacts]) {
             const key = canonicalJsonDigest(entry.ref);
             if (supplied.has(key)) fail("duplicate dependency context artifact");
             supplied.set(key, { ref: entry.ref, bytes: read({ path: entry.path, digest: entry.ref.digest }) });
           }
           const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
-          const handoff = await createLocalWorkDependencyContext({ storage, namespace, graph, registry, checkpointReplay,
+          const deriveDependencyContext = input.materializeDependencyContext ? verifyLocalWorkDependencyContext : createLocalWorkDependencyContext;
+          const handoff = await deriveDependencyContext({ storage, namespace, graph, registry, checkpointReplay,
+            ...(input.materializeDependencyContext ? { handoff: saved } : {}),
             record: records.get(run.state.workGateKey), boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))),
             priorSnapshot: snapshot, priorReceipt: session, createdAt: submission.createdAt,
-            contextSliceSet: submission.contextSliceSet.ref, policyBundle: submission.policyBundle.ref,
+            contextSliceSet: submission.contextSliceSet.ref, policyBundle: submission.policyBundle.ref, currentWorkDependencyBaseline: submission.currentWorkDependencyBaseline?.ref,
             loadArtifact: ref => supplied.get(canonicalJsonDigest(ref))?.bytes ?? executionContext.artifacts.load(ref) });
           const dependencyContextKey = `dependency-context:${handoff.handoffDigest}`;
           if (saved && (run.state.dependencyContextKey !== dependencyContextKey || !same(saved, handoff))) fail("another dependency context is sealed", "DR4962", 6);
@@ -1414,7 +1422,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             const state = JSON.parse(Buffer.from(stateFile.bytesBase64, "base64"));
             dependencyContext = await verifyLocalWorkDependencyContext({ storage, namespace, graph, registry, checkpointReplay: receipt, record: workGate,
               boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))), handoff: stored, priorSnapshot: snapshot, priorReceipt: session,
-              contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, loadArtifact: executionContext.artifacts.load });
+              contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline, loadArtifact: executionContext.artifacts.load });
             if (observed.state.dependencyContextKey !== `dependency-context:${dependencyContext.handoffDigest}`) fail("dependency context key drifted", "DR4964", 7);
             if (observed.state.dependencyContextFilesKey) {
               dependencyContextFiles = materializeLocalWorkDependencyContext({ configuration, handoff: dependencyContext, resolvePath: scopedPath, verifyOnly: true });
@@ -1425,7 +1433,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
               const execution = records.get(observed.state.dependencyExecutionKey);
               const verified = await verifyLocalWorkDependencyExecution({ storage, namespace, graph, registry, checkpointReplay: receipt, record: workGate,
                 boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))), expectedState: { ref: stored.state, bytes: Buffer.from(stateFile.bytesBase64, "base64") },
-                contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, binding: configuration.dependencyBinding,
+                contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline, binding: configuration.dependencyBinding,
                 loadArtifact: executionContext.artifacts.load, execution });
               if (observed.state.dependencyExecutionKey !== `dependency-execution:${verified.executionFingerprint}`) fail("dependency execution key drifted", "DR4964", 7);
               dependencyExecution = { execution, checkpointDigest: verified.checkpointDigest };
@@ -1437,7 +1445,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
                   dependencyActivation = await verifyLocalDependencyBaselineActivation({ storage, namespace, graph, registry, checkpointReplay: receipt,
                     record: workGate, dependencyGate, boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))),
                     expectedState: { ref: stored.state, bytes: Buffer.from(stateFile.bytesBase64, "base64") },
-                    contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, binding: configuration.dependencyBinding,
+                    contextSliceSet: state.contextSliceSet, policyBundle: state.policyBundle, currentWorkDependencyBaseline: state.currentWorkDependencyBaseline, binding: configuration.dependencyBinding,
                     loadArtifact: executionContext.artifacts.load, execution });
                   if (observed.state.dependencyActivationKey !== `dependency-activation-record:${dependencyGate.commitDigest}` ||
                       !same(dependencyActivation, records.get(observed.state.dependencyActivationKey))) fail("dependency activation record drifted", "DR4964", 7);

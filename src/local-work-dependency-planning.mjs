@@ -7,6 +7,38 @@ import { validateWorkDependencyArtifact, WORK_DEPENDENCY_ARTIFACT_CONTRACTS } fr
 
 const same = (a, b) => canonicalJsonDigest(a) === canonicalJsonDigest(b);
 
+// Read-only host publication checks live here so planning and activation share
+// one rule without importing activation back into its own planning dependency.
+export const dependencyHeadId = namespace => `dependency-baseline-head:${canonicalJsonDigest({ namespace })}`;
+export async function verifyDependencyPredecessor({ storage, namespace, currentWorkDependencyBaseline, loadArtifact }) {
+  if (currentWorkDependencyBaseline === undefined) return null;
+  const loaded = await loadArtifactContent(currentWorkDependencyBaseline, { load: loadArtifact });
+  validateWorkDependencyArtifact(loaded.value, { ref: loaded.ref });
+  if (loaded.value.kind !== "WorkDependencyBaseline") throw new TypeError("dependency predecessor must be a WorkDependencyBaseline");
+  const rows = storage.readTransitionJournal(dependencyHeadId(namespace)).filter(row =>
+    row.transition.kind === "DependencyBaselineActivated" && same(row.transition.baseline, loaded.ref));
+  if (rows.length !== 1) throw new TypeError("dependency predecessor publication is missing or ambiguous");
+  const row = rows[0];
+  const digest = row.transition.commitDigest;
+  if (typeof digest !== "string" || !/^sha256:[a-f0-9]{64}$/.test(digest) ||
+      !same(row.transition, { id: digest, kind: "DependencyBaselineActivated", commitDigest: digest, baseline: loaded.ref }) ||
+      row.artifactRefs.length !== 1) throw new TypeError("dependency predecessor publication differs");
+  const stored = row.artifactRefs[0];
+  const bytes = Buffer.from(storage.getArtifact(stored));
+  if (stored.artifactId !== loaded.ref.artifactId || stored.digest !== loaded.ref.digest || stored.mediaType !== loaded.ref.mediaType ||
+      stored.byteCount !== loaded.bytes.length || !bytes.equals(loaded.bytes)) throw new TypeError("dependency predecessor stored bytes differ");
+  return { ...loaded, activationDigest: digest };
+}
+export function assertDependencyPredecessorCurrent({ storage, namespace, predecessor }) {
+  let head;
+  try { head = storage.readRun(dependencyHeadId(namespace)); }
+  catch (error) { if (error.code === "DR4920" && !predecessor) return; throw error; }
+  if (head.state.kind !== "LocalDependencyBaselineHead" || !same(head.state.baseline, predecessor?.ref ?? null) ||
+      head.state.activationDigest !== (predecessor?.activationDigest ?? null) || head.state.pendingCommit !== null) {
+    throw new TypeError("dependency predecessor is missing, stale or has a pending Gate");
+  }
+}
+
 // Host composition only: explicit context and policy, no inferred edges,
 // adapter invocation, assignment, or approval of a dependency candidate.
 async function deriveState({ contextSliceSet, policyBundle, boundary, ...request }, current) {
@@ -32,7 +64,9 @@ async function deriveState({ contextSliceSet, policyBundle, boundary, ...request
   await loadArtifactBytes(policy.value.wasm, { load: request.loadArtifact });
   const snapshot = await buildWorkBreakdownAnalysisSnapshot({ workBreakdown, projectOverview, contextSliceSet: slices, resolveArtifact: load });
   validateWorkDependencyArtifact(snapshot);
-  const binding = { workBreakdownBaseline: activation.baseline, projectOverviewBaseline: overviewRef, contextSliceSet, policyBundle };
+  const predecessor = await verifyDependencyPredecessor(request);
+  if (current) assertDependencyPredecessorCurrent({ ...request, predecessor });
+  const binding = { ...(predecessor ? { currentWorkDependencyBaseline: predecessor.ref } : {}), workBreakdownBaseline: activation.baseline, projectOverviewBaseline: overviewRef, contextSliceSet, policyBundle };
   const value = { apiVersion: "devrelay.dev/v1alpha1", kind: "ProjectWorkDependencyState",
     stateId: `PWDS-${canonicalJsonDigest({ activation, binding }).slice(7).toUpperCase()}`, state: "ready", ...binding };
   validateWorkDependencyArtifact(value);
