@@ -52,7 +52,7 @@ import { publishLocalContractCandidateTrace, verifyLocalContractCandidateTrace }
 import { activateLocalContractGate, verifyLocalContractActivation, activateLocalContractsNotApplicable, verifyLocalContractsNotApplicableActivation } from "./local-contract-activation.mjs";
 import { prepareLocalContractsNotApplicable, verifyLocalContractsNotApplicable } from "./local-contract-not-applicable.mjs";
 import { createArchitectureActivationTraceabilityContributor } from "./architecture-traceability-contributor.mjs";
-import { createLocalWorkBreakdownContext, materializeLocalWorkBreakdownContext, verifyLocalWorkBreakdownContext, assertLocalWorkContextCurrent } from "./local-work-breakdown-context.mjs";
+import { createLocalWorkBreakdownContext, materializeLocalWorkBreakdownContext, verifyLocalWorkBreakdownContext, assertLocalWorkInvocationCurrent } from "./local-work-breakdown-context.mjs";
 import { prepareLocalWorkBreakdownGate, verifyLocalWorkBreakdownGate } from "./local-work-breakdown-gate.mjs";
 import { activateLocalWorkBaseline, verifyLocalWorkBaselineActivation } from "./local-work-baseline-activation.mjs";
 import { createWorkBreakdownApprovalTraceabilityContributor } from "./work-breakdown-traceability-contributor.mjs";
@@ -82,6 +82,7 @@ const validateGateActivation = compileArtifactSchema(schema("desktop-requirement
 const validateQualityPolicySubmission = compileArtifactSchema(schema("desktop-quality-policy-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateWorkClaim = compileArtifactSchema(schema("desktop-work-claim.schema.json"));
 const validateWorkClaimRecord = compileArtifactSchema(schema("local-work-execution-claim.schema.json"), [schema("desktop-work-claim.schema.json"), schema("work-continuity-artifacts.schema.json")]);
+const validateWorkSubmissionV2 = compileArtifactSchema(schema("desktop-work-context-submission-v2.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateWorkSubmission = compileArtifactSchema(schema("desktop-work-context-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateDependencyReplacementSubmission = compileArtifactSchema(schema("desktop-dependency-context-submission-v2.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
 const validateDependencySubmission = compileArtifactSchema(schema("desktop-dependency-context-submission.schema.json"), [schema("desktop-local-host-configuration.schema.json"), schema("module-result.schema.json")]);
@@ -407,7 +408,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
         if (invocation.inputs?.["project-work-breakdown-state"]) {
           const states = invocation.inputs["project-work-breakdown-state"];
           if (states.length !== 1) fail("work invocation requires one exact state", "DR4962", 6);
-          assertLocalWorkContextCurrent({ storage, namespace, state: states[0], boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
+          await assertLocalWorkInvocationCurrent({ storage, namespace, loadArtifact: loadConfigured, state: states[0], boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
         }
         if (invocation.inputs?.["project-architecture-state"]?.length === 1) {
           try { assertLocalArchitectureCurrentState({ storage, namespace, state: invocation.inputs["project-architecture-state"][0] }); }
@@ -426,7 +427,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
       }
       if (resume && input.response && invocation.inputs?.["project-work-breakdown-state"]?.length === 1) {
-        assertLocalWorkContextCurrent({ storage, namespace, state: invocation.inputs["project-work-breakdown-state"][0],
+        await assertLocalWorkInvocationCurrent({ storage, namespace, loadArtifact: loadConfigured, state: invocation.inputs["project-work-breakdown-state"][0],
           boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
       }
       if (resume && !run.state.gateRecordKey) {
@@ -891,7 +892,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           if (!validateWorkGateSubmission(submission)) fail("work Gate submission violates its closed contract");
           const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
           const workState = checkpointReplay.loadedInputs["project-work-breakdown-state"]?.[0]?.ref;
-          assertLocalWorkContextCurrent({ storage, namespace, state: workState, boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
+          await assertLocalWorkInvocationCurrent({ storage, namespace, loadArtifact: loadConfigured, state: workState, boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
           const supplied = new Map();
           for (const entry of [submission.baseline, ...submission.artifacts]) {
             const key = canonicalJsonDigest(entry.ref);
@@ -915,13 +916,14 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
           const savedState = input.materializeWorkBreakdownContext ? JSON.parse(Buffer.from(savedContext.files.find(entry => same(entry.ref, savedContext.state)).bytesBase64, "base64")) : undefined;
           const submission = input.prepareWorkBreakdownContext ? json(input.prepareWorkBreakdownContext) : {
             activationDigest: records.get(run.state.contractActivationKey).gateCommitDigest, createdAt: savedContext.snapshot.createdAt,
-            capabilityCatalog: { ref: savedState.capabilityCatalog }, repositoryContext: { ref: savedState.repositoryContext }, artifacts: [] };
-          if (input.prepareWorkBreakdownContext && !validateWorkSubmission(submission)) fail("work context submission violates its closed contract");
+            capabilityCatalog: { ref: savedState.capabilityCatalog }, repositoryContext: { ref: savedState.repositoryContext ?? savedState.currentRepositorySnapshot },
+            ...(savedState.currentWorkBreakdownBaseline ? { currentWorkBreakdownBaseline: { ref: savedState.currentWorkBreakdownBaseline }, approvedChangePackage: { ref: savedState.approvedChangePackage } } : {}), artifacts: [] };
+          if (input.prepareWorkBreakdownContext && !(submission.version === "2.0.0" ? validateWorkSubmissionV2(submission) : validateWorkSubmission(submission))) fail("work context submission violates its closed contract");
           const activation = run.state.contractActivationKey && records.get(run.state.contractActivationKey);
           if (!activation || activation.gateCommitDigest !== submission.activationDigest) fail("work context requires exact contract activation", "DR4962", 6);
           const checkpointReplay = assertVerifiedCheckpointReplayReceipt(await registry.verifyCheckpointedExecution(invocation, executionContext));
           const supplied = new Map();
-          for (const entry of input.prepareWorkBreakdownContext ? [submission.capabilityCatalog, submission.repositoryContext, ...submission.artifacts] : []) {
+          for (const entry of input.prepareWorkBreakdownContext ? [submission.capabilityCatalog, submission.repositoryContext, ...(submission.currentWorkBreakdownBaseline ? [submission.currentWorkBreakdownBaseline, submission.approvedChangePackage] : []), ...submission.artifacts] : []) {
             const key = canonicalJsonDigest(entry.ref);
             if (supplied.has(key)) fail("duplicate work context artifact");
             supplied.set(key, { ref: entry.ref, bytes: read({ path: entry.path, digest: entry.ref.digest }) });
@@ -934,10 +936,11 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             record: records.get(run.state.architectureGateKey), planning: records.get(run.state.contractPlanningKey), contractGate, contractReplayReceipt,
             notApplicableCommit: run.state.contractsNotApplicableKey ? records.get(run.state.contractsNotApplicableKey) : undefined,
             capabilityCatalog: submission.capabilityCatalog.ref, repositoryContext: submission.repositoryContext.ref,
+            currentWorkBreakdownBaseline: submission.currentWorkBreakdownBaseline?.ref, approvedChangePackage: submission.approvedChangePackage?.ref,
             priorSnapshot: snapshot, priorReceipt: session, createdAt: submission.createdAt,
             loadArtifact: ref => supplied.get(canonicalJsonDigest(ref))?.bytes ?? executionContext.artifacts.load(ref) });
           const workContextKey = `work-context:${handoff.handoffDigest}`;
-          if (run.state.workContextKey && (run.state.workContextKey !== workContextKey || !same(records.get(workContextKey), handoff))) fail("another work context is sealed", "DR4962", 6);
+          if (run.state.workContextKey && !submission.currentWorkBreakdownBaseline && (run.state.workContextKey !== workContextKey || !same(records.get(workContextKey), handoff))) fail("another work context is sealed", "DR4962", 6);
           for (const { ref, bytes } of supplied.values()) {
             const stored = storage.putArtifact({ artifactId: ref.artifactId, mediaType: ref.mediaType, bytes, expectedDigest: ref.digest });
             records.put(`artifact:${canonicalJsonDigest(ref)}`, { ref, stored });
@@ -949,7 +952,10 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
             const workContextFilesKey = `work-context-files:${handoff.handoffDigest}`;
             records.put(workContextFilesKey, materialized);
             nextState = { ...run.state, workContextKey, workContextFilesKey, status: "work-context-materialized" };
-          } else nextState = { ...run.state, workContextKey, status: run.state.workContextFilesKey ? "work-context-materialized" : "work-context-prepared" };
+          } else {
+            nextState = { ...run.state, workContextKey, status: run.state.workContextKey === workContextKey && run.state.workContextFilesKey ? "work-context-materialized" : "work-context-prepared" };
+            if (run.state.workContextKey !== workContextKey) delete nextState.workContextFilesKey;
+          }
         } else if (input.contractsNotApplicable) {
           const submission = json(input.contractsNotApplicable);
           if (!validateContractNotApplicableSubmission(submission)) fail("not-applicable submission violates its closed contract");
@@ -1190,7 +1196,7 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
               boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
           }
           if (!run.state.recordKey && invocation.inputs?.["project-work-breakdown-state"]?.length === 1) {
-            assertLocalWorkContextCurrent({ storage, namespace, state: invocation.inputs["project-work-breakdown-state"][0],
+            await assertLocalWorkInvocationCurrent({ storage, namespace, loadArtifact: loadConfigured, state: invocation.inputs["project-work-breakdown-state"][0],
               boundary: JSON.parse(loadConfigured(roleRef("lifecycle-status"))) });
           }
           const record = await registry.execute(invocation, executionContext);
@@ -1390,7 +1396,8 @@ export async function openDesktopLocalHost({ configurationPath, configurationDig
               executionId: saved.execution.executionId, executionFingerprint: saved.execution.executionFingerprint }) : undefined;
             workContext = await verifyLocalWorkBreakdownContext({ handoff: stored, storage, namespace, graph, registry, checkpointReplay: receipt,
               record: architectureGate, planning: contractPlanning, contractGate: contractGate ?? undefined, contractReplayReceipt,
-              notApplicableCommit: contractsNotApplicable ?? undefined, capabilityCatalog: stateValue.capabilityCatalog, repositoryContext: stateValue.repositoryContext,
+              notApplicableCommit: contractsNotApplicable ?? undefined, capabilityCatalog: stateValue.capabilityCatalog, repositoryContext: stateValue.repositoryContext ?? stateValue.currentRepositorySnapshot,
+              currentWorkBreakdownBaseline: stateValue.currentWorkBreakdownBaseline, approvedChangePackage: stateValue.approvedChangePackage,
               priorSnapshot: snapshot, priorReceipt: session, createdAt: stored.snapshot.createdAt, loadArtifact: executionContext.artifacts.load });
             if (observed.state.workContextKey !== `work-context:${workContext.handoffDigest}` || !same(workContext, stored)) fail("work context record drifted", "DR4964", 7);
             if (observed.state.workContextFilesKey) {

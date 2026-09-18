@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/host/desktop-work-context-submission/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "activationDigest",
+    "createdAt",
+    "capabilityCatalog",
+    "repositoryContext",
+    "artifacts",
+    "version",
+    "currentWorkBreakdownBaseline",
+    "approvedChangePackage"
+  ],
+  "properties": {
+    "kind": {
+      "const": "DesktopWorkContextSubmission"
+    },
+    "activationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{3})?Z$"
+    },
+    "capabilityCatalog": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "repositoryContext": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+      }
+    },
+    "version": {
+      "const": "2.0.0"
+    },
+    "currentWorkBreakdownBaseline": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    },
+    "approvedChangePackage": {
+      "$ref": "https://devrelay.dev/host/desktop-local-configuration/v1#/$defs/artifactFile"
+    }
+  },
+  "$defs": {
+    "handoff": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://devrelay.dev/host/work-breakdown-context-handoff/v2",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "priorSnapshotDigest",
+        "snapshot",
+        "receipt",
+        "state",
+        "route",
+        "files",
+        "invalidatedBindings",
+        "lifecycleComplete",
+        "handoffDigest",
+        "version"
+      ],
+      "properties": {
+        "kind": {
+          "const": "DesktopWorkBreakdownContextHandoff"
+        },
+        "priorSnapshotDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "snapshot": {
+          "$ref": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json#/$defs/sessionSnapshot"
+        },
+        "receipt": {
+          "$ref": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json#/$defs/sessionReceipt"
+        },
+        "state": {
+          "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+        },
+        "route": {
+          "$ref": "https://devrelay.dev/contracts/module-result.schema.json#/$defs/artifactRef"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 9,
+          "items": {
+            "$ref": "https://devrelay.dev/host/local-requirements-gate-commit/v1#/$defs/artifactBytes"
+          }
+        },
+        "invalidatedBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/roadmap-management-artifacts.schema.json#/$defs/contextBinding"
+          }
+        },
+        "lifecycleComplete": {
+          "const": false
+        },
+        "handoffDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "version": {
+          "const": "2.0.0"
+        }
+      }
+    }
+  }
+}

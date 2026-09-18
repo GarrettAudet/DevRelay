@@ -4,13 +4,16 @@ import { publishLocalContextFile } from "./local-context-materialization.mjs";
 import { canonicalJson, canonicalJsonDigest, sha256Digest } from "./content-digest.mjs";
 import { compileArtifactSchema } from "./schema-validation.mjs";
 import { createSessionContextSnapshot, refreshSessionContext, assertSessionContextReceipt } from "./session-bootstrap.mjs";
-import { prepareLocalWorkBreakdownRoute, verifyLocalWorkBreakdownRoute } from "./local-work-breakdown-planning.mjs";
+import { prepareLocalWorkBreakdownRoute, verifyLocalWorkBreakdownRoute, verifyWorkPredecessor, assertWorkPredecessorCurrent } from "./local-work-breakdown-planning.mjs";
+import { loadArtifactContent } from "./artifact-runtime.mjs";
 import { assertLocalArchitectureCurrentState, localArchitectureHeadId } from "./local-discovery-activation.mjs";
 import { assertLocalContractCurrentState, localContractHeadId } from "./local-contract-activation.mjs";
 
 const read = name => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const deps = [read("module-result.schema.json"), read("roadmap-management-artifacts.schema.json"), read("local-requirements-gate-commit.schema.json")];
-const validate = compileArtifactSchema(read("work-breakdown-context-handoff.schema.json"), deps);
+const validateV1 = compileArtifactSchema(read("work-breakdown-context-handoff.schema.json"), deps);
+const validateV2 = compileArtifactSchema(read("desktop-work-context-submission-v2.schema.json").$defs.handoff, deps);
+const validate = value => value?.version === "2.0.0" ? validateV2(value) : validateV1(value);
 const validateBoundary = compileArtifactSchema(read("work-breakdown-context-boundary.schema.json"), deps);
 const validateConfiguration = compileArtifactSchema(read("desktop-local-host-configuration.schema.json"), deps);
 const validateMaterialization = compileArtifactSchema(read("work-breakdown-context-materialization.schema.json"), deps);
@@ -23,7 +26,7 @@ async function deriveContext({ priorSnapshot, priorReceipt, createdAt, ...reques
   const prepared = historical ? await verifyLocalWorkBreakdownRoute({ ...request,
     expectedState: { ref: historical.state, bytes: Buffer.from(expectedFile.bytesBase64, "base64") } }) : await prepareLocalWorkBreakdownRoute(request);
   const value = JSON.parse(prepared.state.bytes);
-  const repository = JSON.parse(Buffer.from(await request.loadArtifact(value.repositoryContext)));
+  const repository = JSON.parse(Buffer.from(await request.loadArtifact(value.repositoryContext ?? value.currentRepositorySnapshot)));
   if (repository.kind === "RepositorySnapshot" && repository.revision !== priorSnapshot.repositoryRevision) throw new TypeError("work context repository revision differs from session");
   for (const [role, ref] of [["requirements-baseline", value.requirementsBaseline], ["project-overview", value.projectOverviewBaseline]]) {
     if (!same(priorSnapshot.bindings.find(entry => entry.role === role)?.artifact, ref)) throw new TypeError("work context changes the approved project pair");
@@ -44,7 +47,13 @@ async function deriveContext({ priorSnapshot, priorReceipt, createdAt, ...reques
   const disposition = (request.contractGate ?? request.notApplicableCommit).disposition;
   add(value.architectureBaseline, Buffer.from(request.record.baseline.bytesBase64, "base64"));
   add(value.contractDisposition, Buffer.from(disposition.bytesBase64, "base64"));
-  for (const ref of [value.capabilityCatalog, value.repositoryContext]) add(ref, await request.loadArtifact(ref));
+  const refs = [value.capabilityCatalog, value.repositoryContext ?? value.currentRepositorySnapshot];
+  if (value.currentWorkBreakdownBaseline) {
+    refs.push(value.currentWorkBreakdownBaseline, value.approvedChangePackage);
+    const change = JSON.parse(Buffer.from(await request.loadArtifact(value.approvedChangePackage)));
+    refs.push(...change.approvalEvidence, change.approvedRequirementsChange, change.approvedArchitectureChange, change.approvedContractChangeDisposition);
+  }
+  for (const ref of refs) if (!files.some(entry => same(entry.ref, ref))) add(ref, await request.loadArtifact(ref));
   const boundaryBody = { kind: "DesktopWorkBreakdownContextBoundary", state: prepared.state.ref, route,
     architectureState: prepared.state.architectureState, contractState: prepared.state.contractState, lifecycleComplete: false };
   if (!validateBoundary(boundaryBody)) throw new TypeError("work context boundary violates its contract");
@@ -55,7 +64,7 @@ async function deriveContext({ priorSnapshot, priorReceipt, createdAt, ...reques
   const receipt = await refreshSessionContext({ priorReceipt, nextSnapshot: snapshot,
     expectedProjectId: snapshot.projectId, expectedTaskId: snapshot.taskId, expectedWorkspaceId: snapshot.workspaceId, expectedRepositoryRevision: snapshot.repositoryRevision,
     artifactResolver: ref => { const file = files.find(entry => same(entry.ref, ref)); return file ? Buffer.from(file.bytesBase64, "base64") : request.loadArtifact(ref); } });
-  const body = { kind: "DesktopWorkBreakdownContextHandoff", priorSnapshotDigest: priorReceipt.snapshot.digest,
+  const body = { kind: "DesktopWorkBreakdownContextHandoff", ...(value.currentWorkBreakdownBaseline ? { version: "2.0.0" } : {}), priorSnapshotDigest: priorReceipt.snapshot.digest,
     snapshot, receipt, state: prepared.state.ref, route, files, invalidatedBindings, lifecycleComplete: false };
   const result = { ...body, handoffDigest: canonicalJsonDigest(body) };
   if (!validate(result)) throw new TypeError("work context handoff violates its contract");
@@ -73,6 +82,15 @@ export function assertLocalWorkContextCurrent({ storage, namespace, boundary, st
   storage.readRun(localContractHeadId(namespace));
   assertLocalArchitectureCurrentState({ storage, namespace, state: boundary.architectureState });
   assertLocalContractCurrentState({ storage, namespace, state: boundary.contractState });
+}
+
+// Fresh work requests additionally bind the predecessor. Downstream requests
+// observing the already activated result use only the upstream boundary check.
+export async function assertLocalWorkInvocationCurrent(request) {
+  assertLocalWorkContextCurrent(request);
+  const loaded = await loadArtifactContent(request.state, { load: request.loadArtifact });
+  const predecessor = await verifyWorkPredecessor({ ...request, currentWorkBreakdownBaseline: loaded.value.currentWorkBreakdownBaseline });
+  assertWorkPredecessorCurrent({ ...request, predecessor });
 }
 
 export async function verifyLocalWorkBreakdownContext({ handoff, ...request }) {

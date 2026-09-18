@@ -565,7 +565,7 @@ async function activationFixture(t, replacement = false) {
   assert.throws(() => assertLocalWorkBaselineCurrent({ storage, namespace, baseline: request.baselineRef }), { code: "DR4920" });
   await assert.rejects(activateLocalWorkBaseline({ ...args(), graph: connect(TRACEABILITY_VOCABULARY_V1_8) }),
     { code: "TG_INVALID_EDGE_AUTHORITY" }, "published 1.8 authority policy remains unchanged");
-  assert.throws(() => storage.readRun(localWorkBaselineHeadId(namespace)), { code: "DR4920" });
+  assert.deepEqual(storage.readRun(localWorkBaselineHeadId(namespace)).state, { kind: "LocalWorkBaselineHead", baseline: null, activationDigest: null, pendingCommit: null });
   const approved = createWorkBreakdownApprovalTraceabilityContributor();
   const candidateSeed = { ...seeds[0], authority: "candidate", ownership: { ...seeds[0].ownership, authority: "candidate" } };
   const badSource = { ...approved, async project(context) {
@@ -575,7 +575,7 @@ async function activationFixture(t, replacement = false) {
   } };
   await assert.rejects(activateLocalWorkBaseline({ ...args(), graph: connect(TRACEABILITY_VOCABULARY_V1_9, [candidateSeed, seeds[1], badSource]) }),
     { code: "TG_INVALID_EDGE_AUTHORITY" }, "candidate requirements cannot authorize approved planned work");
-  assert.throws(() => storage.readRun(localWorkBaselineHeadId(namespace)), { code: "DR4920" });
+  assert.deepEqual(storage.readRun(localWorkBaselineHeadId(namespace)).state, { kind: "LocalWorkBaselineHead", baseline: null, activationDigest: null, pendingCommit: null });
   let merges = 0;
   const originalGraph = graph;
   await assert.rejects(activateLocalWorkBaseline({ ...args(), graph: { ...graph, async mergePrepared(prepared) {

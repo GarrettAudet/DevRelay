@@ -286,3 +286,9 @@ claim that a JSON manifest alone sandboxes an arbitrary implementation.
 
 The package includes bounded manifests, schemas, and conformance fixtures. It
 does not ship or claim live OpenSpec or GitHub Spec Kit command adapters.
+
+### Existing-project Desktop handoff
+
+The closed `desktop-work-context-submission/v2` adds `version: "2.0.0"`, explicit `currentWorkBreakdownBaseline` and `approvedChangePackage` artifact files to the v1 fields. `repositoryContext` carries the current RepositorySnapshot. V1 initial planning remains unchanged. The host derives a baselined state; Core selects `decompose-change`. The prior baseline must have an exact archived publication and be the current head for fresh work. ACP pre-change/target lineage, repository revision/tree and evidence bytes are checked before handoff. Historical reconstruction retains archived predecessor validation without requiring it to remain current. The owning WorkBreakdown Gate alone promotes a candidate.
+
+Existing-project handoffs use `work-breakdown-context-handoff/v2`, defined alongside the v2 submission. Its explicit version permits the additional exact predecessor, ACP and approval-evidence files. V1 retains its fixed seven-file contract. Fresh invocation and response boundaries recheck the predecessor; historical verification does not require a superseded predecessor to remain current. Replacement activation checks the published predecessor before effects and again under its lease, and persists the prepared graph checkpoint before reservation/merge/publication recovery.
