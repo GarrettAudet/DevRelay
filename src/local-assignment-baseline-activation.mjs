@@ -8,6 +8,8 @@ import { assertLocalWorkBaselineCurrent } from "./local-work-baseline-activation
 import { assertLocalWorkContextCurrent } from "./local-work-breakdown-context.mjs";
 import { createLocalHostCheckpointStore } from "./local-host-checkpoints.mjs";
 
+import { loadAssignmentReplacementApproval, assertAssignmentPredecessorPublication } from "./local-assignment-replacement-approval.mjs";
+
 const read = name => JSON.parse(readFileSync(new URL(`../contracts/${name}`, import.meta.url), "utf8"));
 const validateHead = compileArtifactSchema(read("local-assignment-baseline-head.schema.json"), [read("module-result.schema.json")]);
 const validateResult = compileArtifactSchema(read("local-assignment-baseline-activation.schema.json"), [read("module-result.schema.json"), read("module-execution-record.schema.json"), read("local-discovery-activation.schema.json")]);
@@ -23,6 +25,9 @@ export function assertLocalAssignmentBaselineCurrent({ storage, namespace, basel
 }
 
 async function prepare({ assignmentGate, ...request }) {
+  for (const key of ["prior", "priorBaseline", "priorActivationDigest", "replacementApproval"]) {
+    if (Object.hasOwn(request, key)) fail("caller predecessor overrides are forbidden");
+  }
   const replayReceipt = await verifyLocalSpecialistAssignmentExecution(request);
   await verifySpecialistAssignmentGateV3({ checkpointReplay: replayReceipt, record: assignmentGate,
     approvalRef: assignmentGate.approval.ref, loadArtifact: request.loadArtifact });
@@ -34,9 +39,11 @@ async function prepare({ assignmentGate, ...request }) {
   const dependency = replayReceipt.checkpoint.inputs["work-dependency-baseline"].ref;
   const replay = request.checkpointReplay;
   if (!same(replayReceipt.checkpoint.inputs["work-breakdown-baseline"].ref, work.ref)) fail("approved work lineage differs");
-  // Initial assignment activation only. A changed assignment requires its own
-  // explicit prior-baseline contract; never infer replacement from the live head.
-  return { baseline, work, dependency, digest: assignmentGate.commitDigest, prior: null,
+  const approval = decode(assignmentGate.approval).value;
+  const replacement = await loadAssignmentReplacementApproval({ approval, replayReceipt, namespace: request.namespace,
+    projectId: request.graph.captureBase().projectId, loadArtifact: request.loadArtifact });
+  assertAssignmentPredecessorPublication({ storage: request.storage, headId: localAssignmentBaselineHeadId(request.namespace), replacement });
+  return { baseline, work, dependency, digest: assignmentGate.commitDigest, replacement, prior: replacement?.value.priorBaseline ?? null,
     stored: { artifactId: baseline.ref.artifactId, digest: baseline.ref.digest, mediaType: baseline.ref.mediaType, byteCount: baseline.bytes.length },
     graphRequest: { invocation: replay.invocation, moduleResult: replay.moduleResult,
       invocationFingerprint: canonicalJsonDigest({ invocation: replay.invocation, gateCommit: assignmentGate.commitDigest }),
@@ -60,16 +67,19 @@ function result(target, key, applicationProof) {
   return value;
 }
 
+function assertPredecessorHead(head, target) {
+  if (!validateHead(head.state) || !same(head.state.baseline, target.prior) ||
+      head.state.activationDigest !== (target.replacement?.value.priorActivationDigest ?? null) ||
+      (head.state.pendingCommit !== null && head.state.pendingCommit !== target.digest)) fail("prior baseline or pending Gate conflicts");
+}
+
 export async function activateLocalAssignmentBaseline(request) {
   const { storage, namespace, graph } = request;
   const target = await prepare(request);
   const key = `assignment-baseline-activation:${target.digest}`;
   const checkpoints = createLocalHostCheckpointStore({ storage, namespace });
-  const saved = checkpoints.get(key);
-  const prepared = saved ? await graph.validatePrepared({ ...target.graphRequest, checkpoint: saved }) : await graph.prepare({ ...target.graphRequest, baseGraph: graph.captureBase() });
-  checkpoints.put(key, prepared.checkpoint);
   const id = localAssignmentBaselineHeadId(namespace);
-  if (publication(storage, id, target)) return result(target, key, graph.assertApplied(prepared.updateRef));
+  if (publication(storage, id, target)) return verifyLocalAssignmentBaselineActivation(request);
   assertLocalDependencyBaselineCurrent({ storage, namespace, baseline: target.dependency });
   assertLocalWorkBaselineCurrent({ storage, namespace, baseline: target.work.ref });
   assertLocalWorkContextCurrent({ storage, namespace, boundary: request.boundary, state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
@@ -77,16 +87,29 @@ export async function activateLocalAssignmentBaseline(request) {
   try { head = storage.readRun(id); }
   catch (error) {
     if (error.code !== "DR4920") throw error;
-    try { head = storage.initializeRun({ runId: id, state: { kind: "LocalAssignmentBaselineHead", baseline: target.prior, activationDigest: null, pendingCommit: null } }); }
+    try { head = storage.initializeRun({ runId: id, state: { kind: "LocalAssignmentBaselineHead", baseline: null, activationDigest: null, pendingCommit: null } }); }
     catch (race) { if (race.code !== "DR4922") throw race; head = storage.readRun(id); }
   }
-  if (!validateHead(head.state)) fail("head violates its contract");
+  assertPredecessorHead(head, target);
   const lease = storage.acquireLease({ runId: id, owner: `assignment-gate:${process.pid}`, expectedVersion: head.version, durationMilliseconds: 120000 });
   try {
+    head = storage.readRun(id);
+    if (publication(storage, id, target)) return verifyLocalAssignmentBaselineActivation(request);
+    assertPredecessorHead(head, target);
+    assertAssignmentPredecessorPublication({ storage, headId: id, replacement: target.replacement });
+    // Recheck upstream authority after acquiring the publication lease.
+    assertLocalDependencyBaselineCurrent({ storage, namespace, baseline: target.dependency });
+    assertLocalWorkBaselineCurrent({ storage, namespace, baseline: target.work.ref });
+    assertLocalWorkContextCurrent({ storage, namespace, boundary: request.boundary, state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
+    if (target.replacement) {
+      const { ref, bytes } = target.replacement;
+      storage.putArtifact({ artifactId: ref.artifactId, digest: ref.digest, mediaType: ref.mediaType, bytes, expectedDigest: ref.digest });
+    }
+    const saved = checkpoints.get(key);
+    const prepared = saved ? await graph.validatePrepared({ ...target.graphRequest, checkpoint: saved }) : await graph.prepare({ ...target.graphRequest, baseGraph: graph.captureBase() });
+    checkpoints.put(key, prepared.checkpoint);
     let proof;
     try { proof = graph.assertApplied(prepared.updateRef); } catch (error) { if (error.code !== "TG_UPDATE_NOT_APPLIED") throw error; }
-    if (publication(storage, id, target)) { if (!proof) fail("published baseline lacks graph proof"); return result(target, key, proof); }
-    if (!same(head.state.baseline, target.prior) || (head.state.pendingCommit !== null && head.state.pendingCommit !== target.digest)) fail("prior baseline or pending Gate conflicts");
     if (head.state.pendingCommit === null) {
       if (proof) fail("graph applied without durable reservation");
       head = storage.commitTransition({ runId: id, expectedVersion: head.version, leaseToken: lease.token,

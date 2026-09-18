@@ -1,3 +1,4 @@
+import { exerciseAssignmentReplacement } from "./fixtures/local-assignment-replacement.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -521,7 +522,7 @@ async function verifiedFixture(options) {
   return { runtime, checkpointReplay };
 }
 
-test("work baseline activation recovers after graph merge with genuine Core receipt and reopened storage", async t => {
+async function activationFixture(t, replacement = false) {
   const { runtime, checkpointReplay } = await verifiedFixture({ cleanHints: true });
   const request = baselineRequest(runtime, checkpointReplay);
   const loadArtifact = async ref => ref.artifactId === request.baselineRef.artifactId
@@ -876,6 +877,10 @@ test("work baseline activation recovers after graph merge with genuine Core rece
   assert.deepEqual(readiness.readyWorkItemIds, ["WI-ONE"]);
   assert.deepEqual(readiness.dispositions.find(item => item.workItemId === "WI-TWO").blockingWorkItemIds, ["WI-ONE"]);
   await assert.rejects(prepareLocalExecutionBaselines({ ...assignmentActivationArgs(), baselines: executionBaselines }), /overrides are forbidden/);
+  if (replacement) {
+    await exerciseAssignmentReplacement({ initial: assignmentActivationArgs(), initialActivation: assignmentActivated, jsonArtifact, evidenceRef: gateEvidenceRef() });
+    return;
+  }
   const assignmentLease = storage.acquireLease({ runId: assignmentHead.runId, owner: "test-next-assignment-gate", expectedVersion: assignmentHead.version, durationMilliseconds: 120000 });
   storage.commitTransition({ runId: assignmentHead.runId, expectedVersion: assignmentHead.version, leaseToken: assignmentLease.token,
     transition: { kind: "TestPendingNextAssignmentGate" }, nextState: { ...assignmentHead.state, pendingCommit: digest("c") } });
@@ -933,7 +938,10 @@ test("work baseline activation recovers after graph merge with genuine Core rece
   assert.deepEqual(await verifyLocalWorkBaselineActivation(args()), activated);
   assert.deepEqual(await activateLocalWorkBaseline(args()), activated);
   assert.deepEqual(storage.readRun(head.runId), pending, "historical replay must not clear a later pending Gate");
-});
+}
+
+test("work baseline activation recovers after graph merge with genuine Core receipt and reopened storage", t => activationFixture(t));
+test("assignment replacement requires exact evidence and recovers through genuine runtime and Gate", t => activationFixture(t, true));
 
 function gateEvidenceRef() {
   const bytes = Buffer.from("approved", "utf8");

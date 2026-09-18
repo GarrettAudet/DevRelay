@@ -47,3 +47,11 @@ The checkpoint binds all input baselines, catalogs, policy, the configured ranke
 `specialist-assignment@1.0.0` is retained as an immutable compatibility manifest. Its legacy promotion helper accepts a caller-supplied draft and is not the trusted release route.
 
 `specialist-assignment@2.0.0` requires the in-process receipt returned by `verifyCheckpointedExecution`. The Gate derives the only promotable draft and its raw bytes from the validated checkpoint, requires content-addressed owner approval bound to the checkpoint digest and execution fingerprint, and creates the baseline itself. Plain results, cloned receipts, serialized receipts, changed input closure, and replay requiring another ranker call fail closed.
+
+## Host assignment replacement approval
+
+Replacement uses the closed host contract `https://devrelay.dev/host/local-assignment-replacement-approval/v1`, kind `LocalAssignmentReplacementApproval`, media type `application/vnd.devrelay.local-assignment-replacement-approval+json`. Its content-addressed ref is included once in v3 Gate approval `requiredEvidence`. The host derives the predecessor only from these validated bytes; direct predecessor overrides are forbidden.
+
+The record binds namespace and graph project, prior baseline and publication commit, genuine target draft/checkpoint/execution fingerprint, exact work/dependency baselines, project-owner approve-replacement decision, assignment-baseline-publication scope, and nonempty byte-bound supporting evidence. It deliberately excludes the target Gate/baseline to avoid a digest cycle. Unsupported versions, duplicate records, stale lineage, missing prior journal/bytes and altered evidence fail closed before graph preparation.
+
+Initial activation remains initial-only. Replacement compares the recorded predecessor and prior activation with the actual head under lease; checkpoint, reservation, graph merge and publication retain their recovery order. Historical verification checks archived predecessor publication and bytes without requiring it to remain the live head. Neither this host record nor assignment activation dispatches agents or grants lifecycle acceptance.
