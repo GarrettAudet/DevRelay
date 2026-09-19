@@ -78,32 +78,44 @@ export async function activateLocalDependencyBaseline(request) {
     catch (race) { if (race.code !== "DR4922") throw race; head = storage.readRun(id); }
   }
   assertPredecessorHead(head, target);
+  await verifyDependencyPredecessor({ ...request, currentWorkDependencyBaseline: target.prior ?? undefined });
+  const saved = checkpoints.get(key);
+  const prepared = saved ? await graph.validatePrepared({ ...target.graphRequest, checkpoint: saved }) : await graph.prepare({ ...target.graphRequest, baseGraph: graph.captureBase() });
+  checkpoints.put(key, prepared.checkpoint);
+  let proof;
+  try { proof = graph.assertApplied(prepared.updateRef); } catch (error) { if (error.code !== "TG_UPDATE_NOT_APPLIED") throw error; }
+  // The durable reservation spans graph work; a lease protects only a head transition.
+  head = storage.readRun(id);
   const lease = storage.acquireLease({ runId: id, owner: `dependency-gate:${process.pid}`, expectedVersion: head.version, durationMilliseconds: 120000 });
   try {
     head = storage.readRun(id);
     if (publication(storage, id, target)) return verifyLocalDependencyBaselineActivation(request);
     assertPredecessorHead(head, target);
-    await verifyDependencyPredecessor({ ...request, currentWorkDependencyBaseline: target.prior ?? undefined });
     assertLocalWorkBaselineCurrent({ storage, namespace, baseline: target.work.ref });
     assertLocalWorkContextCurrent({ storage, namespace, boundary: request.boundary, state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
-    const saved = checkpoints.get(key);
-    const prepared = saved ? await graph.validatePrepared({ ...target.graphRequest, checkpoint: saved }) : await graph.prepare({ ...target.graphRequest, baseGraph: graph.captureBase() });
-    checkpoints.put(key, prepared.checkpoint);
-    let proof;
-    try { proof = graph.assertApplied(prepared.updateRef); } catch (error) { if (error.code !== "TG_UPDATE_NOT_APPLIED") throw error; }
     if (head.state.pendingCommit === null) {
       if (proof) fail("graph applied without durable reservation");
       head = storage.commitTransition({ runId: id, expectedVersion: head.version, leaseToken: lease.token,
         transition: { kind: "DependencyBaselineReserved", commitDigest: target.digest }, nextState: { ...head.state, pendingCommit: target.digest } });
     }
-    const stored = storage.putArtifact({ ...target.stored, bytes: target.baseline.bytes, expectedDigest: target.baseline.ref.digest });
-    if (!same(stored, target.stored)) fail("stored baseline metadata drifted");
-    if (!proof) { await graph.mergePrepared(prepared); proof = graph.assertApplied(prepared.updateRef); }
-    storage.commitTransition({ runId: id, expectedVersion: head.version, leaseToken: lease.token,
+  } finally { storage.releaseLease({ runId: id, leaseToken: lease.token }); }
+  const stored = storage.putArtifact({ ...target.stored, bytes: target.baseline.bytes, expectedDigest: target.baseline.ref.digest });
+  if (!same(stored, target.stored)) fail("stored baseline metadata drifted");
+  if (!proof) { await graph.mergePrepared(prepared); proof = graph.assertApplied(prepared.updateRef); }
+  head = storage.readRun(id);
+  const publicationLease = storage.acquireLease({ runId: id, owner: `dependency-gate:${process.pid}`, expectedVersion: head.version, durationMilliseconds: 120000 });
+  try {
+    head = storage.readRun(id);
+    if (publication(storage, id, target)) return verifyLocalDependencyBaselineActivation(request);
+    assertPredecessorHead(head, target);
+    if (head.state.pendingCommit !== target.digest) fail("publication requires the exact durable reservation");
+    assertLocalWorkBaselineCurrent({ storage, namespace, baseline: target.work.ref });
+    assertLocalWorkContextCurrent({ storage, namespace, boundary: request.boundary, state: request.checkpointReplay.loadedInputs["project-work-breakdown-state"][0].ref });
+    storage.commitTransition({ runId: id, expectedVersion: head.version, leaseToken: publicationLease.token,
       transition: { id: target.digest, kind: "DependencyBaselineActivated", commitDigest: target.digest, baseline: target.baseline.ref }, artifactRefs: [stored],
       nextState: { kind: "LocalDependencyBaselineHead", baseline: target.baseline.ref, activationDigest: target.digest, pendingCommit: null } });
     return result(target, key, proof);
-  } finally { storage.releaseLease({ runId: id, leaseToken: lease.token }); }
+  } finally { storage.releaseLease({ runId: id, leaseToken: publicationLease.token }); }
 }
 
 export async function verifyLocalDependencyBaselineActivation(request) {

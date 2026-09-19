@@ -86,10 +86,24 @@ export async function exerciseDependencyReplacement({ initial, initialActivation
   await assert.rejects(activateLocalDependencyBaseline({ ...initial, dependencyGate: initialGate, loadArtifact: initialLoad, graph: rejectBeforeGraph }),
     /prior baseline or pending Gate conflicts/, "another genuine initial Gate cannot overwrite a published head");
   let headReads = 0;
-  await assert.rejects(activateLocalDependencyBaseline({ ...next, graph: rejectBeforeGraph, storage: { ...storage,
+  let holdingHeadLease = false;
+  await assert.rejects(activateLocalDependencyBaseline({ ...next, graph: { ...graph,
+    mergePrepared() { assert.fail("conflicting head must not merge graph"); }
+  }, storage: { ...storage,
+    acquireLease(request) {
+      const lease = storage.acquireLease(request);
+      if (request.runId === id) holdingHeadLease = true;
+      return lease;
+    },
+    releaseLease(request) {
+      const result = storage.releaseLease(request);
+      if (request.runId === id) holdingHeadLease = false;
+      return result;
+    },
     readRun(runId) {
       const row = storage.readRun(runId);
-      if (runId === id && ++headReads > 1) return { ...row, state: { ...row.state, pendingCommit: badDigest } };
+      if (runId === id) headReads++;
+      if (runId === id && holdingHeadLease) return { ...row, state: { ...row.state, pendingCommit: badDigest } };
       return row;
     }
   } }), /prior baseline or pending Gate conflicts/, "head is rechecked under the lease");

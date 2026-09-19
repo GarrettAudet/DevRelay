@@ -531,7 +531,8 @@ async function activationFixture(t, replacement = false) {
       ? Buffer.from("approved") : runtime.artifacts.load(ref);
   const record = await prepareLocalWorkBreakdownGate({ ...request, loadArtifact });
   const rootDirectory = mkdtempSync(join(tmpdir(), "devrelay-work-activation-"));
-  let storage = createLocalHostStorage({ rootDirectory });
+  let activationClock = Date.now();
+  let storage = createLocalHostStorage({ rootDirectory, clock: () => activationClock });
   t.after(() => { storage.close(); rmSync(rootDirectory, { recursive: true, force: true }); });
   const namespace = "synthetic-work-gate-recovery";
   // Explicit test-only upstream projections: not evidence of real upstream approval.
@@ -586,7 +587,7 @@ async function activationFixture(t, replacement = false) {
     throw new Error("interrupted after work graph merge");
   } } }), /interrupted after work graph merge/);
   storage.close();
-  storage = createLocalHostStorage({ rootDirectory });
+  storage = createLocalHostStorage({ rootDirectory, clock: () => activationClock });
   graph = connect();
   const recoveredGraph = graph;
   graph = { ...graph, async mergePrepared(prepared) { merges++; return recoveredGraph.mergePrepared(prepared); } };
@@ -708,15 +709,21 @@ async function activationFixture(t, replacement = false) {
   await assert.rejects(activateLocalDependencyBaseline({ ...activationArgs(), graph: { ...graph, async mergePrepared(prepared) {
     assert.ok(createLocalHostCheckpointStore({ storage, namespace }).get(`dependency-baseline-activation:${dependencyGate.commitDigest}`));
     assert.equal(storage.readRun(localDependencyBaselineHeadId(namespace)).state.pendingCommit, dependencyGate.commitDigest);
+    assert.equal(storage.readRun(localDependencyBaselineHeadId(namespace)).lease, null, "graph work must not hold the dependency head lease");
+    activationClock += 240000;
     dependencyMerges++;
     await beforeDependencyGraph.mergePrepared(prepared);
     throw new Error("interrupted dependency activation after merge");
   } } }), /interrupted dependency activation after merge/);
   storage.close();
-  storage = createLocalHostStorage({ rootDirectory });
+  storage = createLocalHostStorage({ rootDirectory, clock: () => activationClock });
   graph = connect();
   const reopenedDependencyGraph = graph;
-  graph = { ...graph, async mergePrepared(prepared) { dependencyMerges++; return reopenedDependencyGraph.mergePrepared(prepared); } };
+  graph = { ...graph, async validatePrepared(request) {
+    assert.equal(storage.readRun(localDependencyBaselineHeadId(namespace)).lease, null, "slow replay validation must run outside the dependency head lease");
+    activationClock += 240000;
+    return reopenedDependencyGraph.validatePrepared(request);
+  }, async mergePrepared(prepared) { dependencyMerges++; return reopenedDependencyGraph.mergePrepared(prepared); } };
   const dependencyActivated = await activateLocalDependencyBaseline(activationArgs());
   assert.equal(dependencyMerges, 1);
   const dependencyHead = storage.readRun(localDependencyBaselineHeadId(namespace));
@@ -731,7 +738,7 @@ async function activationFixture(t, replacement = false) {
     await exerciseDependencyReplacement({ initial: activationArgs(), initialActivation: dependencyActivated,
       context: { ...contextArgs, storage, graph, loadArtifact: ref => ref.artifactId === dependencyBaseline.ref.artifactId ? dependencyBaseline.bytes : sessionLoad(ref) },
       configuration, resolvePath, jsonArtifact, evidenceRef: gateEvidenceRef(),
-      reopen() { storage.close(); storage = createLocalHostStorage({ rootDirectory }); graph = connect(); return { storage, graph }; } });
+      reopen() { storage.close(); storage = createLocalHostStorage({ rootDirectory, clock: () => activationClock }); graph = connect(); return { storage, graph }; } });
     return;
   }
   const specialists = jsonArtifact("SC-RECOVERY", { schema: "https://devrelay.dev/artifacts/specialist-catalog/v1", mediaType: "application/vnd.devrelay.specialist-catalog+json" },
@@ -854,15 +861,21 @@ async function activationFixture(t, replacement = false) {
   await assert.rejects(activateLocalAssignmentBaseline({ ...assignmentActivationArgs(), graph: { ...graph, async mergePrepared(prepared) {
     assert.ok(createLocalHostCheckpointStore({ storage, namespace }).get(`assignment-baseline-activation:${assignmentGate.commitDigest}`));
     assert.equal(storage.readRun(localAssignmentBaselineHeadId(namespace)).state.pendingCommit, assignmentGate.commitDigest);
+    assert.equal(storage.readRun(localAssignmentBaselineHeadId(namespace)).lease, null, "graph work must not hold the assignment head lease");
+    activationClock += 240000;
     assignmentMerges++;
     await graphBeforeAssignmentMerge.mergePrepared(prepared);
     throw new Error("interrupted assignment activation after merge");
   } } }), /interrupted assignment activation after merge/);
   storage.close();
-  storage = createLocalHostStorage({ rootDirectory });
+  storage = createLocalHostStorage({ rootDirectory, clock: () => activationClock });
   graph = connect();
   const reopenedAssignmentGraph = graph;
-  graph = { ...graph, async mergePrepared(prepared) { assignmentMerges++; return reopenedAssignmentGraph.mergePrepared(prepared); } };
+  graph = { ...graph, async validatePrepared(request) {
+    assert.equal(storage.readRun(localAssignmentBaselineHeadId(namespace)).lease, null, "slow replay validation must run outside the assignment head lease");
+    activationClock += 240000;
+    return reopenedAssignmentGraph.validatePrepared(request);
+  }, async mergePrepared(prepared) { assignmentMerges++; return reopenedAssignmentGraph.mergePrepared(prepared); } };
   for (const request of [planningArgs, executionArgs, contextArgs, guardArgs, assignmentArgs, assignmentExecutionArgs, assignmentContextArgs, assignmentGuardArgs]) {
     request.storage = storage; request.graph = graph;
   }
@@ -901,7 +914,7 @@ async function activationFixture(t, replacement = false) {
   await assert.rejects(executeLocalSpecialistAssignment({ ...assignmentExecutionArgs, assignmentBinding: undefined }), /explicit supported native binding/);
   await assert.rejects(verifyLocalSpecialistAssignmentExecution({ ...assignmentExecutionArgs,
     assignmentExecution: { ...assigned, lifecycleComplete: true } }), /differs from durable checkpoint/);
-  const independentStorage = createLocalHostStorage({ rootDirectory });
+  const independentStorage = createLocalHostStorage({ rootDirectory, clock: () => activationClock });
   try {
     const reread = await verifyLocalSpecialistAssignmentExecution({ ...assignmentExecutionArgs, storage: independentStorage, assignmentExecution: assigned });
     assert.equal(reread.checkpointDigest, assignedReceipt.checkpointDigest, "independent storage connection reads the exact persisted assignment checkpoint");
