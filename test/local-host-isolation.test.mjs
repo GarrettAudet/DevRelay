@@ -96,3 +96,9 @@ test("secret receipts never contain the secret value", async () => {
   assert.equal(JSON.stringify(receipts).includes("super-secret-value"), false);
   assert.equal(receipts[0].effect.scope, "TOKEN");
 });
+
+test("process effects honor the host's explicit environment", () => {
+  const enforcer = createCapabilityEnforcer({ attemptId: "ATT-ENV", workspace: process.cwd(), grants: [{ kind: "process.spawn", values: [process.execPath] }] });
+  const result = enforcer.executeProcess({ executable: process.execPath, argv: ["-e", "process.stdout.write(process.env.DEVRELAY_EXPLICIT_ENV ?? 'missing')"], env: { ...process.env, DEVRELAY_EXPLICIT_ENV: "supplied" } });
+  assert.equal(result.stdout.toString(), "supplied");
+});

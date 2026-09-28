@@ -1,0 +1,26 @@
+{
+  "requestId": "hello-project-001",
+  "goal": "Create a greeting module with a passing Node test.",
+  "readPaths": [],
+  "changes": [
+    {
+      "path": "package.json",
+      "beforeDigest": null,
+      "content": "{\n  \"name\": \"devrelay-hello-example\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"test\": \"node --test\" }\n}\n"
+    },
+    {
+      "path": "greeting.mjs",
+      "beforeDigest": null,
+      "content": "export function greet(name) {\n  return \"Hello, \" + name;\n}\n"
+    },
+    {
+      "path": "test/greeting.test.mjs",
+      "beforeDigest": null,
+      "content": "import { test } from \"node:test\";\nimport assert from \"node:assert/strict\";\nimport { greet } from \"../greeting.mjs\";\n\ntest(\"greets Ada\", () => assert.equal(greet(\"Ada\"), \"Hello, Ada\"));\n"
+    }
+  ],
+  "testFiles": [
+    "test/greeting.test.mjs"
+  ],
+  "timeoutMs": 10000
+}

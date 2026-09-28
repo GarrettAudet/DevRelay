@@ -1,0 +1,402 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ProjectOverviewBaseline",
+  "baselineId": "project-overview-baseline-001",
+  "version": "1.0.0",
+  "approvedOverviewCandidate": {
+    "artifactId": "project-overview-draft-001",
+    "digest": "sha256:d4698df12af404a722a25d58a58c3297b1c69d098c37ffd3e62b79304fb2e380"
+  },
+  "requirementsBaseline": {
+    "artifactId": "requirements-baseline-001",
+    "digest": "sha256:8686e8cc5f5f7f544cc84360fc9c84f20a05fe6c018cbec116c791a283372fab"
+  },
+  "projection": {
+    "id": "devrelay.requirements-to-project-overview",
+    "version": "1.0.0",
+    "contractDigest": "sha256:037623b387a0da23932efad2243e1064a1ec28f8984bbb32d4b37b5523ca99db"
+  },
+  "overview": {
+    "purpose": {
+      "statement": "Define secure, observable authentication behavior for registered product users.",
+      "sourceRefs": [
+        {
+          "role": "goal",
+          "artifact": {
+            "artifactId": "goal-001",
+            "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+          }
+        },
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-001",
+            "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+          }
+        }
+      ]
+    },
+    "businessObjectives": [
+      {
+        "id": "BO-AUTH-ACCESS-001",
+        "statement": "Allow registered users to reliably access protected product capabilities.",
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-AUTH-USERS-001"
+        ]
+      },
+      {
+        "id": "BO-AUTH-SECURITY-001",
+        "statement": "Protect account confidentiality throughout authentication failures.",
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ],
+        "stakeholderIds": [
+          "STK-AUTH-SECURITY-001"
+        ]
+      }
+    ],
+    "users": [
+      {
+        "id": "USR-AUTH-REGISTERED-001",
+        "name": "Registered user",
+        "description": "A product user with an existing persistent identity.",
+        "stakeholderIds": [
+          "STK-AUTH-USERS-001"
+        ],
+        "needs": [
+          "Receive safe failure feedback.",
+          "Sign in.",
+          "Sign out."
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "keyCapabilities": [
+      {
+        "id": "CAP-AUTH-SESSION-001",
+        "name": "Authentication session management",
+        "description": "Authenticate registered users, establish sessions, and terminate sessions safely.",
+        "businessObjectiveIds": [
+          "BO-AUTH-ACCESS-001",
+          "BO-AUTH-SECURITY-001"
+        ],
+        "userIds": [
+          "USR-AUTH-REGISTERED-001"
+        ],
+        "audience": "user-facing",
+        "key": true,
+        "priority": "must",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "successMetrics": [
+      {
+        "id": "SM-AUTH-DISCLOSURE-001",
+        "name": "Account-disclosure defects",
+        "businessObjectiveIds": [
+          "BO-AUTH-SECURITY-001"
+        ],
+        "measure": "Confirmed authentication responses that disclose whether an account exists.",
+        "target": "Zero confirmed disclosures.",
+        "measurementMethod": "Security review and negative authentication tests.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SM-AUTH-SUCCESS-001",
+        "name": "Valid sign-in success rate",
+        "businessObjectiveIds": [
+          "BO-AUTH-ACCESS-001"
+        ],
+        "measure": "Percentage of valid registered-user sign-in attempts that establish a session.",
+        "target": "At least 99 percent.",
+        "measurementMethod": "Aggregate authentication integration-test and service telemetry.",
+        "evaluationWindow": "Rolling 30 days after release.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "SCOPE-AUTH-FAILURE-001",
+        "statement": "Authentication failure behavior.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-AUTH-SIGNIN-001",
+        "statement": "Sign in.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "SCOPE-AUTH-SIGNOUT-001",
+        "statement": "Sign out.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "nonGoals": [
+      {
+        "id": "NG-AUTH-ARCHITECTURE-001",
+        "statement": "Select the application architecture.",
+        "rationale": "Architecture selection belongs to ArchitectureDesign.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "NG-AUTH-PROVIDER-001",
+        "statement": "Select or replace the identity provider.",
+        "rationale": "Provider selection is an architectural decision.",
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CON-AUTH-NONDISCLOSURE-001",
+        "category": "security",
+        "statement": "Authentication failures must not disclose whether an account exists.",
+        "rationale": "Account existence is security-sensitive information.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-AUTH-SESSION-001"
+          ]
+        },
+        "acceptanceCriterionIds": [
+          "AC-AUTH-DISCLOSURE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "nonFunctionalRequirements": [
+      {
+        "id": "NFR-AUTH-PERFORMANCE-001",
+        "category": "performance",
+        "statement": "Authentication responses must complete within a bounded user-facing latency.",
+        "applicability": {
+          "level": "capabilities",
+          "capabilityIds": [
+            "CAP-AUTH-SESSION-001"
+          ]
+        },
+        "measure": "95th-percentile authentication response latency.",
+        "target": "At most 500 milliseconds under 100 concurrent sign-in attempts.",
+        "priority": "must",
+        "acceptanceCriterionIds": [
+          "AC-AUTH-PERFORMANCE-001"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          },
+          {
+            "role": "project-context",
+            "artifact": {
+              "artifactId": "project-context-001",
+              "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+            }
+          }
+        ]
+      }
+    ],
+    "terminology": [
+      {
+        "id": "TERM-AUTH-REGISTERED-USER-001",
+        "term": "Registered user",
+        "definition": "A user with an existing persistent product identity.",
+        "aliases": [],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "TERM-AUTH-SESSION-001",
+        "term": "Authenticated session",
+        "definition": "A product session bound to a successfully authenticated user.",
+        "aliases": [
+          "User session"
+        ],
+        "sourceRefs": [
+          {
+            "role": "goal",
+            "artifact": {
+              "artifactId": "goal-001",
+              "digest": "sha256:f25fd66b447dc9bd61bc9c105c335a8581ae7b82c07e00cdc423294ad4d3321c"
+            }
+          }
+        ]
+      }
+    ],
+    "currentStatus": {
+      "lifecycle": "existing",
+      "phase": "planning",
+      "summary": "The existing product has a user domain but no approved authentication baseline.",
+      "sourceRefs": [
+        {
+          "role": "project-context",
+          "artifact": {
+            "artifactId": "project-context-001",
+            "digest": "sha256:92d62db4cc66b42725dd088637a34439bf86b797acf9a809756f5cf104e0c4a5"
+          }
+        }
+      ]
+    }
+  },
+  "renderedDocument": {
+    "path": "ProjectOverview.md",
+    "schema": "https://devrelay.dev/artifacts/project-overview-markdown/v1",
+    "mediaType": "text/markdown; charset=utf-8",
+    "artifact": {
+      "artifactId": "project-overview-md-001",
+      "digest": "sha256:beffbef3c02b9e6b3f109a1d38962bfead8f58c1446b9433a1db9c2be5e9da46"
+    },
+    "renderer": {
+      "id": "devrelay.project-overview.markdown",
+      "version": "1.0.0",
+      "contractDigest": "sha256:b50fd7a486ff860acf569bb1cab8f5cecb8db19b6cf3cb7a6bcba494bb8806eb"
+    }
+  },
+  "approvalEvidence": [
+    {
+      "artifactId": "requirements-approval-001",
+      "digest": "sha256:772840902cc6d8a7b1a046d9e07fea2761810016bfd68630391cfefb09b10626"
+    }
+  ]
+}
