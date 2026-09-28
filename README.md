@@ -6,8 +6,9 @@ Modules with a Core-owned lifecycle traceability sidecar.
 ## Modular developer preview
 
 The `codex/modular-mvp` branch adds a focused `devrelay/modular` API, an immutable
-plug-in registration catalog, and two runnable interchangeable implementations.
-Start with [the modular quickstart](docs/modular-quickstart.md) and
+plug-in registration catalog, two interchangeable digest implementations, and a
+working local inspect/change/test reference workflow.
+Try [the working Desktop coding workflow](docs/modular-coding-quickstart.md), or start with [the modular quickstart](docs/modular-quickstart.md) and
 [the supported plug-in list](docs/supported-plugins.md). The broader engineering
 lifecycle remains available; it is a follow-on reference workflow for this smaller
 framework preview. This is not a published release or full lifecycle acceptance.
@@ -32,7 +33,7 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.12.0-modular.0` is this branch's Apache-2.0 modular developer preview, based on the `0.11.0-rc.3` source/library candidate and the published [v0.11.0-rc.2 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2), and contains DevRelay Core,
+DevRelay `0.12.0-modular.1` is this branch's Apache-2.0 modular developer preview, based on the `0.11.0-rc.3` source/library candidate and the published [v0.11.0-rc.2 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2), and contains DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,

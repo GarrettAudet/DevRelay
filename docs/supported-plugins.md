@@ -25,3 +25,15 @@ Superpowers is used to develop DevRelay. It is not a supported runtime plug-in i
 4. Add its registration to the host configuration and list its actual maturity here.
 
 A compatibility claim is limited to the tested semantic contract. Updates produce new immutable versions and must be explicitly selected; an active invocation cannot float to latest.
+
+## Native coding workflow
+
+`example.coding-change@1.0.0 / apply-and-verify` runs three pinned bindings in Core's declared order:
+
+| Binding | Step | Observed support |
+| --- | --- | --- |
+| native-repository-inventory@1.0.0 | inspect | Live local wrapper over the existing native architecture inventory, with exact bounded source bytes. |
+| native-file-change@1.0.0 | edit | Live local UTF-8 creation/replacement with exact preimages, retained before/after evidence and uncertainty quarantine. |
+| native-node-test@1.0.0 | verify | Live local Node test execution with explicit executable grant, timeout, raw output and a host effect receipt. |
+
+The workflow implemented and tested the DevRelay Desktop command itself and created/tested a new greeting project on Windows with Node 24.19.0. These are example-specific local bindings; they do not certify external providers or promote the full lifecycle's verification/acceptance facts. See [coding quickstart](modular-coding-quickstart.md).

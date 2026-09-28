@@ -163,11 +163,11 @@ export function createCapabilityEnforcer({ attemptId, workspace, grants, receipt
   return Object.freeze({
     grants: frozen(normalized),
     authorize,
-    executeProcess({ executable, argv = [], cwd = workspaceRoot, timeout = 30_000 }) {
+    executeProcess({ executable, argv = [], cwd = workspaceRoot, timeout = 30_000, env = process.env }) {
       const authorized = authorize({ kind: "process.spawn", executable });
       const resolvedCwd = path.resolve(cwd);
       if (!within(workspaceRoot, resolvedCwd)) fail("process cwd escapes workspace", "DR4731");
-      const result = spawnSync(executable, argv, { cwd: resolvedCwd, encoding: null, timeout, windowsHide: true });
+      const result = spawnSync(executable, argv, { cwd: resolvedCwd, encoding: null, timeout, env, windowsHide: true });
       if (result.error) fail(`process effect failed: ${result.error.message}`);
       const output = Buffer.concat([Buffer.from(result.stdout ?? []), Buffer.from(result.stderr ?? [])]);
       return Object.freeze({
