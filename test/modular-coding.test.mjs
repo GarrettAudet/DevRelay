@@ -186,3 +186,36 @@ test("oversized UTF-8 replacements reject before any edit or request binding", a
   request.changes.pop();
   assert.equal((await host.execute(request)).result.outcome,"verified");
 });
+
+test("file growth during a read cannot bypass the byte limit", async t => {
+  const fs = (await import("node:fs")).default;
+  const {syncBuiltinESMExports} = await import("node:module");
+  const {createCodingFiles} = await import("../examples/modular/coding-files.mjs");
+  const root = await mkdtemp(join(tmpdir(),"devrelay-growing-file-"));
+  const path = join(root,"growing.mjs");
+  await writeFile(path,"small\n");
+  t.after(async () => {
+    t.mock.restoreAll();
+    syncBuiltinESMExports();
+    await rm(root,{recursive:true,force:true});
+  });
+  let grew = false;
+  const grow = () => {
+    if (!grew) {
+      grew = true;
+      fs.writeFileSync(path,Buffer.alloc(1048577,97));
+    }
+  };
+  const originalReadFile = fs.readFileSync, originalRead = fs.readSync;
+  t.mock.method(fs,"readFileSync",function (...args) {
+    if (args[0] === path) grow();
+    return originalReadFile.apply(this,args);
+  });
+  t.mock.method(fs,"readSync",function (...args) {
+    grow();
+    return originalRead.apply(this,args);
+  });
+  syncBuiltinESMExports();
+  assert.throws(()=>createCodingFiles(root).read("growing.mjs"),/1 MiB/);
+  assert.equal(grew,true);
+});

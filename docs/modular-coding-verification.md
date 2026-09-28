@@ -37,6 +37,10 @@ Other covered behaviors include existing/new projects, real failed tests, denied
 
 Two review boundaries remain explicit: concurrent writers/link-replacement races require an additional workspace lease or isolated host; untrusted tests require a sandbox and subprocess supervisor. This example promises neither. These are scope rulings, not deferred defects.
 
+## Automated security follow-up
+
+GitHub CodeQL reported a file-system race in the original path-based size check/read. A new test grew the file immediately before reading and first reproduced a bypass of the 1 MiB bound. The reader now opens once, validates that descriptor, and reads from it with a hard byte cap. The regression and all 95 affected workflow/host/Core tests passed. It also requests no-follow behavior where supported; the documented single-writer boundary still applies to parent-path races.
+
 ## ProjectMemory and context
 
 Bootstrap receipt `DPMBR-A2C9EEFD120735CC` passed; the prior session state was `concluded`.

@@ -1,4 +1,4 @@
-import { lstatSync, readFileSync, realpathSync, mkdirSync, writeFileSync, renameSync, unlinkSync } from "node:fs";
+import { lstatSync, openSync, fstatSync, readSync, closeSync, constants, realpathSync, mkdirSync, writeFileSync, renameSync, unlinkSync } from "node:fs";
 import { dirname, join, resolve, relative, isAbsolute, parse } from "node:path";
 import { randomUUID } from "node:crypto";
 import { sha256Digest } from "../../src/content-digest.mjs";
@@ -50,14 +50,27 @@ export function createCodingFiles(workspace) {
   }
   function read(path) {
     const absolute = target(path);
-    let bytes;
+    let bytes, descriptor;
     try {
-      const stat = lstatSync(absolute);
+      descriptor = openSync(absolute, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0));
+      const stat = fstatSync(descriptor);
+      if (!stat.isFile() || stat.nlink > 1) throw new Error("Opened path is not a plain single-link file: " + path);
       if (stat.size > 1048576) throw new Error("File exceeds the 1 MiB example limit: " + path);
-      bytes = readFileSync(absolute);
+      // Validate and read the same handle, with a hard limit even if the file grows.
+      const buffer = Buffer.alloc(1048577);
+      let length = 0;
+      while (length < buffer.length) {
+        const count = readSync(descriptor, buffer, length, buffer.length - length, null);
+        if (count === 0) break;
+        length += count;
+      }
+      if (length > 1048576) throw new Error("File exceeds the 1 MiB example limit: " + path);
+      bytes = buffer.subarray(0, length);
     } catch (error) {
       if (error.code === "ENOENT") return { path, content: null, digest: null };
       throw error;
+    } finally {
+      if (descriptor !== undefined) closeSync(descriptor);
     }
     return { path, content: new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes), digest: sha256Digest(bytes) };
   }
