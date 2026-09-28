@@ -65,3 +65,13 @@ test("automation has bounded permissions and never publishes to npm", () => {
   );
   assert.doesNotMatch(release, /registry-url/u);
 });
+
+test("manual prerelease publication is explicit, limited to main, and follows verification", () => {
+  const release = text(".github/workflows/release.yml");
+  assert.match(release, /publish:\s*\n\s*description:[^\n]+\n\s*type: boolean\n\s*default: false/);
+  assert.match(release, /inputs.publish && github.ref == 'refs\/heads\/main'/);
+  assert.match(release, /needs: build-verify-release/);
+  assert.match(release, /RELEASE_TAG: v\$\{\{ needs.build-verify-release.outputs.package-version \}\}/);
+  assert.match(release, /-f "sha=\$\{GITHUB_SHA\}"/);
+  assert.doesNotMatch(release, /git\/refs[^\n]*--method PATCH/);
+});

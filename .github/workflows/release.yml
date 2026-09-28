@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the verified main commit as a prerelease
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -84,7 +89,7 @@ jobs:
           retention-days: 30
   create-prerelease:
     name: Create prerelease from accepted tag
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish && github.ref == 'refs/heads/main')
     needs: build-verify-release
     permissions:
       actions: read
@@ -100,4 +105,16 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" release-assets/* --repo "${GITHUB_REPOSITORY}" --verify-tag --prerelease --generate-notes --title "DevRelay v${{ needs.build-verify-release.outputs.package-version }}"
+          RELEASE_TAG: v${{ needs.build-verify-release.outputs.package-version }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            # This manual path creates only the exact tag after build verification.
+            # It never moves an existing tag, and the job is restricted to main.
+            if EXISTING="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${RELEASE_TAG}" --jq .object.sha 2>/dev/null)"; then
+              [[ "${EXISTING}" == "${GITHUB_SHA}" ]] || { echo "Tag already identifies another commit" >&2; exit 1; }
+            else
+              gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" -f "ref=refs/tags/${RELEASE_TAG}" -f "sha=${GITHUB_SHA}"
+            fi
+          fi
+          gh release create "${RELEASE_TAG}" release-assets/* --repo "${GITHUB_REPOSITORY}" --verify-tag --prerelease --generate-notes --title "DevRelay v${{ needs.build-verify-release.outputs.package-version }}"
