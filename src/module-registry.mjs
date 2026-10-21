@@ -2861,7 +2861,8 @@ export function createModuleRegistry({
 
   async function verifyCheckpointedChainExecution(runtime) {
     const { context, invocation: invocationSnapshot, resolution } = runtime;
-    for (const plan of resolution.steps) {
+    const startIndex = await prepareResume(runtime);
+    for (const plan of resolution.steps.slice(startIndex)) {
       const stepInvocation = createStepInvocation({
         apiVersion: "devrelay.dev/v1alpha1",
         kind: "ModuleStepInvocation",

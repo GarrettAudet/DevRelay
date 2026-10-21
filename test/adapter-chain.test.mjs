@@ -486,6 +486,15 @@ test("runner validates bytes, checkpoints effects, and passes ordered handoffs",
   assert.deepEqual(calls, ["draft", "refine", "finalize"]);
   assert.equal(result.outcome, "built");
   assert.equal(checkpointEvents.filter((event) => event.startsWith("put:")).length, 3);
+  const checkpointSnapshot = structuredClone([...checkpoints.values]);
+  const replay = await registry.verifyCheckpointedExecution(invocation, {
+    artifacts: store.artifacts,
+    checkpoints: { get: key => checkpoints.store.get(key) },
+  });
+  assert.deepEqual(replay.moduleResult, result);
+  assert.deepEqual(calls, ["draft", "refine", "finalize"]);
+  assert.deepEqual([...checkpoints.values], checkpointSnapshot);
+  assert.equal(checkpointEvents.filter((event) => event.startsWith("put:")).length, 3);
 });
 
 test("resolution rejects missing, reordered, and incompatible step bindings", () => {
@@ -965,6 +974,10 @@ test("all-pure chains may run without checkpoint storage", async () => {
     artifacts: store.artifacts,
   });
   assert.equal(result.outcome, "built");
+  assert.deepEqual(calls, ["draft", "refine", "finalize"]);
+  await expectContractRejection(registry.verifyCheckpointedExecution(invocation, {
+    artifacts: store.artifacts,
+  }), "DR2213");
   assert.deepEqual(calls, ["draft", "refine", "finalize"]);
 });
 

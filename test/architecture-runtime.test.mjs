@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { architectureRuntimeArtifactContracts } from "../src/architecture-runtime-contracts.mjs";
+import { validateArchitectureGatePromotion } from "../src/architecture-gate.mjs";
 import { sha256Digest } from "../src/content-digest.mjs";
 import {
   ContractError,
@@ -18,6 +19,7 @@ import {
   createProjectOverviewBaselineFixture,
 } from "./architecture-project-overview-fixtures.mjs";
 import { registerArchitectureNativeBytes } from "./native-architecture-fixtures.mjs";
+import { architectureReplayGateRequest } from "./architecture-replay-gate-fixture.mjs";
 
 const root = new URL("../", import.meta.url);
 const readJson = async (path) =>
@@ -461,6 +463,7 @@ test("ArchitectureDesign executes the configured Spec Kit → Structurizr → MA
   assert.deepEqual(fixture.calls, ["spec-kit-plan", "structurizr", "madr"]);
   assert.equal(result.outputs["architecture-draft"].length, 1);
   assert.equal(checkpointStore.values.size, 3);
+  await assertResumedReplay(fixture, fixture.invocation, checkpointStore, result);
 });
 
 test("ArchitectureDesign execution cannot bypass the route chosen from state bytes", async () => {
@@ -595,6 +598,50 @@ async function preparePausedResume(activeStage) {
   };
 }
 
+function replayRegistry() {
+  return createModuleRegistry({
+    modules: [architectureModule],
+    plugins: [specKitPlan, openSpecDesign, structurizr, madr].map(definition => ({
+      definition,
+      adapter: { async invoke() { assert.fail("checkpoint replay invoked an adapter"); } },
+    })),
+    artifactContracts: architectureRuntimeArtifactContracts(),
+  });
+}
+
+async function assertResumedReplay(fixture, invocation, checkpointStore, result) {
+  const callsBefore = [...fixture.calls];
+  const checkpointsBefore = structuredClone([...checkpointStore.values]);
+  const context = {
+    artifacts: fixture.store.artifacts,
+    // Verification must also work with a read-only host, not an execution store.
+    checkpoints: { get: key => checkpointStore.get(key) },
+  };
+  const registry = replayRegistry();
+  const receipt = await registry.verifyCheckpointedExecution(invocation, context);
+  assert.deepEqual(receipt.moduleResult, result);
+  assert.deepEqual(receipt.invocation, invocation);
+  const terminal = [...checkpointStore.values.values()].find(value =>
+    value.invocationId === invocation.invocationId && value.disposition === "terminal");
+  assert.equal(receipt.producer.stepInvocationDigest, terminal.stepInvocationDigest);
+  assert.deepEqual(await registry.verifyCheckpointedExecution(invocation, context), receipt);
+  assert.deepEqual(fixture.calls, callsBefore);
+  assert.deepEqual([...checkpointStore.values], checkpointsBefore);
+  if (result.outcome === "baseline_drafted") {
+    const request = architectureReplayGateRequest(receipt);
+    const promotion = await validateArchitectureGatePromotion(request);
+    assert.equal(promotion.operation, "establish-baseline");
+    assert.deepEqual(promotion.candidateRef, result.outputs["architecture-draft"][0]);
+    assert.equal(promotion.commitPayload.baseline.bytesBase64, request.baselineBytes.toString("base64"));
+    await assert.rejects(validateArchitectureGatePromotion({ ...request,
+      checkpointReplay: structuredClone(receipt),
+    }), /in-process verified checkpoint replay receipt/);
+  } else {
+    await assert.rejects(validateArchitectureGatePromotion({ checkpointReplay: receipt }),
+      /completed promotable ArchitectureDesign/);
+  }
+}
+
 test("portable continuation resumes at designer only with its terminal source checkpoint", async () => {
   const prepared = await preparePausedResume("designer");
   const result = await prepared.fixture.registry.execute(
@@ -610,6 +657,7 @@ test("portable continuation resumes at designer only with its terminal source ch
     prepared.fixture.calls,
     ["spec-kit-plan", "structurizr", "madr"],
   );
+  await assertResumedReplay(prepared.fixture, prepared.invocation, prepared.checkpointStore, result);
 });
 
 test("a fabricated designer-stage triad cannot resume from a fresh checkpoint store", async () => {
@@ -662,6 +710,7 @@ test("portable continuation resumes at modeler from validated source checkpoints
 
   assert.equal(result.outcome, "baseline_drafted");
   assert.deepEqual(prepared.fixture.calls, ["structurizr", "madr"]);
+  await assertResumedReplay(prepared.fixture, prepared.invocation, prepared.checkpointStore, result);
 });
 
 test("portable continuation restores both prior handoffs from source checkpoints", async () => {
@@ -676,6 +725,7 @@ test("portable continuation restores both prior handoffs from source checkpoints
 
   assert.equal(result.outcome, "baseline_drafted");
   assert.deepEqual(prepared.fixture.calls, ["madr"]);
+  await assertResumedReplay(prepared.fixture, prepared.invocation, prepared.checkpointStore, result);
 });
 
 test("multi-generation continuation restores checkpoints from their exact source invocations", async () => {
@@ -702,6 +752,7 @@ test("multi-generation continuation restores checkpoints from their exact source
   });
   assert.equal(resultB.outcome, "needs_clarification");
   assert.deepEqual(fixture.calls, ["structurizr", "madr"]);
+  await assertResumedReplay(fixture, resumeB.invocation, checkpointStore, resultB);
   const resumeC = await resumeInvocationFor({
     fixture,
     sourceInvocation: resumeB.invocation,
@@ -716,6 +767,10 @@ test("multi-generation continuation restores checkpoints from their exact source
   });
   assert.equal(resultC.outcome, "baseline_drafted");
   assert.deepEqual(fixture.calls, ["madr"]);
+  const continuation = JSON.parse(await fixture.store.artifacts.load(resumeC.continuationRef));
+  assert.deepEqual(continuation.completedStages.map(stage => stage.sourceInvocation.invocationId),
+    [fixture.invocation.invocationId, resumeB.invocation.invocationId]);
+  await assertResumedReplay(fixture, resumeC.invocation, checkpointStore, resultC);
 });
 
 test("clarification output binds the exact terminal step plug-in and digest", async (t) => {
@@ -1164,4 +1219,60 @@ test("portable resume rejects a forged completed-step plug-in", async () => {
     (error) => error instanceof ContractError && error.code === "DR2104",
   );
   assert.deepEqual(prepared.fixture.calls, []);
+});
+
+test("checkpoint-only resumed receipts fail closed on missing or changed proof", async (t) => {
+  const sourceHandoff = value => value.step === "designer" && value.disposition === "continue";
+  const sourcePause = value => value.moduleResult?.outcome === "needs_clarification";
+  const currentTerminal = value => value.moduleResult?.outcome === "baseline_drafted";
+  function changeCheckpoint(prepared, predicate, mutate) {
+    const [key, stored] = [...prepared.checkpointStore.values].find(([, value]) => predicate(value));
+    const changed = structuredClone(stored);
+    mutate(changed);
+    prepared.checkpointStore.values.set(key, changed);
+  }
+  function removeCheckpoint(prepared, predicate) {
+    const [key] = [...prepared.checkpointStore.values].find(([, value]) => predicate(value));
+    prepared.checkpointStore.values.delete(key);
+  }
+  async function changeContinuation(prepared, mutate) {
+    const continuation = JSON.parse(await prepared.fixture.store.artifacts.load(prepared.continuationRef));
+    mutate(continuation);
+    prepared.invocation.inputs.continuation = [
+      prepared.fixture.store.add(continuation.continuationId, continuation),
+    ];
+  }
+  for (const [name, mutate, code] of [
+    ["changed chain configuration", p => { p.invocation.adapters[1].config.toolVersion = "changed"; }, "DR2210"],
+    ["changed current invocation", p => { p.invocation.invocationId += "-other"; }, "DR2213"],
+    ["missing source clarification", p => removeCheckpoint(p, sourcePause), "DR2104"],
+    ["missing designer handoff", p => removeCheckpoint(p, sourceHandoff), "DR2212"],
+    ["missing modeler handoff", p => removeCheckpoint(p, value => value.step === "modeler"), "DR2212"],
+    ["missing resumed terminal", p => removeCheckpoint(p, currentTerminal), "DR2213"],
+    ["source clarification invocation", p => changeCheckpoint(p, sourcePause, value => { value.invocationId += "-other"; }), "DR2104"],
+    ["source handoff invocation", p => changeCheckpoint(p, sourceHandoff, value => { value.invocationId += "-other"; }), "DR2212"],
+    ["source handoff fingerprint", p => changeCheckpoint(p, sourceHandoff, value => { value.invocationFingerprint = `sha256:${"f".repeat(64)}`; }), "DR2212"],
+    ["source handoff step digest", p => changeCheckpoint(p, sourceHandoff, value => { value.stepInvocationDigest = `sha256:${"f".repeat(64)}`; }), "DR2212"],
+    ["source handoff plugin", p => changeCheckpoint(p, sourceHandoff, value => { value.plugin.version = "0.2.0"; }), "DR2212"],
+    ["source handoff output", p => changeCheckpoint(p, sourceHandoff, value => { value.outputs["architecture-designer-working"][0].digest = `sha256:${"f".repeat(64)}`; }), "DR2212"],
+    ["continuation source invocation", p => changeContinuation(p, value => { value.sourceInvocation.invocationId += "-other"; }), "DR2104"],
+    ["completed handoff order", p => changeContinuation(p, value => { value.completedStages.reverse(); }), "DR2104"],
+    ["completed handoff bytes", p => p.fixture.store.addBytes(p.fixture.designerRef.artifactId, Buffer.from("{}")), "DR2103"],
+    ["terminal result binding", p => changeCheckpoint(p, currentTerminal, value => { value.invocationFingerprint = `sha256:${"f".repeat(64)}`; }), "DR1808"],
+  ]) {
+    await t.test(name, async () => {
+      const prepared = await preparePausedResume("decision-recorder");
+      const context = { artifacts: prepared.fixture.store.artifacts, checkpoints: prepared.checkpointStore };
+      assert.equal((await prepared.fixture.registry.execute(prepared.invocation, context)).outcome, "baseline_drafted");
+      await mutate(prepared);
+      const callsBefore = [...prepared.fixture.calls];
+      const checkpointsBefore = structuredClone([...prepared.checkpointStore.values]);
+      await assert.rejects(replayRegistry().verifyCheckpointedExecution(prepared.invocation, {
+        artifacts: context.artifacts,
+        checkpoints: { get: key => prepared.checkpointStore.get(key) },
+      }), error => error instanceof ContractError && error.code === code);
+      assert.deepEqual(prepared.fixture.calls, callsBefore);
+      assert.deepEqual([...prepared.checkpointStore.values], checkpointsBefore);
+    });
+  }
 });
