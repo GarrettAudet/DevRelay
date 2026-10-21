@@ -15,6 +15,11 @@ lifecycle remains available; it is a follow-on reference workflow for this small
 framework preview. Tagged GitHub prereleases contain an installable tarball; this
 preview does not claim full lifecycle business acceptance or public npm publication.
 
+The unreleased `0.12.0-modular.3` candidate fixes the main CLI confusing command
+protocol versions with `--version`. The standalone main CLI remains unbound:
+commands now fail with exit 70 instead of incorrectly reporting package-version
+success. This does not add a host binding or change the separate modular coding launcher.
+
 ## Current status and pickup
 
 Use these documents in order when inspecting or resuming DevRelay:
@@ -35,7 +40,7 @@ validation, checkpointing, traceability, and progression.
 
 ## Release status
 
-DevRelay `0.12.0-modular.2` is this branch's Apache-2.0 modular developer preview, based on the `0.11.0-rc.3` source/library candidate and the published [v0.11.0-rc.2 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2), and contains DevRelay Core,
+DevRelay `0.12.0-modular.3` is this branch's unreleased Apache-2.0 modular developer preview, based on the `0.11.0-rc.3` source/library candidate and the published [v0.11.0-rc.2 GitHub prerelease](https://github.com/GarrettAudet/DevRelay/releases/tag/v0.11.0-rc.2), and contains DevRelay Core,
 `TraceabilityGraph`, `requirements-gathering@0.1.0`,
 `architecture-discovery@0.1.0`, `architecture-design@0.1.0`, `contract-generation@0.1.0`, `work-breakdown@0.1.0`,
 `work-dependency-analysis@0.1.0`, `specialist-assignment@2.0.0`,
