@@ -49,18 +49,44 @@ function stepResult(invocation, body) {
 }
 
 /**
- * A local example host: Desktop authors the request; existing Core owns the chain.
+ * Legacy modular preview: NOT a governed approval boundary. Desktop authors the
+ * request; existing Core owns the chain. Kept unchanged for compatibility.
  * Trusted code only. Filesystem checks and process grants are not an OS sandbox.
  */
-export function createCodingWorkflow({ workspace, stateDirectory, requirementsBytes, overviewBytes, overviewMarkdownBytes }) {
+export function createCodingWorkflow(options) {
+  return createWorkflow(options);
+}
+
+/** Additive governed entry point; it never infers approval from preview context. */
+export async function createGovernedCodingWorkflow({ governance, ...options }) {
+  const { createCodingPreflight } = await import("./coding-preflight.mjs");
+  const preflight = await createCodingPreflight(governance);
+  return createWorkflow({ ...options, ...preflight.context }, preflight);
+}
+
+/** Read-only discovery is available without setup, approval, state, or execution. */
+export function inspectCodingWorkspace({ workspace, paths }) {
+  if (!Array.isArray(paths) || paths.length > 100 || new Set(paths).size !== paths.length) {
+    throw new Error("Inspection requires at most 100 unique explicit paths");
+  }
+  const files = createCodingFiles(workspace);
+  return { status: "observed", files: paths.map(path => files.read(path)), authority: "none" };
+}
+
+function createWorkflow({ workspace, stateDirectory, requirementsBytes, overviewBytes, overviewMarkdownBytes }, preflight) {
   const files = createCodingFiles(workspace);
   const stateRoot = ensurePlainDirectory(stateDirectory);
   if (stateRoot === files.root) throw new Error("State directory must differ from the workspace root");
-  const config = { workspace: files.root, ...currentNode() };
+  const hostIdentity = { workspace: files.root, ...currentNode(),
+    ...(preflight ? { workflowMode: "governed" } : {}) };
+  const config = { ...hostIdentity,
+    ...(preflight ? { approvalDigest: preflight.approvalDigest } : {}) };
   const store = createCodingStorage(stateRoot);
   let calls = 0;
   try {
-    store.bind("workspace", config);
+    // Workspace identity survives new approvals; each invocation still pins its
+    // exact approvalDigest. Never reset history merely to change approved scope.
+    store.bind("workspace", hostIdentity);
     const requirements = JSON.parse(Buffer.from(requirementsBytes).toString("utf8"));
     const overview = JSON.parse(Buffer.from(overviewBytes).toString("utf8"));
     const requirementsRef = store.putBytes(Buffer.from(requirementsBytes),
@@ -119,8 +145,10 @@ export function createCodingWorkflow({ workspace, stateDirectory, requirementsBy
         return handoff(invocation, "inspection", { files: observed, inventory });
       },
       edit: async invocation => {
-        store.assertEffectAvailable(invocation.stepInvocationDigest);
         const request = readRequest(invocation);
+        // Keep this in the effect adapter: calling Core directly is not a bypass.
+        await preflight?.assertCurrent(request, invocation.inputs);
+        store.assertEffectAvailable(invocation.stepInvocationDigest);
         const inspection = prior(invocation, "inspect", "inspection");
         const guard = enforcer(request);
         files.assertCurrent(inspection.files);
@@ -145,8 +173,9 @@ export function createCodingWorkflow({ workspace, stateDirectory, requirementsBy
         return handoff(invocation, "changes", { files: after, inventory: inspection.inventory, changes });
       },
       verify: async invocation => {
-        store.assertEffectAvailable(invocation.stepInvocationDigest);
         const request = readRequest(invocation);
+        await preflight?.assertCurrent(request, invocation.inputs);
+        store.assertEffectAvailable(invocation.stepInvocationDigest);
         const applied = prior(invocation, "edit", "changes");
         files.assertCurrent(applied.files);
         const guard = enforcer(request);
@@ -205,12 +234,16 @@ export function createCodingWorkflow({ workspace, stateDirectory, requirementsBy
     return {
       catalog, invocation, runtimeContext, close: () => store.close(),
       async execute(request) {
+        await preflight?.assertCurrent(request);
         const before = calls;
         const result = await catalog.registry.execute(invocation(request), runtimeContext);
         const report = store.json(result.outputs.report[0]);
         let currentWorkspaceMatches = true;
         try { files.assertCurrent(report.files); } catch { currentWorkspaceMatches = false; }
-        return { result, report, replayed: calls === before, currentWorkspaceMatches };
+        return { result, report, replayed: calls === before, currentWorkspaceMatches,
+          ...(preflight ? { governance: { workItemId: preflight.card.workItemId,
+            criterionIds: [...preflight.card.criterionIds], approvalDigest: preflight.approvalDigest,
+            acceptance: "not-recorded" } } : {}) };
       },
     };
   } catch (error) { store.close(); throw error; }
