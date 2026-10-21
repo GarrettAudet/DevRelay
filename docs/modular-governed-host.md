@@ -48,8 +48,11 @@ node examples/modular/desktop.mjs governed-run /project /evidence/next-plan.json
 Refresh never commits source, creates an approval, or overwrites old context or
 request bytes. It validates/stages immutable bytes and compare-and-swaps one
 host-owned current head. Old plans become stale and cannot authorize effects.
-A missing reapproved dependency is blocked, not inferred unchanged. General
-"new small change / unchanged upstream" policy is not implemented by this slice.
+A missing approved dependency is blocked, not inferred unchanged. The separately
+versioned [bounded-work lane](modular-bounded-work.md) can prepare one code/test
+item under unchanged aligned upstream approvals, with reviewed design reuse and
+an exact new human work decision. First use, greenfield and rebaseline remain
+outside that lane.
 
 ## Source bundle contract
 

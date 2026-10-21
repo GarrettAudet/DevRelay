@@ -27,6 +27,7 @@ import {
   TRACEABILITY_VOCABULARY_V1_6,
   TRACEABILITY_VOCABULARY_V1_7,
   TRACEABILITY_VOCABULARY_V1_8,
+  TRACEABILITY_VOCABULARY_V1_9,
   assertTraceabilityVocabularyTransition,
   traceabilityContentDigest,
   traceabilityDiagnosticId,
@@ -1728,6 +1729,7 @@ function selectUpdateVocabulary(baseVocabulary, rawProjects, targetVocabulary) {
     projected.edges.every(({ kind }) => TRACEABILITY_EDGE_KINDS_V1_1.includes(kind)),
   );
   if (
+    targetVocabulary.version !== TRACEABILITY_VOCABULARY_V1_9.version &&
     baseVocabulary.version === TRACEABILITY_VOCABULARY_V1_1.version &&
     baseVocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_1.contractDigest &&
     usesOnlyV1_1Edges
@@ -1771,6 +1773,10 @@ export function createTraceabilityGraphService({
     vocabulary.id === TRACEABILITY_VOCABULARY_V1_7.id &&
     vocabulary.version === TRACEABILITY_VOCABULARY_V1_7.version &&
     vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_7.contractDigest;
+  const usesVocabularyV1_9 =
+    vocabulary.id === TRACEABILITY_VOCABULARY_V1_9.id &&
+    vocabulary.version === TRACEABILITY_VOCABULARY_V1_9.version &&
+    vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_9.contractDigest;
   const usesVocabularyV1_8 =
     vocabulary.id === TRACEABILITY_VOCABULARY_V1_8.id &&
     vocabulary.version === TRACEABILITY_VOCABULARY_V1_8.version &&
@@ -1781,8 +1787,8 @@ export function createTraceabilityGraphService({
     vocabulary.contractDigest === TRACEABILITY_VOCABULARY_V1_6.contractDigest;
   const registered = normalizeContributors(
     contributors,
-    new Set(usesVocabularyV1_8 ? TRACEABILITY_NODE_KINDS_V1_8 : usesVocabularyV1_7 ? TRACEABILITY_NODE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_NODE_KINDS_V1_6 : TRACEABILITY_NODE_KINDS),
-    new Set(usesVocabularyV1_8 ? TRACEABILITY_EDGE_KINDS_V1_8 : usesVocabularyV1_7 ? TRACEABILITY_EDGE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_EDGE_KINDS_V1_6 : TRACEABILITY_EDGE_KINDS),
+    new Set(usesVocabularyV1_9 || usesVocabularyV1_8 ? TRACEABILITY_NODE_KINDS_V1_8 : usesVocabularyV1_7 ? TRACEABILITY_NODE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_NODE_KINDS_V1_6 : TRACEABILITY_NODE_KINDS),
+    new Set(usesVocabularyV1_9 || usesVocabularyV1_8 ? TRACEABILITY_EDGE_KINDS_V1_8 : usesVocabularyV1_7 ? TRACEABILITY_EDGE_KINDS_V1_7 : usesVocabularyV1_6 ? TRACEABILITY_EDGE_KINDS_V1_6 : TRACEABILITY_EDGE_KINDS),
   );
   const initialSnapshot = {
     apiVersion: "devrelay.dev/v1alpha1",

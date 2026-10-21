@@ -3,6 +3,7 @@ import { assertVerifiedCheckpointReplayReceipt } from "../../src/module-registry
 import { validateRequirementsGatePromotion } from "../../src/requirements-gate.mjs";
 import { validateArchitectureGatePromotion } from "../../src/architecture-gate.mjs";
 import { validateWorkBreakdownGatePromotion } from "../../src/work-breakdown-gate.mjs";
+import { validateBoundedWorkGatePromotion } from "../../src/work-breakdown-bounded-gate.mjs";
 import { compileArtifactSchema } from "../../src/schema-validation.mjs";
 import { validateRelativePath } from "./coding-files.mjs";
 import { validateCodingArtifact } from "./coding-contracts.mjs";
@@ -50,7 +51,9 @@ export async function createCodingPreflight(governance) {
   }
   const requirements = validateRequirementsGatePromotion(governance.requirements);
   const architecture = await validateArchitectureGatePromotion(governance.architecture);
-  const work = await validateWorkBreakdownGatePromotion(governance.workBreakdown);
+  const replay = assertVerifiedCheckpointReplayReceipt(governance.workBreakdown.checkpointReplay);
+  const bounded = replay.invocation.module.id === "work-breakdown" && replay.invocation.module.version === "0.2.0" && replay.invocation.module.operation === "plan-bounded-work";
+  const work = await (bounded ? validateBoundedWorkGatePromotion : validateWorkBreakdownGatePromotion)(governance.workBreakdown);
   exact("design requirements", architecture.baseline.requirementsBaseline, requirements.requirementsBaselineRef);
   exact("design project overview", architecture.baseline.projectOverviewBaseline, requirements.projectOverviewBaselineRef);
   const input = role => work.baseline.inputBindings.find(binding => binding.role === role)?.artifact;
@@ -61,11 +64,18 @@ export async function createCodingPreflight(governance) {
   if (!architecture.baseline.repositorySnapshot || repository?.schema !== "https://devrelay.dev/artifacts/repository-snapshot/v1") {
     fail("this slice requires an approved existing-repository snapshot; greenfield or not-applicable repository context is not supported");
   }
-  exact("work-item repository context", repository, architecture.baseline.repositorySnapshot);
+  if (bounded) {
+    const reuse = replay.loadedInputs["design-reuse-assessment"]?.[0];
+    exact("work-item reviewed design reuse", input("design-reuse-assessment"), reuse?.ref);
+    exact("historical design evidence", reuse?.value.historicalRepositorySnapshot, architecture.baseline.repositorySnapshot);
+    exact("current execution snapshot", reuse?.value.currentRepositorySnapshot, repository);
+  } else {
+    // Published v1 keeps its original snapshot-equality rule.
+    exact("work-item repository context", repository, architecture.baseline.repositorySnapshot);
+  }
 
   // Baselines deliberately omit nativeArtifacts. Follow their approvedCandidate
   // to the genuine replay-owned candidate instead of trusting a supplied object.
-  const replay = assertVerifiedCheckpointReplayReceipt(governance.workBreakdown.checkpointReplay);
   const candidate = Object.values(replay.loadedOutputs).flat().find(entry => sameRef(entry.ref, work.candidateRef));
   exact("approved work candidate", work.baseline.approvedCandidate, candidate?.ref);
   const { ref, bytes } = governance.changeCard;
@@ -101,7 +111,8 @@ export async function createCodingPreflight(governance) {
     architectureBaseline: architecture.baselineRef,
     workBreakdownBaseline: work.baselineRef,
     projectContext: architecture.baseline.projectContext,
-    repositorySnapshot: architecture.baseline.repositorySnapshot,
+    repositorySnapshot: repository,
+    ...(bounded ? { designReuseAssessment: input("design-reuse-assessment") } : {}),
     contractDisposition: input("contract-disposition"),
     capabilityCatalog: input("capability-catalog"),
   }));

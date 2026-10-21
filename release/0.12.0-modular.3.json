@@ -25,6 +25,20 @@
   "digestAlgorithm": "sha256-raw-bytes",
   "modules": [
     {
+      "id": "work-breakdown",
+      "version": "0.2.0",
+      "definition": "examples/modules/work-breakdown-bounded.module.json",
+      "operations": [
+        {
+          "id": "plan-bounded-work",
+          "steps": []
+        }
+      ],
+      "plugins": [
+        "conversation-bounded-work"
+      ]
+    },
+    {
       "id": "requirements-gathering",
       "version": "0.1.0",
       "definition": "examples/modules/requirements-gathering.module.json",
@@ -324,6 +338,21 @@
     }
   ],
   "plugins": [
+    {
+      "id": "conversation-bounded-work",
+      "version": "0.1.0",
+      "manifest": "examples/plugins/conversation-bounded-work.plugin.json",
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.2.0"
+      },
+      "bindings": [
+        {
+          "operation": "plan-bounded-work",
+          "step": null
+        }
+      ]
+    },
     {
       "id": "mem0-project-memory",
       "version": "0.1.0",
@@ -1238,6 +1267,12 @@
       "digest": "sha256:397e7e5b568e74baabfd33c78d77719e7d2eef36db4bf1b04eaab7b9aeb75e07"
     },
     {
+      "path": "contracts/work-breakdown-bounded-artifacts.schema.json",
+      "role": "contract-schema",
+      "packaged": true,
+      "digest": "sha256:b85d5bdf93ed1f199ccb6aa0ee7f9da8a4c3fa04407dab570121605cf7f2d7e6"
+    },
+    {
       "path": "contracts/work-continuity-artifacts.schema.json",
       "role": "contract-schema",
       "packaged": true,
@@ -1271,7 +1306,7 @@
       "path": "docs/architecture-design.md",
       "role": "contract-documentation",
       "packaged": true,
-      "digest": "sha256:e04d055efa9f075a516991a9efcf088e0c9e13debb2af912e2e380844b5d0d28"
+      "digest": "sha256:1cf0850becef18fc8ecffb6f38eddd8a5c55ef6ceb93ca7abe23f7091c2f2f61"
     },
     {
       "path": "docs/architecture-discovery.md",
@@ -1328,6 +1363,12 @@
       "digest": "sha256:9133dbc7d2929afc06f42176785463c9a8481ec8f0e62196f8e4c67b30fd794e"
     },
     {
+      "path": "docs/modular-bounded-work.md",
+      "role": "contract-documentation",
+      "packaged": true,
+      "digest": "sha256:08ad6c9fd82174e7bea4e604c5f432888fc0409a35a05133d543ba1d5d76a5e7"
+    },
+    {
       "path": "docs/modular-coding-quickstart.md",
       "role": "contract-documentation",
       "packaged": true,
@@ -1343,7 +1384,7 @@
       "path": "docs/modular-desktop-quickstart.md",
       "role": "contract-documentation",
       "packaged": true,
-      "digest": "sha256:bf9664babd16988e540eaf1e94d3777a3d2930c304a6cb80083c175927cb181e"
+      "digest": "sha256:273f34e03420a25e3317870f7d505996f55475bf50213274f058093526e79011"
     },
     {
       "path": "docs/modular-desktop-verification.md",
@@ -1355,7 +1396,7 @@
       "path": "docs/modular-governed-host.md",
       "role": "contract-documentation",
       "packaged": true,
-      "digest": "sha256:b8674b9400f8a9d63def8adeed2f30cec253d1a64dd21c85b3a53f5ca043782f"
+      "digest": "sha256:ba19436edcd0cd24deb59376553982fa839dffce1cfe54690009cf1720f811f0"
     },
     {
       "path": "docs/modular-governed-preflight.md",
@@ -64196,6 +64237,12 @@
       "digest": "sha256:e122fe94e48c272968b16ec5c48c0ac890160c7e81f48664697627a592eb7d90"
     },
     {
+      "path": "examples/modular/coding-bounded-host.mjs",
+      "role": "repository-support",
+      "packaged": true,
+      "digest": "sha256:d0247ab026e76a5990b016d3e5d63044ec154bd38b1111114e90540cc117a086"
+    },
+    {
       "path": "examples/modular/coding-contracts.mjs",
       "role": "repository-support",
       "packaged": true,
@@ -64211,13 +64258,13 @@
       "path": "examples/modular/coding-governed-host.mjs",
       "role": "repository-support",
       "packaged": true,
-      "digest": "sha256:42bb740ff3fcd754d04d38391f6a62a81e715f91fecd1c69c12aa10fd0b2ed02"
+      "digest": "sha256:bb0a17a9f738843e0177d6821ea4c8fc8dbe0725aebff3ec710df12562061859"
     },
     {
       "path": "examples/modular/coding-preflight.mjs",
       "role": "repository-support",
       "packaged": true,
-      "digest": "sha256:fd9941b044a3bca5b8beaacfe322928e3688f5b1cbc26de4c46470c75a6d2782"
+      "digest": "sha256:07cb108d2da10671ea36d827c09a3514305a5eb8882a8f115ab1800dbff4e006"
     },
     {
       "path": "examples/modular/coding-project.mjs",
@@ -64229,7 +64276,7 @@
       "path": "examples/modular/coding-replay-bundle.mjs",
       "role": "repository-support",
       "packaged": true,
-      "digest": "sha256:6d8e96e9fd0105c1495a075507d0d6db579952c07e10465346254c8aade132ca"
+      "digest": "sha256:c9d8ed06e4138b9aa74670d3baae883b23b4925f1819529ac8f09058f61784d4"
     },
     {
       "path": "examples/modular/coding-storage.mjs",
@@ -64271,7 +64318,7 @@
       "path": "examples/modular/desktop.mjs",
       "role": "repository-support",
       "packaged": true,
-      "digest": "sha256:f7e4838052d63914e06522f7ccf2158ccc040b5b9502195c327711e0d47133f6"
+      "digest": "sha256:320233631a7aa08b25528bada40d5ec7eacaa55172f0fc920c6c070f688c0e46"
     },
     {
       "path": "examples/modular/digest.mjs",
@@ -64382,6 +64429,12 @@
       "digest": "sha256:8e8df2342f6c088d6b79886e38c06a0b8c83f23ff6c2c768d5055c9bb33a82c9"
     },
     {
+      "path": "examples/modules/work-breakdown-bounded.module.json",
+      "role": "module-definition",
+      "packaged": true,
+      "digest": "sha256:c9d4ef981adef9a18f877813473c80578079b2c683dacef934300d9db9742e13"
+    },
+    {
       "path": "examples/modules/work-breakdown.module.json",
       "role": "module-definition",
       "packaged": true,
@@ -64488,6 +64541,12 @@
       "role": "plugin-manifest",
       "packaged": true,
       "digest": "sha256:d0c64eed5eaad240271306ea876a9345e72cb4487a8cef80e73a6c4c9d2c675f"
+    },
+    {
+      "path": "examples/plugins/conversation-bounded-work.plugin.json",
+      "role": "plugin-manifest",
+      "packaged": true,
+      "digest": "sha256:74ace9c5ff994ba0507bcfe5b4328f3d5b37e3c06cab13d3023e53659afb3776"
     },
     {
       "path": "examples/plugins/github-spec-kit.plugin.json",
@@ -65261,7 +65320,7 @@
       "path": "package.json",
       "role": "package-metadata",
       "packaged": true,
-      "digest": "sha256:9fd54b609e1a1f2c48a1e5c37796a6edf798acc10c287f105179b4997d5588d1"
+      "digest": "sha256:05d31af4cfc522bd2161eb6bddb29f6e75372b0d6c3f0d3aeae4013bd053fc84"
     },
     {
       "path": "packs/fixtures/web-service/index.mjs",
@@ -65297,7 +65356,7 @@
       "path": "plugins/devrelay-desktop/scripts/code.mjs",
       "role": "repository-support",
       "packaged": true,
-      "digest": "sha256:63e0357dd8e51c02b006e839e1f66032ac7505d45725aa51a72f086bf3964cc0"
+      "digest": "sha256:65beca8b4da4eeac8bce65785ca501a4eebae5f3b05a588e79d0e3577d407437"
     },
     {
       "path": "plugins/devrelay-desktop/scripts/configure-runtime.mjs",
@@ -65321,7 +65380,7 @@
       "path": "plugins/devrelay-desktop/skills/devrelay-code/SKILL.md",
       "role": "repository-support",
       "packaged": true,
-      "digest": "sha256:398f30afe24602c065051ac8c5ba8b0785f92042ddc0de7336798cc603f1e3f0"
+      "digest": "sha256:7546084048395288e09a9bef79833cdf064bbb6810c97182fa9b1f84c6aeacb1"
     },
     {
       "path": "plugins/devrelay-desktop/skills/devrelay-orchestrate/SKILL.md",
@@ -67913,7 +67972,7 @@
       "path": "scripts/release-catalog.mjs",
       "role": "release-tooling",
       "packaged": false,
-      "digest": "sha256:96a625db87204614abdba05a0b3c0af1bfcdfc255a5818e18e16b12201a62eb8"
+      "digest": "sha256:b2ff6958e07747a9e17a950f63ff996271df021f11e0112fb501b07819325e80"
     },
     {
       "path": "scripts/release-check.mjs",
@@ -68813,7 +68872,7 @@
       "path": "src/traceability-artifact-validator.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:bddf661833868e4cfc2df4c56460b0796fde958e936232b54c9528ba154edc61"
+      "digest": "sha256:d13f735bd55e84e88b1ae5888cdbd30d0abbe5567b0b546716910bd17179f456"
     },
     {
       "path": "src/traceability-checkpoint-store.mjs",
@@ -68825,7 +68884,7 @@
       "path": "src/traceability-graph.mjs",
       "role": "runtime",
       "packaged": true,
-      "digest": "sha256:7a4a82f108668cbade1653042cdd98a670c74185eb47d97766c2abd21f355e77"
+      "digest": "sha256:aa0dd605ee877797c1bb8686446f07f90dc76ef2bfda9629cd5b5a5025932074"
     },
     {
       "path": "src/traceability-query-service.mjs",
@@ -68850,6 +68909,30 @@
       "role": "runtime",
       "packaged": true,
       "digest": "sha256:246ff8abb9b96ad0018dbecf759d9076d813d962c60e4614afc3563dbd295bcf"
+    },
+    {
+      "path": "src/work-breakdown-bounded-adapter.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:98a2b9e0688bc5af73ad20db0889df63ef1a96c6f4d79a016a35386390f5d44f"
+    },
+    {
+      "path": "src/work-breakdown-bounded-gate.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:3a1617ea3867a45d4a80deea61d17f6f6a2ecef4e3b557aa2cb1c37fbce257f7"
+    },
+    {
+      "path": "src/work-breakdown-bounded-traceability.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:89e188babf64698921d3179708c45866e4a172b9f8b19894bd2c86c1d68ce3a3"
+    },
+    {
+      "path": "src/work-breakdown-bounded.mjs",
+      "role": "runtime",
+      "packaged": true,
+      "digest": "sha256:7d324a1d90d54b9899b929de822bdd569b484798dc15e358653bc1eae7b369a4"
     },
     {
       "path": "src/work-breakdown-gate.mjs",
@@ -69158,6 +69241,12 @@
       "digest": "sha256:360d3f51908a1616ae77f81194b1e6c027efb2a82616be29447611ef468170d7"
     },
     {
+      "path": "test/bounded-work-fixture.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:a9e4ffcd54066857590354534907547ce025dfff41bdb8cbc02f3c18aa1ddd42"
+    },
+    {
       "path": "test/business-acceptance-contracts.test.mjs",
       "role": "verification",
       "packaged": false,
@@ -69449,7 +69538,7 @@
       "path": "test/governed-coding-fixture.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:2e7dba1d5903939f925a94ec594089dd9713f8b5f9ed6d68b3f4b6f95563b8c8"
+      "digest": "sha256:be9c46512b4137fd5afbca633f8a90d4e40fe059b7f0ecbcbab88d9e7c298959"
     },
     {
       "path": "test/ho001-final-conclusion.test.mjs",
@@ -69576,6 +69665,18 @@
       "role": "verification",
       "packaged": false,
       "digest": "sha256:fd3b0fc09815fe220e87a2868b43070917e35a8c4ab0fac32ced89a0a5e6af5a"
+    },
+    {
+      "path": "test/modular-bounded-work-fixture.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:2a7fadabb6d426733a6b7bf7e6861a64ae34be6d195bf5d020076b60d0b398f9"
+    },
+    {
+      "path": "test/modular-bounded-work.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:55b17f0fda8c76b8436d56f7b77bcaaa00a16b36cc78e485fe6cb458cb86c331"
     },
     {
       "path": "test/modular-coding-cli.test.mjs",
@@ -69893,13 +69994,13 @@
       "path": "test/release-preparation-regression.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:757f074b6fae7ef560364873653f99232c70c13e74a1180d6506048f7276d6b6"
+      "digest": "sha256:118b6be8883280a8ae8fc760ac6930babf94362829333b805037393c720bb94c"
     },
     {
       "path": "test/release-preparation-traceability.test.mjs",
       "role": "verification",
       "packaged": false,
-      "digest": "sha256:6cf47fad3a30eb8fad149fef7e61168210a9ceb843661e14dff7f2ae030eb711"
+      "digest": "sha256:1bdbf9c17ec6b8d38a8e74a3a45a5f4ce8c7bc4818cb8a1d0d04f6a81b0bd0bf"
     },
     {
       "path": "test/release-preparation-verification.test.mjs",
@@ -70212,6 +70313,12 @@
       "role": "verification",
       "packaged": false,
       "digest": "sha256:32f898a24a847e0b7949b0dd434501bdf6ac6c85e3f64c134f0110e98d50529b"
+    },
+    {
+      "path": "test/work-breakdown-bounded.test.mjs",
+      "role": "verification",
+      "packaged": false,
+      "digest": "sha256:92c20b47e72eba9ab17d60d340de784d9ac6ba81265acbe26316ae7aab27758e"
     },
     {
       "path": "test/work-breakdown-contract-hardening.test.mjs",

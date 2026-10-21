@@ -10,7 +10,7 @@ import {
   releasePreparationCandidateTraceabilityContributor,
   releaseReadinessTraceabilityContributor,
 } from "../src/release-preparation-traceability-contributor.mjs";
-import { TRACEABILITY_VOCABULARY_V1_7, TRACEABILITY_VOCABULARY_V1_8 } from "../src/traceability-artifact-validator.mjs";
+import { TRACEABILITY_VOCABULARY_V1_7, TRACEABILITY_VOCABULARY_V1_8, TRACEABILITY_VOCABULARY_V1_9 } from "../src/traceability-artifact-validator.mjs";
 import { createInMemoryTraceabilityStore, createTraceabilityGraphService } from "../src/traceability-graph.mjs";
 
 const API = "devrelay.dev/v1alpha1";
@@ -101,4 +101,24 @@ test("older vocabularies reject release ownership and Gate substitutions", async
   const { readinessContext } = fixture();
   readinessContext.loadedOutputs.readiness[0].value = { ...readinessContext.loadedOutputs.readiness[0].value, publicationAuthorized: true };
   await assert.rejects(() => createReleaseReadinessTraceabilityContributor().project(readinessContext), /stale|substituted|invalid|publication/u);
+});
+
+
+test("explicit V1.9 upgrade retains all V1.8 release facts and endpoint semantics", async () => {
+  const { candidateContext, readinessContext } = fixture();
+  const options = { graphId: "rp-upgrade", projectId: "devrelay", store: createInMemoryTraceabilityStore(), contributors: [releasePreparationCandidateTraceabilityContributor, releaseReadinessTraceabilityContributor] };
+  const prior = createTraceabilityGraphService({ ...options, vocabulary: TRACEABILITY_VOCABULARY_V1_8 });
+  const seeded = await prior.mergePrepared(await prior.prepare({ ...candidateContext, baseGraph: prior.captureBase(), invocationFingerprint: D(candidateContext.invocation) }));
+  assert(seeded.snapshot.edges.some(({kind}) => kind === "materialized-as"));
+  assert(seeded.snapshot.edges.some(({kind}) => kind === "prepared-from"));
+  assert(seeded.snapshot.edges.some(({kind}) => kind === "covers-release-obligation"));
+  const upgraded = createTraceabilityGraphService({ ...options, vocabulary: TRACEABILITY_VOCABULARY_V1_9 });
+  const prepared = await upgraded.prepare({ ...readinessContext, baseGraph: upgraded.captureBase(), invocationFingerprint: D(readinessContext.invocation) });
+  const merged = await upgraded.mergePrepared(prepared);
+  assert.deepEqual(merged.snapshot.vocabulary, TRACEABILITY_VOCABULARY_V1_9);
+  assert.deepEqual(merged.snapshot.parentGraph, seeded.snapshotRef);
+  for (const old of seeded.snapshot.nodes) assert.deepEqual(merged.snapshot.nodes.find(node => node.nodeId === old.nodeId), old);
+  for (const old of seeded.snapshot.edges) assert.deepEqual(merged.snapshot.edges.find(edge => edge.edgeId === old.edgeId), old);
+  assert(merged.snapshot.edges.some(({kind}) => kind === "promoted-to-readiness"));
+  assert.deepEqual(await upgraded.mergePrepared(prepared), merged);
 });
