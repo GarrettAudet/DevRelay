@@ -92,7 +92,7 @@ async function rebindFixtureRepository(bytesById, repositoryRevision, repository
 }
 
 /** A fixture-only host with current heads independent of the coding request. */
-export async function createGovernedCodingFixture(cardValue = defaultGovernedChangeCard, { repositoryNotApplicable = false, repositoryRevision, repositoryTreeDigest } = {}) {
+export async function createGovernedCodingFixture(cardValue = defaultGovernedChangeCard, { repositoryNotApplicable = false, repositoryRevision, repositoryTreeDigest, noWorkArchitectureId } = {}) {
   const bytesById = new Map();
   const checkpoints = new Map();
   function addBytes(artifactId, bytes, schema, mediaType = "application/json") {
@@ -239,14 +239,16 @@ export async function createGovernedCodingFixture(cardValue = defaultGovernedCha
   const workItem = { id: "WI-CODING", objective: "Exercise one bounded coding effect under real Gate-derived test prerequisites.",
     "bounded-scope": { included: ["The exact coding card paths and tests."], excluded: ["Release, installation, integration, and owner acceptance."] },
     deliverables: [{ id: "DEL-CODING", description: "Reviewable source diff and raw test evidence.", artifactKind: "source-change" }],
-    "work-type": "code-change", "acceptance-criterion-refs": criterionIds, "architecture-refs": architectureIds, "contract-refs": [],
+    "work-type": "code-change", "acceptance-criterion-refs": criterionIds, "architecture-refs": architectureIds.filter(id => id !== noWorkArchitectureId), "contract-refs": [],
     "required-capabilities": ["CAP-CODE"], "dependency-hints": [],
     "verification-plan": { checks: [{ id: "VC-CODING", method: "Run the card's bounded Node tests.", successCriteria: "Tests pass; this is not owner acceptance." }] },
     "required-evidence": [{ kind: "test-report", description: "Raw Node test output." }], "source-refs": sourceRefs };
   const workCandidate = add("WBD-CODING", { apiVersion, kind: "WorkBreakdownDraft", draftId: "WBD-CODING", operation: "establish-breakdown",
     inputBindings: Object.entries(refs).map(([role, artifact]) => ({ role, artifact })), workItems: [workItem],
     coverageDispositions: [...criterionIds.map(id => ["acceptance-criterion", id]), ...architectureIds.map(id => ["architecture", id])]
-      .map(([scopeKind, scopeRef]) => ({ scopeKind, scopeRef, disposition: "planned", workItemRefs: ["WI-CODING"] })),
+      .map(([scopeKind, scopeRef]) => scopeKind === "architecture" && scopeRef === noWorkArchitectureId
+        ? { scopeKind, scopeRef, disposition: "no-work-required", rationale: "Synthetic owner review: the existing human actor needs no implementation work." }
+        : { scopeKind, scopeRef, disposition: "planned", workItemRefs: ["WI-CODING"] }),
     nativeArtifacts: [changeCardRef], sourceRefs }, "work-breakdown-draft");
   const workResult = { apiVersion, kind: "ModuleResult", invocationId: "governed-coding-work-breakdown", status: "completed", outcome: "decomposed",
     outputs: { "work-breakdown-draft": [workCandidate.ref] }, evidence: ["contract-validation", "source-closure"].map(name => ({
@@ -263,17 +265,19 @@ export async function createGovernedCodingFixture(cardValue = defaultGovernedCha
     grants: [{ kind: "filesystem.read", scope: "/fixture" }, { kind: "filesystem.write", scope: "/fixture/planning" },
       { kind: "network.connect", scope: "host:implementation-engine" }] };
   const workReplay = await replay(workRegistry, workInvocation);
+  const noWorkApprovals = noWorkArchitectureId ? [{ authority: "work-breakdown-gate", candidate: workCandidate.ref,
+    scopeKind: "architecture", scopeRef: noWorkArchitectureId, evidence: approvalEvidence }] : [];
   const workBaseline = add("WBB-CODING", { apiVersion, kind: "WorkBreakdownBaseline", baselineId: "WBB-CODING", version: "1.0.0",
     approvedCandidate: workCandidate.ref, inputBindings: workCandidate.value.inputBindings, workItems: workCandidate.value.workItems,
-    coverageDispositions: [...workCandidate.value.coverageDispositions].sort((a, b) => `${a.scopeKind}\0${a.scopeRef}`.localeCompare(`${b.scopeKind}\0${b.scopeRef}`)),
+    coverageDispositions: workCandidate.value.coverageDispositions.map(entry => entry.disposition === "no-work-required" ? { ...entry, approval: noWorkApprovals[0] } : entry).sort((a, b) => `${a.scopeKind}\0${a.scopeRef}`.localeCompare(`${b.scopeKind}\0${b.scopeRef}`)),
     approvalEvidence: [approvalEvidence], sourceRefs }, "work-breakdown-baseline");
   const workBreakdown = { checkpointReplay: workReplay, baseline: workBaseline.value, baselineRef: workBaseline.ref,
-    baselineBytes: workBaseline.bytes, evidenceResolver };
+    baselineBytes: workBaseline.bytes, evidenceResolver, noWorkApprovals };
   await validateWorkBreakdownGatePromotion(workBreakdown);
   const heads = clone({ requirementsBaseline: requirements.requirementsBaselineRef, projectOverviewBaseline: requirements.projectOverviewBaselineRef,
     architectureBaseline: architectureBaseline.ref, workBreakdownBaseline: workBaseline.ref, projectContext: draft.projectContext,
     repositorySnapshot: draft.repositorySnapshot, contractDisposition: contract.ref, capabilityCatalog: catalog.ref });
-  const bundle = { formatVersion: 1, artifacts: [], checkpoints: [...checkpoints].map(([key, value]) => ({ key, value })),
+  const bundle = { formatVersion: noWorkArchitectureId ? 2 : 1, ...(noWorkArchitectureId ? { workHistory: [] } : {}), artifacts: [], checkpoints: [...checkpoints].map(([key, value]) => ({ key, value })),
     invocations: { requirements: requirementsInvocation, architecture: architectureInvocation, workBreakdown: workInvocation },
     gates: { requirements: { requirementsBaseline: requirements.requirementsBaselineRef, projectOverviewBaseline: requirements.projectOverviewBaselineRef,
       projectOverviewMarkdown: overviewDocument.value.renderedDocument.artifact },

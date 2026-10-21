@@ -4,8 +4,11 @@ The Desktop preview adds a small front door to the existing modular coding workf
 
 This is the **legacy preview**, not a governed approval boundary. The additive
 [governed preflight API](modular-governed-preflight.md) validates real Gate evidence
-and current heads before effects; its CLI reports blocked until a trusted host
-bridge is supplied. No installed Desktop default is changed.
+and current heads before effects. The opt-in [durable bridge](modular-governed-host.md)
+can import that evidence, and the [bounded-work lane](modular-bounded-work.md)
+prepares one ordinary change within an already aligned approved project. Governed
+work requires an existing Git repository; the preview's new-project setup is not
+governed onboarding. No installed Desktop default is changed.
 
 ## Install the local runtime and Desktop plug-in
 

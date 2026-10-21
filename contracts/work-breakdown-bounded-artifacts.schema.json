@@ -1,0 +1,567 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devrelay.dev/contracts/work-breakdown-bounded-artifacts.schema.json",
+  "oneOf": [
+    {
+      "$ref": "https://devrelay.dev/contracts/work-breakdown-bounded-artifacts.schema.json#/$defs/state"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/work-breakdown-bounded-artifacts.schema.json#/$defs/assessment"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/work-breakdown-bounded-artifacts.schema.json#/$defs/candidate"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/work-breakdown-bounded-artifacts.schema.json#/$defs/baseline"
+    },
+    {
+      "$ref": "https://devrelay.dev/contracts/work-breakdown-bounded-artifacts.schema.json#/$defs/approval"
+    }
+  ],
+  "$defs": {
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "BoundedWorkBreakdownState"
+        },
+        "stateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "state": {
+          "const": "bounded-work"
+        },
+        "requirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "projectOverviewBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "architectureBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "contractDisposition": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "capabilityCatalog": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "currentRepositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "currentWorkBreakdownBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "designReuseAssessment": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "expectedHeadDigest": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest"
+        }
+      },
+      "required": [
+        "apiVersion",
+        "kind",
+        "stateId",
+        "state",
+        "requirementsBaseline",
+        "projectOverviewBaseline",
+        "architectureBaseline",
+        "contractDisposition",
+        "capabilityCatalog",
+        "currentRepositorySnapshot",
+        "currentWorkBreakdownBaseline",
+        "designReuseAssessment",
+        "expectedHeadDigest"
+      ],
+      "$id": "https://devrelay.dev/artifacts/project-work-breakdown-state/v2"
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "BoundedDesignReuseAssessment"
+        },
+        "assessmentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "requirementsBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "projectOverviewBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "architectureBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "contractDisposition": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "historicalRepositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "currentRepositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "criterionIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "uniqueItems": true
+        },
+        "architectureIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "uniqueItems": true
+        },
+        "contractIds": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10000,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "uniqueItems": true
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "changes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "criteria": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "productIntent": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "interfaces": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "dependencies": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "platform": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "security": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "migrations": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            },
+            "architecture": {
+              "enum": [
+                "unchanged",
+                "changed",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "criteria",
+            "productIntent",
+            "interfaces",
+            "dependencies",
+            "platform",
+            "security",
+            "migrations",
+            "architecture"
+          ]
+        },
+        "inspectionEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+          }
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "reviewerId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "method": {
+              "const": "semantic-review"
+            },
+            "conclusion": {
+              "enum": [
+                "reuse-approved-design",
+                "full-change-required",
+                "needs-clarification"
+              ]
+            },
+            "evidence": {
+              "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+            }
+          },
+          "required": [
+            "reviewerId",
+            "method",
+            "conclusion",
+            "evidence"
+          ]
+        },
+        "revalidatedEvidence": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+          }
+        }
+      },
+      "required": [
+        "apiVersion",
+        "kind",
+        "assessmentId",
+        "requirementsBaseline",
+        "projectOverviewBaseline",
+        "architectureBaseline",
+        "contractDisposition",
+        "historicalRepositorySnapshot",
+        "currentRepositorySnapshot",
+        "criterionIds",
+        "architectureIds",
+        "contractIds",
+        "rationale",
+        "changes",
+        "inspectionEvidence",
+        "review",
+        "revalidatedEvidence"
+      ],
+      "$id": "https://devrelay.dev/artifacts/bounded-design-reuse-assessment/v1"
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "WorkBreakdownBoundedDraft"
+        },
+        "draftId": {
+          "type": "string",
+          "pattern": "^WBD-[A-Z0-9-]+$"
+        },
+        "operation": {
+          "const": "plan-bounded-work"
+        },
+        "inputBindings": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "role": {
+                "enum": [
+                  "project-work-breakdown-state",
+                  "requirements-baseline",
+                  "project-overview-baseline",
+                  "architecture-baseline",
+                  "contract-disposition",
+                  "capability-catalog",
+                  "current-repository-snapshot",
+                  "current-work-breakdown-baseline",
+                  "design-reuse-assessment"
+                ]
+              },
+              "artifact": {
+                "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+              }
+            },
+            "required": [
+              "role",
+              "artifact"
+            ]
+          }
+        },
+        "currentBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "workItem": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemDraft"
+        },
+        "resultingWorkItemsDigest": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest"
+        },
+        "coverageDispositions": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedCoverageDisposition"
+          }
+        },
+        "nativeArtifacts": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      },
+      "required": [
+        "apiVersion",
+        "kind",
+        "draftId",
+        "operation",
+        "inputBindings",
+        "currentBaseline",
+        "workItem",
+        "resultingWorkItemsDigest",
+        "coverageDispositions",
+        "nativeArtifacts",
+        "sourceRefs"
+      ],
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-bounded-draft/v1"
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "BoundedWorkBreakdownBaseline"
+        },
+        "baselineId": {
+          "type": "string",
+          "pattern": "^WBB-[A-Z0-9-]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "approvedCandidate": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "previousBaseline": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "inputBindings": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "role": {
+                "enum": [
+                  "project-work-breakdown-state",
+                  "requirements-baseline",
+                  "project-overview-baseline",
+                  "architecture-baseline",
+                  "contract-disposition",
+                  "capability-catalog",
+                  "current-repository-snapshot",
+                  "current-work-breakdown-baseline",
+                  "design-reuse-assessment"
+                ]
+              },
+              "artifact": {
+                "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+              }
+            },
+            "required": [
+              "role",
+              "artifact"
+            ]
+          }
+        },
+        "workItems": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/workItemDraft"
+          }
+        },
+        "coverageDispositions": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/approvedCoverageDisposition"
+          }
+        },
+        "approvalEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+          }
+        },
+        "sourceRefs": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/sourceRefs"
+        }
+      },
+      "required": [
+        "apiVersion",
+        "kind",
+        "baselineId",
+        "version",
+        "approvedCandidate",
+        "previousBaseline",
+        "inputBindings",
+        "workItems",
+        "coverageDispositions",
+        "approvalEvidence",
+        "sourceRefs"
+      ],
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-baseline/v2"
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apiVersion": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/apiVersion"
+        },
+        "kind": {
+          "const": "WorkBreakdownBoundedApproval"
+        },
+        "approvalId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "decision": {
+          "const": "approve"
+        },
+        "candidate": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "changeCard": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "designReuseAssessment": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "currentRepositorySnapshot": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/artifactRef"
+        },
+        "expectedHeadDigest": {
+          "$ref": "https://devrelay.dev/contracts/work-breakdown-artifacts.schema.json#/$defs/digest"
+        },
+        "originalMessage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "author": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "timestamp": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "id",
+            "author",
+            "text",
+            "timestamp"
+          ]
+        }
+      },
+      "required": [
+        "apiVersion",
+        "kind",
+        "approvalId",
+        "decision",
+        "candidate",
+        "changeCard",
+        "designReuseAssessment",
+        "currentRepositorySnapshot",
+        "expectedHeadDigest",
+        "originalMessage"
+      ],
+      "$id": "https://devrelay.dev/artifacts/work-breakdown-bounded-approval/v1"
+    }
+  }
+}

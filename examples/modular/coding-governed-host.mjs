@@ -31,7 +31,7 @@ function location(workspace, mustExist = true) {
     }
   }
   const stateDirectory = join(root, ".devrelay", "modular-coding");
-  if (mustExist && !existsSync(join(stateDirectory, "state.sqlite"))) blocked("No governed head is active; activate a complete approved replay bundle", "GOVERNED_HOST_REQUIRED");
+  if (mustExist && !existsSync(join(stateDirectory, "state.sqlite"))) blocked("No approved work is prepared yet; inspect the project and propose a bounded change after aligning its approved baselines", "GOVERNED_HOST_REQUIRED");
   return { workspace: root, stateDirectory };
 }
 function git(workspace, args) {
@@ -77,9 +77,9 @@ function identity(state) {
 function readHead(store, workspace) {
   let row;
   try { row = store.host.readRun(headKey); }
-  catch (error) { if (error.code === "DR4920") blocked("No governed head is active; activate a complete approved replay bundle", "GOVERNED_HOST_REQUIRED"); throw error; }
+  catch (error) { if (error.code === "DR4920") blocked("No approved work is prepared yet; inspect the project and propose a bounded change after aligning its approved baselines", "GOVERNED_HOST_REQUIRED"); throw error; }
   const state = row.state;
-  if (state.mode === "legacy") blocked("No governed head is active; activate a complete approved replay bundle", "GOVERNED_HOST_REQUIRED");
+  if (state.mode === "legacy") blocked("No approved work is prepared yet; inspect the project and propose a bounded change after aligning its approved baselines", "GOVERNED_HOST_REQUIRED");
   exactKeys(state, ["formatVersion", "workspace", "generation", "bundle", "heads", "approvalDigest", "catalogDigest", "repository", "headDigest", "request", "active", "completed"], "governed head");
   if (state.formatVersion !== 1 || state.workspace !== workspace || identity(state) !== state.headDigest) blocked("Saved governed head identity is invalid");
   return row;
@@ -151,7 +151,7 @@ export async function activateGovernedCodingProject({ workspace, bundle, expecte
       lease = acquire(store, row);
     } else if (expectedHeadDigest !== undefined) blocked("Cannot refresh a missing governed head", "STALE_GOVERNED_HEAD");
     // Validation precedes persistence; immutable bytes are staged before the one head CAS.
-    const bundleRef = store.put(bundle, bundleSchema);
+    const bundleRef = store.put(bundle, bundle.formatVersion === 2 ? "https://devrelay.dev/examples/modular/coding/replay-bundle/v2" : bundleSchema);
     const state = { formatVersion: 1, workspace: local.workspace, generation: (row?.state.generation ?? 0) + 1,
       bundle: bundleRef, heads: resolved.heads, approvalDigest: resolved.approvalDigest, catalogDigest: resolved.catalogDigest,
       repository: expectedRepository, request: null, active: null, completed: null };
@@ -265,4 +265,34 @@ export async function reconcileGovernedCodingProject({ workspace, expectedHeadDi
       completed: { requestId: plan.request.requestId, result: replay.moduleResult } });
     return status(row);
   } finally { workflow?.close(); try { if (lease && store.host.readRun(headKey).lease?.token === lease.token) store.host.releaseLease({ runId: headKey, leaseToken: lease.token }); } finally { store.close(); } }
+}
+
+/** Trusted candidate-authoring boundary. Uses the existing head lease/store;
+ * permits a clean newer Git HEAD only as separately reviewed planning evidence.
+ * The callback cannot obtain a source-write or process capability from this port.
+ */
+export async function withGovernedCodingPreparation({ workspace, expectedHeadDigest }, action) {
+  const local = location(workspace);
+  const store = createCodingStorage(local.stateDirectory);
+  let lease;
+  try {
+    const row = readHead(store, local.workspace);
+    if (expectedHeadDigest !== undefined) assertExpected(row, expectedHeadDigest);
+    assertIdle(row);
+    lease = acquire(store, row);
+    const currentRepository = repository(local.workspace);
+    assertRepository(local.workspace, currentRepository);
+    const resolved = await resolveHead(store, row);
+    const assertCurrent = () => {
+      assertLease(store, row.state, lease);
+      assertRepository(local.workspace, currentRepository);
+    };
+    const result = await action({ ...local, store, head: structuredClone(row.state), resolved,
+      repository: currentRepository, assertCurrent });
+    assertCurrent();
+    return result;
+  } finally {
+    try { if (lease && store.host.readRun(headKey).lease?.token === lease.token) store.host.releaseLease({ runId: headKey, leaseToken: lease.token }); }
+    finally { store.close(); }
+  }
 }

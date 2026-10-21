@@ -1,0 +1,47 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModulePlugin",
+  "metadata": {
+    "id": "conversation-bounded-work",
+    "version": "0.1.0",
+    "description": "Candidate-only conversation authoring. Does not claim execution of OpenSpec or Spec Kit."
+  },
+  "implements": [
+    {
+      "module": {
+        "id": "work-breakdown",
+        "version": "0.2.0"
+      },
+      "operations": [
+        {
+          "id": "plan-bounded-work",
+          "execution": "effect",
+          "configSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "planningOutputRoot": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "authoringMethod": {
+                "const": "conversation"
+              }
+            },
+            "required": [
+              "planningOutputRoot",
+              "authoringMethod"
+            ]
+          },
+          "capabilities": [
+            {
+              "kind": "filesystem.write",
+              "scope": "config:planningOutputRoot"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

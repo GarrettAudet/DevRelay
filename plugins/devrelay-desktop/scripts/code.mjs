@@ -3,7 +3,7 @@ import { dirname, resolve, join, isAbsolute } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { runtimeIdentity, entrypoint } from "./configure-runtime.mjs";
 
-export async function main(args = process.argv.slice(2)) {
+export async function main(args = process.argv.slice(2), trustedHost = {}) {
   try {
     const path = resolve(dirname(fileURLToPath(import.meta.url)), "../runtime.json");
     let saved;
@@ -16,7 +16,9 @@ export async function main(args = process.argv.slice(2)) {
     if (current.runtimeRoot !== saved.runtimeRoot || current.version !== saved.version) throw new Error("Configured runtime path or version changed; explicitly reconfigure and reinstall");
     if (current.entrypointDigest !== saved.entrypointDigest) throw new Error("Configured runtime entry-point digest changed; explicitly reconfigure and reinstall");
     const runtime = await import(pathToFileURL(join(current.runtimeRoot, entrypoint)).href);
-    await runtime.main(args);
+    // Only an embedding trusted conversation host may supply captureDecision.
+    // Command-line JSON and flags never authenticate a human approval.
+    await runtime.main(args, trustedHost);
   } catch (error) {
     console.error(JSON.stringify({error:error.message}));
     process.exitCode = 2;

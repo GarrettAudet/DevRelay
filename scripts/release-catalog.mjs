@@ -33,6 +33,13 @@ export const excludedReleaseDirectories = Object.freeze([
 
 export const canonicalModules = Object.freeze([
   {
+    id: "work-breakdown",
+    version: "0.2.0",
+    definition: "examples/modules/work-breakdown-bounded.module.json",
+    operations: [{ id: "plan-bounded-work", steps: [] }],
+    plugins: ["conversation-bounded-work"],
+  },
+  {
     id: "requirements-gathering",
     version: "0.1.0",
     definition: "examples/modules/requirements-gathering.module.json",
@@ -208,6 +215,13 @@ export const compatibilityPlugins = Object.freeze([
 ]);
 
 export const canonicalPlugins = Object.freeze([
+  {
+    id: "conversation-bounded-work",
+    version: "0.1.0",
+    manifest: "examples/plugins/conversation-bounded-work.plugin.json",
+    module: { id: "work-breakdown", version: "0.2.0" },
+    bindings: [{ operation: "plan-bounded-work", step: null }],
+  },
   {
     id: "mem0-project-memory",
     version: "0.1.0",

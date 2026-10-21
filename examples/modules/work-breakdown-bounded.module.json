@@ -1,0 +1,227 @@
+{
+  "apiVersion": "devrelay.dev/v1alpha1",
+  "kind": "ModuleDefinition",
+  "metadata": {
+    "id": "work-breakdown",
+    "version": "0.2.0",
+    "description": "Add exactly one code/test work item within unchanged approved scope; reviewed design reuse binds current repository evidence without rewriting historical architecture."
+  },
+  "routing": {
+    "stateSchema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v2",
+    "discriminator": "/state",
+    "rules": [
+      {
+        "value": "bounded-work",
+        "operation": "plan-bounded-work",
+        "reasonCode": "BOUNDED_WORK_WITH_UNCHANGED_UPSTREAM"
+      }
+    ],
+    "stateInput": "project-work-breakdown-state",
+    "decisionInput": "routing-decision"
+  },
+  "operations": [
+    {
+      "id": "plan-bounded-work",
+      "description": "Prepare one add-only candidate, never approval or source effects.",
+      "adapterExecution": "effect",
+      "inputs": [
+        {
+          "name": "project-work-breakdown-state",
+          "schema": "https://devrelay.dev/artifacts/project-work-breakdown-state/v2",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-work-breakdown-state+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "requirements-baseline",
+          "schema": "https://devrelay.dev/artifacts/requirements-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.requirements-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "project-overview-baseline",
+          "schema": "https://devrelay.dev/artifacts/project-overview-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.project-overview-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "architecture-baseline",
+          "schema": "https://devrelay.dev/artifacts/architecture-baseline/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.architecture-baseline+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "contract-disposition",
+          "schema": "https://devrelay.dev/artifacts/contract-disposition/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.contract-disposition+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "capability-catalog",
+          "schema": "https://devrelay.dev/artifacts/capability-catalog/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.capability-catalog+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "current-repository-snapshot",
+          "schema": "https://devrelay.dev/artifacts/repository-snapshot/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.repository-snapshot+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "current-work-breakdown-baseline",
+          "variants": [
+            {
+              "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v1",
+              "mediaTypes": [
+                "application/vnd.devrelay.work-breakdown-baseline+json"
+              ]
+            },
+            {
+              "schema": "https://devrelay.dev/artifacts/work-breakdown-baseline/v2",
+              "mediaTypes": [
+                "application/vnd.devrelay.work-breakdown-baseline+json"
+              ]
+            }
+          ],
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "name": "design-reuse-assessment",
+          "schema": "https://devrelay.dev/artifacts/bounded-design-reuse-assessment/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.bounded-design-reuse-assessment+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "routing-decision",
+          "schema": "https://devrelay.dev/artifacts/module-route-decision/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.module-route-decision+json"
+          ],
+          "cardinality": "one",
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "work-breakdown-bounded-draft",
+          "schema": "https://devrelay.dev/artifacts/work-breakdown-bounded-draft/v1",
+          "mediaTypes": [
+            "application/vnd.devrelay.work-breakdown-bounded-draft+json"
+          ],
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "decomposed",
+        "baseline_drift",
+        "unable_to_proceed",
+        "execution_failed"
+      ],
+      "resultContracts": {
+        "decomposed": {
+          "status": "completed",
+          "requiredInputs": [
+            "project-work-breakdown-state",
+            "requirements-baseline",
+            "project-overview-baseline",
+            "architecture-baseline",
+            "contract-disposition",
+            "capability-catalog",
+            "current-repository-snapshot",
+            "current-work-breakdown-baseline",
+            "design-reuse-assessment",
+            "routing-decision"
+          ],
+          "forbiddenInputs": [],
+          "requiredOutputs": [
+            "work-breakdown-bounded-draft"
+          ],
+          "allowedOutputs": [
+            "work-breakdown-bounded-draft"
+          ],
+          "requiredEvidence": [
+            {
+              "kind": "work-breakdown/contract-validation",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "work-breakdown-bounded-draft"
+            },
+            {
+              "kind": "work-breakdown/source-closure",
+              "statuses": [
+                "pass"
+              ],
+              "artifactOutput": "work-breakdown-bounded-draft"
+            }
+          ],
+          "diagnosticsRequired": false
+        },
+        "baseline_drift": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "unable_to_proceed": {
+          "status": "completed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        },
+        "execution_failed": {
+          "status": "failed",
+          "requiredInputs": [],
+          "forbiddenInputs": [],
+          "requiredOutputs": [],
+          "allowedOutputs": [],
+          "requiredEvidence": [],
+          "diagnosticsRequired": true
+        }
+      },
+      "evidence": [
+        "work-breakdown/contract-validation",
+        "work-breakdown/source-closure"
+      ],
+      "optionsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "inputRules": []
+    }
+  ]
+}

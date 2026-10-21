@@ -39,9 +39,9 @@ blocking discovery gap prevents a successful architecture draft until it is
 clarified. Once discovery is recorded, Core derives a new provider-neutral
 `ModuleRouteDecision` and can invoke `establish-baseline`.
 
-`ArchitectureDiscovery` is only an explicit prerequisite contract in `0.1.0`;
-DevRelay does not ship an executable discovery Module. For a brownfield project
-without an architecture baseline, the caller must supply a validated
+`ArchitectureDiscovery` ships an executable native-inventory implementation; see
+[ArchitectureDiscovery](architecture-discovery.md). For a brownfield project
+without an architecture baseline, discovery must produce a validated
 `CurrentArchitectureSnapshot` before ArchitectureDesign can route to
 `establish-baseline`.
 

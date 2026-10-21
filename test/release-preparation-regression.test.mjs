@@ -32,8 +32,8 @@ test("complete release matrix passes repeatedly with complete telemetry", () => 
   const second = runReleaseMatrix();
   for (const receipt of [first, second]) {
     assert.equal(receipt.exitCode, 0);
-    assert.equal(receipt.tests, 46);
-    assert.equal(receipt.passed, 46);
+    assert.equal(receipt.tests, 47);
+    assert.equal(receipt.passed, 47);
     assert.equal(receipt.failed, 0);
     assert.equal(receipt.durationMs > 0, true);
     assert.match(receipt.commandFingerprint, /^sha256:/u);
