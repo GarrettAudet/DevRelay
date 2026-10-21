@@ -7,7 +7,7 @@ description: Make a bounded coding change in an existing repository or start a n
 
 Use this entry point for the modular preview. Desktop authors the change; the local DevRelay runtime validates and executes its declared steps. Use the existing orchestration skill only when the user requests the larger approved dependency-frontier workflow.
 
-This is the legacy preview, not the governed approval boundary. The additive programmatic `createGovernedCodingWorkflow` and its current limits are documented in `docs/modular-governed-preflight.md`. A blocked `governed-run` must not silently fall back to this preview. Read-only `inspect <workspace> <paths...>` remains available without setup or approval.
+This is the legacy preview, not the governed approval boundary. The additive programmatic `createGovernedCodingWorkflow` is documented in `docs/modular-governed-preflight.md`; its opt-in durable CLI bridge and limits are in `docs/modular-governed-host.md`. This does not switch the installed default. A blocked `governed-run` must not silently fall back to this preview. Read-only `inspect <workspace> <paths...>` remains available without setup or approval.
 
 ## Start with the project
 

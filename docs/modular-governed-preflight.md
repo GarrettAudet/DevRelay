@@ -51,7 +51,7 @@ import { createGovernedCodingWorkflow } from "devrelay/examples/modular/coding.m
 
 const host = await createGovernedCodingWorkflow({
   workspace,
-  stateDirectory, // A separate state directory from an existing legacy preview.
+  stateDirectory, // The trusted host owns its durable workspace store.
   governance: {
     requirements, // Normal validateRequirementsGatePromotion arguments.
     architecture, // Normal validateArchitectureGatePromotion arguments.
@@ -68,7 +68,8 @@ Each Gate receives its genuine in-process Core checkpoint-replay receipt and
 exact baseline/approval bytes. Plain or serialized receipt objects cannot
 replace these. A durable host can regenerate genuine receipts through Core's
 `verifyCheckpointedExecution` using its existing exact artifact/checkpoint store
-without rerunning an adapter. That CLI bridge is not provided by this slice.
+without rerunning an adapter. The opt-in [durable CLI bridge](modular-governed-host.md)
+now implements this using the same SQLite/CAS store and a host-owned head lease.
 The requirements and overview context used by coding is derived from the
 validated Gate payload, never borrowed from preview setup.
 
@@ -99,15 +100,17 @@ pinned per invocation. Old request/checkpoint history is preserved, not reset.
 `inspectCodingWorkspace({workspace, paths})`, or
 `node examples/modular/desktop.mjs inspect <workspace> <paths...>`, reads bounded
 explicit files without setup, state creation, approval, or process execution.
-`governed-run <workspace> <request.json>` reports `GOVERNED_HOST_REQUIRED` and
-does not edit: this preview CLI cannot reconstruct trusted current authority.
+`governed-run <workspace> <plan.json>` uses the opt-in durable bridge. Without
+an activated approved source bundle it reports `GOVERNED_HOST_REQUIRED` and
+does not edit. Legacy preview setup alone is not sufficient authority.
 Do not delete/recreate preview state to disguise stale context or silently fall
 back from a blocked governed request to legacy `run`.
 
-This is stale-head **detection**, not atomic fencing against concurrent head
-writers. A production host must serialize approval activation/refresh and effects
-under its existing project lease (including lease expiry/recovery), rather than
-add a second store. In-process receipts and approval JSON do not authenticate a
+The bare programmatic preflight is stale-head **detection**, not atomic fencing
+against concurrent head writers. Its trusted caller must serialize activation,
+refresh, and effects. The opt-in CLI host implements that boundary with the
+existing project lease and a durable active intent that survives lease expiry,
+without adding another store. In-process receipts and approval JSON do not authenticate a
 human against a hostile host. Path checks/process grants are not an OS sandbox:
 trusted test code can itself cause effects. Arbitrary edits outside this governed
 DevRelay entry point are not protected.
