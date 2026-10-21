@@ -14,7 +14,7 @@ if (parsed.help) {
       "Use --json and --input '{...}' for deterministic machine operation.\n",
   );
   process.exitCode = 0;
-} else if (parsed.version) {
+} else if (parsed.version === true) {
   process.stdout.write(`${pkg.version}\n`);
   process.exitCode = 0;
 } else {
