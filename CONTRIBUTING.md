@@ -52,8 +52,14 @@ product identifiers to generic Core branches.
 
 A pull request must describe its goal, scope, verification evidence, security
 impact, compatibility impact, and release impact. At least one approving
-review and every required check are required. Stale approvals must be renewed
-after material changes. Maintainers may ask that an oversized change be split.
+review and every required check are required, except for the owner-authorized
+case in [Governance](GOVERNANCE.md#merge-policy): when explicit owner
+authorization is recorded in the pull request or a linked issue, independent
+code review plus passing required CI for the exact merge candidate is
+sufficient; a separate approving GitHub review is optional. All other
+requirements and GitHub's enforced protections remain unchanged. Stale
+approvals and independent review evidence must be renewed after material
+changes. Maintainers may ask that an oversized change be split.
 
 Publishing, tagging, changing repository controls, or creating a GitHub
 Release remains owner-authorized release work.

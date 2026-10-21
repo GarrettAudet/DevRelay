@@ -15,11 +15,19 @@ maintainer decision recorded in the repository.
 
 Changes enter the canonical branch through pull requests after:
 
-- at least one approving review;
+- at least one approving review, except for the owner-authorized case below;
 - all required checks pass;
 - DCO sign-off is present on every commit;
 - security and compatibility impact are documented;
 - stale approvals are renewed after material changes.
+
+For work explicitly authorized by the repository owner, with that authorization
+recorded in the pull request or a linked issue, independent code review plus
+passing required CI for the exact merge candidate is sufficient to satisfy
+the review and check requirements. A separate approving GitHub review is
+optional for that case. Independent review evidence must be renewed after
+material changes. All other requirements above and GitHub's enforced
+protections continue to apply.
 
 Force pushes and branch deletion are prohibited on the canonical release
 branch. Release tags are signed and immutable.
