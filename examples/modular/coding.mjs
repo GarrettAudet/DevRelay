@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { randomUUID } from "node:crypto";
 import { createPluginCatalog } from "../../src/modular.mjs";
 import { canonicalJsonDigest, sha256Digest } from "../../src/content-digest.mjs";
 import { requirementsRuntimeArtifactContracts } from "../../src/requirements-runtime-contracts.mjs";
@@ -73,19 +74,55 @@ export function inspectCodingWorkspace({ workspace, paths }) {
   return { status: "observed", files: paths.map(path => files.read(path)), authority: "none" };
 }
 
-function createWorkflow({ workspace, stateDirectory, requirementsBytes, overviewBytes, overviewMarkdownBytes }, preflight) {
+function createWorkflow({ workspace, stateDirectory, requirementsBytes, overviewBytes, overviewMarkdownBytes, effectGuard, assertEffectLease }, preflight) {
   const files = createCodingFiles(workspace);
   const stateRoot = ensurePlainDirectory(stateDirectory);
   if (stateRoot === files.root) throw new Error("State directory must differ from the workspace root");
-  const hostIdentity = { workspace: files.root, ...currentNode(),
-    ...(preflight ? { workflowMode: "governed" } : {}) };
+  const hostIdentity = { workspace: files.root, ...currentNode() };
   const config = { ...hostIdentity,
     ...(preflight ? { approvalDigest: preflight.approvalDigest } : {}) };
   const store = createCodingStorage(stateRoot);
   let calls = 0;
+  let legacyLease;
+  let closed = false;
+  const headKey = "governed-project-head";
+  function legacyHead() {
+    const row = store.host.readRun(headKey);
+    if (row.state.mode !== "legacy" || row.state.workspace !== files.root) throw new Error("Workspace has an active governed head; use governed-run, not legacy preview");
+    return row;
+  }
+  function checkLease() {
+    if (preflight) return assertEffectLease?.();
+    const row = legacyHead();
+    if (!legacyLease || row.lease?.token !== legacyLease.token || row.lease.expiresAt <= Date.now()) throw new Error("Legacy preview head lease expired or changed; effect remains quarantined");
+  }
+  async function beforeEffect(stepInvocation, request) {
+    if (preflight) return effectGuard?.(stepInvocation);
+    let row = legacyHead();
+    if (row.state.active && (row.state.active.requestId !== request.requestId || !legacyLease || row.lease?.token !== legacyLease.token)) throw new Error("Uncertain interrupted legacy effect is quarantined; governed activation is blocked");
+    legacyLease ??= store.host.acquireLease({ runId: headKey, owner: "legacy-" + randomUUID(), expectedVersion: row.version, durationMilliseconds: request.timeoutMs + 60000 });
+    checkLease();
+    row = legacyHead();
+    store.host.commitTransition({ runId: headKey, expectedVersion: row.version, leaseToken: legacyLease.token,
+      transition: { kind: "legacy-effect-intent" }, nextState: { ...row.state,
+        active: { requestId: request.requestId, invocationId: stepInvocation.invocationId, stepInvocationDigest: stepInvocation.stepInvocationDigest } } });
+  }
+  function close() {
+    if (closed) return;
+    closed = true;
+    try { if (legacyLease && store.host.readRun(headKey).lease?.token === legacyLease.token) store.host.releaseLease({ runId: headKey, leaseToken: legacyLease.token }); }
+    finally { store.close(); }
+  }
   try {
     // Workspace identity survives new approvals; each invocation still pins its
     // exact approvalDigest. Never reset history merely to change approved scope.
+    if (!preflight) {
+      if (!store.find(headKey)) {
+        try { store.host.initializeRun({ runId: headKey, state: { formatVersion: 1, mode: "legacy", workspace: files.root, active: null } }); }
+        catch (error) { if (error.code !== "DR4922") throw error; }
+      }
+      legacyHead();
+    }
     store.bind("workspace", hostIdentity);
     const requirements = JSON.parse(Buffer.from(requirementsBytes).toString("utf8"));
     const overview = JSON.parse(Buffer.from(overviewBytes).toString("utf8"));
@@ -159,9 +196,11 @@ function createWorkflow({ workspace, stateDirectory, requirementsBytes, overview
           return { path: change.path, before: before.content, after: change.content,
             beforeDigest: before.digest, afterDigest: sha256Digest(Buffer.from(change.content, "utf8")) };
         });
+        await beforeEffect(invocation, request);
         store.beginEffect(invocation.stepInvocationDigest);
         for (const change of changes) {
           // Repeat the exact preimage check immediately before each bounded write.
+          await checkLease();
           files.assertCurrent([{ path: change.path, digest: change.beforeDigest }]);
           files.write(change.path, change.after);
         }
@@ -180,10 +219,12 @@ function createWorkflow({ workspace, stateDirectory, requirementsBytes, overview
         files.assertCurrent(applied.files);
         const guard = enforcer(request);
         if (sha256Digest(readFileSync(config.nodeExecutable)) !== config.nodeDigest) throw new Error("Pinned Node executable changed");
+        await beforeEffect(invocation, request);
         store.beginEffect(invocation.stepInvocationDigest);
         const env = { ...process.env };
         delete env.NODE_TEST_CONTEXT;
         delete env.NODE_OPTIONS;
+        await checkLease();
         const execution = guard.executeProcess({ executable: config.nodeExecutable,
           argv: ["--test", "--test-concurrency=1", ...request.testFiles.map(path => "./" + path)],
           cwd: files.root, timeout: request.timeoutMs, env });
@@ -212,7 +253,20 @@ function createWorkflow({ workspace, stateDirectory, requirementsBytes, overview
         return { definition, adapter: { async invoke(invocation) { calls++; return adapters[step](invocation); } } };
       }),
     });
-    const runtimeContext = { artifacts: store.artifacts, checkpoints: store.checkpoints };
+    const runtimeContext = { artifacts: store.artifacts, checkpoints: {
+      get: store.checkpoints.get,
+      async put(key, value) {
+        await store.checkpoints.put(key, value);
+        if (!preflight && legacyLease && value.disposition === "terminal") {
+          checkLease();
+          const row = legacyHead();
+          store.host.commitTransition({ runId: headKey, expectedVersion: row.version, leaseToken: legacyLease.token,
+            transition: { kind: "legacy-terminal-checkpoint" }, nextState: { ...row.state, active: null } });
+          store.host.releaseLease({ runId: headKey, leaseToken: legacyLease.token });
+          legacyLease = undefined;
+        }
+      },
+    } };
     function invocation(request) {
       requestPaths(request);
       const value = {
@@ -232,11 +286,35 @@ function createWorkflow({ workspace, stateDirectory, requirementsBytes, overview
       return structuredClone(value);
     }
     return {
-      catalog, invocation, runtimeContext, close: () => store.close(),
+      catalog, invocation, runtimeContext, close,
       async execute(request) {
+        if (!preflight) legacyHead();
         await preflight?.assertCurrent(request);
         const before = calls;
-        const result = await catalog.registry.execute(invocation(request), runtimeContext);
+        let result;
+        const pending = preflight ? undefined : legacyHead();
+        if (pending?.state.active) {
+          if (pending.state.active.requestId !== request.requestId) throw new Error("Uncertain interrupted legacy effect is quarantined for another request");
+          // A crash after terminal checkpoint persistence must be recoverable,
+          // but incomplete effects must never fall back to adapter execution.
+          const exactInvocation = invocation(request);
+          let replay;
+          try { replay = await catalog.registry.verifyCheckpointedExecution(exactInvocation, runtimeContext); }
+          catch (error) { throw new Error("Uncertain interrupted legacy effect is quarantined; exact terminal checkpoints are incomplete: " + error.message); }
+          if (pending.state.active.invocationId !== exactInvocation.invocationId) throw new Error("Legacy intent does not bind the exact checkpointed invocation");
+          const recoveredReport = store.json(replay.moduleResult.outputs.report[0]);
+          if (!legacyLease || pending.lease?.token !== legacyLease.token || pending.lease.expiresAt <= Date.now()) {
+            legacyLease = store.host.acquireLease({ runId: headKey, owner: "legacy-reconcile-" + randomUUID(), expectedVersion: pending.version, durationMilliseconds: 30000 });
+          }
+          checkLease();
+          files.assertCurrent(recoveredReport.files);
+          const current = legacyHead();
+          store.host.commitTransition({ runId: headKey, expectedVersion: current.version, leaseToken: legacyLease.token,
+            transition: { kind: "legacy-terminal-reconciled" }, nextState: { ...current.state, active: null } });
+          store.host.releaseLease({ runId: headKey, leaseToken: legacyLease.token });
+          legacyLease = undefined;
+          result = replay.moduleResult;
+        } else result = await catalog.registry.execute(invocation(request), runtimeContext);
         const report = store.json(result.outputs.report[0]);
         let currentWorkspaceMatches = true;
         try { files.assertCurrent(report.files); } catch { currentWorkspaceMatches = false; }
@@ -246,5 +324,5 @@ function createWorkflow({ workspace, stateDirectory, requirementsBytes, overview
             acceptance: "not-recorded" } } : {}) };
       },
     };
-  } catch (error) { store.close(); throw error; }
+  } catch (error) { close(); throw error; }
 }

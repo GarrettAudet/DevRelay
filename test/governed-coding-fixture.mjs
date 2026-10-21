@@ -3,7 +3,7 @@
 // The existing authentication sample supplies real artifact contracts; arithmetic
 // workspace tests exercise only preflight mechanics, not fulfillment of its ACs.
 import { readFile } from "node:fs/promises";
-import { sha256Digest } from "../src/content-digest.mjs";
+import { canonicalJson, sha256Digest } from "../src/content-digest.mjs";
 import { createModuleRegistry } from "../src/module-registry.mjs";
 import { requirementsRuntimeArtifactContracts } from "../src/requirements-runtime-contracts.mjs";
 import { architectureRuntimeArtifactContracts } from "../src/architecture-runtime-contracts.mjs";
@@ -27,8 +27,7 @@ export const defaultGovernedChangeCard = {
   reuse: { disposition: "not-applicable", rationale: "The synthetic bounded arithmetic fixture introduces no reusable component.", paths: [] },
 };
 
-function checkpointStore() {
-  const values = new Map();
+function checkpointStore(values = new Map()) {
   return { async get(key) { return values.get(key); }, async put(key, value) { values.set(key, value); } };
 }
 
@@ -38,9 +37,64 @@ function stepResult(invocation, body) {
     stepInvocationDigest: invocation.stepInvocationDigest, step: invocation.step, plugin: invocation.plugin, ...body };
 }
 
+// Rebind only synthetic fixture lineage before any Core execution. Existing
+// immutable project artifacts are never edited or promoted by this helper.
+async function rebindFixtureRepository(bytesById, repositoryRevision, repositoryTreeDigest) {
+  if (!repositoryRevision && !repositoryTreeDigest) return value => clone(value);
+  if (!/^[0-9a-f]{40,64}$/.test(repositoryRevision ?? "") || !/^sha256:[0-9a-f]{64}$/.test(repositoryTreeDigest ?? "")) {
+    throw new Error("Synthetic repository fixture requires an exact revision and tree digest");
+  }
+  const original = JSON.parse(bytesById.get("repository-snapshot-001"));
+  const records = new Map();
+  function references(value, found = []) {
+    if (!value || typeof value !== "object") return found;
+    if (typeof value.artifactId === "string" && typeof value.digest === "string") found.push(value);
+    for (const child of Object.values(value)) references(child, found);
+    return found;
+  }
+  // Materialize the original source closure first, including discovery history.
+  for (const [id, bytes] of bytesById) {
+    let value;
+    try { value = JSON.parse(bytes); } catch { continue; }
+    records.set(id, value);
+    for (const ref of references(value)) if (!bytesById.has(ref.artifactId)) {
+      if (!/^[A-Za-z0-9-]+$/.test(ref.artifactId)) throw new Error("Unsafe fixture reference");
+      const bytes = await readFile(new URL(`examples/artifacts/${ref.artifactId}.json`, root));
+      if (sha256Digest(bytes) !== ref.digest) throw new Error("Original fixture closure digest mismatch");
+      bytesById.set(ref.artifactId, bytes);
+    }
+  }
+  const complete = new Set();
+  const visiting = new Set();
+  function replace(value) {
+    if (value === original.revision) return repositoryRevision;
+    if (value === original.treeDigest) return repositoryTreeDigest;
+    if (!value || typeof value !== "object") return value;
+    const next = Array.isArray(value) ? value.map(replace) : Object.fromEntries(Object.entries(value).map(([key, child]) => [key, replace(child)]));
+    if (typeof next.artifactId === "string" && typeof next.digest === "string" && bytesById.has(next.artifactId)) {
+      rewrite(next.artifactId);
+      next.digest = sha256Digest(bytesById.get(next.artifactId));
+    }
+    return next;
+  }
+  function rewrite(id) {
+    if (complete.has(id) || !records.has(id)) return;
+    if (visiting.has(id)) throw new Error("Synthetic fixture artifact reference cycle: " + id);
+    visiting.add(id);
+    const old = records.get(id);
+    const next = replace(old);
+    if (canonicalJson(old) !== canonicalJson(next)) bytesById.set(id, Buffer.from(`${JSON.stringify(next, null, 2)}\n`));
+    visiting.delete(id);
+    complete.add(id);
+  }
+  for (const id of records.keys()) rewrite(id);
+  return replace;
+}
+
 /** A fixture-only host with current heads independent of the coding request. */
-export async function createGovernedCodingFixture(cardValue = defaultGovernedChangeCard, { repositoryNotApplicable = false } = {}) {
+export async function createGovernedCodingFixture(cardValue = defaultGovernedChangeCard, { repositoryNotApplicable = false, repositoryRevision, repositoryTreeDigest } = {}) {
   const bytesById = new Map();
+  const checkpoints = new Map();
   function addBytes(artifactId, bytes, schema, mediaType = "application/json") {
     bytes = Buffer.from(bytes);
     bytesById.set(artifactId, bytes);
@@ -64,7 +118,7 @@ export async function createGovernedCodingFixture(cardValue = defaultGovernedCha
     return Buffer.from(bytes);
   } };
   async function replay(registry, invocation) {
-    const context = { artifacts, checkpoints: checkpointStore() };
+    const context = { artifacts, checkpoints: checkpointStore(checkpoints) };
     await registry.execute(invocation, context);
     return registry.verifyCheckpointedExecution(invocation, context);
   }
@@ -82,15 +136,20 @@ export async function createGovernedCodingFixture(cardValue = defaultGovernedCha
   const markdownBytes = await readFile(new URL("examples/artifacts/ProjectOverview.md", root));
   bytesById.set("project-overview-md-001", markdownBytes);
   bytesById.set("openspec-proposal-001", await readFile(new URL("examples/native/openspec/proposal.md", root)));
-  const requirementsInvocation = await readJson("examples/invocations/requirements-openspec.invocation.json");
-  const requirementsResult = await readJson("examples/results/requirements-openspec.result.json");
+  bytesById.set("requirements-approval-001", await readFile(new URL("examples/artifacts/requirements-approval-001.md", root)));
+  const replaceSourceRefs = await rebindFixtureRepository(bytesById, repositoryRevision, repositoryTreeDigest);
+  for (const [document, id] of [[requirementsDocument, "requirements-baseline-001"], [overviewDocument, "project-overview-baseline-001"]]) {
+    document.bytes = bytesById.get(id); document.value = JSON.parse(document.bytes);
+  }
+  const requirementsInvocation = replaceSourceRefs(await readJson("examples/invocations/requirements-openspec.invocation.json"));
+  const requirementsResult = replaceSourceRefs(await readJson("examples/results/requirements-openspec.result.json"));
   const requirementsRegistry = createModuleRegistry({
     modules: [await readJson("examples/modules/requirements-gathering.module.json")],
     plugins: [{ definition: await readJson("examples/plugins/openspec.plugin.json"),
       adapter: { async invoke() { return clone(requirementsResult); } } }],
     artifactContracts: requirementsRuntimeArtifactContracts(),
   });
-  const architectureInvocation = await readJson("examples/invocations/architecture-establish-baseline.invocation.json");
+  const architectureInvocation = replaceSourceRefs(await readJson("examples/invocations/architecture-establish-baseline.invocation.json"));
   const requirements = {
     checkpointReplay: await replay(requirementsRegistry, requirementsInvocation),
     requirementsBaseline: requirementsDocument.value,
@@ -104,7 +163,7 @@ export async function createGovernedCodingFixture(cardValue = defaultGovernedCha
   validateRequirementsGatePromotion(requirements);
 
   // Exercise the real configured designer -> modeler -> decision-recorder chain.
-  const architectureResult = await readJson("examples/results/architecture-establish-baseline.result.json");
+  const architectureResult = replaceSourceRefs(await readJson("examples/results/architecture-establish-baseline.result.json"));
   const draft = JSON.parse(bytesById.get("architecture-draft-001"));
   const designerRef = JSON.parse(bytesById.get("architecture-modeler-working-001")).designerWorkingArtifact;
   const modelerBytes = bytesById.get("architecture-modeler-working-001");
@@ -214,7 +273,34 @@ export async function createGovernedCodingFixture(cardValue = defaultGovernedCha
   const heads = clone({ requirementsBaseline: requirements.requirementsBaselineRef, projectOverviewBaseline: requirements.projectOverviewBaselineRef,
     architectureBaseline: architectureBaseline.ref, workBreakdownBaseline: workBaseline.ref, projectContext: draft.projectContext,
     repositorySnapshot: draft.repositorySnapshot, contractDisposition: contract.ref, capabilityCatalog: catalog.ref });
+  const bundle = { formatVersion: 1, artifacts: [], checkpoints: [...checkpoints].map(([key, value]) => ({ key, value })),
+    invocations: { requirements: requirementsInvocation, architecture: architectureInvocation, workBreakdown: workInvocation },
+    gates: { requirements: { requirementsBaseline: requirements.requirementsBaselineRef, projectOverviewBaseline: requirements.projectOverviewBaselineRef,
+      projectOverviewMarkdown: overviewDocument.value.renderedDocument.artifact },
+    architecture: { baseline: architectureBaseline.ref, ownerApproval: ownerApprovalRef }, workBreakdown: { baseline: workBaseline.ref } }, changeCard: changeCardRef };
+  const bundleRefs = new Map();
+  function collect(value) {
+    if (!value || typeof value !== "object") return;
+    if (typeof value.artifactId === "string" && typeof value.digest === "string") bundleRefs.set(canonicalJson(value), value);
+    for (const child of Object.values(value)) collect(child);
+  }
+  collect(bundle);
+  const visited = new Set();
+  for (const [, ref] of bundleRefs) {
+    let bytes = bytesById.get(ref.artifactId);
+    if (!bytes && /^[A-Za-z0-9-]+$/.test(ref.artifactId)) {
+      bytes = await readFile(new URL(`examples/artifacts/${ref.artifactId}.json`, root));
+      bytesById.set(ref.artifactId, bytes);
+    }
+    if (!bytes || sha256Digest(bytes) !== ref.digest) throw new Error("Missing exact bundle fixture artifact: " + ref.artifactId);
+    bundle.artifacts.push({ ref: clone(ref), bytesBase64: bytes.toString("base64") });
+    if (!visited.has(ref.artifactId)) {
+      visited.add(ref.artifactId);
+      try { collect(JSON.parse(bytes)); } catch {}
+    }
+  }
   return {
+    bundle,
     governance: { requirements, architecture, workBreakdown, changeCard: { ref: changeCardRef, bytes: changeCardBytes }, readCurrentHeads: () => clone(heads) },
     context: { requirementsBytes: requirements.requirementsBaselineBytes, overviewBytes: requirements.projectOverviewBaselineBytes, overviewMarkdownBytes: markdownBytes },
     heads, card, workItem,

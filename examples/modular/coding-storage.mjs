@@ -34,7 +34,7 @@ export function createCodingStorage(rootDirectory) {
     return storage.getArtifact(entry.stored);
   }
   return {
-    bind, putBytes, load,
+    bind, putBytes, load, find, host: storage,
     put(value, schema) { return putBytes(Buffer.from(canonicalJson(value) + "\n"), schema); },
     json(ref) { return JSON.parse(load(ref).toString("utf8")); },
     artifacts: { load },
