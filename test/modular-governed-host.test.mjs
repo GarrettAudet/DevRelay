@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
-import { mkdtemp, mkdir, readFile, writeFile, rm, access } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, rm, access, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -97,6 +97,27 @@ test("governed CLI activates, edits, tests and replays genuine durable evidence 
   assert.equal(status.completed.requestId, value.request.requestId);
   assert.equal(status.active, null);
   assert.equal(status.acceptance, "not-recorded");
+});
+
+test("Git root identity accepts a resolved directory alias but rejects a nested workspace", async t => {
+  const value = await fixture(t);
+  await assert.rejects(activateGovernedCodingProject({ workspace: join(value.workspace, "test"), bundle: value.approved.bundle }),
+    { code: "UNSUPPORTED_REPOSITORY_CONTEXT" });
+  await assert.rejects(access(join(value.workspace, "test", ".devrelay")), { code: "ENOENT" });
+  const alias = join(value.root, "project-alias");
+  await symlink(value.workspace, alias, process.platform === "win32" ? "junction" : "dir");
+  const head = success(command("governed-activate", alias, value.bundlePath));
+  assert.equal(inspectGovernedCodingProject(value.workspace).headDigest, head.headDigest);
+  await noEffects(value);
+});
+
+test("Git root identity accepts a differently spelled Windows drive", { skip: process.platform !== "win32" }, async t => {
+  const value = await fixture(t);
+  const workspace = value.workspace.replace(/^[a-z]:/i, drive => drive[0] === drive[0].toUpperCase() ? drive.toLowerCase() : drive.toUpperCase());
+  assert.notEqual(workspace, value.workspace);
+  const head = success(command("governed-activate", workspace, value.bundlePath));
+  assert.equal(success(command("governed-plan", workspace, value.requestPath)).headDigest, head.headDigest);
+  await noEffects(value);
 });
 
 test("missing, substituted head and changed Git revision cannot authorize effects", async t => {

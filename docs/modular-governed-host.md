@@ -88,6 +88,8 @@ store. Old bytes and the SQLite transition journal remain intact.
 ## Repository and concurrency boundary
 
 This initial bridge supports an existing Git worktree root with a committed HEAD.
+The filesystem must expose nonzero directory device/inode identities; the root
+check compares those identities, not case-folded or short/long path spellings.
 Its approved RepositorySnapshot must use the existing local Git adapter convention:
 `revision = commit` and `treeDigest = canonicalJsonDigest({commit, tree})`, with
 `tree` the exact Git tree object ID. Other snapshot conventions are unsupported,

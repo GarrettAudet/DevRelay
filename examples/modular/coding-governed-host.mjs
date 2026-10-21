@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { existsSync, lstatSync, realpathSync } from "node:fs";
+import { existsSync, lstatSync, realpathSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { canonicalJsonDigest } from "../../src/content-digest.mjs";
@@ -42,7 +42,16 @@ function git(workspace, args) {
   return result.stdout;
 }
 function repository(workspace) {
-  if (realpathSync(git(workspace, ["rev-parse", "--show-toplevel"]).trim()) !== workspace) blocked("Workspace must be the Git worktree root", "UNSUPPORTED_REPOSITORY_CONTEXT");
+  // Git and Node can spell the same Windows directory differently (including
+  // short/long names). Compare filesystem identity, not case-folded path text.
+  const root = statSync(git(workspace, ["rev-parse", "--show-toplevel"]).trim(), { bigint: true });
+  const selected = statSync(workspace, { bigint: true });
+  if (root.dev === 0n || selected.dev === 0n || root.ino === 0n || selected.ino === 0n) {
+    blocked("Filesystem does not expose a reliable Git worktree directory identity", "UNSUPPORTED_REPOSITORY_CONTEXT");
+  }
+  if (!root.isDirectory() || !selected.isDirectory() || root.dev !== selected.dev || root.ino !== selected.ino) {
+    blocked("Workspace must be the Git worktree root", "UNSUPPORTED_REPOSITORY_CONTEXT");
+  }
   const commit = git(workspace, ["rev-parse", "--verify", "HEAD"]).trim();
   const tree = git(workspace, ["rev-parse", "--verify", "HEAD^{tree}"]).trim();
   return { revision: commit, treeDigest: canonicalJsonDigest({ commit, tree }) };
