@@ -2,6 +2,11 @@
 
 The Desktop preview adds a small front door to the existing modular coding workflow. Describe a change in this conversation; the devrelay-code skill prepares an exact request, runs native inspect/edit/test bindings, and returns a diff plus actual test evidence. Both existing repositories and new project directories are supported. No separate model service is required.
 
+This is the **legacy preview**, not a governed approval boundary. The additive
+[governed preflight API](modular-governed-preflight.md) validates real Gate evidence
+and current heads before effects; its CLI reports blocked until a trusted host
+bridge is supplied. No installed Desktop default is changed.
+
 ## Install the local runtime and Desktop plug-in
 
 Use Node >=22 and a trusted DevRelay source checkout with its exact dependencies installed, or install the release tarball into a stable local directory:
